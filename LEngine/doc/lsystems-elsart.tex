@@ -2,18 +2,16 @@
 % with harvard style bibliographic references
 % SP 2001/01/05
 
-\documentclass{elsart}
-%Scandinavian alphabet
-%\usepackage[finnish]{babel}
-%\usepackage[latin1]{inputenc}
-
+%\documentclass{elsart}
 % Use the option doublespacing or reviewcopy to obtain double line spacing
-%\documentclass[doublespacing]{elsart}
+\documentclass[doublespacing]{elsart}
 %\usepackage[T1]{fontenc}
 % the natbib package allows both number and author-year (Harvard)
 % style referencing;
 \usepackage{natbib}
-
+%Scandinavian alphabet
+%\usepackage[finnish]{babel}
+%\usepackage[latin1]{inputenc}
 % if you use PostScript figures in your article
 % use the graphics package for simple commands
 % \usepackage{graphics}
@@ -40,6 +38,7 @@ in a functional-structural tree model}
 \author[Metla]{Jari Perttunen\corauthref{cor1}}
 \corauth[cor1]{Corresponding author}
 \ead{jari.perttunen@metla.fi}
+\ead[url]{http://www.metla.fi/pp/JPer/}
 \author[Metla]{Risto Siev\"anen}
 
 \address[Metla]{Vantaa   Research  Centre,  Finnish   Forest  Research
@@ -67,7 +66,7 @@ Insititute, PL 18,  01301 Vantaa, Finland.}
   algorithm  to  convert  tree  structures  generated  by  Lindenmayer
   systems to  the LIGNUM  representation of trees.   We then  give two
   example applications  that model the  development of Scots  pine and
-  the   dwarf  shrub  bearberry   (\textit{Arctostaphylos  uva-ursi}).
+  the  dwarf shrub  bearberry  (\textit{Arctostaphylos uva-ursi  L.}).
   Finally we discuss our approach  and its consequences for the future
   development of LIGNUM.
 
@@ -95,8 +94,11 @@ Insititute, PL 18,  01301 Vantaa, Finland.}
 
 % The Appendices part is started with the command \appendix;
 % appendix sections are then done as normal sections
-% \appendix
-
+\appendix
+\input{figureL1}
+\pagebreak
+\input{figureL2}
+\pagebreak
 % \section{}
 % \label{}
 
@@ -108,11 +110,7 @@ Insititute, PL 18,  01301 Vantaa, Finland.}
 %Tables and figures.
 
 \input{figures}
-\pagebreak
-\appendix
-\input{figureL1}
-%\pagebreak
-\input{figureL2}
+
 
 
 

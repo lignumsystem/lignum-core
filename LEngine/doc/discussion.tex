@@ -21,18 +21,18 @@ computable to  support qualitative  and quantitative reasoning  of the
 model  properties.    It  is  extensible,  new   symbols  can  capture
 additional features of the model if required and it is understandable,
 the formal  notation allows the  sharing and comparison  of scientific
-knowledge.   For example,  part of  an  L-system model  in itself  can
+knowledge.   For example,  part of  an  L system model  in itself  can
 appear  in  a  publication  as  a  model  description,  unlike  models
 implemented with general programming languages.
 
 The theoretical advancements that have snice been implemented in tools
-based on L-system formalism have  been motivated by the desire to find
+based on L system formalism have  been motivated by the desire to find
 out what  phenomena in  plant modeling can  be formally  described and
-simulated.   The range  of circumstances  where L-system  formalism is
+simulated.   The range  of circumstances  where L system  formalism is
 applicable  is quite  extensive  \citep{pp:99}.  \citet{kurth:99}  has
 demonstrated  this by  realizing a  number of  published architectural
 tree models including LIGNUM Scots pine \citep{perttunen:96} using the
-L-system based  tool GROGRA \citep{kurth:94}. The  simulation of plant
+L system based  tool GROGRA \citep{kurth:94}. The  simulation of plant
 communities has been  reported by \citet{deussen:98}, \citet{kurth:99}
 and with multiset L  systems developed by \citet{lane:02}.  Inevitably
 one has to ask why not reimplement LIGNUM and make L systems the basis
@@ -43,7 +43,7 @@ plays an  important function in their development.   Modelling of such
 phenomena  include, for example,  computation of  the light  regime in
 plant communities  and competition for growing space  (cf.  example on
 bearberry,  Sec.   \ref{sec:bearberry}).   To  model  such  phenomena,
-\citet{mech:97} and  \citet{mech:96} have extended  L-system formalism
+\citet{mech:97} and  \citet{mech:96} have extended  L system formalism
 with communication symbols that  can pass parameter values between the
 plant model in the L system and a separate program (in general purpose
 language) simulating, for example, the relevant characteristics of its
@@ -52,18 +52,18 @@ functions to return  environmental information to the L  system in the
 GROGRA  program.    Once  implemented,  these   separate  programs  or
 predefined functions are easily used and reused.
 
-The functionalities  enhancing L-system languages make  it possible to
+The functionalities  enhancing L system languages make  it possible to
 realize  parts of  the simulations  using general  purpose programming
 languages (e.g.  unit to unit interactions) that would be difficult to
 implement  with the  parallel rewriting  semantics.  The  design  of L
 allows embedding of C++, thus making such constructs unnecessary.  But
 note that  the time  spent in these  environmental models is  the time
-spent  outside  the  L-system  formalism  with  some  general  purpose
+spent  outside  the  L system  formalism  with  some  general  purpose
 programming language.  Hence, complicated architectural tree and plant
 models, such as FSTM's,  implemented using L systems inevitably employ
 both an L system and  general purpose language parts.  LIGNUM combined
 with e  L language  also contains those  parts, although  in different
-proportions  than  models realized  with  L-system  tools.  It  seems,
+proportions  than  models realized  with  L system  tools.  It  seems,
 therefore, that an optimal way to implement complicated plant and tree
 models is to mix L systems and general purpose programming languages.
  
@@ -85,7 +85,7 @@ offers one alternative.
 It  would definitely  be an  interesting exercise  in itself  to study
 carefully  the  convergence  between  LIGNUM  and L  systems  and  the
 practical  issues involved  by fully  implementing the  model  in some
-L-system tool,  say L+C \citep{karwowski:02}.   Some modeling efforts,
+L system tool,  say L+C \citep{karwowski:02}.   Some modeling efforts,
 especially  phenomena  involving single  or  directly connected  plant
 parts only,  are easily expressed  by rewriting.  But  other phenomena
 inevitably require  modeling and implementation  outside the rewriting
