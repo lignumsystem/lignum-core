@@ -44,7 +44,7 @@ void CfTreeSegment<TS,BUD>::aging()
   //Foliage senescence
   const ParametricCurve& fm = GetFunction(GetTree(*this),LGMFM);
   //This implementation assumes declining function of age from 1 to 0.
-  LGMdouble Wf_new = fm(GetValue(*this,LGAage))*GetValue(*this,LGAWf);
+  LGMdouble Wf_new = fm(GetValue(*this,LGAage))*GetValue(*this,LGAWf0);
   SetValue(*this,LGAWf,Wf_new);  
 }
 
