@@ -231,7 +231,7 @@ void drawBud(Bud<TS,BUD> *bud, DRAW_TYPE mode)
   Point position = GetPoint(*bud);;
   PositionVector direction = GetDirection(*bud);
 
-  cout << "budi paikka " << position << endl;
+  //cout << "budi paikka " << position << endl;
 
   rot_x = -1 * direction.getVector()[1];
   rot_y = direction.getVector()[0];
