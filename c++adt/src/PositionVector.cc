@@ -60,6 +60,20 @@ PositionVector& PositionVector::rotate(ROTATION direction, RADIAN angle)
   return *this;
 }
 
+//Dot product of two vectors
+double Dot(const PositionVector& pv1,const PositionVector& pv2)
+{
+  return pv1.v[0]*pv2.v[0] +  pv1.v[1]*pv2.v[1] +  pv1.v[2]*pv2.v[2];
+}
+
+PositionVector Cross(const PositionVector& pv1,const PositionVector& pv2)
+{
+  double x = pv1.v[1]*pv2.v[2] - pv1.v[2]*pv2.v[1];
+  double y = pv1.v[2]*pv2.v[0] - pv1.v[0]*pv2.v[2];
+  double z = pv1.v[0]*pv2.v[1] - pv1.v[1]*pv2.v[0];
+  return PositionVector(x,y,z);
+}
+
 //Normalize the vector
 //by making its length 1.
 //The vector is now directon vector
@@ -86,6 +100,11 @@ ostream& operator << (ostream& os, const vector<double>& v1)
   return os;
 }
 
+ostream& operator << (ostream& os, const PositionVector& pv)
+{
+  cout << pv.getVector();
+  return os;
+}
 int main()
 {
   PositionVector pv1;
@@ -163,6 +182,33 @@ int main()
   cout << " beta: "  << pv3.beta() << endl;
   cout << " gamma: " << pv3.gamma() << endl;
   cout << " (x,y,z): " << pv3.getVector() << endl;
+
+  cout << "Cross Products" << endl;
+  cout << "Cross(PositionVector(1,0,0),PositionVector(0,1,0))" << endl;
+  cout << Cross(PositionVector(1,0,0),PositionVector(0,1,0)) << endl;
+
+  cout << "Cross(PositionVector(1,0,0),PositionVector(0,0,1))" << endl;
+  cout <<  Cross(PositionVector(1,0,0),PositionVector(0,0,1))  << endl;
+
+  cout << "Cross(PositionVector(0,1,0),PositionVector(0,0,1))" << endl;
+  cout << Cross(PositionVector(0,1,0),PositionVector(0,0,1)) << endl;
+
+  cout << "Cross(PositionVector(0,0,1),PositionVector(0,0,1))" << endl;
+  cout << Cross(PositionVector(0,0,1),PositionVector(0,0,1)) << endl;
+
+  cout << "Cross(PositionVector(0,1,1),PositionVector(0,0,1))" << endl;
+  cout << Cross(PositionVector(0,1,1),PositionVector(0,0,1)) << endl;
+  
+  cout << "Cross(PositionVector(0,0.01,9.1),PositionVector(0,0,1))" <<endl;
+  cout << Cross(PositionVector(0,0.01,9.1),PositionVector(0,0,1))  <<endl;
+  
+  cout << "Cross(PositionVector(0,-1,0),PositionVector(0,0,-1))" <<endl;
+  cout << Cross(PositionVector(0,-1,0),PositionVector(0,0,-1)) <<endl;
+  
+  cout << "Cross(PositionVector(1,2,-2),PositionVector(3,0,1))" <<endl;
+  cout << Cross(PositionVector(1,2,-2),PositionVector(3,0,1)) <<endl;
 }
 
 #endif
+
+
