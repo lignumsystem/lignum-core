@@ -217,7 +217,7 @@ namespace Lignum{
   //VI as a function of diameter 'd'
   inline double ViData::operator()(double d)const
   {
-    list<double>::const_iterator maxj = NULL;
+    list<double>::const_iterator maxj;
     //maximum of the diameters
     maxj = max_element(segment_diameter_ls.begin(),segment_diameter_ls.end());
     //formula for vi from Nikinmaa et al 2003 Tree Physiology 
