@@ -90,7 +90,7 @@ void EvaluateRadiationForHwTreeSegment<TS,BUD,S>::operator()
       a_dot_b = fabs(tmp_adotb);  
       help = radiation*result[i];
       SetValue(**Il, Qin, help+GetValue(**Il, Qin));
-      help *= GetValue(**Il, dof)*(GetEllipsis(**Il).getArea())*a_dot_b;
+      help *= GetValue(**Il, dof)*(GetShape(**Il).getArea())*a_dot_b;
       SetValue(**Il, Qabs, help+GetValue(**Il, Qabs));
     }
   }
