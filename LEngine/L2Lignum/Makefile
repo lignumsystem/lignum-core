@@ -75,7 +75,7 @@ birch: birch.o l2c $(LIB1) $(LIB2) $(LIB3)  $(LIB4)  $(LIB5) $(LIB6)
 
 gnubirch:
 	make "CCC=g++" "CCCFLAGS=-c" "OPTIMIZE=-g" \
-             "AR=ar"  "ARFLAGS=rv" "LIBD=lib32"  birch
+             "AR=ar"  "ARFLAGS=rv" "LIBD=lib32" "LSYS=birch.L" birch
 l2c:
 	(cd ../L2C; make "CCC=$(CCC)" "CCCFLAGS=$(CCCFLAGS)" "OPTIMIZE=$(OPTIMIZE)" \
                           "AR=ar" "ARFLAGS=rv" $@)
