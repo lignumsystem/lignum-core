@@ -9,11 +9,13 @@
 #include <fstream>
 #include <vector>
 #include <ScotsPineVisual.h>
+#include <OpenGLUnix.h>
 
 using namespace std;
 
 using namespace Lignum;
 
+/*
 struct SmallCube
 {
 	int x,y,z;
@@ -21,6 +23,9 @@ struct SmallCube
 	float areaden;
 	bool ready;
 };
+*/
+
+
 
 extern float cam_x;  //camera position
 extern float cam_y;
@@ -98,6 +103,7 @@ public:
   void Draw();
 
   
+  vector<SmallCube> GetCubes();
 
   void display() const;
   void printInfo();
