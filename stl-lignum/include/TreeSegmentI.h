@@ -18,7 +18,7 @@ TreeSegment<TS,BUD>::TreeSegment(const Point<METER>& p, const PositionVector& d,
   SetValue(*this,omega,go);
   SetValue(*this,L,l);
   SetValue(*this,R,r);
-  SetValue(*this,Rn,rn);
+  SetValue(*this,Rh,rn);
 
   //the first annual ring
   tsa.annual_rings.push_back(r);
@@ -74,7 +74,7 @@ KGC GetSapwoodMass(const TreeSegment<TS,BUD>& ts)
   //volume up to R
   LGMdouble V1 = (PI_VALUE * pow((double)ts.tsa.R,2.0)) * ts.tsa.L;
   //heartwood volume
-  LGMdouble V2 = (PI_VALUE * pow((double)ts.tsa.Rn,2.0)) * ts.tsa.L;
+  LGMdouble V2 = (PI_VALUE * pow((double)ts.tsa.Rh,2.0)) * ts.tsa.L;
   //sapwood volume
   LGMdouble V3 = V1 - V2;
 
@@ -132,8 +132,8 @@ LGMdouble GetValue(const TreeSegment<TS,BUD>& ts, const LGMAD name)
   else if (name == Rf)
     return ts.tsa.Rf;
 
-  else if (name == Rn)
-    return ts.tsa.Rn;
+  else if (name == Rh)
+    return ts.tsa.Rh;
 
   else if (name == Wf)
     return ts.tsa.Wf;
@@ -192,11 +192,11 @@ LGMdouble SetValue(TreeSegment<TS,BUD>& ts, const LGMAD name, const LGMdouble va
   else if (name == Rf)
     ts.tsa.Rf = value;
 
-  else if (name == Rn)
-    ts.tsa.Rn = value;
+  else if (name == Rh)
+    ts.tsa.Rh = value;
 
   else if (name == Wf)
-    ts.tsa.Rn = value;
+    ts.tsa.Wf = value;
 
   else if (name == Wm)
     ts.tsa.Wm = value;
