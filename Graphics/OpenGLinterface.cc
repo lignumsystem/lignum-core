@@ -1,14 +1,12 @@
 #include "stdafx.h"
-#include "LignumWBDoc.h"
 #include "OpenGLinterface.h"
 
-#include <math.h>
-#include <gl\gl.h>
-#include <gl\glu.h>
-#include <gl\glaux.h>
 
-#include "tga.h"
-#include "Functions.h"
+#include <GL/gl.h>
+#include <GL/glu.h>
+
+
+
 #include "TreeVariables.h"
 
 #include "OpenGLSymbols.h"
@@ -18,6 +16,7 @@
 
 #include <string>
 #include <vector>
+#include <math.h>
 
 GLfloat m_xRotate;   //left button values
 GLfloat m_yRotate;
@@ -322,15 +321,6 @@ void DrawBuds()
 }
 
 
-void DrawCircles(CLignumWBDoc *doc)
-{
-	gluLookAt (0.4, 0.4, dr_height+0.4,		// camera x,y,z  0.5
-			   0, 0, dr_height+0.05,		// look at x,y,z    
-			   0.0, 0.0, 1.0);				// which way up 
-
-	glBindTexture(GL_TEXTURE_2D, texture[0]);
-	TraverseMainAxis(GetAxis(doc->GetScotsPine()), stem, doc, dr_height);	
-}
 
 
 void DrawCross()
@@ -662,7 +652,7 @@ void DrawOrderedNeedles()
 	int num = -1;
 	for (int a=0; a<s; a++)
 	{
-		for (i=0; i<s; i++)
+		for (int i=0; i<s; i++)
 		{
 			if (nplanes[i].dist>min_dist && furthest>nplanes[i].dist)
 			{

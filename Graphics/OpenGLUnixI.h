@@ -2,20 +2,31 @@
 #ifndef OPENGLUNIXI_H
 #define OPENGLUNIXI_H
 
+#include <Tree.h>
 #include "OpenGL.h"
 #include "OpenGLinterface.h"
 #include "OpenGLSymbols.h"
 
-int Visual(int argc, char** argv)
+
+#include <GL/gl.h>
+#include <GL/glu.h>
+#include <GL/glx.h>
+#include <GL/glut.h>
+
+using namespace Lignum;
+
+namespace Lignum{
+template <class TS,class BUD>
+int Visualize(Tree<TS,BUD> &tree)
 { 
   
 
-  init_window (argc, argv);    
+  init_window();    
   //initTextures(); 
  
-  TreeHeight<ScotsPineVisual, ScotsBud> th3;
-  MakeTreeList(*betula, rad_limit);
-  ForEach(*betula, th1);
+  //  TreeHeight<TS,BUD> th;
+  MakeTreeList(tree, 0.05);
+  //ForEach(tree, th);
   
   
   /*
@@ -48,3 +59,7 @@ int Visual(int argc, char** argv)
   cout << "Exiting ...." << endl;
   return 0;
 }
+
+}//closing namespace Lignum
+
+#endif

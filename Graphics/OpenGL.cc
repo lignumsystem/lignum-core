@@ -2,9 +2,9 @@
 #include "OpenGL.h"
 
 #include <math.h>
-#include <gl\gl.h>
-#include <gl\glu.h>
-#include <gl\glaux.h>
+#include <GL/gl.h>
+#include <GL/glu.h>
+
 #include <vector>
 
 
@@ -57,22 +57,9 @@ LGMdouble needle_length = 0.05;
 
 bool ONLY_LAST_SEGMENT_TRANSPIRATION=true;
 
-extern LGMdouble height_odd;
+LGMdouble height_odd = 29;
 
-CString GetStr(float value, int decimals)
-{
-	char tmp[20];
 
-	sprintf(tmp, "%f", value);
-	int i=0;
-	while (tmp[i] != '.' && i<17)
-		i++;
-
-	if (decimals == 0)
-		tmp[i]='\0';
-	else tmp[i+decimals+1] = '\0';
-	return (CString)tmp;
-}
 
 
 void Make3DLeave(float xodd, float yodd, float rad)
@@ -209,13 +196,13 @@ void InitDrawing()
 		my_sine[a] = sin(1+a*2*PI/MY_EDGES);
 	}
 
-	for (a=0; a<MY_EDGES_BIG; a++)
+	for (int a=0; a<MY_EDGES_BIG; a++)
 	{
 		my_cosine_big[a] = cos(1+a*2*PI/MY_EDGES_BIG);
 		my_sine_big[a] = sin(1+a*2*PI/MY_EDGES_BIG);
 	}
 
-	for (a=0; a<MY_EDGES_MIN; a++)
+	for (int a=0; a<MY_EDGES_MIN; a++)
 	{
 		my_cosine_min[a] = cos(1+a*2*PI/MY_EDGES_MIN);
 		my_sine_min[a] = sin(1+a*2*PI/MY_EDGES_MIN);
@@ -231,7 +218,7 @@ void InitDrawing()
 	}
 }
 
-
+/*
 void DrawCone(branch_in &bri)
 {
 	Point position = bri.start;
@@ -261,7 +248,7 @@ void DrawCone(branch_in &bri)
 	MakeCone(length, radius, max_radius); 	 
 	glPopMatrix();
 }
-
+*/
 
 
 void MakeCone(float length, float radius, float max_radius)
@@ -326,7 +313,7 @@ void MakeCone(float length, float radius, float max_radius)
 	glBegin(GL_POLYGON);
 	glColor3f(0.5, 0.5, 0.0);
 	
-	for (i = 0; i < edges ; i++)
+	for (int i = 0; i < edges ; i++)
 	{    
 	  cosine= my_cosine_min[i]; 
 	  sine= my_sine_min[i];
@@ -398,109 +385,110 @@ void MakeCylinder(float radius, float rad_top, float length, float rad_limit, fl
 		tex_y= texY_min_odd*length;
   }
 
+  int i;
   GLfloat len;
   if (length <= 0 || radius <= 0)
-	  return;
-
-  while(y > 1)
-	  y--;
-
-
-    
-	float *position1 = new float[255];
-	float *position2 = new float[255];
-	float *tex1 = new float[255];
-	float *tex2 = new float[255];
-
-
-
-
-	//glBegin(GL_QUAD_STRIP); 
-	for (int i = 0; i < edges ; i++)
-	{	
-		if (edges == 16)
-		{
-			cosine= my_cosine_min[i]; // cos((i)*2*PI/edges);
-			sine= my_sine_min[i];		//sin((i)*2*PI/edges); 
-		}
-
-		else if (edges == 36)
-		{
-			cosine= my_cosine[i]; // cos((i)*2*PI/edges);
-			sine= my_sine[i];		//sin((i)*2*PI/edges); 
-		}
-		else if (edges == 100)
-		{
-			cosine= my_cosine_big[i]; // cos((i)*2*PI/edges);
-			sine= my_sine_big[i];		//sin((i)*2*PI/edges); 
-		}
-	 
-      
-		//Set the normal    
-		glNormal3f(cosine, sine,0);
-		cos_top = cosine * rad_top;
-		sin_top = sine * rad_top;
-
-		cosine *= radius;
-		sine *= radius; 
-	   
-		position1[0+i*3] = cosine+xx;
-		position1[1+i*3] = sine+yy;
-		position1[2+i*3] = 0;
-
-		position2[0+i*3] = cos_top+xx;
-		position2[1+i*3] = sin_top+yy;
-		position2[2+i*3] = length;
-
-		tex1[0+i*2] = x;
-		tex1[1+i*2] = y;
-		tex2[0+i*2] = x;
-		tex2[1+i*2] = y+tex_y;
-
-
-		x=x+tex_x;
-   }
-   
-	cosine=my_cosine[0]; //cos(0);
-	sine=my_sine[0]; //sin(0); 
-	len = sqrt(cosine*cosine+sine*sine);  //Set the normal
-	glNormal3f(cosine/len, sine/len,0); 
-	cos_top = cosine * rad_top;
-	sin_top = sine * rad_top;
-	cosine *= radius;
-	sine *= radius; 
-
-	position1[0+i*3] = cosine+xx;
-	position1[1+i*3] = sine+yy;
-	position1[2+i*3] = 0;
-
-	position2[0+i*3] = cos_top+xx;
-	position2[1+i*3] = sin_top+yy;
-	position2[2+i*3] = length;
-
-	tex1[0+i*2] = x;
-	tex1[1+i*2] = y;
-	tex2[0+i*2] = x;
-	tex2[1+i*2] = y+tex_y;
-
-	glBegin(GL_QUAD_STRIP); 
-	for (i = 0; i < edges+1 ; i++)
-	{
-		glTexCoord2fv(&tex1[i*2]);		glVertex3fv(&position1[i*3]);
-		glTexCoord2fv(&tex2[i*2]);		glVertex3fv(&position2[i*3]);
-
-	}
-	glEnd();
+    return;
   
-	last_texY = last_texY + length;
-
-	if (last_texY > 1)
-		last_texY = last_texY - (int)(last_texY);
-
-	delete position1;
-	delete position2;
-	delete tex1;
-	delete tex2;
+  while(y > 1)
+    y--;
+  
+  
+  
+  float *position1 = new float[255];
+  float *position2 = new float[255];
+  float *tex1 = new float[255];
+  float *tex2 = new float[255];
+  
+  
+  
+  
+  //glBegin(GL_QUAD_STRIP); 
+  for (i = 0; i < edges ; i++)
+    {	
+      if (edges == 16)
+	{
+	  cosine= my_cosine_min[i]; // cos((i)*2*PI/edges);
+	  sine= my_sine_min[i];		//sin((i)*2*PI/edges); 
+	}
+      
+      else if (edges == 36)
+	{
+	  cosine= my_cosine[i]; // cos((i)*2*PI/edges);
+	  sine= my_sine[i];		//sin((i)*2*PI/edges); 
+	}
+      else if (edges == 100)
+	{
+	  cosine= my_cosine_big[i]; // cos((i)*2*PI/edges);
+	  sine= my_sine_big[i];		//sin((i)*2*PI/edges); 
+	}
+      
+      
+      //Set the normal    
+      glNormal3f(cosine, sine,0);
+      cos_top = cosine * rad_top;
+      sin_top = sine * rad_top;
+      
+      cosine *= radius;
+      sine *= radius; 
+      
+      position1[0+i*3] = cosine+xx;
+      position1[1+i*3] = sine+yy;
+      position1[2+i*3] = 0;
+      
+      position2[0+i*3] = cos_top+xx;
+      position2[1+i*3] = sin_top+yy;
+      position2[2+i*3] = length;
+      
+      tex1[0+i*2] = x;
+      tex1[1+i*2] = y;
+      tex2[0+i*2] = x;
+      tex2[1+i*2] = y+tex_y;
+      
+      
+      x=x+tex_x;
+    }
+  
+  cosine=my_cosine[0]; //cos(0);
+  sine=my_sine[0]; //sin(0); 
+  len = sqrt(cosine*cosine+sine*sine);  //Set the normal
+  glNormal3f(cosine/len, sine/len,0); 
+  cos_top = cosine * rad_top;
+  sin_top = sine * rad_top;
+  cosine *= radius;
+  sine *= radius; 
+  
+  position1[0+i*3] = cosine+xx;
+  position1[1+i*3] = sine+yy;
+  position1[2+i*3] = 0;
+  
+  position2[0+i*3] = cos_top+xx;
+  position2[1+i*3] = sin_top+yy;
+  position2[2+i*3] = length;
+  
+  tex1[0+i*2] = x;
+  tex1[1+i*2] = y;
+  tex2[0+i*2] = x;
+  tex2[1+i*2] = y+tex_y;
+  
+  glBegin(GL_QUAD_STRIP); 
+  for (i = 0; i < edges+1 ; i++)
+    {
+      glTexCoord2fv(&tex1[i*2]);		glVertex3fv(&position1[i*3]);
+      glTexCoord2fv(&tex2[i*2]);		glVertex3fv(&position2[i*3]);
+      
+    }
+  glEnd();
+  
+  last_texY = last_texY + length;
+  
+  if (last_texY > 1)
+    last_texY = last_texY - (int)(last_texY);
+  
+  delete position1;
+  delete position2;
+  delete tex1;
+  delete tex2;
 }
 
 
@@ -1209,7 +1197,7 @@ void make_leaflet()
   glBegin(GL_QUAD_STRIP);
   glVertex3f(0, 0, z);
   glVertex3f(0, 0, z);
-  for(c=0; c<=LEAVE_HEIGHT; c=c+LEAVE_HEIGHT/10)
+  for(float c=0; c<=LEAVE_HEIGHT; c=c+LEAVE_HEIGHT/10)
     {
       width = sin(c*2*3.14/LEAVE_HEIGHT/2)* LEAVE_WIDTH;
       z = LEAVE_BASE + c;

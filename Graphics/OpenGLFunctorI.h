@@ -9,10 +9,6 @@
 
 namespace Lignum{
 
-template <class TS,class BUD=DefaultBud<TS> > class TreeCompartment;
-
-template <class TS,class BUD=DefaultBud<TS> > class TreeSegment;
-
 
 
 
@@ -51,6 +47,7 @@ TreeCompartment<TS,BUD>* DrawStemFunctor<TS,BUD>::operator()(TreeCompartment<TS,
 			//if (top)
 			//	MakeCylinderWithTop(radius, radius_top, length, rad_limit, GetAnnualRings(*ts), GetValue( *ts,age), odd);
 			//else
+			float rad_limit = 0.05;
 			MakeCylinder(radius, radius, length, rad_limit); 
 			glPopMatrix();
 			

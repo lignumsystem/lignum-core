@@ -3,7 +3,8 @@
 
 
 
-#include "ScotsPineVisual.h"
+//#include "ScotsPineVisual.h"
+#include <Tree.h>
 #include "OpenGLSymbols.h"
 
 #define TABLESIZE 100
@@ -82,7 +83,7 @@ void draw_texfoliage_planes(float lenght, float radius, float fol_mas, int age);
 
 int make_texfoliage_planes_lists(Point position, float rot_angle, float rot_x, float rot_y, int number, float lenght, float radius, float fol_mas, int age);
 
-void DrawCone(branch_in &bri);
+//void DrawCone(branch_in &bri);
 
 void MakeCone(float length, float radius, float max_radius);
 
@@ -91,8 +92,6 @@ void Make3DLeave(float xodd, float yodd, float rad);
 void MakeLeave(float x, float y, float rad);
 
 void MakeLeaveTable();
-
-CString GetStr(float value, int decimals);
 
 void make_bud();
 

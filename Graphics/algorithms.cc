@@ -3,6 +3,7 @@
 #include <Lignum.h>
 #include <MyBud.h>
 #include <Shading.h>
+#include <OpenGLUnix.h>
 
 using namespace std;
 using namespace Lignum;
@@ -255,7 +256,7 @@ int main(int argc, char *argv[])
    cout << endl << "hw_tree Respiration (): "
 	<< GetValue(cf_tree, M) << endl;
 
-   Visual(cf_tree);
+   Visualize(cf_tree);
 }
 
 

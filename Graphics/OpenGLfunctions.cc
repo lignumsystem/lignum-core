@@ -3,26 +3,24 @@
 #include "OpenGLinterface.h"
 
 #include <math.h>
-#include <gl\gl.h>
-#include <gl\glu.h>
-#include <gl\glaux.h>
+#include <GL/gl.h>
+#include <GL/glu.h>
+
 #include <string>
 
-#include "tga.h"
-#include "Functions.h"
+//#include "tga.h"
+//#include "Functions.h"
 #include "TreeVariables.h"
 #include "OpenGLSymbols.h"
 
 extern GLuint texture[3];
 extern int texIds[6];
 
-extern CString stem_min_texture;	
-extern CString fol_texture;
-extern CString stem_texture;
+
 
 
 using namespace std;
-
+/*
 bool LoadTextures(string stem1, string stem2, string foliage)
 {
 	char buff[15];
@@ -89,7 +87,7 @@ AUX_RGBImageRec* LoadBMP(string filename)
 	}
 	return NULL;
 }
-
+*/
 bool LoadGLTextures()
 {
    /*

@@ -9,9 +9,9 @@
 #include "OpenGLFunctor.h"
 #include "OpenGL.h"
 
-#include <gl\gl.h>
-#include <gl\glu.h>
-#include <gl\glaux.h>
+#include <GL/gl.h>
+#include <GL/glu.h>
+
 
 extern GLfloat cam_x;  //camera position
 extern GLfloat cam_y;

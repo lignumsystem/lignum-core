@@ -4,9 +4,9 @@
 
 #include <Tree.h>
 
-#include <gl\gl.h>
-#include <gl\glu.h>
-#include <gl\glaux.h>
+#include <GL/gl.h>
+#include <GL/glu.h>
+//#include <GL/glaux.h>
 
 
 
@@ -39,23 +39,15 @@ void InitOpenGL();
 
 void SetShadeModel();
 
-//void DrawAllTrees(CLignumWBDoc *doc);
-
-//void DrawAllFoliage(CLignumWBDoc *doc);
-
 void DrawTree();
 
 void DrawFoliage();
 
 void DrawBuds();
 
-void DrawCircles(CLignumWBDoc *doc);
-
 void DrawCross();
 
 void DrawWireModel();
-
-//void RenderScene(CLignumWBDoc *doc);
 
 void CountCamera();
 
@@ -67,9 +59,6 @@ void SetLight();
 
 void SetLightPosition();
 
-//float MakeTreeLists(CLignumWBDoc *doc);
-						
-//void MakeLeaveList(CLignumWBDoc *doc);
 
 template <class TS,class BUD>
 void MakeLeaveList(Tree<TS,BUD> &tree,int xsize=6, int ysize=6);
@@ -80,6 +69,6 @@ void MakeTreeList(Tree<TS,BUD> &tree, LGMdouble limit);
 void DrawOrderedFoliage();
 
 
-#include "OpenGLinterfaceI.h";
+#include "OpenGLinterfaceI.h"
 
 #endif

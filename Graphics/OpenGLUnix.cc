@@ -33,7 +33,8 @@ using namespace Lignum;
 #include "OpenGL.h"
 #include "OpenGLinterface.h"
 #include "OpenGLSymbols.h"
-
+#include <CTexture.h>
+#include <texture.h>
 
 //#include <dpylc.h>
 //#include <CTexture.h>
@@ -50,12 +51,12 @@ using namespace Lignum;
 float TEXTURE_LIMIT_MAX = 0.20;  // The radius limit to choose the texture
 float TEXTURE_LIMIT_MIN = 0.05;        
 
-int overstate = 15;      // Liioittelukerroin säteen pienenemiselle
-int overstateTran = 50;  // Liioittelukerroin haihtumiselle ja veden tulolle maasta
 
 int hours = 6;
 double minutes = 0;
 
+#define UP 0
+#define DOWN 1
 
 /*
 int current_axis = 1;
@@ -129,7 +130,7 @@ Window          win;
 
 GLboolean       MOVEMENT = TRUE;
 GLboolean       TEXTURES_ON = TRUE;
-GLboolean       FOLIAGE = FALSE;
+GLboolean       FOLIAGE_ON = FALSE;
 GLboolean       SHADOWS = TRUE;
 GLboolean       HEARTWOOD = FALSE;
 
@@ -197,13 +198,6 @@ int n_lea = 0;
 
 
  
-
-                               
-template <class TS,class BUD>
-int Visual(int argc, char** argv, Tree<TS,BUD> &tree);
-
-
-
 
 
 //Function -- makeBGR        
@@ -280,9 +274,7 @@ int screenShot (char *fName, int winW, int winH)
 void redrawAll()
 {
   redraw();
-  redraw2();
-  subRedraw();
-  subRedraw2();
+ 
 }
 
 
@@ -312,8 +304,8 @@ void redraw(void)
   
   
   // Check the camera coordinates 
-  hx = cos(x_move*0.1*2*PI/360) * 8;
-  hy = sin(x_move*0.1*2*PI/360) * 8;
+  hx = cos(x_move*0.1*2*PI_VALUE/360) * 8;
+  hy = sin(x_move*0.1*2*PI_VALUE/360) * 8;
   hz = hz + z_move * 0.01;
 
   cam_x = (cam_x - hx) * 0.001 * y_move; // * cos(y_move*2*PI/360) * 0.01;
@@ -640,7 +632,7 @@ void menu(int value)
 
 
 // Init the window and handling of events
-void init_window (int argc, char** argv)
+void init_window () //int argc, char** argv)
 {
   
   glutInitDisplayMode (GLUT_DOUBLE |          // Double buffering        
@@ -651,7 +643,7 @@ void init_window (int argc, char** argv)
 
   glutInitWindowPosition (400, 20);          // Window size and place
   glutInitWindowSize(WINDOW_SIZE_X, WINDOW_SIZE_Y);    
-  window1 = glutCreateWindow (argv[0]);                 // Open a window    
+  window1 = glutCreateWindow (0); //argv[0]);                 // Open a window    
   glutReshapeFunc(new_window_size);          // Call this function if the size is changed  
   glutKeyboardFunc(keypress);                // Call this funktion when a key is pressed 
   glutMouseFunc (mouse_button);                      // Mouse events
