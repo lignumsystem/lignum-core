@@ -44,18 +44,19 @@ TreeSegment<TS, BUD>* GetFirstTreeSegment(Axis<TS,BUD>& axis)
 }
 
 template <class TS,class BUD>
-Axis<TS,BUD>::~Axis()  //***
+Axis<TS,BUD>::~Axis() 
 {	
-  typename std::list<TreeCompartment<TS,BUD>*>::iterator first = tc_ls.begin();
-  typename std::list<TreeCompartment<TS,BUD>*>::iterator last = tc_ls.end();
-
-  while (first != last)
+  typename list<TreeCompartment<TS,BUD>*>::iterator first = tc_ls.begin();
+  //Delete tree compartments, the list will be destroyed automatically. 
+  while (first != tc_ls.end()){
     delete *first++;
+  }
 }
 
 //default constructor
 template <class TS,class BUD>
 Axis<TS,BUD>::Axis()
+  :aa(ALIVE)
 {
   tree = NULL;
 }
@@ -65,7 +66,7 @@ Axis<TS,BUD>::Axis()
 //to the tree this axis is part of
 template <class TS,class BUD>
 Axis<TS,BUD>::Axis(const Point& p, const PositionVector& d, Tree<TS,BUD>* t)
-  :TreeCompartment<TS,BUD>(p,d,t)
+  :TreeCompartment<TS,BUD>(p,d,t),aa(ALIVE)
 {
 }
 
@@ -181,6 +182,31 @@ LGMdouble GetValue(Axis<TS,BUD>& ax, LGMAD name)
   return 0.0;
 }                                                                               
 
+template <class TS,class BUD>
+STATUS SetValue(Axis<TS,BUD>& axis, LGMAS name, const STATUS value)
+{
+
+  STATUS old_value = GetValue(axis,name);
+
+  if (name == state)
+    axis.aa.state = value;
+  
+  return old_value;
+}
+
+template <class TS,class BUD>
+STATUS GetValue(Axis<TS,BUD>& axis, LGMAS name)
+{
+  if (name == state)
+    return axis.aa.state;
+
+  else{
+    cout << "Unknown attribute: " << name << endl;
+    cout << "Returning 0.0" << endl;
+  }
+
+  return DEAD;
+}
 
 template <class TS,class BUD>
 LGMdouble GetBranchFoliage(Axis<TS,BUD>& ax) {

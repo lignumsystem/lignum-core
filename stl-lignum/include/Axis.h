@@ -14,7 +14,11 @@ using namespace cxxadt;
 
 namespace Lignum{
 
-
+  class AxisAttributes{
+  public:
+    AxisAttributes(STATUS s):state(s){}
+    STATUS state; //LIVE or DEAD 
+  };
 
 template <class TS,class BUD=DefaultBud<TS> >
 class Axis: public TreeCompartment<TS,BUD>{
@@ -51,9 +55,16 @@ class Axis: public TreeCompartment<TS,BUD>{
   friend LGMdouble GetSumValue(Axis<TS1,BUD1>& axis, LGMAD name, int Age);
   template <class TS1,class BUD1>
   friend void Delete2ndLastTreeCompartment(Axis<TS1,BUD1>& axis);
+
   template <class TS1,class BUD1>
   friend LGMdouble GetValue(Axis<TS1,BUD1>& axis, LGMAD name);
+
   template <class TS1,class BUD1>
+  friend STATUS SetValue(Axis<TS1,BUD1>& axis, LGMAS name, const STATUS value);
+  template <class TS1,class BUD1>
+  friend STATUS GetValue(Axis<TS1,BUD1>& axis, LGMAS name);
+
+  template <class TS1,class BUD1>  
   friend LGMdouble GetBranchFoliage(Axis<TS1,BUD1>& axis); 
 #endif // _MFC_VER
 
@@ -62,8 +73,8 @@ public:
   virtual ~Axis();
   Axis();
   Axis(const Point& p, const PositionVector& d, Tree<TS,BUD>* t);
-  
 protected: 
+  AxisAttributes aa;
   list<TreeCompartment<TS,BUD>*> tc_ls;
 };
 
