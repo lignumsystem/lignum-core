@@ -83,10 +83,37 @@ depend:
 ./src/CString.o: /usr/include/CC/streambuf /usr/include/CC/stl_stdio_file.h
 ./src/CString.o: /usr/include/CC/stl_numeric_facets.h /usr/include/CC/limits
 ./src/CString.o: /usr/include/float.h
+./src/DList.o: /usr/include/CC/iostream /usr/include/CC/iosfwd
+./src/DList.o: /usr/include/CC/stl_config.h /usr/include/standards.h
+./src/DList.o: /usr/include/wchar.h /usr/include/sgidefs.h
+./src/DList.o: /usr/include/locale_attr.h /usr/include/stdio.h
+./src/DList.o: /usr/include/ctype.h /usr/include/time.h /usr/include/stddef.h
+./src/DList.o: /usr/include/CC/functional /usr/include/CC/stl_function.h
+./src/DList.o: /usr/include/CC/char_traits.h /usr/include/string.h
+./src/DList.o: /usr/include/CC/istream /usr/include/CC/ostream
+./src/DList.o: /usr/include/CC/ios /usr/include/CC/stl_string_fwd.h
+./src/DList.o: /usr/include/CC/stl_alloc.h /usr/include/stdlib.h
+./src/DList.o: /usr/include/assert.h /usr/include/CC/stl_threads.h
+./src/DList.o: /usr/include/mutex.h /usr/include/CC/stl_exception.h
+./src/DList.o: /usr/include/CC/utility /usr/include/CC/stl_relops.h
+./src/DList.o: /usr/include/CC/stl_pair.h /usr/include/CC/stl_locale.h
+./src/DList.o: /usr/include/CC/typeinfo /usr/include/CC/exception
+./src/DList.o: /usr/include/CC/string /usr/include/CC/stdexcept
+./src/DList.o: /usr/include/CC/stl_iterator_base.h /usr/include/CC/memory
+./src/DList.o: /usr/include/CC/stl_algobase.h /usr/include/CC/type_traits.h
+./src/DList.o: /usr/include/limits.h /usr/include/CC/new.h
 ./src/DList.o: /usr/include/CC/iostream.h /usr/include/memory.h
-./src/DList.o: /usr/include/stddef.h /usr/include/sgidefs.h
-./src/DList.o: /usr/include/stdlib.h /usr/include/standards.h include/DList.h
-./src/DList.o: include/DListElement.h include/boolean.h
+./src/DList.o: /usr/include/CC/stl_iterator.h /usr/include/CC/stl_construct.h
+./src/DList.o: /usr/include/CC/stl_tempbuf.h
+./src/DList.o: /usr/include/CC/stl_uninitialized.h
+./src/DList.o: /usr/include/CC/stl_raw_storage_iter.h
+./src/DList.o: /usr/include/CC/algorithm /usr/include/CC/stl_algo.h
+./src/DList.o: /usr/include/CC/stl_heap.h /usr/include/CC/stl_hash_fun.h
+./src/DList.o: /usr/include/CC/stl_ctype.h /usr/include/CC/c_locale.h
+./src/DList.o: /usr/include/CC/streambuf /usr/include/CC/stl_stdio_file.h
+./src/DList.o: /usr/include/CC/stl_numeric_facets.h /usr/include/CC/limits
+./src/DList.o: /usr/include/float.h include/DList.h include/DListElement.h
+./src/DList.o: include/boolean.h
 ./src/DListElement.o: include/DListElement.h /usr/include/stdlib.h
 ./src/DListElement.o: /usr/include/standards.h /usr/include/sgidefs.h
 ./src/Ellipsis.o: include/Ellipsis.h /usr/include/math.h
@@ -122,8 +149,8 @@ depend:
 ./src/Lex.o: /usr/include/CC/stl_stdio_file.h
 ./src/Lex.o: /usr/include/CC/stl_numeric_facets.h /usr/include/CC/limits
 ./src/Lex.o: /usr/include/float.h /usr/include/CC/stl_codecvt.h
-./src/Lex.o: include/DList.h include/DListElement.h include/boolean.h
-./src/Lex.o: /usr/include/CC/fstream.h
+./src/Lex.o: /usr/include/CC/iostream include/DList.h include/DListElement.h
+./src/Lex.o: include/boolean.h
 ./src/ParametricCurve.o: include/ParametricCurve.h /usr/include/CC/vector
 ./src/ParametricCurve.o: /usr/include/CC/stl_range_errors.h
 ./src/ParametricCurve.o: /usr/include/CC/stl_config.h
