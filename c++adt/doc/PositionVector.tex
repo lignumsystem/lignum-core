@@ -78,8 +78,8 @@ public:
   double alpha()const;
   double beta()const;
   double gamma()const;
-  PositionVector& normalize(); 
   vector<double> getVector()const{return v;}
+  PositionVector& normalize(); 
 private:
   vector <double> v;
 };
@@ -164,9 +164,6 @@ vector and $z$-axis.
                        where $l$ is the length of the vector.
   \end{description} 
 
-\subsubsection{normalize}
-Normalizes the vector. The vector can be then used as a direction
-vector, i.e., the length of the vector will be 1 (one).
  
 \subsubsection{vector<double> getVector()const;} 
 Return a copy of the internal vector containing the end points 
@@ -175,6 +172,10 @@ of the position vector.
        \item [Returns] The copy of the internal vector. 
   \end{description} 
 
+
+\subsubsection{normalize}
+Normalizes the vector. The vector can be then used as a direction
+vector, i.e., the length of the vector will be 1 (one).
 
 \subsection{Private Data Members}
 \begin{description}
