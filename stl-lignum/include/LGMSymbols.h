@@ -13,15 +13,43 @@
 //LGMVERBOSE = Verbose or scanty output
 //LGMFLOW = Flow symbols
 
+//USAGE: The main functionality of these enumerations is to allow
+//reference to variables (i.e. their values) with symbolic names. The
+//values of variables (LGMAD) and parameters (LGMPD) in LIGNUM can be
+//assessed and changed with GetValue(OBJECT, NAME) and
+//SetValue(OBJECT, NAME) (OBJECT=the unit of LIGNUM - Tree,
+//TreeSegment, etc - concerned, NAME=name of variable, parameter in
+//enumeration). The naming of symbols that refer to LIGNUM variables
+//is done as follows for LGMAD and LGMPD: the name of
+//variable/parameter is prefixed with LGA/LGP. For example, the area
+//of foliage is denoted by Af in LIGNUM, hence the symbol referring to
+//this variable is LGAAf; the maintenance respiration rate of foliage
+//(=parameter) is denoted by mf, hence enumeration symbol is LGPmf.
+
+//The C++ compiler labels each symbol in the enumeration list with an
+//integer (0,1,...) and later deals only with these numbers. Consequently, if
+//GetValue(compartment, NAME) fails to find value for variable
+//referrred to by NAME, an error message is issued that says "A value
+//cannot be found for variable nn" (nn is an integer). The numbers on
+//the left of the symbol documentation aid to identify for which
+//symbol in the enumeration the value could not be found. Please keep
+//the numbers of documentations in sync. with the the enumerations.
+
+//OBS: DO NOT USE ENUMERATIONS AS SIMPLE VARIABLE NAMES!  To minimize
+//the possibility of using enumerations as variable names, they have
+//been prefixed with LGA, LGP etc.
 
 namespace Lignum{
 
-  //LGMAD = LIGNUM Attribute Double
+  //LGMAD = LIGNUM Attribute Double  *********************'
+  
+  // These symbols are used to access (GetValue, SetValue) the
+  // variables (either attributes or other variables) of TreeSegment,
+  // Bud, BrachingPoint, BroadLeaf in LIGNUM (in any compartment
+  // except Tree). As regards GetValue, it may be that the value
+  // returned is calculated on the basis of other variables.
 
-  //OBS:  DO  NOT USE  ENUMERATIONS  AS  SIMPLE  VARIABLE NAMES!   For
-  //example, NEVER create: double LGAWf;
-  //AND, if you add a new symbol be sure to document it carefully, see
-  //for example LGMAD below.
+  //If you add a new symbol be sure to document it carefully.
 
   enum LGMAD {LGAA,LGAAf,LGAAh, LGAAhair,LGAAs,LGAAs0,LGAage,LGAcollision,
               LGADbase,LGADbh,LGAdof, LGAdR, LGAH,LGAHf,LGAHTop,LGAip,
@@ -47,7 +75,7 @@ namespace Lignum{
   //  13 LGAHf     Height (thickness) of cylindrical layer of foliage 
   //            in a segment, e.g. Hf = Lneedle*sin(needle_angle) 
   //  14 LGAHTop   Max height from ground of the tree, segment, etc.
-  //  15 LGAip     Degree of interction
+  //  15 LGAip     Degree of interaction
   //  16 LGAL      Length of segment
   //  17 LGAM      Rate of respiration (= amount of r. during the time step)
   //  18 LGAMaxD   Maximum diameter of the segments 
@@ -82,14 +110,26 @@ namespace Lignum{
   //  42 LGAWh     Mass of heartwood (kg C)
   //  43 LGAWhair  Mass of root hair (kg C)
 
-  //LIGNUM  Parameter Double
+
+
+  //LIGNUM  Parameter Double   ************************************
+
+  // These symbols are used to access (GetValue, SetValue) parameters
+  // in any compartment (predominantly Tree) of LIGNUM. A parameter is
+  // basically a variable that remains constant during
+  // simulation. Depending on application, quantity can be either
+  // variable or parameter - the variable having the same name can
+  // therefore referred to in LGMAD and LGMPD. It is up to the
+  // programmer of the application to make sure that correct variables
+  // are accessed.
+
   //Keep the LGMPD enumeration in sync with MapLGMPD table constructor
   //in TreeFriend.cc. MapLGMPD maps the names of  the parameters found
   //in configuration files to the symbolic names in LGMPD.
 
-  enum LGMPD {LGPaf, LGPaleafmax, LGPar, LGPdof, LGPlr, LGPmf, LGPmr, LGPms, LGPna,
-	      LGPnl, LGPpr, LGPq, LGPrhoW, LGPrho_hair, LGPrho_root, LGPsf,
-	      LGPsr, LGPss, LGPyc, LGPxi, LGPzbrentEpsilon };
+  enum LGMPD {LGPaf, LGPaleafmax, LGPar, LGPdof, LGPlr, LGPmf, LGPmr, LGPms,
+	      LGPna, LGPnl, LGPpr, LGPq, LGPrhoW, LGPrho_hair, LGPrho_root,
+	      LGPsf, LGPsr, LGPss, LGPyc, LGPxi, LGPzbrentEpsilon };
 
   // 1  LGPaf  Needle mass - tree segment area (kgC/m^2)relationship
   // 2  LGPaleafmax  Maximum size of a leaf (m2)
@@ -118,7 +158,8 @@ namespace Lignum{
   //              (see Zbrent)
 
 
-  //LGMTAD LIGNUM Tree level  attribute double.
+  //LGMTAD LIGNUM Tree level attribute double. **************************
+
   //Set LGMTADLENGTH to the number of enumerations in LGMTAD.  It will
   //intialize  the   vector<LGMdouble>  in  class   Tree  holding  the
   //attribute values.
@@ -133,6 +174,9 @@ namespace Lignum{
   // TreeQinMax  Max Qin of all segments in a tree
   // Treelambda; Variable to balance carbon balance equation
 
+
+
+  //LGMF   = Functions known in a tree   ********************************
 
   //There are parameters and functions and graphics 
   //to configure the tree. The initial tree (INITIAL) 
@@ -153,10 +197,16 @@ namespace Lignum{
   //LGMVIONB = The effect of vigour index to the number of the buds. 
   //           If no effect the value is always 1 of this function
 
+  
+
+ 
   //If needed you may design verbose output for example
   //when initializing trees 
   enum LGMVERBOSE {QUIET,VERBOSE};
 
+
+  //Goes with TreeSegmentWithFlow - will eventually be removed from
+  //stl-lignum
   enum LGMFLOW { fin, fout, Pr, Wm };
 
 }//closing namespace Lignum
