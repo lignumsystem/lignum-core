@@ -2,7 +2,7 @@
 
 #define YYDEBUG 1
 #include <assert.h>
-#include <malloc.h>
+#include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 
@@ -45,7 +45,7 @@ extern ProductionTable productionTable;
 extern ProductionTable interpretationTable;
 
 static int counter = eFirstModuleId;
-bool close = false;
+bool namespace_close = false;
 
 %}
 
@@ -103,7 +103,7 @@ OpenNamespace: tOPEN tIDENT tSEMICOLON
         ;
 CloseNamespace: tCLOSE tIDENT tSEMICOLON
         {
-          close = true;
+          namespace_close = true;
         }
         ;
 ModuleDeclaration: tMODULE tIDENT tLPAREN Parameters tRPAREN tSEMICOLON
