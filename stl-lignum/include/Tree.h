@@ -1,3 +1,4 @@
+
 #ifndef TREE_H
 #define TREE_H
 
@@ -36,6 +37,20 @@ public:
   TP xi;            //Fraction of heartwood in new tree segments
 };
 
+
+class ConnectionMatrix{
+public:
+  ConnectionMatrix(int);
+  void AddConnection(long int,long int);
+  bool setValue(int, int, long int);
+  long int **pointer;
+  void print();
+private:
+  int size;
+  int GetRow(long int);
+};
+
+
 class TreeAttributes{
 public:
   TreeAttributes();
@@ -65,6 +80,7 @@ class Tree: public TreeCompartment<TS>{
   friend TP GetProduction(const Tree<TS>& t);
   friend void InitializeTree(Tree<TS>& tree, const CString& meta_file);
   friend TP GetTreeAttributeValue(const Tree<TS>& tree, const TAD name);
+  
   friend YEAR GetTreeAttributeValue(const Tree<TS>& tree, const TAI name);
   template <class T1,class T2>
   friend T2 SetTreeAttributeValue(Tree<TS>& tree, const T1 name, const T2 value);
@@ -75,11 +91,15 @@ class Tree: public TreeCompartment<TS>{
 public:
   Tree();
   Tree(const Point<METER>& p, const PositionVector& d);
+  void makeConnectionMatrix();
 private:
+  int CountTreeSegments(Axis<TS> &ax);
+  void makeAxis(Axis<TS> &ax, TreeSegment<TS> &ts);
   TreeAttributes ta;
   TreeFunctions tf;
   TreeParameters tp;
   TreeTransitVariables ttp;
+  ConnectionMatrix *cm;
   Axis<TS> axis;
   RootSystem rs;
 };

@@ -1,5 +1,64 @@
 #include <Tree.h>
 
+//Constructor of connection matrix reserves memory
+//for n * n matrix.
+ConnectionMatrix::ConnectionMatrix(int n)
+{
+  size = n;
+  pointer = new long int*[n];
+  for (int i=0; i<n; i++)
+    pointer[i] = new long int[n];
+
+  for (int x=0; x<n; x++)
+    for (int y=0; y<n; y++)
+      pointer[x][y] = 0;
+
+}
+
+bool ConnectionMatrix::setValue(int r, int c, long int value)
+{
+  if (r>size-1 || c>size-1)
+    return false;
+  pointer[r][c] = value;
+  return true;
+}
+
+void  ConnectionMatrix::AddConnection(long int s, long int t)
+{ 
+  pointer[GetRow(s)][GetRow(t)] = t;
+}
+
+void  ConnectionMatrix::print()
+{
+ for(int i=0; i<size; i++)
+    {
+      for(int a=0; a<size; a++)
+	{
+	  if (pointer[i][a]==0)
+	    cout << "     -     ";
+	  else cout << "  " << pointer[i][a];
+	}
+      cout << endl;
+    }
+}
+
+  
+
+int ConnectionMatrix::GetRow(long int a)
+{
+  for(int i=0; i<size; i++)
+    {
+      if (pointer[i][i] == 0)
+	{
+	  pointer[i][i]=a;
+	  return i;
+	}
+      if (pointer[i][i] == a)
+	return i;
+    }
+  return -1;
+}
+
 TreeParameters::TreeParameters()
 {
   af = ar = lr = mf = 0.0;
@@ -21,6 +80,7 @@ template <class TS>
 Tree<TS>::Tree()
 {
   tree = NULL;
+  cm = NULL;
 }
 
 //Construct a tree at a certain position to a certain direction
@@ -29,7 +89,111 @@ template <class TS>
 Tree<TS>::Tree(const Point<METER>& p, const PositionVector& d)
   :TreeCompartment<TS>(p,d,this),axis(p,d,this)
 {
+  cm = NULL;
 }
+
+template <class TS>
+int Tree<TS>::CountTreeSegments(Axis<TS> &ax)
+{
+  int count = 0; 
+  list<TreeCompartment<MyTreeSegment>*>& ls = GetTreeCompartmentList(ax);
+  list<TreeCompartment<MyTreeSegment>*>::iterator I = ls.begin();
+  
+  while(I != ls.end())
+    {
+      if (TreeSegment<MyTreeSegment>* myts = dynamic_cast<TreeSegment<MyTreeSegment>*>(*I))
+	{
+	  count++;
+	}
+      if (BranchingPoint<MyTreeSegment>* mybp = dynamic_cast<BranchingPoint<MyTreeSegment>*>(*I))
+      	{	 
+	  list<Axis<TS>*>& axis_ls = GetAxisList(*mybp);  	  
+	  list<Axis<TS>*>::iterator I = axis_ls.begin();
+	  while(I != axis_ls.end())
+	    {
+	      Axis<MyTreeSegment> *axis = *I;
+	      count = count + CountTreeSegments(*axis);
+	      I++;	    
+	    }
+	}      
+      I++;
+    }
+  return count;
+}
+
+
+
+template <class TS>
+void Tree<TS>::makeConnectionMatrix()
+{  
+  TreeSegment<MyTreeSegment> *lastSegment = NULL;
+  list<TreeCompartment<MyTreeSegment>*>& ls = GetTreeCompartmentList(axis);
+  list<TreeCompartment<MyTreeSegment>*>::iterator I = ls.begin();
+  cm = new ConnectionMatrix(CountTreeSegments(this->axis));
+
+  while(I != ls.end())
+    {
+      if (TreeSegment<MyTreeSegment>* myts = dynamic_cast<TreeSegment<MyTreeSegment>*>(*I))
+      	{	  	  
+	  cm->AddConnection((long int &)myts, (long int &)lastSegment);
+	  lastSegment = myts;
+	}
+      if (BranchingPoint<MyTreeSegment>* mybp = dynamic_cast<BranchingPoint<MyTreeSegment>*>(*I))
+	{	 
+	  list<Axis<TS>*>& axis_ls = GetAxisList(*mybp);  	  
+	  list<Axis<TS>*>::iterator I = axis_ls.begin();
+	  while(I != axis_ls.end())
+	    {	      
+	      Axis<MyTreeSegment> *axis = *I;
+	      makeAxis(*axis, *lastSegment);
+	      I++;
+	    }
+	  
+	}
+      I++;
+    }
+  cm->print();
+}
+
+
+
+
+template <class TS>
+void Tree<TS>::makeAxis(Axis<TS>& ax, TreeSegment<TS>& ts)
+{
+  TreeSegment<MyTreeSegment> *lastSegment = &ts;
+  list<TreeCompartment<MyTreeSegment>*>& ls = GetTreeCompartmentList(ax);
+  list<TreeCompartment<MyTreeSegment>*>::iterator I = ls.begin();
+  
+  while(I != ls.end())
+    {
+      if (TreeSegment<MyTreeSegment>* myts = dynamic_cast<TreeSegment<MyTreeSegment>*>(*I))
+	{
+	  cm->AddConnection((long int &)myts, (long int &)lastSegment);
+	  lastSegment = myts;
+	}
+      if (BranchingPoint<MyTreeSegment>* mybp = dynamic_cast<BranchingPoint<MyTreeSegment>*>(*I))
+      	{
+	  list<Axis<TS>*>& axis_ls = GetAxisList(*mybp);  	  
+	  list<Axis<TS>*>::iterator I = axis_ls.begin();
+	  while(I != axis_ls.end())
+	    {
+	      Axis<MyTreeSegment> *axis = *I;
+	      makeAxis(*axis, *lastSegment);
+	      I++;	    
+	    }
+	}
+      if (Bud<MyTreeSegment>* mybud = dynamic_cast<Bud<MyTreeSegment>*>(*I))
+	{
+	 
+	}
+      I++;
+
+    }
+}
+
+
+
 
 
 //The initialization of the tree.

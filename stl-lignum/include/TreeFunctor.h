@@ -9,7 +9,17 @@ template <class TS>
 class DisplayType{
 public:
   void operator ()(TreeCompartment<TS>* ts);
-}; 
+};
 
+
+
+ 
+/*
+class CountElements{
+public:
+  void operator ()TreeCompartment<TS>* ts);
+
+}
+*/
 #endif
 

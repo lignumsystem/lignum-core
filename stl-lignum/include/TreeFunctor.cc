@@ -27,3 +27,6 @@ void DisplayType<TS>::operator ()(TreeCompartment<TS>*tc)
   else
     cout << "Who am I???" << endl;
 }
+
+
+
