@@ -23,16 +23,7 @@ namespace cxxadt{
     return *this;
   }
 
-  PositionVector Triangle::getNormal()const
-  {
-    PositionVector tmpa(apexcorner);
-    PositionVector tmpl(leftcorner);
-    //Two vectors from center point: to apex and to left corner
-    const PositionVector p1(tmpa - PositionVector(getCenterPoint()));
-    const PositionVector p2(tmpl - PositionVector(getCenterPoint()));
-    //return cross product  
-    return Cross(p1,p2).normalize();
-  }
+
 
 vector<Point>& Triangle::getTriangleCorners(vector<Point>& corners)const
 {
@@ -60,6 +51,28 @@ Point Triangle::getCenterPoint()const
   }
   return center ;
 }
+
+//getting the triangle normal vector
+
+PositionVector Triangle::getNormal()const
+{
+
+  
+  PositionVector p1(leftcorner);
+  PositionVector p2(rightcorner);
+  PositionVector p3(apexcorner);
+
+ // these vectors are the triangle sides 
+ 
+ PositionVector p12=p1-p2;
+ PositionVector p13=p1-p3;
+ PositionVector normal= Cross(p12,p13);
+ if (normal.length()!= 0)
+   normal=normal*(1/normal.length());
+ 
+ return ( normal  );
+
+} 
 
 //set up the triangle center point
 //end change the triangle corners
@@ -229,8 +242,8 @@ double Triangle::setArea(double area, const Point& base )
  //the first angle  less than the second angle 
  //
 
- bool Triangle::intersectTriangle(const Point& O,
-				  const Point& B){
+ bool Triangle::intersectShape(const Point& O,
+				  const PositionVector& B){
 
    int i,j,k;
    int counter=0;
@@ -242,7 +255,7 @@ double Triangle::setArea(double area, const Point& base )
 
    PositionVector o(O);           //the view point on the light beam
                                   //(the pyramid apex)
-   PositionVector beam(B);        //the light beam vector
+   PositionVector beam=B;        //the light beam vector
    PositionVector obeam = beam - o; //the light beam vector from 
                                     //o to b
    
@@ -340,8 +353,9 @@ int main()
   cout << "1.For these points  " << endl;  
   cout << "2.Area is   " << t1.getArea() << endl;
   cout << "3.Center is " << t1.getCenterPoint().getX()
-       << endl<<endl;
-
+       << endl;
+  cout <<"3a. Normal vector is "<<t1.getNormal()
+       <<endl<<endl;
 
   Point base=Point(2.0,0.0,0.0);
 
@@ -368,15 +382,17 @@ int main()
   cout<<"----------------------------------------------"<<endl;
 
   Point o=Point(0.0,0.0,3.0);
-  //Point b=Point(1.0,1.5,0.0);//not intersection
 
-  Point b=Point(1.5,1.5,0.0);//there is  intersection
+  PositionVector b(0,1,3);//not intersection
 
+  //  PositionVector b(1.5,1.5,0.0);//there is  intersection
 
-  if (t1.intersectTriangle(o,b) ) 
-    cout<<"The OB  vector crosses the triangle "<<endl<<endl;
+  
+  cout<<"From point O " <<o<< " the beam vector "<<b;
+  if (t1.intersectShape(o,b) ) 
+    cout<<" crosses the triangle "<<endl<<endl;
   else
-    cout<<"The OB vector does not cross the triangle "<<endl<<endl;
+    cout<<" does not cross the triangle "<<endl<<endl;
 
 
   exit(0);
