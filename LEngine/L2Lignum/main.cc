@@ -5,16 +5,15 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#include <iostream>
-
 #include <lglobal.h>
-
 #include <lsysintrfc.h>
 
 #include <succstor.h>
 
+#include <iostream>
 #include <L2Lignum.h>
 #include <MyTreeSegment.h>
+#include <MyBud.h>
 
 using namespace std;
 
@@ -88,13 +87,13 @@ int main(int argc, char** argv)
     cout << "\n\n";
   }
 
-  Tree<MyCfTreeSegment> tree(Point(0,0,0),
+  Tree<MyCfTreeSegment,MyBud> tree(Point(0,0,0),
 			     PositionVector(0,0,1.0));
   L2Lignum(tree,mainstring);
 
-  {
-    //Draw(100);
-  }
+//    {
+//      //Draw(100);
+//    }
 
 }
 
