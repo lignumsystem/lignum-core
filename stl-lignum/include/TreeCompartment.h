@@ -17,6 +17,8 @@ namespace Lignum{
       friend LGMdouble GetValue(const TreeCompartment<TS,BUD>& tc, const LGMAD name);
       friend LGMdouble SetValue(TreeCompartment<TS,BUD>& tc, const LGMAD name,
 				const LGMdouble value);
+      friend void SetDirection(TreeCompartment<TS,BUD>& tc, const PositionVector& d);
+      friend void SetPoint(TreeCompartment<TS,BUD>& tc, const Point<LGMdouble>& p);
     public:
       TreeCompartment();
       TreeCompartment(const Point<METER>& p, const PositionVector& d, Tree<TS,BUD>* t);

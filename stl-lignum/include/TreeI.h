@@ -323,11 +323,12 @@ LGMdouble GetValue(const Tree<TS,BUD>& tree, const LGMAD name)
      return tree.ta.Wr;
 
   else {
-    cerr << "GetValue  unknown attribute: " << name << " returning 0.0" 
-	 << endl;
+    //    cerr << "GetValue  unknown attribute: " << name << " returning 0.0" 
+    //	 << endl;
+    return GetValue(dynamic_cast<const TreeCompartment<TS,BUD>&>(tree), name);
   }
 
-  return 0.0;
+  //  return 0.0;
 }
 
 template <class TS,class BUD>
@@ -348,8 +349,9 @@ LGMdouble SetValue(Tree<TS,BUD>& tree, const LGMAD name, const LGMdouble value)
     tree.ta.Wr = value;
 
   else{
-    cerr << "SetValue unknown attribute: " << name << " returning " 
-	 << old_value << endl;
+//      cerr << "SetValue unknown attribute: " << name << " returning " 
+//  	 << old_value << endl;
+    old_value=SetValue(dynamic_cast<TreeCompartment<TS,BUD>&>(tree),name,value);
   }
 
   return old_value;

@@ -54,11 +54,13 @@ LGMdouble GetValue(const Bud<TS,BUD>& bud, const LGMAD name)
     return bud.ba.ip;
 
   else{
-    cout << "Unknown attribute: " << name << endl;
-    cout << "Returning 0.0" << endl;
+    return GetValue(dynamic_cast<const TreeCompartment<TS,BUD>&>(bud), name);
+
+    //    cout << "Unknown attribute: " << name << endl;
+    //    cout << "Returning 0.0" << endl;
   }
 
-  return 0.0;
+  //  return 0.0;
 }
 
 template<class TS, class BUD>
@@ -74,8 +76,9 @@ LGMdouble SetValue(Bud<TS,BUD>& bud, const LGMAD name, const LGMdouble value)
     bud.ba.ip = value;
 
   else{
-    cout << "Unknown attribute: " << name << endl;
-    cout << "Returning 0.0" << endl;
+    //    cout << "Unknown attribute: " << name << endl;
+    //    cout << "Returning 0.0" << endl;
+        old_value = SetValue(dynamic_cast<TreeCompartment<TS,BUD>&>(bud), name,value);
   }
 
   return old_value;

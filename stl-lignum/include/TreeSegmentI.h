@@ -85,7 +85,7 @@ KGC GetSapwoodMass(const TreeSegment<TS,BUD>& ts)
 template <class TS,class BUD>
 LGMdouble GetValue(const TreeSegment<TS,BUD>& ts, const LGMAD name)
 {
-  LGMdouble unknown_value = 0.0;
+  //  LGMdouble unknown_value = 0.0;
 
   if (name == A)
     return PI_VALUE*pow(ts.tsa.R,2.0);
@@ -145,9 +145,10 @@ LGMdouble GetValue(const TreeSegment<TS,BUD>& ts, const LGMAD name)
     return ts.tsa.Wh;
 
   else
-    cout << "Unknown attribute returning" << unknown_value << endl;
+    return GetValue(dynamic_cast<const TreeCompartment<TS,BUD>&>(ts), name);
+    //    cout << "Unknown attribute returning" << unknown_value << endl;
 
-  return unknown_value;
+  //  return unknown_value;
 }
 
 
@@ -205,7 +206,8 @@ LGMdouble SetValue(TreeSegment<TS,BUD>& ts, const LGMAD name, const LGMdouble va
     ts.tsa.Wh = value;
 
   else
-    cerr << "TreeSegment: Unknown attribute " << name << endl;
+    //    cerr << "TreeSegment: Unknown attribute " << name << endl;
+    old_value = SetValue(dynamic_cast<TreeCompartment<TS,BUD>&>(ts), name,value);
 
   return old_value;
 }
