@@ -109,7 +109,7 @@ namespace Lignum{
   class TreeFunctions{
   public:
     ParametricCurve nb;   //number of new buds
-    ParametricCurve ip;   //relative length of a new tree segment 
+    ParametricCurve ip;   //light relative length of a new tree segment 
     ParametricCurve fm;   //foliage mortality 
     ParametricCurve vi;   //vigour index function
     ParametricCurve al;   //adjusted  length. For  example  for making
