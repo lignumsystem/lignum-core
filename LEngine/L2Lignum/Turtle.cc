@@ -42,6 +42,20 @@ Turtle& Turtle::roll(const RADIAN angle)
    return *this;
 }
 
+//Rotation round Heading axis so that
+//Left becomes horizontal 
+Turtle& Turtle::hroll()
+{
+  PositionVector up(0,0,1); //opposite to gravity
+
+  l = Cross(up,h); //left becomes horizontal 
+  l.normalize();
+
+  u = Cross(h,l);  //adjust up
+  u.normalize();
+   
+  return *this;
+}
 //Move the turtle forward,
 //Units are in principle arbitrary, but 
 //for LIGNUM we will use meters.
