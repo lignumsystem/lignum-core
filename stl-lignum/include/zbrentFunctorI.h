@@ -7,7 +7,7 @@
 
 
 
-double diam_hana = 1.0;  //!!!!!!!!!!!!!!!!
+//double diam_hana = 1.0;  //!!!!!!!!!!!!!!!!
 
 
 namespace Lignum{
@@ -49,7 +49,7 @@ LGMdouble& AdjustDiameterCfGrowth<TS,BUD>::operator()(LGMdouble& As, TreeCompart
 			
 
 				LGMdouble sapwood_area = PI_VALUE * (Rnew*Rnew - r_h*r_h) - dAs;
-				sapwood_area = sapwood_area/diam_hana;  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+				sapwood_area = sapwood_area;
 
 				As = maximum(sapwood_area, 0.0);
 		} //CfTreeSegment
@@ -59,7 +59,7 @@ LGMdouble& AdjustDiameterCfGrowth<TS,BUD>::operator()(LGMdouble& As, TreeCompart
 		  Tree<TS,BUD> &tree = dynamic_cast<Tree<TS,BUD>&>(GetTree(*tts));
 		  
 		  LGMdouble sapwood_area = GetSapwoodArea(*tts);
-		  sapwood_area = sapwood_area; ///diam_hana;  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		  sapwood_area = sapwood_area;   
 		  As = sapwood_area;
 		   
 	  }
@@ -100,7 +100,7 @@ LGMdouble& AdjustDiameterHwGrowth<TS,BUD>::operator()(LGMdouble& As, TreeCompart
 				LGMdouble growth = Rnew - GetValue(*hwsegment, R);	
 				hwsegment->AdjustAnnualGrowth(growth); 
 				LGMdouble sapwood_area = PI_VALUE * (Rnew*Rnew - r_h*r_h) - dAs;
-				sapwood_area = sapwood_area/diam_hana;  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+				sapwood_area = sapwood_area;
 
 				As = maximum(sapwood_area, 0.0);
 			} // HwTreeSegment
@@ -110,7 +110,7 @@ LGMdouble& AdjustDiameterHwGrowth<TS,BUD>::operator()(LGMdouble& As, TreeCompart
 		  Tree<TS,BUD> &tree = dynamic_cast<Tree<TS,BUD>&>(GetTree(*tts));
 		  
 		  LGMdouble sapwood_area = GetSapwoodArea(*tts);
-		  sapwood_area = sapwood_area; ///diam_hana;  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		  sapwood_area = sapwood_area;
 		  As = sapwood_area;
 		   
 	  }
