@@ -18,8 +18,12 @@ namespace Lignum{
   template <class TS, class BUD>
     class CreateLeaves{
     public:
+    CreateLeaves(METER l, METER semi_major, METER semi_minor):pl(l),a(semi_major),b(semi_minor){}
     vector<PositionVector>& operator()(vector<PositionVector>& v,
 				       TreeCompartment<TS,BUD>* tc)const;
+    METER pl;
+    METER a;
+    METER b;
   };
 
   template <class TS, class BUD>
@@ -34,7 +38,7 @@ namespace Lignum{
 	}
       }
       if (TS* ts = dynamic_cast<TS*>(tc)){
-	ts->createLeaves(v);
+	ts->createLeaves(v,pl,a,b);
       }
       return v;
     }
