@@ -93,10 +93,11 @@ TreeCompartment<TS,BUD>* FillWithWater<TS,BUD>::operator()(TreeCompartment<TS,BU
 {
   if (TreeSegment<TS,BUD>* myts = dynamic_cast<TreeSegment<TS,BUD>*>(tc))
     {
-      cout << "Filling water.." << endl;
       SetTSAttributeValue(*myts, Wm, pow(GetTSAttributeValue(*myts, R), 2) * 
 			  PI_VALUE * GetTSAttributeValue(*myts, L) * 0.5 *  
-			  1000); // korjaaa...1000 GetTree(*myts).ttp.rhow                                                                               
+			  1000); 
+      SetTSAttributeValue(*myts, Pr, -GetTSAttributeValue(*myts, Hm) 
+			  * 9.81 * 1000);     
     }
   return tc;
 }
@@ -154,6 +155,7 @@ MyExampleSignal<TS,BUD>::operator()(int& n,
   return tc;
 }
 
+
 template <class TS,class BUD> int&
 DisplayStructure<TS,BUD>::operator()(int& depth,TreeCompartment<TS,BUD>* tc)const
 {
@@ -186,6 +188,7 @@ DisplayStructure<TS,BUD>::operator()(int& depth,TreeCompartment<TS,BUD>* tc)cons
 
   return depth;
 }
+
 
 
 
