@@ -9,7 +9,41 @@
 #include <BroadLeaf.h>
 #include <Algorithms.h>
 
+//This file declares the following functors (functions) for Tree. Help
+//functors etc. are not specified. If you add a functor-function
+//please update this list.
+
+//   CountTreeSegments
+//   PrintTreeInformation
+//   CountCompartments
+//   CountCompartmentsReverse
+//   DisplayStructure
+//   CheckCoordinates
+//   GetBoundingBox     ****is this obsolete?
+//   FindCfBoundingBox
+//   FindHwBoundingBox
+//   CollectFoliageMass
+//   CollectFoliageArea
+//   CollectQabs
+//   MoveTree
+//   DeleteDeadBranches
+//   PrintTreeSegmentInformationToFile(const string& filenae)
+
+//Functors-functions below used in LIGNUM WorkBench are not listed. 
+
 namespace Lignum{
+
+   template <class TS,class BUD>
+     class CountTreeSegments {
+     public:
+     int& CountTreeSegments<TS,BUD>::
+       operator()(int& n,TreeCompartment<TS,BUD>* tc)const
+       {
+	 if (TS* myts = dynamic_cast<TS*>(tc))
+	   n+=1;
+	 return n;
+       }
+   };
 
   //PrintTreeInformation collects and prints out information about the
   //tree. It uses functor TreeData to collect the information with
@@ -126,38 +160,9 @@ namespace Lignum{
     };
 
 
-  //A functor to print out the datatype
-  //of a tree compartment
-  template <class TS,class BUD=DefaultBud<TS> >
-    class DisplayType{
-      public:
-      TreeCompartment<TS,BUD>*  operator ()(TreeCompartment<TS,BUD>* ts)const;
-    };
 
   template <class TS,class BUD=DefaultBud<TS> >
-    class DisplayType2: public AdaptableTCFunction<TS,BUD>{
-      public:
-      TreeCompartment<TS,BUD>* operator ()(TreeCompartment<TS,BUD>* ts)const;
-    };
-
-  template <class TS,class BUD=DefaultBud<TS> >
-    class CountTreeSegments{
-      public:
-      int& operator ()(int& id,TreeCompartment<TS,BUD>* ts)const;
-    };
-
-	/*
-
-	Tämän totuetus on kadonnut??? 12.6.2003
-  template <class TS,class BUD=DefaultBud<TS> >
-    class FillWithWater:  public AdaptableTCFunction<TS,BUD>{
-      public:
-      TreeCompartment<TS,BUD>* operator()(TreeCompartment<TS,BUD>* tc)const;
-    };
-	*/
-
-
-  template <class TS,class BUD=DefaultBud<TS> >class CountCompartments{
+    class CountCompartments{
     public:
     int& operator ()(int& id,TreeCompartment<TS,BUD>* ts)const;
   };
@@ -170,11 +175,6 @@ namespace Lignum{
       int& operator ()(int& id,TreeCompartment<TS,BUD>* ts)const;
     };
 
-  template <class TS,class BUD=DefaultBud<TS> >
-    class MyExampleSignal{
-      public:
-      int operator ()(int id,TreeCompartment<TS,BUD>* ts)const;
-    };
 
   template <class TS,class BUD> void DisplayStructure(Tree<TS,BUD>& t);
   template <class TS,class BUD> void DisplayStructure(TreeCompartment<TS,BUD>* tc);
@@ -208,11 +208,11 @@ namespace Lignum{
 
 
   template <class TS, class BUD>
-    Point GetBoundingBox(Tree<TS,BUD> &tree, Point &p);
+    Point GetBoundingBox(Tree<TS,BUD> &tree, Point &p);  ///****obsolete???
 
 
   template <class TS, class BUD>
-    Point GetBoundingBox(Axis<TS,BUD> &ax, Point &p);
+    Point GetBoundingBox(Axis<TS,BUD> &ax, Point &p); ///****obsolete???
 
 
 
@@ -322,6 +322,27 @@ namespace Lignum{
       public:
       LGMdouble& operator()(LGMdouble& foliage, TreeCompartment<TS,BUD>* tc)const;
     };
+
+
+
+
+  template <class TS,class BUD=DefaultBud<TS> >
+    class PrintTreeSegmentInformationToFile {
+      public:
+      PrintTreeSegmentInformationToFile(/*const string& filename*/)
+      {
+	//	ofstream file(filename.c_str());
+	cout << "X:Y:Z:diX:diY:diZ:As0:As:L:M:omega:R:RTop:Rh:Ws:Wh:"
+                "Wf:W:Af:Qin:Qabs:Ring:vigour" << endl;
+      }
+      TreeCompartment<TS,BUD>* operator ()(TreeCompartment<TS,BUD>* tc)const;
+
+/*       private: */
+/*       ofstream file; */
+    };
+
+
+
 
 
   //cvs update: LignumWB:n käytössä olevat funktorit

@@ -1,71 +1,30 @@
 #ifndef TREE_FUNCTORI_H
 #define TREE_FUNCTORI_H
 
+
+//This file contains implementation of the following functors
+//(functions) for Tree. Help functors etc. are not specified. If you
+//add a functor-function please update this list.
+
+//   PrintTreeInformation
+//   CountCompartments
+//   CountCompartmentsReverse
+//   DisplayStructure
+//   CheckCoordinates
+//   GetBoundingBox     ****is this obsolete?
+//   FindCfBoundingBox
+//   FindHwBoundingBox
+//   CollectFoliageMass
+//   CollectFoliageArea
+//   CollectQabs
+//   MoveTree
+//   DeleteDeadBranches
+//   PrintTreeSegmentInformationToFile(const string& filenae)
+
+//Functors-functions below used in LIGNUM WorkBench are not listed. 
+
+
 namespace Lignum{
-
-  //Use built-in operator dynamic_cast
-  //to resolve the data_type of a tree compartment
-  template <class TS,class BUD>
-    TreeCompartment<TS,BUD>*  DisplayType<TS,BUD>::operator
-    ()(TreeCompartment<TS,BUD>*tc)const
-    {
-      if (Axis<TS,BUD>* myaxis =  dynamic_cast<Axis<TS,BUD>*>(tc)){
-	cout << "Hello, I'm Axis" << endl;
-      }
-
-      else if (BranchingPoint<TS,BUD>* mybp =
-	       dynamic_cast<BranchingPoint<TS,BUD>*>(tc)){
-	cout << "Hello, I'm BranchingPoint" << endl;
-      }
-
-      else if (TS* myts = dynamic_cast<TS*>(tc))
-	cout << "Hello, I'm TreeSegment" << endl;
-      
-      else if (Bud<TS,BUD>* mybud =  dynamic_cast<Bud<TS,BUD>*>(tc))
-	cout << "Hello, I'm Bud" << endl;
-      
-      else
-	cout << "Who am I???" << endl;
-      
-      return tc;
-    }
-  
-  template <class TS,class BUD>
-    TreeCompartment<TS,BUD>* DisplayType2<TS,BUD>::operator()
-    (TreeCompartment<TS,BUD>* tc)const
-    {
-      if (Axis<TS,BUD>* myaxis =  dynamic_cast<Axis<TS,BUD>*>(tc)){
-	cout << "Hello, I'm Axis" << endl;
-      }
-      
-      else if (BranchingPoint<TS,BUD>* mybp =
-	       dynamic_cast<BranchingPoint<TS,BUD>*>(tc)){
-	cout << "Hello, I'm BranchingPoint" << endl;
-      }
-
-      else if (TS* myts = dynamic_cast<TS*>(tc))
-	cout << "Hello, I'm TreeSegment" << endl;
-
-      else if (Bud<TS,BUD>* mybud =  dynamic_cast<Bud<TS,BUD>*>(tc))
-	cout << "Hello, I'm Bud" << endl;
-
-      else
-	cout << "Who am I???" << endl;
-
-      return tc;
-    }
-
-  template <class TS,class BUD>
-    int& CountTreeSegments<TS,BUD>::
-    operator()(int& n,TreeCompartment<TS,BUD>* tc)const
-    {
-      if (TS* myts = dynamic_cast<TS*>(tc))
-	n+=1;
-  
-      return n;
-    }
-
-
 
   template <class TS,class BUD>
     int& CountCompartments<TS,BUD>::
@@ -118,33 +77,6 @@ namespace Lignum{
 	cout << "Who am I??? ";
 
       //counting them all
-      n+=1;
-      cout << n << endl;
-      return n;
-    }
-
-  template <class TS,class BUD>  
-    int MyExampleSignal<TS,BUD>::operator()(int n,
-					    TreeCompartment<TS,BUD>* tc)const
-    {
-      if (Axis<TS,BUD>* myaxis =  dynamic_cast<Axis<TS,BUD>*>(tc)){
-	cout << "Hello, I'm Axis ";
-      }
-
-      else if (BranchingPoint<TS,BUD>* mybp =
-	       dynamic_cast<BranchingPoint<TS,BUD>*>(tc)){
-	cout << "Hello, I'm BranchingPoint ";
-      }
-
-      else if (TS* myts = dynamic_cast<TS*>(tc))
-	cout << "Hello, I'm TreeSegment ";
-
-      else if (Bud<TS,BUD>* mybud =  dynamic_cast<Bud<TS,BUD>*>(tc))
-	cout << "Hello, I'm Bud ";
-
-      else
-	cout << "Who am I??? ";
- 
       n+=1;
       cout << n << endl;
       return n;
@@ -700,6 +632,46 @@ namespace Lignum{
       }
       return foliage;
     }
+
+
+  template <class TS,class BUD>
+    TreeCompartment<TS,BUD>*
+    PrintTreeSegmentInformationToFile<TS,BUD>::operator
+    () (TreeCompartment<TS,BUD>* tc)const {
+
+      if(TS* ts = dynamic_cast<TS*>(tc)) {
+	Point r = GetPoint(*tc);
+	PositionVector di = GetDirection(*tc);
+	cout << r.getX() << ":" <<
+	r.getY() << ":" <<
+	r.getZ() << ":" <<
+	di.getX() << ":" <<
+	di.getY() << ":" <<
+	di.getZ() << ":" <<
+	GetValue(*ts,LGAAs0) << ":" <<
+	GetValue(*ts,LGAAs) << ":" <<
+	GetValue(*ts,LGAL) << ":" <<
+	GetValue(*ts,LGAM) << ":" <<
+	GetValue(*ts,LGAomega) << ":" <<
+	GetValue(*ts,LGAR) << ":" <<
+	GetValue(*ts,LGARTop) << ":" <<
+	GetValue(*ts,LGARh) << ":" <<
+	GetValue(*ts,LGAWs) << ":" <<
+	GetValue(*ts,LGAWh) << ":" <<
+	GetValue(*ts,LGAWf) << ":" <<
+	GetValue(*ts,LGAWh)+GetValue(*ts,LGAWs)+GetValue(*ts,LGAWf) << ":" <<
+	GetValue(*ts,LGAAf) << ":" <<
+	GetValue(*ts,LGAQin) << ":" <<
+	GetValue(*ts,LGAQabs) << ":" <<
+	GetLastAnnualIncrement(*ts) << ":" <<
+	GetValue(*ts,LGAvi)
+	<< endl;
+      }
+      return tc;
+    }
+
+
+
 
 
 
