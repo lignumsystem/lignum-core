@@ -54,6 +54,12 @@ list<METER> GetAnnualRings(const TreeSegment<TS,BUD>& ts)
 }
 
 template <class TS,class BUD>
+Point GetEndPoint(const TreeSegment<TS,BUD>& ts)
+{
+  return GetPoint(ts)+GetValue(ts,L)*(Point)GetDirection(ts);
+}
+
+template <class TS,class BUD>
 KGC GetSapwoodMass(const TreeSegment<TS,BUD>& ts)
 {
   //volume up to R
@@ -111,12 +117,23 @@ LGMdouble GetValue(const TreeSegment<TS,BUD>& ts, const LGMAD name)
   else if (name == Wm)
     return ts.tsa.Wm;
 
-  else if (name == Ws)
-    return ts.tsa.Ws;
+  else if (name == Ws) {
+    LGMdouble V1 = (PI_VALUE * pow((double)ts.tsa.R,2.0)) * ts.tsa.L;
+    //heartwood volume
+    LGMdouble V2 = (PI_VALUE * pow((double)ts.tsa.Rh,2.0)) * ts.tsa.L;
+    //sapwood volume
+    LGMdouble V3 = V1 - V2;
+    //mass is density * volume
+    return GetValue(*(ts.tree),rho) * V3;
+  }
 
-  else if (name == Wh)
-    return ts.tsa.Wh;
-
+  else if (name == Wh) {
+    //heartwood volume
+    LGMdouble V2 = (PI_VALUE * pow((double)ts.tsa.Rh,2.0)) * ts.tsa.L;
+    //mass is density * volume
+    return GetValue(*(ts.tree),rho) * V2;
+  }
+ 
   else
     return GetValue(dynamic_cast<const TreeCompartment<TS,BUD>&>(ts), name);
     //    cout << "Unknown attribute returning" << unknown_value << endl;
@@ -180,6 +197,12 @@ LGMdouble SetValue(TreeSegment<TS,BUD>& ts, const LGMAD name, const LGMdouble va
 }//close namespace Lignum
 
 #endif
+
+
+
+
+
+
 
 
 
