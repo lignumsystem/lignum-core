@@ -7,6 +7,7 @@ Petiole::Petiole(const Point& b, const Point& e)
 {
 }
 
+
 Point GetStartPoint(const Petiole& p)
 {
   return p.begin;
@@ -57,6 +58,13 @@ BroadLeaf::BroadLeaf(LGMdouble sf,LGMdouble tauL,LGMdouble dof,int number_of_sec
   // center = end of petiole (this is a bit arbitrary)
   else
     bla.center = GetEndPoint(petiole) + (b/ppl) * petiol_proj;
+}
+
+BroadLeaf::BroadLeaf(const Ellipsis& shape, const Petiole& petiole, 
+		     const PositionVector& leaf_normal)
+  :bla(1.0,1.0,1.0,petiole,leaf_normal,shape,10)
+{
+
 }
 
 
