@@ -92,15 +92,9 @@ LGMdouble SetValue(TreeCompartment<TS,BUD>& tc, const LGMAD name, const LGMdoubl
   
   if (name == LGAage)
     tc.tc_age = value;
-
-  else
-  {
-    if (CfTreeSegment<TS,BUD>* cfts = dynamic_cast<CfTreeSegment<TS,BUD>*>(&tc))
-	{
-		SetValue(*cfts, name, value);
-	}
-	else  cerr << "GetValue: Unknown attribute " << name << endl;
-	//MessageBox(NULL, "Setvalue " + name, NULL, NULL);
+  
+  else{
+    cerr << "Tree Compartment GetValue: Unknown attribute " << name << endl;
   }
 
   return old_value;

@@ -83,9 +83,9 @@ namespace Lignum{
   //It will intialize the vector
 #define LGMTADLENGTH 5
 
-  //Tree Parameter Double
+  //LIGNUM Parameter Double
   //Keep this list in synbc with MapLGMPD constructor in TreeFriend.cc
-  enum LGMPD {af,al,ar,ca, dofp,lr,mf,mr,ms,na,nl,pr,q, rca, rld,sf, 
+  enum LGMPD {LGPaf,al,ar,ca, dofp,lr,mf,mr,ms,na,nl,pr,q, rca, rld,sf, 
               sla,LGPsr,LGPss,LGPrhoW,LGPrho_root,LGPrho_hair, LGPyc, LGPxi,
 	      LGPzbrentEpsilon, LGPLn_par, LGPn_ang_par};
 

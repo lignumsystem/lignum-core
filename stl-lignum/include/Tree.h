@@ -139,18 +139,8 @@ namespace Lignum{
   template <class TS,class BUD = DefaultBud<TS> >
     class Tree: public TreeCompartment<TS,BUD>{
 
-
-#ifdef _MSC_VER  //cvs update
-	
-	
-#else
-	template <class TS1,class BUD1>
+      template <class TS1,class BUD1>
       friend class InitializeTree;
-
-
-
-	
-#endif // _MSC_VER
     
 	  template <class TS1,class BUD1>
      friend LGMdouble GetValue(const Tree<TS1,BUD1>& tree, const LGMAD name);
@@ -203,7 +193,7 @@ namespace Lignum{
 	   LGMdouble len, LGMdouble rad, int num_buds);
 
       void UpdateWaterFlow(LGMdouble time, const ConnectionMatrix<TS,BUD> &cm);
-	void photosynthesis();
+      void photosynthesis();
       void respiration();
       TreeFunctions tf;  //cvs update
 

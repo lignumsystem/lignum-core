@@ -179,13 +179,6 @@ METER SetRadius(TreeSegment<TS,BUD>& ts)
 	int size = ts.tsa.annual_rings.size();
 	ts.tsa.R = ts.tsa.annual_rings[size-1];
 	ts.tsa.Rtop = ts.tsa.R;
-
-	/*
-	Tree<TS,BUD> &tree = GetTree(ts);
-	LGMdouble A_s = (1.0 - GetValue(tree, LGPxi)) * GetValue(ts, LGAWf)/(2.0*GetValue(tree, af)*GetValue(tree, lr));
-	LGMdouble r_h = sqrt((PI_VALUE*ts.tsa.R*ts.tsa.R - A_s)/PI_VALUE);
-	SetValue(ts, LGARh, r_h);
-*/
 	return ts.tsa.R;
 }
 

@@ -288,7 +288,7 @@ void StructuralPineGrowth(Axis<TS,BUD> &ax, const ParametricCurve& bud_fun, Tree
 				f_l = 0.01;
 
 			LGMdouble l_r = GetValue(tree, lr);
-			LGMdouble a_f = GetValue(tree, af);
+			LGMdouble a_f = GetValue(tree, LGPaf);
 			LGMdouble x_i = GetValue(tree, LGPxi);
 
 			LGMdouble length = lda * f_w * f_l;		  //length
@@ -556,8 +556,13 @@ MotherInfo& AddSugarMapleSegments<TS,BUD>::operator()(MotherInfo& mi, TreeCompar
 			f_w = 0.0;
 
 		LGMdouble l_r = GetValue(tree, lr);
+<<<<<<< TreeGrowthI.h
+		LGMdouble a_f = GetValue(tree, LGPaf);
+		LGMdouble x_i = GetValue(tree, xi);
+=======
 		LGMdouble a_f = GetValue(tree, af);
 		LGMdouble x_i = GetValue(tree, LGPxi);
+>>>>>>> 1.15
 
 		//LGMdouble Irel_b = motherQin / mi.B;
 		
@@ -811,8 +816,13 @@ MotherInfo& AddWhiteBirchSegments<TS,BUD>::operator()(MotherInfo& mi, TreeCompar
 			f_w = 0.0;
 
 		LGMdouble l_r = GetValue(tree, lr);
+<<<<<<< TreeGrowthI.h
+		LGMdouble a_f = GetValue(tree, LGPaf);
+		LGMdouble x_i = GetValue(tree, xi);
+=======
 		LGMdouble a_f = GetValue(tree, af);
 		LGMdouble x_i = GetValue(tree, LGPxi);
+>>>>>>> 1.15
 
 		ParametricCurve apidom = tree.tf.ip;
 		ParametricCurve vigfun = tree.tf.vi;

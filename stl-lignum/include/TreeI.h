@@ -20,15 +20,13 @@ Tree<TS,BUD>::Tree()
 template <class TS,class BUD>
 Tree<TS,BUD>::Tree(const Point& p, const PositionVector& d)
   :TreeCompartment<TS,BUD>(p,d,this),f(5,5),axis(p,d,this),
-  root_axis(p,d,*this)
-  { }
+  root_axis(p,d,*this){ }
 
 
 template <class TS,class BUD>
 Tree<TS,BUD>::Tree(const Point& p, const PositionVector& d, LGMdouble len, LGMdouble rad, int num_buds) :TreeCompartment<TS,BUD>(p,d,this),f(5,5),axis(p,d,this),
     root_axis(p,d,*this)
 {
-
   //force the instantiation of BranchingPoint
   BranchingPoint<TS,BUD>(p,d,this);
   
@@ -48,8 +46,8 @@ Tree<TS,BUD>::Tree(const Point& p, const PositionVector& d, LGMdouble len, LGMdo
   
   //Sapwood area corresponds to foliage mass
   LGMdouble A_s = (1.0 - GetValue(*this, LGPxi)) * 
-    GetValue(*ts, LGAWf)/(2.0*GetValue(*this, af)*
-		       GetValue(*this, lr));
+    GetValue(*ts, LGAWf)/(2.0*GetValue(*this, LGPaf)*
+			  GetValue(*this, lr));
   
   if (A_s > PI_VALUE*ts_rad*ts_rad)
     SetValue(*ts, LGARh, 0);
@@ -100,7 +98,7 @@ Tree<TS,BUD>::Tree(const Point& p, const PositionVector& d, LGMdouble len, LGMdo
 template <class TS,class BUD>
 LGMdouble GetValue(const Tree<TS,BUD>& tree, const LGMPD name)
 {
-  if (name == af)
+  if (name == LGPaf)
     return tree.tp.af;
 
   else if (name == ar)
@@ -172,7 +170,7 @@ LGMdouble SetValue(Tree<TS,BUD>& tree, const LGMPD name, const LGMdouble value)
 {
   LGMdouble old_value = GetValue(tree,name);
 
-  if (name == af)
+  if (name == LGPaf)
     tree.tp.af = value;
 
   else if (name == ar)
@@ -240,7 +238,8 @@ LGMdouble GetValue(const Tree<TS,BUD>& tree, const LGMTD name)
     return tree.ttp.lambda;
   
   else{
-    cerr << "GetValue unknown parameter: " << name << " returning 0.0" 
+    cerr << "Tree: GetValue unknown LGMTD parameter: " 
+	 << name << " returning 0.0" 
 	 << endl;
   }
 
