@@ -11,7 +11,7 @@ namespace Lignum{
 {
 	HwWrapper<TS,BUD> *wb = new HwWrapper<TS,BUD>(t);
 
-	trees.push_back((WrapperBase *)wb);
+	trees.push_back(wb);
 }
 
   
@@ -21,7 +21,7 @@ namespace Lignum{
 {	
 	CfWrapper<TS,BUD> *wb = new CfWrapper<TS,BUD>(t);
 
-	trees.push_back((WrapperBase *)wb);
+	trees.push_back(wb);
 }
 
 
