@@ -17,7 +17,7 @@
 using namespace Lignum;
 
 
-CTexture stemtexture;
+extern CTexture stemtexture;
 
 namespace Lignum{
 
