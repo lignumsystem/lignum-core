@@ -4,7 +4,7 @@
 TreeSegmentAttributes::TreeSegmentAttributes()
   :age(0),M(0.0),L(0.0),omega(0.0),P(0.0),Qin(0.0),Qabs(0.0),
    R(0.0),Rn(0.0),Pr(1.0),fin(0.0),fout(0.0)
-{ 
+{
 }
 
 template <class TS>
@@ -31,7 +31,6 @@ TreeSegment<TS>::TreeSegment(const Point<METER>& p, const PositionVector& d, con
   //the given parameters are needle length (nl) and the
   //needle angle (na)
   //Rf = hf + tsa.R, where hf is height of the foliage (hf = nl * sin(na))
-  GetTreeParameterValue(*t,nl);
   SetTSAttributeValue(*this,Rf,
 		      GetTreeParameterValue(*t,nl) * 
 		      sin((double)GetTreeParameterValue(*t,na)) + 
@@ -45,12 +44,7 @@ TreeSegment<TS>::TreeSegment(const Point<METER>& p, const PositionVector& d, con
   SetTSAttributeValue(*this,Wf,sa*wf);
 
   //compute the sapwood mass
-  SetTSAttributeValue(*this,Ws,GetSapwoodMass(*this));
-
-  //compute the initial pressure in the TreeSegment
-  tsa.Pr = -p.getZ() * 9.81 * 1000; 
-  tsa.Wm = 0.5 * 1000 * p.getZ() * l * R/100 * R/100 * 3.14;
-  cout << "säde " << R << endl;
+  SetTSAttributeValue(*this,Ws,GetSapwoodMass(*this)); 
 }
 
 template <class TS>
@@ -94,7 +88,7 @@ TP GetTSAttributeValue(const TreeSegment<TS>& ts, const TAD name)
   TP unknown_value = 0.0;
   
   if (name == area)
-    return 3.14*R*R;
+    return PI_VALUE*pow(ts.tsa.R,2.0);
 
   else if (name == fin)
     return ts.tsa.fin;
@@ -206,9 +200,6 @@ TP SetTSAttributeValue(TreeSegment<TS>& ts, const TAD name, const TP value)
 
   else if (name == Wf)
     ts.tsa.Rn = value;
-
-  else if (name == Wm)
-    ts.tsa.Wm = value;
 
   else if (name == Ws)
     ts.tsa.Ws = value;

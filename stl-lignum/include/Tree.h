@@ -13,12 +13,9 @@
 #include <BranchingPoint.h>
 #include <TreeSegment.h>
 #include <Axis.h>
-#include <ConnectionMatrix.h>
-
 
 template <class TS>
 TP GetProduction(const Tree<TS>& t);
-
 
 
 class TreeParameters{
@@ -26,13 +23,13 @@ public:
   TreeParameters();
   TP af;            //Needle mass - tree segment area relationship
   TP ar;            //Foliage - root relationship
-  TP lr;            //L/R for a new tree segment   
+
+  TP lr;            //L/R for a new tree segment
   TP mf;            //Maintenance respiration rate of foliage
   TP mr;            //Maintenance respiration rate of roots
   TP ms;            //Maintenance respiration rate of sapwood
   TP na;            //needle angle (radian)
   TP nl;            //needle length
-
   TP pr;            //Propotion of bound solar radiation used in photosynthesis
   TP q;             //Tree segment shortening factor
   TP sr;            //Senescence rate of roots
@@ -40,7 +37,6 @@ public:
   TP rho;           //Density of wood
   TP xi;            //Fraction of heartwood in new tree segments
 };
-
 
 
 
@@ -66,7 +62,6 @@ public:
   KGC Wr;                //Root mass
 };
 
-
 class TreeFunctions{
 public:
   ParametricCurve nb;       //number of new buds
@@ -83,7 +78,6 @@ public:
   TP k;             //Wood spesific conductivity or permeability
   TP rhow;          //Density of water
 };
-
 
 
 
@@ -112,7 +106,6 @@ private:
   TreeFunctions tf;
   TreeParameters tp;
   TreeTransitVariables ttp;
-  ConnectionMatrix<TS> *cm;
   Axis<TS> axis;
   RootSystem rs;
 };
