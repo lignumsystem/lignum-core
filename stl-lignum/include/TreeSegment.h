@@ -14,7 +14,7 @@ using namespace cxxadt;
 class TreeSegmentAttributes{
 public:
   TreeSegmentAttributes();
-  double age;               //Age of the tree segment
+  LGMdouble age;               //Age of the tree segment
   METER L;                //Length of the tree segment
   KGC M;                  //Respiration of the tree segment during the time step
   LGMdouble omega;               //Gravelius order

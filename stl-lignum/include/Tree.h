@@ -13,7 +13,6 @@
 #include <PositionVector.h>
 
 using namespace cxxadt;
-
 #include <Algorithms.h>
 #include <TreeFunctor.h>
 #include <LGMdecl.h>
@@ -55,7 +54,7 @@ public:
 class TreeAttributes{
 public:
   TreeAttributes();
-  double age;            //Age of the tree
+  LGMdouble age;            //Age of the tree
   METER lb;              //Longest branch (as vertical projection from the main stem)
   KGC P;                 //Photosynthesis of the tree during the time step
   KGC M;                 //Respiration of the tree during the time step
