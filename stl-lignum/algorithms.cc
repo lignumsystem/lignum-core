@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
   //by default the tree is from namespace Lignum
   Tree<MyCfTreeSegment,MyBud> cf_tree(Point<METER>(0,0,0),
 				      PositionVector(0,0,1.0));
-  string clarg,empty;
+ string clarg,empty;
 
   clarg = ParseCommandLine(argc,argv,"-file");
   if (clarg != empty)
@@ -51,9 +51,9 @@ int main(int argc, char *argv[])
   //B = Bud<MyHwTreeSegment,MyBud>
   Axis<MyHwTreeSegment,MyBud>& axis = GetAxis(hw_tree);
   //create the first tree segment
-  TreeSegment<MyHwTreeSegment,MyBud> *ts = 
-    new TreeSegment<MyHwTreeSegment,MyBud>(Point<METER>(0,0,0),PositionVector(0,0,1.0),
-				   0,1,0.5,0.2,&hw_tree);
+  MyHwTreeSegment *ts = 
+    new  MyHwTreeSegment(Point<METER>(0,0,0),PositionVector(0,0,1.0),
+			 0,1,0.5,0.2,&hw_tree);
   //create the branching point
   BranchingPoint<MyHwTreeSegment,MyBud> *bp = 
     new BranchingPoint<MyHwTreeSegment,MyBud>(Point<METER>(0,0,0),
@@ -218,28 +218,17 @@ int main(int argc, char *argv[])
   PropagateUp(cf_tree,id,DisplayStructureFunctor<MyCfTreeSegment,MyBud>());
   cout << endl;
 
-  //Phtosynthesis
-  SetValue(cf_tree, pr, 1.0);      //Set the photosynthesis parameter
-  cf_tree.photosynthesis();
-  UpdateTreePhotosynthesis(cf_tree);
-  cout << endl << "Photosynthesis (should be = 1*100): "
-       << GetValue(cf_tree, P) << endl;
+  //Photosynthesis
+   SetValue(cf_tree, pr, 1.0);      //Set the photosynthesis parameter
+   SetValue(hw_tree, pr, 1.0);
+   hw_tree.photosynthesis();
+   cout << endl << "Photosynthesis (should be = ?): "
+	 << GetValue(hw_tree, P) << endl;
+   UpdateTreePhotosynthesis(hw_tree);
+   cf_tree.photosynthesis();
+   UpdateTreePhotosynthesis(cf_tree);
+   cout << endl << "Photosynthesis (should be = 1*100): "
+	<< GetValue(cf_tree, P) << endl;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

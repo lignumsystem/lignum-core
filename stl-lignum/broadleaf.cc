@@ -42,6 +42,7 @@ int main(int argc, char *argv[])
   Petiole pe(p1,p2);
   Ellipsis e(4.0,6.0);
 
+  //Tree<MyCfTreeSegment,MyBud> cf_tree(Point<>(0,0,0),PositionVector(0,0,1.0));
   Tree<MyHwTreeSegment,MyBud> hw_tree(Point<>(0,0,0),PositionVector(0,0,1.0));
   BranchingPoint<MyHwTreeSegment,MyBud> bp(Point<METER>(0,0,0),
 					   PositionVector(0,0,1.0),&hw_tree);
