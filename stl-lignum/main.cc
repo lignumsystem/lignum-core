@@ -47,6 +47,8 @@ int main(int argc, char *argv[])
   //create a tree with a structure [TS,[[B],[B]],B]
   //i.e, [TS,BP,B] which expands to [TS,[A,A],B] and to [TS,[[B],[B]],B]
   //A= Axis, BP = BranchingPoint, TS = TreeSegment and B = Bud 
+  Axis<MyTreeSegment>* axis2 = new Axis<MyTreeSegment>();
+  Axis<MyTreeSegment>* axis3 = new Axis<MyTreeSegment>();
   Axis<MyTreeSegment>& axis = GetAxis(tree);
   //create the first tree segment
   TreeSegment<MyTreeSegment> *ts = 
@@ -74,15 +76,57 @@ int main(int argc, char *argv[])
 
 
   //The tree will now look as  [TS,[[B],[B]],B]
+
+  InsertAxis(*bp, axis2);
+  InsertAxis(*bp, axis3);
+
+
+
   InsertTreeCompartment(axis,ts);
   InsertTreeCompartment(axis,bp);
   InsertTreeCompartment(axis,bud);
+  
+  ts = 
+    new TreeSegment<MyTreeSegment>(Point<METER>(0,0,0),PositionVector(0,0,1.0),
+				   0,1,0.5,0.2,&tree);
+
+  InsertTreeCompartment(*axis2, ts);
+  InsertTreeCompartment(*axis2,bud);
+
+
+ ts = 
+    new TreeSegment<MyTreeSegment>(Point<METER>(0,0,0),PositionVector(0,0,1.0),
+				   0,1,0.5,0.2,&tree);
+
+  InsertTreeCompartment(*axis3, ts);
+
+ ts = 
+    new TreeSegment<MyTreeSegment>(Point<METER>(0,0,0),PositionVector(0,0,1.0),
+				   0,1,0.5,0.2,&tree);
+
+  InsertTreeCompartment(*axis3, ts);
 
   //traverse the tree and print out  the datatypes of tree compartments
   //see class DisplayType in TreeFunctor.h and in TreeFunctor.cc
   axis = GetAxis(tree);
+
   list<TreeCompartment<MyTreeSegment>*>& ls = GetTreeCompartmentList(axis);
+
+
+  list<TreeCompartment<MyTreeSegment>*>::iterator I = ls.begin();
+  while(I != ls.end())
+    {
+      if (TreeSegment<MyTreeSegment>* myts = dynamic_cast<TreeSegment<MyTreeSegment>*>(*I))
+      	cout << "tree segment" << endl;
+      if (BranchingPoint<MyTreeSegment>* mybp = dynamic_cast<BranchingPoint<MyTreeSegment>*>(*I))
+      	cout << "branching point" << endl;
+      I++;
+
+    }
+
   for_each(ls.begin(),ls.end(),DisplayType<MyTreeSegment>());
+  //  for_each(ls.begin(),ls.end(),DisplayType<MyTreeSegment>());
+  tree.makeConnectionMatrix();
 }
 
 
