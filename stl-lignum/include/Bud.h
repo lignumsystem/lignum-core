@@ -25,6 +25,10 @@ public:
 
 template <class TS,class BUD=DefaultBud<TS> >
 class Bud: public TreeCompartment<TS,BUD>{
+
+template <class TS1,class BUD1>
+friend ostream &operator << (ostream& os, Bud<TS1,BUD1>& bud);
+	
 template <class TS1,class BUD1>
 friend LGMdouble GetValue(const Bud<TS1,BUD1>& bud, const LGMAD name);
 

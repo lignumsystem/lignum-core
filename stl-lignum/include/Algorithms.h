@@ -5,8 +5,10 @@
 #include <list>
 #include <LGMdecl.h>
 
+using namespace std;
 
 namespace Lignum{
+
 
 template <class TS,class BUD>
 class AdaptableTCFunction

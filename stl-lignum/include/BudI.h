@@ -4,6 +4,14 @@
 
 namespace Lignum{
 
+
+template <class TS,class BUD>
+ostream &operator << (ostream& os, Bud<TS,BUD>& bud)
+{	
+  os << GetDirection(bud) << " " << GetPoint(bud) << " " << GetValue(bud , omega);
+  return os;
+}
+
 //default constructor
 template <class TS,class BUD>
 Bud<TS,BUD>::Bud()

@@ -171,6 +171,8 @@ TreeCompartment<TS,BUD>*
 PropagateUpTreeCompartments<TS,BUD,T,BinOp>::operator()(T& id,
 					     TreeCompartment<TS,BUD>* tc)const
 {
+	#ifdef _MSC_VER //cvs
+	#else
   if (TreeSegment<TS,BUD>* ts = dynamic_cast<TreeSegment<TS,BUD>*>(tc))
     op1(id,ts);
 
@@ -197,7 +199,7 @@ PropagateUpTreeCompartments<TS,BUD,T,BinOp>::operator()(T& id,
       (*this)(id_new,*first++);
     }
   }
-
+#endif
   return tc;
 }
 
