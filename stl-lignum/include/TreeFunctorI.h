@@ -533,23 +533,21 @@ namespace Lignum{
 					   TreeCompartment<TS,BUD>* tc)const
     {
       if(TS* ts = dynamic_cast<TS*>(tc)){
-	if(GetValue(*ts,LGAWf) > R_EPSILON) {
-	  Point base = GetPoint(*ts);
-	  Point top = GetEndPoint(*ts);
-	  
-	  if(b_box.getMin().getX() > base.getX()) b_box.setMinX(base.getX());
-	  if(b_box.getMin().getY() > base.getY()) b_box.setMinY(base.getY());
-	  if(b_box.getMin().getZ() > base.getZ()) b_box.setMinZ(base.getZ());
-	  if(b_box.getMin().getX() > top.getX()) b_box.setMinX(top.getX());
-	  if(b_box.getMin().getY() > top.getY()) b_box.setMinY(top.getY());
-	  if(b_box.getMin().getZ() > top.getZ()) b_box.setMinZ(top.getZ());
-	  if(b_box.getMax().getX() < base.getX()) b_box.setMaxX(base.getX());
-	  if(b_box.getMax().getY() < base.getY()) b_box.setMaxY(base.getY());
-	  if(b_box.getMax().getZ() < base.getZ()) b_box.setMaxZ(base.getZ());
-	  if(b_box.getMax().getX() < top.getX()) b_box.setMaxX(top.getX());
-	  if(b_box.getMax().getY() < top.getY()) b_box.setMaxY(top.getY());
-	  if(b_box.getMax().getZ() < top.getZ()) b_box.setMaxZ(top.getZ());
-	}
+	Point base = GetPoint(*ts);
+	Point top = GetEndPoint(*ts);
+	
+	if(b_box.getMin().getX() > base.getX()) b_box.setMinX(base.getX());
+	if(b_box.getMin().getY() > base.getY()) b_box.setMinY(base.getY());
+	if(b_box.getMin().getZ() > base.getZ()) b_box.setMinZ(base.getZ());
+	if(b_box.getMin().getX() > top.getX()) b_box.setMinX(top.getX());
+	if(b_box.getMin().getY() > top.getY()) b_box.setMinY(top.getY());
+	if(b_box.getMin().getZ() > top.getZ()) b_box.setMinZ(top.getZ());
+	if(b_box.getMax().getX() < base.getX()) b_box.setMaxX(base.getX());
+	if(b_box.getMax().getY() < base.getY()) b_box.setMaxY(base.getY());
+	if(b_box.getMax().getZ() < base.getZ()) b_box.setMaxZ(base.getZ());
+	if(b_box.getMax().getX() < top.getX()) b_box.setMaxX(top.getX());
+	if(b_box.getMax().getY() < top.getY()) b_box.setMaxY(top.getY());
+	if(b_box.getMax().getZ() < top.getZ()) b_box.setMaxZ(top.getZ());
       }
 
       return b_box;
