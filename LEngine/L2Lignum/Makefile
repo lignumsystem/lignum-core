@@ -61,7 +61,7 @@ STL     = -I/usr/include/CC
 LIBD = lib64
 LIBFLAGS = -L../../c++adt/lib -L../../stl-lignum/lib -L../../Firmament/lib \
            -L. -L../lsys -L../../Graphics -L/usr/X11R6/lib -L/usr/freeware/$(LIBD) \
-           -L/sw/lib
+           -L/sw/lib -L/usr/$(LIBD)
 
 LIB1   = libc++adt.a
 LIB2   = libLGM.a
