@@ -13,13 +13,13 @@ definition consists of a predecessor defining one module possible with
 its  context ending  with colon  and a  production  defining successor
 string embraced  within curly braces.   For example the third  rule in
 Eq. \ref{eq:ca110} is written in L as:
-\begin{equation}
+\begin{equation}\label{eq:r3}
  O() < X() > O(): \{\mathrm{produce}\ X();\}
 \end{equation}
 
 For branching structures of plants L predefines two modules $SB()$ and
 $EB()$ denoting begin and end  of branch respectively.  To control the
-movements of the  turtle (the drawing engine) let  us first define its
+movements of the turtle (the  geometry engine) let us first define its
 orientation  in space by  three unit  vectors $\vec  H$, $\vec  L$ and
 $\vec U$ perpendicular to each other such that $\vec U = \vec H \times
 \vec L$ denoting turtle's heading,  direction to the left and up. Then
@@ -29,19 +29,34 @@ $Roll(\alpha)$ to  rotate orientation of  the turtle around  $\vec U$,
 $\vec  L$  and $\vec  H$  by  $\alpha$.   One special  module  $Start$
 corresponds the axiom.
 
+To model tree structures with L as in LIGNUM let the module $F$ denote
+tree segment and designate module  $B$ for bud.  Given the modules for
+turtle  graphics  and  branching  we  can now  describe  topology  and
+geometry of  the tree structures  of LIGNUM (Eq.   \ref{eq:tree}) with
+rules of  L (Eq.  \ref{eq:r3}). To  accommodate L with  LIGNUM we need
+first  to construct  an  algorithm  that translates  strings  of L  to
+structural  units  of  LIGNUM  (Section \ref{sec:pine}).   Second,  as
+metabolism  implemented  in  LIGNUM   will  act  on  structural  units
+(segments  and  buds  most  notably)  and produces  changes  in  their
+physiological states,  in their dimensions  and in their  positions in
+space  accordingly, this  information  must be  transferred to  turtle
+symbols  and  module  $B$   (Section  \ref{sec:bearberry})  as  it  is
+necessary in rewriting.
+
 \section{Scots pine: integrating L and LIGNUM}\label{sec:pine}
-The  first example  mimics the  growth  of young  Scots pine.   First,
-introduce module  $B(O,L)$ representing a bud.   The module definition
-implements development for the  main stem and the branching evolution.
-In each iteration the apical bud ($O = 0$) moves forward of length $L$
-and forks off four new side  branches.  The first order branches ($O =
-1$)  are  similar  but  only  two  more  side  branches  are  created.
-Branching stops after third order  ($O > 3$).  The definition for this
-pine growth in L is in Fig.  \ref{fig:L1}. The development starts from
-one bud and  the string after two iterations  is in Eq. \ref{eq:pine2}
-(we postpone the  explanation of open and close  statements). Symbol [
-denotes $SB()$ and ] denotes  $EB()$, modules for turtle rotations are
-not shown:
+To present algorithm that translates  strings of L to structural units
+of LIGNUM  the first  example mimics the  growth of young  Scots pine.
+First,  introduce  module $B(O,L)$  representing  a  bud.  The  module
+definition implements development for  the main stem and the branching
+evolution.  In each  iteration the apical bud ($O  = 0$) moves forward
+of length $L$  and forks off four new side  branches.  The first order
+branches ($O  = 1$) are  similar but only  two more side  branches are
+created.  Branching stops after third order ($O > 3$).  The definition
+for this pine growth in L is in Appendix \ref{sec:L1}. The development
+starts from  one bud  and the  string after two  iterations is  in Eq.
+\ref{eq:pine2}  (we  postpone  the   explanation  of  open  and  close
+statements). Symbol [ denotes $SB()$ and ] denotes $EB()$, modules for
+turtle rotations are not shown:
 \begin{equation}\label{eq:pine2}
 F\;[F[B][B]B]\:[F[B][B]B]\:[F[B][B]B]\:[F[B][B]B]\; F \;[B][B][B][B]\; B
 \end{equation}
@@ -70,16 +85,21 @@ the  string   defines  the  position  and  orientation   of  the  tree
 compartments in LIGNUM.
 
 The structural development of the tree described in L does not require
-the generation  of LIGNUM representation  of trees from  scratch after
-each derivation.   In our case we  can assume that  an L-system indeed
-generates alternating sequence of  tree segments, branching points and
-terminating buds  and the terminal  buds only generate  new structural
-units.   Thus  after each  derivation  it  is  possible to  match  the
-existing  string   and  LIGNUM  representation  and   insert  the  new
-structural units in  the axis lists before the  terminating buds whose
-positions and  orientations will be  updated.  The development  of the
-pine  after  one,  four  and   eight  development  steps  is  in  Fig.
-\ref{fig:pine}.
+the regeneration  of LIGNUM representation of trees  (deleting the old
+tree and  creating a new one)  after each derivation.  In  our case we
+can assume  that an L-system indeed generates  alternating sequence of
+tree segments, branching points  and terminating buds and the terminal
+buds only  generate new structural units.  Thus  after each derivation
+it is possible to match  the existing string and LIGNUM representation
+and  insert the  new structural  units in  the axis  lists  before the
+terminating buds whose positions and orientations will be updated.
+
+The development  of three  pines after eight  development steps  is in
+Fig.   \ref{fig:pine}.  The  first  pine  is the  result  of  L-system
+rewriting only,  the second and the  third are the result  of the same
+L-system   derivation   and  two   different   {\it  very}   exemplary
+photosynthesis and foliage senescence models demonstrating the effects
+of metabolism on development of tree structure.
 
 
 

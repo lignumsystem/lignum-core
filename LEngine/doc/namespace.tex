@@ -3,8 +3,10 @@ LIGNUM is designed as a  single tree model for hardwood and coniferous
 species.  To  allow modeling the  development of mixed  species forest
 stands (in the future) we  have augmented the original definition of L
 with  the   concept  of  namespace  denoted   with  \texttt{open}  and
-\texttt{close}   statements   (see    Fig.   \ref{fig:L1}   and   Fig.
-\ref{fig:L2}).
+\texttt{close}    statements    (see    Appendix   \ref{sec:L1}    and
+\ref{sec:L2}).     A    namespace     is    a    scope    or    module
+\citep{stroustrup:97}),  a  mechanism to  express  things that  belong
+logically together without adding too much notational burden.
  
 Technically, each L  file is compiled to C++, hence  it is possible to
 embed C++ statements in the productions. The result of the compilation

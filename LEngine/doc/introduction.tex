@@ -9,7 +9,7 @@ described  for  example with  state  variables representing  different
 aggregated  tree compartments  or with  detailed  modelling components
 faithful to botanical or morphological units of plants.
 
-Kurth  has  constructed a  model  triangle \citep{kurth:99}  arranging
+Kurth  has constructed  a model  triangle  \citep{kurth:94b} arranging
 existing modelling approaches in  forestry into three categories based
 on the  emphasis in the modeling approaches  (structure vs.  function,
 single tree vs.  forest stand).  Accordingly there are practically two
@@ -63,28 +63,27 @@ Lindenmayer-systems (L-systems)  invented 1968 by  Aristid Lindenmayer
 \citep{lindenmayer:68,   lindenmayer:71}  were   initially   meant  to
 describe  the development of  multicellular organisms.   L-systems are
 string  rewriting  systems  and   their  research  is  concerned  what
-phenomena can be described with formal languages.  Prusinkewicz, Kurth
-and other scientists have developed the theory, tools and applications
-for modeling  plants and their environment  using L-systems framework.
-The  ubiquitous theory  and  the progress  in  L-systems in  modelling
-plants  and  trees  until the  end  of  '90's  is well  documented  in
+phenomena can  be described with  formal languages. The  theory, tools
+and  applications using  L-systems framework  for modeling  plants and
+their    environment    have    been   developed    by    Prusinkewicz
+\citep{pp:89,pp:92}, Kurth \citep{kurth:94} and other scientists.  The
+ubiquitous theory  and the progress  in L-systems in  modelling plants
+and   trees  until   the  end   of   '90's  is   well  documented   in
 \citet{pp:96,pp:99} and \citet{kurth:99}.
 
-The objective of  this study is to enhance  the modelling capabilities
-of  LIGNUM with L-systems  using a  subset of  language L  to formally
-describe architectural development of trees.  We clearly recognize the
-original design and implementation of the language L to [Prusinkiewicz
-and Karwowski??].  Here we present the use of L in LIGNUM based on the
-similarity  how  LIGNUM and  bracketed  L-systems represent  branching
-structures  of  trees  \citep{perttunen:96,perttunen:01}.   Given  the
-parser of L [Karwowski and  Prusinkiewicz ??] to use the language with
-LIGNUM  we  must first  implement  an  algorithm  that translates  the
-bracketed string of symbols to LIGNUM representation of trees (Section
-\ref{sec:pine}.   Second,  we  must  provide  communication  mechanism
-between  the   L-string  and  LIGNUM   (Section  \ref{sec:bearberry}).
-Finally, our implementation must  be able simulate forest stands, i.e.
-several tree  species, in one model  (Section \ref{sec:namespace}). We
-give sample applications and discuss our approach for its consequences
-to  the future  development of  LIGNUM  in modeling  trees and  forest
-stands.
+The  objective of this  study is  to interface  the model  LIGNUM with
+L-systems  so  that the  architectural  development  of  trees can  be
+specified formally  and rigorously. This is accomplished  by using the
+language L [Prusinkiewicz and  Karwowski??].  We first present the use
+of  L in  LIGNUM  based on  the  similarity how  LIGNUM and  bracketed
+L-systems     represent      branching     structures     of     trees
+\citep{perttunen:96,perttunen:01}.  Second,  we implement an algorithm
+that   translates  the   bracketed   string  of   symbols  to   LIGNUM
+representation of  trees (Section \ref{sec:pine}).   Third, we provide
+communication  mechanism  between  the  L-string and  LIGNUM  (Section
+\ref{sec:bearberry}).  Finally,  we present simple  language construct
+that allows  us to model  group of plants  each with its  own L-system
+(Section  \ref{sec:namespace}).   We   give  sample  applications  and
+discuss our approach for its consequences to the future development of
+LIGNUM in modeling trees and forest stands.
 

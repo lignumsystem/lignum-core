@@ -50,15 +50,14 @@ what  phenomena  in  plant  modeling  can be  formally  described  and
 simulated.   The range  of circumstances  where L-system  formalism is
 applicable  is quite extensive  \citep{pp:99}.  In  fact, it  is quite
 possible  to  implement  many  physiological  models  in  LIGNUM  with
-L-systems.  Section  \ref{sec:vi} gives an example of  the vigor index
-with the language L and it is trivial to implement also current models
-for  photosynthesis and  respiration.  With  a little  effort  one can
-surely  outline  a  rule  set  for the  iterative  allocation  of  net
-photosynthates    to    growth   \citep{perttunen:96,    perttunen:98,
-  perttunen:01}.   The  simulation   of  plant  communities  has  been
-reported by \citet{kurth:99} and  with multiset L-systems developed by
-\citet{lane:02}.  Inevitably one has to ask why not reimplement LIGNUM
-and make L-systems the basis of its future development?
+L-systems.    It  would   be   trivial  to   reimplement  models   for
+photosynthesis and  respiration.  With a little effort  one can surely
+outline a rule set for  the iterative allocation of net photosynthates
+to  growth   \citep{perttunen:96,  perttunen:98,  perttunen:01}.   The
+simulation of plant communities  has been reported by \citet{kurth:99}
+and with multiset  L-systems developed by \citet{lane:02}.  Inevitably
+one has to ask why not reimplement LIGNUM and make L-systems the basis
+of its future development?
 
 Plants are not closed systems  but interaction with environment has an
 important function  in their  development.  Such modeling  include for
@@ -76,25 +75,10 @@ Once implemented  these separate programs or  predefined functions are
 easily  used and reused  but note  the time  spent to  implement these
 environmental models is the time spent outside the formalism with some
 general purpose  programming language.  Also,  the full implementation
-of bearberry (Fig. \ref{fig:L2})  is about 190 lines long  so L-systems can
-become cumbersome  programs too but  usually shorter than  same models
-created with general purpose programming languages.
+of  bearberry  (Appendix  \ref{sec:L2})  is  about 190  lines  long  so
+L-systems can become cumbersome  programs too but usually shorter than
+same models created with general purpose programming languages.
  
-Section \ref{sec:vi}  for vigor index  presents how elegantly  one can
-express  computations in L-systems.   But there  are two  things worth
-noting.  First,  recall the parallel semantics in  rewriting.  Given a
-single processor machine  it takes $n$ scans of  the string length $n$
-to pass  the symbol $V$ from  the base of the  tree to the  tip of the
-branches. Again,  use of global  functions may reduce  the algorithmic
-complexity from  $O(n^2)$ to linear  time $O(n)$.  In general  one can
-avoid these computational pitfalls  by assuming left to right scanning
-of  the string  and arranging  computations using  for  example global
-variables. In this  case this might be difficult  because each segment
-may have its own unique value for vigor index.  Second, each branching
-pattern requires own  rule to match the context.   The example in Fig.
-\ref{fig:vi} is for  two segments forking off but one  must be able to
-capture one, two, three or any number of branches required.
-
 An essential feature of the  original L-systems theory is its discrete
 character.   Symbols are  created, rewritten  and deleted  in distinct
 events  captured  by  the  rules.   This limitation  was  assessed  in
@@ -130,7 +114,7 @@ one write  rules having  no explicit time  steps?  In  general partial
 differential  equations  are considered  difficult  to  solve and  the
 knowledge of the  problem domain is used to  find efficient solutions.
 Reaction-diffusion model  in the context of  branching structures (and
-LIGNUM) is in [Palovaara 03]. 
+LIGNUM) is in \citet{palovaara:03}. 
 
 It is still an open question for us what parts of the modeling efforts
 with LIGNUM will switch to  L-systems.  Some modeling efforts done can

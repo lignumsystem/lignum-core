@@ -1,7 +1,18 @@
-\begin{figure}[p]
-\begin{picture}(1,1)
-\put(0,0){\line(1,0){370}}
-\end{picture}
+\section{Fragmentary  L-system for bearberry growth}\label{sec:L2}
+Fragmentary L-system  for bearberry  growth. Module Start  creates the
+initial  plant. In the  module B  line 14  check for  collision, lines
+17--32 determine branching and  growth. The pattern of ramification is
+based on  field data and  implemented in the uniform  random variables
+$r1~\mathrm{and}~r2 \in [0,1]$.  $r1$  intializes the branching to the
+left or right.   Growth depends on bud type, its  status and the value
+of $r2$.  The counter on  line 34 eventually activate dormant buds ($s
+> 0$).  For  bud types D  = dominant, \mbox{N  = nondominant} and  S =
+subdominant.  See \citet{salemaa:02} for details.
+
+%\begin{figure}[p]
+%\begin{picture}(1,1)
+%\put(0,0){\line(1,0){370}}
+%\end{picture}
 \begin{verbatim}
  1.open Bearberry;
  2.module B(double type,double status,double collision); 
@@ -40,19 +51,11 @@
 35.   produce B(T,s,C);
 36.  }
 37.}
+38.close Bearberry;
 \end{verbatim}
-\begin{picture}(1,1)
-\put(0,0){\line(1,0){370}}
-\end{picture}
-\caption{Fragmentary  L-system for bearberry growth. Module Start creates 
-  the initial  plant. In the module B  line 14 check  for collision, lines
-  17--32 determine  branching and growth. The  pattern of ramification
-  is  based  on field  data  and  implemented  in the  uniform  random
-  variables  $r1~\mathrm{and}~r2  \in  [0,1]$.   $r1$  intializes  the
-  branching to  the left  or right.  Growth  depends on bud  type, its
-  status and  the value  of $r2$.  The  counter on line  34 eventually
-  activate dormant  buds ($s > 0$).  For  bud types D =  dominant, \mbox{N =
-  nondominant} and S = subdominant.  See \citet{salemaa:02} for details
-  .}\label{fig:L2}
-\end{figure}
+%\begin{picture}(1,1)
+%\put(0,0){\line(1,0){370}}
+%\end{picture}
+%\caption{)
+%\end{figure}
 
