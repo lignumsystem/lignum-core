@@ -258,7 +258,9 @@ TreeCompartment<TS,BUD>* DrawNeedlesFunctor<TS,BUD>::operator()(TreeCompartment<
       //  cout << "neulasmassa " << GetValue(*cfts, Wf) << endl;
       //SetValue(*cfts, Wf, 40);
 
-      if (GetValue(*cfts, Wf) > 0)
+      //if a very short segment do not visualize foliage
+      //it just eats up memory
+      if (GetValue(*cfts, Wf) > 0 && (GetValue(*cfts,L) > 0.01)
 	{               
 	      
 	  glPushMatrix();
