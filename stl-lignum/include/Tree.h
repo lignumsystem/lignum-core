@@ -64,6 +64,12 @@ public:
   TP Er;            //Elastic modulus of wood in radial direction
 };
 
+class TreeInitializationFiles{
+public:
+  void install(CString file) {treeFile = file;}
+
+  CString treeFile;
+};
 
 
 template <class TS,class BUD = DefaultBud<TS> >
@@ -79,6 +85,7 @@ class Tree: public TreeCompartment<TS,BUD>{
   friend TP SetParameterValue(Tree<TS,BUD>& tree, const TPD  name, const TP value);
   friend TP GetTransitVariableValue(const Tree<TS,BUD>& tree, const TTD name);
   friend TP SetTransitVariableValue(Tree<TS,BUD>& tree, const TTD name, const TP value);
+  friend CString GetTreeInitializationFile(Tree<TS,BUD>& tree);
 public:
   Tree();
   Tree(const Point<METER>& p, const PositionVector& d);
@@ -89,12 +96,36 @@ private:
   TreeFunctions tf;
   TreeParameters tp;
   TreeTransitVariables ttp;
+  TreeInitializationFiles tif;
+
   Axis<TS,BUD> axis;
   RootSystem rs;
 };
 
 #include <TreeI.h>
 #endif
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -149,6 +149,10 @@ void InitializeTree(Tree<TS,BUD>& tree, const CString& meta_file)
   cout << "Reading function for foliage mortality from: " << file << endl;
   tree.tf.fm.install(file);
 
+  file = tmfp.getTreeInitializationFile(CString("Tree"));
+  cout << "Reading tree initialization file from: " << file << endl;
+  tree.tif.install(file);
+
 }
 
 //Get a parameter value 
@@ -362,6 +366,13 @@ YEAR SetAttributeValue(Tree<TS,BUD>& tree, const TAI name, const YEAR value)
   }
 
   return old_value;
+}
+
+//At the moment returns the name of the only (ASCII) file that contains
+//the definition of the initial tree. Later - maybe - several such files.
+template<class TS, class BUD>
+CString GetTreeInitializationFile(Tree<TS,BUD>& tree) {
+  return tree.tif.treeFile;
 }
 
 #endif
