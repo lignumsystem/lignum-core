@@ -82,19 +82,19 @@ namespace Lignum{
 			     //P-M-dW(lambda), i.e. allocation.
 
 
-	LGMdouble SLA;			//Spesific leaf area
-	LGMdouble dof_p;		//degree of filling
-	LGMdouble alm;			//Maximum size of a leaf
-
-	LGMdouble yc;			//Foliage mass supported by 1m2 of sapwood
-	LGMdouble ca;			//circulation angle for new buds compared to belowed ones
-	LGMdouble rca;			//random effect of circulation angle [%] 0->
-	LGMdouble rld;			//random effect of leaf distances in a single tree segment
-
+    LGMdouble SLA;			//Spesific leaf area
+    LGMdouble dof_p;		//degree of filling
+    LGMdouble alm;			//Maximum size of a leaf
+    
+    LGMdouble yc;			//Foliage mass supported by 1m2 of sapwood
+    LGMdouble ca;			//circulation angle for new buds compared to belowed ones
+    LGMdouble rca;			//random effect of circulation angle [%] 0->
+    LGMdouble rld;			//random effect of leaf distances in a single tree segment
+    
  
-	LGMdouble nitroLeaves;  
-	LGMdouble nitroRoots;
-	LGMdouble nitroWood;
+    LGMdouble nitroLeaves;  
+    LGMdouble nitroRoots;
+    LGMdouble nitroWood;
 
 
   };
@@ -126,7 +126,7 @@ namespace Lignum{
 						  // effect the value is always 1 of
 						  // this function
 
-	ParametricCurve nitroMaxPhotosynthesis;   
+    ParametricCurve nitroMaxPhotosynthesis;   
     ParametricCurve nitroRespiration;   
     ParametricCurve nitroRootShootRatio;   
   };
@@ -218,25 +218,19 @@ namespace Lignum{
       void UpdateWaterFlow(LGMdouble time, const ConnectionMatrix<TS,BUD> &cm);
 	  void photosynthesis();
       void respiration();
-<<<<<<< Tree.h
-
-=======
-
-
->>>>>>> 1.66
-	  TreeFunctions tf;  //cvs update
+      TreeFunctions tf;  //cvs update
 
 	
-	private:
-	LGMdouble CountFlow(TreeSegment<TS,BUD> &in, TreeSegment<TS,BUD> &out);
-	TreeAttributes ta;
-	TreeParameters tp;
-	TreeTransitVariables ttp;
+    private:
+      LGMdouble CountFlow(TreeSegment<TS,BUD> &in, TreeSegment<TS,BUD> &out);
+      TreeAttributes ta;
+      TreeParameters tp;
+      TreeTransitVariables ttp;
       
-	TreeInitializationFiles tif;
-	FirmamentWithMask f;
-	Axis<TS,BUD> axis;
-	RootAxis<Tree<TS,BUD> > root_axis;
+      TreeInitializationFiles tif;
+      FirmamentWithMask f;
+      Axis<TS,BUD> axis;
+      RootAxis<Tree<TS,BUD> > root_axis;
     };
 
 
