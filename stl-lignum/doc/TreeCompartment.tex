@@ -1,0 +1,179 @@
+\section{TreeCompartment}
+
+The class TreeCompartment  is  the  common  base  class for  all  tree
+compartments.  It defines  the position and  the direction  of a  tree
+compartment but the  main purpose of the class  is to define  a common
+set   of metabolic  processes   implemented as   virtual  methods. 
+
+The  metabolic processes can  be further  divided into two categories.
+The first category assumes  that no flow of  information from one tree
+compartment  to another  is  required (thus also  not  allowed).  This
+includes phosynthesis, respiration and mortality of tree compartments.
+The   second   category  allows  flow  of   information  between  tree
+compartments.   These   metabolic   processes include  length  growth,
+diameter growth and flow of nutrients, water etc. in the tree.
+
+The metabolic processes not   allowing parameter passing  assumes that
+all the information must be present in the tree compartment before the
+method is applied.  Computationally  these processes can be thought to
+be parallel.   To apply these  throughout  the whole tree  use ForEach
+algorithm using  a   predefined  functor simply calling    appropriate
+method.   The  metabolic processes allowing  parameter  passing can be
+applied throughout the  whole tree by  using either  AccumulateDown or
+PropagateUp algorithms depending on  the direction of  the information
+flow in the tree.   The actual type  of the parameter implementing the
+flow of information between tree compartments is left to be decided in
+the user defined functor used in AccumulateDown or in PropagateUp.
+
+The important design  issue is weather  the metabolic processes should
+be pure virtual or not.  Conceptually the better  solution would be to
+make them pure virtual.  The class TreeCompartment is  meant to be  an
+abstract base  class with  no  instances. But this  could (and  would)
+cause practical  problems by requiring   to implement  each method  at
+least as an empty method in each  subclass.  This is why the metabolic
+processes are predefined as empty in this base class.
+  
+\subsection{The Class Declaration}
+\begin{verbatim}
+template <class TS,class BUD> 
+class TreeCompartment{
+  friend Point<METER> GetPoint(const TreeCompartment<TS,BUD>& tc);
+  friend PositionVector GetDirection(const TreeCompartment<TS,BUD>&
+tc);
+  friend Tree<TS,BUD>& GetTree(const TreeCompartment<TS,BUD>& tc);
+public:
+  TreeCompartment();
+  TreeCompartment(const Point<METER>& p, const PositionVector& d, Tree<TS,BUD>* t);
+  virtual ~TreeCompartment();
+  virtual void photosynthesis(){}
+  virtual void respiration(){}
+  virtual void mortality(){}
+  template <class LGInOut> virtual void lengthGrowth(LGInOut& data){}
+  template <class DGInOut> virtual void diameterGrowth(DGInOut& data){}
+  template <class UpInOut> virtual void upFlow(UpInOut& data){}
+  template <class DownInOut> virtual void downFlow(DownInOut& data){}
+protected:
+  Point<METER> point;
+  PositionVector direction;
+  Tree<TS,BUD>* tree;
+};
+\end{verbatim}
+
+\subsection{Functions an operations}
+\begin{enumerate}
+\item \bf GetPoint \rm Returns the position of the tree compartment.
+\begin{description}
+    \item [Signature] friend Point<METER> GetPoint(const
+    TreeCompartment<TS,BUD>\& tc).
+\end{description}
+\item \bf GetDirection \rm Returns the direction of the tree compartment.
+\begin{description}
+    \item [Signature] friend PositionVector GetDirection(const TreeCompartment<TS,BUD>\& tc).
+\end{description}
+\item \bf GetTree \rm Returns the tree the tree compartment
+belongs to.
+\begin{description}
+    \item [Signature] friend Tree<TS,BUD>\& GetTree(const TreeCompartment<TS,BUD>\& tc).
+\end{description}
+\end{enumerate}
+
+\subsection{Constructors}
+
+The default constructor predefines the position at (0,0,0) and
+the  direction  to be  up,   i.e.,  (0,0,1). 
+\begin{description}
+    \item [Signature 1] TreeCompartment().
+\end{description}
+
+The second constructor normalizes the direction to avoid subtile bugs
+when visualizing the tree with OpenGL graphics library.
+\begin{description}
+    \item [Signature 2] TreeCompartment(const Point<METER>\& p, const
+    PositionVector\& d, Tree<TS,BUD>* t)).
+    \begin{description}
+        \item [Arguments] for the constructor.
+        \begin{description}
+            \item [p] The position of the tree compartment.
+            \item [d] The direction of the tree compartment . Will be
+    normalized.
+            \item [t] The tree the tree compartment is part of.
+         \end{description}
+    \end{description} 
+\end{description}
+
+\subsection{Destructor}
+
+The destructor is predefined empty but allows the use of polymorphism
+in the program.
+
+\subsection{Metabolic processes}
+
+The metabolic processes are predefined as empty methods but they designate a common
+interface that allows the use of polymorphism in the program.
+\begin{enumerate}
+\item Photosynthesis
+  \begin{description}
+     \item [Signature] virtual void photosynthesis().
+  \end{description}
+\item Respiration
+  \begin{description}
+     \item [Signature] virtual void respiration().
+  \end{description}
+\item Mortality
+   \begin{description}
+     \item [Signature] virtual void mortality().
+   \end{description}
+\item Length Growth
+   \begin{description}
+       \item [Signature] virtual void lengthGrowth(LGInOut\& data).
+       \begin{description}
+           \item [Arguments] to the method.
+           \begin{description} 
+                \item [data] The data needed for the length growth,
+     e.g., the $\lambda$. The type (LGInOut)of the argument is parameterized 
+     and must be defined in the functor used in the appropriate generic function
+     PropagateUp, AccumulateDown etc.
+            \end{description}
+       \end{description}
+   \end{description}
+\item Diameter Growth  
+ \begin{description} 
+     \item [Signature]  virtual void diameterGrowth(DGInOut\& data).
+     \begin{description}
+         \item [Arguments] to the method.
+            \begin{description} 
+                \item [data]  The data needed for the diameter
+     growth. The type (DGInOut) is parameterized.
+             \end{description}
+     \end{description}
+ \end{description} 
+\item Up Flow  
+  \begin{description} 
+     \item [Signature] virtual void upFlow(UpInOut\& data).
+     \begin{description}
+         \item [Arguments] to the method.
+            \begin{description} 
+                \item [data]  The data needed for the up flow
+     The type (UpInOut) is parameterized.
+             \end{description}
+     \end{description}
+  \end{description}
+\item Down Flow  
+  \begin{description} 
+     \item [Signature] virtual void downFlow(DownInOut\& data).
+     \begin{description}
+         \item [Arguments] to the method.
+            \begin{description} 
+                \item [data]  The data needed for the down flow
+     The type (DownInOut) is parameterized.
+             \end{description}
+     \end{description}
+  \end{description}
+\end{enumerate}
+
+\subsection{Data Members}
+\begin{enumerate}
+\item \bf Point<METER> p \rm The position of the tree compartment.
+\item \bf PositionVector d \rm The direction of the tree compartment.
+\item \bf Tree<TS,BUD>* t \rm The tree tree compartment belongs to.
+\end{enumerate}
