@@ -5,12 +5,12 @@ SRCDIR2 = ../include
 SRC = $(SRCDIR1)/CString.cc  $(SRCDIR1)/DList.cc $(SRCDIR1)/DListElement.cc \
       $(SRCDIR1)/Ellipsis.cc $(SRCDIR1)/Lex.cc $(SRCDIR1)/ParametricCurve.cc \
       $(SRCDIR1)/PositionVector.cc $(SRCDIR1)/RMatrix.cc $(SRCDIR1)/HRMatrix.cc \
-      $(SRCDIR1)/rand3.cc
+      $(SRCDIR1)/rand3.cc  $(SRCDIR1)/gauss.cc
 
 OBJ = $(SRCDIR1)/CString.o $(SRCDIR1)/DList.o $(SRCDIR1)/DListElement.o \
       $(SRCDIR1)/Ellipsis.o $(SRCDIR1)/Lex.o $(SRCDIR1)/ParametricCurve.o \
       $(SRCDIR1)/PositionVector.o $(SRCDIR1)/RMatrix.o $(SRCDIR1)/HRMatrix.o \
-      $(SRCDIR1)/rand3.o
+      $(SRCDIR1)/rand3.o $(SRCDIR1)/gauss.o
 
 INCLUDE= -I../include -I/usr/include/CC 
 
