@@ -674,8 +674,10 @@ namespace Lignum {
 #endif
   }
 
-
-  void VoxelSpace::writeVoxBoxesToFile(const string& filename)
+  //Write voxel boxes  to file. If 'all' is true  write all boxes else
+  //write  only boxes  with foliage.  By  default 'all'  is true  (old
+  //beaviour)
+  void VoxelSpace::writeVoxBoxesToFile(const string& filename, bool all)
   {
     ofstream file(filename.c_str());
     file << "Vokselien koko " << Xbox << " " << Ybox << " " << Zbox << endl;
@@ -684,10 +686,14 @@ namespace Lignum {
       for(int i2=0; i2<Yn; i2++)
 	for(int i3=0; i3<Zn; i3++)
 	  {
-	    file << "[" << i1 << "," << i2 << "," << i3 << "]   ";
-	    file << voxboxes[i1][i2][i3] << endl;
-
-
+	    if (all){
+	      file << "[" << i1 << "," << i2 << "," << i3 << "]   ";
+	      file << voxboxes[i1][i2][i3] << endl;
+	    }
+	    else if (voxboxes[i1][i2][i3].getFoliageMass() > R_EPSILON){
+	      file << "[" << i1 << "," << i2 << "," << i3 << "]   ";
+	      file << voxboxes[i1][i2][i3] << endl;
+	    }
 	  }
     file.close();
 

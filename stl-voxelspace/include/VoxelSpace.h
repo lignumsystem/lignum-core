@@ -73,10 +73,13 @@ namespace Lignum {
       void setLight();
 
       void draw();
-
-      Point getLocalPoint(Point p); //Funktio palauttaa globaalissa koordinaatistossa olevan pisteen VoxelSpacen koordinaatistossa
-	
-      void writeVoxBoxesToFile(const string& filename);
+      //Funktio palauttaa globaalissa koordinaatistossa olevan pisteen
+      //VoxelSpacen koordinaatistossa
+      Point getLocalPoint(Point p);
+      //Write voxel  boxes to file. If  'all' is true  write all boxes
+      //else write only  boxes with foliage. By default  'all' is true
+      //(old beaviour).
+      void writeVoxBoxesToFile(const string& filename, bool all = true);
       void writeVoxBoxesToFile2(ofstream &file);
 
       int getNumVoxBoxes();
