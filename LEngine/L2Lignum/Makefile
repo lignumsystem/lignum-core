@@ -32,6 +32,10 @@ CA90OBJ = ${CA90SRC:.cc=.o}
 BEARBERRYSRC = bearberry.cc
 BEARBERRYOBJ = ${BEARBERRYSRC:.cc=.o}
 
+AUVAURSISRC  = a-uvaursi.cc
+AUVAURSIOBJ  = ${AUVAURSISRC:.cc=.o}
+
+
 LSYS =   bearberry.L pine9bp.L cs-plantA.L cs-plantB.L  cs-plantC.L \
          cs-plantD.L cs-plant.L 
 #LSYS = ca110.L
@@ -148,6 +152,13 @@ bearberry: l2c $(BEARBERRYOBJ) $(LIB1) $(LIB2) $(LIB3)  $(LIB4) $(LIB5) $(LIB6)
 gnubearberry:
 	make "CCC=g++" "CCCFLAGS=-c" "OPTIMIZE=-g" \
              "AR=ar"  "ARFLAGS=rvs" "LIBD=lib32" "LSYS=bearberry.L ErythrinaRoots.L" bearberry
+
+auvaursi: l2c  $(AUVAURSIOBJ) $(LIB1) $(LIB2) $(LIB3)  $(LIB4) $(LIB5) $(LIB6)  
+	$(CCC)  -o $@ $(INCLUDE) $(OPTIMIZE) $(AUVAURSIOBJ) $(LIBFLAGS) $(LIBS)
+
+gnuauvaursi:
+	make "CCC=g++" "CCCFLAGS=-c" "OPTIMIZE=-g" \
+             "AR=ar"  "ARFLAGS=rvs" "LIBD=lib32" "LSYS=A-UvaUrsiSandpit.L" auvaursi
 
 l2c:	
 	(cd ../L2C; make "CCC=$(CCC)" "CCCFLAGS=$(CCCFLAGS)" "OPTIMIZE=$(OPTIMIZE)" \
