@@ -334,7 +334,7 @@ LGMdouble Zbrent(LGMdouble x1,LGMdouble x2,LGMdouble fa, LGMdouble fb, LGMdouble
 
   //DiameterGrowthBookkeep<TS,BUD> bookkeep;
   LGMdouble identity = 0.0;
-  CollectDWAfterGrowth<TS,BUD> collectDW;
+  CollectCfDWAfterGrowth<TS,BUD> collectDW;
 
   LGMdouble sum_nfol = 0.0f;
   CollectNewCfFoliageMass<TS,BUD> collectNFM;
