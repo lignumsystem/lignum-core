@@ -30,7 +30,7 @@ const double CU = -5.0*2.0*PI_VALUE/360.0;
 const double CT = 0.5*2.0*PI_VALUE/360.0;
 
 module F(double);
-module B(double,double,double); //Bud type, status and collision
+module B(double,double,double,double); //Bud leaf,type,status and collision
 module Turn(double);
 
 derivation length: 10;
@@ -41,10 +41,10 @@ Start:
   int init = -1;
   int seed = 137591;
   ran3(&init);
-  produce F(0.1*DL) SB() EB() B(D,0.0,0.0);
+  produce F(0.1*DL) SB() EB() B(0,D,0.0,0.0);
 }
 
-B(type,status,coll):
+B(leaf,type,status,coll):
 {
   double g = 0.0;
   double r1 = ran3(&seed);
@@ -56,134 +56,134 @@ B(type,status,coll):
      g = -CU;
 
   if (coll == 1.0){
-    produce B(type,status,coll);
+    produce B(0,type,status,coll);
   }
   else if (type == D && status == 0.0){
     if (r2 < 0.26)
-      produce Turn(g) F(0.6*DL) SB() Turn(NA)  B(N,2,coll) EB() 
-              Turn(g) F(0.1*DL) SB() Turn(-NA) B(N,1,coll) EB()
-              Turn(g) F(0.1*DL) SB() Turn(SA)  B(S,1,coll) EB()
-              Turn(g) F(0.1*DL) SB() Turn(-SA) B(S,0,coll) EB()
-              Turn(g) F(0.1*DL) SB() EB() B(D,0,coll);
+      produce Turn(g) F(0.6*DL) SB() Turn(NA)  B(1,N,2,coll) EB() 
+              Turn(g) F(0.1*DL) SB() Turn(-NA) B(1,N,1,coll) EB()
+              Turn(g) F(0.1*DL) SB() Turn(SA)  B(1,S,1,coll) EB()
+              Turn(g) F(0.1*DL) SB() Turn(-SA) B(1,S,0,coll) EB()
+              Turn(g) F(0.1*DL) SB() EB() B(leaf,D,0,coll);
   
    else if (r2 < 0.52)
-     produce Turn(g) F(0.6*DL) SB() Turn(-NA) B(N,2,coll) EB() 
-             Turn(g) F(0.1*DL) SB() Turn(NA)  B(N,1,coll) EB()
-             Turn(g) F(0.1*DL) SB() Turn(-SA) B(S,1,coll) EB()
-             Turn(g) F(0.1*DL) SB() Turn(SA)  B(S,0,coll) EB()
-             Turn(g) F(0.1*DL) SB() EB() B(D,0,coll);
+     produce Turn(g) F(0.6*DL) SB() Turn(-NA) B(1,N,2,coll) EB() 
+             Turn(g) F(0.1*DL) SB() Turn(NA)  B(1,N,1,coll) EB()
+             Turn(g) F(0.1*DL) SB() Turn(-SA) B(1,S,1,coll) EB()
+             Turn(g) F(0.1*DL) SB() Turn(SA)  B(1,S,0,coll) EB()
+             Turn(g) F(0.1*DL) SB() EB() B(leaf,D,0,coll);
    
    else if (r2 < 0.69)
-     produce Turn(g) F(0.6*DL)  SB() Turn(-NA) B(N,2,coll) EB() 
-             Turn(g) F(0.1*DL)  SB() Turn(NA)  B(N,1,coll) EB()
-             Turn(g) F(0.1*DL)  SB() Turn(-SA) B(S,1,coll) EB()
-             Turn(g) F(0.15*DL) SB() Turn(DA)  B(S,0,coll) EB()
-             Turn(g) F(0.05*DL) SB() EB() B(D,0,coll);
+     produce Turn(g) F(0.6*DL)  SB() Turn(-NA) B(1,N,2,coll) EB() 
+             Turn(g) F(0.1*DL)  SB() Turn(NA)  B(1,N,1,coll) EB()
+             Turn(g) F(0.1*DL)  SB() Turn(-SA) B(1,S,1,coll) EB()
+             Turn(g) F(0.15*DL) SB() Turn(DA)  B(1,S,0,coll) EB()
+             Turn(g) F(0.05*DL) SB() EB() B(leaf,D,0,coll);
   
    else if (r2 < 0.86)
-     produce Turn(g) F(0.6*DL)  SB() Turn(NA)  B(N,2,coll) EB() 
-             Turn(g) F(0.1*DL)  SB() Turn(-NA) B(N,1,coll) EB()
-             Turn(g) F(0.1*DL)  SB() Turn(SA)  B(S,1,coll) EB()
-             Turn(g) F(0.15*DL) SB() Turn(-DA) B(S,0,coll) EB()
-             Turn(g) F(0.05*DL) SB() EB() B(D,0,coll);
+     produce Turn(g) F(0.6*DL)  SB() Turn(NA)  B(1,N,2,coll) EB() 
+             Turn(g) F(0.1*DL)  SB() Turn(-NA) B(1,N,1,coll) EB()
+             Turn(g) F(0.1*DL)  SB() Turn(SA)  B(1,S,1,coll) EB()
+             Turn(g) F(0.15*DL) SB() Turn(-DA) B(1,S,0,coll) EB()
+             Turn(g) F(0.05*DL) SB() EB() B(leaf,D,0,coll);
 
    else if (r2 < 0.90)
-     produce Turn(g) F(0.6*DL)  SB() Turn(NA)  B(N,2,coll) EB() 
-             Turn(g) F(0.1*DL)  SB() Turn(-NA) B(N,1,coll) EB()
-             Turn(g) F(0.1*DL)  SB() Turn(SA)  B(S,1,coll) EB()
-             Turn(g) F(0.15*DL) SB() Turn(-DA) B(S,0,coll) EB()
-             Turn(g) F(0.05*DL) SB() EB() B(T,0,coll);
-
+     produce Turn(g) F(0.6*DL)  SB() Turn(NA)  B(1,N,2,coll) EB() 
+             Turn(g) F(0.1*DL)  SB() Turn(-NA) B(1,N,1,coll) EB()
+             Turn(g) F(0.1*DL)  SB() Turn(SA)  B(1,S,1,coll) EB()
+             Turn(g) F(0.15*DL) SB() Turn(-DA) B(1,S,0,coll) EB()
+             Turn(g) F(0.05*DL) SB() EB() B(0,T,0,coll);
    else if (r2 < 0.94)
-     produce Turn(g) F(0.6*DL)  SB() Turn(-NA) B(N,2,coll) EB() 
-             Turn(g) F(0.1*DL)  SB() Turn(NA)  B(N,1,coll) EB()
-             Turn(g) F(0.1*DL)  SB() Turn(-SA) B(S,1,coll) EB()
-             Turn(g) F(0.15*DL) SB() Turn(DA)  B(S,0,coll) EB()
-             Turn(g) F(0.05*DL) SB() EB() B(T,0,coll);
+     produce Turn(g) F(0.6*DL)  SB() Turn(-NA) B(1,N,2,coll) EB() 
+             Turn(g) F(0.1*DL)  SB() Turn(NA)  B(1,N,1,coll) EB()
+             Turn(g) F(0.1*DL)  SB() Turn(-SA) B(1,S,1,coll) EB()
+             Turn(g) F(0.15*DL) SB() Turn(DA)  B(1,S,0,coll) EB()
+             Turn(g) F(0.05*DL) SB() EB() B(leaf,T,0,coll);
 
    else if (r2 < 0.97)
-     produce Turn(g) F(0.6*DL) SB() Turn(-NA) B(N,2,coll) EB() 
-             Turn(g) F(0.1*DL) SB() Turn(NA)  B(N,1,coll) EB()
-             Turn(g) F(0.1*DL) SB() Turn(-NA) B(N,1,coll) EB()
-             Turn(g) F(0.1*DL) SB() Turn(-SA) B(S,0,coll) EB()
-             Turn(g) F(0.1*DL) SB() EB() B(T,0,coll);
+     produce Turn(g) F(0.6*DL) SB() Turn(-NA) B(1,N,2,coll) EB() 
+             Turn(g) F(0.1*DL) SB() Turn(NA)  B(1,N,1,coll) EB()
+             Turn(g) F(0.1*DL) SB() Turn(-NA) B(1,N,1,coll) EB()
+             Turn(g) F(0.1*DL) SB() Turn(-SA) B(1,S,0,coll) EB()
+             Turn(g) F(0.1*DL) SB() EB() B(0,T,0,coll);
   
    else if (r2 <= 1.0)
-     produce Turn(g) F(0.6*DL) SB() Turn(NA)  B(N,2,coll) EB() 
-             Turn(g) F(0.1*DL) SB() Turn(-NA) B(N,1,coll) EB()
-             Turn(g) F(0.1*DL) SB() Turn(NA)  B(N,1,coll) EB()
-             Turn(g) F(0.1*DL) SB() Turn(-SA) B(S,0,coll) EB()
-             Turn(g) F(0.1*DL) SB() EB() B(T,0,coll);
+     produce Turn(g) F(0.6*DL) SB() Turn(NA)  B(1,N,2,coll) EB() 
+             Turn(g) F(0.1*DL) SB() Turn(-NA) B(1,N,1,coll) EB()
+             Turn(g) F(0.1*DL) SB() Turn(NA)  B(1,N,1,coll) EB()
+             Turn(g) F(0.1*DL) SB() Turn(-SA) B(1,S,0,coll) EB()
+             Turn(g) F(0.1*DL) SB() EB() B(leaf,T,0,coll);
   }
   else if (type == S && status == 0.0){
    if (r2 < 0.037)
-     produce Turn(g) F(0.85*SL) SB() Turn(-SA) B(S,1,coll) EB()
-             Turn(g) F(0.15*SL) SB() EB() B(S,0,coll);
+     produce Turn(g) F(0.85*SL) SB() Turn(-SA) B(1,S,1,coll) EB()
+             Turn(g) F(0.15*SL) SB() EB() B(leaf,S,0,coll);
 
    else if (r2 < 0.074)
-     produce Turn(g) F(0.85*SL) SB() Turn(SA) B(S,1,coll) EB()
-             Turn(g) F(0.15*SL) SB() EB() B(S,0,coll);
+     produce Turn(g) F(0.85*SL) SB() Turn(SA) B(1,S,1,coll) EB()
+             Turn(g) F(0.15*SL) SB() EB() B(leaf,S,0,coll);
 
    else if (r2 < 0.407)
-     produce Turn(g) F(0.75*SL) SB() Turn(NA) B(S,1,coll) EB()
-             Turn(g) F(0.25*SL) SB() EB() B(S,0,coll);
+     produce Turn(g) F(0.75*SL) SB() Turn(NA) B(1,S,1,coll) EB()
+             Turn(g) F(0.25*SL) SB() EB() B(leaf,S,0,coll);
    
    else if (r2 < 0.740)
-     produce Turn(g) F(0.75*SL) SB() Turn(-NA) B(S,1,coll) EB()
-             Turn(g) F(0.25*SL) SB() EB() B(S,0,coll);
+     produce Turn(g) F(0.75*SL) SB() Turn(-NA) B(1,S,1,coll) EB()
+             Turn(g) F(0.25*SL) SB() EB() B(leaf,S,0,coll);
 
    else if (r2 < 0.844)
-     produce Turn(g) F(0.6*DL) SB() Turn(NA)  B(N,2,coll) EB() 
-             Turn(g) F(0.1*DL) SB() Turn(-NA) B(N,1,coll) EB()
-             Turn(g) F(0.1*DL) SB() Turn(NA)  B(N,1,coll) EB()
-             Turn(g) F(0.1*DL) SB() Turn(-SA) B(S,0,coll) EB()
-             Turn(g) F(0.1*DL) SB() EB() B(T,0,coll);  
+     produce Turn(g) F(0.6*DL) SB() Turn(NA)  B(1,N,2,coll) EB() 
+             Turn(g) F(0.1*DL) SB() Turn(-NA) B(1,N,1,coll) EB()
+             Turn(g) F(0.1*DL) SB() Turn(NA)  B(1,N,1,coll) EB()
+             Turn(g) F(0.1*DL) SB() Turn(-SA) B(1,S,0,coll) EB()
+             Turn(g) F(0.1*DL) SB() EB() B(leaf,T,0,coll);  
    
    else if (r2 < 0.948)
-      produce Turn(g) F(0.6*DL) SB() Turn(-NA) B(N,2,coll) EB() 
-              Turn(g) F(0.1*DL) SB() Turn(NA)  B(N,1,coll) EB()
-              Turn(g) F(0.1*DL) SB() Turn(-NA) B(N,1,coll) EB()
-              Turn(g) F(0.1*DL) SB() Turn(SA)  B(S,0,coll) EB()
-              Turn(g) F(0.1*DL) SB() EB() B(T,0,coll); 
+      produce Turn(g) F(0.6*DL) SB() Turn(-NA) B(1,N,2,coll) EB() 
+              Turn(g) F(0.1*DL) SB() Turn(NA)  B(1,N,1,coll) EB()
+              Turn(g) F(0.1*DL) SB() Turn(-NA) B(1,N,1,coll) EB()
+              Turn(g) F(0.1*DL) SB() Turn(SA)  B(1,S,0,coll) EB()
+              Turn(g) F(0.1*DL) SB() EB() B(leaf,T,0,coll); 
 
    else if (r2 < 0.974)
-      produce Turn(g) F(0.6*SL) SB() Turn(NA)  B(N,2,coll) EB() 
-              Turn(g) F(0.1*SL) SB() Turn(-NA) B(N,1,coll) EB()
-              Turn(g) F(0.1*SL) SB() Turn(SA)  B(N,1,coll) EB()
-              Turn(g) F(0.1*SL) SB() Turn(-SA) B(S,0,coll) EB()
-              Turn(g) F(0.1*SL) SB() EB() B(T,0,coll); 
+      produce Turn(g) F(0.6*SL) SB() Turn(NA)  B(1,N,2,coll) EB() 
+              Turn(g) F(0.1*SL) SB() Turn(-NA) B(1,N,1,coll) EB()
+              Turn(g) F(0.1*SL) SB() Turn(SA)  B(1,N,1,coll) EB()
+              Turn(g) F(0.1*SL) SB() Turn(-SA) B(1,S,0,coll) EB()
+              Turn(g) F(0.1*SL) SB() EB() B(leaf,T,0,coll); 
    
    else if (r2 <= 1.0)
-      produce Turn(g) F(0.6*SL) SB() Turn(-NA) B(N,2,coll) EB() 
-              Turn(g) F(0.1*SL) SB() Turn(NA)  B(N,1,coll) EB()
-              Turn(g) F(0.1*SL) SB() Turn(-SA) B(N,1,coll) EB()
-              Turn(g) F(0.1*SL) SB() Turn(SA)  B(S,0,coll) EB()
-              Turn(g) F(0.1*SL) SB() EB() B(T,0,coll); 	
+      produce Turn(g) F(0.6*SL) SB() Turn(-NA) B(1,N,2,coll) EB() 
+              Turn(g) F(0.1*SL) SB() Turn(NA)  B(1,N,1,coll) EB()
+              Turn(g) F(0.1*SL) SB() Turn(-SA) B(1,N,1,coll) EB()
+              Turn(g) F(0.1*SL) SB() Turn(SA)  B(1,S,0,coll) EB()
+              Turn(g) F(0.1*SL) SB() EB() B(leaf,T,0,coll); 	
   }  
   else if (type == N && status == 0.0){
    if (r2 < 0.39)
-      produce  Turn(g) F(NL) SB() EB() B(N,0,coll);
+      produce  Turn(g) F(NL) SB() EB() B(leaf,N,0,coll);
 
    else if (r2 < 0.585)
-      produce  Turn(g) F(0.75*NL) SB() Turn(NA) B(N,1,coll) EB() 
-               Turn(g) F(0.25) SB() EB() B(N,0,coll);
+      produce  Turn(g) F(0.75*NL) SB() Turn(NA) B(1,N,1,coll) EB() 
+               Turn(g) F(0.25) SB() EB() B(leaf,N,0,coll);
 
    else if (r2 < 0.780)
-      produce  Turn(g) F(0.75*NL) SB() Turn(-NA) B(N,1,coll) EB() 
-               Turn(g) F(0.25) SB() EB() B(N,0,coll);
+      produce  Turn(g) F(0.75*NL) SB() Turn(-NA) B(1,N,1,coll) EB() 
+               Turn(g) F(0.25) SB() EB() B(leaf,N,0,coll);
 
    else if (r2 < 0.890)
-      produce  Turn(g) F(0.75*NL) SB() Turn(-NA) B(N,0,coll) EB() 
-               Turn(g) F(0.25) SB() EB() B(T,0,coll);
+      produce  Turn(g) F(0.75*NL) SB() Turn(-NA) B(1,N,0,coll) EB() 
+               Turn(g) F(0.25) SB() EB() B(leaf,T,0,coll);
 
    else if (r2 <= 1.0)
-      produce  Turn(g) F(0.75*NL) SB() Turn(NA) B(N,0,coll) EB() 
-               Turn(g) F(0.25) SB() EB() B(T,0,coll);
+      produce  Turn(g) F(0.75*NL) SB() Turn(NA) B(1,N,0,coll) EB() 
+               Turn(g) F(0.25) SB() EB() B(leaf,T,0,coll);
   }
   else{
    double s = maximum(status-1.0,0.0);
-   produce B(type,s,coll);
+   produce B(1,type,s,coll);
   }
+
 }
 
 //This interpretation  is a ToDo for me.
