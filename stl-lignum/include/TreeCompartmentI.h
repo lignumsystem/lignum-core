@@ -38,6 +38,13 @@ PositionVector GetDirection(const TreeCompartment<TS,BUD>& tc)
   return  tc.direction;
 }
 
+template <class TS,class BUD>
+Tree<TS,BUD>& GetTree(const TreeCompartment<TS,BUD>& tc)
+{
+  return *(tc.tree);
+}
+
+
 }//closing namespace Lignum
 #endif
 

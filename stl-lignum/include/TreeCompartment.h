@@ -13,6 +13,7 @@ namespace Lignum{
     class TreeCompartment{
       friend Point<METER> GetPoint(const TreeCompartment<TS,BUD>& tc);
       friend PositionVector GetDirection(const TreeCompartment<TS,BUD>& tc);
+      friend Tree<TS,BUD>& GetTree(const TreeCompartment<TS,BUD>& tc);
     public:
       TreeCompartment();
       TreeCompartment(const Point<METER>& p, const PositionVector& d, Tree<TS,BUD>* t);
