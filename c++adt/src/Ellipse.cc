@@ -11,13 +11,7 @@ namespace cxxadt{
     :center(center0),normal(normal0),semimajoraxis(semimajoraxis0),
      semiminoraxis(semiminoraxis0)
   {
-    /*
-    cout<<"Ellips:ellipse with parameters"<<endl;
-    cout<<"center="<<center<<endl;
-    cout<<"vector normal="<<normal<<endl;
-    cout<<"semimajoraxis="<<semimajoraxis<<endl;
-    cout<<"semiminoraxis="<<semiminoraxis<<endl;
-    */
+    
   }
 
   Ellipse::Ellipse(const PositionVector& petiole0,
@@ -36,15 +30,6 @@ namespace cxxadt{
     PositionVector petiolecenter(x1u*semimajoraxis0);
     PositionVector center0=petiole0+petiolecenter;
     center=Point(center0);
-
-    //cout<<"in Ellips with petiole x1u="<<x1u<<endl;
-
-
-    cout<<"Ellipse petiole with parameters"<<endl;
-    cout<<"center="<<center<<endl;
-    cout<<"vector normal="<<normal<<endl;
-    cout<<"semimajoraxis="<<semimajoraxis<<endl;
-    cout<<"semiminoraxis="<<semiminoraxis<<endl;
 
   }
 
@@ -76,7 +61,6 @@ namespace cxxadt{
 
     PositionVector y1(Cross(normal,x1u()));
     y1=y1.normalize();
-    //cout<<"y1u() y1u="<<y1<<endl;
     return y1;
   }
 
@@ -84,14 +68,12 @@ namespace cxxadt{
   Point  Ellipse::getSemimajorAxisPoint()const{
 
     Point p=Point((Point)center+Point(semimajoraxis*x1u()));
-    //cout<<"getSemimajorAxisPoint ="<<p<<endl;
     return p;
   }
 
   Point  Ellipse::getSemiminorAxisPoint()const{
 
     Point p=Point((Point)center+Point(semiminoraxis*y1u()));
-    //cout<<"getSemiminorAxisPoint ="<<p<<endl;
     return p;
   }
 
@@ -155,75 +137,58 @@ namespace cxxadt{
   //with a straight line in space, 
   //given by the O point(O - the first parameter the method) 
   //and direction B(B - the second parameter the method).
-  //Image a angle with the O point as the apex of the angle
-  //and two sides:
-  //the one with the vector OB, the vector of direction B 
-  //as a vector having the points O and B 
-  //and the second with the OC vector(the ellipse center) 
-  //Let the B point is the intersection point 
-  //between the ellipse plane and the beam.
-  //Let CB - vector between two points:
-  //the C and the B.
-  //Let X the point where the CB vector crosses the ellipse.
-  //The OB vector crosses the ellipce
-  //if the COB angle less the COX angle
 
- bool Ellipse::intersectEllipse(const Point& O,
-				const Point& B){
+
+ bool Ellipse::intersectShape(const Point& O,
+				const PositionVector& B0){
+   double t;
    double cosangleBCXu,angleBCXu;
-   double cosangleCOX, angleCOX;
-   double cosangleCOB, angleCOB;
 
    PositionVector o(O);           //the view point on the light beam
                                   //(the pyramid apex)
-   PositionVector beam(B);        //the light beam vector
-   PositionVector OB = beam - o; //the light beam vector from 
-                                    //o to b
+   PositionVector beam=B0;        //the light beam vector
+
+   beam = beam - o; //the light beam vector from O to B0
+
+   PositionVector B;
    PositionVector c(center);
-   PositionVector OC= c - o;
-   PositionVector CB=OB-OC;
+
+
+   //Looking for the crossing point B on the ellipse plane with
+   // the beam.
+   
+
+   if ( ( Dot(normal,o)-Dot(normal,c) ) != 0 
+        && Dot(normal,beam) !=0 )
+   {
+     t=-( Dot(normal,o)-Dot(normal,c)) /
+         Dot(normal,beam) ;
+     B=o+beam*t;
+
+   }
+   else
+     return false;
+                                 
+   PositionVector CB=c-B;
+
 
    if ( (CB.length()*x1u().length()) !=0 )
      cosangleBCXu=Dot(CB,x1u())/(CB.length()*x1u().length());
    else{
-     //cout <<"1. Check positions for the OB vector "
-     //   << "and the ellipse plane"<<endl;
-      return false;
+     cosangleBCXu=1; 
    };
  
    angleBCXu = acos(cosangleBCXu);
 
-   Point X=center+semimajoraxis*cos(angleBCXu)
-                +semiminoraxis*sin( angleBCXu);
-
-   PositionVector CX(X-center);
-   PositionVector OX=OC+CX;
+   if (semimajoraxis == 0 || semiminoraxis ==0)
+     return false;
+   
+   if (power(CB.length()*cos(angleBCXu)/semimajoraxis,2)+
+	 power(CB.length()*sin(angleBCXu)/semiminoraxis,2) <= 1)
+       return true;
+   else 
+     return false;
   
-   if ( (OC.length()*OX.length()) !=0 )
-     cosangleCOX=Dot(OC,OX)/(OC.length()*OX.length());
-   else{
-     //cout<<"2. Check positions for the OB vector "
-     //	 <<"and the ellipse plane"<<endl;
-      return false;
-   };
-  
-   angleCOX=acos(cosangleCOX);
-
-   if ( (OB.length()*OC.length()) !=0 )
-     cosangleCOB=Dot(OB,OC)/(OB.length()*OC.length());
-   else{
-     //cout<<"3. Check positions for the OB vector "
-     // <<"and the ellipse plane"<<endl;
-      return false;
-   };
-  
-   angleCOB=acos(cosangleCOB);
-
-   if (angleCOB <= angleCOX)
-    return true;
-   else
-    return false;
-
  }
   
 
@@ -240,8 +205,8 @@ int main()
 {
 
 
-  Point c1=Point(1,1,1);
-  PositionVector n1(2,1,1);
+  Point c1=Point(0,0,0);
+  PositionVector n1(0,0,1);
   PositionVector petiole(1,1,1);
 
   double a1=2;
@@ -251,52 +216,51 @@ int main()
   //Ellipse e2(petiole, n1, a1,b1);
   
     
-
+  PositionVector normal(e1.getNormal());
+  cout<<"ellipse normal vector="<<normal<<endl;
   a1=e1.getCenterPoint() || e1.getSemimajorAxisPoint();
-  cout<<"distance a1="<<a1<<endl;
+  cout<<"semimajoraxis a1="<<a1<<endl;
   b1=e1.getCenterPoint() || e1.getSemiminorAxisPoint();
-  cout<<"distance b1="<<b1<<endl;
+  cout<<"semiminoraxis b1="<<b1<<endl;
 
   double area1=e1.getArea();
   cout<<"area1="<<area1<<endl;
 
-  e1.setArea(12, Point(1,1,1) );
+//   e1.setArea(12, Point(1,1,1) );
 
-  double a2=e1.getCenterPoint() || e1.getSemimajorAxisPoint();
-  cout<<"distance a2="<<a2<<endl;
-  double b2=e1.getCenterPoint() || e1.getSemiminorAxisPoint();
-  cout<<"distance b2="<<b2<<endl;
+//   double a2=e1.getCenterPoint() || e1.getSemimajorAxisPoint();
+//   cout<<"semimajoraxis  a2="<<a2<<endl;
+//   double b2=e1.getCenterPoint() || e1.getSemiminorAxisPoint();
+//   cout<<"semiminoraxis b2="<<b2<<endl;
 
-  double area2=e1.getArea();
-  cout<<"area2="<<area2<<endl;
+//   double area2=e1.getArea();
+//   cout<<"area2="<<area2<<endl;
 
   bool intersection;
   
-  Point PO1(0,0,3);//this case doesn't cross the ellipse
-  Point PB1(0,0,0);
-  PositionVector POB1=PB1-PO1;
+  Point PO1(0,0,1);//this case doesn't cross the ellipse
+  PositionVector PB1(1,1,0);
  
-  intersection=e1.intersectEllipse(PO1,PB1);
+  intersection=e1.intersectShape(PO1,PB1);
   if( intersection){
-    cout<<"1. vector"<< POB1<<endl;
+    cout<<"1. vector"<< PB1<<endl;
     cout<<" crosses the ellipse"<<endl;
   }
   else{
-    cout<<"1. vector"<< POB1<<endl;
+    cout<<"1. vector"<< PB1<<endl;
     cout<<" doesn't cross the ellipse"<<endl;
   }
 
   Point PO2(4,4,4);//this case crosses the ellipse
-  Point PB2(0,0,0);
-  PositionVector POB2=PB2-PO2;
-  intersection=e1.intersectEllipse(PO2,PB2);
+  PositionVector PB2(-4,-4,-4);
+  intersection=e1.intersectShape(PO2,PB2);
 
   if( intersection){
-    cout<<"2. vector"<< POB2<<endl;
+    cout<<"2. vector"<< PB2<<endl;
     cout<<" crosses the ellipse"<<endl;
   }
   else{
-    cout<<"2. vector"<< POB2<<endl;
+    cout<<"2. vector"<< PB2<<endl;
     cout<<" doesn't cross the ellipse"<<endl;
   }
 
