@@ -101,7 +101,7 @@ LGMdouble GetValue(const BroadLeaf& bl, const LGMAD name)
   else if (name == Wf)
     return  bl.bla.degree_of_filling*GetValue(bl,A)/bl.bla.sf;
   else
-    cout << "BroadLeaf unknown attribute: " << name << " returning 0.0" << endl;
+    cout << "BroadLeaf GetValue unknown attribute: " << name << " returning 0.0" << endl;
  
   return 0.0;
 }
@@ -135,12 +135,13 @@ LGMdouble SetValue(BroadLeaf& bl, const LGMAD name, const LGMdouble value)
   else if (name == Qin)
     bl.bla.Qin = value;
 
-  if (name == Wf)
+  else if (name == Wf)
     bl.bla.shape.setArea(bl.bla.sf*value/bl.bla.degree_of_filling);
                   //sf * Wf specifies the true area of the leaf
 
   else 
-    cout << "Unknown attribute: " << name << "returning: "  << old_value << endl;
+    cout << "BroadLeaf SetValue uknown aattribute: " << name << "returning: "
+	 << old_value << endl;
  
   return old_value;
 }
