@@ -10,8 +10,9 @@
 ** as well as "add and assign" and "subtract and assign" points
 */ 
 
-namespace cxxadt{
 
+namespace cxxadt{
+  class PositionVector;
   template <class T = double>
     class Point{
       template <class T1>
@@ -50,6 +51,8 @@ namespace cxxadt{
       Point<T>& operator += (const Point<T>& point); 
       Point<T>& operator -= (const Point<T>& point);
       Point<T>& operator *= (const T scalar);
+      operator PositionVector (){return PositionVector(*this);}
+      operator PositionVector ()const{return PositionVector(*this);}
     private:
       T x;
       T y;
