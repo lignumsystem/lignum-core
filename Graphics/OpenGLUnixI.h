@@ -283,7 +283,7 @@ b1 = ls1.begin();
 
 
 
- template <class TS,class BUD>
+ template <class TS,class BUD, class S>
    int VisualizeHwTree(Tree<TS,BUD> &tree)
 { 
   // init_window();
@@ -314,7 +314,7 @@ b1 = ls1.begin();
 
   
   cout << "rakennetaan lehdet " << endl;
-  MakeLeaveList(tree, 2, 2);
+  MakeLeaveList<TS,BUD,S>(tree, 2, 2);
  
 
   //elavat budit

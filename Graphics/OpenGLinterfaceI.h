@@ -21,7 +21,7 @@ extern GLfloat lookat_x;  // look at
 extern GLfloat lookat_y;
 extern GLfloat lookat_z;
 
-template <class TS,class BUD>
+template <class TS, class BUD, class S>
 void MakeLeaveList(Tree<TS,BUD> &tree, int xsize, int ysize)
 {
 	MakeLeaveTable();
@@ -42,7 +42,7 @@ void MakeLeaveList(Tree<TS,BUD> &tree, int xsize, int ysize)
 
 	glPushMatrix();
 	glNewList(LGMFOLIAGE, GL_COMPILE);
-	DrawLignumLeavesFunctor<TS, BUD, Triangle> leaves_functor;
+	DrawLignumLeavesFunctor<TS,BUD,S> leaves_functor;
 	ForEach(tree, leaves_functor);		
 	glEndList();
 	glPopMatrix();

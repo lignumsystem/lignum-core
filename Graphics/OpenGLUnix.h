@@ -21,7 +21,7 @@ namespace Lignum{
     int VisualizeLGMTree(Tree<TS,BUD> &tree);
   
 
-  template <class TS,class BUD>
+  template <class TS,class BUD, class S>
     int VisualizeHwTree(Tree<TS,BUD> &tree);
 
 
