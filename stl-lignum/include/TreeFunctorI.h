@@ -225,32 +225,38 @@ DisplayStructureFunctor<TS,BUD>:: operator ()(DisplayStructureData& id,
 }
 
 
+template <class TS,class BUD>
+CheckCoordinates<TS,BUD>::CheckCoordinates(double e)
+  :epsilon(e)
+{
+}
+
 //Check coordinates: Each tree compartment should match
 //the "id" given. Segment changes the "id" to its end point 
 template <class TS,class BUD> TreeCompartment<TS,BUD>* 
-CheckCoordinates<TS,BUD>:: operator ()(Point& id,
+CheckCoordinates<TS,BUD>::operator ()(Point& id,
 				       TreeCompartment<TS,BUD>* tc)const
 {
   Point p = GetPoint(*tc);
 
   if (Axis<TS,BUD>* axis = dynamic_cast<Axis<TS,BUD>*>(tc)){
-    if (id != p)
+    if (id != p && (p || id) > epsilon)
       cout << "A: p || id " << (p || id) << endl;
   }
 
   else if (BranchingPoint<TS,BUD>* bp = dynamic_cast<BranchingPoint<TS,BUD>*>(tc)){
-    if (id != p)
+    if (id != p && (p || id) > epsilon)
       cout <<  "BP: p || id " << (p || id) << endl;
   }
 
   else if (TreeSegment<TS,BUD>* ts = dynamic_cast<TreeSegment<TS,BUD>*>(tc)){
-    if (id != p)
+    if (id != p && (p || id) > epsilon)
       cout << "TS: p || id " << (p || id) << endl; 
     id = GetEndPoint(*ts);
   }
 
   else if (Bud<TS,BUD>* bud = dynamic_cast<Bud<TS,BUD>*>(tc)){
-    if (id != p)
+    if (id != p && (p || id) > epsilon)
       cout << "B: p || id " << (p || id) << endl; 
   }
   return tc;
