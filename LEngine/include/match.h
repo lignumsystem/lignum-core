@@ -197,8 +197,8 @@ inline bool MatchRightContext(LstringIterator& pos,
       pos.FindEOB();
     }
     //compare modules and [ literally
-    //cout << "  Comparing: "  << string(pos.GetCurrentModuleName()) << " " 
-    // << GetModuleName(*front) << endl;
+    //cout << "Right Context Comparing: "  << string(pos.GetCurrentModuleName()) << " " 
+    //	 << GetModuleName(*front) << endl;
     //Consider and ignore statements makes this a bit complicated
     //If the consider set is not empty consider only Modules in the set and brackets
     //If ignore list is not empty ignore Module if in the set
@@ -292,8 +292,8 @@ inline bool MatchLeftContext(LstringIterator& pos,
     }
     //The head of left context should match current module in string
     front = fm_ls.begin();
-    //cout << "  Comparing: "  << string(pos.GetCurrentModuleName()) << " " 
-    // << GetModuleName(*front) << endl;
+    //cout << "Left Context Comparing: "  << string(pos.GetCurrentModuleName()) << " " 
+    //	 << GetModuleName(*front) << endl;
     //Consider and ignore statements makes this a bit complicated
     //If the consider set is not empty consider only Modules in the set and brackets
     //If ignore list is not empty ignore Module if in the set
@@ -321,14 +321,30 @@ inline bool MatchLeftContext(LstringIterator& pos,
       pos--;
   }
 
-  //the above loop ends when the string is AtBeginning, check the possible last symbol 
-  if (pos.AtBeginning() && fm_ls.size() == 1 && ignore_set.find(pos.GetModuleId()) != ignore_set.end() &&
+  //cout << pos.AtBeginning() << " "  << (fm_ls.size() == 1) << " " <<
+  //(ignore_set.find(pos.GetModuleId()) != ignore_set.end()) << " " <<
+  //GetModuleName(pos.GetModuleId())    <<    (pos.GetModuleId()    ==
+  //fm_ls.front())<<  endl; 
+
+  //the above loop  ends when the string is  AtBeginning (or breaks if
+  //context  or not),  check the  possible last  symbol 
+  //1. if  at the beginning and 
+  //2. there  is exactly one symbol to  be checked and  
+  //3. the  symbol is  not in  the ignore  set and
+  //4. the symbols match
+  //Note: the idea  is to change current value  of has_left_context if
+  //all 4 conditions are true.  If 1) fails either context is found or
+  //not, if  2) fails we cannot  have context, if 3)  fails the symbol
+  //can be  ignored and current value of  has_left_context remains and
+  //if 4) fails we cannot have context.
+  if (pos.AtBeginning() && (fm_ls.size() == 1) && (ignore_set.find(pos.GetModuleId()) == ignore_set.end()) &&
       (pos.GetModuleId() == fm_ls.front())){
     //cout << "  Comparing: " << GetModuleName(pos.GetModuleId()) << " " <<  GetModuleName( fm_ls.front())<< endl;
     has_left_context = true;
   }
   //no match if context not exhausted but the string is 
-  else if (pos.AtBeginning() && fm_ls.size() >= 1){
+  else if (pos.AtBeginning() && (fm_ls.size() >= 1)){
+    
     has_left_context = false;
   }	
     
@@ -399,12 +415,16 @@ inline ProdCaller  ContextMatch(const LstringIterator& pos,
   while (!match && i < NumOfProductions()){
     caller_data.Reset();
     match = MatchStrictPredecessor(const_cast<LstringIterator&> (pos),GetProductionPrototype(i),caller_data);
-    if (match)
+    if (match){
       match = MatchLeftContext(const_cast<LstringIterator&> (pos),GetProductionPrototype(i),caller_data,
 			       ignore_set,consider_set);
-    if (match)
+      //cout << "Rule i " << i << " Left " << match << endl;
+    }
+    if (match){
       match = MatchRightContext(const_cast<LstringIterator&> (pos),GetProductionPrototype(i),caller_data,
 				ignore_set,consider_set);
+      //cout << "Rule i " << i << " Right " << match << endl;
+    }
     i++;
   }
  
