@@ -1,6 +1,7 @@
 #ifndef TREE_FUNCTORI_H
 #define TREE_FUNCTORI_H
 
+#include <iomanip>
 //This file contains implementation of the following functors
 //(functions) for Tree. Help functors etc. are not specified. If you
 //add a functor-function please update this list.
