@@ -16,7 +16,7 @@ namespace Lignum{
 	cout << "Hello, I'm BranchingPoint" << endl;
       }
 
-      else if (TreeSegment<TS,BUD>* myts = dynamic_cast<TreeSegment<TS,BUD>*>(tc))
+      else if (TS* myts = dynamic_cast<TS*>(tc))
 	cout << "Hello, I'm TreeSegment" << endl;
 
       else if (Bud<TS,BUD>* mybud =  dynamic_cast<Bud<TS,BUD>*>(tc))
@@ -39,7 +39,7 @@ namespace Lignum{
 	cout << "Hello, I'm BranchingPoint" << endl;
       }
 
-      else if (TreeSegment<TS,BUD>* myts = dynamic_cast<TreeSegment<TS,BUD>*>(tc))
+      else if (TS* myts = dynamic_cast<TS*>(tc))
 	cout << "Hello, I'm TreeSegment" << endl;
 
       else if (Bud<TS,BUD>* mybud =  dynamic_cast<Bud<TS,BUD>*>(tc))
@@ -54,7 +54,7 @@ namespace Lignum{
   template <class TS,class BUD>
     int& CountTreeSegments<TS,BUD>::operator()(int& n,TreeCompartment<TS,BUD>* tc)const
     {
-      if (TreeSegment<TS,BUD>* myts = dynamic_cast<TreeSegment<TS,BUD>*>(tc))
+      if (TS* myts = dynamic_cast<TS*>(tc))
 	n+=1;
   
       return n;
@@ -73,7 +73,7 @@ namespace Lignum{
 	cout << "Hello, I'm BranchingPoint ";
       }
 
-      else if (TreeSegment<TS,BUD>* myts = dynamic_cast<TreeSegment<TS,BUD>*>(tc))
+      else if (TS* myts = dynamic_cast<TS*>(tc))
 	cout << "Hello, I'm TreeSegment ";
 
       else if (Bud<TS,BUD>* mybud =  dynamic_cast<Bud<TS,BUD>*>(tc))
@@ -100,7 +100,7 @@ namespace Lignum{
 	cout << "Hello, I'm BranchingPoint ";
       }
 
-      else if (TreeSegment<TS,BUD>* myts = dynamic_cast<TreeSegment<TS,BUD>*>(tc))
+      else if (TS* myts = dynamic_cast<TS*>(tc))
 	cout << "Hello, I'm TreeSegment ";
 
       else if (Bud<TS,BUD>* mybud =  dynamic_cast<Bud<TS,BUD>*>(tc))
@@ -127,7 +127,7 @@ namespace Lignum{
 	cout << "Hello, I'm BranchingPoint ";
       }
 
-      else if (TreeSegment<TS,BUD>* myts = dynamic_cast<TreeSegment<TS,BUD>*>(tc))
+      else if (TS* myts = dynamic_cast<TS*>(tc))
 	cout << "Hello, I'm TreeSegment ";
 
       else if (Bud<TS,BUD>* mybud =  dynamic_cast<Bud<TS,BUD>*>(tc))
@@ -172,7 +172,7 @@ namespace Lignum{
 	cout << "}," << flush; 
       }
 
-      else if (TreeSegment<TS,BUD>* myts = dynamic_cast<TreeSegment<TS,BUD>*>(tc)){
+      else if (TS* myts = dynamic_cast<TS*>(tc)){
 	//the comma is because we know that a branching point will follow 
 	cout << "TS," << flush;
     
@@ -249,7 +249,7 @@ namespace Lignum{
 	  cout <<  "BP: p || id " << (p || id) << endl;
       }
 
-      else if (TreeSegment<TS,BUD>* ts = dynamic_cast<TreeSegment<TS,BUD>*>(tc)){
+      else if (TS* ts = dynamic_cast<TS*>(tc)){
 	if (id != p && (p || id) > epsilon)
 	  cout << "TS: p || id " << (p || id) << endl; 
 	id = GetEndPoint(*ts);
