@@ -33,6 +33,8 @@ namespace cxxadt{
     double getArea()const;               //the triangle area calculation
     Point  getCenterPoint()const;     //getting the triangle center 
 
+                                 //getting the triangle normal vector
+    PositionVector getNormal()const;
                                  //set up the triangle center point
                                  //end change the triangle corners
                                  //according the center point 
@@ -52,8 +54,8 @@ namespace cxxadt{
                                    // with "a light beam" 
                                    //the light beam is the ob vector 
                                    // o - the observer position
-                                   // b - the vector beam end
-    bool   intersectTriangle(const Point& o,const Point& b); 
+                                   // b - the vector beam 
+    bool   intersectShape(const Point& o,const PositionVector& beam); 
                                             
   private:
     Point leftcorner,rightcorner,apexcorner;//the triangle corners
