@@ -137,9 +137,10 @@ Matrix<TS,BUD>::Matrix(Tree<TS,BUD> *tree, double x, double y, double z, double 
   X = (int)((int)(x / edge)+2) * 2;              // depth
   Y = (int)((int)(y / edge)+2) * 2;              // width
   Z = (int)(z / edge) + 2;              // heigth of the matrix
-  X_0 = (int)X/2;
-  Y_0 = (int)Y/2;
-  Z_0 = (int)0;
+ 
+  // X_0 = (int)X/2;
+  // Y_0 = (int)Y/2;
+  //Z_0 = (int)0;
 
 	
   
@@ -214,7 +215,7 @@ vector<SmallCube> Matrix<TS,BUD>::GetCubes()
 	      
 	      cube.dist = pow(cam_x-xx, 2) + pow(cam_y-yy, 2) + pow(cam_z-zz, 2); 
 	      
-
+	      cube.edge = edge;
 	      cube.x_coord = xx;
 	      cube.y_coord = yy;
 	      cube.z_coord = zz;
@@ -528,7 +529,7 @@ double Matrix<TS,BUD>::getLight(TreeSegment<TS,BUD> *ts)
   //  SetValue(*ts, Qin, q_in);
 
   //compute the surface area (sa) of the cylinder representing foliage
-  LGMdouble sf = 0.0;  
+  LGMdouble s_f = 0.0;  
   LGMdouble W_f = 0.0;	
  
 
@@ -552,7 +553,7 @@ double Matrix<TS,BUD>::getLight(TreeSegment<TS,BUD> *ts)
       SetValue(*cfts, Rf,needle_length * sin(needle_angle)+ GetValue(*ts,R));
       needle_rad = GetValue(*cfts, Rf);
   
-      sf = GetValue(GetTree(*cfts),sf);
+      s_f = GetValue(GetTree(*cfts),sf);
       LGMdouble star = 0;
   
 	
@@ -561,7 +562,7 @@ double Matrix<TS,BUD>::getLight(TreeSegment<TS,BUD> *ts)
       //endl;
       for (double phi=0;phi<PI_VALUE/2;phi+=PI_VALUE/16)
 	{  
-	  star += S(phi, sf, W_f, needle_rad, GetValue(*ts, L))/8.0;
+	  star += S(phi, s_f, W_f, needle_rad, GetValue(*ts, L))/8.0;
 	  
 /* 	  cout << "star += S()/8.0" << endl; */
 /* 	  cout << "eli star += S(phi, sf, W_f, needle_rad, GetValue(*ts, L))/8.0; " << endl; */
