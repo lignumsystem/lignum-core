@@ -17,7 +17,7 @@ touch:
 	(cd lib; make touch)
 
 html:
-	cd lib; make html)
+	(cd lib; make html)
 clean:
 	(cd lib; make clean) 
 
