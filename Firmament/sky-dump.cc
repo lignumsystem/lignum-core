@@ -26,21 +26,26 @@ void ParseCommandLine(int argc, char *argv[],const string& option, string& argum
 
 void Usage()
 {
-  cout << "Usage: sky-dump [-def <file>] [-mask <file>] -out <file>" << endl;
+  cout << "Usage: sky-dump -def <file> [-mask <file>] [-out <file>]" << endl;
 }
  
 int main(int argc, char* argv[])
 { 
-  Firmament f1;
   FirmamentWithMask f2;
   string arg,empty;
   Token t;
   Lex lex;
-  
+  double drp = 0.0;
+  double diff_ball_sensor = 0.0;
   ParseCommandLine(argc,argv,"-def",arg);
   
+  if (arg == empty){
+    Usage();
+    exit(0);
+  }  
+  
   if (arg != empty){
-    int incl,azim,drp;
+    int incl = 0; int azim = 0;
     lex.scan(arg);
     t = lex.getToken();
     incl = atoi(t.getValue().c_str());
@@ -49,8 +54,11 @@ int main(int argc, char* argv[])
     t = lex.getToken();
     drp = atof(t.getValue().c_str());
     f2.resize(incl,azim,drp);
+    diff_ball_sensor =  f2.diffuseBallSensor();
     cout << "Definition from: " << arg << endl;
     cout << "Incl: " << incl << " Azim: " << azim << " Rad: " <<  drp <<endl;
+    cout << "Radiation (diffuse ball sensor): " << f2.diffuseBallSensor() << endl;
+    cout << "Radiation (diffuse plane sensor): " << f2.diffusePlaneSensor() << endl;
   }
 
   arg = empty;
@@ -59,18 +67,27 @@ int main(int argc, char* argv[])
   if (arg != empty){
     f2.readMaskFile(arg);
     cout << "Mask file is: " << arg << endl;
-  }
 
-  ParseCommandLine(argc,argv,"-out",arg);
+    cout << "Radiation with mask (diffuse ball sensor): " <<  f2.diffuseBallSensor()
+	 << " Percentage: " << f2.diffuseBallSensor() / diff_ball_sensor * 100.0 << endl;  
 
-  if (arg == empty){
-    Usage();
+    cout << "Radiation with mask (diffuse plane sensor): " << f2.diffusePlaneSensor() 
+	 << " Percentage: " << f2.diffusePlaneSensor() / drp * 100.0 << endl;  
   }
   else{
+    cout << "No mask file" << endl;
+  }
+
+  arg = empty;
+  ParseCommandLine(argc,argv,"-out",arg);
+
+  if (arg != empty){
     cout << "Output to: " << arg <<  " and: " << arg <<".schema" << endl; 
     CreateOutPutFile(f2,arg);
   }
-
+  else{
+    cout <<"No output file" << endl;
+  }
 
   exit(0);
 }
