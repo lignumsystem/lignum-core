@@ -5,7 +5,7 @@ namespace Lignum{
   TreeParameters::TreeParameters()
   {
     af = ar = lr = mf = 0.0;
-    mr = ms = na = nl = pr = q = sr = ss = rho = xi = 0.0;
+    mr = ms = na = nl = pr = q = sf = sr = ss = rho = xi = 0.0;
   }
 
   //Initialize the vector with negative value
