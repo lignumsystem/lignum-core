@@ -1,9 +1,9 @@
-
 #include <Lignum.h>
 #include <MyTreeSegment.h>
 #include <MyBud.h>
 #include <Shading.h>
 #include <Collision.h>
+#include <VoxelSpace.h>
 
 using namespace std;
 using namespace Lignum;
@@ -263,6 +263,20 @@ int main(int argc, char *argv[])
 
    ForEach(hw_tree, EvaluateCollisionForAllBuds<MyHwTreeSegment,MyBud>
 	   (PI_VALUE, 0.1));
+
+
+   //Voxelspace
+
+
+   Matrix<MyCfTreeSegment, MyBud > *matrix;
+	
+   //konstruktoriin menee mitat jotka ovat suurin x-arvo,y-arvo ja
+   //z-arvo. Viimeinen on pikkuneliön sivun mitta
+
+   matrix = new Matrix<MyCfTreeSegment, MyBud >(&cf_tree, 0,0,0,0.1);
+
+
+   
 }
 
 
