@@ -144,4 +144,9 @@ Petiole& GetPetiole(BroadLeaf& bl)
   return bl.bla.petiole;
 }
 
+Ellipsis& GetEllipsis(BroadLeaf& bl)
+{
+  return bl.bla.shape;
+}
+
 }//closing namespace Lignum
