@@ -74,7 +74,7 @@ TreeCompartment<TS,BUD>*  AdjustStructureAfterZbrent<TS,BUD>::operator()(Structu
 			LGMdouble length = GetValue(*ts,LGAL);
 			Point end = base + (Point)(length * dir);
 			
-			SetValue(*ts, RTop, GetValue(*ts, R));
+			SetValue(*ts, LGARTop, GetValue(*ts, R));
 			SetLastRing(*ts);
 			sa.changed = true;
 			sa.location = end;

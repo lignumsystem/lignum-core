@@ -13,7 +13,7 @@ namespace Lignum{
       return rs.rsa.L;     //Length
     case R:
       return rs.rsa.R;     //Radius (sapwood)
-    case RTop:
+    case LGARTop:
       return rs.rsa.RTop;  //Radius at top (sapwood)
     case Rh:
       return rs.rsa.Rh;    //Radius heartwood
@@ -33,17 +33,17 @@ namespace Lignum{
       //Compound attributes, volumes
     case V:                //Segment volume based on A
       return GetValue(rs,LGAA)*GetValue(rs,LGAL);
-    case Vh:               //Heartwood volume
+    case LGAVh:               //Heartwood volume
       return GetValue(rs,LGAAh)*GetValue(rs,LGAL);
     case LGAVs:               //Sapwood volume
-      return GetValue(rs,V) - GetValue(rs,Vh);
-    case Vhair:            //Root hair volume
-      return GetValue(rs,LGAAhair)*GetValue(rs,LGAL) - GetValue(rs,V);
+      return GetValue(rs,LGAV) - GetValue(rs,LGAVh);
+    case LGAVhair:            //Root hair volume
+      return GetValue(rs,LGAAhair)*GetValue(rs,LGAL) - GetValue(rs,LGAV);
       //Compound attributes, weights
     case LGAWs:               //sapwood weight
       return GetValue(GetTree(rs),rho_root)*GetValue(rs,LGAVs);
     case LGAWhair:            //root hair weight
-      return GetValue(GetTree(rs),rho_hair)*GetValue(rs,Vhair);
+      return GetValue(GetTree(rs),rho_hair)*GetValue(rs,LGAVhair);
     default:
       cout << "RootSegment GetValue unknown attribute: " << name << endl;
       return -1.0;
@@ -63,7 +63,7 @@ namespace Lignum{
     case R:
       rs.rsa.R = value;
       break;
-    case RTop:
+    case LGARTop:
       rs.rsa.RTop = value;
       break;
     case Rh:

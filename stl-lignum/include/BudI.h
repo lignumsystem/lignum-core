@@ -67,7 +67,7 @@ LGMdouble GetValue(const Bud<TS,BUD>& bud, const LGMAD name)
   else if (name == LGMstatus)
     return bud.ba.status ;
   
-  else if (name == LGMtype)
+  else if (name == LGAtype)
     return bud.ba.type;
 
   else{
@@ -93,7 +93,7 @@ LGMdouble SetValue(Bud<TS,BUD>& bud, const LGMAD name, const LGMdouble value)
   else if (name == LGMstatus)
     bud.ba.status = value;
 
-  else if (name == LGMtype)
+  else if (name == LGAtype)
     bud.ba.type = value;
 
   else{

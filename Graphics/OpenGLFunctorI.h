@@ -47,7 +47,7 @@ namespace Lignum{
 
 	      length = GetValue(*ts, LGAL); 
 			
-	      radius_top = GetValue(*ts, RTop);
+	      radius_top = GetValue(*ts, LGARTop);
 	      position = GetPoint(*ts);
 		
 	      direction.normalize();
@@ -130,7 +130,7 @@ namespace Lignum{
 
 	      LGMdouble radius = GetValue(*ts, R);
 	      length = GetValue(*ts, L); 
-	      radius_top = GetValue(*ts, RTop);
+	      radius_top = GetValue(*ts, LGARTop);
 	      position = GetPoint(*ts);
 			
 	      rot_x = -1*direction.getVector()[1];
@@ -247,7 +247,7 @@ TreeCompartment<TS,BUD>* DrawNeedlesFunctor<TS,BUD>::operator()(TreeCompartment<
       PositionVector direction = GetDirection(*cfts);
 	  
       length = GetValue(*cfts, LGAL); 
-      radius_top = GetValue(*cfts, RTop);
+      radius_top = GetValue(*cfts, LGARTop);
       position = GetPoint(*cfts);
 	  
       rot_x = -1*direction.getVector()[1];

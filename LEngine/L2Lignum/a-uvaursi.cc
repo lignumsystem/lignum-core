@@ -43,14 +43,14 @@ int main(int argc, char** argv)
        << nddie << " p1 " << sddie << " p2 " << ddie << " p3 " << endl;
   
   bearberryL.start();
-  bearberryL.lstringToLignum(bearberry,3,LGMtype,LGMstatus,LGMcollision);
+  bearberryL.lstringToLignum(bearberry,3,LGAtype,LGMstatus,LGMcollision);
   for (int i=0; i < iter ; i++)
   {
     cout << "Step: " << i << endl;    
     ForEach(bearberry,EvaluateCollisionForAllBuds<BearberrySegment,BearberryBud>(angle*PI_VALUE/180.0,distance));
-    bearberryL.lignumToLstring(bearberry,3,LGMtype,LGMstatus,LGMcollision);  
+    bearberryL.lignumToLstring(bearberry,3,LGAtype,LGMstatus,LGMcollision);  
     bearberryL.derive();
-    bearberryL.lstringToLignum(bearberry,3,LGMtype,LGMstatus,LGMcollision);
+    bearberryL.lstringToLignum(bearberry,3,LGAtype,LGMstatus,LGMcollision);
     //ForEach(bearberry,aging);
     //ForEach(bearberry,kill_bud);
   }
@@ -58,8 +58,8 @@ int main(int argc, char** argv)
 
   LGMdouble coll = 0.0;  
   AccumulateDown(bearberry,coll,shorten_segment);
-  bearberryL.lignumToLstring(bearberry,3,LGMtype,LGMstatus,LGMcollision);
-  bearberryL.lstringToLignum(bearberry,3,LGMtype,LGMstatus,LGMcollision);
+  bearberryL.lignumToLstring(bearberry,3,LGAtype,LGMstatus,LGMcollision);
+  bearberryL.lstringToLignum(bearberry,3,LGAtype,LGMstatus,LGMcollision);
 
 //   vector<PositionVector> v;
 //   AccumulateDown(bearberry,v,

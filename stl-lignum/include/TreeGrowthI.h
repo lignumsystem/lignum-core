@@ -925,7 +925,7 @@ MotherInfo& AddWhiteBirchSegments<TS,BUD>::operator()(MotherInfo& mi, TreeCompar
 			
 			LGMdouble dof_p = GetValue(tree, dofp);
 			LGMdouble sf_p = GetValue(tree, sla);  //specific leaf area
-			LGMdouble v = GetValue(tree, tauL);
+			LGMdouble v = GetValue(tree, LGAtauL);
 
 			Firmament& f = GetFirmament(tree);
 			int number_of_regions = f.numberOfRegions();

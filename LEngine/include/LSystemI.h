@@ -195,7 +195,7 @@ int LSystem<TS,BUD,N,F>::lignum2Lstring(Tree<TS,BUD>& t, vector<N>& vav)
  *User can keep the symbol B for bud in sync with Lignum                       *
  *by giving the meaning of the symbols in order of                             *
  *appearance in the argument list. For example the call                        *
- *lignum2Lstring<MySegment,MyBud,LGMAD,LGMdouble(t,2,LGMtype,LGMstatus)        *
+ *lignum2Lstring<MySegment,MyBud,LGMAD,LGMdouble(t,2,LGAtype,LGMstatus)        *
  *will update the type  and the status of the bud from LIGNUM to Lstring.      *
  *The algorithm is essentially the same as Lstring2Lignum                      *
  *so other operations are easily added and kept in sync.                       *
@@ -528,7 +528,7 @@ int LSystem<TS,BUD,N,F>::lstring2Lignum(Tree<TS,BUD>& t, vector<N>& vav)
  *User can keep the symbol B for bud in sync with Lignum                       *
  *by giving the meaning of the symbols in order of                             *
  *appearance in the argument list. For example the call                        *
- *lstring2Lignum<MySegment,MyBud,LGMAD,LGMdouble(t,2,LGMtype,LGMstatus)        *
+ *lstring2Lignum<MySegment,MyBud,LGMAD,LGMdouble(t,2,LGAtype,LGMstatus)        *
  *will update the type  and the status of the bud from Lstring to LIGNUM.      *
  *The algorithm is essentially the same as lignum2Lstring                      *
  *so other operations are easily added and kept in sync.                       *

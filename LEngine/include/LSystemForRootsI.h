@@ -207,7 +207,7 @@ int LSystem<TS,BUD,N,F>::rootSystem2Lstring(Tree<TS,BUD>& t, vector<N>& vav)
  *updated implicetly. User  can keep the symbol B for root tip in sync
  *with RootSystem  by giving  the meaning of  the symbols in  order of
  *appearance   in   the   argument   list.  For   example   the   call
- *rootSystem2Lstring<MySegment,MyBud,LGMAD,LGMdouble(t,2,LGMtype,LGMstatus)
+ *rootSystem2Lstring<MySegment,MyBud,LGMAD,LGMdouble(t,2,LGAtype,LGMstatus)
  *will update the  type and the status of the bud  from root system to
  *Lstring. The algorithm is essentially the same as lstring2RootSystem
  *so other operations are easily added and kept in sync.
@@ -550,7 +550,7 @@ int LSystem<TS,BUD,N,F>::lstring2RootSystem(Tree<TS,BUD>& t, vector<N>& vav)
  *implicetly.   User  can  keep the  symbol  B  for  bud in  sync  with
  *RootSystem  by  giving  the  meaning  of  the  symbols  in  order  of
  *appearance   in   the   argument   list.   For   example   the   call
- *lstring2RootSystem<MySegment,MyBud,LGMAD,LGMdouble(t,2,LGMtype,LGMstatus)
+ *lstring2RootSystem<MySegment,MyBud,LGMAD,LGMdouble(t,2,LGAtype,LGMstatus)
  *will update the  type and the status of the bud  from Lstring to root
  *system.  The algorithm is  essentially the same as rootSystem2Lstring
  *so other operations are easily added and kept in sync.

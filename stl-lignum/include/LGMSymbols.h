@@ -16,8 +16,9 @@ namespace Lignum{
   enum LGMAD {LGAA,LGAAf,LGAAh, LGAAhair,LGAAs,LGAAs0,LGAage,api, LGAcollision,
               LGADbase,LGADbh,LGAdof, dR, LGAH,LGAHf,Hm,LGAip,
               lb,LM,LP,LWf,LGAL,lw,LGAM, LGAMaxD,LGAomega,LGAP,
-	      Qin,Qabs,R,Rf,Rh,Rhair,RTop,Sa,LGMstatus,sw,tauL,LGMtype,V,Vh,
-	      Vhair,LGAvi,LGAVs,LGAWf, LGAWr, LGAWs, LGAWh, LGAWhair};
+	      Qin,Qabs,R,Rf,Rh,Rhair,LGARTop,LGASa,LGMstatus,LGAtype,LGAV,LGAVh,
+	      LGAVhair,LGAvi,LGAVs,
+              LGAWf, LGAWr, LGAWs, LGAWh, LGAWhair};
 
   //  LGAA      Segment area based on R (see GetValue)
   //  LGAAf     area of foliage
@@ -51,14 +52,15 @@ namespace Lignum{
   //  Rf     radius of segment cylinder that contains also foliage (conifers)
   //  Rh     radius of heartwood
   //  Rhair  Radius including root hair 
-  //  Rtop   radius of segment at upper end
-  //  Sa     Surface area of the segment cylinder: 2*PI*R*L 
-  //  sw     ????
-  //  tauL   transmission coefficient of leaf (in direction of the ray of light)
-  //  V      Segment volume based on R
-  //  Vh     Heartwood volume
-  //  Vhair  Root hair volume
-  //  vi     vigour index
+  //  LGARTop   radius of segment at upper end
+  //  LGASa     Surface area of the segment cylinder: 2*PI*R*L 
+  //  LGAtype General type specifier, e.g. Bud:dominant, apical,
+  //          lateral etc. The numerical values and their symbols of
+  //          different types given in LGMUnits.h
+  //  LGAV      Segment volume based on R
+  //  LGAVh     Heartwood volume
+  //  LGAVhair  Root hair volume
+  //  LGAvi     vigour index
   //  LGAVs     Sapwood volume
   //  LGAWf     foliage mass (kg C)
   //  LGAWr     root mass (kg C)
@@ -88,7 +90,7 @@ namespace Lignum{
   //Keep this list in synbc with MapLGMPD constructor in TreeFriend.cc
 
 
-  enum LGMPD {af,al,ar,ca, dofp,lr,mf,mr,ms,na,nl,pr,q, rca, rld,sf, sla,sr,ss,rho,rho_root,rho_hair, yc, xi,
+  enum LGMPD {af,al,ar,ca, dofp,lr,mf,mr,ms,na,nl,pr,q, rca, rld,sf, sla,sr,ss,rho,rho_root,rho_hair, LGPtauL,yc, xi,
 	      zbrentEpsilon, Ln_par, n_ang_par, fake_forest, nitroRoots, nitroWood, nitroLeaves};
 
 
@@ -117,6 +119,8 @@ namespace Lignum{
   //sf = specific leaf area (=leaf area/ leaf weight)
   //sr = Senescence rate of roots
   //ss = Senescence rate of sapwood
+  //LGPtauL = transmission coefficient of leaf (in direction of
+  //          the ray of light)
   //xi = Fraction of heartwood in newly created tree segments
   //zbrentEpsilon = accuracy in numerical computation in root finding (see Zbrent)
   //Ln_par = ????????????????? 

@@ -150,7 +150,7 @@ vector<LGMdouble>& ShadingEffectOfLeaf<TS,BUD,S>::operator()(vector<LGMdouble>& 
 	result = EllipseBeamShading(mp, tmp, **Ishding);
 	if (result == HIT_THE_FOLIAGE){
 	  Vp = 1.0-GetValue(**Ishding,LGAdof)+GetValue(**Ishding,LGAdof)*
-	    GetValue(**Ishding,tauL);
+	    GetValue(**Ishding,LGAtauL);
 	  v[i] *= Vp;
 	}
       }

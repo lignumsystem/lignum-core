@@ -81,13 +81,13 @@ int main(int argc, char** argv)
   //1. Expand the axiom.
   bl.start();
   //2. Update LIGNUM with  interchange of information.  In each LIGNUM
-  //bud the attributes of the name LGMtype, LGMstatus and LGMcollision
+  //bud the attributes of the name LGAtype, LGMstatus and LGMcollision
   //are updated from symbols B in the L-system string.  In bearberry.L
   //the  symbol  B contains  3  arguments  and  their meaning  and  is
-  //LGMtype, LGMstatus  and LGMcollision from left to  right. The data
+  //LGAtype, LGMstatus  and LGMcollision from left to  right. The data
   //type of these attributes is LGMdouble both in LIGNUM and in symbol
   //B in bearberry.L.
-  bl.lstringToLignum(bearberry,3,LGMtype,LGMstatus,LGMcollision);
+  bl.lstringToLignum(bearberry,3,LGAtype,LGMstatus,LGMcollision);
   //3. Loop derivation length of times: 
   for (int i=0; i < bl.derivationLength() ; i++)
   {
@@ -98,16 +98,16 @@ int main(int argc, char** argv)
     //lookahead  distance  in meters.  Other  metabolic processes  may
     //follow.
     ForEach(bearberry,EvaluateCollisionForAllBuds<MyTreeSegment,MyBud>(60.0*2.0*PI_VALUE/360.0,0.10));
-    //5. Update the  string; LGMtype,LGMstatus,LGMcollision are copied
+    //5. Update the  string; LGAtype,LGMstatus,LGMcollision are copied
     //from LIGNUM buds to symbols B in the string.
-    bl.lignumToLstring(bearberry,3,LGMtype,LGMstatus,LGMcollision);  
+    bl.lignumToLstring(bearberry,3,LGAtype,LGMstatus,LGMcollision);  
     //6. Expand the  string. If you have defined  StartEach or EndEach
     //statements derive executes these statements.
     bl.derive();
-    //7.   Update LIGNUM  with interchange  of  information.  LGMtype,
+    //7.   Update LIGNUM  with interchange  of  information.  LGAtype,
     //LGMstatus, LGMcollision are copied  from symbols B in the string
     //to LIGNUM buds.
-    bl.lstringToLignum(bearberry,3,LGMtype,LGMstatus,LGMcollision);
+    bl.lstringToLignum(bearberry,3,LGAtype,LGMstatus,LGMcollision);
   }
   //8. Some clean up if  End statement is defined in L-file; otherwise
   //end is a dummy method.

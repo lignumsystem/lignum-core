@@ -81,7 +81,7 @@ TreeSegment<TS,BUD>::TreeSegment(const Point& p, const PositionVector& d, const 
   SetValue(*this,LGAL,l);
   SetValue(*this,R,r);
   SetValue(*this,Rh,rh);
-  SetValue(*this,RTop,r);
+  SetValue(*this,LGARTop,r);
   
   //the first annual ring
   tsa.annual_rings.push_back(r);
@@ -308,7 +308,7 @@ LGMdouble GetValue(const TreeSegment<TS,BUD>& ts, const LGMAD name)
   else if (name == Rh)
     return ts.tsa.Rh;
 
-  else if (name == RTop)
+  else if (name == LGARTop)
     return ts.tsa.Rtop;
   
   else if(name == LGAvi)
@@ -370,7 +370,7 @@ LGMdouble SetValue(TreeSegment<TS,BUD>& ts, const LGMAD name, const LGMdouble va
   else if (name == Rh)
     ts.tsa.Rh = value;
 
-  else if (name == RTop)
+  else if (name == LGARTop)
     ts.tsa.Rtop = value;
 
   else if(name == LGAvi)
