@@ -1,33 +1,28 @@
 %\addcontentsline{toc}{section}{Introduction}
 \section{Introduction}
 
-This document describess useful, general purpose  classes 
-designed and implemented during the development  
-process of the tree model \lignum. The classes described here are not found in 
-the current implementations of the C++ Standard Template Library (STL) 
-but are frequently used during our work. 
+This document describess useful,  general purpose classes designed and
+implemented  during   the  development  process  of   the  tree  model
+\lignum.  The classes  described here  are  not found  in the  current
+implementations  of the C++  Standard Template  Library (STL)  but are
+frequently used during our work.  By saying that the classes described
+in this report  are ``general purpose'' it means  that the classes are
+not specific to the functioning of the tree model \lignum\ itself, but
+can be used in many other programs as well.
 
-By saying that the classes described in this report are
-``general purpose'' it means that the classes are not
-specific to the functioning of the tree model \lignum\
-itself, but can be used in many other programs as well.
+The implementations of the classes are collected into a library called
+\linebreak  libc++adt.a  that   provides  basic  algorithms  and  data
+structures  needed.  The  STL  provides many  abstract  datatypes  for
+generic programming, so if you  want to contribute to libc++adt.a, you
+are welcome  to do  so, but  check first if  STL already  provides the
+abstract datatype you need.
 
-The implementations of the classes are collected into a 
-library called \linebreak libc++adt.a that provides basic algorithms 
-and data structures needed.
+Many classes in libc++adt.a use  templates and are built using classes
+in STL  so STL  should also be  available. Naturally, you  should make
+sure that  you understand  how templates work  in C++  (especially the
+instantiation mechanism of your compiler) before using this library.
 
-The STL provides many abstract datatypes for generic programming, so
-if you want to contribute to libc++adt.a, you are welcome
-to do so, but check first if STL already provides the abstract
-datatype you need. 
-
-Many classes use templates and are built using classes in STL
-so STL should also be available. Naturally, you should make sure 
-that you understand how templates work in C++ (especially the instantiation
-mechanism of your compiler) before using this library. 
-
-To use a class described in this report
-include the header file of the class into your program
-and link the program against libc++adt.a. The name of the 
-header file for a class is the class name appended with .h. 
-For example, to use CString include CString.h.
+To use a class described in this report include the header file of the
+class into your program and  link the program against libc++adt.a. The
+name of  the header file for a  class is the class  name appended with
+.h.  For example, to use PositionVector include PositionVector.h.

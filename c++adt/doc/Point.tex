@@ -1,155 +1,189 @@
 \section{Point}
 
-The \tt Point \rm describes a point in a three dimensional space.  The
-right  handed  coordinate  system is  assumed  with $z$-axis  pointing
-upwards. The  right handed coordinate   system has a property  that an
-ordinary  screw  pointed in  the  direction of positive $z$-axis would
-advance     if  the positive   $x$-axis is   rotated  towards positive
-$y$-axis.  In  other   words, $z$-axis   points   up, $x$-axis  points
-south and $y$-axis points east.
+The \tt Point \rm describes a point in a three dimensional space using
+the  right handed  coordinate system  with the  positive  direction of
+$z$-axis pointing upwards, the positive direction of $x$-axis pointing
+south  and the  positive  $y$-axis pointing  east.   The right  handed
+coordinate system has a property that an ordinary screw pointed in the
+direction of positive $z$-axis  would advance if the positive $x$-axis
+is rotated towards positive $y$-axis.
 
 \subsection{The Class Declaration of Point}
 \begin{verbatim}
-template <class T = double>
+
 class Point{
-friend Point<T> operator+(const Point<T>& p1, 
-                          const Point<T>& p2);
-friend Point<T> operator-(const Point<T>& p1,
-                            const Point<T>& p2);
-friend Point<T> operator*(const T scalar, 
-                          const Point<T>& p);
-friend T operator||(const Point<T>& p1, 
-                    const Point<T>& p2);
+friend Point operator+(const Point& p1, 
+                       const Point& p2);
+friend Point operator-(const Point& p1,
+                       const Point& p2);
+friend Point operator*(const double s, 
+                       const Point& p);
+friend double operator||(const Point& p1, 
+                    const Point& p2);
 friend ostream& operator<<(ostream& os, 
-                           const Point<T>& p);
-friend inline bool operator==(const Point<T>& p1, 
-                              const Point<T>& p2);
+                           const Point& p);
+friend inline bool operator==(const Point& p1, 
+                              const Point& p2);
 public:
-  Point(T x1 = 0.0, T y1 = 0.0, T z1 = 0.0)
+  Point(double x1 = 0.0, double y1 = 0.0, double z1 = 0.0)
   {x = x1; y =  y1; z =  z1;}
-  inline Point(const Point<T>& p);
-  T getX()const;
-  T getY()const;
-  T getZ()const;
-  Point<T>& setX(const T x);
-  Point<T>& setY(const T y);
-  Point<T>& setZ(const T z);
-  Point<T>& operator += (const Point<T>& p); 
-  Point<T>& operator -= (const Point<T>& p);
-  Point<T>& operator *= (const T scalar);
+  inline Point(const Point& p);
+  double getX()const;
+  double getY()const;
+  double getZ()const;
+  Point& setX(const double x);
+  Point& setY(const double y);
+  Point& setZ(const double z);
+  Point& operator += (const Point& p); 
+  Point& operator -= (const Point& p);
+  Point& operator *= (const double scalar);
 private:
-  T x;
-  T y;
-  T z;
+  double x;
+  double y;
+  double z;
 };
 \end{verbatim}
 
-\subsection{Template Parameters}
-\begin{description}
-  \item[T] The type, any of the arithmetic types in C/C++.
-    \begin{description}
-      \item[Default values] double.
-     \end{description}
-\end{description}
 
 \subsection{Public Methods}
 
-\subsubsection{Point(T x = 0.0, T y = 0.0, T z = 0.0);}
-Default constructor that creates a point at origo.
+\subsubsection{Point}
+Constructor for the class. 
 \begin{description}
+  \item[Signature 1] Point(double x = 0.0, double y = 0.0, double z = 0.0).
+  \begin{description}
   \item[Arguments] to the method.
-    \begin{description}
+   \begin{description}
       \item[x, y, z] The $x$, $y$ and $z$ coordinates, 
                      default point is at (0,0,0).
-    \end{description}
+   \end{description}
   \item[Returns] Nothing.
+  \end{description}
+  \item[Signature 2] Point(const Point\& p).
+   \begin{description}
+  \item[Arguments] to the method.
+   \begin{description}
+      \item[p] A point in 3D space.
+   \end{description}
+  \item[Returns] Nothing.
+  \end{description}
 \end{description}
 
-\subsubsection{inline Point(const Point<T>\& point);}
-Copy constructor. 
-\begin{description}
-  \item[Returns] Nothing.
-\end{description}
 
-\subsubsection{T getX()const;}
-Qyery the $x$-coordinate.
+\subsubsection{getX}
+Query the $x$-coordinate.
 \begin{description}
+  \item[Signature] double getX()const
   \item[Returns] The $x$-coordinate.
 \end{description}
 
-\subsubsection{T getY()const;}
+\subsubsection{getY}
 Query the $y$-coordinate. 
 \begin{description}
+  \item[Signature] double getY()const.
   \item[Returns] The $y$-coordinate.
 \end{description}
 
-\subsubsection{T getZ()const;}
+\subsubsection{getZ}
 Query the $z$-coordinate.
 \begin{description}
+  \item[Signature] double getZ()const.
   \item[Returns] The $z$-coordinate.
 \end{description}
 
-\subsubsection{Point<T>\& setX(const T x);}
+\subsubsection{setX}
 Change the $x$-coordinate. 
 \begin{description}
+  \item[Signature] Point\& setX(const double x).
   \item[Returns] The point itself.
 \end{description}
 
-\subsubsection{Point<T>\& setY(const T y);}
+\subsubsection{setY}
 Change the $y$-coordinate.
 \begin{description}
+   \item[Signature] Point\& setY(const double x).
   \item[Returns] The point itself.
 \end{description}
 
-\subsubsection{Point<T>\& setZ(const T z);}
+\subsubsection{setZ}
 Change the $z$-coordinate.
 \begin{description}
+  \item[Signature] Point\& setZ(const double x).
   \item[Returns] The point itself.
 \end{description}
 
-\subsection{Functions and Operations on Point}
+\subsection{Functions and Operators on Point}
 
-\subsubsection{friend Point<T> operator+(const Point<T>\& p1, \\
-                                         const Point<T>\& p2);}
-Adds two points.
+\subsubsection{operator+}
+Add two points.
  
 \begin{description}
+  \item[Signature] friend Point operator+(const Point\& p1,const
+  Point\& p2).
+  \item[Arguments] to the overloaded '+' operator.
+    \begin{description}
+      \item[p1, p2] The two points to be added. 
+    \end{description}
   \item[Returns] The new point.
 \end{description}
 
-\subsubsection{friend Point<T> operator-(const Point<T>\& p1, \\
-                                         const Point<T>\& p2);}
-Subtracts two points.
+\subsubsection{operator-}
+Subtract two points.
 \begin{description}
+  \item[Signature] friend Point operator-(const Point\& p1,const
+  Point\& p2).
+  \item[Arguments] to the overloaded '-' operator.
+    \begin{description}
+      \item[p1, p2] The two points to be subtracted. 
+    \end{description}
   \item[Returns] The new point.
 \end{description}
 
-\subsubsection{friend Point<T> operator*(const T scalar, \\ 
-                                         const Point<T>\& p);}
+\subsubsection{operator*}
 Multiply a point by a scalar.
 \begin{description}
+  \item[Signature 1] friend Point operator*(const double s,const Point\& p).
+  \item[Signature 2] friend Point operator*(const Point\& p,const double s).
+  \item[Arguments]  to the overloaded '*' operator.
+     \begin{description}
+        \item[s] The scalar.
+        \item[p] The point.
+     \end{description} 
   \item[Returns] The new point.
 \end{description}
 
-\subsubsection{friend T operator||(const Point<T>\& p1, \\ 
-                                   const Point<T>\& p2);}
+\subsubsection{operator||}
 Compute the distance between two points.
 \begin{description}
+  \item[Signature] friend double operator||(const Point\& p1,const Point\&
+  p2).
+  \item[Arguments]  to the overloaded '||' operator.
+     \begin{description}
+        \item[p1, p2] The two points the distance of which will be
+  computed.
+      \end{description}
   \item[Returns] The distance between \tt p1 \rm and \tt p2\rm.
 \end{description}
 
-\subsubsection{friend inline bool operator==(const Point<T>\& p1, \\
-                                             const Point<T>\& p2);}
-Test for equality of two points
+\subsubsection{operator==}
+Test for equality. Two points are equal if the values for the x, y and z 
+coordinates are the same.
 \begin{description}
-  \item[Returns] true if points are the equal, otherwise false.
+  \item[Signature]  friend inline bool operator==(const Point\& p1,
+  const Point\& p2).
+    \item[Arguments]  to the overloaded '==' operator.
+      \begin{description}
+        \item[p1, p2] The two points equality of which will be
+  tested.
+      \end{description}
+  \item[Returns] true if p1 and p2  are equal, otherwise false.
 \end{description}
 
 \subsection{Private Data Members}
 \begin{description} 
-  \item [T x] The $x$-coordinate.
-  \item [T y] The $y$-coordinate.
-  \item [T z] The $z$-coordinate.
+  \item [x] The $x$-coordinate.
+  \item [y] The $y$-coordinate.
+  \item [z] The $z$-coordinate.
 \end{description}
 
 

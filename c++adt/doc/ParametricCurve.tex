@@ -1,24 +1,21 @@
 
 \section{ParametricCurve}
 
-The class \tt ParametricCurve \rm can be used to define simple
-functions.  The approximation of a function
-can be described  in an ASCII file that contains a set of $(x,y)$ pairs 
-defining the values of the function at given points. 
-There is no limit to the number of points
+The  class  \tt ParametricCurve  \rm  can  be  used to  define  simple
+functions.  A function $y = f(x)$ can  be described in an  ASCII file
+that  contains a  set  of $(x,y)$  pairs  defining the  values of  the
+function at given  points.  There is no limit to  the number of points
 that can be defined. At least two points must be defined.
 
-The $x$ values must be in ascending
-order and each $x$ value must have exactly one $y$ value. 
-Functions having steps can be defined by having two
-close enough $x$ values. The closer the two $x$ values are
-the better the step in the function is
-described.
+The $x$ values must be in ascending order and each $x$ value must have
+exactly one $y$ value.  Functions  having steps can be approximated by
+having two close enough $x$ values.  The closer the two $x$ values are
+the better the step in the function is described.
 
-The values of the function between the defined pairs are 
-interpolated  with a straight line. Values outside the defined
-pairs are extrapolated with a straight line defined by
-first two or last two$(x,y)$ pairs  found in the file.
+The values of the function  between the defined pairs are interpolated
+with  a   straight  line.  Values   outside  the  defined   pairs  are
+extrapolated  with  a straight  line  defined  by  first two  or  last
+two $(x,y)$ pairs found in the definition file.
 
 \subsection{Using Parametric Curve}
  
@@ -33,11 +30,12 @@ curve at $x = 2.0$.
 Tabbing \= Tabbing \= Tabbing \= Tab \= \kill
 \>\>\>\tt  ParametricCurve pc(``curve.fn''); \\
 \>\>\>\tt  if (pc.ok()) \\
-\>\>\>\>\tt pc.eval(2.0);
+\>\>\>\>\tt pc(2.0);
 \end{tabbing}
 First, the parametric curve is created and then after checking
 if the program was able to read the file the value of the curve
-is evaluated.
+is evaluated. The classes with overloaded function operators are
+also called functors.
 
 \begin{figure}[h]
 \begin{center}
@@ -98,99 +96,117 @@ class ParametricCurve{
 public:
   ParametricCurve();
   ParametricCurve(const vector<double>& v);
-  ParametricCurve(const CString& file_name);
-  bool install(const CString& file_name);
+  ParametricCurve(const string& file);
+  double operator()(double x)const;
+  bool install(const string& file);
   bool ok();
-  float eval(double x);
-  CString getFile();
+  double eval(double x)const;
+  string getFile();
 private:
-  ParametricCurve& read_xy_file(char *file_name);
-  CString file;
+  ParametricCurve& read_xy_file(char *file);
+  string file;
   vector<double> v;
   int num_of_elements;
 };
 \end{verbatim}
 
 \subsection{Public Methods}
-\subsubsection{ParametricCurve();}
-Default constructor, no parametric curve is defined.
-The curve must be defined by method \tt install()\rm.
-
+\subsubsection{ParametricCurve}
+The three overloaded constructors. The first (signature 1) does not define
+any parametric curve. Use method \tt install \rm  to define
+the curve. 
+ 
 \begin{description}
+    \item [Signature 1] ParametricCurve().
+    \item [Signature 2] ParametricCurve(const vector<double>\& v).
+    \item [Arguments] for the method.
+	\begin{description}
+           \item [v] The vector containing $(x,y)$ pairs for $y =
+    f(x)$. 
+        \end{description}
+     \item [Signature 3] ParametricCurve(const string\& file).
+    \item [Arguments] for the method.
+       \begin{description}
+           \item [file] The file containing $(x,y)$ pairs for $y =
+    f(x)$. 
+         \end{description} 
     \item [Returns] Nothing.
 \end{description} 
 
-\subsubsection{ParametricCurve(const vector<double>\& v);}  
-Create a parametric curve defined in vector \tt v\rm.
+\subsubsection{operator()}
+Evaluate the value $y$ of the curve at the point $x$. 
+See the method \tt eval\rm.
 \begin{description}
-    \item [Returns] Nothing.
+   \item [Signature] double  operator() (double x)const.
+   \item [Arguments] for the method.
+     \begin{description}
+        \item [x] The point $x$ where the value of the parametric curve 
+                  is to be evaluated.
+       \end{description}
+    \item [Returns] The value $y$ at the point $x$.
 \end{description} 
 
-\subsubsection{ParametricCurve(const CString\& file\_name);}
+\subsubsection{install}
+Install a parametric cure defined in the file \tt file\rm.
+ \begin{description}
+    \item [Signature] bool install(const string\& file).
+    \item [Arguments] for the method
+       \begin{description}
+         \item[file] The file containing  $(x,y)$ pairs for $y =
+    	f(x)$.
+        \end{description} 
+    \item [Returns] true if the parametric curve was properly defined,
+        	               false if not (see method \tt ok\rm).
+ \end{description} 
 
-Create a parametric curve defined in file \tt file\_name\rm.
 
-\subsubsection{install(const CString\& file\_name);}
-Install a parametric cure defined in the file \tt file\_name\rm.
-    \begin{description}
-       \item [Returns] true if  the parametric curve properly defined,
-                       false if not (see method \tt ok())\rm.
-    \end{description} 
-
-
-\begin{description}
-    \item [Returns] Nothing.
-\end{description} 
-
-\subsubsection{bool ok();} 
+\subsubsection{ok} 
 Checks if the parametric curve is properly defined. The curve is 
 properly defined if each $x$ value has exactly one $y$ value in the file and
-the $x$ values are in strictly ascending order.
-
-If you want to define functions that have ``steps'' (i.e, $x$ value
-has two $y$ values) you have to define two $x$ values that are 
-very close. 
-   
-    \begin{description}
-       \item [Returns] true if  the parametric curve properly defined,
+the $x$ values are strictly in ascending order.
+   \begin{description}
+    \item [Signature] bool ok().
+    \item [Returns] true if  the parametric curve properly defined,
                        false if not. 
-    \end{description} 
+   \end{description} 
 
-\subsubsection{float eval(double x);}
-Evalute the value of the curve at the point \tt x\rm.
+\subsubsection{eval}
+Evalute the value $y$  of the curve at the point $x$.
 \begin{description}  
+    \item [Signature] double eval(double x).
     \item [Arguments] for the method.
       \begin{description}
-        \item [x] The point where the value of the parametric curve 
-                  is evaluated.
+        \item [x] The point $x$ where the value of the parametric curve 
+                  is to be evaluated.
        \end{description}
-    \item [Returns] The value at the point \tt x\rm.
+    \item [Returns] The value $y$ at the point $x$.
 \end{description} 
 
-\subsubsection{CString getFile()}
+\subsubsection{getFile}
 \begin{description}
-       \item [Returns] The name of the file where the curve is defined
-    \end{description}
-
+    \item [Signature] string  getFile().
+    \item [Returns] The file where the curve is defined.
+\end{description}
 
 \subsection{Private Methods}
-\subsubsection{ParametricCurve\& read\_xy\_file(char* file\_name);}
+
+\subsubsection{read\_xy\_file}
 Read the file and create the internal representation of the parametric curve.
-This method should be reimplemented allowing user to include
-comments in the file. (See class \tt Lex\rm).
  \begin{description}
+     \item [Signature] ParametricCurve\& read\_xy\_file(char*
+ file\_name).
     \item [Arguments] for the method.
       \begin{description}
-        \item [file\_name] The file where the parametric curve is defined.
+        \item [file] The file where the parametric curve is defined.
        \end{description}
     \item [Returns] The parametric curve itself.
  \end{description} 
 
 \subsection{Private Data Members}
 \begin{description}
- \item [CString file] The name of the file where the parametric curve
+ \item [file] The name of the file where the parametric curve
                       is defined.
- \item [vector<double> v] Vector containg the internal representation of the
+ \item [v] Vector containg the internal representation of the
                           parametric curve. 
- \item [int num\_of\_elements]  The length of the vector \tt v\rm.
+ \item [num\_of\_elements]  The length of the vector \tt v\rm.
 \end{description}

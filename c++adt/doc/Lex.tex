@@ -90,12 +90,12 @@ Tabbing \= Tabbing \= Tabbing \= Tab \= \kill
 \>\>\>\tt Token token; \\
 \>\>\>\tt token = lex.getToken(); \\  
 \>\>\>\tt while (token.getType() != ENDFILE)\{\\
-\>\>\>\>\tt //Decide what to do with the token\\
+\>\>\>\>\tt //Decide here what to do with the token\\
 \>\>\>\>\tt lex.getToken();\\
 \>\>\>\tt \}
 \end{tabbing}
 
-The method \tt getToken() \rm returns one token at a time and
+The method \tt getToken\rm returns one token at a time and
 also removes the token from the list. More complex algorithms can
 be designed by using methods that only peeks the next token
 and puts a token back into the token list.
@@ -121,38 +121,44 @@ private:
 
 \subsection{Public Methods}
 
-\subsubsection{\~{ }Lex()}
+\subsubsection{Lex}
 
 The destructor, delete the list of tokens.
 \begin{description}
+  \item [Signature] \~{ }Lex()
   \item [Returns]  Nothing.
 \end{description}
 
-\subsubsection{Lex\& scan(const char *file);}
-Read the file and create the list of
-tokens. 
+\subsubsection{scan}
+Read the file and create the list of tokens. 
 \begin{description}
-  \item [Returns] The tokenizer containing now the list of tokens.
+   \item [Signature] Lex\& scan(const char *file).
+   \item [Arguments] to the method.
+     \begin{description}
+        \item [file] The file for the lexical analysis.
+     \end{description} 
+  \item [Returns] The tokenizer (lexer) containing the list of tokens.
 \end{description}
 
-\subsubsection{Token peek();}
-Return the first token in the token list. The token list is not
+\subsubsection{peek}
+Return the first token in the token list. The list of tokens  is not
 changed.
 \begin{description}
+  \item [Signature] Token peek().
   \item [Returns] The first token.
 \end{description}
 
-\subsubsection{Token getToken();}
-Like \tt peek() \rm but the token is removed from
-the token list. 
-changed.
+\subsubsection{getToken}
+Like \tt peek \rm but the token is removed from the token list. 
 \begin{description}
+  \item [Signature] Token getToken().
   \item [Returns] The first token.
 \end{description}
 
-\subsubsection{Lex\& putToken(const Token\& token);}
+\subsubsection{putToken}
 Insert the token \tt token \rm as the first element in the token list. 
 \begin{description}
+  \item [Signature] Lex\& putToken(const Token\& token),
   \item [Arguments] to the method
     \begin{description}
       \item [token] The token to be inserted.
@@ -161,58 +167,62 @@ Insert the token \tt token \rm as the first element in the token list.
 \end{description}
 
 \subsection{Protected Methods}
-
-\subsubsection{Lex\& scanId();}
-Generates identifier token using C-library function \tt isalnum\rm. 
-However, the first character must be alphabetic. 
+The protected methods are used when generating the list of tokens from
+a file. The user of the class must not use them directly.
+\subsubsection{scanId}
+Generates identifier token (ID) using C-library function \tt isalnum\rm. 
+However, the first character must be alphabetic, i.e., in [A..Z][a..z]. 
 \begin{description}
+  \item [Signature] Lex\& scanId().
   \item [Returns] The tokenizer.
 \end{description}
 
-\subsubsection{Lex\& scanNum();}  
+\subsubsection{scanNum}  
 Generates token representing number (integer or real).
 \begin{description}
+  \item [Signature] Lex\&  scanNum().
   \item [Returns] The tokenizer.
 \end{description}
 
-\subsubsection{Lex\& scanSpecial();}
-Generates token for special characters.
+\subsubsection{scanSpecial}
+Generates token for special characters. 
 \begin{description}
+  \item [Signature] Lex\&  scanSpecial().
   \item [Returns] The tokenizer.   
 \end{description}
 
 \subsection{Private Data Memebers}
 \begin{description}
-  \item [ifstream ifile] The ASCII file stream.
-  \item [DList token\_ls] The list of tokens generated 
+  \item [ifile] The ASCII file stream.
+  \item [token\_ls] The list of tokens generated 
    from the file stream \tt ifile\rm. The \tt DList \rm
    is here for historical reasons and might change to the \tt list
   \rm type provided by STL. This change will not affect the visible part
    of the class \tt Lex \rm (i.e., the use of the class). 
 \end{description}
 
-\subsection{Token}
-A single token in \tt Lex \rm is represented as a pair of its string value and 
-token type. The possible token types are enumerated as 
-\tt TOKEN\_TYPE\rm.
+\section{Token}
+A single token of type \tt Token  \rm in \tt Lex \rm is represented as
+a pair of its string value and type, e.g., (``foo'',ID).  The possible
+types are enumerated as \tt TOKEN\_TYPE\rm.
 
-\subsubsection{The Class Declaration of Token}
+\subsection{The Class Declaration of Token}
 \begin{verbatim}
 class Token{
 public:
   Token():value(""),type(ENDFILE){}
-  Token(const CString& token_value, TOKEN_TYPE token_type);
+  Token(const string& token_value, TOKEN_TYPE token_type);
   Token(const Token& token);
-  CString getValue()const{return value;}
+  string getValue()const{return value;}
   TOKEN_TYPE getType()const{return type;}
   Token& operator = (const Token& token);
 private:
-  CString value;
+  string value;
   TOKEN_TYPE type;
 };
 \end{verbatim}
 
-\subsubsection{Type Definitions}
+\subsection{Type Definitions}
 The type of the token is represented as enumerated data type 
 \tt TOKEN\_TYPE\rm:
 
@@ -226,47 +236,55 @@ The possible values are \tt COLON \rm for ':', \tt DOT \rm for '.',
 \tt HYPHEN \rm for '-', \tt ID \rm for identifier, \tt INT \rm for
 integer and \tt SLASH \rm for '/'.
 
-\subsubsection{Public Methods}
+\subsection{Public Methods}
 
-\subsubsection{Token();}
-The default constructor that creates a token representing the
-end of file.
+\subsubsection{Token}
+The constructor.
 \begin{description}
+  \item [Signature 1] Token().
+  \item [Signature 2] Token(const string\& value, TOKEN\_TYPE type).
+  \item [Arguments] for the method.
+     \begin{description}
+        \item [value] The string value of the token.
+        \item [type]  The type of a token.
+     \end{description}
+  \item [Signature 3] Token(const Token\& token).
+  \item [Arguments] for the method.
+     \begin{description}
+        \item [token] The token for the copy constructor.
+     \end{description}
   \item [Returns] Nothing.
 \end{description}
 
-\subsubsection{Token(const CString\& value, TOKEN\_TYPE type);}
-Constructor that creates token with a known string value and token type.
-\begin{description}
-  \item [Returns] Nothing.
-\end{description}
-
-\subsubsection{Token(const Token\& token);}
-Copy constructor.
-\begin{description}
-  \item [Returns] Nothing.
-\end{description}
-
-\subsubsection{CString getValue() const;}
+\subsubsection{getValue}
 Query the string value of the token.
 \begin{description}
+  \item [Signature] string getValue() const.
   \item [Returns] The string value of the token.
 \end{description}
 
-\subsubsection{TOKEN\_TYPE getType() const;}
+\subsubsection{getType}
 Query the type of the token.
 \begin{description}
+  \item [Signature] TOKEN\_TYPE getType() const.
   \item [Returns] The type of the token.
 \end{description}
 
-\subsubsection{Token\& operator = (const Token\& token);}
+\subsubsection{operator=}
 The assignment operator.
 \begin{description}
+  \item [Signature] Token\& operator = (const Token\& token).
+  \item [Arguments] for the overloaded '=' operator.
+    \begin{description}
+      \item [token] The token on the right side of the assignment. 
+    \end{description}
   \item [Returns] The token (on the left side of the assignment).
 \end{description}
 
-\subsubsection{Private Data Memebers}
+\subsection{Private Data Memebers}
 \begin{description}
-  \item [CString value] The string value of the token.
-  \item [TOKEN\_TYPE type]  The type of the token.
+  \item [value] The string value of the token.
+  \item [type]  The type of the token.
 \end{description}
+
+
