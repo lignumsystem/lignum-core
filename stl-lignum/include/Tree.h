@@ -104,8 +104,6 @@ namespace Lignum{
 				    // the  number of the  buds. If no
 				    // effect the value is always 1 of
 				    // this function
-    ParametricCurve nleaves; //The number  of leaves as  a function of
-			     //segment length
   };
 
   class TreeInitializationFiles{
