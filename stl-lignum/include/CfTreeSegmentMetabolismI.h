@@ -31,8 +31,8 @@ void CfTreeSegment<TS,BUD>::respiration()
 template <class TS,class BUD>
 void CfTreeSegment<TS,BUD>::aging()
 {
-  //Add age first: one (year) time step 
-  SetValue(*this,age,GetValue(*this,age) + 1);
+  //Add age (see foliage senescence below)
+  SetValue(*this,age,GetValue(*this,age)+1.0);
 
   //Sapwood senescence
   LGMdouble dAs = GetValue(GetTree(*this),ss) * GetValue(*this,As);
@@ -50,25 +50,25 @@ void CfTreeSegment<TS,BUD>::aging()
 template <class TS, class BUD>
 TcData& CfTreeSegment<TS,BUD>::diameterGrowth(TcData& data)
 {
-  CfData& cfdata = dynamic_cast<CfData&>(data);
- 
-  const ParametricCurve& fm = GetFunction(GetTree(*this),LGMFM);
-  LGMdouble Asu = GetValue(data,As); //sapwood area from above
-  LGMdouble Ahown  = GetValue(*this,Ah);//own heartwood
-  //Sapwood  requirement  of  remaining  foliage,  assume  fm  returns
-  //proportion initial  foliage present, declining function  from 1 to
-  //0.
-  LGMdouble Asr = fm(GetValue(*this,age))*GetValue(*this,As0);
-  //possible new radius
-  LGMdouble Rnew = sqrt((Asu + Ahown + Asr)/PI_VALUE);
-  //compare Rnew to R, choose max
-  Rnew = max(Rnew, GetValue(*this,R));
-  //New wood radius
-  SetValue(*this,R,Rnew);
-  
-  //Pass down sapwood area
+  //New segment (age == 0) is iteratively set. 
+  if (GetValue(*this,age) > 0.0){
+    const ParametricCurve& fm = GetFunction(GetTree(*this),LGMFM);
+    LGMdouble Asu = GetValue(data,As); //sapwood area from above
+    LGMdouble Ahown  = GetValue(*this,Ah);//own heartwood
+    //Sapwood  requirement  of  remaining  foliage,  assume  fm  returns
+    //proportion initial  foliage present, declining function  from 1 to
+    //0.
+    LGMdouble Asr = fm(GetValue(*this,age))*GetValue(*this,As0);
+    //possible new radius
+    LGMdouble Rnew = sqrt((Asu + Ahown + Asr)/PI_VALUE);
+    //compare Rnew to R, choose max
+    Rnew = max(Rnew, GetValue(*this,R));
+    //New wood radius
+    SetValue(*this,R,Rnew);
+  }
+  //Pass down sapwood area requirement
   SetValue(data,As,GetValue(*this,As)); 
-
+  
   return data;
 }
 
