@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
  //create the first tree segment
   TreeSegment<MyTreeSegment> *ts = 
     new TreeSegment<MyTreeSegment>(Point<METER>(0,0,0),PositionVector(0,0,1.0),
-				   0, 0.4, 0.3, 0.2,&tree);
+				   0, 0.3, 0.3, 0.2,&tree);
   //create the branching point
   BranchingPoint<MyTreeSegment> *bp = 
     new BranchingPoint<MyTreeSegment>(Point<METER>(0,0,0),
@@ -73,11 +73,11 @@ int main(int argc, char *argv[])
   InsertTreeCompartment(axis,bp);
   TreeSegment<MyTreeSegment> *ts2 = 
     new TreeSegment<MyTreeSegment>(Point<METER>(0,0,0.3),PositionVector(0,0,1.0),
-				   0, 0.4, 0.3, 0.2,&tree);
+				   0, 0.3, 0.3, 0.2,&tree);
   InsertTreeCompartment(axis,ts2);
 
   ts2 = new TreeSegment<MyTreeSegment>(Point<METER>(0,0,0.6),PositionVector(0,0,1.0),
-				   0, 0.4, 0.3, 0.2,&tree);
+				   0, 0.3, 0.3, 0.2,&tree);
 
  
   InsertTreeCompartment(axis,ts2);
@@ -120,6 +120,8 @@ int main(int argc, char *argv[])
   ConnectionMatrix<MyTreeSegment,DefaultBud<MyTreeSegment> > *cm = 
     new ConnectionMatrix<MyTreeSegment,DefaultBud<MyTreeSegment> >(GetAxis(tree)); 
   Accumulate(tree, count1, CountTreeSegments<MyTreeSegment>()); 
+
+
   while (aa != 'q')
     {       
       Accumulate(tree, count2, CountTreeSegments<MyTreeSegment>());
@@ -130,7 +132,7 @@ int main(int argc, char *argv[])
 	  count1 = count2;
 	}
      
-      for (int i=0; i<200; i++)
+      for (int i=0; i<200; i++)     
 	tree.UpdateWaterFlow(.25, *cm);
       cm->print();
       cout << endl << endl << endl;

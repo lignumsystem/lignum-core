@@ -15,7 +15,7 @@ TreeAttributes::TreeAttributes()
 }
 
 TreeTransitVariables::TreeTransitVariables()
-  :lambda(0.0),g(9.81),eta(1/pow(10,3)),Er((7.993-6.030e-4)/20),k(1/pow(10,12)),rhow(1000.0)
+  :lambda(0.0),g(9.81),eta(1/pow(10,3)),Er((7.993-(6.030e-1))*1000000),k(1/pow(10,12)),rhow(1000.0)
 {
 }
 
@@ -46,12 +46,14 @@ void Tree<TS,BUD>::UpdateWaterFlow(TP time_step, const ConnectionMatrix<TS,BUD> 
     
     for (int a=0; a<cm.getSize(); a++){
       if (i != a && cm.getTreeSegment(i, a) != 0){
+
 	TreeSegment<TS,BUD> *in = cm.getTreeSegment(i,a);	
-	SetTSAttributeValue(*in, fin, CountFlow(*in, *out,  time_step));
+	SetTSAttributeValue(*in, fin, CountFlow(*in, *out));
       }
-      SetTSAttributeValue(*out, fout, 0);  // 
+      SetTSAttributeValue(*out, fout, 0);   
     }	
   }
+
   TreeSegment<TS,BUD> *in = cm.getTreeSegment(0);
   SetTSAttributeValue(*in, fin, 3* 0.12e-9);
   
@@ -66,77 +68,61 @@ void Tree<TS,BUD>::UpdateWaterFlow(TP time_step, const ConnectionMatrix<TS,BUD> 
 	SetTSAttributeValue(*out, fout, GetTSAttributeValue(*out, fout)+GetTSAttributeValue(*in, fin));
       }
     }
+
     TP Dw = GetTSAttributeValue(*out, R);  //diameter of sapwood
     
-    TP new_pressure = GetTSAttributeValue(*out, Pr) + time_step * ttp.Er / Dw *
+    TP new_pressure = GetTSAttributeValue(*out, Pr) + time_step * ttp.Er / Dw * 2  /
+      (ttp.rhow * PI_VALUE *  GetTSAttributeValue(*out, L) *  GetTSAttributeValue(*out, R)) *
       ( GetTSAttributeValue(*out, fin) - GetTSAttributeValue(*out, fout) - 
 	out->GetTranspiration(time_step));  
     
-    
-    cout << i << ":virtaus sisään " <<  GetTSAttributeValue(*out, fin) << " ; ulos " << GetTSAttributeValue(*out, fout) << " haihdunta:" << out->GetTranspiration(time_step)  <<endl;
-    cout << "SUMMA = " <<  GetTSAttributeValue(*out, fin) - GetTSAttributeValue(*out, fout) -  out->GetTranspiration(time_step) << endl << endl;
-    
-    SetTSAttributeValue(*out, Pr, new_pressure); 
-    
-    
-    SetTSAttributeValue(*out, Wm, GetTSAttributeValue(*out, Wm) + GetTSAttributeValue(*out, fin)-  GetTSAttributeValue(*out, fout) - out->GetTranspiration(0.0)); 
+   
+     cout << i << ":virtaus sisään " <<  GetTSAttributeValue(*out, fin)*time_step << " ; ulos " << GetTSAttributeValue(*out, fout)*time_step << " haihdunta:" << out->GetTranspiration(time_step)*time_step  <<endl;
+    cout << "SUMMA = " <<  (GetTSAttributeValue(*out, fin) - GetTSAttributeValue(*out, fout) -  out->GetTranspiration(time_step))*time_step << " paineen muutos " <<  time_step * ttp.Er / Dw * 2 * ttp.rhow /
+      (PI_VALUE *  GetTSAttributeValue(*out, L) *  GetTSAttributeValue(*out, R)) *
+      ( GetTSAttributeValue(*out, fin) - GetTSAttributeValue(*out, fout) - 
+	out->GetTranspiration(time_step)) << endl;
+    cout << "uusi paine " << new_pressure << endl;
+        
+    SetTSAttributeValue(*out, Pr, new_pressure);         
+    SetTSAttributeValue(*out, Wm, GetTSAttributeValue(*out, Wm) + (GetTSAttributeValue(*out, fin)-  GetTSAttributeValue(*out, fout) - out->GetTranspiration(0.0))* time_step); 
   }
-  cout << endl << endl << endl; 
+  cout << endl; 
 }
 
 
 
 // This method counts the flow from the TreeSegment below (out) to the TreeSegment above.
-template <class TS,class BUD>
-TP Tree<TS,BUD>::CountFlow(TreeSegment<TS,BUD> &in, TreeSegment<TS,BUD> &out, TP time_step)
-{
-  
 
+template <class TS,class BUD>
+TP Tree<TS,BUD>::CountFlow(TreeSegment<TS,BUD> &in, TreeSegment<TS,BUD> &out)
+
+{
   TP ar = GetTSAttributeValue(out, area);
   TP le = GetTSAttributeValue(out, L);
-  TP he = GetTSAttributeValue(out, H);
+  TP he = GetTSAttributeValue(in, H) - GetTSAttributeValue(out, H);
+
   TP pr_out = GetTSAttributeValue(out, Pr);  // Pressure in the element above
   TP pr_in = GetTSAttributeValue(in, Pr);    // Pressure in the element below
  
-  return ttp.rhow * (ttp.k/ ttp.eta) * (ar / le) * (pr_out - pr_in - (ttp.rhow*ttp.g*he)) * time_step;
+  cout << " area " << ar << endl;
+  cout << "pituus " << le << endl;
+  cout << " korkeus ero " << he << endl;
+  cout << " paine ero " << pr_out - pr_in - (ttp.rhow * ttp.g * he) << endl;
+  cout << " vakio " <<  ttp.rhow * (ttp.k/ ttp.eta) * (ar / le) << endl;
+
+  /*
+  // cout << "paine sisaan" << pr_out << " ulos  " <<  pr_in << " hydro  " << ttp.rhow* ttp.g * he << " summa " <<(pr_out - pr_in) - (ttp.rhow * ttp.g * he) << endl;  
+ 
+  */
+
+ cout << "   virtaus " << ttp.rhow * (ttp.k/ ttp.eta) * (ar / le) * (pr_out - pr_in - (ttp.rhow * ttp.g * he)) << endl << endl;
+  
+
+  return ttp.rhow * (ttp.k/ ttp.eta) * (ar / le) * (pr_out - pr_in - (ttp.rhow * ttp.g * he));
 }
 
 
-//<<<<<<< Tree.cc
-//=======
-/*
-
-//This method builds the connection matrix, where the structure of the tree
-//is stored. 
-template <class TS,class BUD>
-void Tree<TS,BUD>::BuiltConnectionMatrix()
-{  
-  TreeSegment<MyTreeSegment> *lastSegment = NULL;
-  list<TreeCompartment<MyTreeSegment>*>& ls = GetTreeCompartmentList(axis);
-  list<TreeCompartment<MyTreeSegment>*>::iterator I = ls.begin();
-  cm = new ConnectionMatrix<MyTreeSegment>(CountTreeSegments(this->axis));
-
-  while(I != ls.end()){      
-    if (TreeSegment<MyTreeSegment>* myts = dynamic_cast<TreeSegment<MyTreeSegment>*>(*I)){	
-      cm->AddConnection(lastSegment, myts);
-      lastSegment = myts;
-    }      
-    if (BranchingPoint<MyTreeSegment>* mybp = dynamic_cast<BranchingPoint<MyTreeSegment>*>(*I)){
-      list<Axis<TS,BUD>*>& axis_ls = GetAxisList(*mybp);  	  
-      list<Axis<TS,BUD>*>::iterator I = axis_ls.begin();
-      while(I != axis_ls.end()){	      
-	Axis<MyTreeSegment> *axis = *I;
-	if (lastSegment)
-	  makeAxis(*axis, *lastSegment);
-	I++;
-      }  
-    }  
-    I++;
-  }
-}
-*/
-
-//>>>>>>> 1.12
 
 
 

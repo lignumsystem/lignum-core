@@ -88,8 +88,8 @@ public:
   Tree(const Point<METER>& p, const PositionVector& d);
   void UpdateWaterFlow(TP time, const ConnectionMatrix<TS,BUD> &cm);
 private:
- 
-  TP CountFlow(TreeSegment<TS,BUD> &in, TreeSegment<TS,BUD> &out, TP time);
+  TP CountFlow(TreeSegment<TS,BUD> &in, TreeSegment<TS,BUD> &out);
+
   TreeAttributes ta;
   TreeFunctions tf;
   TreeParameters tp;

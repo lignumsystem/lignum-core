@@ -48,8 +48,8 @@ TreeSegment<TS,BUD>::TreeSegment(const Point<METER>& p, const PositionVector& d,
 
   //compute the initial pressure in the TreeSegment    
   SetTSAttributeValue(*this, Wm, 0.5 * 1000 * l * r * r * PI_VALUE);
-  SetTSAttributeValue(*this, Pr, (-p.getZ() - l/2) * 9.81 * 1000);
-
+  SetTSAttributeValue(*this, Pr, (-p.getZ()-l/2) * 9.81 * 1000); 
+  cout << " paine " << (-p.getZ()-l/2) * 9.81 * 1000 << endl;
 }
 
 template <class TS,class BUD>
@@ -63,7 +63,8 @@ TreeSegment<TS,BUD>::~TreeSegment()
 template <class TS,class BUD>
 TP TreeSegment<TS,BUD>::GetTranspiration(TP time)
 {
-  return time * 0.12e-9;
+  
+  return 0.12e-9;
 }
 
 
