@@ -11,128 +11,128 @@ namespace Lignum{
 
 
 
-template <class TS, class BUD>
-TreeCompartment<TS,BUD>* DrawBudFunctor<TS,BUD>::operator()(TreeCompartment<TS,BUD>* tc)const
-{
-  if (Bud<TS,BUD>* mybud = dynamic_cast<Bud<TS, BUD>*>(tc))
+  template <class TS, class BUD>
+    TreeCompartment<TS,BUD>* DrawBudFunctor<TS,BUD>::operator()(TreeCompartment<TS,BUD>* tc)const
     {
-      //cout << "Budi!" << endl;
-      drawBud(mybud, mode);
-    } 
+      if (Bud<TS,BUD>* mybud = dynamic_cast<Bud<TS, BUD>*>(tc))
+	{
+	  //cout << "Budi!" << endl;
+	  drawBud(mybud, mode);
+	} 
 
-  return tc;
-}
+      return tc;
+    }
 
 
 
-template <class TS, class BUD>
-TreeCompartment<TS,BUD>* DrawStemFunctor<TS,BUD>::operator()(TreeCompartment<TS,BUD>* tc)const
-{
-	if (TreeSegment<TS, BUD>* ts = dynamic_cast<TreeSegment<TS, BUD>*>(tc))
+  template <class TS, class BUD>
+    TreeCompartment<TS,BUD>* DrawStemFunctor<TS,BUD>::operator()(TreeCompartment<TS,BUD>* tc)const
+    {
+      if (TreeSegment<TS, BUD>* ts = dynamic_cast<TreeSegment<TS, BUD>*>(tc))
 	{  			
-		LGMdouble radius = GetValue(*ts, R);
-		if (radius > min_rad && radius<=max_rad)	
-		{
+	  LGMdouble radius = GetValue(*ts, R);
+	  if (radius > min_rad && radius<=max_rad)	
+	    {
 
-			float length;
-			float radius_top;
-			float rot_x;
-			float rot_y;
-			float rot_angle;
+	      float length;
+	      float radius_top;
+	      float rot_x;
+	      float rot_y;
+	      float rot_angle;
 
-			Point position;
-			PositionVector direction = GetDirection(*ts);
+	      Point position;
+	      PositionVector direction = GetDirection(*ts);
 
-			length = GetValue(*ts, L); 
+	      length = GetValue(*ts, L); 
 			
-			radius_top = GetValue(*ts, RTop);
-			position = GetPoint(*ts);
+	      radius_top = GetValue(*ts, RTop);
+	      position = GetPoint(*ts);
 		
-			direction.normalize();
-			rot_x = -1*direction.getVector()[1];
-			rot_y =    direction.getVector()[0];
-			rot_angle = (360/(2*PI_VALUE))*acos((double)direction.getVector()[2]);
-			glPushMatrix();
-			glTranslatef(position.getX(), position.getY(), position.getZ());
-			if (rot_angle == 180.0){
-			  rot_y = 1.0;
-			}
-			glRotatef( rot_angle, rot_x, rot_y, 0);
-			float rad_limit = 0.05;
-			MakeCylinder(radius, radius, length, rad_limit); 
-			glPopMatrix();
+	      direction.normalize();
+	      rot_x = -1*direction.getVector()[1];
+	      rot_y =    direction.getVector()[0];
+	      rot_angle = (360/(2*PI_VALUE))*acos((double)direction.getVector()[2]);
+	      glPushMatrix();
+	      glTranslatef(position.getX(), position.getY(), position.getZ());
+	      if (rot_angle == 180.0){
+		rot_y = 1.0;
+	      }
+	      glRotatef( rot_angle, rot_x, rot_y, 0);
+	      float rad_limit = 0.05;
+	      MakeCylinder(radius, radius, length, rad_limit); 
+	      glPopMatrix();
 			
-		}
+	    }
 		
 	} 
-	return tc;
-}
+      return tc;
+    }
 
 
 
 
-template <class TS, class BUD>
-TreeCompartment<TS,BUD>* DrawLeavesFunctor<TS,BUD>::operator()(TreeCompartment<TS,BUD>* tc)const
-{
-	if (TreeSegment<TS, BUD>* ts = dynamic_cast<TreeSegment<TS, BUD>*>(tc))
+  template <class TS, class BUD>
+    TreeCompartment<TS,BUD>* DrawLeavesFunctor<TS,BUD>::operator()(TreeCompartment<TS,BUD>* tc)const
+    {
+      if (TreeSegment<TS, BUD>* ts = dynamic_cast<TreeSegment<TS, BUD>*>(tc))
 	{  			
-		if (HwTreeSegment<TS,BUD>* hwts = dynamic_cast<HwTreeSegment<TS,BUD>*>(ts))
+	  if (HwTreeSegment<TS,BUD>* hwts = dynamic_cast<HwTreeSegment<TS,BUD>*>(ts))
+	    {
+			
+	      float length;
+	      float radius_top;
+	      float rot_x;
+	      float rot_y;
+	      float rot_angle;
+
+	      Point position;
+	      PositionVector direction = GetDirection(*ts);
+
+	      LGMdouble radius = GetValue(*ts, R);
+	      length = GetValue(*ts, L); 
+	      radius_top = GetValue(*ts, RTop);
+	      position = GetPoint(*ts);
+			
+	      rot_x = -1*direction.getVector()[1];
+	      rot_y =    direction.getVector()[0];
+	      rot_angle = (360/(2*PI_VALUE))*acos((double)direction.getVector()[2]);
+			
+	      float xx = direction.getX() * length;
+	      float yy = direction.getY() * length;
+	      float zz = direction.getZ() * length;
+
+	      Point np(position.getX()+xx, position.getY()+yy, position.getZ()+zz);		
+
+	      std::list<BroadLeaf*>& leaf_list = GetLeafList(*hwts);
+	      std::list<BroadLeaf*>::iterator I;
+	      for(I = leaf_list.begin(); I != leaf_list.end(); I++) 
 		{
-			float length;
-			float radius_top;
-			float rot_x;
-			float rot_y;
-			float rot_angle;
-
-			Point position;
-			PositionVector direction = GetDirection(*ts);
-
-			LGMdouble radius = GetValue(*ts, R);
-			length = GetValue(*ts, L); 
-			radius_top = GetValue(*ts, RTop);
-			position = GetPoint(*ts);
-			
-			rot_x = -1*direction.getVector()[1];
-			rot_y =    direction.getVector()[0];
-			rot_angle = (360/(2*PI_VALUE))*acos((double)direction.getVector()[2]);
-			
-			float xx = direction.getX() * length;
-			float yy = direction.getY() * length;
-			float zz = direction.getZ() * length;
-
-			Point np(position.getX()+xx, position.getY()+yy, position.getZ()+zz);		
-
-			std::list<BroadLeaf*>& leaf_list = GetLeafList(*hwts);
-			std::list<BroadLeaf*>::iterator I;
+		  LGMdouble area = GetValue(**I, A);   //BroadLeaf returns true area of the leaf
 				
-			for(I = leaf_list.begin(); I != leaf_list.end(); I++) 
-			{
-				LGMdouble area = GetValue(**I, A);   //BroadLeaf returns true area of the leaf
-				
-				Petiole pet = GetPetiole(**I);
+		  Petiole pet = GetPetiole(**I);
 
-				LGMdouble rx = sqrt(area / 3.14);
-				LGMdouble ry = sqrt(area / 3.14);
+		  LGMdouble rx = sqrt(area / 3.14);
+		  LGMdouble ry = sqrt(area / 3.14);
 
-				PositionVector pv(GetEndPoint(pet)-GetStartPoint(pet));
-				pv.getVector()[2] = 0.0;
-				pv.normalize();
+		  PositionVector pv(GetEndPoint(pet)-GetStartPoint(pet));
+		  pv.getVector()[2] = 0.0;
+		  pv.normalize();
 
-				LGMdouble ang = (360/(2*PI_VALUE))*acos((double)pv.getVector()[1]);
+		  LGMdouble ang = (360/(2*PI_VALUE))*acos((double)pv.getVector()[1]);
 
-				glPushMatrix();  
-				glTranslatef(np.getX(), np.getY(), np.getZ());          
-				glRotatef( ang, 0, 0, 1); 			
+		  glPushMatrix();  
+		  glTranslatef(np.getX(), np.getY(), np.getZ());          
+		  glRotatef( ang, 0, 0, 1); 			
 							
-				// sivuttaiskallistus
-				glRotatef( rand()%30-15, 0, 1, 0);
-				Make3DLeave( rx*leave_size_x, ry*leave_size_y, radius+0.01); 
-				glPopMatrix();    	
-			}
+		  // sivuttaiskallistus
+		  glRotatef( rand()%30-15, 0, 1, 0);
+		  Make3DLeave( rx*leave_size_x, ry*leave_size_y, radius+0.01); 
+		  glPopMatrix();    	
 		}
+	    }
 	} 
-	return tc;
-}
+      return tc;
+    }
 
 
 }
@@ -140,39 +140,39 @@ TreeCompartment<TS,BUD>* DrawLeavesFunctor<TS,BUD>::operator()(TreeCompartment<T
 
 
 template <class TS, class BUD>
-TreeCompartment<TS,BUD>* DrawNeedlesFunctor<TS,BUD>::operator()(TreeCompartment<TS,BUD>* tc)const
+							      TreeCompartment<TS,BUD>* DrawNeedlesFunctor<TS,BUD>::operator()(TreeCompartment<TS,BUD>* tc)const
 {
   if (CfTreeSegment<TS, BUD>* cfts = dynamic_cast<CfTreeSegment<TS, BUD>*>(tc))
     {
-	  float length;
-	  float radius_top;
-	  float radius;
-	  float rot_x;
-	  float rot_y;
-	  float rot_angle;
+      float length;
+      float radius_top;
+      float radius;
+      float rot_x;
+      float rot_y;
+      float rot_angle;
 	  
-	  Point position;
-	  PositionVector direction = GetDirection(*cfts);
+      Point position;
+      PositionVector direction = GetDirection(*cfts);
 	  
-	  length = GetValue(*cfts, L); 
-	  radius_top = GetValue(*cfts, RTop);
-	  position = GetPoint(*cfts);
+      length = GetValue(*cfts, L); 
+      radius_top = GetValue(*cfts, RTop);
+      position = GetPoint(*cfts);
 	  
-	  rot_x = -1*direction.getVector()[1];
-	  rot_y =    direction.getVector()[0];
-	  rot_angle = (360/(2*PI_VALUE))*acos((double)direction.getVector()[2]);
-	  radius = GetValue(*cfts, R);
+      rot_x = -1*direction.getVector()[1];
+      rot_y =    direction.getVector()[0];
+      rot_angle = (360/(2*PI_VALUE))*acos((double)direction.getVector()[2]);
+      radius = GetValue(*cfts, R);
 	  
-	  if (GetValue(*cfts, Wf) > 0)
-	    {               
+      if (GetValue(*cfts, Wf) > 0)
+	{               
 	      
-	      glPushMatrix();
-	      glTranslatef(position.getX(), position.getY(), position.getZ());
-	      if (rot_angle > 0.01)
-		glRotatef( rot_angle, rot_x, rot_y, 0);
-	      draw_texfoliage_planes(length, radius, GetValue(*cfts, Wf), GetValue(*cfts, age));         
-	      glPopMatrix();
-	    }                       
+	  glPushMatrix();
+	  glTranslatef(position.getX(), position.getY(), position.getZ());
+	  if (rot_angle > 0.01)
+	    glRotatef( rot_angle, rot_x, rot_y, 0);
+	  draw_texfoliage_planes(length, radius, GetValue(*cfts, Wf), GetValue(*cfts, age));         
+	  glPopMatrix();
+	}                       
     }
   return tc;
 }
