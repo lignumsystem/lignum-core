@@ -781,7 +781,7 @@ namespace Lignum {
   }
 
   //Write Qabs, Qin and foliage mass to a GnuPlot file
-  void  VoxelSpace::writeVoxelBoxesToGnuPlotFile(const string& filename)
+  void  VoxelSpace::writeVoxelBoxesToGnuPlotFile(const string& filename, const string& sep)
   {
     ofstream file(filename.c_str());
 
@@ -790,21 +790,23 @@ namespace Lignum {
 	for(int i3=0; i3<Zn; i3++){
 	    if ( voxboxes[i1][i2][i3].getFoliageMass() > R_EPSILON){
 	      file << left << setfill(' ')
-		   << setw(4) << i1 << " " 
-		   << setw(4) << i2 << " " 
-		   << setw(4) << i3 << " "
-		   << setw(11) << voxboxes[i1][i2][i3].getCenterPoint().getX() << " "
-		   << setw(11) << voxboxes[i1][i2][i3].getCenterPoint().getY() << " "
-		   << setw(11) << voxboxes[i1][i2][i3].getCenterPoint().getZ() << " "
-		   << setw(11) << voxboxes[i1][i2][i3].getQabs() << " " 
-		   << setw(11) << voxboxes[i1][i2][i3].getQin() << " " 
-		   << setw(11) << voxboxes[i1][i2][i3].getNeedleMass() << " "
-		   << setw(11) << voxboxes[i1][i2][i3].getLeafMass() << " "
-		   << setw(11) << voxboxes[i1][i2][i3].getFoliageMass() << " "
-	           << setw(11) << voxboxes[i1][i2][i3].getNeedleArea() << " "
-		   << setw(11) << voxboxes[i1][i2][i3].getLeafArea() << " "
-		   << setw(11) << voxboxes[i1][i2][i3].getStar() << " "
-		   << setw(11) << voxboxes[i1][i2][i3].getStarSum() << " " << endl;
+		   << setw(4) << i1 << sep 
+		   << setw(4) << i2 << sep 
+		   << setw(4) << i3 << sep
+		   << setw(11) << voxboxes[i1][i2][i3].getCenterPoint().getX() << sep
+		   << setw(11) << voxboxes[i1][i2][i3].getCenterPoint().getY() << sep
+		   << setw(11) << voxboxes[i1][i2][i3].getCenterPoint().getZ() << sep
+		   << setw(11) << voxboxes[i1][i2][i3].getQabs() << sep 
+		   << setw(11) << voxboxes[i1][i2][i3].getQin() << sep 
+		   << setw(11) << voxboxes[i1][i2][i3].getNeedleMass() << sep
+		   << setw(11) << voxboxes[i1][i2][i3].getLeafMass() << sep
+		   << setw(11) << voxboxes[i1][i2][i3].getFoliageMass() << sep
+	           << setw(11) << voxboxes[i1][i2][i3].getNeedleArea() << sep
+		   << setw(11) << voxboxes[i1][i2][i3].getLeafArea() << sep
+		   << setw(4)  << voxboxes[i1][i2][i3].getNumSegments() << sep
+		   << setw(4)  << voxboxes[i1][i2][i3].getNumLeaves() << sep
+		   << setw(11) << voxboxes[i1][i2][i3].getStar() << sep
+		   << setw(11) << voxboxes[i1][i2][i3].getStarSum() << sep << endl;
 	    }
 	}
     file.close();
