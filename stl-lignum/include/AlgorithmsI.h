@@ -40,11 +40,8 @@ AccumulateTreeCompartments<TS,BUD,T,BinOp>::AccumulateTreeCompartments(const Bin
 template <class TS,class BUD, class T, class BinOp>
 T& AccumulateTreeCompartments<TS,BUD,T,BinOp>:: operator()(T& id,TreeCompartment<TS,BUD>* tc)const
 {
-  if (TreeSegment<TS,BUD>* ts = dynamic_cast<TreeSegment<TS,BUD>*>(tc))
+  if (TS* ts = dynamic_cast<TS*>(tc))
     id = op1(id,ts);
-  
-  //if (TS* ts = dynamic_cast<TS*>(tc))
-  //  id = op1(id,ts);
   
   //Why this cannot  be 'BUD* bud = dynamic_cast<BUD*>(tc)'  for CC on
   //SGI? For  g++ it can be.  Also, in other algorithms  the type cast
