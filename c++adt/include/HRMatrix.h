@@ -10,7 +10,7 @@
 **with point (0,0,0) wich is the invariant in 3D point transformations
 */
 
-#include <vector.h>
+#include <vector>
 #include <Rotation.h>
 #include <mathsym.h>
 #include <Point.h>
