@@ -42,13 +42,13 @@ PositionVector GetDirection(const TreeCompartment<TS,BUD>& tc)
 
 
 template <class TS,class BUD>
-void SetPoint(TreeCompartment<TS,BUD>& tc, Point& p)
+void SetPoint(TreeCompartment<TS,BUD>& tc, const Point& p)
 {
 	tc.point = p;
 }
 
 template <class TS,class BUD>
-void SetDirection(TreeCompartment<TS,BUD>& tc, PositionVector& pv)
+void SetDirection(TreeCompartment<TS,BUD>& tc, const PositionVector& pv)
 {
 	tc.direction = pv;
 }
@@ -60,17 +60,7 @@ Tree<TS,BUD>& GetTree(const TreeCompartment<TS,BUD>& tc)
   return *(tc.tree);
 }
 
-template <class TS,class BUD>
-void SetDirection(TreeCompartment<TS,BUD>& tc, const PositionVector& d)
-{
-  tc.direction = d;
-}
 
-template <class TS,class BUD>
-void SetPoint(TreeCompartment<TS,BUD>& tc, const Point& p)
-{
-  tc.point = p;
-}
 
 
 
