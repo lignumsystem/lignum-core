@@ -69,7 +69,7 @@ LGMdouble GetValue(const TreeCompartment<TS,BUD>& tc, const LGMAD name)
     return tc.age;
 
   else
-    cout << "SetValue: unknown attribute:" << name << endl;
+    cout << "GetValue: unknown attribute:" << name << endl;
 
   return unknown_value;
 }
