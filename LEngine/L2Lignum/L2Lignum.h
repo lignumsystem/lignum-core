@@ -51,7 +51,7 @@ int L2Lignum(BranchingPoint<TS,BUD>& bp, LstringIterator& iterator,
     turtle_stack.pop();
     iterator++;
   }
-  //This can only be a symbol  "S" in between "SB" and "EB": "] S ["
+  //This can only be a symbol  "S" in between "EB" and "SB": "] S ["
   //It means end of branching point, return and let the calling Axis see the symbol S
   else{
     return 0; //end of bp
