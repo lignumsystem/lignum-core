@@ -63,7 +63,6 @@ TreeSegment<TS,BUD>::~TreeSegment()
 template <class TS,class BUD>
 TP TreeSegment<TS,BUD>::GetTranspiration(TP time)
 {
-  
   return 0.12e-9;
 }
 

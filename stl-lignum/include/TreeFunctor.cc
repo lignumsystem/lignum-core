@@ -87,6 +87,7 @@ int& CountCompartments<TS,BUD>::operator()(int& n,TreeCompartment<TS,BUD>* tc)co
   return n;
 }
 
+
 template <class TS,class BUD>
 TreeCompartment<TS,BUD>* FillWithWater<TS,BUD>::operator()(TreeCompartment<TS,BUD>* tc)const
 {
