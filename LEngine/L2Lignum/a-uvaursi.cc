@@ -35,18 +35,18 @@ int main(int argc, char** argv)
   for (int i=0; i < bearberryL.derivationLength() ; i++)
   {
     cout << "Step: " << i << endl;    
-    ForEach(bearberry,EvaluateCollisionForAllBuds<BearberrySegment,BearberryBud>(65.0*2.0*PI_VALUE/360.0,0.20));
+    ForEach(bearberry,EvaluateCollisionForAllBuds<BearberrySegment,BearberryBud>(55.0*2.0*PI_VALUE/360.0,0.30));
     bearberryL.lignumToLstring(bearberry,3,LGMtype,LGMstatus,LGMcollision);  
     bearberryL.derive();
     bearberryL.lstringToLignum(bearberry,3,LGMtype,LGMstatus,LGMcollision);
-    ForEach(bearberry,aging);
-    ForEach(bearberry,kill_bud);
+    //ForEach(bearberry,aging);
+    //ForEach(bearberry,kill_bud);
   }
   bearberryL.end();  
   
-  AccumulateDown(bearberry,coll,shorten_segment);
-  bearberryL.lignumToLstring(bearberry,3,LGMtype,LGMstatus,LGMcollision);
-  bearberryL.lstringToLignum(bearberry,3,LGMtype,LGMstatus,LGMcollision);
+  //AccumulateDown(bearberry,coll,shorten_segment);
+  //bearberryL.lignumToLstring(bearberry,3,LGMtype,LGMstatus,LGMcollision);
+  //bearberryL.lstringToLignum(bearberry,3,LGMtype,LGMstatus,LGMcollision);
 
   vector<PositionVector> v;
   AccumulateDown(bearberry,v,
