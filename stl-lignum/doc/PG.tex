@@ -1,0 +1,266 @@
+\chapter{Programming Guidelines}
+
+\section{Background}
+The programming language used to  implement Lignum is C++. Although it
+has bias and history in systems  programming it is used by hundreds of
+thousands of programmers practically in every application domain. Some
+simple reasons can explain the popularity of C++. For the first it has
+language  constructs  that make  it  convenient  (easy, efficient  and
+reliable)  to use  many types  of modern  programming  paradigms, most
+notably  object oriented  and generic  programming.  Secondly,  it has
+language  facilities that  support the  implementation of  large (more
+than 1000  000 line) programs.  It  is possible to  create alone small
+programs containg  1000 or so lines  and make them  work through brute
+force breaking each  programming paradigm and rule of  good style. But
+for any  larger program  requiring cooperation of  several programmers
+this  is simply not  possible.  You  will notice  that new  errors are
+introduced more rapidly than the old ones are fixed.  The program will
+become unmanageable.
+
+Very few programs created today exist in one application area only. It
+is very common  to have numeric applications with  at least scientific
+visualization  and user  interaction  but also  data  base access  and
+perhaps  even local  networking.   C++ was  not  designed for  numeric
+applications but many numerical  and scientific program libraries have
+been  created  in  C++  simply  because the  necessary  libraries  for
+visualization and user interface already were implemented in C++. 
+
+Lignum  is   no  exception.   The  basic   data  structures  (classes)
+implementing  a generic  tree  model  don't easily  fit  into a  e.g.,
+Fortran mold. Further  to be of any practical  use at least scientific
+visualization must be providied with elementary user interface so that
+the  results of  the  simulations  can be  studied.   Lignum has  also
+evolved from a small research experiment to a medium size project with
+many international  connections.  In  the future also  the programming
+work to develop the model for diverse purposes will be done by several
+independent  teams  of  programmers.   Hopefully  the  result  of  the
+programming work done  in one team can be shared  by other teams. Thus
+the maintenance of the program will  be important. C++ has been a good
+choice for Lignum  and due to the development of  the language and the
+introduction of  the Standard  Template Library (STL)  it is  now also
+more convinient to use than ever.
+
+\section{Using C++}
+
+This is not  intended to be a C++ programming  manual.  There are many
+excellent textbooks available.  For  example you may find \cite{Str97}
+and  \cite{Brey98} useful. Stroustrup's  book not  only is  a complete
+tutorial  and  reference to  the  language but  also  gives  a lot  of
+practical  programming  advice   how  to  use  and  not   to  use  the
+language. Breymann's book teaches the  use of STL, the essiential tool
+for any serious C++ programmer.
+
+Many of the  developers of Lignum have and  will have background other
+than computer science but they have some programming experience with C
+or Fortran.  Here  we have tried to collect  some most common mistakes
+and pitfalls made  by the novice C++ progarmmers and  also try to give
+some elementary practical  advice what to learn first  to get started.
+You don't have to  learn whole C++ to work with it.  You can grow with
+the language.
+
+\subsection{C programmers}
+
+We  have  noticed that  people  with a  strong  C  background tend  to
+continue to write C with C++. It is possible to do so because C with a
+few exceptions  is a subset of  C++ but the potential  benefits of the
+language are lost.  Here are some common mistakes and suggestions what
+to do instead.
+
+\begin{itemize}
+\item Avoid macros. Use inline functions if you want to avoid function
+call overhead and for simple macros defining a constant consider const
+or enum constructs.
+\item Forget malloc and free. The new and delete operators do the
+same job better.  Remeber to use  delete to avoid memory leaks. If you
+seem to  need realloc consider  if some predefined data  structure for
+example vector fulfills your  needs.  In general avoid unnecessary use
+of  new  operator.  Note  that  it  is  possible to  create  temporary
+variables, e.g., local to a function  on the fly whenever you need one
+without using  dynamic memory allocation.  In fact only  objects (like
+new tree parts)  that may have a life time of  the entire program need
+to be  created dynamically  with the new  operator and stored  in some
+container.
+\item Avoid pointers. Use references that are safer instead as
+formal parameters  and return  values. When you  have a  reference you
+know  there is  a real  object you  can deal  with.  With  pointers to
+create safe code you  always have to check if it is  a NULL pointer or
+not. If you  have to deal with the pointers  yourself try to implement
+clean interface that provides references to the user.
+\item Forget C cast. If you need type cast learn to use dynamic,
+static and const casts in C++. They provide type checking.
+\item Use const. Everything that is constant (does not change) should
+be declared const. The more you program the more you'll learn to
+respect this little keyword. Do it from the beginning. It is
+practically impossible to correct afterwards.
+\item Avoid the use of built-in arrays and C style strings. There are
+predefined string and vector classes in the STL library. They simplify
+the programming and you don't loose in efficiency either. For
+numerical computations there is valarray class. 
+\item If you need to use unions, to do complicated pointer arithmetic, bit
+shifting   or   some  other   exotic   language   fieature  hide   the
+implementation deep in some function or class.  Provide clear and easy
+to use  interface. But when developing  Lignum you are  unlikely to do
+any of these. Lignum is a tree model and you are more likely to create
+data structures  by refining  existing ones to  model tree  organs and
+implement numerical methods to simulate their metabolic processes.
+
+\end{itemize}
+
+\subsection{Learning C++} 
+
+The reason to learn C++ is not to learn a new syntax to do things that
+has been previously done with Fortran  or C. The reason is to learn to
+to design and  implement systems better and more  efficiently in a way
+C++ supports the work.  This  is like learning a new natural language;
+it will  take years of  practice to read  or write for  example french
+fluently and correctly as a foreign language.
+
+It is not necessary to learn C first to learn C++. In fact it might be
+beneficial to learn  C++ directly without any knowledge  of C. As said
+it is  not so much of  learning a new programming  language syntax but
+learning  new design  and programming  paradigms.  Thus  the  top down
+approach might be the best  way.  
+
+First learn the key language  concept class and its importance in data
+abstraction when  modeling the problem domain.  Learn  the concepts of
+methods, friend functions, operator overloading and data members. Also
+make yourself clear what is  meant by access control of class members.
+People coming from natural sciences may find easy to grasp the idea of
+inheritance that  is simply hierarchical ordering of  things to manage
+complexity.
+
+Then expose yourself to STL that teaches you generic programming.  The
+key concept in  this paradigm is an abstract  datatype and the generic
+algorithms that can  be applied to that datatype.   You will learn the
+important language  concepts of templates  and functors that  are used
+extensively  to implement  STL. Also  Lignum follows  the  paradigm of
+generic programming.  The tree is implemented as  an abstract datatype
+with a set of generic  algorithms to apply various metabolic processes
+or collect information implemented as methods or functors to it.
+
+All in  all by learning first  the high-level techniques  of C++, then
+gradually the common  subset of C and C++ you'll  notice that there is
+no  need or  very little  advantage to  know or  use the  most obscure
+language  features.   After  all  they  are  mostly  used  by  systems
+programmers  implementing operating systems,  device drivers  etc. You
+will see that with C++ it  is possible to apply good programming style
+to  create applications  that are  easy to  read and  understand using
+program design based on sound methodology.
+   
+\section{Programming Style}
+
+\subsection{Typographical Issues}
+To  aid reading  and understanding  programs written  by others  a few
+simple  typographical  conventions used  in  Lignum  and advice  about
+writing comments are  outlined.  First, a few lines  of fictitious C++
+code that provides an example of the things to consider.
+
+\begin{verbatim}
+
+//The purpose of the class AClass is to ...
+typedef double METER;
+typedef double KG;
+
+class AClass{
+friend METER AFriendFunction(AClass& obj);
+public:
+   AClass();
+   METER firstMethodForTheClass(KG fm);
+private:
+   KG Wf;
+   double rho;
+};
+
+
+//The purpose of the method is to ...
+//For the physiological motivation of 
+//the algorithm see ... 
+METER AClass::firstMethodForTheClass(KG fm)
+{
+}
+\end{verbatim}
+
+The C++ class names are capitalized.   If the class name is a compound
+word each word is capitalized. The  method names in a class start with
+a  lower letter.   If the  method  name is  a compound  word the  each
+following word is capitalized.   All (friend) functions are written as
+class names, i.e.,  each word is capitalized.  User  defined types are
+written in capital letters.
+
+In Lignum we have noticed that to minimize the learning and memorizing
+process  try  to be  consistent  with the  paper  published  or to  be
+published when  choosing names for  variables.  For example in  a tree
+segment  we  need to  have  a state  variable  for  foliage mass.   In
+publications the symbol for the foliage mass is $W_f$.  So the name of
+the  attribute in the  class TreeSegment  should be  \tt Wf\rm.   If a
+Greek letter is used in a paper  as a symbol for a state variable or a
+parameter  write it  out  as the  name  of the  class attribute.   For
+example the symbol $\rho$ is used as the wood density.  So the name of
+the attribute should be \tt rho\rm.   In general we use \LaTeX \ style
+to write out the mathematical symbols.
+
+Consistent  use of  indentation will  ease the  burden of  reading and
+understanding of  program code.  There  are several styles in  use and
+there is no reason to  prefer one over another. Selecting and learning
+a text editor  like emacs the proper indentation  will become a trivia
+and  in addition  to that  emacs provides  many other  useful features
+improving your productivity when editing program source files.
+
+\subsection{Comments and Documentation}
+Needless to say  comments are an essential part of  a good program. But
+remember misused comments can  seriously affect the readibility of the
+program. Three self-evident rules of thumb for writing comments are
+
+\begin{itemize}
+  \item Comment is meaningful, i.e., the program code is not evident.
+  \item Comment describes the piece of a program precisely.
+  \item Comment is up to date. 
+\end{itemize}
+   
+Don't bother to explain trivial pieces of a program. Something written
+in the  language itself (like  \tt a =  b + c  \rm) does not  need any
+comments. Such  comments (``a  becomes b plus  c'') just  increase the
+amount of  text reader has to  go through.  Describe the  piece of the
+program unambiguously. Ambiguous  and incomprehensible comments are no
+use at all.  Too often when the program changes  the comments are left
+untouched. Plain wrong comments are worse than no comments at all. 
+
+Writing good comments is as difficult as writing the progam. Some
+general guidelines may help to nurture this art:
+
+\begin{itemize}
+  \item Instead of explaining  the non-trivial algorithm in detail you
+        can  refer  to  manuals,  text books,  publications  etc.
+  \item Comment each class member and constant shortly for its
+        purpose.  Comment on data is usually more useful than on algorithms.
+  \item Try to answer the questions what and why rather than how. 
+  \item Use ``formal comments'' to describe preconditions, postconditions 
+        domain and range of a method or a function especially when
+        some side effects will occur.
+\end{itemize}
+     
+Ideally when you  return to your program after a  few weeks you should
+still understand it yourself.   Tricky code should be rewritten rather
+than  exhaustively commented.   Finally, comments  don't  replace the
+program  documentation. In short the documentation should describe:
+
+\begin{itemize}
+  \item How to install and operate the software system.
+  \item How to use the system. There is no so simple system that is
+  obvious to its user.
+  \item The design and the requirements of the system.
+  \item The implementation and the maintenance of the system.
+\end{itemize} 
+
+You    can   study    more   about    software    documentation   from
+\cite{Som85}. Ideally  the documentaiton should run  in parallell with
+the programming  work.  It will mean  rewritings of the  manual due to
+the changes  in the  program but any  documentation will  require many
+iterations before it is useful anyway.
+
+
+
+
+
+
+
