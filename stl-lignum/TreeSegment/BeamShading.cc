@@ -1,13 +1,11 @@
-
+#include <Ellipsis.h>
 #include <Shading.h>
 using namespace Lignum;
 
 #define HIT_THE_FOLIAGE 1
 #define NO_HIT 0
 #define HIT_THE_WOOD -1
-
-template <class SHAPE>  
-Point GetCenterPoint(const BroadLeaf<SHAPE>& bl);
+  
 
 ///////////////////////////////////////////////////////////////
 //     Ellipsis beamshading for hardwoods
