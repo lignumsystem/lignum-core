@@ -88,3 +88,9 @@ rewriting rules for  interpretation. Thus there is no  way to know the
 exact  definition   of  these  modules   and  what  they   exactly  do
 (rewrite). The name of the module tells how to move the turtle and the
 first parameter how much.
+
+If you are planning to simulate  a small forest you probably will come
+up an idea to create and store trees and L-systems in vectors. You can
+do so  but remember to  carefully initialize these  vectors. Otherwise
+you will get very strange runtime errors. See forest.cc in L2Lignum as
+an example.
