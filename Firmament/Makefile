@@ -20,23 +20,23 @@ STL     = -I/usr/include/CC
 
 LIBFLAGS = -L../c++adt/lib -L../stl-lignum/lib 
 
-LIB1   = libc++adt.a
+#LIB1   = libc++adt.a
 
-LIBADT = -lc++adt
+#LIBADT = -lc++adt
 LIBMATH  = -lm 
-
-LIBS     = $(LIBADT) $(LIBMATH)
+LIBS     = $(LIBMATH)
 
 .SUFFIXES: .o .cc
 
 libsky.a:  $(OBJ)
 	$(AR) $(ARFLAGS) $(ARFILE) $(OBJ)
-sky: $(MAIN)  $(LIB1)   
-	$(CCC) -DFIRMAMENT -o $@ $(INCLUDE)  $(MAIN)  $(LIBFLAGS) $(LIBS) 
+sky: $(MAIN)  
+	$(CCC) -DFIRMAMENT -g  -o $@  $(INCLUDE)  $(MAIN)  \
+	$(LIBFLAGS) $(LIBS) 
 
-$(LIB1): 
-	(cd ../c++adt/lib; make "CCC=$(CCC)" "CCCFLAGS=$(CCCFLAGS)" \
-        "OPTIMIZE=$(OPTIMIZE)" $@)
+#$(LIB1): 
+#	(cd ../c++adt/lib; make "CCC=$(CCC)" "CCCFLAGS=$(CCCFLAGS)" \
+#        "OPTIMIZE=$(OPTIMIZE)" $@)
 
 
 .cc.o: 
