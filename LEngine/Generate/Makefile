@@ -4,7 +4,6 @@ TARGET=$(OS).out/lengine
 LIBTRG=$(OS).out/liblengine.a
 
 OBJECTS=\
-test.o\
 lstring.o\
 lstriter.o\
 succstor.o\
@@ -29,8 +28,8 @@ $(PLATLINKDIRS)
 CPPFILES=\
 ${OBJECTS:.o=.cpp}
 
-$(TARGET): $(OBJECTS) ../lsys/lsys.o
-	$(LINK) $(LINKFLAGS) $(OBJECTS) ../lsys/lsys.o $(LINKDIRS) $(LIBS) -o $(TARGET)
+$(TARGET): test.o $(OBJECTS) ../lsys/lsys.o
+	$(LINK) $(LINKFLAGS) test.o $(OBJECTS) ../lsys/lsys.o $(LINKDIRS) $(LIBS) -o $(TARGET)
 
 lib:
 	make $(LIBTRG)
