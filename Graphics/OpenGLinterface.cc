@@ -334,22 +334,27 @@ void DrawTree()
 
 void DrawNeedles()
 {
-	 glEnable(GL_BLEND);
-     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	 glBindTexture(GL_TEXTURE_2D, texIds[0]);
-	 glDisable(GL_LIGHTING);
+  glBindTexture(GL_TEXTURE_2D, texIds[0]);
+  cout << "neulastekstuurin numero:" <<  texIds[0] << endl;
 
-	 glPushMatrix();
-	 glEnable(GL_CULL_FACE);
-     glCullFace(GL_FRONT);     
-	 glCallList(NEEDLES_TEX);
- 
-	 glCullFace(GL_BACK);     	 
-	 glCallList(NEEDLES_TEX);
-     glDisable(GL_CULL_FACE);
-	 glPopMatrix();
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  glBindTexture(GL_TEXTURE_2D, texIds[0]);
+  glDisable(GL_LIGHTING);
+  
+  glPushMatrix();
+  glEnable(GL_CULL_FACE);
+  glCullFace(GL_FRONT);     
+  glCallList(NEEDLES_TEX);
+  glPopMatrix();
 
-	 cout << "visualisoitiin neulaset" << endl;
+  glPushMatrix();
+  glCullFace(GL_BACK);     	 
+  glCallList(NEEDLES_TEX);
+  glDisable(GL_CULL_FACE);
+  glPopMatrix();
+
+  cout << "visualisoitiin neulaset" << endl;
 }
 
 

@@ -253,6 +253,9 @@ TreeCompartment<TS,BUD>* DrawNeedlesFunctor<TS,BUD>::operator()(TreeCompartment<
       rot_angle = (360/(2*PI_VALUE))*acos((double)direction.getVector()[2]);
       radius = GetValue(*cfts, R);
 
+      //  cout << "neulasmassa " << GetValue(*cfts, Wf) << endl;
+      SetValue(*cfts, Wf, 40);
+
       if (GetValue(*cfts, Wf) > 0)
 	{               
 	      

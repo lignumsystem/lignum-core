@@ -105,7 +105,10 @@ bool LoadGLTextures(char *name)
   
   
   texIds[0] = image.GenId(); // let OpenGL give us a texture id
-  texIds[1] = image.GenId(); 
+  
+  cout << "neulastekstuurin numero " <<  texIds[0] << endl;
+
+texIds[1] = image.GenId(); 
   
   
    image.Load(name, texIds[0]);

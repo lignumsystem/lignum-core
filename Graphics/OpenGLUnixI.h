@@ -388,7 +388,7 @@ int VisualizeCfTree(Tree<TS,BUD> &tree)
   glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
  
   stemtexture.Load("Manty.bmp", 512, 512);
-  LoadGLTextures("neulaset5.tga");  //**** CFLoadGLTextures
+  LoadGLTextures("lehti.tga"); //neulaset5.tga");  //**** CFLoadGLTextures
   
 
 
