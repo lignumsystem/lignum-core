@@ -70,10 +70,10 @@ namespace Lignum{
       return tc;
     }
 
- template <class TREE>
- RootCompartment<TREE>* DrawRootFunctor<TREE>::operator()(RootCompartment<TREE>* rc)const
+ template <class TR>
+ RootCompartment<TR>* DrawRootFunctor<TR>::operator()(RootCompartment<TR>* rc)const
     {
-      if (RootSegment<TREE>* rs = dynamic_cast<RootSegment<TREE> *>(rc))
+      if (RootSegment<TR>* rs = dynamic_cast<RootSegment<TR> *>(rc))
 	{  			
 	  LGMdouble radius = GetValue(*rs, R);
 	 
