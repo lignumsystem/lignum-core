@@ -21,6 +21,7 @@ using namespace cxxadt;
 #include <TreeFunctor.h>
 #include <TreeMetaFileParser.h>
 #include <RootSystem.h>
+#include <RootAlgorithms.h>
 #include <Bud.h>
 #include <DefaultBud.h>
 #include <BranchingPoint.h>
@@ -69,11 +70,15 @@ namespace Lignum{
     LGMdouble sr;            //Senescence rate of roots
     LGMdouble ss;            //Senescence rate of sapwood
     LGMdouble rho;           //Density of wood
+    LGMdouble rho_root;      //Density of root sapwood
+    LGMdouble rho_hair;      //Density of root hair
     LGMdouble xi;            //Fraction of heartwood in new tree segments
-    LGMdouble zbrentEpsilon; //Accuracy for finding root of P-M-dW(lambda)
+    LGMdouble zbrentEpsilon; //Accuracy    for    finding   root    of
+			     //P-M-dW(lambda), i.e. allocation.
   };
 
-  //TreeAttributes are in a (long) vector indexed by enumeration LGMTAD defined in LGMSymbols.h
+  //TreeAttributes  are  in a  (long)  vector  indexed by  enumeration
+  //LGMTAD defined in LGMSymbols.h
   class TreeAttributes{
   public:
     TreeAttributes(int size = LGMTADLENGTH);
@@ -86,13 +91,19 @@ namespace Lignum{
     ParametricCurve ip;   //relative length of a new tree segment 
     ParametricCurve fm;   //foliage mortality 
     ParametricCurve vi;   //vigour index function
-    ParametricCurve al;   //adjusted length. For example for making branches below 0.002 to have length 0 and branches
-    //between 0.002 and 0.01 have length 0.002 (short segments)...
-    ParametricCurve LightOnNumBuds; // the effect of light to number of the buds. If no effect the value is always 1 of this function
-    ParametricCurve VigourOnNumBuds;// the effect of vigour index to the number of the buds. If no effect the value is always 1 of this function
+    ParametricCurve al;   //adjusted  length. For  example  for making
+			  //branches below 0.002  to have length 0 and
+			  //branches  between   0.002  and  0.01  have
+			  //length 0.002 (short segments)...
+    ParametricCurve LightOnNumBuds; // the  effect of light  to number
+				    // of  the buds. If  no effect the
+				    //  value  is  always  1  of  this
+				    // function
+    ParametricCurve VigourOnNumBuds;// the  effect of vigour  index to
+				    // the  number of the  buds. If no
+				    // effect the value is always 1 of
+				    // this function
   };
-
-
 
   class TreeTransitVariables{
   public:
@@ -119,6 +130,8 @@ namespace Lignum{
 
       template <class TS1,class BUD1>
       friend Axis<TS1,BUD1>& GetAxis(Tree<TS1,BUD1>& t);
+
+      RootAxis<Tree<TS,BUD> >& GetRootAxis(Tree<TS,BUD>& t){return t.root_axis}
 
       template <class TS1,class BUD1>
       friend LGMdouble GetValue(const Tree<TS1,BUD1>& tree, const LGMTAD name);
@@ -172,7 +185,7 @@ namespace Lignum{
       TreeInitializationFiles tif;
       FirmamentWithMask f;
       Axis<TS,BUD> axis;
-      RootAxis root_axis;
+      RootAxis<Tree<TS,BUD> > root_axis;
     };
 
   //Tree with Firmament (FRMNT)

@@ -1,10 +1,13 @@
 #ifndef TREEI_H
 #define TREEI_H
+
 using namespace sky;
+
 namespace Lignum{
 
 template <class TS,class BUD>
 Tree<TS,BUD>::Tree()
+  :root_axis(Point(0,0,0),PositionVector(0,0,-1),*this)
 {
   tree = NULL;
 }
@@ -13,7 +16,8 @@ Tree<TS,BUD>::Tree()
 //with one terminating bud in the main axis
 template <class TS,class BUD>
 Tree<TS,BUD>::Tree(const Point& p, const PositionVector& d)
-  :TreeCompartment<TS,BUD>(p,d,this),f(5,5),axis(p,d,this),root_axis(p,d)
+  :TreeCompartment<TS,BUD>(p,d,this),f(5,5),axis(p,d,this),
+    root_axis(p,d,*this)
 {
   //force the instantiation of BranchingPoint
   BranchingPoint<TS,BUD>(p,d,this);
@@ -22,7 +26,8 @@ Tree<TS,BUD>::Tree(const Point& p, const PositionVector& d)
 
 template <class TS,class BUD>
 Tree<TS,BUD>::Tree(const Point& p, const PositionVector& d, LGMdouble len, LGMdouble rad, int num_buds)
-  :TreeCompartment<TS,BUD>(p,d,this),f(5,5),axis(p,d,this),root_axis(p,d)
+  :TreeCompartment<TS,BUD>(p,d,this),f(5,5),axis(p,d,this),
+    root_axis(p,d,*this)
 {
   //force the instantiation of BranchingPoint
   BranchingPoint<TS,BUD>(p,d,this);
@@ -134,6 +139,12 @@ LGMdouble GetValue(const Tree<TS,BUD>& tree, const LGMPD name)
   else if (name == rho)
     return tree.tp.rho;
 
+  else if (name == rho_root)
+    return tree.tp.rho_root;
+  
+  else if ( name == rho_hair)
+    return tree.tp.rho_hair;
+
   else if (name == xi)
      return tree.tp.xi;
 
@@ -191,6 +202,12 @@ LGMdouble SetValue(Tree<TS,BUD>& tree, const LGMPD name, const LGMdouble value)
 
   else if (name == rho)
     tree.tp.rho = value;
+
+  else if (name == rho_root)
+    tree.tp.rho_root = value;
+
+  else if (name == rho_hair)
+    tree.tp.rho_hair = value;
 
   else if (name == xi)
     tree.tp.xi = value;
