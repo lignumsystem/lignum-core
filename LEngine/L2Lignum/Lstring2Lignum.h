@@ -14,6 +14,10 @@ using namespace std;
 #include <Lignum.h>
 using namespace Lignum;
 
+/************************************************************************
+ *Lstring2Lignum for Axes and Branching points.                         *
+ *Scan for SB's and EB's for the beginning and end of axes respectively.*
+ ************************************************************************/
 template <class TS, class BUD>
 int Lstring2Lignum(list<Axis<TS,BUD>*>& ls, typename list<Axis<TS,BUD>*>::iterator current, 
 		   Tree<TS,BUD>& tree, LstringIterator& ltr, stack<Turtle>& turtle_stack)
@@ -21,7 +25,7 @@ int Lstring2Lignum(list<Axis<TS,BUD>*>& ls, typename list<Axis<TS,BUD>*>::iterat
 
   //Lstring must not end in a branching point 
   if (ltr.AtEnd()){
-    cerr<< "BP Error end of string" << endl;
+    cerr << "BP error end of string" << endl;
     return -1; //exit
   }
   
@@ -47,6 +51,9 @@ int Lstring2Lignum(list<Axis<TS,BUD>*>& ls, typename list<Axis<TS,BUD>*>::iterat
     //they are added last in the Lstring
     //Example: [A,A,A] ---> [A,A,A,Anew]
     else if (Axis<TS,BUD>* axis = dynamic_cast<Axis<TS,BUD>*> (*current)){
+      //Update point and direction
+      SetPoint(*axis,GetPoint(turtle_stack.top()));
+      SetDirection(*axis,GetHeading(turtle_stack.top()));
       //Go to the first symbol of the new axis
       ltr++;
       list<TreeCompartment<TS,BUD>*>& tc_ls = GetTreeCompartmentList(*axis);
@@ -55,7 +62,7 @@ int Lstring2Lignum(list<Axis<TS,BUD>*>& ls, typename list<Axis<TS,BUD>*>::iterat
       current++;
     }
     else{
-      cout << "Hello BP, what's up in SB" << endl;
+      cerr << "BP error current not axis" << endl;
       //If control reaches here we are seriously wrong,
       //there can only be axes in an axis list
     }
@@ -76,10 +83,12 @@ int Lstring2Lignum(list<Axis<TS,BUD>*>& ls, typename list<Axis<TS,BUD>*>::iterat
   return Lstring2Lignum(ls,current,tree,ltr,turtle_stack);
 }
       
-//Add new structure to Lignum. It is assumed that the Lstring
-//and Lignum match except the new structure in the Lstring.
-//This algorithm is similar to  L2Lignum but Lstring2Lignum
-//adds only the new structure in Lstring into Lignum 
+/**************************************************************
+ *Add new structure to Lignum. It is assumed that the Lstring *
+ *and Lignum match except the new structure in the Lstring.   *
+ *This algorithm is similar to  L2Lignum but Lstring2Lignum   *
+ *adds only the new structure in Lstring into Lignum          *
+ **************************************************************/
 template <class TS, class BUD>
 int Lstring2Lignum(list<TreeCompartment<TS,BUD>*>& ls,
 		   typename list<TreeCompartment<TS,BUD>*>::iterator current,
@@ -91,7 +100,6 @@ int Lstring2Lignum(list<TreeCompartment<TS,BUD>*>& ls,
 
   //Check the end of Lstring
   if (ltr.AtEnd()){
-    //cout << "Axis end of string" << endl;
     return 1; //exit
   }
 
@@ -109,11 +117,15 @@ int Lstring2Lignum(list<TreeCompartment<TS,BUD>*>& ls,
     //no new structure, proceed into the branching point
     //Don't go forward in LString, let the ltr iterator see "SB" again
     if (BranchingPoint<TS,BUD>* bp = dynamic_cast<BranchingPoint<TS,BUD>*> (*current)){
-      list<Axis<TS,BUD>*>& al= GetAxisList(*bp);
+      //Update point and direction
+      SetPoint(*bp,GetPoint(turtle_stack.top()));
+      SetDirection(*bp,GetHeading(turtle_stack.top()));
       //Proceed into the branching point
+      list<Axis<TS,BUD>*>& al= GetAxisList(*bp);
       //Note we DO NOT return here but will construct the branching point
       Lstring2Lignum(al,al.begin(),tree,ltr,turtle_stack);
-      current++;//I'm not sure about this 
+      //Branching point done, move the current to the next tree segment
+      current++;
     }
     //Current tree compartment is bud but the symbol is "SB" --> new branching point
     else if (Bud<TS,BUD>* bud = dynamic_cast<Bud<TS,BUD>*> (*current)){
@@ -127,7 +139,8 @@ int Lstring2Lignum(list<TreeCompartment<TS,BUD>*>& ls,
       Lstring2Lignum(al,al.begin(),tree,ltr,turtle_stack);
     }
     else{
-      cout << "Hello A, what's up in BP" << endl;
+      //We don't have other choices
+      cerr << "Axis error 1 L file does not generate Lignum structure" << endl;
     }
   } 
   //The symbol F means a tree segment
@@ -140,7 +153,7 @@ int Lstring2Lignum(list<TreeCompartment<TS,BUD>*>& ls,
     //If the list is empty, we may have had in the previous step a symbol that
     //was ignored, but has now created segments and  buds. See for example 
     //symbodial.l. We give a chance and create a bud now, return  to this
-    //algorithm and try again create the segment.  
+    //algorithm and try again create the tree compartments.  
     if (ls.empty()){
       BUD* bud = new BUD(GetPoint(turtle_stack.top()),
 			 GetHeading(turtle_stack.top()),
@@ -153,6 +166,10 @@ int Lstring2Lignum(list<TreeCompartment<TS,BUD>*>& ls,
     //If the current tree compartment is a tree segment,
     //no new structure but update turtle and iterators
     else if (TreeSegment<TS,BUD>* ts = dynamic_cast<TreeSegment<TS,BUD>*> (*current)){
+      //Update point and direction
+      SetPoint(*ts,GetPoint(turtle_stack.top()));
+      SetDirection(*ts,GetHeading(turtle_stack.top()));
+      //Move the turtle
       turtle_stack.top().forward(arg1);
       //Update iterators 
       ltr++;
@@ -173,7 +190,7 @@ int Lstring2Lignum(list<TreeCompartment<TS,BUD>*>& ls,
       ltr++;
     }
     else{
-      cout << "The L file does not generate Lignum " << endl;
+      cerr << "Axis error 2  L file does not generate Lignum " << endl;
       //If control comes here it is an error
     }
   }
@@ -202,7 +219,7 @@ int Lstring2Lignum(list<TreeCompartment<TS,BUD>*>& ls,
       ltr++;
     }
     else{
-      cout << "Hello, what's up with BUD" << endl;
+      cerr << "Axis error 3 L file does not generate Lignum structure" << endl;
       //If control reaches here it is an error
     }
   }
