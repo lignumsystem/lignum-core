@@ -3,7 +3,7 @@ using namespace cxxadt;
 
 #include <lengine.h>
 
-open CSPlantE;
+open CSPlantD;
 
 #include <lsystem.h>
 
@@ -12,43 +12,43 @@ module I();
 module Turn(double);
 module F(double);
 
-derivation length: 30;
+derivation length: 24;
 
 ignore: Turn F;
 
 Start:
 {
-  produce F(0.1) I() F(0.1) I() F(0.1) I();
+  produce F(0.1) O() F(0.1) I() F(0.1) I();
 }
 
 O() < O() > O():
 {
-  produce O();
+  produce I();
 }
 
 O() < O() >   I() :
 {
-  produce I() SB() Turn(-22.5*2.0*PI_VALUE/360.0) F(0.1) I() F(0.1) I() EB();
+  produce O();
 }
 
 O() < I() > O():
 {
-  produce I();
+  produce O();
 }
 
 O() < I() >  I():
 {
-  produce I();
+  produce I() F(0.1) I();
 }
 
 I() < O() > O():
 {
-  produce O();
+  produce I();
 }
 
 I() < O() >  I():
 {
-  produce I() F(0.1) I();
+  produce I()SB() Turn(25.75*2.0*PI_VALUE/360.0) F(0.1) I() F(0.1) I() EB();
 }
 
 I() < I() >  O():
@@ -74,6 +74,6 @@ F(s):
   ;
 }
 
-close CSPlantE;
+close CSPlantD;
 
 

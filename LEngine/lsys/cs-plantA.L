@@ -3,7 +3,7 @@ using namespace cxxadt;
 
 #include <lengine.h>
 
-open CSPlantE;
+open CSPlantA;
 
 #include <lsystem.h>
 
@@ -28,7 +28,7 @@ O() < O() > O():
 
 O() < O() >   I() :
 {
-  produce I() SB() Turn(-22.5*2.0*PI_VALUE/360.0) F(0.1) I() F(0.1) I() EB();
+  produce I() SB() Turn(22.5*2.0*PI_VALUE/360.0) F(0.1) I() F(0.1) I() EB();
 }
 
 O() < I() > O():
@@ -53,7 +53,7 @@ I() < O() >  I():
 
 I() < I() >  O():
 {
-  produce I();
+  produce O();
 }
 
 I()  < I() > I():
@@ -74,6 +74,6 @@ F(s):
   ;
 }
 
-close CSPlantE;
+close CSPlantA;
 
 
