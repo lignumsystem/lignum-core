@@ -6,7 +6,7 @@
 using namespace std;
 
 enum TPD {af,ar,lr,mf,mr,ms,na,nl,pr,q,sr,ss,rho,xi};
-enum TAD {area, fin, fout, H, ip,lb,L,M,omega,P,Pr,Qin,Qabs,R,Rf,Rn,Wf,Wm,Ws};  // Wm lisätty..Wr pois
+enum TAD {area,fin,fout,H,ip,lb,L,M,omega,P,Pr,Qin,Qabs,R,Rf,Rn,Wf,Wm,Ws};  // Wm lisätty..Wr pois
 enum TAI {age};
 enum TTD {lambda};
 

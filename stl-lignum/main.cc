@@ -90,42 +90,36 @@ int main(int argc, char *argv[])
     new TreeSegment<MyTreeSegment>(Point<METER>(0,0,0),PositionVector(0,0,1.0),
 				   0,1,0.5,0.2,&tree);
 
+  bud = new  Bud<MyTreeSegment>(Point<METER>(0,0,0),
+				PositionVector(0,0,1.0),
+				0,
+				&tree);
+
   InsertTreeCompartment(*axis2, ts);
+
+ ts = 
+    new TreeSegment<MyTreeSegment>(Point<METER>(0,0,0),PositionVector(0,0,1.0),
+				   0,1,0.5,0.2,&tree);
+
+ 
+
+  InsertTreeCompartment(*axis2, ts);
+
   InsertTreeCompartment(*axis2,bud);
 
 
- ts = 
+  ts = 
     new TreeSegment<MyTreeSegment>(Point<METER>(0,0,0),PositionVector(0,0,1.0),
-				   0,1,0.5,0.2,&tree);
-
+  				   0,1,0.5,0.2,&tree);
+  
   InsertTreeCompartment(*axis3, ts);
-
- ts = 
-    new TreeSegment<MyTreeSegment>(Point<METER>(0,0,0),PositionVector(0,0,1.0),
-				   0,1,0.5,0.2,&tree);
-
+  
+  ts =   new TreeSegment<MyTreeSegment>(Point<METER>(0,0,0),PositionVector(0,0,1.0),
+					0,1,0.5,0.2,&tree);
   InsertTreeCompartment(*axis3, ts);
-
-  //traverse the tree and print out  the datatypes of tree compartments
-  //see class DisplayType in TreeFunctor.h and in TreeFunctor.cc
-  axis = GetAxis(tree);
-
-  list<TreeCompartment<MyTreeSegment>*>& ls = GetTreeCompartmentList(axis);
-
-
-  list<TreeCompartment<MyTreeSegment>*>::iterator I = ls.begin();
-  while(I != ls.end())
-    {
-      if (TreeSegment<MyTreeSegment>* myts = dynamic_cast<TreeSegment<MyTreeSegment>*>(*I))
-      	cout << "tree segment" << endl;
-      if (BranchingPoint<MyTreeSegment>* mybp = dynamic_cast<BranchingPoint<MyTreeSegment>*>(*I))
-      	cout << "branching point" << endl;
-      I++;
-
-    }
-
-  //for_each(ls.begin(),ls.end(),DisplayType<MyTreeSegment>());
-  //  for_each(ls.begin(),ls.end(),DisplayType<MyTreeSegment>());
+  
+  
+ 
   tree.UpdateWaterFlow(1.0);
 }
 

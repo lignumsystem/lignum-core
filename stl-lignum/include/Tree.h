@@ -40,17 +40,42 @@ public:
 };
 
 
+
+
+template <class TS>
 class ConnectionMatrix{
 public:
   ConnectionMatrix(int);
+  void AddConnection(TreeSegment<TS> *ts1, TreeSegment<TS> *ts2);
+  TreeSegment<TS> ***pointer;
+  void print();
+  int size;
+private:
+};
+
+
+
+
+
+
+
+
+
+/*
+class ConnectionMatrix{
+public:
+  ConnectionMatrix(int);
+
   void AddConnection(long int,long int);
   bool setValue(int, int, long int);
   long int **pointer;
   void print();
   int size;
+
 private:
   int GetRow(long int);
 };
+*/
 
 
 
@@ -99,8 +124,7 @@ public:
   Tree(const Point<METER>& p, const PositionVector& d);
   void UpdateWaterFlow(TP time);
 private:
- 
-  TreeSegment<TS>* GetTreeSegment(Axis<TS> &ax, long int add);
+  TreeSegment<TS>* GetTreeSegment(Axis<TS> &ax, TreeSegment<TS> *as);
   void BuiltConnectionMatrix();
   int CountTreeSegments(Axis<TS> &ax);
   void makeAxis(Axis<TS> &ax, TreeSegment<TS> &ts);
@@ -109,7 +133,7 @@ private:
   TreeFunctions tf;
   TreeParameters tp;
   TreeTransitVariables ttp;
-  ConnectionMatrix *cm;
+  ConnectionMatrix<TS> *cm;
   Axis<TS> axis;
   RootSystem rs;
 };

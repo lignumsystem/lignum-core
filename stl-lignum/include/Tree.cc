@@ -1,63 +1,86 @@
 #include <Tree.h>
 
-//Constructor of connection matrix reserves memory
-//for n * n matrix.
-ConnectionMatrix::ConnectionMatrix(int n)
+
+
+// The constructor reserves memory for n*n matrix
+template <class TS>
+ConnectionMatrix<TS>::ConnectionMatrix(int n)
 {
   size = n;
-  pointer = new long int*[n];
+  pointer = new TreeSegment<TS>**[n];
   for (int i=0; i<n; i++)
-    pointer[i] = new long int[n];
+    pointer[i] = new TreeSegment<TS>*[n];
 
   for (int x=0; x<n; x++)
     for (int y=0; y<n; y++)
-      pointer[x][y] = 0;
+      pointer[x][y] = NULL;
 
 }
 
-bool ConnectionMatrix::setValue(int r, int c, long int value)
-{
-  if (r>size-1 || c>size-1)
-    return false;
-  pointer[r][c] = value;
-  return true;
-}
 
-void  ConnectionMatrix::AddConnection(long int s, long int t)
+
+
+// This method adds a connection from source (TreeSegment) to the target
+// (TreeSegment).
+template <class TS>
+void ConnectionMatrix<TS>::AddConnection(TreeSegment<TS> *source, TreeSegment<TS> *target)
 { 
-  pointer[GetRow(s)][GetRow(t)] = t;
-}
+  if (source == NULL || target == NULL)
+    return;
 
-void  ConnectionMatrix::print()
+  int i=0, a=0;
+  while(pointer[i][i] != source) // source [TreeSegment] is not in the matrix yet
+    {
+      if (pointer[i][i] == NULL)
+	{
+	  pointer[i][i] = source;
+	  break;
+	}
+      if (i>=size-1)
+	{
+	  cout << "Error in program (Tree.cc)" << endl;
+	  return;
+	}
+      i++;
+    }
+  while(pointer[a][a]!=target) // target [TreeSegment] is not in the matrix yet
+    {
+      if (pointer[a][a] == NULL) 
+	{
+	  pointer[a][a] = target;
+	  break;
+	}
+
+      if (a>=size-1)
+	{
+	  cout << "Error in program (Tree.cc)" << endl;
+	  return;
+	}
+      a++;
+    }
+  pointer[i][a] = target;
+} 
+
+
+
+// This method prints the information of the matrix
+template<class TS>
+void  ConnectionMatrix<TS>::print()
 {
  for(int i=0; i<size; i++)
     {
       for(int a=0; a<size; a++)
 	{
-	  if (pointer[i][a]==0)
-	    cout << "     -     ";
-	  else cout << "  " << pointer[i][a];
+	  if (i == a)
+	    cout << "    -       ";
+	  else if (pointer[i][a]==0)
+	    cout << "   NULL     ";
+	  else cout << "  connection";
 	}
       cout << endl;
     }
 }
 
-  
-
-int ConnectionMatrix::GetRow(long int a)
-{
-  for(int i=0; i<size; i++)
-    {
-      if (pointer[i][i] == 0)
-	{
-	  pointer[i][i]=a;
-	  return i;
-	}
-      if (pointer[i][i] == a)
-	return i;
-    }
-  return -1;
-}
 
 TreeParameters::TreeParameters()
 {
@@ -96,7 +119,7 @@ Tree<TS>::Tree(const Point<METER>& p, const PositionVector& d)
 
 
 template <class TS>
-TreeSegment<TS>* Tree<TS>::GetTreeSegment(Axis<TS> &ax, long int add)
+TreeSegment<TS>* Tree<TS>::GetTreeSegment(Axis<TS> &ax, TreeSegment<TS> *ts)
 {
   list<TreeCompartment<MyTreeSegment>*>& ls = GetTreeCompartmentList(ax);
   list<TreeCompartment<MyTreeSegment>*>::iterator I = ls.begin();
@@ -105,7 +128,7 @@ TreeSegment<TS>* Tree<TS>::GetTreeSegment(Axis<TS> &ax, long int add)
     {
       if (TreeSegment<MyTreeSegment>* myts = dynamic_cast<TreeSegment<MyTreeSegment>*>(*I))
 	{
-	  if ((long int &)myts == add)
+	  if (myts == ts)
 	    return myts;
 	}
       if (BranchingPoint<MyTreeSegment>* mybp = dynamic_cast<BranchingPoint<MyTreeSegment>*>(*I))
@@ -115,9 +138,9 @@ TreeSegment<TS>* Tree<TS>::GetTreeSegment(Axis<TS> &ax, long int add)
 	  while(I != axis_ls.end())
 	    {
 	      Axis<MyTreeSegment> *axis = *I;
-	      TreeSegment<MyTreeSegment> *ts = GetTreeSegment(*axis, add);
-	      if (ts != NULL)
-		return ts;
+	      TreeSegment<MyTreeSegment> *t = GetTreeSegment(*axis, ts);
+	      if (t != NULL)
+		return t;
 	      I++;	    
 	    }
 	}      
@@ -132,13 +155,13 @@ void Tree<TS>::UpdateWaterFlow(TP time_step)
 {
   if (cm == NULL)
     this->BuiltConnectionMatrix();
+ 
   cm->print();
-
   // This counts the flow in for every segment
   for (int i=0; i<cm->size; i++)
     {
       TreeSegment<MyTreeSegment> *out;
-      if(cm->pointer[i][i] != 0)  
+      if(cm->pointer[i][i] != NULL)  
 	out = GetTreeSegment(this->axis, cm->pointer[i][i]);
       if (out == NULL)
 	cout << "ei l;ytynyt" << endl;
@@ -166,8 +189,11 @@ void Tree<TS>::UpdateWaterFlow(TP time_step)
 	      SetTSAttributeValue(*out, fout, GetTSAttributeValue(*out, fout)+GetTSAttributeValue(*in, fin));
 	    }
 	}
-      TP new_pressure = GetTSAttributeValue(*out, pr) + time_step * ( GetTSAttributeValue(*out, fin) - GetTSAttributeValue(*out, fout) - out->GetTranspiration(time)); 
-      SetTSAttributeValue(*out, pr, new_pressure); 
+      TP new_pressure = GetTSAttributeValue(*out, Pr) + time_step * 
+	( GetTSAttributeValue(*out, fin) - GetTSAttributeValue(*out, fout) - 
+	  out->GetTranspiration(0.0)); 
+      
+      SetTSAttributeValue(*out, Pr, new_pressure); 
     }
 
 }
@@ -229,15 +255,19 @@ void Tree<TS>::BuiltConnectionMatrix()
   TreeSegment<MyTreeSegment> *lastSegment = NULL;
   list<TreeCompartment<MyTreeSegment>*>& ls = GetTreeCompartmentList(axis);
   list<TreeCompartment<MyTreeSegment>*>::iterator I = ls.begin();
-  cm = new ConnectionMatrix(CountTreeSegments(this->axis));
+  cm = new ConnectionMatrix<MyTreeSegment>(CountTreeSegments(this->axis));
 
   while(I != ls.end())
     {
+      
       if (TreeSegment<MyTreeSegment>* myts = dynamic_cast<TreeSegment<MyTreeSegment>*>(*I))
-      	{	  	  
-	  cm->AddConnection((long int &)myts, (long int &)lastSegment);
+      	{	
+	  if (lastSegment)
+	    cm->AddConnection(lastSegment, myts);
+	  //  cm->AddConnection((long int &)myts, (long int &)lastSegment);
 	  lastSegment = myts;
 	}
+      
       if (BranchingPoint<MyTreeSegment>* mybp = dynamic_cast<BranchingPoint<MyTreeSegment>*>(*I))
 	{	 
 	  list<Axis<TS>*>& axis_ls = GetAxisList(*mybp);  	  
@@ -245,11 +275,13 @@ void Tree<TS>::BuiltConnectionMatrix()
 	  while(I != axis_ls.end())
 	    {	      
 	      Axis<MyTreeSegment> *axis = *I;
-	      makeAxis(*axis, *lastSegment);
+	      if (lastSegment)
+		makeAxis(*axis, *lastSegment);
 	      I++;
 	    }
 	  
 	}
+      
       I++;
     }
 }
@@ -266,11 +298,15 @@ void Tree<TS>::makeAxis(Axis<TS>& ax, TreeSegment<TS>& ts)
   
   while(I != ls.end())
     {
+      
       if (TreeSegment<MyTreeSegment>* myts = dynamic_cast<TreeSegment<MyTreeSegment>*>(*I))
 	{
-	  cm->AddConnection((long int &)myts, (long int &)lastSegment);
+	  if (lastSegment)
+	    cm->AddConnection(lastSegment, myts);
+	  // cm->AddConnection((long int &)myts, (long int &)lastSegment);
 	  lastSegment = myts;
 	}
+      
       if (BranchingPoint<MyTreeSegment>* mybp = dynamic_cast<BranchingPoint<MyTreeSegment>*>(*I))
       	{
 	  list<Axis<TS>*>& axis_ls = GetAxisList(*mybp);  	  
@@ -278,14 +314,16 @@ void Tree<TS>::makeAxis(Axis<TS>& ax, TreeSegment<TS>& ts)
 	  while(I != axis_ls.end())
 	    {
 	      Axis<MyTreeSegment> *axis = *I;
-	      makeAxis(*axis, *lastSegment);
+	      if (lastSegment)
+		makeAxis(*axis, *lastSegment);
 	      I++;	    
 	    }
 	}
+      
       if (Bud<MyTreeSegment>* mybud = dynamic_cast<Bud<MyTreeSegment>*>(*I))
-	{
-	 
+	{	 
 	}
+      
       I++;
 
     }

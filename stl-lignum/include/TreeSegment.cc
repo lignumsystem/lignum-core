@@ -89,7 +89,13 @@ TP GetTSAttributeValue(const TreeSegment<TS>& ts, const TAD name)
   if (name == area)
     return 3.14*R*R;
 
- else if (name == H)
+  else if (name == fin)
+    return ts.tsa.fin;
+  
+  else if (name == fout)
+    return ts.tsa.fout;
+  
+  else if (name == H)
     return ts.point.getZ();
 
   else if (name == L)
