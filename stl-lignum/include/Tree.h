@@ -2,7 +2,6 @@
 #ifndef TREE_H
 #define TREE_H
 
-
 #include <list>
 #include <stdlib.h>
 #include <iostream.h>

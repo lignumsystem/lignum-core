@@ -121,6 +121,9 @@ int main(int argc, char *argv[])
   
  
   tree.UpdateWaterFlow(1.0);
+  tree.UpdateWaterFlow(1.0); 
+  tree.UpdateWaterFlow(1.0); 
+  tree.UpdateWaterFlow(1.0);
 }
 
 

@@ -46,11 +46,11 @@ public:
 	      const METER l, const METER r, const METER rn, Tree<TS>* t);
   virtual ~TreeSegment();
   TP GetTranspiration(TP time);
+  TP GetPressure(){ return tsa.Pr;};
 
 private:
   TreeSegmentAttributes tsa;
 };
-
 
 #endif
 
