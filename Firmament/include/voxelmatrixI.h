@@ -1140,7 +1140,7 @@ void Matrix<TS,BUD>::doAxis(Axis<TS,BUD> *axis, Point base)
 	BranchingPoint<TS,BUD> *bp;
 
 	list<TreeCompartment<TS,BUD>*>& ls = GetTreeCompartmentList(*axis);
-	list<TreeCompartment<TS,BUD>*>::iterator I = ls.begin();
+	typename list<TreeCompartment<TS,BUD>*>::iterator I = ls.begin();
   
 	while(I != ls.end())
 	{
@@ -1170,13 +1170,13 @@ void Matrix<TS,BUD>::doAxis(Axis<TS,BUD> *axis, Point base)
 template <class TS,class BUD>
 void Matrix<TS,BUD>::doBranchingPoint(BranchingPoint<TS,BUD> *bp, Point base)
 {
-	list<Axis<TS,BUD>*>::iterator first = GetAxisList(*bp).begin();
-	list<Axis<TS,BUD>*>::iterator last = GetAxisList(*bp).end();
-
-	while (first != last)
-	{
-		doAxis(*first++, base);	
-	}  
+  typename list<Axis<TS,BUD>*>::iterator first = GetAxisList(*bp).begin();
+  typename list<Axis<TS,BUD>*>::iterator last = GetAxisList(*bp).end();
+  
+  while (first != last)
+    {
+      doAxis(*first++, base);	
+    }  
 }
 
 
