@@ -18,6 +18,7 @@ using namespace std;
 //please update this list.
 
 //   CountTreeSegments
+//   ForwardQin (for coniferous)
 //   PrintTreeInformation
 //   CountCompartments
 //   CountCompartmentsReverse
@@ -66,12 +67,31 @@ namespace Lignum{
   template <class TS, class BUD, class STREAM>
     class PrintTreeInformation {
     public:
-    PrintTreeInformation(): out(cout) {}
-    PrintTreeInformation(ofstream& file):
+      PrintTreeInformation(): out(cout) {}
+      PrintTreeInformation(ofstream& file):
     out(file) {}
-    void operator() (Tree<TS,BUD>&  tr);
+      void operator() (Tree<TS,BUD>&  tr);
     private:
-    STREAM& out;
+      STREAM& out; 
+  };
+
+
+  template <class TS,class BUD>
+  class ForwardQin{
+  public:
+    double operator()(double& qin, TreeCompartment<TS,BUD>* tc)const
+    {
+      if (TS* ts = dynamic_cast<TS*>(tc)){
+	double ts_qin = GetValue(*ts,LGAQin);
+	if (GetValue(*ts,LGAage) == 0.0){//pass qin to this segment
+	  SetValue(*ts,LGAQin,qin);
+	}
+	else{ //computed
+	  qin = ts_qin;
+	}
+      }
+      return qin;
+    }
   };
 
   //TreeData is used to collect (Accumulate) data on a tree.
