@@ -96,7 +96,7 @@ int GoNextModuleInSameAxis(list<ModuleIdType>::iterator& first,
  *Like this the context will become as the default algorithm for right*
  *context where the branches are enumerated explicitely. Naturally the*
  *ordering is difficult to manage. In  "A > [B] J" the B has its      *
- *position and to interpret if "A > [] B J" or "A > [B] [] J" etc.    *
+ *position and to interpret if "A > [] [B] J" or "A > [B] [] J" etc.  *
  *is meant would require permutations. So the empty branches are      *
  *always inserted in front of J.                                      *   
  **********************************************************************/ 
