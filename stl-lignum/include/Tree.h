@@ -28,6 +28,7 @@ using namespace cxxadt;
 #include <Axis.h>
 #include <ConnectionMatrix.h>
 #include <Firmament.h>
+#include <TreeRadiation.h>
 
 using namespace sky;
 
@@ -126,6 +127,9 @@ class Tree: public TreeCompartment<TS,BUD>{
   template <class TS1,class BUD1>
   friend LGMdouble UpdateTreePhotosynthesis(Tree<TS1,BUD1>& tree);
 
+  template <class TS1, class BUD1, class F>
+  friend void EvaluateRadiationForTree(Tree<TS1,BUD1>& tree, const F& f);
+
 public:
   Tree();
   Tree(const Point& p, const PositionVector& d);
@@ -152,6 +156,7 @@ private:
 #include <TreeI.h>
 #include <TreeMetabolismI.h>
 #include <TreeBookkeepingI.h>
+#include <TreeRadiationI.h>
 
 #endif
 

@@ -2,46 +2,89 @@
 #define SHADING_H
 
 #include <Tree.h>
-#include <BetulaWithFlow.h>
-//#include <Algorithms.h>
-using namespace Lignum;
+
+namespace Lignum {
 
 
-//Evaluate radiaton conditions for each leaf
-template <class TS,class BUD = DefaultBud<TS> >
-class EvaluateRadiation:
-  public AdaptableTCFunction<TS,BUD> {
+//This functor EvaluateRadiationForHwTreeSegment evaluates shading
+//caused by all other leaves to all leaves of this hardwood
+//segment. This functor uses functor ShadingEffectOfLeaf<TS,BUD> to
+//go through all leaves and to check the shading.
+
+template <class TS, class BUD>
+class EvaluateRadiationForHwTreeSegment {
 public:
-TreeCompartment<TS,BUD>* operator()
-  (TreeCompartment<TS,BUD>* tc)const;
+  void operator()(TreeSegment<TS,BUD>* ts)const;
+  void setExtinction(ParametricCurve& K); //not needed really for
+ //hardwoods, included only to quarantee that program compiles also in
+ //the case when constructor of WrapRadiationEvaluations<F,TS,BUD> is
+ //invoked with sring argument for harrdwoods.
 };
 
-//Accumulate the effect of shading by other leaves
-template <class TS,class BUD = DefaultBud<TS> >
-class EvaluateRadiationForLeaf{
+//This functor ShadingEffectOfLeaf<TS,BUD> evaluates shading caused
+//by all leaves of a hardwood segment on a leaf (shaded_l) of a
+//hardwood segment (shaded_s). 
+
+template <class TS,class BUD>
+class ShadingEffectOfLeaf{
 public:
-  EvaluateRadiationForLeaf(TreeSegment<TS,BUD>* ts, BroadLeaf* lf);
+  ShadingEffectOfLeaf(HwTreeSegment<TS,BUD>* ts, BroadLeaf* lf);
   vector<LGMdouble>& operator()(vector<LGMdouble>& v,TreeCompartment<TS,BUD>* tc)const;
-  Lignum::BetulaWithFlow* shaded_s;
+
+  HwTreeSegment<TS,BUD>* shaded_s;
   BroadLeaf* shaded_l;
 };
 
-template <class TS,class BUD = DefaultBud<TS> >
-class EvaluateRadiationForSegmentCylinder{
+
+//This functor EvaluateRadiationForCfTreeSegment evaluates shading
+//caused by all other segments on this conifer segment. This functor
+//uses functor ShadingEffectOfCfTreeSegment<TS,BUD> to go through all
+//segments to check the shading.
+
+template <class TS, class BUD>
+class EvaluateRadiationForCfTreeSegment {
+public:
+  void  operator()(TreeSegment<TS,BUD>* ts)const;
+  void setExtinction(ParametricCurve& K);
+private:
+  ParametricCurve K;
 };
 
-template <class TS,class BUD = DefaultBud<TS> >
-class PrintLight:
-  public AdaptableTCFunction<Lignum::BetulaWithFlow,
-  DefaultBud<Lignum::BetulaWithFlow> > {
+
+//This functor ShadingEffectOfCfTreeSegment<TS,BUD> evaluates shading caused
+//by a conifer segment on this conifer segment (shaded_s)
+
+template <class TS,class BUD>
+class ShadingEffectOfCfTreeSegment {
 public:
-TreeCompartment<Lignum::BetulaWithFlow,DefaultBud<Lignum::BetulaWithFlow> >* operator()
-  (TreeCompartment<Lignum::BetulaWithFlow,DefaultBud<Lignum::BetulaWithFlow> >* tc)const;
+  ShadingEffectOfCfTreeSegment(CfTreeSegment<TS,BUD>* ts, const ParametricCurve& K_in) {
+    shaded_s = ts;
+    K = K_in;
+  }
+  vector<LGMdouble>& operator()(vector<LGMdouble>& v,TreeCompartment<TS,BUD>* tc)const;
+private:
+  CfTreeSegment<TS,BUD>* shaded_s;
+  ParametricCurve K;
 };
+
+
+
+}     //END OF NAMESPACE LIGNUM
+
 
 #include <ShadingI.h>
 
 #endif
+
+
+
+
+
+
+
+
+
+
 
 
 
