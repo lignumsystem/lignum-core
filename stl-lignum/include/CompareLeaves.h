@@ -3,7 +3,6 @@
 
 #include <BroadLeaf.h>
 #include <HwTreeSegment.h>
-
 /*********************************************************************
  *This  file implements pairwise  comparison of  leaves in  a hardwood
  *tree. Essentially the algorithms  consists of two ForEach calls. The
@@ -27,31 +26,31 @@ namespace Lignum{
   template <class TS, class BUD, class SHAPE>
   class HwTreeSegmentLeafCompare{
   public:
-    HwTreeSegmentLeafCompare(const Tree<TS,BUD>& t):tree(t){}
+    HwTreeSegmentLeafCompare(Tree<TS,BUD>& t):tree(t){}
     void operator()(BroadLeaf<SHAPE>* l);
   private:
-    const Tree<TS,BUD>& tree;
+    Tree<TS,BUD>& tree;
   };
 
   //Called by HwTreeSegmentLeafCompare to compare leaf 'l' to other leaves in the tree.
   template<class TS,class BUD,class SHAPE>
   class ForEachLeafIntersect{
-    friend BroadLeaf<SHAPE>* GetLeaf(ForEachLeafIntersect<TS,BUD,SHAPE>& f){return f.leaf;}
+    friend const BroadLeaf<SHAPE>& GetLeaf(const ForEachLeafIntersect<TS,BUD,SHAPE>& f){return f.leaf;}
   public:
-    ForEachLeafIntersect(BroadLeaf<SHAPE>& l):leaf(l){}
+    ForEachLeafIntersect(const BroadLeaf<SHAPE>& l):leaf(l){}
     TreeCompartment<TS,BUD>* operator()(TreeCompartment<TS,BUD>* tc)const;
   private:
-    BroadLeaf<SHAPE>& leaf;
+    const BroadLeaf<SHAPE>& leaf;
   };
 
   //Called by ForEachLeafIntersect and does the actual comparison. 
   template<class SHAPE>
   class HwTreeSegmentLeafIntersect{
   public:
-    HwTreeSegmentLeafIntersect(BroadLeaf<SHAPE>& l,Firmament& sky):leaf(l),f(sky){}
+    HwTreeSegmentLeafIntersect(const BroadLeaf<SHAPE>& l,Firmament& sky):leaf(l),f(sky){}
     void operator()(BroadLeaf<SHAPE>* l);
   private:
-    BroadLeaf<SHAPE>& leaf;
+    const BroadLeaf<SHAPE>& leaf;
     Firmament& f;
   };
 
@@ -64,9 +63,9 @@ namespace Lignum{
   template<class TS, class BUD, class SHAPE> TreeCompartment<TS,BUD>* 
   ForEachLeafCompare<TS,BUD,SHAPE>::operator()(TreeCompartment<TS,BUD>* tc)const
   {
-    if (HwTreeSegment<TS,BUD>* ts = dynamic_cast<HwTreeSegment<TS,BUD>*>(tc)){
+    if (HwTreeSegment<TS,BUD,SHAPE>* ts = dynamic_cast<HwTreeSegment<TS,BUD,SHAPE>*>(tc)){
       list<BroadLeaf<SHAPE>*>& ls = GetLeafList(*ts);
-      for_each(ls,HwTreeSegmentLeafCompare<TS,BUD,SHAPE>(GetTree(*ts)));
+      for_each(ls.begin(),ls.end(),HwTreeSegmentLeafCompare<TS,BUD,SHAPE>(GetTree(*ts)));
     }
     return tc;
   }
@@ -84,9 +83,10 @@ namespace Lignum{
   template<class TS,class BUD,class SHAPE> TreeCompartment<TS,BUD>*
   ForEachLeafIntersect<TS,BUD,SHAPE>::operator()(TreeCompartment<TS,BUD>* tc)const
   {
-    if (HwTreeSegment<TS,BUD>* ts = dynamic_cast<HwTreeSegment<TS,BUD>*>(tc)){
+    if (HwTreeSegment<TS,BUD,SHAPE>* ts = dynamic_cast<HwTreeSegment<TS,BUD,SHAPE>*>(tc)){
       list<BroadLeaf<SHAPE>*>& ls = GetLeafList(*ts);
-      for_each(ls,HwTreeSegmentLeafIntersect<SHAPE>(GetLeaf(*this),GetFirmament(GetTree(*ts))));
+      for_each(ls.begin(),ls.end(),HwTreeSegmentLeafIntersect<SHAPE>(GetLeaf(*this),
+								     GetFirmament(GetTree(*ts))));
     }
 
     return tc;
@@ -103,10 +103,15 @@ namespace Lignum{
   {
     vector<double> v(3);
     for (int i = 0; i < f.numberOfRegions();i++){
-      f.diffuseRadiationSum(i,v); //direction of the light beam
-      Point p1 = GetCenterPoint(leaf); //center point of the leaf
+      f.diffuseRegionRadiationSum(i,v); //direction of the light beam
+      Point p1 = GetCenterPoint(leaf);  //center point of the leaf
       Point p2 = p1 + 1.0*(Point)PositionVector(v[0],v[1],v[2]); //second point on the light beam
-      l->intersectEllipse(p1,p2); //now check if the light beam hits the second leaf.
+      if (GetShape(*l).intersectEllipse(p1,p2)){//now check if the light beam hits the leaf 'l'.
+	cout << "HIT" << endl;
+      }
+      else{
+	cout << "NOT HIT" << endl;
+      }
       //I suggest common interface to all shapes: Triangle, Ellipse and Polygon.
       //I  propose   method  'intersectShape(const  Point&   p,  const
       //PositionVector& d)' where 'p' is  the center point of the leaf
