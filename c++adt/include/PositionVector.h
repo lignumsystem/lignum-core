@@ -34,6 +34,7 @@ public:
   PositionVector& operator -= (const PositionVector& point);
   PositionVector& operator *= (const double scalar);
   operator Point<double> () { return Point<double>(v[0], v[1], v[2]); }
+  operator Point<double> () const { return Point<double>(v[0], v[1], v[2]); }
   double length()const;
   double alpha()const;
   double beta()const;
