@@ -34,7 +34,7 @@ void Tree<TS,BUD>::photosynthesis()
 template <class TS,class BUD>
 void Tree<TS,BUD>::respiration()
 {
-  //Have TreeCompartments to do photosynthesis
+  //Have TreeCompartments to do respiration
 
   ForEach(*this, TreeRespiration<TS,BUD>());
 
