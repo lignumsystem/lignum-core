@@ -1,5 +1,6 @@
 #include <PositionVector.h>
 
+
 namespace cxxadt{
 
 //default constructor
@@ -28,9 +29,10 @@ PositionVector::PositionVector(const PositionVector& pv)
 
 
 PositionVector::PositionVector(const Point<>& p)
-  :v(3)
+   :v(3)
 {
-  PositionVector(p.getX(),p.getY(),p.getZ());
+  //  PositionVector(p.getX(),p.getY(),p.getZ()); //This did not work.
+  v[0] = p.getX(); v[1] = p.getY(); v[2] = p.getZ();
 }
 
 //The assignment
@@ -69,6 +71,205 @@ PositionVector& PositionVector::rotate(ROTATION direction, RADIAN angle)
 
   return *this;
 }
+
+//Rotation about an arbitrary axis in space according to
+//Rogers&Adams: mathematical Elements for Computer Graphics p. 121-128
+PositionVector& PositionVector::rotate(const Point<double>& p0,
+				       const PositionVector& dir, RADIAN angle)
+{
+  // TM = transformation matrix,
+  // M = multiplication matrix 
+  TMatrix<double> TM(4,4);
+
+  //Remove intermediate output from here (Commented out) - when happy
+
+//    vector<double> vm1(4), vm2(4), dir0(4),
+//      my(4), vm(4);
+//    dir0[0] = dir.getX(); dir0[1] = dir.getY();
+//    dir0[2] = dir.getZ(); dir0[3] = 1.0;
+//    my[0] = v[0]; my[1] = v[1]; my[2] = v[2]; my[3] = 1.0;
+
+  // 1. Make p0 origin of the coordinate system = move
+
+  TMatrix<double> T(4,4);
+  T.unitize();
+  T[3][0] = -p0.getX();
+  T[3][1] = -p0.getY();
+  T[3][2] = -p0.getZ();
+
+  TM = T;
+
+
+//    vm1 = my * TM;
+//    vm2 = dir0 * TM;
+//    cout << endl;
+//    cout << "  Origin   *********" << endl;
+//    cout << " Axis:" << endl;
+//    cout << vm1;
+//    cout << " Point: " << endl;
+//    cout << vm2 << endl;
+//    cout << " T and TM: " << endl;
+//    cout << T << endl;
+//    cout << TM << endl << endl;
+
+
+  
+
+  // 2. Perform appropriate rotations to make the axis of rotation coincident with
+  // the z-axis
+
+  TMatrix<double> Rx(4,4), Ry(4,4);
+  double cx, cy, cz;   //direction cosines of the axis =(x,y,z) of a unit vector
+  cx = dir.getX();
+  cy = dir.getY();
+  cz = dir.getZ();
+
+  double lxy;   //projection of direction (unit) vector on xy plane
+  Rx.unitize();
+
+  lxy = sqrt( pow(cy, 2.0) + pow(cz, 2.0) );
+
+  if(lxy > R_EPSILON) {
+      Rx[1][1] = cz/lxy;
+      Rx[1][2] = cy/lxy;
+      Rx[2][1] = -cy/lxy;
+      Rx[2][2] = cz/lxy;
+
+      TM = TM * Rx;      // rotation about x-axis
+
+//    vm1 = my * TM;
+//    vm2 = dir0 * TM;
+//    cout << endl;
+//    cout << "   rotation about x-axis *********" << endl;
+//    cout << " Axis:" << endl;
+//    cout << vm1;
+//    cout << " Point: " << endl;
+//    cout << vm2 << endl;
+//    cout << " T and TM: " << endl;
+//    cout << Rx << endl;
+//    cout << TM << endl << endl;
+  }
+
+
+     Ry.unitize();
+      Ry[0][0] = lxy;
+      Ry[0][2] = cx;
+      Ry[2][0] = -cx;
+      Ry[2][2] = lxy;
+    
+      TM = TM * Ry;    //rotation about y-axis
+
+//    vm1 = my * TM;
+//    vm2 = dir0 * TM;
+//    cout << endl;
+//    cout << "   rotation about y-axis *********" << endl;
+//    cout << " Axis:" << endl;
+//    cout << vm1;
+//    cout << " Point: " << endl;
+//    cout << vm2 << endl;
+//    cout << " T and TM: " << endl;
+//    cout << Ry << endl;
+//    cout << TM << endl << endl;
+
+
+  // 3. Finally, the rotation about the arbitrary axis is given be z-axis rotation
+  //    matrix
+
+  TMatrix<double> Ra(4,4);
+  double cosa, sina;
+  Ra.unitize();
+  cosa = cos(angle);
+  sina = sin(angle);
+  Ra[0][0] = cosa;
+  Ra[0][1] = sina;
+  Ra[1][0] = -sina;
+  Ra[1][1] = cosa;
+
+  TM = TM * Ra;
+
+//    vm1 = my * TM;
+//    vm2 = dir0 * TM;
+//    cout << endl;
+//    cout << " rotation about the arbitrary axis *********" << endl;
+//    cout << " Axis:" << endl;
+//    cout << vm1;
+//    cout << " Point: " << endl;
+//    cout << vm2 << endl;
+//    cout << " T and TM: " << endl;
+//    cout << Ra << endl;
+//    cout << TM << endl << endl;
+
+
+
+  // 4. Now, trasformations Ry, Rx and T inversed to get back to
+  //    original position
+
+  TM = TM * (Ry.transpose());
+
+//    vm1 = my * TM;
+//    vm2 = dir0 * TM;
+//    cout << endl;
+//    cout << " (Ry)^-1 *********" << endl;
+//    cout << " Axis:" << endl;
+//    cout << vm1;
+//    cout << " Point: " << endl;
+//    cout << vm2 << endl;
+//    cout << " T and TM: " << endl;
+//    cout << Ry.transpose() << endl;
+//    cout << TM << endl << endl;
+
+  if(lxy > R_EPSILON) {
+  TM = TM * (Rx.transpose());
+
+//    vm1 = my * TM;
+//    vm2 = dir0 * TM;
+//    cout << endl;
+//    cout << "  (Rx) ^-1   *********" << endl;
+//    cout << " Axis:" << endl;
+//    cout << vm1;
+//    cout << " Point: " << endl;
+//    cout << vm2 << endl;
+//    cout << " T and TM: " << endl;
+//    cout << Rx.transpose() << endl;
+//    cout << TM << endl << endl;
+
+  }
+
+  // Move back
+  T.unitize();
+  T[3][0] = p0.getX();
+  T[3][1] = p0.getY();
+  T[3][2] = p0.getZ();
+
+
+  TM = TM * T;
+
+//    vm1 = my * TM;
+//    vm2 = dir0 * TM;
+//    cout << endl;
+//    cout << "  (-T)    *********" << endl;
+//    cout << " Axis:" << endl;
+//    cout << vm1;
+//    cout << " Point: " << endl;
+//    cout << vm2 << endl;
+//    cout << " T and TM: " << endl;
+//    cout <<  T << endl;
+//    cout << TM << endl << endl;
+ 
+  
+  // Apply transformation to Positionvector
+
+  vector<double> vm(4);
+  vm[0] = v[0]; vm[1] = v[1];  vm[2] = v[2];  vm[3] = 1.0;
+
+  vm = vm * TM;
+
+  v[0] = vm[0]; v[1] = vm[1];  v[2] = vm[2];
+
+  return *this;
+  
+}
+
 
 //Dot product of two vectors
 double Dot(const PositionVector& pv1,const PositionVector& pv2)
@@ -323,6 +524,39 @@ int main()
   cout << "Restore (1,0,0), ((1,0,0)+=(0,1,0))-=(0,1,0) = " <<
     (PositionVector)(x-=y) << " yes" << endl;
   cout << "(1,0,0) *= 10 = " << (PositionVector)(x *= 10.0) << endl;
+
+  cout << "Type casting PostitionVector -> Point:" << endl;
+  Point<double> dd;
+  dd = (Point<double>)x;
+  cout << dd << endl;
+
+//    cout << "Testing using the Point-argument constructor" << endl;
+//    Point<double> pp(2, 2, 2);
+//    cout << "Point pp(2,2,2) as PositionVector: " << PositionVector(pp) << endl;
+
+  
+  z = PositionVector(1,0,0);
+  PositionVector dir(0,1,0);
+  RADIAN angle = -PI_VALUE/2.0;
+  Point<double> p0(0,0,0);
+
+  cout << endl;
+  z.rotate(p0,dir,angle);
+  cout << z << endl;
+  dir = PositionVector(1,0,0);
+  z.rotate(p0,dir,angle);
+  cout << z << endl;
+  dir = PositionVector(0,0,1);
+  z.rotate(p0,dir,angle);
+  cout << z << endl;
+
+
+//    cout << z << " after rotation " << angle << " around (p0, dir) ( "
+//         << p0 << " , " << dir << " )" << " is" << endl;
+
+//    z.rotate(p0,dir,angle);
+
+  //  cout << z << endl;
   
 }
 

@@ -6,6 +6,7 @@
 #include <vector>
 #include <Point.h>
 #include <RMatrix.h>
+#include <TMatrix.h>
 
 namespace cxxadt{
 
@@ -29,6 +30,8 @@ public:
   PositionVector(const vector<double>& v1):v(v1){}
   PositionVector(const Point<>& p);
   PositionVector& rotate(ROTATION direction, RADIAN angle);
+  PositionVector& rotate(const Point<double>& p0, const PositionVector& dir,
+			 RADIAN angle);
   PositionVector& operator = (const PositionVector& pv);
   PositionVector& operator += (const PositionVector& point); 
   PositionVector& operator -= (const PositionVector& point);
@@ -44,6 +47,9 @@ public:
   double getX() { return v[0]; }
   double getY() { return v[1]; }
   double getZ() { return v[2]; }
+  double getX()const { return v[0]; }
+  double getY()const { return v[1]; }
+  double getZ()const { return v[2]; }
 private:
   vector<double> v;
 };
