@@ -14,6 +14,9 @@ LIBOBJ = ${LIBSRC:.cc=.o}
 BIRCHSRC = birch.cc
 BIRCHOBJ =  ${BIRCHSRC:.cc=.o}
 
+FORESTSRC = forest.cc
+FORESTOBJ = ${FORESTSRC:.cc=.o}
+
 CCC = CC -64 -LANG:std
 
 #OPTIMIZE = -Ofast=ip28 -IPA
@@ -81,7 +84,10 @@ birch:  l2c $(BIRCHOBJ) $(LIB1) $(LIB2) $(LIB3)  $(LIB4) $(LIB5) $(LIB6)
 gnubirch:
 	make "CCC=g++" "CCCFLAGS=-c" "OPTIMIZE=-g" \
              "AR=ar"  "ARFLAGS=rv" "LIBD=lib32" "LSYS=birch.L" birch
-l2c:
+
+forest: l2c $(FORESTOBJ) $(LIB1) $(LIB2) $(LIB3)  $(LIB4) $(LIB5) $(LIB6)  
+	$(CCC)  -o $@ $(INCLUDE) $(OPTIMIZE) $(FORESTOBJ) $(LIBFLAGS) $(LIBS)
+l2c:	
 	(cd ../L2C; make "CCC=$(CCC)" "CCCFLAGS=$(CCCFLAGS)" "OPTIMIZE=$(OPTIMIZE)" \
                           "AR=ar" "ARFLAGS=rv" $@)
 $(LIB1):
@@ -99,7 +105,7 @@ $(LIB5):
 	(cd ../../Graphics; make "CCC=$(CCC)" "CCCFLAGS=$(CCCFLAGS)" \
          "OPTIMIZE=$(OPTIMIZE)"  "AR=$(AR)"  "ARFLAGS = $(ARFLAGS)" $@)
 $(LIB6):
-	(cd ../lsys; make distclean; make "CCC=$(CCC)" "CCCFLAGS=$(CCCFLAGS)" \
+	(cd ../lsys; make "CCC=$(CCC)" "CCCFLAGS=$(CCCFLAGS)" \
          "OPTIMIZE=$(OPTIMIZE)"  "AR=$(AR)"  "ARFLAGS = $(ARFLAGS)" "LSYS=$(LSYS)" $@ )
 .cc.o: 
 	$(CCC) $(OPTIMIZE) $(CCCFLAGS) $(INCLUDE)  $< -o $@
@@ -122,5 +128,5 @@ distclean: clean
 depend:
 	(cd ../../Graphics; make "CCC=$(CCC)"  depend)
 	(cd ../L2C; make "CCC=$(CCC)"  depend)
-	$(CCC) -M $(INCLUDE) $(SRC) $(LIBSRC) $(BIRCHSRC) > Makedepend
+	$(CCC) -M $(INCLUDE) $(SRC) $(LIBSRC) $(BIRCHSRC) $(FORESTSRC)  > Makedepend
 
