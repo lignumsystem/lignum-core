@@ -8,7 +8,7 @@
  *Multiple  decalarations and  definitions are  prevented by wrapping*
  *LSystem.h and lsystem.h in namespaces.                             *
  *********************************************************************/
-#include <lsystem.h>
+#include <lsys.h>
 
 
 ProdCaller  ContextMatch(const LstringIterator& pos,CallerData& caller_data,int& prod);
