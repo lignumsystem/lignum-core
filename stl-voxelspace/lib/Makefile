@@ -1,7 +1,7 @@
 SRCDIR1 = ../src
 SRCDIR2 = ../include
 
-SRC = $(SRCDIR1)/VoxelBox.cc  $(SRCDIR1)/VoxelSpace.cc $(SRCDIR1)/bernoulli.cc 
+SRC = $(SRCDIR1)/VoxelBox.cc  $(SRCDIR1)/VoxelSpace.cc  
 
 OBJ = ${SRC:.cc=.o} 
 

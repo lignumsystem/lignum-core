@@ -12,6 +12,7 @@
 #include <VoxelBox.h>
 #include <VoxelSpace.h>
 #include <bernoulli.h>
+#include <Bernoulli.h>
 
 #include <fstream>
 
@@ -29,8 +30,7 @@ namespace Lignum {
   //
   VoxelSpace::VoxelSpace():voxboxes(10,10,10),Xn(10),Yn(10),Zn(10)
   {
-    cout<<"create voxel space!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
-    sky = NULL;
+     sky = NULL;
   }
 
 
@@ -85,7 +85,6 @@ namespace Lignum {
 	    voxboxes[i1][i2][i3].setVoxelSpace(this, corner); 
 	  }
     sky = &f;
-    //  cout<<"_________voxel space created___________"<<endl;
   }
 
 
@@ -343,49 +342,46 @@ namespace Lignum {
 		    int size = vec.size();
 
 		    sumiop += iop; //WHERE IS THIS NEEDED??
-		    
-            
-		    if (size>1)
-		      {int a=1;
+		    	   
+		      if (size>1)
+		      {
+                      int a=1;
 		      bool flag=0;
 		      long int seed= time(0);
                       double p, result, test;
-                        StochasticLib obj(seed);
- 
+                      StochasticLib obj(seed);
+                      
                       while (a<size && flag==0)
 			{
+			  
 			  VoxelMovement v1 = vec[a-1];
-			  VoxelMovement v2 = vec[a];
+			  //  VoxelMovement v2 = vec[a];
 					
                           LGMdouble starsum=voxboxes[v1.x][v1.y][v1.y].getStarSum();			
 			 
-			  // a++;
-
-                          p=min(starsum, 1.0);
-			  
+                          p=min(starsum, 1.0);     //need to work on my field data to get the p value
+			  cout<<starsum<<" ";
                           result=obj.Bernoulli(p);
-                          cout<<result<<" ________________show result____________"<<endl; 
+			  // cout<<result<<" ________________show result____________"<<endl; 
   			  if (result>0.5)
 			    flag=1;
                           else 
                             a++;
 			}
-                     
+		      cout<<endl;
                       if (a==size-1)
                       {
                            voxboxes[i1][i2][i3].addRadiation(iop);
-                           cout<<a<<"________-the hit voxelbox:"<<size<<endl;
+			   cout<<a<<"________-the hit voxelbox:"<<size<<endl;
 		      }
 		
 		      }	
 		  }
               }             	      
-	  }
-    
+	  }   
     // file.close();
     return 0;
   }
-
 
 
 
