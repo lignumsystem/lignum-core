@@ -128,8 +128,10 @@ depend:
 ../src/ParametricCurve.o: /usr/include/CC/stl_heap.h
 ../src/ParametricCurve.o: /usr/include/CC/char_traits.h /usr/include/wchar.h
 ../src/ParametricCurve.o: /usr/include/CC/stl_hash_fun.h
-../src/PositionVector.o: ../include/PositionVector.h /usr/include/math.h
+../src/PositionVector.o: ../include/Point.h /usr/include/math.h
 ../src/PositionVector.o: /usr/include/sgidefs.h /usr/include/standards.h
+../src/PositionVector.o: /usr/include/CC/iostream.h /usr/include/memory.h
+../src/PositionVector.o: /usr/include/stddef.h ../include/PositionVector.h
 ../src/PositionVector.o: ../include/mathsym.h /usr/include/CC/vector
 ../src/PositionVector.o: /usr/include/CC/stl_range_errors.h
 ../src/PositionVector.o: /usr/include/CC/stl_config.h
@@ -138,8 +140,7 @@ depend:
 ../src/PositionVector.o: /usr/include/CC/stl_pair.h
 ../src/PositionVector.o: /usr/include/CC/type_traits.h /usr/include/string.h
 ../src/PositionVector.o: /usr/include/limits.h /usr/include/stdlib.h
-../src/PositionVector.o: /usr/include/stddef.h /usr/include/CC/new.h
-../src/PositionVector.o: /usr/include/CC/iostream.h /usr/include/memory.h
+../src/PositionVector.o: /usr/include/CC/new.h
 ../src/PositionVector.o: /usr/include/CC/stl_iterator_base.h
 ../src/PositionVector.o: /usr/include/CC/stl_iterator.h
 ../src/PositionVector.o: /usr/include/CC/stl_alloc.h /usr/include/stdio.h
@@ -148,13 +149,13 @@ depend:
 ../src/PositionVector.o: /usr/include/CC/stl_construct.h
 ../src/PositionVector.o: /usr/include/CC/stl_uninitialized.h
 ../src/PositionVector.o: /usr/include/CC/stl_vector.h
-../src/PositionVector.o: /usr/include/CC/stl_bvector.h ../include/Point.h
-../src/PositionVector.o: ../include/PointI.h ../include/RMatrix.h
+../src/PositionVector.o: /usr/include/CC/stl_bvector.h ../include/RMatrix.h
 ../src/PositionVector.o: ../include/Rotation.h ../include/TMatrix.h
 ../src/PositionVector.o: /usr/include/CC/stream.h /usr/include/CC/iomanip.h
 ../src/PositionVector.o: /usr/include/CC/generic.h
 ../src/PositionVector.o: /usr/include/CC/stdiostream.h
 ../src/PositionVector.o: /usr/include/CC/fstream.h ../include/TMatrixI.h
+../src/PositionVector.o: ../include/PointI.h
 ../src/RMatrix.o: ../include/RMatrix.h /usr/include/math.h
 ../src/RMatrix.o: /usr/include/sgidefs.h /usr/include/standards.h
 ../src/RMatrix.o: ../include/mathsym.h ../include/Rotation.h
@@ -176,30 +177,25 @@ depend:
 ../src/RMatrix.o: /usr/include/CC/stl_uninitialized.h
 ../src/RMatrix.o: /usr/include/CC/stl_vector.h /usr/include/CC/stl_bvector.h
 ../src/RMatrix.o: ../include/TMatrixI.h
-../src/HRMatrix.o: ../include/HRMatrix.h /usr/include/CC/vector.h
+../src/HRMatrix.o: ../include/HRMatrix.h /usr/include/CC/vector
 ../src/HRMatrix.o: /usr/include/CC/stl_range_errors.h
 ../src/HRMatrix.o: /usr/include/CC/stl_config.h /usr/include/standards.h
-../src/HRMatrix.o: /usr/include/CC/algobase.h /usr/include/CC/pair.h
+../src/HRMatrix.o: /usr/include/CC/stl_algobase.h
 ../src/HRMatrix.o: /usr/include/CC/stl_relops.h /usr/include/CC/stl_pair.h
-../src/HRMatrix.o: /usr/include/CC/iterator.h /usr/include/CC/function.h
-../src/HRMatrix.o: /usr/include/stddef.h /usr/include/sgidefs.h
-../src/HRMatrix.o: /usr/include/CC/stl_function.h /usr/include/CC/iostream.h
+../src/HRMatrix.o: /usr/include/CC/type_traits.h /usr/include/string.h
+../src/HRMatrix.o: /usr/include/limits.h /usr/include/sgidefs.h
+../src/HRMatrix.o: /usr/include/stdlib.h /usr/include/stddef.h
+../src/HRMatrix.o: /usr/include/CC/new.h /usr/include/CC/iostream.h
 ../src/HRMatrix.o: /usr/include/memory.h /usr/include/CC/stl_iterator_base.h
-../src/HRMatrix.o: /usr/include/CC/stl_iterator.h
-../src/HRMatrix.o: /usr/include/CC/type_traits.h
-../src/HRMatrix.o: /usr/include/CC/stl_construct.h /usr/include/CC/new.h
-../src/HRMatrix.o: /usr/include/CC/stl_raw_storage_iter.h
-../src/HRMatrix.o: /usr/include/CC/stl_algobase.h /usr/include/string.h
-../src/HRMatrix.o: /usr/include/limits.h /usr/include/stdlib.h
-../src/HRMatrix.o: /usr/include/CC/stl_uninitialized.h
-../src/HRMatrix.o: /usr/include/CC/alloc.h /usr/include/CC/stl_alloc.h
+../src/HRMatrix.o: /usr/include/CC/stl_iterator.h /usr/include/CC/stl_alloc.h
 ../src/HRMatrix.o: /usr/include/stdio.h /usr/include/assert.h
 ../src/HRMatrix.o: /usr/include/CC/stl_threads.h /usr/include/mutex.h
-../src/HRMatrix.o: /usr/include/time.h /usr/include/CC/stl_vector.h
+../src/HRMatrix.o: /usr/include/time.h /usr/include/CC/stl_construct.h
+../src/HRMatrix.o: /usr/include/CC/stl_uninitialized.h
+../src/HRMatrix.o: /usr/include/CC/stl_vector.h /usr/include/CC/stl_bvector.h
 ../src/HRMatrix.o: ../include/Rotation.h ../include/mathsym.h
 ../src/HRMatrix.o: /usr/include/math.h ../include/Point.h
-../src/HRMatrix.o: ../include/PositionVector.h /usr/include/CC/vector
-../src/HRMatrix.o: /usr/include/CC/stl_bvector.h ../include/RMatrix.h
+../src/HRMatrix.o: ../include/PositionVector.h ../include/RMatrix.h
 ../src/HRMatrix.o: ../include/TMatrix.h /usr/include/CC/stream.h
 ../src/HRMatrix.o: /usr/include/CC/iomanip.h /usr/include/CC/generic.h
 ../src/HRMatrix.o: /usr/include/CC/stdiostream.h /usr/include/CC/fstream.h
@@ -217,21 +213,16 @@ depend:
 ../src/hrmatrix.o: /usr/include/CC/stl_uninitialized.h
 ../src/hrmatrix.o: /usr/include/CC/stl_tempbuf.h /usr/include/CC/stl_algo.h
 ../src/hrmatrix.o: /usr/include/CC/stl_heap.h ../include/HRMatrix.h
-../src/hrmatrix.o: /usr/include/CC/vector.h
-../src/hrmatrix.o: /usr/include/CC/stl_range_errors.h
-../src/hrmatrix.o: /usr/include/CC/stl_config.h /usr/include/CC/algobase.h
-../src/hrmatrix.o: /usr/include/CC/pair.h /usr/include/CC/iterator.h
-../src/hrmatrix.o: /usr/include/CC/function.h /usr/include/CC/stl_function.h
-../src/hrmatrix.o: /usr/include/CC/stl_raw_storage_iter.h
-../src/hrmatrix.o: /usr/include/CC/alloc.h /usr/include/CC/stl_alloc.h
+../src/hrmatrix.o: /usr/include/CC/vector /usr/include/CC/stl_range_errors.h
+../src/hrmatrix.o: /usr/include/CC/stl_config.h /usr/include/CC/stl_alloc.h
 ../src/hrmatrix.o: /usr/include/stdio.h /usr/include/assert.h
 ../src/hrmatrix.o: /usr/include/CC/stl_threads.h /usr/include/mutex.h
 ../src/hrmatrix.o: /usr/include/time.h /usr/include/CC/stl_vector.h
-../src/hrmatrix.o: ../include/Rotation.h ../include/mathsym.h
-../src/hrmatrix.o: /usr/include/math.h ../include/Point.h
-../src/hrmatrix.o: ../include/PositionVector.h /usr/include/CC/vector
-../src/hrmatrix.o: /usr/include/CC/stl_bvector.h ../include/RMatrix.h
-../src/hrmatrix.o: ../include/TMatrix.h /usr/include/CC/stream.h
-../src/hrmatrix.o: /usr/include/CC/iomanip.h /usr/include/CC/generic.h
-../src/hrmatrix.o: /usr/include/CC/stdiostream.h /usr/include/CC/fstream.h
-../src/hrmatrix.o: ../include/TMatrixI.h ../include/PointI.h
+../src/hrmatrix.o: /usr/include/CC/stl_bvector.h ../include/Rotation.h
+../src/hrmatrix.o: ../include/mathsym.h /usr/include/math.h
+../src/hrmatrix.o: ../include/Point.h ../include/PositionVector.h
+../src/hrmatrix.o: ../include/RMatrix.h ../include/TMatrix.h
+../src/hrmatrix.o: /usr/include/CC/stream.h /usr/include/CC/iomanip.h
+../src/hrmatrix.o: /usr/include/CC/generic.h /usr/include/CC/stdiostream.h
+../src/hrmatrix.o: /usr/include/CC/fstream.h ../include/TMatrixI.h
+../src/hrmatrix.o: ../include/PointI.h
