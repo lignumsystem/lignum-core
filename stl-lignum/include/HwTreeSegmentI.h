@@ -84,10 +84,10 @@ LGMdouble GetLeafArea(const HwTreeSegment<TS,BUD>& ts)
 }
 
 template<class TS, class BUD >
-LGMdouble SetValue(const HwTreeSegment<TS,BUD>& ts, const LGMAD name,  
+LGMdouble SetValue(HwTreeSegment<TS,BUD>& ts, const LGMAD name,  
 		   const LGMdouble value)
 {
-  return SetValue(dynamic_cast<const TreeSegment<TS,BUD>&>(ts), name);
+  return SetValue(dynamic_cast<TreeSegment<TS,BUD>&>(ts), name, value);
 }
 
 template<class TS, class BUD >
