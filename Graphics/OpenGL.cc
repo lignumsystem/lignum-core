@@ -19,7 +19,7 @@ const float leave_length=0.157;  // gliricidian lehtia varten
 float texX_odd = 86;  //kerroin tekstuurin mappaykseen
 float texY_odd = 22;
 
-float texX_min_odd  = 26;  //kerroin tekstuurin mappaykseen
+float texX_min_odd  = 26;  //kerroin tekstuurin mappaykseen...
 float texY_min_odd  = 22;
 
 float leave_size_x = 1;
