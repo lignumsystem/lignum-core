@@ -1000,13 +1000,14 @@ void CTexture::Load(char *filename, int fw, int fh)
 
   w = fw;
   h = fh;
-
+  glGenTextures(1, &texturenum);
+  glBindTexture(GL_TEXTURE_2D, texturenum);
   glTexImage2D(GL_TEXTURE_2D, 0, 3, w, h, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 }
 
 void CTexture::use()
 {
-  
+  glBindTexture(GL_TEXTURE_2D, texturenum);
   glEnable(GL_TEXTURE_2D);
 }
 

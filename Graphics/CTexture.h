@@ -5,7 +5,7 @@ class CTexture {
 public:
   char *data;
   int  w, h;
-
+  int texturenum;
   void Load(char *filename, int fw, int fh);
   void use();
   void do_not_use();
