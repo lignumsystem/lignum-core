@@ -5,7 +5,7 @@
 
 
 #include <BroadLeaf.h>
-#
+#include <Firmament.h>
 
 namespace Lignum{
 
@@ -13,6 +13,7 @@ template <class TS, class BUD=DefaultBud<TS> >
 class HwTreeSegment:public TreeSegment<TS,BUD>{
   friend list<BroadLeaf*>& GetLeafList(HwTreeSegment<TS,BUD>& ts);
   friend void InsertLeaf(HwTreeSegment<TS,BUD>& ts, BroadLeaf* l);
+  friend void InitializeForRadiation(HwTreeSegment<TS,BUD>& ts);
 public:
   HwTreeSegment(const cxxadt::Point<METER>& p,const PositionVector& pv,
 		const LGMdouble go,const Lignum::METER l, const Lignum::METER r,
