@@ -4,8 +4,7 @@
 
 
 
-#include <Tree.h>
-#include <VoxelSpace.h>
+#include <Lignum.h>
 #include <fstream>
 
 using namespace cxxadt;
@@ -28,8 +27,6 @@ class VoxelSpace;
 
 class VoxelBox
 {
-	template <class TS,class BUD>
-	friend void dumpSegment(VoxelBox &b, const HwTreeSegment<TS,BUD>& ts, int num_parts);
 	
 	template <class TS,class BUD>
 	friend void dumpSegment(VoxelBox &b, const CfTreeSegment<TS,BUD>& ts, int num_parts);
