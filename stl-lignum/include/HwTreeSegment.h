@@ -13,7 +13,7 @@ namespace Lignum{
 
 
 
-template <class TS, class BUD=DefaultBud<TS>,class SHAPE=Ellipsis >
+template <class TS, class BUD=DefaultBud<TS>, class SHAPE=Ellipse>
 class HwTreeSegment:public TreeSegment<TS,BUD>
 {
 //#ifdef _MSC_VER   
