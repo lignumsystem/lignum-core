@@ -1,10 +1,7 @@
-#include <stdlib.h>
-#include <iostream>
-#include <list>
-#include <algorithm>
+
 #include <MyTreeSegment.h>
+#include <Lignum.h>
 #include <MyBud.h>
-#include <Tree.h>
 #include <Shading.h>
 
 using namespace std;
