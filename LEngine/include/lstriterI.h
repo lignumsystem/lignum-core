@@ -171,7 +171,7 @@ inline void LstringIterator::operator+=(int n)
 //background    information,    given   a    vector    char   v[]    =
 //{'A','B','C','D','E','F','G','H','I','J','K','L','M'},
 //memmove(&v[3],&v[8],3) will produce A B C I J K G H I J K L M.
-inline void LstringIteratr::prune(int from, int size_to_move)
+inline void LstringIterator::prune(int from, int size_to_move)
 {
   //Move the memory: the branch SB S1....SN EB with symbols S1...SN in
   //it  becomes SB  EB.
