@@ -58,6 +58,24 @@ void MakeNeedlesList(Tree<TS,BUD> &tree)
 }
 
 
+template <class TS,class BUD>
+void ForestNeedles(Tree<TS,BUD> &tree)
+{
+  glPushMatrix();     
+  DrawNeedlesFunctor<TS, BUD> needles_functor;
+  ForEach(tree, needles_functor);
+  glPopMatrix();               
+}
+
+
+template <class TS,class BUD>
+void ForestLeaves(Tree<TS,BUD> &tree,int xsize, int ysize)
+{
+  glPushMatrix();
+  DrawLeavesFunctor<TS, BUD> leaves_functor(xsize, ysize);
+  ForEach(tree, leaves_functor);
+  glPopMatrix();
+}
 
 template <class TS,class BUD>
 void MakeBudList(Tree<TS,BUD> &tree, bool alive)

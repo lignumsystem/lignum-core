@@ -376,7 +376,28 @@ void DrawFoliage()
 {
   if (several_species)
     {
+      glEnable(GL_BLEND);
+      glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
       
+      
+      glDisable(GL_LIGHTING);
+      
+      glPushMatrix();
+      glEnable(GL_CULL_FACE);
+      glCullFace(GL_FRONT);  
+
+      glBindTexture(GL_TEXTURE_2D, texIds[0]);
+      glCallList(CFNEEDLES_LIST);  
+      glBindTexture(GL_TEXTURE_2D, texIds[1]);
+      glCallList(HWLEAVES_LIST);
+
+      glCullFace(GL_BACK);     	 
+      glBindTexture(GL_TEXTURE_2D, texIds[0]);
+      glCallList(CFNEEDLES_LIST);  
+      glBindTexture(GL_TEXTURE_2D, texIds[1]);
+      glCallList(HWLEAVES_LIST);
+      glDisable(GL_CULL_FACE);
+      glPopMatrix();
     }
   else
     {

@@ -121,6 +121,28 @@ bool LoadGLTextures(char *name)
 
 
 
+bool LoadGLTextures(char *name1, char *name2)
+{
+  
+  char buff[15];
+  tga_t image;
+  
+  glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+  glEnable(GL_DEPTH_TEST);
+  glEnable(GL_TEXTURE_2D);
+ 
+  texIds[0] = image.GenId(); // let OpenGL give us a texture id
+  image.Load(name1, texIds[0]);
+
+  texIds[1] = image.GenId(); 
+  image.Load(name2, texIds[1]);
+   	
+  
+   return true;
+}
+
+
+
 
 
 void ShadowMatrix(GLfloat shadowMat[4][4],  GLfloat groundplane[4], GLfloat lightpos[4])

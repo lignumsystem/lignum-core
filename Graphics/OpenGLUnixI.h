@@ -158,56 +158,80 @@ int VisualizeLGMTree(Tree<TS,BUD> &tree)
 }
 
 
+template <class TREE>
+   int Initialize3DForest(Forest &f)
+  {
+    several_species = true;
 
+    InitDrawing();
+    InitOpenGL();
+    
+    init_window();
+    //setLight();
+    
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    
+    glTexEnvf(GL_TEXTURE_2D, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
+    
+    cfstemtexture.Load("Manty.bmp", 512, 512);
+    hwstemtexture.Load("koivu.bmp", 512, 512);
+    
+    LoadGLTextures("neulaset5.tga", "lehti.tga");
+    MakeLeaveTable();
+    
+    
+    list<VTree*>& ls1 =  GetCfTreeList(f);
+    list<VTree*>::iterator b1 = ls1.begin();
+    list<VTree*>::iterator e1 = ls1.end();
+    
+    if (glIsList(CFTREES_LIST))
+      glDeleteLists(CFTREES_LIST,1);
+    
+    glNewList(CFTREES_LIST, GL_COMPILE);
+    while (b1 != e1)
+      {
+	//I can  check that the tree type  matches but how to  decide if a
+	//tree is coniferous or hardwood, how to see what is behind TREE?
+	if (TREE* t = dynamic_cast<TREE*>(*b1))
+	  {
+	    MakeForestTree(*t);
+	  }
+	b1++;
+      }
+    glEndList();
+
+    b1 = ls1.begin();
+    if (glIsList(CFNEEDLES_LIST))
+      glDeleteLists(CFNEEDLES_LIST,1);
+    
+    glNewList(CFNEEDLES_LIST, GL_COMPILE);
+    while (b1 != e1)
+      {
+	//I can  check that the tree type  matches but how to  decide if a
+	//tree is coniferous or hardwood, how to see what is behind TREE?
+	if (TREE* t = dynamic_cast<TREE*>(*b1))
+	  {
+	    ForestNeedles(*t);
+	  }
+	b1++;
+      }
+    glEndList();
+    
+  }
 
 
  template <class TREE>
    int VisualizeForest(Forest &f)
    {
-     several_species = true;
-
-     InitDrawing();
-     InitOpenGL();
      
-     init_window();
-     //setLight();
-     
-     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-     
-     glTexEnvf(GL_TEXTURE_2D, GL_TEXTURE_ENV_MODE, GL_REPLACE);
-     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
-     
-     cfstemtexture.Load("Manty.bmp", 512, 512);
-     hwstemtexture.Load("koivu.bmp", 512, 512);
-
-
-     list<VTree*>& ls1 =  GetCfTreeList(f);
-     list<VTree*>::iterator b1 = ls1.begin();
-     list<VTree*>::iterator e1 = ls1.end();
-     
-     if (glIsList(CFTREES_LIST))
-       glDeleteLists(CFTREES_LIST,1);
-
-     glNewList(CFTREES_LIST, GL_COMPILE);
-     while (b1 != e1)
-       {
-	 //I can  check that the tree type  matches but how to  decide if a
-	 //tree is coniferous or hardwood, how to see what is behind TREE?
-	 if (TREE* t = dynamic_cast<TREE*>(*b1))
-	   {
-	     MakeForestTree(*t);
-	   }
-	 b1++;
-       }
-     glEndList();
-   
      list<VTree*>& ls2 =  GetCfTreeList(f);
      list<VTree*>::iterator b2 = ls2.begin();
      list<VTree*>::iterator e2 = ls2.end();
-
+     
      if (glIsList(HWTREES_LIST))
        glDeleteLists(HWTREES_LIST,1);
      
@@ -219,6 +243,25 @@ int VisualizeLGMTree(Tree<TS,BUD> &tree)
 	 if (TREE* t = dynamic_cast<TREE*>(*b2))
 	   {
 	     MakeForestTree(*t);
+	   }
+	 b2++;
+       }
+     glEndList();
+
+
+
+     b2 = ls2.begin();
+     if (glIsList(HWLEAVES_LIST))
+       glDeleteLists(HWLEAVES_LIST,1);
+
+     glNewList(HWLEAVES_LIST, GL_COMPILE);
+     while (b2 != e2)
+       {
+	 //I can  check that the tree type  matches but how to  decide if a
+	 //tree is coniferous or hardwood, how to see what is behind TREE?
+	 if (TREE* t = dynamic_cast<TREE*>(*b1))
+	   {
+	     ForestLeaves(*t,6,6);
 	   }
 	 b2++;
        }

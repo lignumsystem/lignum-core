@@ -60,6 +60,13 @@ void SetLight();
 void SetLightPosition();
 
 
+
+template <class TS,class BUD>
+void ForestNeedles(Tree<TS,BUD> &tree);
+
+template <class TS,class BUD>
+void ForestLeaves(Tree<TS,BUD> &tree,int xsize, int ysize);
+
 template <class TS,class BUD>
 void MakeForestTree(Tree<TS,BUD> &tree);
 

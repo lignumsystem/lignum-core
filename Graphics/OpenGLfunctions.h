@@ -20,6 +20,8 @@ bool LoadTextures(string stem1, string stem2, string foliage);
 
 bool LoadGLTextures(char *name);
 
+bool LoadGLTextures(char *name1, char *name2);
+
 void FindPlane(GLfloat plane[4]);
 
 void UseTextures();
