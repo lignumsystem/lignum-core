@@ -3,8 +3,8 @@ OBJ  = Firmament.o  FirmamentWithMask.o MineSet.o Interlen.o Voxel.o voxellattic
  
 CCC = CC -64 -LANG:std
 
-AR = $(CCC) -ar  
-ARFLAGS = -o 
+AR = $(ARCOMMAND)  
+ARFLAGS = $(ARCOMMANDFLAGS) 
 ARFILE = lib/libsky.a
 
 #OPTIMIZE = -Ofast=ip28 -IPA
@@ -14,7 +14,7 @@ SUPPRESS = #-w 1155 -w 1183
 
 CCCFLAGS = -c #-ptv -prelink -fullwarn 
 
-INCLUDE =  -Iinclude -I../c++adt/include -I../stl-lignum/include 
+INCLUDE =  -Iinclude -I../c++adt/include -I../stl-lignum/include -I../ScotsPine/include 
 STL     = -I/usr/include/CC
 
 LIBFLAGS = -L../c++adt/lib -L../stl-lignum/lib -Llib 
@@ -50,3 +50,5 @@ distclean:
 
 depend:
 	makedepend $(INCLUDE) $(STL) $(MAIN)
+
+# DO NOT DELETE
