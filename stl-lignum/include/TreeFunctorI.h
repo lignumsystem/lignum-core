@@ -847,7 +847,8 @@ void SaveLeafInfo(Axis<TS,BUD> &ax, std::ofstream& file)
 
 
 template <class TS, class BUD>
-void SaveTree(Axis<TS,BUD> &ax, CString file_name, CString treetype)
+void SaveTree(Axis<TS,BUD> &ax, const string& file_name, 
+	      const string& treetype)
 {
 	const char *tmp = LPCTSTR(treetype);
 

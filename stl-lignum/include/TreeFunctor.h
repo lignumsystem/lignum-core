@@ -343,7 +343,8 @@ void SaveLeafInfo(Axis<TS,BUD> &ax, ofstream& file);
 
 
 template <class TS, class BUD>
-void SaveTree(Axis<TS,BUD> &tr, CString file_name, CString treetype);
+void SaveTree(Axis<TS,BUD> &tr, const string& file_name, 
+	      const string& treetype);
 
 
 template <class TS, class BUD>
