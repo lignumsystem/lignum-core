@@ -165,7 +165,23 @@ inline void LstringIterator::operator+=(int n)
     (*this)++;
 }
 
-
+//This  is intended to  be used  when deleting  dead branches.   It is
+//assumed that _mem+currentPos is SB, _mem+from is EB and size_to_move
+//is  the rest  of the  string from  the  EB to  the last  bud.  As  a
+//background    information,    given   a    vector    char   v[]    =
+//{'A','B','C','D','E','F','G','H','I','J','K','L','M'},
+//memmove(&v[3],&v[8],3) will produce A B C I J K G H I J K L M.
+inline void LstringIteratr::prune(int from, int size_to_move)
+{
+  //Move the memory: the branch SB S1....SN EB with symbols S1...SN in
+  //it  becomes SB  EB.
+  memmove(const_cast<Lstring&>(_lstring)._mem +_currentPos,_lstring._mem+from,
+	  size_to_move);
+  //Update the module name 
+  memcpy(&_CurrentModuleId,_mem+_currentPos, sizeof(ModuleIdType));
+  //Update the end point of the string
+  const_cast<Lstring&>(_lstring)._lastByte = _currentPos+size_to_move;
+}
 
 
 

@@ -18,6 +18,14 @@ public:
   const char* GetCurrentModuleName() const;
   int CurrentPosition() const
   { return _currentPos; }
+  int GetEndPosition()const{
+    return _lstring._lastByte;
+  }
+  void SetEndPosition(int position){
+    const_cast<Lstring&>(_lstring)._lastByte = position;
+  }
+  //This is intended to be used when deleting dead branches. 
+  void prune(int from, int size_to_move);
   void operator++(int);
   void operator--(int);
   void operator+=(int);
