@@ -12,8 +12,9 @@ namespace Lignum{
    *Two  functors to be  used with  AccumulateDown to  create leaves.
    *CreateLeaves  create  the   Ellipse  leaves  and  AppendDirections
    *appends the  directions of the  buds in branching  points.  Usage:
-   *AccumulateDown(tree,vector<PositionVector>(),AppendSequence<TS,BUD>(),
-   *                                             CreateLeaves<TS,BUD>())  
+   *AccumulateDown(tree,vector<PositionVector>(),
+   *               AppendSequence<vector<PositionVector> >(),
+   *               CreateLeaves<TS,BUD>())  
    *CreateLeaves uses LGMstatus of 1 for bud to create leaves.            
    **************************************************************************/
   //From buds collect directions if they will create a leaf,
@@ -67,9 +68,12 @@ namespace Lignum{
 	  E shape((PositionVector)GetEndPoint(petiole),
 		  leaf_normal,a,b); //initial shape of a leaf is Ellips
 	  BroadLeaf<E>* leaf = new BroadLeaf<E>(shape,petiole,leaf_normal);
+	  //Set parameters for radiation calculation.
+	  SetValue(*leaf,LGAdof,GetValue(GetTree(*tc),LGPdof));
+	  SetValue(*leaf,LGAtauL,GetValue(GetTree(*tc),LGPtauL));
+	  SetValue(*leaf,LGAsf,GetValue(GetTree(*tc),LGPsf));
 	  //Insert leaf
 	  ts->addLeaf(leaf);
-	  cout << "Leaf inserted" << endl;
 	}
 	//clear the vector; don't create leaves twice
 	pdv.clear();
