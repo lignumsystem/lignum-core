@@ -97,7 +97,7 @@ LGMdouble GetValue(const BroadLeaf& bl, const LGMAD name)
   else if (name == P)
     return bl.bla.P;
 
-  else if (name == LM)
+  else if (name == M)
     return  bl.bla.M;
   
   else if (name == Qabs)
@@ -134,7 +134,7 @@ LGMdouble SetValue(BroadLeaf& bl, const LGMAD name, const LGMdouble value)
   else if (name == P)
     bl.bla.P = value;
 
-  else if (name == LM)
+  else if (name == M)
     bl.bla.M = value;
   
   else if (name == Qabs)
