@@ -47,6 +47,7 @@ distclean: clean
 etags:
 	$(ETAGS)   TAGSFILE ../src/*.cc ../include/*.h
 depend:
+	(cd lib; make depend)
 	makedepend $(INCLUDE) $(SRC)
 # DO NOT DELETE THIS LINE -- make depend depends on it.
 
@@ -70,12 +71,26 @@ depend:
 ./src/Lex.o: include/Lex.h /usr/include/CC/fstream.h
 ./src/Lex.o: /usr/include/CC/iostream.h /usr/include/memory.h
 ./src/Lex.o: /usr/include/stddef.h /usr/include/sgidefs.h include/DList.h
-./src/Lex.o: include/DListElement.h include/boolean.h include/CString.h
-./src/Lex.o: /usr/include/string.h /usr/include/standards.h
-./src/Lex.o: /usr/include/stdio.h /usr/include/ctype.h
-./src/Lex.o: /usr/include/locale_attr.h /usr/include/CC/stream.h
-./src/Lex.o: /usr/include/CC/iomanip.h /usr/include/CC/generic.h
-./src/Lex.o: /usr/include/CC/stdiostream.h /usr/include/stdlib.h
+./src/Lex.o: include/DListElement.h include/boolean.h /usr/include/CC/string
+./src/Lex.o: /usr/include/CC/stl_config.h /usr/include/standards.h
+./src/Lex.o: /usr/include/CC/stl_string_fwd.h /usr/include/CC/stl_alloc.h
+./src/Lex.o: /usr/include/stdio.h /usr/include/stdlib.h /usr/include/string.h
+./src/Lex.o: /usr/include/assert.h /usr/include/CC/stl_threads.h
+./src/Lex.o: /usr/include/mutex.h /usr/include/time.h /usr/include/ctype.h
+./src/Lex.o: /usr/include/locale_attr.h /usr/include/CC/functional
+./src/Lex.o: /usr/include/CC/stl_function.h /usr/include/CC/stdexcept
+./src/Lex.o: /usr/include/CC/stl_exception.h
+./src/Lex.o: /usr/include/CC/stl_iterator_base.h /usr/include/CC/memory
+./src/Lex.o: /usr/include/CC/stl_algobase.h /usr/include/CC/stl_relops.h
+./src/Lex.o: /usr/include/CC/stl_pair.h /usr/include/CC/type_traits.h
+./src/Lex.o: /usr/include/limits.h /usr/include/CC/new.h
+./src/Lex.o: /usr/include/CC/stl_iterator.h /usr/include/CC/stl_construct.h
+./src/Lex.o: /usr/include/CC/stl_tempbuf.h
+./src/Lex.o: /usr/include/CC/stl_uninitialized.h
+./src/Lex.o: /usr/include/CC/stl_raw_storage_iter.h /usr/include/CC/algorithm
+./src/Lex.o: /usr/include/CC/stl_algo.h /usr/include/CC/stl_heap.h
+./src/Lex.o: /usr/include/CC/char_traits.h /usr/include/wchar.h
+./src/Lex.o: /usr/include/CC/stl_hash_fun.h
 ./src/ParametricCurve.o: include/ParametricCurve.h /usr/include/CC/vector
 ./src/ParametricCurve.o: /usr/include/CC/stl_range_errors.h
 ./src/ParametricCurve.o: /usr/include/CC/stl_config.h
@@ -91,18 +106,30 @@ depend:
 ./src/ParametricCurve.o: /usr/include/CC/stl_iterator_base.h
 ./src/ParametricCurve.o: /usr/include/CC/stl_iterator.h
 ./src/ParametricCurve.o: /usr/include/CC/stl_alloc.h /usr/include/stdio.h
-./src/ParametricCurve.o: /usr/include/assert.h
+./src/ParametricCurve.o: /usr/include/assert.h /usr/include/CC/stl_threads.h
+./src/ParametricCurve.o: /usr/include/mutex.h /usr/include/time.h
 ./src/ParametricCurve.o: /usr/include/CC/stl_construct.h
 ./src/ParametricCurve.o: /usr/include/CC/stl_uninitialized.h
 ./src/ParametricCurve.o: /usr/include/CC/stl_vector.h
 ./src/ParametricCurve.o: /usr/include/CC/stl_bvector.h
 ./src/ParametricCurve.o: /usr/include/CC/fstream.h /usr/include/float.h
-./src/ParametricCurve.o: include/CString.h /usr/include/ctype.h
-./src/ParametricCurve.o: /usr/include/locale_attr.h /usr/include/CC/stream.h
-./src/ParametricCurve.o: /usr/include/CC/iomanip.h /usr/include/CC/generic.h
-./src/ParametricCurve.o: /usr/include/CC/stdiostream.h
-./src/PositionVector.o: include/PositionVector.h /usr/include/math.h
+./src/ParametricCurve.o: /usr/include/CC/string
+./src/ParametricCurve.o: /usr/include/CC/stl_string_fwd.h
+./src/ParametricCurve.o: /usr/include/ctype.h /usr/include/locale_attr.h
+./src/ParametricCurve.o: /usr/include/CC/functional
+./src/ParametricCurve.o: /usr/include/CC/stl_function.h
+./src/ParametricCurve.o: /usr/include/CC/stdexcept
+./src/ParametricCurve.o: /usr/include/CC/stl_exception.h
+./src/ParametricCurve.o: /usr/include/CC/memory /usr/include/CC/stl_tempbuf.h
+./src/ParametricCurve.o: /usr/include/CC/stl_raw_storage_iter.h
+./src/ParametricCurve.o: /usr/include/CC/algorithm /usr/include/CC/stl_algo.h
+./src/ParametricCurve.o: /usr/include/CC/stl_heap.h
+./src/ParametricCurve.o: /usr/include/CC/char_traits.h /usr/include/wchar.h
+./src/ParametricCurve.o: /usr/include/CC/stl_hash_fun.h
+./src/PositionVector.o: include/Point.h /usr/include/math.h
 ./src/PositionVector.o: /usr/include/sgidefs.h /usr/include/standards.h
+./src/PositionVector.o: /usr/include/CC/iostream.h /usr/include/memory.h
+./src/PositionVector.o: /usr/include/stddef.h include/PositionVector.h
 ./src/PositionVector.o: include/mathsym.h /usr/include/CC/vector
 ./src/PositionVector.o: /usr/include/CC/stl_range_errors.h
 ./src/PositionVector.o: /usr/include/CC/stl_config.h
@@ -111,22 +138,25 @@ depend:
 ./src/PositionVector.o: /usr/include/CC/stl_pair.h
 ./src/PositionVector.o: /usr/include/CC/type_traits.h /usr/include/string.h
 ./src/PositionVector.o: /usr/include/limits.h /usr/include/stdlib.h
-./src/PositionVector.o: /usr/include/stddef.h /usr/include/CC/new.h
-./src/PositionVector.o: /usr/include/CC/iostream.h /usr/include/memory.h
+./src/PositionVector.o: /usr/include/CC/new.h
 ./src/PositionVector.o: /usr/include/CC/stl_iterator_base.h
 ./src/PositionVector.o: /usr/include/CC/stl_iterator.h
 ./src/PositionVector.o: /usr/include/CC/stl_alloc.h /usr/include/stdio.h
-./src/PositionVector.o: /usr/include/assert.h /usr/include/CC/stl_construct.h
+./src/PositionVector.o: /usr/include/assert.h /usr/include/CC/stl_threads.h
+./src/PositionVector.o: /usr/include/mutex.h /usr/include/time.h
+./src/PositionVector.o: /usr/include/CC/stl_construct.h
 ./src/PositionVector.o: /usr/include/CC/stl_uninitialized.h
 ./src/PositionVector.o: /usr/include/CC/stl_vector.h
-./src/PositionVector.o: /usr/include/CC/stl_bvector.h include/Point.h
-./src/PositionVector.o: include/PointI.h include/RMatrix.h include/TMatrix.h
+./src/PositionVector.o: /usr/include/CC/stl_bvector.h include/RMatrix.h
+./src/PositionVector.o: include/Rotation.h include/TMatrix.h
 ./src/PositionVector.o: /usr/include/CC/stream.h /usr/include/CC/iomanip.h
 ./src/PositionVector.o: /usr/include/CC/generic.h
 ./src/PositionVector.o: /usr/include/CC/stdiostream.h
 ./src/PositionVector.o: /usr/include/CC/fstream.h include/TMatrixI.h
+./src/PositionVector.o: include/PointI.h
 ./src/RMatrix.o: include/RMatrix.h /usr/include/math.h /usr/include/sgidefs.h
-./src/RMatrix.o: /usr/include/standards.h include/mathsym.h include/TMatrix.h
+./src/RMatrix.o: /usr/include/standards.h include/mathsym.h
+./src/RMatrix.o: include/Rotation.h include/TMatrix.h
 ./src/RMatrix.o: /usr/include/CC/stream.h /usr/include/CC/iostream.h
 ./src/RMatrix.o: /usr/include/memory.h /usr/include/stddef.h
 ./src/RMatrix.o: /usr/include/CC/iomanip.h /usr/include/CC/generic.h
@@ -139,7 +169,9 @@ depend:
 ./src/RMatrix.o: /usr/include/limits.h /usr/include/stdlib.h
 ./src/RMatrix.o: /usr/include/CC/new.h /usr/include/CC/stl_iterator_base.h
 ./src/RMatrix.o: /usr/include/CC/stl_iterator.h /usr/include/CC/stl_alloc.h
-./src/RMatrix.o: /usr/include/assert.h /usr/include/CC/stl_construct.h
+./src/RMatrix.o: /usr/include/assert.h /usr/include/CC/stl_threads.h
+./src/RMatrix.o: /usr/include/mutex.h /usr/include/time.h
+./src/RMatrix.o: /usr/include/CC/stl_construct.h
 ./src/RMatrix.o: /usr/include/CC/stl_uninitialized.h
 ./src/RMatrix.o: /usr/include/CC/stl_vector.h /usr/include/CC/stl_bvector.h
 ./src/RMatrix.o: include/TMatrixI.h
