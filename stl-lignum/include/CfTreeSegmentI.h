@@ -22,7 +22,7 @@ CfTreeSegment<TS,BUD>::CfTreeSegment(const Point& p, const PositionVector& d, co
   LGMdouble sa =  2.0 * PI_VALUE * GetValue(*this,Rf) * GetValue(*this,L);
   //2. the mass of the foliage (Wf = sa * af) 
   LGMdouble wf =  sa * GetValue(*t,af);
-  SetValue(*this,Wf,sa*wf);
+  SetValue(*this,Wf,wf);
 
   SetValue(*this,sf, 28.0);     //Initialization of specific leaf area here!
 
