@@ -64,9 +64,8 @@ ReverseAccumulateOp2<TS,T,BinOp>::ReverseAccumulateOp2(const BinOp& op)
 }
 
 template <class TS, class T, class BinOp> 
-TreeCompartment<TS>* 
-ReverseAccumulateOp2<TS,T,BinOp>::operator()(T& id,
-					     TreeCompartment<TS>* tc)const
+T& ReverseAccumulateOp2<TS,T,BinOp>::operator()(T& id,
+						TreeCompartment<TS>* tc)const
 {
   if (TreeSegment<TS>* ts = dynamic_cast<TreeSegment<TS>*>(tc))
     op1(id,ts);
@@ -95,7 +94,7 @@ ReverseAccumulateOp2<TS,T,BinOp>::operator()(T& id,
     }
     op1(id,tc);
   }
-  return tc;
+  return id;
 }
 
 template <class TS, class T, class BinOp>
@@ -156,11 +155,11 @@ T& Accumulate(Tree<TS>& tree, T& id, const BinOp& op1)
 }
 
 template <class TS, class T, class BinOp>
-void AccumulateDown(Tree<TS>& tree, T& id, const BinOp& op1)
+T& AccumulateDown(Tree<TS>& tree, T& id, const BinOp& op1)
 {
   ReverseAccumulateOp2<TS,T,BinOp> op2(op1);
   Axis<TS>& axis = GetAxis(tree);
-  op2(id,&axis);
+  return op2(id,&axis);
 }
 
 template <class TS, class T, class BinOp>

@@ -23,7 +23,7 @@ template <class TS, class T, class BinOp>
 class ReverseAccumulateOp2{
  public:
   ReverseAccumulateOp2(const BinOp& op);
-  TreeCompartment<TS>* operator()(T& id,TreeCompartment<TS>* tc)const;
+  T& operator()(T& id,TreeCompartment<TS>* tc)const;
  private:
   BinOp op1;
 };
@@ -54,7 +54,7 @@ template <class TS, class T, class BinOp>
 T& Accumulate(Tree<TS>& tree, T& init, const BinOp& op);
 
 template <class TS, class T, class BinOp>
-void AccumulateDown(Tree<TS>& tree, T& init, const BinOp& op);
+T& AccumulateDown(Tree<TS>& tree, T& init, const BinOp& op);
 
 template <class TS, class T, class BinOp>
 void PropagateUp(Tree<TS>& tree, T& init, const BinOp& op1);
