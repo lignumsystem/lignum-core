@@ -104,7 +104,14 @@ inline void LstringIterator::Dump()
   while (!AtEnd())
   {
     ModuleIdType mid = GetModuleId();
-    cout << GetModuleName(mid) << ' ';
+    if (GetModuleName(mid) == "F")
+      cout << GetModuleName(mid) << ' ';
+    if (GetModuleName(mid) == "B")
+      cout << GetModuleName(mid) << ' ';
+    if (GetModuleName(mid) == "SB")
+      cout << GetModuleName(mid) << ' ';
+    if (GetModuleName(mid) == "EB")
+      cout << GetModuleName(mid) << ' ';
     (*this)++;
   }
   cout << endl;
