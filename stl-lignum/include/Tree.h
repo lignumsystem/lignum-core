@@ -66,6 +66,11 @@ namespace Lignum{
 
     LGMdouble dof;    //Degree of filling (proportion leaf surface fills
                       // of geometric shape - e.g. ellipsis - of the leaf).
+    LGMdouble tauL;   //Transmission   coeffient  (light)   for  leaf,
+		      //should be about 0.06  for green leaf. NOTE: be
+		      //careful  here, the attenuation  coefficient is
+		      //the opposite (1-tauL)
+
     LGMdouble aleafmax;    //Maximum size of a leaf (m2)
     
     LGMdouble yc;     //Foliage mass supported by 1m2 of sapwood

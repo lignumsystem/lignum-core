@@ -101,7 +101,7 @@ LGMdouble GetValue(const Tree<TS,BUD>& tree, const LGMPD name)
   if (name == LGPaf)
     return tree.tp.af;
 
-  if (name == LGPaleafmax)
+  else if (name == LGPaleafmax)
     return tree.tp.aleafmax;
 
   else if (name == LGPar)
@@ -134,15 +134,6 @@ LGMdouble GetValue(const Tree<TS,BUD>& tree, const LGMPD name)
   else if (name == LGPq)
     return tree.tp.q;
 
-  else if (name == LGPsf)
-    return tree.tp.sf;
-
-  else if (name == LGPsr)
-    return tree.tp.sr;
-
-  else if (name == LGPss)
-    return tree.tp.ss;
-
   else if (name == LGPrhoW)
     return tree.tp.rhoW;
 
@@ -152,8 +143,23 @@ LGMdouble GetValue(const Tree<TS,BUD>& tree, const LGMPD name)
   else if ( name == LGPrho_hair)
     return tree.tp.rho_hair;
 
+  else if (name == LGPsf)
+    return tree.tp.sf;
+
+  else if (name == LGPsr)
+    return tree.tp.sr;
+
+  else if (name == LGPss)
+    return tree.tp.ss;
+
+  else if (name == LGPtauL)
+    return tree.tp.tauL;
+
   else if (name == LGPxi)
-     return tree.tp.xi;
+    return tree.tp.xi;
+
+  else if (name == LGPyc)
+    return tree.tp.yc;
 
   else if (name == LGPzbrentEpsilon)
      return tree.tp.zbrentEpsilon;
@@ -175,7 +181,7 @@ LGMdouble SetValue(Tree<TS,BUD>& tree, const LGMPD name, const LGMdouble value)
   if (name == LGPaf)
     tree.tp.af = value;
 
-  if (name == LGPaleafmax)
+  else if (name == LGPaleafmax)
     tree.tp.aleafmax = value;
 
   else if (name == LGPar)
@@ -208,15 +214,6 @@ LGMdouble SetValue(Tree<TS,BUD>& tree, const LGMPD name, const LGMdouble value)
   else if (name == LGPq)
     tree.tp.q = value;
 
-  else if (name == LGPsf)
-    tree.tp.sf = value;
-
-  else if (name == LGPsr)
-    tree.tp.sr = value;
-
-  else if (name == LGPss)
-    tree.tp.ss = value;
-
   else if (name == LGPrhoW)
     tree.tp.rhoW = value;
 
@@ -226,8 +223,23 @@ LGMdouble SetValue(Tree<TS,BUD>& tree, const LGMPD name, const LGMdouble value)
   else if (name == LGPrho_hair)
     tree.tp.rho_hair = value;
 
+  else if (name == LGPsf)
+    tree.tp.sf = value;
+
+  else if (name == LGPsr)
+    tree.tp.sr = value;
+
+  else if (name == LGPss)
+    tree.tp.ss = value;
+
+  else if (name == LGPtauL)
+    tree.tp.tauL = value;
+
   else if (name == LGPxi)
     tree.tp.xi = value;
+
+  else if (name == LGPyc)
+     tree.tp.yc = value;
 
   else if (name == LGPzbrentEpsilon)
     tree.tp.zbrentEpsilon = value;

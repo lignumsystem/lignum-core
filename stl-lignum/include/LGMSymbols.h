@@ -95,10 +95,10 @@ namespace Lignum{
   //  30 LGAstatus General counter to control e.g. bud burst.  
   //  31 LGAstate  Bud state can be dead, alive, dormant etc., see LGMUnits.h
   //  32 LGPtauL   Transmission coefficient of leaf (in direction of
-  //            the ray of light) 
+  //               the ray of light) 
   //  33 LGAtype   General type specifier, e.g. Bud:dominant, apical,
-  //            lateral etc. The numerical values and their symbols of
-  //            different types given in LGMUnits.h
+  //               lateral etc. The numerical values and their symbols of
+  //               different types given in LGMUnits.h
   //  34 LGAV      Segment volume based on R and L
   //  35 LGAVh     Heartwood volume
   //  36 LGAVhair  Root hair volume
@@ -129,31 +129,32 @@ namespace Lignum{
 
   enum LGMPD {LGPaf, LGPaleafmax, LGPar, LGPdof, LGPlr, LGPmf, LGPmr, LGPms,
 	      LGPna, LGPnl, LGPpr, LGPq, LGPrhoW, LGPrho_hair, LGPrho_root,
-	      LGPsf, LGPsr, LGPss, LGPyc, LGPxi, LGPzbrentEpsilon };
+	      LGPsf, LGPsr, LGPss, LGPtauL,LGPxi, LGPyc,LGPzbrentEpsilon };
 
-  // 1  LGPaf  Needle mass - tree segment area (kgC/m^2)relationship
-  // 2  LGPaleafmax  Maximum size of a leaf (m2)
-  // 3  LGPar  Foliage - root relationship
-  // 4  LGPdof Degree of filling (proportion leaf surface fills of geometric
+  // 0  LGPaf  Needle mass - tree segment area (kgC/m^2)relationship
+  // 1  LGPaleafmax  Maximum size of a leaf (m2)
+  // 2  LGPar  Foliage - root relationship
+  // 3  LGPdof Degree of filling (proportion leaf surface fills of geometric
   //          shape - e.g. ellipsis - of the leaf). 
-  // 5  LGPlr  Length - radius relationship of a tree segment
-  // 6  LGPmf  Maintenance respiration rate of foliage
-  // 7  LGPmr  Maintenance respiration rate of roots
-  // 8  LGPms  Maintenance respiration rate of sapwood
-  // 9  LGPna  Needle angle (radians)
-  // 10 LGPnl  Needle length (na and nl define the cylinder of foliage in
+  // 4  LGPlr  Length - radius relationship of a tree segment
+  // 5  LGPmf  Maintenance respiration rate of foliage
+  // 6  LGPmr  Maintenance respiration rate of roots
+  // 7  LGPms  Maintenance respiration rate of sapwood
+  // 8  LGPna  Needle angle (radians)
+  // 9  LGPnl  Needle length (na and nl define the cylinder of foliage in
   //           CfTreeSegment)
-  // 11 LGPpr  Photsynthetic efficiency (=photos. rate = pr * intercepted rad.)
-  // 12 LGPq   Segment shortening factor (becoming obsolete due to vigour
+  // 10 LGPpr  Photsynthetic efficiency (=photos. rate = pr * intercepted rad.)
+  // 11 LGPq   Segment shortening factor (becoming obsolete due to vigour
   //           index)
-  // 13 LGPrhoW      Density of  wood in general (is usually used in Segment)
-  // 14 LGPrho_hair  Density of root hair
-  // 15 LGPrho_root  Density root sapwood
-  // 16 LGPsf        Specific leaf area (=leaf area/ leaf weight)
-  // 17 LGPsr        Senescence rate of roots
-  // 18 LGPss        Senescence rate of sapwood
-  // 19 LGPyc	  Foliage mass (kgC) supported by 1 m^2 of sapwood
-  // 20 LGPxi        Fraction of heartwood in newly created tree segments
+  // 12 LGPrhoW      Density of  wood in general (is usually used in Segment)
+  // 13 LGPrho_hair  Density of root hair
+  // 14 LGPrho_root  Density root sapwood
+  // 15 LGPsf        Specific leaf area (=leaf area/ leaf weight)
+  // 16 LGPsr        Senescence rate of roots
+  // 17 LGPss        Senescence rate of sapwood
+  // 18 LGPtauL      Transmission coefficient (light) for leaf
+  // 19 LGPxi        Fraction of heartwood in newly created tree segments
+  // 20 LGPyc	     Foliage mass (kgC) supported by 1 m^2 of sapwood
   // 21 LGPzbrentEpsilon  Accuracy in numerical computation in root finding
   //              (see Zbrent)
 
