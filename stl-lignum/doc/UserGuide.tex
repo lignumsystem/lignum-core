@@ -8,13 +8,20 @@ to develop a program. To get Lignum type:
 \begin{tabbing}
 Tabbing\=\kill
 \>prompt\% cvs checkout c++adt \\
-\>prompt\% cvs checkout stl-lignum
+\>prompt\% cvs checkout stl-lignum \\
+\>prompt\% cvs checkout Firmament
 \end{tabbing}
-If you must obtain the software over the network type on your machine:
+
+stl-lignum  implements the  core model  of Lignum,  i.e.,  the general
+representation  of deciduous and  coniferous trees.  c++adt implements
+general   useful  classes   used  in   Lignum.   Firmament  implements
+customizable standard  overcast sky. If  you must obtain  the software
+over the network type on your machine:
 \begin{tabbing}
 Tabbing\=\kill
-\>prompt\% cvs -d <user>@magnolia.metla.fi checkout c++adt \\
-\>prompt\% cvs -d <user>@magnolia.metla.fi checkout stl-lignum
+\>prompt\% cvs -d <user>@magnolia.metla.fi checkout c++adt \\ 
+\>prompt\% cvs -d <user>@magnolia.metla.fi checkout stl-lignum \\
+\>prompt\% cvs -d <user>@magnolia.metla.fi checkout stl-lignum 
 \end{tabbing}
 Naturally you must have a user  account on the machine that is the CVS
 repository.   In   the  example  the  repository  is   assumed  to  be
@@ -28,7 +35,7 @@ same directory level:
 \begin{tabbing}
 Tabbing\=\kill
 \>prompt\% ls -F \\
-\>c++adt/ stl-lignum/
+\>Firmament/ c++adt/ stl-lignum/ 
 \end{tabbing}
 The STL  library must  also be  part of the  C++ compiler  system.  To
 compile both the c++adt and  the LGM libraries simply go to stl-lignum
