@@ -220,6 +220,7 @@ vector<SmallCube> Matrix<TS,BUD>::GetCubes()
 	      cube.y_coord = yy;
 	      cube.z_coord = zz;
 
+
 	      cubes.push_back(cube);
 	      num ++;
 	    }
@@ -822,9 +823,9 @@ Point Matrix<TS,BUD>::calcVoxel(Point point)
 {
 	// Uusi toteutus
 
-	int x = (int)(point.getX() - p1.getX()) / edge;
-	int y = (int)(point.getY() - p1.getY()) / edge;
-	int z = (int)(point.getZ() - p1.getZ()) / edge;
+	int x = (int)((point.getX() - p1.getX()) / edge);
+	int y = (int)((point.getY() - p1.getY()) / edge);
+	int z = (int)((point.getZ() - p1.getZ()) / edge);
 
 	if (x<0 || x>X-1)
 	{
@@ -969,6 +970,7 @@ void Matrix<TS,BUD>::calculateMeanSegment()
 	      }
 	      matrix[i][j][k].addSTAR(STARtmp);
 	      
+	     
 	    }
 	}
 }
@@ -1209,7 +1211,8 @@ void Matrix<TS,BUD>::placeSegment(TreeSegment<TS,BUD> *ts, Point base)
 			    (startpoint.getY() + base.getY() + length*direction.getY()),
 			    (startpoint.getZ() + base.getZ() + length*direction.getZ()));
 
-  Point voxel = calcVoxel(middlepoint);   
+
+  Point voxel = calcVoxel(middlepoint);  
   addValues(voxel, GetValue(*ts, L), ts);
   
 
