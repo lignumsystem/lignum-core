@@ -552,8 +552,8 @@ void Firmament::setDiffuseToUniform() {
   double mult = diffuseRadBall / (double)numOfSectors;
   double av_area = (2.0 * PI_VALUE) /  (double)numOfSectors;
 
-  int inc, az;
-  for(int i = 0; i < numOfSectors - 1; i++) {     //zenith = numOfSectors - 1
+  int inc, az,i;
+  for(i = 0; i < numOfSectors - 1; i++) {     //zenith = numOfSectors - 1
     inc = inclinationIndex[i];
     az = azimuthIndex[i];
     diffuseRad[inc][az] = mult * (areasByInclination[inc] / av_area);
