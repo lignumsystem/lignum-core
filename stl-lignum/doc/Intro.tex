@@ -1,58 +1,57 @@
 \section{Introduction}
 
-\lignum\ is a tree model developed by the researches 
-in the Finnish Forest Research Institute, The University of Helsinki
-and The Helsinki University of Technology.
-The model \lignum\ has been designed to capture the three dimensional
-structure of a tree species and, at the same time, to be able 
-to model its growth and development.
+\lignum\ is a tree model developed by the researches in the  Finnish
+Forest Research Institute, The University of Helsinki and The Helsinki
+University of  Technology.   The model \lignum\  has  been designed to
+capture the three dimensional structure of  a tree species and, at the
+same time, to be able to model its growth and development.
 
-The three dimensional structure of a tree is captured with the
-help of simple structural units close to their real
-world counterparts. The metabolic functioning (photo synthesis, 
-respiration, transport of nutrients) is modelled by associating 
-appropriate functions to these structural units. The
-growth and senescence is modelled by changing the size 
-of these units, creating new units and deleting these units
+The three dimensional structure of a tree is captured with the help of
+simple structural  units close to their  real  world counterparts. The
+metabolic  functioning (photo  synthesis,  respiration,  transport  of
+nutrients) is modelled by  associating appropriate functions to  these
+structural units.  The growth and  senescence is  modelled by changing
+the size of  these units, creating  new units and deleting these units
 during a simulation.
 
-The software that implements \lignum\ has been programmed in C++. 
-Since \lignum\ was first introduced \cite{salminen:omt94, perttunen:aob96} a lot
-of things have happened. During the first implementations of the model 
-the terminology was not established and this inevitably
-was reflected  in the software. Also, the main tool the C++ 
-programming language was still under development. 
-Thirdly, as characterizing any
-research project many things were found by trial and error, by 
-experimenting different alternatives. This too, was reflected in the software.
+The  software  that implements \lignum\  has   been programmed in C++.
+Since   \lignum\   was      first    introduced  \cite{salminen:omt94,
+perttunen:aob96}  a lot  of things   have  happened. During the  first
+implementations of the model  the terminology was not  established and
+this inevitably was reflected in the software. Also, the main tool the
+C++ programming  language  was still  under development.   Thirdly, as
+characterizing any  research project many things  were found  by trial
+and  error, by experimenting    different alternatives. This  too, was
+reflected in the software.
 
-Today many things are different. The terminology used in \lignum\
-is now established (and approved by the scientific community), 
-The C++ ANSI Committee has finished its work. 
-The major addition to the language from the
-point of view of \lignum\ is the Standard Template Library (STL)
-now providing the ubiquitous abstract datatypes needed in
-software development. The research
-work is still going on, but we have now established a solid set of
-parameters, state variables and functions that can be
-used to describe a functioning of a tree with \lignum. In addition,
-\lignum\ is no longer a research project \it per se\rm, but also
-used by, e.g., the students of Helsinki University of Technology.
+Today many things are different.   The terminology used in \lignum\ is
+now established and approved by the scientific community. The C++ ANSI
+Committee has finished  its work.  The major addition  to the language
+from the  point of view of  \lignum\ is the  Standard Template Library
+(STL)  now  providing  the  ubiquitous abstract  datatypes  needed  in
+software development.   The research  work is still  going on,  but we
+have now  established a solid  set of parameters, state  variables and
+functions that can be used to describe a functioning of a tree with
+\lignum. In addition, \lignum\ is no longer a research project \it per
+se\rm, but also used by, e.g.,  the students of Helsinki University of
+Technology.
 
-All this leads to only one conclusion: The time has come for
-a major rewrite of the software to keep The Tower of Babel from rising.       
+All this leads to only one  conclusion: The time has  come for a major
+rewrite of the software to keep The Tower of Babel from rising.
 
-This document describes the C++ implementation of the tree model \linebreak
-\lignum. The classes, algorithms and other utilities are available in the
-library called libLGM.a and related C++ header files. The
-implementation uses the STL designed 
-as part of ANSI C++ specification.  Before  you use the LGM library
-be sure you understand STL library.
+This document  describes   the C++  implementation of the   tree model
+\linebreak \lignum.  The  classes, algorithms and  other utilities are
+available in the library called libLGM.a and related C++ header files.
+The implementation  uses the   STL   designed  as part of   ANSI   C++
+specification.  Before you use the LGM library  be sure you understand
+STL library. In fact, if you  understand the principles of STL-library
+it should be relatively easy  for you to  undestand the design and the
+program architecture of \lignum.
 
-The software implementing \lignum\ is a result of an ongoing
-research work, thus only a momentary (a ``snapshot'') description
-can be given. The interested \lignum\ user is encouraged to report
-errors (both in the software and in the documentation) to the authors. 
+The software implementing \lignum\ is a result  of an ongoing research
+work,  thus only  a   momentary  (a ``snapshot'') description   can be
+given. The interested  \lignum\ user  is  encouraged to  report errors
+(both in the software and in the documentation) to the authors.
 
 
 \section{Programming Style}

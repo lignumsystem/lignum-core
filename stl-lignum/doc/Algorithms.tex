@@ -1,34 +1,37 @@
 \section{Algorithms}
 
-So  far  all metabolic processes   and queries  of  the status  of the
-simulated  tree can  be  implemented using one  of  the following four
-generic     algorithms: ForEach,   Accumulate,  AccumulateDown     and
+So far   all metabolic processes  and   queries of the status   of the
+simulated tree can  be implemented  using  one of the  following  four
+generic algorithms:      ForEach,     Accumulate,  AccumulateDown  and
 PropagateUp.  Each of these algorithms traverse the tree in a slightly
-different manner and take care   that the actual metabolic process  or
-query  implemented as a functor  is applied to  each tree compartment.
-Thus they eliminate the trouble  of writing repetitive and error prone
-explicit  loops each time a metabolic  process or query is implemented
-or refined. To use these algorithms include the file Algorithms.h into
-your program.
+different manner  and take care that the   actual metabolic process or
+query implemented as  a functor is  applied to  each tree compartment.
+Thus they eliminate the trouble of writing  repetitive and error prone
+explicit loops each  time a metabolic process  or query is implemented
+or refined. The algorithmic complexity for each of these algorithms is
+$O(n)$.
 
-Sample  use  of these  algorithms can   be  obtained by  compiling and
-running  the program algorithms in   stl-lignum project directory.  To
-compile the program type \tt make algorithms\rm.
+To  use   these algorithms  include the  file  Algorithms.h  into your
+program. Examples of these algorithms can be obtained by compiling and
+running  the  program  \tt   algorithms   \rm  in stl-lignum   project
+directory.  To compile the program type \tt make algorithms\rm.
 
 
-The sample tree   used  as an  example  consists   of  one  main  axis
+The sample  tree  used in  the   examples consists  of one  main  axis
 containing one tree segment, one branch whorl and the terminating bud.
-The branch whorl contains two auxilliary buds. Using the notation from
-our papers the tree can be written as:
+The branch whorl contains two  auxilliary buds. Using the notation for
+the list the tree can be written as:
 
 \begin{displaymath}
 [TS,[[B],[B]],B]
 \end{displaymath}
 
-Also the functors used  in subsequent sections to  clarify the use  of
-the generic algorithms are the same as used in the program algorithms.
+Also the  functors used in subsequent  sections to clarify  the use of
+the generic algorithms are the same as used in the sample program. The
+tree segment  used in the examples  is called MyTreeSegment  and it is
+simply an subclass of TreeSegment.
  
-\subsection{void ForEach(Tree<TS>\& tree, const Function\& f)}
+\subsection{ForEach}
 
 ForEach is similar to  STL-library  function  for\_each.  In fact   it
 applies  for\_each to  each  list  of  tree  compartments  in a  tree.
@@ -36,6 +39,7 @@ for\_each in turn simply applies a user defined functor f to each tree
 compartment in a list.
 
 \begin{description}
+    \item [Signature] void ForEach(Tree<TS>\& tree, const Function\& f).
     \item [Arguments] for the function.
       \begin{description}
         \item [tree] The tree.
@@ -54,9 +58,13 @@ function f:
 h = (g \circ f)(x) = g(f(x))
 \end{displaymath}
 
-The purpose of the function g is  simply to traverse  the tree.  As an
-example consider the  following functor DisplayType2 playing  the role
-of the function f:
+The purpose of  the function g is simply to traverse  the tree.  As an
+example consider  the following functor DisplayType2  playing the role
+of  the function  f. The  easiest way  to ensure  proper  argument and
+return    type    for    the    functor    is    to    inherit    from
+AdaptableTCFunction<TS>.  It  is an  empty class but  predefines right
+argument  and   return  types.  It  also  defines   (using  STL  class
+unary\_function) necessary internal typedef-declarations.
 
 \begin{verbatim}
 template <class TS>
@@ -66,11 +74,8 @@ public:
 };
 \end{verbatim}
 
-The easiest  way  to ensure proper   argument  and return  type  for a
-functor  is to inherit from  AdaptableTCFunction<TS>.   It is an empty
-class   but predefines   right    argument  and return   types.    The
-implementation of  the overloaded function  operator simply prints out
-the type of a tree compartment.
+The  implementation  of  the  overloaded function  operator  simply
+prints out the type of the argument tree compartment.
 
 \begin{verbatim}
 template <class TS> TreeCompartment<TS>* 
@@ -99,20 +104,22 @@ visualization where the computations  on   each tree compartment   are
 inherently parallel.  That   is,  tree  compartments can  be   treated
 individually.
 
-\subsection{T\& Accumulate(Tree<TS>\& tree, T\& init, const BinOp\& op)}
+\subsection{Accumulate}
 
-The algorithm Accumulate can be used to collect data or query a status
-of a tree. It  is  similar to STL-library  function  accumulate.  Note
-however,  that  in  Accumulate  the  initial  value (also  called  the
-identitity element) is passed and returned  as reference, not by value
-as in accumulate.  The  reason for this design  decision is that it is
-not always numerical data a modeller may want collect.
+The algorithm Accumulate can be used to collect data, pass information
+from one tree compartment to another or query the status of a tree. It
+is similar to STL-library  function accumulate.  Note however, that in
+Accumulate  the initial value  (also called  the identity  element) is
+passed and returned as reference,  not by value as in accumulate.  The
+reason for  this design  decision is that  it is not  always numerical
+data a modeller may want collect.
 
 Accumulate traverses  the tree  and  applies the user  defined  binary
 operator op to each  tree compartment with the  initial value that can
 be modified according to the binary operator.
 
 \begin{description}
+   \item [Signature] T\& Accumulate(Tree<TS>\& tree, T\& init, const BinOp\& op).
    \item [Arguments] for the function.
      \begin{description}
         \item [tree] The tree.
@@ -174,26 +181,30 @@ int i = 0;
 int n = Accumulate(tree,i,CountCompartments<MyTreeSegment>());
 \end{verbatim}
 
-The  algorithm    Accumulate can be    used,   e.g.,  to   sum up  the
+The  algorithm   Accumulate  can  be   used,  e.g.,  to  sum   up  the
 photosynthates and respiration of all tree segments in a tree. Another
-example could be   a functor that collects all   tree segments into  a
-sequence.  The computations must  not assume in  which order the  tree
-compartments are traversed.
+example  could be a  functor that  collects all  tree segments  into a
+sequence.  The computations \it must not assume \rm in which order the
+tree  compartments  are   traversed.   Algorithms  AccumulateDown  and
+PropagateUp can be  used to traverse the tree  explicitely from top to
+bottom and from below upwards respectively.
 
-\subsection{T\& AccumulateDown(Tree<TS>\& tree,T\& init, const BinOp\& op)}
+\subsection{AccumulateDown}
 
-The AccumulateDown algorithm can also be used to collect data or query
-the status   of a tree.  However, as   the name  suggests  the tree is
-traversed  from the  tip  of the  branches to  the  base of  the tree.
-More over each    axis  is  traversed   independently  (semantically in
-parallell).   Note that  the initial value  is passed  and returned as
-reference because the computations are not necessarily numerical.
+The AccumulateDown  algorithm can also  be used to collect  data, pass
+information from one tree compartment to anoter or query the status of
+a tree.  However, as the name  suggests the tree is traversed from the
+tip of the branches  to the base of the tree.  More  over each axis is
+traversed  independently (semantically in  parallell).  Note  that the
+initial  value  is  passed  and  returned  as  reference  because  the
+computations are not necessarily numerical.
 
 AccumulateDown traverses the tree and  applies the user defined binary
 operator op  to each tree compartment  with the initial value that can
 be modified according to the binary operator.
 
 \begin{description}
+   \item [Signature] T\& AccumulateDown(Tree<TS>\& tree,T\& init, const BinOp\& op).
    \item [Arguments] for the function.
      \begin{description}
         \item [tree] The tree.
@@ -222,15 +233,16 @@ int i = 0;
 int n = AccumulateDown(tree,i,CountCompartments<MyTreeSegment>());
 \end{verbatim}
 
-Assuming that  the  add and assign  operator and   the constructor are
-defined   for  the  identity element  one  can   use AccumulateDown as
-Accumulate.  However,  some  metabolic processes  are  depended on the
-information  flowing downwards in  a   tree.  These  processes  can be
-implemented only with  the AccumulateDown algorithm.  One such process
+Assuming  that the  add and  assign operator  and the  constructor are
+defined for  the identity element\footnote{Note that  they are defined
+for  the integer  and floating  types.} one  can use  AccumulateDown as
+Accumulate.   However, some  metabolic processes  are depended  on the
+information  flowing downwards  in  a tree.   These  processes can  be
+implemented only with the  AccumulateDown algorithm.  One such process
 is diameter growth.  Other examples  can be various models for hormone
 and nutrient flows downwards in a tree.
 
-\subsection{void PropagateUp(Tree<TS>\& tree,T\& init,const BinOp\& op)}
+\subsection{PropagateUp}
 
 The algorithm PropagateUp  can be thought as  an inverse  operation to
 AccumulateDown. The tree is traversed from the  base to the tip of the
@@ -242,6 +254,7 @@ Note again  that the initial value  is passed as  reference. It is not
 always numerical data one wants to send up in a tree.
 
 \begin{description}
+   \item [Signature] void PropagateUp(Tree<TS>\& tree,T\& init, const BinOp\& op).
    \item [Arguments] for the function.
      \begin{description}
         \item [tree] The tree.
