@@ -39,8 +39,10 @@ namespace Lignum {
    //dumpSegment for poplar
    template <class TS,class BUD, class S>
     void dumpSegment(VoxelBox &b, HwTreeSegment<TS, BUD, S> &ts, int num_parts)
-    {	
-      LGMdouble r_f = GetValue(ts, LGARf);
+    {
+      //NOTE: This is the same implementation as for Coniferous tree!!!!!??????
+      //HwTrees don't have LGARf!!!!
+      //LGMdouble r_f = GetValue(ts, LGARf);
       LGMdouble lenghth = GetValue(ts, LGAL) / num_parts;
       LGMdouble S_f = GetValue(GetTree(ts), LGPsf);
       LGMdouble fmass = GetValue(ts, LGAWf) / num_parts;
