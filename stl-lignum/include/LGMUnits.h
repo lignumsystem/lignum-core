@@ -13,7 +13,10 @@ namespace Lignum{
   typedef double PA;         //Pressure in
   typedef unsigned int YEAR; //age of the tree compartments in years
 
-  enum STATUS {DEAD,ALIVE,DORMANT};    //States of the bud 
+  //The states of a bud
+  const LGMdouble DEAD = 0.0;
+  const LGMdouble ALIVE = 1.0;
+  const LGMdouble DORMANT = 2.0;
 
 }//closing namespace Lignum
 #endif 

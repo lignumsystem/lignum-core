@@ -3,24 +3,21 @@
 
 namespace Lignum{
 
-  //OBS: DO NOT USE ENUMERATIONS AS VARIABLE NAMES!
-  //For example, _NEVER_ create: double Wf;
+  //OBS:  DO  NOT USE  ENUMERATIONS  AS  SIMPLE  VARIABLE NAMES!   For
+  //example, NEVER create: double LGAWf;
+  //AND, if you add a new symbol be sure to document it carefully, see
+  //for example LGMAD below.
+  //LGMAD = LIGNUM Attribute Double
+  //LGMPD = LIGNUM Parameter Double
 
-  //_AND_, if you add a new symbol be sure to document it carefully!
-
-  // LGMAD = LIGNUM Attribute Double
-
-  // LGMPD = LIGNUM Parameter Double
-
-  // Wr           dry weight of the roots
   enum LGMAD {LGAA,LGAAf,LGAAh, LGAAhair,LGAAs,LGAAs0,LGAage,LGAcollision,
               LGADbase,LGADbh,LGAdof, LGAdR, LGAH,LGAHf,LGAHTop,LGAip,
               LGAL,LGAM, LGAMaxD,LGAomega,LGAP,LGAQabs,LGAQin,LGAR,LGARf,
-              LGARh, LGARhair,LGARTop,LGASa,LGAstatus, LGAtauL, LGAtype,
-              LGAV,LGAVh,LGAVhair,LGAvi,LGAVs,LGAWf, LGAWr, LGAWs, LGAWh, 
-              LGAWhair};
+              LGARh, LGARhair,LGARTop,LGASa,LGAstatus, LGAstate,LGAtauL, 
+              LGAtype,LGAV,LGAVh,LGAVhair,LGAvi,LGAVs,LGAWf, LGAWr, LGAWs, 
+              LGAWh,LGAWhair};
 
-  //  LGAA      Segment base area based on R (see GetValue)
+  //  LGAA      Segment base area based on R 
   //  LGAAf     Area of foliage
   //  LGAAh     Heartwood area
   //  LGAAhair  Root hair area
@@ -54,6 +51,7 @@ namespace Lignum{
   //  LGARTop   Radius of segment at upper end
   //  LGASa     Surface area of the segment cylinder: 2*PI*R*L
   //  LGAstatus General counter to control e.g. bud burst.  
+  //  LGAstate  Bud state can be dead, alive, dormant etc., see LGMUnits.h
   //  LGPtauL = Transmission coefficient of leaf (in direction of
   //            the ray of light) 
   //  LGAtype   General type specifier, e.g. Bud:dominant, apical,
@@ -73,9 +71,6 @@ namespace Lignum{
 
   enum LGMFLOW { fin, fout, Pr, Wm };
 
-  //Tree Attribute STATUS
-  enum LGMAS {state};
-
   //enlisting tree level attributes
   enum LGMTAD {Treelb,TreeP,TreeM,TreeWr,TreeQinMax};
   //lb = longest branch
@@ -87,13 +82,13 @@ namespace Lignum{
   //Keep this in sync with the number of enumerations in LGMTAD
   //It will intialize the vector
 #define LGMTADLENGTH 5
+
   //Tree Parameter Double
-  // zbrentEpsilon       Accuracy in solving the root of P - M -dW(lambda)
   //Keep this list in synbc with MapLGMPD constructor in TreeFriend.cc
-
-
-  enum LGMPD {af,al,ar,ca, dofp,lr,mf,mr,ms,na,nl,pr,q, rca, rld,sf, sla,sr,ss,rho,rho_root,rho_hair, LGPtauL,yc, xi,
-	      zbrentEpsilon, Ln_par, n_ang_par, fake_forest, nitroRoots, nitroWood, nitroLeaves};
+  enum LGMPD {af,al,ar,ca, dofp,lr,mf,mr,ms,na,nl,pr,q, rca, rld,sf, 
+              sla,sr,ss,rho,rho_root,rho_hair, LGPtauL,yc, xi,
+	      zbrentEpsilon, Ln_par, n_ang_par, fake_forest, nitroRoots, 
+              nitroWood, nitroLeaves};
 
 
  //cvs update
