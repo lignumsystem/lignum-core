@@ -537,8 +537,58 @@ double Firmament::getAzimuth(int n)
   int nAzim = azimuthIndex[n];
 
   return zoneAzims[nIncl][nAzim];
-}  
+}
 
+
+void Firmament::setDiffuseToUniform() {
+  //Sets the brightness distribution of the diffuse sky radiation to uniform
+  //It means that brightness is independent on inclination (and azimuth).
+  // It means radiation from a sector = (area of sector/mean sector area) * constant
+  // where constant is determined radiation to plane remains the same as before.
+  // Reading of ball sensor becomes
+  // (2/1.714) * (the previous value)
+  // no INPUT, no OUTPUT
+
+  double mult = diffuseRadBall / (double)numOfSectors;
+  double av_area = (2.0 * PI_VALUE) /  (double)numOfSectors;
+
+  int inc, az;
+  for(int i = 0; i < numOfSectors - 1; i++) {     //zenith = numOfSectors - 1
+    inc = inclinationIndex[i];
+    az = azimuthIndex[i];
+    diffuseRad[inc][az] = mult * (areasByInclination[inc] / av_area);
+    //the last factor corrects for different area of sectors
+  }
+
+  diffuseRadZenith = mult;
+
+  //Now is true thar diffuseRadBall is as before.
+  //However, diffuseRadPlane is not as before, must be => correct it
+  double check_sum = 0.0;
+  for(i = 0; i < numOfSectors - 1; i++) {     //zenith = numOfSectors - 1
+    inc = inclinationIndex[i];
+    az = azimuthIndex[i];
+    check_sum +=diffuseRad[inc][az] * sin(inclinations[inc]);
+  }
+  check_sum += diffuseRadZenith;
+  double correction = diffuseRadPlane / check_sum;
+
+  for(i = 0; i < numOfSectors - 1; i++) {
+    inc = inclinationIndex[i];
+    az = azimuthIndex[i];
+    diffuseRad[inc][az] *= correction;
+  }
+  diffuseRadZenith *= correction;
+
+  diffuseRadBall = 0.0;
+  for(i = 0; i < numOfSectors - 1; i++) {
+    inc = inclinationIndex[i];
+    az = azimuthIndex[i];
+    diffuseRadBall += diffuseRad[inc][az];
+  }
+  diffuseRadBall += diffuseRadZenith;
+
+}
 
 
 #ifdef  FIRMAMENT
@@ -679,6 +729,31 @@ int  main(int argc, char* argv[])
   cout << " n   " << "Area (,steradians?)" << endl;
   for(i = 0; i < firmament.getNoOfInclinations() - 1; i++)
     cout << " " << i << "  " << firmament.getSectorArea(i) << endl;
+
+  cout << endl << "diffuse to Uniform" << endl;
+  firmament.setDiffuseToUniform();
+
+  sum = firmament.diffusePlaneSensor();
+  cout << "plane: " << sum << endl;
+
+  sum = firmament.diffuseBallSensor();
+  cout << "ball: " << sum << endl;
+
+  cout << endl << " Radiation sector by sector\n" <<
+    " no.    incl    azim    radiation\n";
+
+  for (i=0; i < firmament.numberOfRegions(); i++)
+    cout << i << " " << firmament.getInclination(i) <<
+      " " << firmament.getAzimuth(i) << " " <<
+      firmament.diffuseRegionRadiationSum(i, a) << "\n";
+
+  cout << endl << "planeradiation from sectors: ";
+  double pr = 0.0;
+  for (i=0; i < firmament.numberOfRegions(); i++)
+    pr += firmament.diffuseRegionRadiationSum(i, a) * 
+      sin(firmament.getInclination(i));
+  cout << pr << endl;
+
 
   return 0;
 }

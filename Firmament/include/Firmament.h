@@ -6,11 +6,10 @@
 #include <vector>
 #include <TMatrix.h>
 #include <LGMUnits.h>
+#include <Tree.h>
 
 namespace sky{
-
 using namespace cxxadt;
-
 
 #define NUM_OF_AZIM 24
 #define NUM_OF_INCL 9
@@ -158,6 +157,14 @@ typedef double MJ;
 
 22. int getNoOfInclinations()
     Returns number of inclination classes.
+
+23. void setDiffuseToUniform()
+    Changes the brightness of the sky uniform (=independent of inclination).
+    The amount of radiation to horizontal surface is not changed,
+    the reading of the ball sensor is multiplied by factor (2/1.714)
+    
+
+
 =====================================================================================
 */
 
@@ -208,6 +215,7 @@ public:
   }
   
   int getNoOfInclinations() { return num_of_incl; }
+  void setDiffuseToUniform();
 
 private:
   int num_of_incl;
