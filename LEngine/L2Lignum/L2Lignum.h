@@ -28,31 +28,35 @@ template <class TS, class BUD>
 int L2Lignum(BranchingPoint<TS,BUD>& bp, LstringIterator& iterator, 
 	      stack<Turtle>& turtle_stack)
 {
-
+  if (iterator.AtEnd()){
+    cout << "BP Error end of string" << endl;
+    return 1; //exit
+  }
   const char* name = iterator.GetCurrentModuleName();
-  cout << "BP Module name " << name << endl;
 
   //Branching point sees "SB" --> new Axis
   if (strcmp(name,"SB") == 0){
+    turtle_stack.push(turtle_stack.top());
     Axis<TS,BUD>* axis = new Axis<TS,BUD>(GetPoint(turtle_stack.top()),
 					  GetHeading(turtle_stack.top()),
 					  &GetTree(bp));
     InsertAxis(bp,axis);
     //Go to the first symbol of the new axis
     iterator++;
-    return L2Lignum(*axis,iterator,turtle_stack);
+    L2Lignum(*axis,iterator,turtle_stack);
   }
   //Branching point sees "EB" --> end of Axis
   //Go to next symbol
   else if (strcmp(name,"EB") == 0){
+    turtle_stack.pop();
     iterator++;
-    return L2Lignum(bp,iterator,turtle_stack);
   }
   //This can only be a symbol  "S" in between "SB" and "EB": "] S ["
   //It means end of branching point, return and let the calling Axis see the symbol S
   else{
     return 0; //end of bp
   }
+  return L2Lignum(bp,iterator,turtle_stack);
 }
   
 template <class TS, class BUD>
@@ -62,14 +66,12 @@ int L2Lignum(Axis<TS,BUD>& axis, LstringIterator& iterator,
   CallerData caller_data;
 
   if (iterator.AtEnd()){
+    cout << "Axis end of string" << endl;
     return 1; //exit
   }
 
   const char* name =  iterator.GetCurrentModuleName();
-  cout << "Axis module name " << name  << endl; 
   if (strcmp(name,"EB") == 0){
-    turtle_stack.pop();
-    iterator++;
     return 2; //end of axis
   } 
   //Forward, also create a segment
@@ -93,7 +95,6 @@ int L2Lignum(Axis<TS,BUD>& axis, LstringIterator& iterator,
 							    GetHeading(turtle_stack.top()),
 							    &GetTree(axis));
     InsertTreeCompartment(axis,bp);
-    turtle_stack.push(turtle_stack.top());
     //Read the branching point
     L2Lignum(*bp,iterator,turtle_stack);
   }
@@ -126,6 +127,8 @@ int L2Lignum(Axis<TS,BUD>& axis, LstringIterator& iterator,
   }
   //Bud
   else if (strcmp(name,"B") == 0){
+    Point p = GetPoint(turtle_stack.top());
+    cout << "Turtle size: "<<  turtle_stack.size() << endl;
     Bud<TS,BUD>* bud = new Bud<TS,BUD>(GetPoint(turtle_stack.top()),
 				       GetHeading(turtle_stack.top()),
 				       0.0,&GetTree(axis));

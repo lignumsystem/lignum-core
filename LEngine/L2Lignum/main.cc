@@ -93,7 +93,7 @@ int main(int argc, char** argv)
   DisplayStructureData id;
   PropagateUp(tree,id,DisplayStructureFunctor<MyCfTreeSegment,MyBud>());
   cout << endl;
-
+  DisplayStructure(tree);
 //    {
 //      //Draw(100);
 //    }
