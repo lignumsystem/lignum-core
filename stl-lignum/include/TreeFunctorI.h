@@ -94,8 +94,8 @@ TreeCompartment<TS,BUD>* FillWithWater<TS,BUD>::operator()(TreeCompartment<TS,BU
   if (TreeSegment<TS,BUD>* myts = dynamic_cast<TreeSegment<TS,BUD>*>(tc))
     {
       cout << "Filling water.." << endl;
-      SetTSAttributeValue(*myts, Wm, pow(GetTSAttributeValue(*myts, R), 2) * 
-			  PI_VALUE * GetTSAttributeValue(*myts, L) * 0.5 *  
+      SetAttributeValue(*myts, Wm, pow(GetAttributeValue(*myts, R), 2) * 
+			  PI_VALUE * GetAttributeValue(*myts, L) * 0.5 *  
 			  1000); // korjaaa...1000 GetTree(*myts).ttp.rhow                                                                               
     }
   return tc;

@@ -13,10 +13,10 @@ TreeSegment<TS,BUD>::TreeSegment(const Point<METER>& p, const PositionVector& d,
 			     const METER l, const METER r, const METER rn, Tree<TS,BUD>* t)
   :TreeCompartment<TS,BUD>(p,d,t)
 {
-  SetTSAttributeValue(*this,omega,go);
-  SetTSAttributeValue(*this,L,l);
-  SetTSAttributeValue(*this,R,r);
-  SetTSAttributeValue(*this,Rn,rn);
+  SetAttributeValue(*this,omega,go);
+  SetAttributeValue(*this,L,l);
+  SetAttributeValue(*this,R,r);
+  SetAttributeValue(*this,Rn,rn);
 
   //the first annual ring
   tsa.annual_rings.push_back(r);
@@ -27,22 +27,22 @@ TreeSegment<TS,BUD>::TreeSegment(const Point<METER>& p, const PositionVector& d,
   //Rf = hf + tsa.R, where hf is height of the foliage (hf = nl * sin(na))
   TP needle_length = GetParameterValue(*t,nl);
   TP needle_angle = GetParameterValue(*t,na);
-  SetTSAttributeValue(*this,Rf,needle_length * sin(needle_angle)+ 
-		      GetTSAttributeValue(*this,R));
+  SetAttributeValue(*this,Rf,needle_length * sin(needle_angle)+ 
+		      GetAttributeValue(*this,R));
 
   //compute the initial mass of the foliage
   //1. compute the surface area (sa) of the cylinder representing foliage
-  TP sa =  2.0 * PI_VALUE * GetTSAttributeValue(*this,Rf) * GetTSAttributeValue(*this,L);
+  TP sa =  2.0 * PI_VALUE * GetAttributeValue(*this,Rf) * GetAttributeValue(*this,L);
   //2. the mass of the foliage (Wf = sa * af) 
   TP wf =  sa * GetParameterValue(*t,af);
-  SetTSAttributeValue(*this,Wf,sa*wf);
+  SetAttributeValue(*this,Wf,sa*wf);
 
   //compute the sapwood mass
-  SetTSAttributeValue(*this,Ws,GetSapwoodMass(*this)); 
+  SetAttributeValue(*this,Ws,GetSapwoodMass(*this)); 
 
   //compute the initial pressure in the TreeSegment    
-  SetTSAttributeValue(*this, Wm, 0.5 * 1000 * l * r * r * PI_VALUE);
-  SetTSAttributeValue(*this, Pr, GetTSAttributeValue(*this, Hm) * 9.81 * 1000);   
+  SetAttributeValue(*this, Wm, 0.5 * 1000 * l * r * r * PI_VALUE);
+  SetAttributeValue(*this, Pr, GetAttributeValue(*this, Hm) * 9.81 * 1000);   
 }
 
 template <class TS,class BUD>
@@ -81,7 +81,7 @@ KGC GetSapwoodMass(const TreeSegment<TS,BUD>& ts)
 }
 
 template <class TS,class BUD>
-TP GetTSAttributeValue(const TreeSegment<TS,BUD>& ts, const TAD name)
+TP GetAttributeValue(const TreeSegment<TS,BUD>& ts, const TAD name)
 {
   TP unknown_value = 0.0;
 
@@ -146,7 +146,7 @@ TP GetTSAttributeValue(const TreeSegment<TS,BUD>& ts, const TAD name)
 }
 
 template <class TS,class BUD>
-YEAR GetTSAttributeValue(const TreeSegment<TS,BUD>& ts,const TAI name)
+YEAR GetAttributeValue(const TreeSegment<TS,BUD>& ts,const TAI name)
 {
   int unknown_value = 0;
 
@@ -160,9 +160,9 @@ YEAR GetTSAttributeValue(const TreeSegment<TS,BUD>& ts,const TAI name)
 }
 
 template <class TS,class BUD>
-TP SetTSAttributeValue(TreeSegment<TS,BUD>& ts, const TAD name, const TP value)
+TP SetAttributeValue(TreeSegment<TS,BUD>& ts, const TAD name, const TP value)
 {
-  TP old_value = GetTSAttributeValue(ts,name);
+  TP old_value = GetAttributeValue(ts,name);
   
   if (name == L)
     ts.tsa.L = value;
@@ -216,9 +216,9 @@ TP SetTSAttributeValue(TreeSegment<TS,BUD>& ts, const TAD name, const TP value)
 }
 
 template <class TS,class BUD>
-YEAR SetTSAttributeValue(TreeSegment<TS,BUD>& ts, const TAI name, const YEAR  value)
+YEAR SetAttributeValue(TreeSegment<TS,BUD>& ts, const TAI name, const YEAR  value)
 {
-  YEAR old_value = GetTSAttributeValue(ts,name);
+  YEAR old_value = GetAttributeValue(ts,name);
 
   if (name == age)
     ts.tsa.age = value;
@@ -226,85 +226,5 @@ YEAR SetTSAttributeValue(TreeSegment<TS,BUD>& ts, const TAI name, const YEAR  va
     cerr << "TreeSegment: Unknown attribute " << name << endl;
   return old_value;
 }
-
-
-
-//Things shouls work with overloaded GetAttributeValue
-template <class TS,class BUD>
-TP GetAttributeValue(const TreeSegment<TS,BUD>& ts, const TAD name)
-{
-  TP unknown_value = 0.0;
-
-  if (name == area)
-    return PI_VALUE*pow(ts.tsa.R,2.0);
-
-  else if (name == fin)
-    return ts.tsa.fin;
-  
-  else if (name == fout)
-    return ts.tsa.fout;
-  
-  else if (name == H)
-    return ts.point.getZ();
-
-  else if (name == L)
-    return ts.tsa.L;
-
-  else if (name == Pr)
-    return ts.tsa.Pr;
-
-  else if (name == M)
-    return ts.tsa.M;
-
-  else if (name == omega)
-    return ts.tsa.omega;
-
-  else if (name == P)
-    return ts.tsa.P;
-
-  else if (name == Qin)
-    return ts.tsa.Qin;
-
-  else if (name == Qabs)
-    return ts.tsa.Qabs;
-
-  else if (name == R)
-    return ts.tsa.R;
-
-  else if (name == Rf)
-    return ts.tsa.Rf;
-
-  else if (name == Rn)
-    return ts.tsa.Rn;
-
-  else if (name == Wf)
-    return ts.tsa.Wf;
-
-  else if (name == Wm)
-    return ts.tsa.Wm;
-
-  else if (name == Ws)
-    return ts.tsa.Ws;
-
-  else
-    cout << "Unknown attribute returning" << unknown_value << endl;
-
-  return unknown_value;
-}
-
-template <class TS,class BUD>
-YEAR GetAttributeValue(const TreeSegment<TS,BUD>& ts,const TAI name)
-{
-  int unknown_value = 0;
-
-  if (name == age)
-    return ts.tsa.age;
-
-  else
-     cout << "Unknown attribute returning" << unknown_value << endl;
-
-  return unknown_value;
-}
-
 
 #endif

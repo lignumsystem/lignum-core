@@ -36,13 +36,11 @@ template <class TS,class BUD=DefaultBud<TS> >
 class TreeSegment: public TreeCompartment<TS,BUD>{ 
   friend list<METER> GetAnnualRings(const TreeSegment<TS,BUD>& ts);
   friend KGC GetSapwoodMass(const TreeSegment<TS,BUD>& ts);
-  friend TP GetTSAttributeValue(const TreeSegment<TS,BUD>& ts, const TAD name);
-  friend YEAR GetTSAttributeValue(const TreeSegment<TS,BUD>& ts, const TAI name);
   friend TP GetAttributeValue(const TreeSegment<TS,BUD>& ts, const TAD name);
   friend YEAR GetAttributeValue(const TreeSegment<TS,BUD>& ts, const TAI name);
-  friend TP SetTSAttributeValue(TreeSegment<TS,BUD>& ts, const TAD name, const TP value);
-  friend YEAR SetTSAttributeValue(TreeSegment<TS,BUD>& ts, const TAI name, 
-				  const YEAR  value);
+  friend TP SetAttributeValue(TreeSegment<TS,BUD>& ts, const TAD name, const TP value);
+  friend YEAR SetAttributeValue(TreeSegment<TS,BUD>& ts, const TAI name, 
+				const YEAR  value);
 public:
   TreeSegment();
   TreeSegment(const Point<METER>& p, const PositionVector& d, const TP go,

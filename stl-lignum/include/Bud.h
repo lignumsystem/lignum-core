@@ -13,8 +13,8 @@ public:
 
 template <class TS,class BUD=DefaultBud<TS> >
 class Bud: public TreeCompartment<TS,BUD>{
-friend TP GetBudAttributeValue(const Bud<TS,BUD>& bud, const TAD name);
-friend TP SetBudAttributeValue(Bud<TS,BUD>& bud, const TAD name, const TP value);
+friend TP GetAttributeValue(const Bud<TS,BUD>& bud, const TAD name);
+friend TP SetAttributeValue(Bud<TS,BUD>& bud, const TAD name, const TP value);
 public:
   Bud();
   Bud(const Point<METER>& p, const PositionVector& d, const TP omega, Tree<TS,BUD>* tree);

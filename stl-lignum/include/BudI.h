@@ -17,7 +17,7 @@ Bud<TS,BUD>::Bud(const Point<METER>& p, const PositionVector& d, const TP go,
 	     Tree<TS,BUD>* t)
   :TreeCompartment<TS,BUD>(p,d,t)
 {
-  SetBudAttributeValue(*this,omega,go);
+  SetAttributeValue(*this,omega,go);
 }
 
 template <class TS,class BUD>
@@ -42,7 +42,7 @@ BranchingPoint<TS,BUD>& Bud<TS,BUD>::createBranchingPoint()const
 }
 
 template <class TS,class BUD>   
-TP GetBudAttributeValue(const Bud<TS,BUD>& bud, const TAD name)
+TP GetAttributeValue(const Bud<TS,BUD>& bud, const TAD name)
 {
   if (name == omega)
     return bud.ba.omega;
@@ -59,9 +59,9 @@ TP GetBudAttributeValue(const Bud<TS,BUD>& bud, const TAD name)
 }
 
 template <class TS,class BUD>    
-TP SetBudAttributeValue(Bud<TS,BUD>& bud, const TAD name, const TP value)
+TP SetAttributeValue(Bud<TS,BUD>& bud, const TAD name, const TP value)
 {
-  TP old_value = GetBudAttributeValue(bud,name);
+  TP old_value = GetAttributeValue(bud,name);
 
   if (name == omega)
     bud.ba.omega = value;

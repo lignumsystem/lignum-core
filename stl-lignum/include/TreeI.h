@@ -29,14 +29,14 @@ void Tree<TS,BUD>::UpdateWaterFlow(TP time_step, const ConnectionMatrix<TS,BUD> 
       if (i != a && cm.getTreeSegment(i, a) != 0){
 
 	TreeSegment<TS,BUD> *in = cm.getTreeSegment(i,a);	
-	SetTSAttributeValue(*in, fin, CountFlow(*in, *out));
+	SetAttributeValue(*in, fin, CountFlow(*in, *out));
       }
-      SetTSAttributeValue(*out, fout, 0);   
+      SetAttributeValue(*out, fout, 0);   
     }	
   }
 
   TreeSegment<TS,BUD> *in = cm.getTreeSegment(0);
-  SetTSAttributeValue(*in, fin, cm.getSize() * 0.12e-9);
+  SetAttributeValue(*in, fin, cm.getSize() * 0.12e-9);
   
   // This counts the flow out for every segment
   for (i=0; i<cm.getSize(); i++){
@@ -46,26 +46,26 @@ void Tree<TS,BUD>::UpdateWaterFlow(TP time_step, const ConnectionMatrix<TS,BUD> 
     for (int a=0; a<cm.getSize(); a++){
       if (i != a && cm.getTreeSegment(i,a) != 0){
 	TreeSegment<TS,BUD> *in = cm.getTreeSegment(i,a);
-	SetTSAttributeValue(*out, fout, GetTSAttributeValue(*out, fout)+GetTSAttributeValue(*in, fin));
+	SetAttributeValue(*out, fout, GetAttributeValue(*out, fout)+GetAttributeValue(*in, fin));
       }
     }
 
-    TP Dw = GetTSAttributeValue(*out, R);  //diameter of sapwood
+    TP Dw = GetAttributeValue(*out, R);  //diameter of sapwood
     
-    TP new_pressure = GetTSAttributeValue(*out, Pr) + time_step * ttp.Er / Dw * 2  /
-      (ttp.rhow * PI_VALUE *  GetTSAttributeValue(*out, L) *  GetTSAttributeValue(*out, R)) *
-      ( GetTSAttributeValue(*out, fin) - GetTSAttributeValue(*out, fout) - 
+    TP new_pressure = GetAttributeValue(*out, Pr) + time_step * ttp.Er / Dw * 2  /
+      (ttp.rhow * PI_VALUE *  GetAttributeValue(*out, L) *  GetAttributeValue(*out, R)) *
+      ( GetAttributeValue(*out, fin) - GetAttributeValue(*out, fout) - 
 	out->GetTranspiration(time_step));  
     
    
-     cout << i << ":virtaus sisään " <<  GetTSAttributeValue(*out, fin)*time_step << " ; ulos " 
-	  << GetTSAttributeValue(*out, fout)*time_step << " haihdunta:" << out->GetTranspiration(time_step)*time_step;
-    cout << "SUMMA = " <<  (GetTSAttributeValue(*out, fin) - GetTSAttributeValue(*out, fout) -  out->GetTranspiration(time_step))*time_step 
+     cout << i << ":virtaus sisään " <<  GetAttributeValue(*out, fin)*time_step << " ; ulos " 
+	  << GetAttributeValue(*out, fout)*time_step << " haihdunta:" << out->GetTranspiration(time_step)*time_step;
+    cout << "SUMMA = " <<  (GetAttributeValue(*out, fin) - GetAttributeValue(*out, fout) -  out->GetTranspiration(time_step))*time_step 
 	 << endl;
    
         
-    SetTSAttributeValue(*out, Pr, new_pressure);         
-    SetTSAttributeValue(*out, Wm, GetTSAttributeValue(*out, Wm) + (GetTSAttributeValue(*out, fin)-  GetTSAttributeValue(*out, fout) - out->GetTranspiration(0.0))* time_step); 
+    SetAttributeValue(*out, Pr, new_pressure);         
+    SetAttributeValue(*out, Wm, GetAttributeValue(*out, Wm) + (GetAttributeValue(*out, fin)-  GetAttributeValue(*out, fout) - out->GetTranspiration(0.0))* time_step); 
   }
   cout << endl; 
 }
@@ -78,12 +78,12 @@ template <class TS,class BUD>
 TP Tree<TS,BUD>::CountFlow(TreeSegment<TS,BUD> &in, TreeSegment<TS,BUD> &out)
 
 {
-  TP ar = GetTSAttributeValue(out, area);
-  TP le = GetTSAttributeValue(out, L);
-  TP he = GetTSAttributeValue(in, Hm) - GetTSAttributeValue(out, Hm);
+  TP ar = GetAttributeValue(out, area);
+  TP le = GetAttributeValue(out, L);
+  TP he = GetAttributeValue(in, Hm) - GetAttributeValue(out, Hm);
 
-  TP pr_out = GetTSAttributeValue(out, Pr);  // Pressure in the element above
-  TP pr_in = GetTSAttributeValue(in, Pr);    // Pressure in the element below
+  TP pr_out = GetAttributeValue(out, Pr);  // Pressure in the element above
+  TP pr_in = GetAttributeValue(in, Pr);    // Pressure in the element below
  
   return ttp.rhow * (ttp.k/ ttp.eta) * (ar / le) * (pr_out - pr_in - (ttp.rhow * ttp.g * he));
 }
