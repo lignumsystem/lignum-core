@@ -287,7 +287,13 @@ LGMdouble GetValue(const TreeSegment<TS,BUD>& ts, const LGMAD name)
 {
   if (name == A)
     return PI_VALUE*pow(GetValue(ts,R), 2.0);
+  
+  else if (name == Ah)
+    return PI_VALUE*pow(GetValue(ts,Rh), 2.0);
 
+  else if (name == As)
+    return GetValue(ts,A) - GetValue(ts,Ah);
+    
   if (name == age)
     return ts.tc_age; 
 
