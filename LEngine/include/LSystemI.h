@@ -151,23 +151,6 @@ int LSystem<TS,BUD,T,F>::lignum2Lstring(list<TreeCompartment<TS,BUD>*>& ls,
       //If control reaches here it is an error
     }
   }
-  //Take care of three turtle commands
-  //Turn
-  else if (strcmp(name,"Turn") == 0){
-    ltr++;
-  }
-  //Pitch
-  else if (strcmp(name,"Pitch") == 0){
-    ltr++;
-  }
-  //Roll
-  else if (strcmp(name,"Roll") == 0){
-    ltr++;
-  }
-  //Hroll
-  else if (strcmp(name,"Roll") == 0){
-    ltr++;
-  }
   //Ignore  other symbols, go forward in the string
   else{
     ltr++;
@@ -501,6 +484,15 @@ int LSystem<TS,BUD,T,F>::lstring2Lignum(list<TreeCompartment<TS,BUD>*>& ls,
   //HRoll
   else if (strcmp(name,"HRoll") == 0){
     turtle_stack.top().hroll();
+    ltr++;
+  }
+  //f: move the turtle forward but don't generate segment
+  else if (strcmp(name,"f") == 0){
+    double arg1 = 0.0;
+    caller_data.Reset();
+    caller_data.Strct.AddModuleAddr(ltr.Ptr());
+    memcpy(&arg1,caller_data.Strct.pArg(0),sizeof(double));
+    turtle_stack.top().forward(arg1);
     ltr++;
   }
   //Ignore  other symbols, go forward in the string
