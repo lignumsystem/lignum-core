@@ -54,7 +54,8 @@ void VoxelBox::setVoxelSpace(VoxelSpace *s, Point c)
 
 
 //
-//	Updates the values after every tree segment being added to this VoxelBox
+//	Updates  the values after  every tree  segment being  added to
+//	this VoxelBox. 
 //
 void VoxelBox::UpdateValues()
 {
@@ -80,8 +81,9 @@ void VoxelBox::UpdateValues()
 //
 LGMdouble VoxelBox::extinction(LGMdouble l)
 {
-	double tmp = -val_c*l - val_b*l;
-	return exp(tmp);
+  //val_c conifers, val_b broad-leaves  
+  double tmp = -val_c*l - val_b*l;
+  return exp(tmp);
 }
 
 
@@ -101,8 +103,9 @@ void VoxelBox::setArea(M2 larea, M2 narea)
 
 
 //
-//	return the boolean value whether or not the VoxelBox 
-//	contains any foliage
+//	return the boolean value  whether or not the VoxelBox contains
+//	any foliage. This assumes starSum is computed and indeed has a
+//	value!!!!
 //
 bool VoxelBox::isEmpty()
 {
@@ -181,8 +184,7 @@ LGMdouble VoxelBox::S(LGMdouble phi, LGMdouble Sf, LGMdouble Wf, LGMdouble r, LG
 	if (SAc(phi, r, l) == 0)
 		return 0;
 	
-	return SAc(phi, r, l) * (1 - exp(-K(phi) * Sf * Wf 
-				   / SAc(phi, r, l))) / (Sf * Wf);
+	return SAc(phi, r, l)*(1 - exp(-K(phi)*Sf*Wf/SAc(phi, r, l)))/(Sf*Wf);
 }
 
 
@@ -227,9 +229,11 @@ LGMdouble VoxelBox::K(LGMdouble phi)
 
 ostream& operator << (ostream& os, VoxelBox &b)
 {
-	//os << "Qabs(Intercepted ratiation)" <<  "    Qin " << "     star " << "   needleArea " << "     leafArea " << endl;
+  //os << "Qabs(Intercepted ratiation)" <<  "    Qin " << "     star " << "   needleArea " << "     leafArea " << endl;
 	
-	os << b.Q_abs << " : " << b.Q_in << " : " << b.star << " : " << b.needleArea << " : " << b.leafArea << " : ";
+  os << "Qabs: " <<  b.Q_abs << " Q_in: " << b.Q_in 
+     << "star: " << b.star << " needleArea: " << b.needleArea 
+     << "leafArea: " << b.leafArea << " : ";
 	
 	return os;
 }
