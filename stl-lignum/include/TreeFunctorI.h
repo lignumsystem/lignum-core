@@ -319,7 +319,7 @@ namespace Lignum{
 	<< " " << values.max_Qin << " " <<  values.sum_Qabs << " "
 	<< P << " " << M
 	<< " " <<  values.num_segments << " " << values.num_buds
-	<< " " << noSegAll << " " << noSeg0 << endl;
+	<< " " << noSegAll << " " << noSeg0 << " " << values.num_br_l << endl;
   }
 
 

@@ -167,7 +167,7 @@ namespace Lignum{
     out(out)
       {
      out << "age db d13 H Hc Wf Ws Wb Af LAR QinM Qabs P M NoSeg NoBud"
-       " NoSegN NSegNZ"
+       " NoSegN NSegNZ NBranches"
 	<< endl;
       }
     void operator() (Tree<TS,BUD>&  tr);
