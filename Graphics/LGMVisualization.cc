@@ -1,11 +1,7 @@
 #include <stdafx.h>
 
 #include <LGMVisualization.h>
-#include <Tree.h>
-#include <ScotsBud.h>
-#include <ScotsPineVisual.h>
-#include <OpenGLfunctions.h>
-//#include <OpenGLUnix.h>
+
 
 using namespace Lignum;
 
@@ -59,58 +55,6 @@ void LGMVisualization::SetAntialising(bool antialisingOn)
 }
 
 
-void LGMVisualization::AddScotsPine(Tree<ScotsPineVisual, ScotsBud> *tree)
-{
-	scotspines.push_back(tree);
-}
-
-
-
-void LGMVisualization::DrawScotsPine(Tree<ScotsPineVisual, ScotsBud> &tree, DRAWMODE mode)
-{
-  if (mode == STEM_MODE) //runko
-    {
-      GLfloat mat_amb[] = { 0.2, 0.3, 0.4, 1.0 }; 
-      GLfloat mat_dif[] = { 0.2, 0.4, 0.4, 1.0 }; 
-  
-      GLfloat mat_amb2[] = { 1.0, 0.5, 0.4, 1.0 }; 
-      glMaterialfv(GL_FRONT, GL_AMBIENT, mat_amb); 
-      glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_dif);     
-
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-      glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);  
-  
-      glDisable(GL_LIGHTING);
-      DrawStemFunctor<ScotsPineVisual, ScotsBud> stemfunctor;
-      stemfunctor.min_rad = -99;
-      stemfunctor.max_rad = 999;
-      ForEach(tree, stemfunctor);
-    }
-  
-  if (mode == FOLIAGE_MODE) //neulaset
-    {
-      glEnable(GL_BLEND);
-      //UseTextures();
-      DrawNeedlesFunctor<ScotsPineVisual, ScotsBud> needles_functor;
-
-      glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-      glDisable(GL_LIGHTING);
-      
-      glPushMatrix();
-      glEnable(GL_CULL_FACE);
-      glCullFace(GL_FRONT);  
-      ForEach(tree, needles_functor); 
-      glCullFace(GL_BACK); 
-      ForEach(tree, needles_functor); 
-      
-      glDisable(GL_CULL_FACE);
-      glPopMatrix();    
-    
-      glDisable(GL_BLEND);
-         
-    }
-}
 
 
 
@@ -502,7 +446,7 @@ void LGMVisualization::StaticKeyPress(unsigned char key, int x, int y)
 
 
 
-void LGMVisualization::StaticNewWindowSize(GLsizei new_x, GLsizei new_y)
+void LGMVisualization::StaticNewWindowSize(int new_x, int new_y)
 {
   active_visualization->NewWindowSize(new_x, new_y); 
 }

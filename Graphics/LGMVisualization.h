@@ -11,8 +11,6 @@
 #include <vector>
 
 #include <Lignum.h>
-#include <ScotsBud.h>
-#include <ScotsPineVisual.h>
 
 namespace Lignum{
 
@@ -28,14 +26,6 @@ class LGMVisualization
   LGMVisualization();
   void InitVisualization();
   void SetAntialising(bool antialisingOn);
-
-  void DrawScotsPine(Tree<ScotsPineVisual, ScotsBud> &tree, DRAWMODE mode);
-  
-
-  void AddScotsPine(Tree<ScotsPineVisual, ScotsBud> *tree);
-
-
- 
   void NewWindowSize(GLsizei new_x, GLsizei new_y);
   void Quit(void);
   void Arrows(int key, int x, int y);
@@ -50,9 +40,6 @@ private:
   bool drawed;
 
   GLSettings settings;
-
-
-  std::vector<Tree<ScotsPineVisual, ScotsBud> * > scotspines;
 
   void InitCallBacks();
   void ReDrawWindow(void);
@@ -70,7 +57,7 @@ private:
   static void StaticMenu(int value);
   static void StaticChangeMouseButton(int button, int state, int x, int y);
   static void StaticKeyPress(unsigned char key, int x, int y);
-  static void StaticNewWindowSize(GLsizei new_x, GLsizei new_y);
+  static void StaticNewWindowSize(int new_x, int new_y);
 };
 
 

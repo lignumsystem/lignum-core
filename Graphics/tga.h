@@ -62,7 +62,7 @@ struct tga_t
    byte *Data(void) {return data;}
    byte operator[](int ndx) {return data[ndx];}
    int GenId(void)     
-    {unsigned int temp; glGenTextures(1, &temp); return temp;}
+  {GLuint temp; glGenTextures(1, &temp); return static_cast<int>(temp);}
 
    enum
    {

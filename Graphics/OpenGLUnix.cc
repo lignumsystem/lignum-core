@@ -499,7 +499,7 @@ void check_values(void)
 
 
 // This function is called when size of the window changes
-void new_window_size (GLsizei new_x, GLsizei new_y)
+void new_window_size (int new_x, int new_y)
 {
   
   glutSetWindow(window1);

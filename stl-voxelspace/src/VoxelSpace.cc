@@ -641,80 +641,6 @@ namespace Lignum {
     return 0;
   }
 
-
-
-  //
-  //	This function adds a ScotsPine to the VoxelSpace 
-  //
-    void VoxelSpace::AddScotspine(Tree<ScotsPineVisual, ScotsBud> &tree)
-  {
-    vecScotspines.push_back(&tree);
-  }
-
-
-
-  //
-  //	This function searches for the minimum BoundingBox where every tree is included in
-
-  //
-  BoundingBox& VoxelSpace::searchDimensions(BoundingBox &bbox, bool boolDimensionsWithNumBoxes)
-  {
-    int size, i;
-
-
-    //Scotspines
-    size = vecScotspines.size();
-    for (i = 0; i<size; i++)
-      {
-		
-	FindCfBoundingBox<ScotsPineVisual, ScotsBud> fbb;	
-	bbox = Accumulate(*vecScotspines[i], bbox, fbb);
-      }
-
-    LGMdouble scaleOdd = 1.1;
-    LGMdouble scaleOdd2 = 0.05;
-
-    LGMdouble dx = (0.1 + bbox.getMax().getX() - bbox.getMin().getX()) * scaleOdd;
-    LGMdouble dy = (0.1 + bbox.getMax().getY() - bbox.getMin().getY()) * scaleOdd;
-    LGMdouble dz = (0.1 + bbox.getMax().getZ() - bbox.getMin().getZ()) * scaleOdd;
-
-    if (boolDimensionsWithNumBoxes)
-      {
-	Xbox = dx / (Xn-0.5);
-	Ybox = dy / (Yn-0.5);
-	Zbox = dz / (Zn-0.5);
-      }
-    else
-      {
-	Xn = static_cast<int>(dx / Xbox + 1);
-	Yn = static_cast<int>(dy / Ybox + 1);
-	Zn = static_cast<int>(dz / Zbox + 1);
-      }
-
-    corner1 = Point(bbox.getMin().getX()-dx*scaleOdd2,
-		    bbox.getMin().getY()-dy*scaleOdd2,
-		    bbox.getMin().getZ()-dz*scaleOdd2); 
-
-    double fx = corner1.getX();
-    double fy = corner1.getY();
-    double fz = corner1.getZ();
-	
-
-
-    voxboxes.resize(Xn, Yn, Zn);
-
-    for(int i1=0; i1<Xn; i1++)
-      for(int i2=0; i2<Yn; i2++)
-	for(int i3=0; i3<Zn; i3++)
-	  {
-	    Point corner = corner1 + Point(i1*Xbox, i2*Ybox, i3*Zbox); 
-	    voxboxes[i1][i2][i3].setVoxelSpace(this, corner); 
-	  }
-
-    return bbox;
-  }
-
-
   void VoxelSpace::updateStar()
   {
     for(int i1=0; i1<Xn; i1++)
@@ -780,48 +706,8 @@ namespace Lignum {
 	  }
     return p;
   }
-  //
-  //	This function Dumps every tree included in the VoxelSpace to
-  //	VoxelBoxes.
-  //
-  void VoxelSpace::dumpTrees()
-  {
-    int size, i;
 
 
-    //Scotspines first
-    size = vecScotspines.size();
-    for (i = 0; i<size; i++)
-      {
-	//This does not compile on Linux g++ with ScotsPineVisual
-	//DumpCfTree(*this, *vecScotspines[i]);
-      }
-
-    for(int i1=0; i1<Xn; i1++)
-      for(int i2=0; i2<Yn; i2++)
-	for(int i3=0; i3<Zn; i3++)
-	  {
-				
-	    voxboxes[i1][i2][i3].updateValues(); 
-	  }
-  }
-
-
-  //
-  //	This function is called after calculateTurbidLight-function. The light values calculated in VoxelBoxes
-  //	are now tranformed to treesegments.
-  //
-  void VoxelSpace::setLightValues()
-  {
-    int size, i;
-
-    //Scotspines
-    size = vecScotspines.size();
-    for (i = 0; i<size; i++)
-      {
-	SetCfTreeQabs(*this, *vecScotspines[i]);
-      }
-  } 
 
 
 
