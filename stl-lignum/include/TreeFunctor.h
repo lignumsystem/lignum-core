@@ -78,9 +78,10 @@ public:
 template <class TS,class BUD=DefaultBud<TS> >
 class CheckCoordinates{
 public:
+  CheckCoordinates(double e = 1.0e-20);
   TreeCompartment<TS,BUD>* operator ()(Point& id,
 				       TreeCompartment<TS,BUD>* ts)const;
-
+  double epsilon;
 
 };
 }//closing namespace Lignum
