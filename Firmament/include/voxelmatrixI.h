@@ -410,9 +410,9 @@ void Matrix<TS,BUD>::addTree(Tree<TS,BUD> *tree, Point base)
 
 //-------------------------------------------------------------------------
 //
-// getLight. Gets the shoot as argument and calculates the light conditions
-// for it. 
-// Pretty much the function as addToVoxel. Maybe they could be combined...
+// getLight. Gets the shoot as argument and calculates the light
+// conditions for it.  Pretty much the function as addToVoxel. Maybe
+// they could be combined...
 //
 //-------------------------------------------------------------------------
 template <class TS,class BUD>
@@ -440,44 +440,55 @@ double Matrix<TS,BUD>::getLight(TreeSegment<TS,BUD> *ts)
 
   
   LGMdouble q_in = matrix[x][y][z].getRadiationSum();
-  SetValue(*ts, Qin, q_in);
+  //  SetValue(*ts, Qin, q_in);
 
-	//compute the surface area (sa) of the cylinder representing foliage
-	LGMdouble sf = 0.0;  
-	LGMdouble W_f = 0.0;	
-	
-	LGMdouble needle_rad = 0.0;
-	if (CfTreeSegment<TS, BUD>* cfts = dynamic_cast<CfTreeSegment<TS, BUD>*>(ts))  	  
-	{
-		W_f = GetValue(*cfts, Wf);
-		sf = 2.0 * PI_VALUE * GetValue(*ts,Rf) * GetValue(*ts,L);
-
-		LGMdouble needle_length = GetValue(GetTree(*cfts),nl);
-		LGMdouble needle_angle = GetValue(GetTree(*cfts),na);
-		SetValue(*cfts, Rf,needle_length * sin(needle_angle)+ GetValue(*ts,R));
-		needle_rad = GetValue(*cfts, Rf);
-	}
-
-	sf = 28.1;
-	LGMdouble star = 0;
-	
-	
-	//ofstream file("starsum.txt");
-	//file << "kaava : star += S(phi, sa, W_f, GetValue(*ts, R), GetValue(*ts, L))/8;" << endl << endl;
-	for (double phi=0;phi<PI_VALUE/2;phi+=PI_VALUE/16)
-	{
-		
+  //compute the surface area (sa) of the cylinder representing foliage
+  LGMdouble sf = 0.0;  
+  LGMdouble W_f = 0.0;	
  
-		star += S(phi, sf, W_f, needle_rad, GetValue(*ts, L))/8;
-		//file << "S()="<< S(phi, sf, W_f, GetValue(*ts, R), GetValue(*ts, L)) << "   parametrit: phi="<<phi<<"  sf="<< sf<<"  Wf="<<W_f<<"  R="<<GetValue(*ts, R)<<"  L="<<GetValue(*ts, L);
-		//file << "   summa=" << star << endl;
-	}
-	LGMdouble Q_abs = q_in * star * W_f * sf;
-	//file << "Q_abs = q_in * star * wf * sf:   " << q_in << " * " << star << " * " << W_f << " * " << sf << " = " << Q_abs << endl; 
-	//file.close();
 
-	SetValue(*ts, Qabs, Q_abs);
-	return Q_abs;
+  //Note Qin and the following calculations made only for
+  //CfTreeSegment --ONLY PRELIMINARY SOLUTION --- MUST BE REVISED to
+  //include also HwTreeSegment !!!!!!!!!!!!!!!!!!!!!!
+  LGMdouble needle_rad = 0.0;
+  if (CfTreeSegment<TS, BUD>* cfts = dynamic_cast<CfTreeSegment<TS, BUD>*>(ts))  	  
+    {
+      SetValue(*cfts, Qin, q_in);
+      W_f = GetValue(*cfts, Wf);
+      sf = 2.0 * PI_VALUE * GetValue(*cfts,Rf) * GetValue(*ts,L);
+      
+      LGMdouble needle_length = GetValue(GetTree(*cfts),nl);
+      LGMdouble needle_angle = GetValue(GetTree(*cfts),na);
+      SetValue(*cfts, Rf,needle_length * sin(needle_angle)+ GetValue(*ts,R));
+      needle_rad = GetValue(*cfts, Rf);
+  
+      sf = 28.1;
+      LGMdouble star = 0;
+  
+	
+      //ofstream file("starsum.txt"); file << "kaava : star += S(phi,
+      //sa, W_f, GetValue(*ts, R), GetValue(*ts, L))/8;" << endl <<
+      //endl;
+      for (double phi=0;phi<PI_VALUE/2;phi+=PI_VALUE/16)
+	{  
+	  star += S(phi, sf, W_f, needle_rad, GetValue(*ts, L))/8;
+	  //file << "S()="<< S(phi, sf, W_f, GetValue(*ts, R),
+	  //GetValue(*ts, L)) << " parametrit: phi="<<phi<<" sf="<<
+	  //sf<<" Wf="<<W_f<<" R="<<GetValue(*ts, R)<<"
+	  //L="<<GetValue(*ts, L); file << " summa=" << star << endl;
+	}
+      LGMdouble Q_abs = q_in * star * W_f * sf;
+      //file << "Q_abs = q_in * star * wf * sf: " << q_in << " * " <<
+      //star << " * " << W_f << " * " << sf << " = " << Q_abs << endl;
+      //file.close();
+  
+      SetValue(*cfts, Qabs, Q_abs);
+
+
+      return Q_abs;
+    }
+
+  return 0.0;  //THIS if not CfTreeSegment --- PRELIMINARY!!!!!!!
 }
 
 
