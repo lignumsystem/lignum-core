@@ -74,58 +74,67 @@ namespace Lignum{
 	cout << "Radiation (Ball sensor): " << GetFirmament(tree). diffuseBallSensor()
 	     << " Radiation (Plane sensor): " << GetFirmament(tree). diffusePlaneSensor()
 	     << endl;
-	
-	cout << "Radiation sector by sector:"  << endl;
-	int r = GetFirmament(tree).numberOfRegions();
-	vector<double> d(3);
-	for (int i = 0; i < r; i++){
-	  MJ rad = GetFirmament(tree).diffuseRegionRadiationSum(i,d);
-	  cout << d[0] << ":" <<  d[1] << ":" <<  d[2 ] << ":" << rad << endl;
-	}
       }
       //3. Parse functions for a tree
       //1.
       file = tmfp.getFunctionFile("LGMAL");
       if (verbose){
 	cout << "Configuring functions" << endl;
-	cout << "Reading LGMAL from: " << file.c_str() << endl;
+      }
+      if (file != ""){
+	if (verbose){
+	  cout << "Reading LGMAL from: " << file << endl;
+	}
+	tree.tf.al.install(file);
       }
       //2.
       file = tmfp.getFunctionFile("LGMFM");
-      if (verbose){
-	cout << "Reading LGMFM from: " << file.c_str() << endl;
+      if (file != ""){
+	if (verbose){
+	  cout << "Reading LGMFM from: " << file << endl;
+	}
+	tree.tf.fm.install(file);
       }
-      tree.tf.fm.install(file);
       //3.
       file = tmfp.getFunctionFile("LGMIP");
-      if (verbose){
-	cout << "Reading LGMIP from: " << file.c_str() << endl;
+      if (file != ""){
+	if (verbose){
+	  cout << "Reading LGMIP from: " << file<< endl;
+	}
+	tree.tf.ip.install(file);
       }
-      tree.tf.fm.install(file);
       //4.
       file = tmfp.getFunctionFile("LGMLONB");
-      if (verbose){
-	cout << "Reading LGMLONB from: " << file.c_str() << endl;
+      if (file != ""){
+	if (verbose){
+	  cout << "Reading LGMLONB from: " << file << endl;
+	}
+	tree.tf.LightOnNumBuds.install(file);
       }
-      tree.tf.fm.install(file);
       //5.
       file = tmfp.getFunctionFile("LGMNB");
-      if (verbose){
-	cout << "Reading LGMNB from: " << file.c_str() << endl;
+      if (file != ""){
+	if (verbose){
+	  cout << "Reading LGMNB from: " << file << endl;
+	}
+	tree.tf.nb.install(file);
       }
-      tree.tf.nb.install(file);
       //6.
       file = tmfp.getFunctionFile("LGMVI");
-      if (verbose){
-	cout << "Reading LGMVI from: " << file.c_str() << endl;
+      if (file != ""){
+	if (verbose){
+	  cout << "Reading LGMVI from: " << file << endl;
+	}
+	tree.tf.vi.install(file);
       }
-      tree.tf.nb.install(file);
       //7.
       file = tmfp.getFunctionFile("LGMVIONB");
-      if (verbose){
-	cout << "Reading LGMVIONB from: " << file.c_str() << endl;
+      if (file != ""){
+	if (verbose){
+	  cout << "Reading LGMVIONB from: " << file << endl;
+	}
+	tree.tf.VigourOnNumBuds.install(file);
       }
-      tree.tf.ip.install(file);
     }
 }//closing namespace Lignum
 
