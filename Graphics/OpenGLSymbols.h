@@ -21,6 +21,9 @@ const int CROSS = 13;
 const int STEM_CROSS = 14;
 const int GRP_TREE = 15;
 const int FIRMAMENT_POINTS = 16;
+const int ROOT_LIST = 17;
+const int LGMFOLIAGE = 18;
+
 
 const int MANY_TREES = 20;  // yhdelle puulle varattu 3 numeroa
 const int FOREST_LIST = 21;

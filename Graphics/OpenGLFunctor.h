@@ -34,6 +34,15 @@ public:
 };
 
 
+template <class TREE>
+class DrawRootFunctor
+{
+public:
+	RootCompartment<TREE>* operator()(RootCompartment<TREE>* tc)const; 
+       
+};
+
+
 template <class TS,class BUD>
 class DrawNeedlesFunctor
 {
@@ -52,6 +61,20 @@ public:
 	LGMdouble leave_size_x;
 	LGMdouble leave_size_y;
 };
+
+
+
+
+template <class TS,class BUD,class S = Ellipse>
+class DrawLignumLeavesFunctor
+{
+public:
+   DrawLignumLeavesFunctor() {};
+   TreeCompartment<TS,BUD>* operator()(TreeCompartment<TS,BUD>* tc)const; 
+};
+
+
+
 
 }
 

@@ -28,7 +28,7 @@ namespace Lignum{
   template <class TS, class BUD>
     TreeCompartment<TS,BUD>* DrawStemFunctor<TS,BUD>::operator()(TreeCompartment<TS,BUD>* tc)const
     {
-      if (TreeSegment<TS, BUD>* ts = dynamic_cast<TreeSegment<TS, BUD>*>(tc))
+      if (TS* ts = dynamic_cast<TS *>(tc))
 	{  			
 	  LGMdouble radius = GetValue(*ts, R);
 	  if (radius > min_rad && radius<=max_rad)	
@@ -68,7 +68,45 @@ namespace Lignum{
       return tc;
     }
 
+ template <class TREE>
+ RootCompartment<TREE>* DrawRootFunctor<TREE>::operator()(RootCompartment<TREE>* rc)const
+    {
+      if (RootSegment<TREE>* rs = dynamic_cast<RootSegment<TREE> *>(rc))
+	{  			
+	  LGMdouble radius = GetValue(*rs, R);
+	 
+	  float length;
+	  float radius_top;
+	  float rot_x;
+	  float rot_y;
+	  float rot_angle;
+	      
+	  Point position;
+	  PositionVector direction = GetDirection(*rs);
 
+	  length = GetValue(*rs, L);
+	  position = GetPoint(*rs);
+	  
+	  direction.normalize();
+
+	  rot_x = -1*direction.getVector()[1];
+	  rot_y =    direction.getVector()[0];
+	  rot_angle = (360/(2*PI_VALUE))*acos((double)direction.getVector()[2]);
+	  glPushMatrix();
+	  glTranslatef(position.getX(), position.getY(), position.getZ());
+	  if (rot_angle == 180.0){
+	    rot_y = 1.0;
+	  }
+	  glRotatef( rot_angle, rot_x, rot_y, 0);
+	  float rad_limit = 0.05;
+	  MakeCylinder(radius, radius, length, rad_limit);
+	  glPopMatrix();
+			
+	    
+	       
+	} 
+      return rc;
+    }
 
 
   template <class TS, class BUD,class S>
@@ -136,6 +174,58 @@ namespace Lignum{
 
 
 }
+
+
+
+
+
+
+
+
+// Uusi funktori joka piirt‰‰ lehdet pyyt‰m‰ll‰ pistejoukon
+template <class TS, class BUD,class S>
+TreeCompartment<TS,BUD>* DrawLignumLeavesFunctor<TS,BUD,S>::operator()(TreeCompartment<TS,BUD>* tc)const
+{
+   			
+  if (TS* hwts = dynamic_cast<TS *>(tc))
+    {
+      std::list<BroadLeaf<S>*>& leaf_list = GetLeafList(*hwts);
+      typename std::list<BroadLeaf<S>*>::iterator I;
+      for(I = leaf_list.begin(); I != leaf_list.end(); I++)
+	{
+	   LGMdouble area = GetValue(**I, A);   //BroadLeaf returns true area of the leaf
+	      
+	  Petiole pet = GetPetiole(**I);
+	      
+	  S& shape = GetShape(**I);
+	  vector<Point> points;
+	  shape.getVertexVector(points);
+	      
+	  int size = points.size();
+	  glPushMatrix();
+	  glBegin(GL_POLYGON);
+	  for (int i=0; i<size; i++)
+	    {
+	      Point p = points[i];
+	      PositionVector dir = shape.getNormal();
+	      glNormal3f(dir.getX(), dir.getY(), dir.getZ());
+	      glTexCoord2f(p.getX(), p.getY()); glVertex3f(p.getX(), p.getY(), p.getZ());
+
+	      
+	    }
+	  glEnd();
+	  glPopMatrix();
+	      
+	      
+	}
+    }
+     
+  return tc;
+}
+
+
+
+
 
 
 

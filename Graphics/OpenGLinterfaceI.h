@@ -11,7 +11,7 @@
 
 #include <GL/gl.h>
 #include <GL/glu.h>
-
+#include <Triangle.h>
 
 extern GLfloat cam_x;  //camera position
 extern GLfloat cam_y;
@@ -33,9 +33,17 @@ void MakeLeaveList(Tree<TS,BUD> &tree, int xsize, int ysize)
 	glNewList(FOLIAGE, GL_COMPILE);	
 	UseTextures();
 
-	DrawLeavesFunctor<TS, BUD> leaves_functor(xsize, ysize);
-	ForEach(tree, leaves_functor);
-		
+
+	glEndList();
+	glPopMatrix();
+
+	//DrawLeavesFunctor<TS, BUD> leaves_functor(xsize, ysize);
+		//ForEach(tree, leaves_functor);
+
+	glPushMatrix();
+	glNewList(LGMFOLIAGE, GL_COMPILE);
+	DrawLignumLeavesFunctor<TS, BUD, Triangle> leaves_functor;
+	ForEach(tree, leaves_functor);		
 	glEndList();
 	glPopMatrix();
 }
@@ -128,8 +136,11 @@ void MakeTreeList(Tree<TS,BUD> &tree, LGMdouble limit)
 		glDeleteLists(TREE_BIG, 1);
 	if (glIsList(TREE_SMALL))
 		glDeleteLists(TREE_SMALL, 1);
+	if (glIsList(ROOT_LIST))
+		glDeleteLists(ROOT_LIST, 1);
+	
   
-	cout << "MakeTreeList:tehdaan puu" << endl;
+	cout << "MakeTreeList22:tehdaan puu" << endl;
 
 	glPushMatrix();
 	glNewList(TREE_BIG, GL_COMPILE);
@@ -148,6 +159,15 @@ void MakeTreeList(Tree<TS,BUD> &tree, LGMdouble limit)
 	ForEach(tree, stemfunctor);
 	glEndList();
 	glPopMatrix();
+
+
+	glPushMatrix();
+	glNewList(ROOT_LIST, GL_COMPILE);
+	DrawRootFunctor<Tree<TS,BUD> > rootfunctor;
+	ForEach(GetRootAxis(tree), rootfunctor);
+	glEndList();
+	glPopMatrix();
+
 }
 
 

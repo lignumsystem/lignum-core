@@ -342,6 +342,12 @@ void DrawTree()
 	  
   stemtexture.do_not_use();
   
+  glPushMatrix();
+  if (glIsList(ROOT_LIST) == false)
+    cout << "Virhe2:juuria ei määritelty " << endl;
+  glCallList(ROOT_LIST);
+  glPopMatrix();
+
  
   //glDisable(GL_CULL_FACE);
 #endif
@@ -376,6 +382,9 @@ void DrawOrderedFoliage()
 	 glCallList(FOLIAGE);
      glDisable(GL_CULL_FACE);
 	 glPopMatrix();
+
+     glDisable(GL_BLEND);
+     glCallList(LGMFOLIAGE);
 }
 
 
@@ -439,6 +448,16 @@ void DrawFoliage()
       glCallList(FOLIAGE);
       glDisable(GL_CULL_FACE);
       glPopMatrix();
+
+      glEnable(GL_LIGHTING);
+      glDisable(GL_TEXTURE_2D);
+
+      GLfloat mat_amb1[] = { 0.1, 0.7, 0.1, 1.0 };
+    
+  
+      glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, mat_amb1);
+      glDisable(GL_BLEND);
+      glCallList(LGMFOLIAGE);
     }
   return;
 }
