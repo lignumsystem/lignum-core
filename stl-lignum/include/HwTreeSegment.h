@@ -4,7 +4,7 @@
 
 #include <TreeSegment.h>
 #include <BroadLeaf.h>
-#include <Firmament.h>
+#include <FirmamentWithMask.h>
 
 namespace Lignum{
 using namespace cxxadt;
