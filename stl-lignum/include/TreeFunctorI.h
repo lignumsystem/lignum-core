@@ -552,8 +552,7 @@ namespace Lignum{
     FindHwBoundingBox<TS,BUD,SHAPE>::operator ()(BoundingBox& b_box,
 					 TreeCompartment<TS,BUD>* tc)const
     {
-      if(HwTreeSegment<TS,BUD,SHAPE>* ts = 
-	 dynamic_cast<HwTreeSegment<TS,BUD,SHAPE>*>(tc)){
+      if(TS* ts = dynamic_cast<TS*>(tc)){
 	if(GetValue(*ts,LGAWf) > R_EPSILON) {
 	  list<BroadLeaf<SHAPE>*>& leaf_list = GetLeafList(*ts);
 	  typename list<BroadLeaf<SHAPE>*>::iterator I;
