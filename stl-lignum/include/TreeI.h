@@ -107,16 +107,16 @@ LGMdouble GetValue(const Tree<TS,BUD>& tree, const LGMPD name)
   else if (name == lr)
     return tree.tp.lr;		 
   
-  else if (name == mf)
+  else if (name == LGPmf)
     return tree.tp.mf;
 
-  else if (name == mr)
+  else if (name == LGPmr)
     return tree.tp.mr;
 
-  else if (name == ms)
+  else if (name == LGPms)
     return tree.tp.ms;
 
-  else if (name == na)
+  else if (name == LGPna)
     return tree.tp.na;
 
   else if (name == LGPnl)
@@ -160,10 +160,6 @@ LGMdouble GetValue(const Tree<TS,BUD>& tree, const LGMPD name)
 }
 
 
-
-
-
-
 //Change a parameter value, return the old value
 template <class TS,class BUD>
 LGMdouble SetValue(Tree<TS,BUD>& tree, const LGMPD name, const LGMdouble value)
@@ -179,16 +175,16 @@ LGMdouble SetValue(Tree<TS,BUD>& tree, const LGMPD name, const LGMdouble value)
   else if (name == lr)
     tree.tp.lr = value;
   
-  else if (name == mf)
+  else if (name == LGPmf)
     tree.tp.mf = value;
 
-  else if (name == mr)
+  else if (name == LGPmr)
     tree.tp.mr = value;
 
-  else if (name == ms)
+  else if (name == LGPms)
     tree.tp.ms = value;
 
-  else if (name == na)
+  else if (name == LGPna)
     tree.tp.na = value;
 
   else if (name == LGPnl)

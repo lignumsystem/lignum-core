@@ -9,7 +9,7 @@ CfTreeSegment<TS,BUD>::CfTreeSegment(const Point& p, const PositionVector& d,
 				     const METER rh, Tree<TS,BUD>* t)
   :TreeSegment<TS,BUD>(p,d,go,l,r,rh,t)
   {
-    SetValue(*this,LGAHf,GetValue(*t,LGPnl)*sin(GetValue(*t,na)));
+    SetValue(*this,LGAHf,GetValue(*t,LGPnl)*sin(GetValue(*t,LGPna)));
     SetValue(*this,LGARf,GetValue(*this,LGAR)+GetValue(*this,LGAHf));
     //compute the initial mass of the foliage
     //1. compute the surface area (Sa) of the segment cylinder

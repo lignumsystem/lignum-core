@@ -84,15 +84,14 @@ namespace Lignum{
   // TreeWr  Root mass
   // TreeQinMax  Max Qin of all segments in a tree
 
-
   //LIGNUM  Parameter Double
   //Keep the LGMPD enumeration in sync with MapLGMPD table constructor
   //in TreeFriend.cc. MapLGMPD maps the names of  the parameters found
   //in configuration files to the symbolic names in LGMPD.
-  enum LGMPD {LGPaf,LGPar,dofp,lr,mf,mr,ms,na,LGPnl,LGPpr, LGPq, LGPsf, 
-              LGPsr,LGPss,LGPrhoW,LGPrho_root,LGPrho_hair, LGPyc, LGPxi,
+ 
+ enum LGMPD {LGPaf,LGPar,dofp,lr,LGPmf,LGPmr,LGPms,LGPna,LGPnl,LGPpr, LGPq, LGPsf, LGPsr,LGPss,LGPrhoW,LGPrho_root,LGPrho_hair, LGPyc, LGPxi,
 	      LGPzbrentEpsilon, LGPLn_par, LGPn_ang_par};
-  // LGPsla    specific leaf area. sf determined for leaf..
+
   // LGPaf     Needle mass - tree segment area (kgC/m^2)relationship
   // LGPar     Foliage - root relationship 
   // lr = Length - radius relationship of a tree segment
@@ -115,7 +114,35 @@ namespace Lignum{
   // LGPLn_par = ????????????????? 
   // LGPn_ang_par = ??????????????
 
-  //LIGNUM Transit Variable Double
+ //cvs update
+  // al					Maximun size of a leaf
+ // LGPyc					Foliage mass supported by 1m2 of sapwood
+  // LGPsla  specific leaf area. sf determined for leaf..
+  // cvs update
+  //af = Needle mass - tree segment area (kg/m^2)relationship
+  //ar = Foliage - root relationship 
+  //al=	Maximun size of a leaf
+  //lr = Length - radius relationship of a tree segment
+  //LGPmf = Maintenance respiration rate of foliage
+  //LGPmr = Maintenance respiration rate of roots
+  //LGPms = Maintenance respiration rate of sapwood
+  //LGPna = Needle angle (radians)
+  //LGPnl = Needle length (na and nl define the cylinder of foliage in CfTreeSegment)
+  //LGPpr = Photsynthetic efficiency (=photos. rate = pr * intercepted rad.)
+  //LGPq  = segment shortening (becoming obsolete due to vigour index)
+  //LGPrhoW= Density of  wood in general (is usually used in Segment)
+  //rho_root = Density root sapwood
+  //LGPrho_hair = Density of root hair
+  //LGPsf = specific leaf area (=leaf area/ leaf weight)
+  //LGPsr = Senescence rate of roots
+  //LGPss = Senescence rate of sapwood
+  //LGPxi = Fraction of heartwood in newly created tree segments
+  //LGPzbrentEpsilon = accuracy in numerical computation in root finding (see Zbrent)
+  //LGPLn_par = ????????????????? 
+  //LGPn_ang_par = ??????????????
+
+  //Tree Transit Variable Double
+
   enum LGMTD {lambda, g, eta, Er, k, rhow}; 
   //lambda  Elongates and shortens segments in tree to allocate photosynthates
   //         (see Zbrent)

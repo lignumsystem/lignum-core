@@ -41,7 +41,7 @@ void Tree<TS,BUD>::respiration()
   sumM = Accumulate(*this, sumM, SumTreeRespiration<TS,BUD>());
   
   // Root respiration
-  sumM += GetValue(*this,mr)*GetValue(*this,LGAWr);
+  sumM += GetValue(*this,LGPmr)*GetValue(*this,LGAWr);
 
   SetValue(*this, LGAM, sumM);
 }
