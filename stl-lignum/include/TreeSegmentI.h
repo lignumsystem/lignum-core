@@ -314,9 +314,6 @@ LGMdouble GetValue(const TreeSegment<TS,BUD>& ts, const LGMAD name)
   else if (name == R)
     return ts.tsa.R;
 
- //else if (name == Rf)
-  //return ts.tsa.Rf;
-
   else if (name == Rh)
     return ts.tsa.Rh;
 
