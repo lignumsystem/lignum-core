@@ -17,6 +17,17 @@ Point<> GetEndPoint(const Petiole& p)
   return p.end;
 }
 
+void SetStartPoint(Petiole& p, const Point<>& pnt)
+{
+  p.begin = pnt;
+}
+  
+void SetEndPoint(Petiole& p, const Point<>& pnt)
+{
+  p.end = pnt;
+}
+
+
 PositionVector GetDirection(const Petiole& p)
 {
   Point<> dp = p.end - p.begin;
@@ -170,5 +181,32 @@ vector<double> GetRadiationVector(BroadLeaf& bl)
   return bl.bla.sv;
 }
 
+//Translates BroadLeaf as specified by vector t, orientation not changed
+//(= vector t added to all positions, including Petiole)
+void TranslateLeaf(BroadLeaf& bl, const PositionVector& t)
+{
+
+  const Point<LGMdouble> t_point = (Point<LGMdouble>)t;
+  Point<LGMdouble> pnt = GetCenterPoint(bl);
+
+  SetCenterPoint(bl, pnt + t_point);
+
+  pnt = GetStartPoint(bl.bla.petiole);
+  SetStartPoint(bl.bla.petiole, pnt + t_point);
+
+  pnt = GetEndPoint(bl.bla.petiole);
+  SetEndPoint(bl.bla.petiole, pnt + t_point);
+  
+}
+
+//Moves leaf from its current position to position where
+//the starting point of the petiole is p.
+//Orientation does not change
+void SetLeafPosition(BroadLeaf& bl, const Point<>& p)
+{
+  PositionVector transvct = PositionVector(p - GetStartPoint(bl.bla.petiole));
+
+  TranslateLeaf(bl, transvct);
+}
 
 }//closing namespace Lignum

@@ -14,6 +14,8 @@ using namespace cxxadt;
 class Petiole{
   friend Point<> GetStartPoint(const Petiole& p);
   friend Point<> GetEndPoint(const Petiole& p);
+  friend void SetStartPoint(Petiole& p, const Point<>& pnt);
+  friend void SetEndPoint(Petiole& p, const Point<>& pnt);
   friend PositionVector GetDirection(const Petiole& p);
 public:
   Petiole(const Point<>& begin, const Point<>& end);
@@ -54,7 +56,8 @@ class BroadLeaf{
   friend Ellipsis& GetEllipsis(BroadLeaf& bl);
   friend vector<double> GetRadiationVector(BroadLeaf& bl);
   friend void SetRadiationVector(BroadLeaf& bl, const vector<LGMdouble>& v);
-  friend bool HasLeaves(const BroadLeaf& bl);
+  friend void TranslateLeaf(BroadLeaf& bl, const PositionVector& t);
+  friend void SetLeafPosition(BroadLeaf& bl, const Point<>& p);
 public:
 
   BroadLeaf(LGMdouble sf,LGMdouble tauL,LGMdouble dof,int number_of_sectors,
