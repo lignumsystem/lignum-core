@@ -8,52 +8,56 @@ namespace Lignum{
 
   // Tree Attribute Double, Wm lisätty
   // Wr           dry weight of the roots
-  enum LGMAD {A,Af,Ah, Ahair,As,As0,age,api, LGMcollision,dof, dR, H,Hf,Hm,ip,lb,LM,LP,LWf,L,lw,M, omega,P,
+  enum LGMAD {A,Af,Ah, Ahair,As,As0,age,api, LGMcollision,Dbase,Dbh,dof, dR, H,Hf,Hm,ip,
+              lb,LM,LP,LWf,L,lw,M, omega,P,
 	      Qin,Qabs,R,Rf,Rh,Rhair,RTop,Sa,LGMstatus,sw,tauL,LGMtype,V,Vh,Vhair,Vs,vi,
               Wf,Wr, Ws,Wh,Whair};
 
-  //  A       0   Segment area based on R (see GetValue)
-  //  Af          area of foliage
-  //  Ah          Heartwood area
-  //  Ahair       Root hair area
-  //  As          Sapwood area
-  //  As0         Original sapwood area
-  //  age     1   age of object
-  //  dof     2   degree of filling?
-  //  H       3   height of tree
-  //  Hf          height of foliage 
-  //  Hm      4   ???
-  //  ip      5   degree of interction
-  //  lb      6   ???
-  //  LM      7   ???
-  //  LP      8   ???
-  //  LWf     9   ???
-  //  L       10  length of segment
-  //  lw      11  ???
-  //  M       12  rate of respiration (= amount of r. during the time step)
-  //  omega   13  Gravelius order
-  //  P       14  Photosynthetic rate (= amount of p. during time step)
-  //  Qin     15  incoming radiant flux
-  //  Qabs    16  amount of absorbed radiation
-  //  R       17  radius of segment
-  //  Rf      18  radius of segment cylinder that contains also foliage (cofers)
-  //  Rh      19  radius of heartwood
-  //  Rhair       Radius including root hair 
-  //  Rtop    20  radius of segment at upper end
-  //  Sa          Surface area of the segment cylinder: 2*PI*R*L 
-  //  sw      22  ????
-  //  tauL    23  transmission coefficient of leaf (in direction of the ray of light)
-  //  Wf      24  foliage mass (kg C)
-  //  Wr      27  root mass (kg C)
-  //  Ws      25  mass of sapwood (kg C)
-  //  Wh      26  mass of heartwood (kg C)
-  //  Whair       mass of root hair (kg C)
+  //  A      Segment area based on R (see GetValue)
+  //  Af     area of foliage
+  //  Ah     Heartwood area
+  //  Ahair  Root hair area
+  //  As     Sapwood area
+  //  As0    Original sapwood area
+  //  age    age of object
+  //  api    ???
+  //  Dbase  diameter at base
+  //  Dbh    diameter at breast height
+  //  dof    degree of filling?
+  //  H      height of tree
+  //  Hf     height (thickness) of cylindrical layer of foliage in a segment 
+  //  Hm     ???
+  //  ip     degree of interction
+  //  lb     ???
+  //  LM     ???
+  //  LP     ???
+  //  LWf    ???
+  //  L      length of segment
+  //  lw     ???
+  //  M      rate of respiration (= amount of r. during the time step)
+  //  omega  Gravelius order
+  //  P      Photosynthetic rate (= amount of p. during time step)
+  //  Qin    incoming radiant flux
+  //  Qabs   amount of absorbed radiation
+  //  R      radius of segment (wood)
+  //  Rf     radius of segment cylinder that contains also foliage (conifers)
+  //  Rh     radius of heartwood
+  //  Rhair  Radius including root hair 
+  //  Rtop   radius of segment at upper end
+  //  Sa     Surface area of the segment cylinder: 2*PI*R*L 
+  //  sw     ????
+  //  tauL   transmission coefficient of leaf (in direction of the ray of light)
+  //  Wf     foliage mass (kg C)
+  //  Wr     root mass (kg C)
+  //  Ws     mass of sapwood (kg C)
+  //  Wh     mass of heartwood (kg C)
+  //  Whair  mass of root hair (kg C)
 
-  //  vi          vigour index
-  //  V           Segment volume based on R
-  //  Vh          Heartwood volume
-  //  Vhair       Root hair volume
-  //  Vs          Sapwood volume
+  //  vi     vigour index
+  //  V      Segment volume based on R
+  //  Vh     Heartwood volume
+  //  Vhair  Root hair volume
+  //  Vs     Sapwood volume
 
 
   enum LGMFLOW { fin, fout, Pr, Wm };
@@ -67,6 +71,7 @@ namespace Lignum{
   //P  = tree level photosynthesis
   //M  = tree level respiration
   //Wr = root mass
+  //TreeQinMax = max Qin of all segments in a tree
 
   //Keep this in sync with the number of enumerations in LGMTAD
   //It will intialize the vector
