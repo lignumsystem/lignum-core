@@ -500,7 +500,7 @@ void* DList::reverseReduce(void *(*reduce_fn)(void *,void *),void *identity)
 //Boolean list reduce 
 //The method is like reduce above
 //but the form of the reduce function must be 
-//"void*  (*reduce_fn)(BOOLEAN (*bool_fn)(void *, void*),
+//"void*  (*reduce_fn)(bool (*bool_fn)(void *, void*),
 //                  void *fst_arg_2_bool_fn, void *list_data,void *identity)"
 //the "bool_fn" is applied to the list data_element
 //and if "bool_fn" returns TRUE list data will be taken to reduction
@@ -510,9 +510,9 @@ void* DList::reverseReduce(void *(*reduce_fn)(void *,void *),void *identity)
 //"identity" is the identity element and must hold enough space to store the final result
 //and it must initially be the 0-element
 //The currentElmt will point the firstElmt after reduction
-void* DList::booleanReduce(void *(*reduce_fn)(BOOLEAN (*b_fn)(void *,void *),
+void* DList::booleanReduce(void *(*reduce_fn)(bool (*b_fn)(void *,void *),
 					      void*,void *,void*),
-			   BOOLEAN (*bool_fn)(void *,void *),void *fst_arg_2_bool_fn,
+			   bool (*bool_fn)(void *,void *),void *fst_arg_2_bool_fn,
 			   void* identity)
 {
   void *data;
@@ -535,9 +535,9 @@ void* DList::booleanReduce(void *(*reduce_fn)(BOOLEAN (*b_fn)(void *,void *),
 //from the lastElmt towards the first element
 //The currentElmt will point the lastElmt  after reduction
 //The elements of the list will remain unaltered
-void* DList::booleanReverseReduce(void *(*reduce_fn)(BOOLEAN (*b_fn)(void *,void *),
+void* DList::booleanReverseReduce(void *(*reduce_fn)(bool (*b_fn)(void *,void *),
 						     void*,void *,void*),
-				  BOOLEAN (*bool_fn)(void *,void *),void *fst_arg_2_bool_fn,
+				  bool (*bool_fn)(void *,void *),void *fst_arg_2_bool_fn,
 				  void* identity)
 {
   void *data;
@@ -608,7 +608,7 @@ void *my_add(void * data1,void *id2)
 }
 
 //For testing boolean_reduce-method
-void *my_bool_add(BOOLEAN (*fn)(void*,void*),void *fst_arg,void* data,void *id)
+void *my_bool_add(bool (*fn)(void*,void*),void *fst_arg,void* data,void *id)
 {
   if ((*fn)(fst_arg,data)){
     *(int *)id = (*(int *)data) + (*(int *)id);
@@ -619,9 +619,9 @@ void *my_bool_add(BOOLEAN (*fn)(void*,void*),void *fst_arg,void* data,void *id)
 }
 //boolean function to test boolean_reduce-method
 //return TRUE if arg1 < arg2
-BOOLEAN gt(void *arg1,void *arg2)
+bool gt(void *arg1,void *arg2)
 {
-  return (BOOLEAN)(*(int *)arg1 < * (int *)arg2);
+  return (bool)(*(int *)arg1 < * (int *)arg2);
 }
 
 int  main()

@@ -196,7 +196,7 @@ int cylinderBeamShading(const Point& r0_1, const PositionVector& b,
   double c2Over2, c1, c3, discriminantOver4;
   static PositionVector r1;
   static PositionVector r2;
-  bool firstHits = FALSE, secondHits = FALSE;
+  bool firstHits = false, secondHits = false;
 	
   c2Over2 = rdiffa * ab - rdiffb;
   c1 = 1.0 - pow(ab, 2);
@@ -256,11 +256,11 @@ int cylinderBeamShading(const Point& r0_1, const PositionVector& b,
 
   rd = r1 - rs;
   any = Dot(a, rd);
-  if(any > 0.0 && any < L) firstHits = TRUE;
+  if(any > 0.0 && any < L) firstHits = true;
 
   rd = r2 - rs;
   any = Dot(a, rd);
-  if(any > 0.0 && any < L) secondHits = TRUE;
+  if(any > 0.0 && any < L) secondHits = true;
 
   //	6. One member of Cartesian product 
   //	{mantle, end disk} x {mantle, end disk} or no hit possible 
@@ -315,7 +315,7 @@ int cylinderBeamShading(const Point& r0_1, const PositionVector& b,
       else	//Error condition; this should not happen;
 	return  HIT_THE_WOOD;
     }
-  else				//firstHits not TRUE 
+  else				//firstHits not true 
     if(secondHits)	{	//Must be either of end disks
       p1 = rdiffa / ab;
       // N.B. Cannot come into this branch if a perpen-

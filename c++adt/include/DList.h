@@ -2,8 +2,6 @@
 #define DLIST_H
 
 #include <DListElement.h>
-//enum BOOLEAN {FALSE,TRUE};
-#include <boolean.h>
 
 namespace cxxadt{
 /*=============================================================
@@ -28,25 +26,25 @@ public:
   DList& reverseMap(void *(*map_fn)(void *));
   void*  reduce(void *(*reduce_fn)(void *,void *),void *identity);
   void*  reverseReduce(void *(*reduce_fn)(void *,void *),void *identity);
-  void*  booleanReduce(void *(*reduce_fn)(BOOLEAN (*bfn)(void*,void*),
+  void*  booleanReduce(void *(*reduce_fn)(bool (*bfn)(void*,void*),
 					  void *fst_arg_2_bfn,
 					  void* data, void *id),
-		       BOOLEAN (*bool_fn)(void*,void*),
+		       bool (*bool_fn)(void*,void*),
 		       void *fst_arg_to_bfn,
 		       void *identity);
-  void*  booleanReverseReduce(void *(*reduce_fn)(BOOLEAN (*bfn)(void*,void*),
+  void*  booleanReverseReduce(void *(*reduce_fn)(bool (*bfn)(void*,void*),
 						   void *fst_arg_2_bfn,
 						   void* data, void *id),
-				BOOLEAN (*bool_fn)(void*,void*),
+				bool (*bool_fn)(void*,void*),
 				void *fst_arg_to_bfn,
 				void *identity);
   DList&  reverse();
   void*   getData();
   void*   setData(void *data);
   DList&  deleteCurrent();
-  inline BOOLEAN isEmpty();
-  inline BOOLEAN isOffleft();
-  inline BOOLEAN isOffright();
+  inline bool isEmpty();
+  inline bool isOffleft();
+  inline bool isOffright();
   inline DListElement* first();
   inline DListElement* last();
   inline DListElement* current();
@@ -70,25 +68,25 @@ private:
 //Check if the list is empty
 //Observe that this requires a real object
 //if DList *ptr == NULL, ptr is NOT empty
-inline BOOLEAN  DList::isEmpty()
+inline bool  DList::isEmpty()
 {
-    return (BOOLEAN)(listLength == 0);
+    return (bool)(listLength == 0);
 }
 
 
 //Check if pointer to current element
 //is to the right of the current element
-inline BOOLEAN DList::isOffright()
+inline bool DList::isOffright()
 {
     //The last position in the list is listLength - 1 !!
-    return (BOOLEAN)(isEmpty() || (currentPos == listLength));
+    return (bool)(isEmpty() || (currentPos == listLength));
 }
 
 //Check if pointer to current element 
 //is to the left of the current element
-inline BOOLEAN DList::isOffleft()
+inline bool DList::isOffleft()
 {
-    return (BOOLEAN)(isEmpty() || (currentPos < 0));
+    return (bool)(isEmpty() || (currentPos < 0));
 }
 
 //Return the first element of the list
