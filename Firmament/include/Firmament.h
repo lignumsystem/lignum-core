@@ -215,7 +215,7 @@ public:
 }
   
 
-
+  int getNoOfAzimuths() { return num_of_azim; }
   int getNoOfInclinations() { return num_of_incl; }
 
 protected:
