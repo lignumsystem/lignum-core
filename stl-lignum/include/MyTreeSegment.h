@@ -8,6 +8,8 @@
 namespace Lignum{
 
 class MyBud;
+class MyHwBud;
+ class MyCfBud;
 
 class MyTreeSegment:public TreeSegment<MyTreeSegment,MyBud>
 {
@@ -19,22 +21,22 @@ public:
 };
 
 
-class MyHwTreeSegment:public HwTreeSegment<MyHwTreeSegment,MyBud>
+class MyHwTreeSegment:public HwTreeSegment<MyHwTreeSegment,MyHwBud>
 {
 public:
   MyHwTreeSegment(const Point& p, const PositionVector& d, const LGMdouble go,
 		  const METER l, const METER r, const METER rn,
-		  Tree<MyHwTreeSegment,MyBud>* t)
-    :HwTreeSegment<MyHwTreeSegment,MyBud>(p,d,go,l,r,rn,t){}
+		  Tree<MyHwTreeSegment,MyHwBud>* t)
+    :HwTreeSegment<MyHwTreeSegment,MyHwBud>(p,d,go,l,r,rn,t){}
 };
 
-class MyCfTreeSegment:public CfTreeSegment<MyCfTreeSegment,MyBud>
+class MyCfTreeSegment:public CfTreeSegment<MyCfTreeSegment,MyCfBud>
 {
 public:
   MyCfTreeSegment(const cxxadt::Point& p, const PositionVector& d, const LGMdouble go,
 		  const METER l, const METER r, const METER rn,
-		  Tree<MyCfTreeSegment,MyBud>* t)
-    :CfTreeSegment<MyCfTreeSegment,MyBud>(p,d,go,l,r,rn,t){}
+		  Tree<MyCfTreeSegment,MyCfBud>* t)
+    :CfTreeSegment<MyCfTreeSegment,MyCfBud>(p,d,go,l,r,rn,t){}
 };
 
 } //close namespace Lignum
