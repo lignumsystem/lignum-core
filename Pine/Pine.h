@@ -205,7 +205,7 @@ public:
 	 double Lvi = GetValue(*ts,LGAvi);
 	 //In Tree Physiology for side branches fp is for example as follows:
 	 //fp = (1-a)f(vi) = (1-0.2)(0.15+0.85vi) = 0.8(0.15+0.85vi)
-	 Lvi = apical*(Lvi);
+	 Lvi = apical*(0.05+0.95*Lvi);
 	 //experimental   forest   grown  double   Lq   =  pow(1.0   -
 	 //GetValue(GetTree(*ts),q),GetValue(*ts,omega)-1);    relative
 	 //light, if TreeQinMax  is ball sensor reading, it  is as for
@@ -213,11 +213,13 @@ public:
 	 double B = GetValue(GetTree(*ts),TreeQinMax);
 	 double L_new = l*Lvi*fip(GetValue(*ts,LGAQin)/B);
          //Eero's idea distance from ground
-         double z = GetPoint(*ts).getZ();
-         L_new = L_new*(sqrt((40.0-z)/40.0));
+         //double z = GetPoint(*ts).getZ();
+	 //Path length
+	 double plength = GetValue(*ts,LGAplength);
+         L_new = L_new*(sqrt((30.0-plength)/30.0));
 	 L_new = max(L_new,0.0);
 	 //don't allow segments shorter than 1cm
-	 if (L_new <= 0.005)
+	 if (L_new <= 0.010)
 	   L_new = 0.0;
 	 SetValue(*ts,LGAL,L_new);
 	 //Initial radius
@@ -236,7 +238,7 @@ public:
 	 list<TreeCompartment<TS,BUD>*> & ls = GetTreeCompartmentList(*axis);
 	 //new brancing [TS,BP,B]
 	 if (ls.size() == 3)
-	   apical = 0.9;
+	   apical = 0.85;
 	 //old branch
 	 else
 	   apical = 1.0;
