@@ -14,48 +14,73 @@ namespace Lignum{
     double M;
   };
 
-  //TreeGrowthAllocator is  intended as  a generic functor  to iterate
-  //the net  photosynthates for Cf and  Hw trees.  It is  based on the
-  //experience  with LPineGrowthFunctor in  LPine and  Lig-Grobas. The
-  //function operator  is called by  some root finding  algorithm, say
-  //Bisection: TreeGrowthAllocator<T,F1,F2> G(tree); Bisection(0,5,G);
-  //where the T is the tree,  F1 is the user defined functor to adjust
-  //the  segment  lengths as  the  function of  lamda,  and  F2 is  to
-  //calculate  the diameter  growth induced  by the  new  segments and
-  //foliage.
-  template <class TS, class BUD, class F1, class F2>
-  class TreeGrowthAllocator{
+  //TreeGrowthAllocator    and    TreeGrowthAllocatorPropagateUp   are
+  //intended as generic functors to iterate the net photosynthates for
+  //Cf  and  Hw  trees.   They   are  based  on  the  experience  with
+  //LPineGrowthFunctor in LPine  and Lig-Grobas. The function operator
+  //is  called   by  some  root  finding   algorithm,  say  Bisection:
+  //TreeGrowthAllocator<TS,BUD,F1,F2> G(tree); Bisection(0,5,G); where
+  //the TS and BUD are the segment and the bud, F1 is the user defined
+  //functor to  adjust the segment  lengths as the function  of lamda,
+  //and  F2 is to  calculate the  diameter growth  induced by  the new
+  //segments  and foliage. TreeGrowthAllocatorPropaGateUp  is similar,
+  //but  the  user  defined  data  is  passed  up  in  the  tree  with
+  //PropagateUp in each iteration
+  template <class TS, class BUD>
+  class TreeGrowthAllocatorBase{
   public: 
-    TreeGrowthAllocator(Tree<TS,BUD>& t)
-      :tree(t){}
-    double operator()(double l);//The  function operator  called  by a
-				//root        finding        function,
-				//e.g.   Bisection   or   Zbrent,   to
-				//allocate net photosynthates
+    TreeGrowthAllocatorBase(Tree<TS,BUD>& t)
+      :tree(t),P(0.0),M(0.0){}
     void init();
     double getP()const{return P;}
     double getM()const{return M;}
-  private:
+  protected:
     Tree<TS,BUD>& tree;
     double P;//Production of the tree
     double M;//Respiration of the tree
   };
 
-
+  
+  //The data of type T given by the user will be passed up in the tree
+  //with PropagateUp
+  template <class TS, class BUD, class F1, class F2>
+  class TreeGrowthAllocator:
+    public TreeGrowthAllocatorBase<TS,BUD>{
+  public:
+    TreeGrowthAllocator(Tree<TS,BUD>& t)
+      :TreeGrowthAllocatorBase<TS,BUD>(t){}
+    double operator()(double l);//The  function operator  called  by a
+				//root        finding        function,
+				//e.g.   Bisection   or   Zbrent,   to
+				//allocate net photosynthates
+  };
+  
+  //The data of type T given by the user will be passed up in the tree
+  //with PropagateUp
+  template <class TS, class BUD, class F1, class F2, class T>
+  class TreeGrowthAllocatorPropagateUp:
+    public TreeGrowthAllocatorBase<TS,BUD>{
+  public:
+    TreeGrowthAllocatorPropagateUp(Tree<TS,BUD>& t,const T& up1)
+      :TreeGrowthAllocatorBase<TS,BUD>(t),up(up1){}
+    double operator()(double l);
+  private:
+    const T up;
+  };
   //Collect  photosynthates and  respiration once  per  (and obviously
-  //before) growth allocation. Throw excption if P < M
-  template <class TS,class BUD,class F1,class F2>
-  void TreeGrowthAllocator<TS,BUD,F1,F2>::init()
+  //before) growth allocation. Throw excption if P <= M
+  template <class TS,class BUD>
+  void TreeGrowthAllocatorBase<TS,BUD>::init()
   {
     double p = 0.0;
     P = Accumulate(tree,p,SumTreePhotosynthesis<TS,BUD>());
     double m = 0.0;
     M =  Accumulate(tree,m,SumTreeRespiration<TS,BUD>());
-    if (P-M < 0.0)
+    if (P-M <= 0.0)
       throw TreeGrowthAllocatorException(P,M);
   } 
 
-  //This functor is repeteadly  called by some root finding algorithm,
+  //This functor is repeatedly  called by some root finding algorithm,
   //e.g. Bisection or Zbrent. After the iteration, the segment lengths
   //in the new segments allocate P-M=G (including the induced diameter
   //and root  growth).  F1: set  the segment lengths with  lamda.  F2:
@@ -81,5 +106,30 @@ namespace Lignum{
     return (P - M - GetValue(data,DGWs) - GetValue(data,DGWfnew) 
 	    - GetValue(tree,LGPar)* GetValue(data,DGWfnew));
   }
+
+  //As for TreeGrowthAllocator the functor is called by some iterative
+  //method, but instead of ForEach the  data of type T is passed up in
+  //the tree with PropagateUp
+  template  <class TS,class BUD,class F1,class F2,class T>
+  double TreeGrowthAllocatorPropagateUp<TS,BUD,F1,F2,T>::operator()(double l)
+  {
+    DiameterGrowthData data;
+    //Reinitialize the data to passed up in the tree
+    T up_new = up;
+    //1.Elongate or shorten segment lengths
+    PropagateUp(tree,up_new,F1(l));
+    
+    //2. Simulate  diameter  growth  and  collect  sapwood  and  foliage
+    //masses.
+    data = AccumulateDown(tree,data,F2());   
+      
+    //3. return P-M-G where G = iWs(l) + iWfnew(l) + iWrnew(l)
+    //iWs = sapwood mass: new segments + thickening
+    //iWfnew = new foliage
+    //iWrnew = new roots = ar*iWfnew
+    return (P - M - GetValue(data,DGWs) - GetValue(data,DGWfnew) 
+	    - GetValue(tree,LGPar)* GetValue(data,DGWfnew));
+  }
+  
 }//namespace Lignum
 #endif
