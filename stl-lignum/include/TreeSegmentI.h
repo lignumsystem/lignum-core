@@ -147,6 +147,17 @@ LGMdouble GetValue(const TreeSegment<TS,BUD>& ts, const LGMAD name)
   else if (name == Wh)
     return ts.tsa.Wh;
 
+  /////////////////////////////////
+  //Values for converting to Grogra
+
+  else if (name == nr)
+    return ts.tsag.nr;
+
+  else if (name == order)
+    return ts.tsag.order;
+
+  /////////////////////////////////
+
   else
     cout << "Unknown attribute returning" << unknown_value << endl;
 
@@ -209,6 +220,18 @@ LGMdouble SetValue(TreeSegment<TS,BUD>& ts, const LGMAD name, const LGMdouble va
 
   else if (name == Wh)
     ts.tsa.Wh = value;
+
+  /////////////////////////////////
+  //Values for converting to Grogra
+  
+  else if (name == nr)
+    ts.tsag.nr = value;
+  
+  else if (name == order)
+    ts.tsag.order = value;
+  
+  /////////////////////////////////
+
 
   else
     cerr << "TreeSegment: Unknown attribute " << name << endl;
