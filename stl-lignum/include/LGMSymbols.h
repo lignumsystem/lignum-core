@@ -9,7 +9,7 @@ namespace Lignum{
   // Tree Attribute Double, Wm lisätty
   // Wr           dry weight of the roots
   enum LGMAD {A,Ah, Ahair,As,age,api, LGMcollision,dof, dR, H,Hm,ip,lb,LM,LP,LWf,L,lw,M, omega,P,
-	      Qin,Qabs,R,Rf,Rh,Rhair,RTop,sf,LGMstatus,sw,tauL,LGMtype,V,Vh,Vhair,Vs,vi,
+	      Qin,Qabs,R,Rf,Rh,Rhair,RTop,LGMstatus,sw,tauL,LGMtype,V,Vh,Vhair,Vs,vi,
               Wf,Wr, Ws,Wh,Whair,Af};
 
   //  A       0   Segment area based on R (see GetValue)
@@ -37,7 +37,7 @@ namespace Lignum{
   //  Rh      19  radius of heartwood
   //  Rhair       Radius including root hair 
   //  Rtop    20  raqdiaus of segment at upper end
-  //  sf      21  specifi leaf area (=leaf area/ leaf weight)
+ 
   //  sw      22  ????
   //  tauL    23  transmission coefficient of leaf (in direction of the ray of light)
   //  Wf      24  foliage mass (kg C)
@@ -71,7 +71,7 @@ namespace Lignum{
   //Tree Parameter Double
   // zbrentEpsilon       Accuracy in solving the root of P - M -dW(lambda)
   //Keep this list in synbc with MapLGMPD constructor in TreeFriend.cc
-  enum LGMPD {af,al,ar,ca, dofp,lr,mf,mr,ms,na,nl,pr,q, rca, rld, sla,sr,ss,rho,rho_root,rho_hair, yc, xi,
+  enum LGMPD {af,al,ar,ca, dofp,lr,mf,mr,ms,na,nl,pr,q, rca, rld,sf, sla,sr,ss,rho,rho_root,rho_hair, yc, xi,
 	      zbrentEpsilon, Ln_par, n_ang_par, fake_forest}; 
  //cvs update
   // al					Maximun size of a leaf
@@ -95,6 +95,7 @@ namespace Lignum{
   //rho= Density of  wood (carbon = 50% dry weight)
   //rho_root = Density root sapwood
   //rho_hair = Density of root hair
+  //sf = specific leaf area (=leaf area/ leaf weight)
   //sr = Senescence rate of roots
   //ss = Senescence rate of sapwood
   //xi = Fraction of heartwood in newly created tree segments
