@@ -147,7 +147,7 @@ bearberry: l2c $(BEARBERRYOBJ) $(LIB1) $(LIB2) $(LIB3)  $(LIB4) $(LIB5) $(LIB6)
 
 gnubearberry:
 	make "CCC=g++" "CCCFLAGS=-c" "OPTIMIZE=-g" \
-             "AR=ar"  "ARFLAGS=rvs" "LIBD=lib32" "LSYS=bearberry.L" bearberry
+             "AR=ar"  "ARFLAGS=rvs" "LIBD=lib32" "LSYS=bearberry.L ErythrinaRoots.L" bearberry
 
 l2c:	
 	(cd ../L2C; make "CCC=$(CCC)" "CCCFLAGS=$(CCCFLAGS)" "OPTIMIZE=$(OPTIMIZE)" \
