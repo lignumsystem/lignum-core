@@ -26,459 +26,449 @@ namespace Lignum
 
   
 
-LGMVisualization::LGMVisualization()
-{
-  active_visualization = this;
-}
+  LGMVisualization::LGMVisualization()
+  {
+    active_visualization = this;
+  }
 
 
-void LGMVisualization::InitVisualization()
-{
-	glClearColor(0.9f, 0.9f, 0.9f, 0.9f);
+  void LGMVisualization::InitVisualization()
+  {
+    glClearColor(0.9f, 0.9f, 0.9f, 0.9f);
 
-	glLightfv(GL_LIGHT0, GL_POSITION, settings.light.LightPosition);
-	glEnable(GL_LIGHT0);
-	glEnable(GL_DEPTH_TEST);
+    glLightfv(GL_LIGHT0, GL_POSITION, settings.light.LightPosition);
+    glEnable(GL_LIGHT0);
+    glEnable(GL_DEPTH_TEST);
 
-	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_FASTEST);
-	glShadeModel(GL_SMOOTH);
+    glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_FASTEST);
+    glShadeModel(GL_SMOOTH);
 
-	InitCallBacks();
-}
+    InitCallBacks();
+  }
 
-void LGMVisualization::StartVisualization()
-{
-  cout << "Launch OpenGL........" << endl;
+  void LGMVisualization::StartVisualization()
+  {
+    cout << "Launch OpenGL........" << endl;
 
-  MakeDisplayLists();
+    MakeDisplayLists();
 
-  glutMainLoop ();
-}
+    glutMainLoop ();
+  }
 
 
-void LGMVisualization::MakeDisplayLists()
-{
-  int s = trees.size();
-  for (int i=0; i<s; i++)
-    {
-      WrapperBase *wb = trees[i];
+  void LGMVisualization::MakeDisplayLists()
+  {
+    int s = trees.size();
+    for (int i=0; i<s; i++)
+      {
+	WrapperBase *wb = trees[i];
       
-      cout << "puu "<< i << endl;
-      wb->VisualizeTree();
-     
-      
-      trees[i]->MakeStemDisplayList();
-      
-      if (CfWrapper<SugarMapleSegment,
-              SugarMapleBud> *cfwb = dynamic_cast<CfWrapper <SugarMapleSegment,
-              SugarMapleBud> *> (trees[i]))
-	{
-	  cfwb->MakeStemDisplayList();
-	  cout << "visualization of tree... " << endl;
-	}
-    }
+	cout << "puu "<< i << endl;
+	wb->VisualizeTree();
+      }
 
-}
-
-void LGMVisualization::SetAntialising(bool antialisingOn)
-{
+  }
+   
+  void LGMVisualization::SetAntialising(bool antialisingOn)
+  {
 	
-}
+  }
 
 
 
-//Draw-funktions
-void LGMVisualization::CountCamera(void)
-{
-	//OpenGLinterface
-}
+  //Draw-funktions
+  void LGMVisualization::CountCamera(void)
+  {
+    //OpenGLinterface
+  }
 
 
-void LGMVisualization::SetLight(void)
-{
-	GLfloat mat_amb[] = {.4,.4,.2,1};
+  void LGMVisualization::SetLight(void)
+  {
+    GLfloat mat_amb[] = {.4,.4,.2,1};
   
-	GLfloat lightPosition[] = {settings.lightx, settings.lighty, settings.lightz, settings.lightw};
+    GLfloat lightPosition[] = {settings.lightx, settings.lighty, 
+			       settings.lightz, settings.lightw};
 
-	glLightfv (GL_LIGHT0, GL_POSITION, lightPosition);
-	glEnable (GL_LIGHT0);
-	glEnable (GL_LIGHTING);
-}
-
-
-void LGMVisualization::SetValues(void)
-{
-	//OpenGLinterface
-}
-
-void LGMVisualization::CheckValues(void)
-{
-	//Arvojen tarkastus jos haluaa rajoituksia
-}
-
-void LGMVisualization::ReDraw(void)
-{
-  ReDrawWindow();
-}
+    glLightfv (GL_LIGHT0, GL_POSITION, lightPosition);
+    glEnable (GL_LIGHT0);
+    glEnable (GL_LIGHTING);
+  }
 
 
-void LGMVisualization::ReDrawWindow(void)
-{
-  float hx=0,hy=0, hz=0;  
+  void LGMVisualization::SetValues(void)
+  {
+    //OpenGLinterface
+  }
+
+  void LGMVisualization::CheckValues(void)
+  {
+    //Arvojen tarkastus jos haluaa rajoituksia
+  }
+
+  void LGMVisualization::ReDraw(void)
+  {
+    ReDrawWindow();
+  }
+
+
+  void LGMVisualization::ReDrawWindow(void)
+  {
+    float hx=0,hy=0, hz=0;  
 
  
-  glutSetWindow(settings.window1);
+    glutSetWindow(settings.window1);
   
-  if (settings.blackBackGround)
-    glClearColor(0.0, 0.0, 0.0, 1.0);
-  else 
-    glClearColor(1.0, 1.0, 1.0, 1.0);
+    if (settings.blackBackGround)
+      glClearColor(0.0, 0.0, 0.0, 1.0);
+    else 
+      glClearColor(1.0, 1.0, 1.0, 1.0);
 
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   
 
  
  
-  glPushMatrix();
-  glLoadIdentity(); 
-  SetLight();
-  CheckValues(); 
+    glPushMatrix();
+    glLoadIdentity(); 
+    SetLight();
+    CheckValues(); 
   
   
-  // Check the settings.camera coordinates 
-  hx = cos(settings.x_move*0.1*2*PI_VALUE/360) * 8;
-  hy = sin(settings.x_move*0.1*2*PI_VALUE/360) * 8;
-  hz = hz + settings.z_move * 0.01;
+    // Check the settings.camera coordinates 
+    hx = cos(settings.x_move*0.1*2*PI_VALUE/360) * 8;
+    hy = sin(settings.x_move*0.1*2*PI_VALUE/360) * 8;
+    hz = hz + settings.z_move * 0.01;
 
-  //hx = 0;
-  //hy = 0;
-  //hz = 0.6;
+    //hx = 0;
+    //hy = 0;
+    //hz = 0.6;
 
-  settings.cam_x = (settings.cam_x - hx) * 0.001 * settings.y_move; 
-  settings.cam_y = (settings.cam_y - hy) * 0.001 * settings.y_move; 
-  //settings.cam_z = 1;
+    settings.cam_x = (settings.cam_x - hx) * 0.001 * settings.y_move; 
+    settings.cam_y = (settings.cam_y - hy) * 0.001 * settings.y_move; 
+    //settings.cam_z = 1;
 
   
 
-  gluLookAt(settings.cam_x, settings.cam_y, settings.cam_z,         // settings.camera x,y,z  
-			hx, hy, hz-settings.cam_z,								// look at x,y,z    
-			0.0, 0.0, 1.0);											// which way up    
+    gluLookAt(settings.cam_x, settings.cam_y, settings.cam_z,// settings.camera x,y,z  
+	      hx, hy, hz-settings.cam_z, // look at x,y,z    
+	      0.0, 0.0, 1.0);	// which way up    
 
   
  
 
-  //Drawing
-  /*
-  if (glIsList(FOREST_LIST_STEMS))
-    {
+    //Drawing
+    /*
+      if (glIsList(FOREST_LIST_STEMS))
+      {
       glCallList(FOREST_LIST_STEMS);
       glCallList(FOREST_LIST_NEEDLES);
-    }
-  else
-    {
+      }
+      else
+      {
       DrawTree();
       DrawBuds();
       DrawFoliage();
-    }
-
-  if (boolVisualizeVoxelSpace)
-    //if (voxel)
-      {
-	//cout << "Visualization of VoxelSpace " << endl;
-	//voxel->draw(true);
       }
 
-  //vanha tapa
-  //if (boolShowVoxel)
-  //  DrawVoxelCubes();  
-*/
+      if (boolVisualizeVoxelSpace)
+      //if (voxel)
+      {
+      //cout << "Visualization of VoxelSpace " << endl;
+      //voxel->draw(true);
+      }
+
+      //vanha tapa
+      //if (boolShowVoxel)
+      //  DrawVoxelCubes();  
+      */
 
 
 
-  glPopMatrix();   
-  glutSwapBuffers();        // Swap buffers  
-  //glutPostRedisplay ();
-}
+    glPopMatrix();   
+    glutSwapBuffers();        // Swap buffers  
+    //glutPostRedisplay ();
+  }
 
 
 
-void LGMVisualization::NewWindowSize(GLsizei new_x, GLsizei new_y)
-{
-  glutSetWindow(settings.window1);
+  void LGMVisualization::NewWindowSize(GLsizei new_x, GLsizei new_y)
+  {
+    glutSetWindow(settings.window1);
 
-  glViewport (0, 0, new_x, new_y);
-  settings.WINDOW_SIZE_X = new_x;
-  settings.WINDOW_SIZE_Y = new_y;
+    glViewport (0, 0, new_x, new_y);
+    settings.WINDOW_SIZE_X = new_x;
+    settings.WINDOW_SIZE_Y = new_y;
   
-  glMatrixMode (GL_PROJECTION);    // change to the projection matrix
-  glLoadIdentity ();               // Start from a clear table
+    glMatrixMode (GL_PROJECTION);    // change to the projection matrix
+    glLoadIdentity ();               // Start from a clear table
   
-  gluPerspective (25.0,            // Width of field of view 
-                  new_x/new_y,     // Shape of new view 
-                  .1,              // Shortest visible distance 
-                  52);             // Longest visible distance 
+    gluPerspective (25.0,            // Width of field of view 
+		    new_x/new_y,     // Shape of new view 
+		    .1,              // Shortest visible distance 
+		    52);             // Longest visible distance 
   
 		  
-  glMatrixMode (GL_MODELVIEW);     // change to the modelview matrix	
-}
-
-
-// This function quits the program
-void LGMVisualization::Quit (void)
-{
-  exit (0);
-}
-
-
-//Näppäin kutsut
-void LGMVisualization::Arrows(int key, int x, int y)
-{
-}
-
-
-
-// This function is called when a key is pressed
-void LGMVisualization::Keypress(unsigned char key, int x, int y)
-{
-  switch(key) {
-  
-  case 'q': Quit();             // q to quit  
-    break; 
-  case 'a': settings.lightx++;           // Move the light source 
-    ReDraw();
-    break;    
-  case 'z': settings.lightx--;
-    ReDraw();
-    break;    
-  case 's': settings.lighty++;   
-    ReDraw();
-    break;       
-  case 'x': settings.lighty--;   
-    ReDraw();
-    break;    
-  case 'd': settings.lightz++;   
-    ReDraw();
-    break;
-  case 'c': settings.lightz--;  
-    ReDraw();
-    break;
-  case '4': settings.head_xy--;          // Turn head
-    ReDraw();
-   break;    
-  case '6': settings.head_xy++;
-    ReDraw();
-    break;
-  case '2': settings.cam_z = settings.cam_z - .5;
-    ReDraw();
-    break;    
-  case '8': settings.cam_z = settings.cam_z + .5;//
-    ReDraw();
-    break;
-  case '5': settings.cam_z =  1; //Reset values
-    settings.head_xy = 0;
-    ReDraw();
-    break;
-
-  default:printf("%c",key);fflush(NULL);
+    glMatrixMode (GL_MODELVIEW);     // change to the modelview matrix	
   }
-}
 
 
-
-// This function is called when a mouse value is changed
-void LGMVisualization::ChangeMouseButton(int button, int state, int x, int y)
-{
-  settings.MIDDLEBUTTON=UP;
-  settings.RIGHTBUTTON=UP;
-  settings.LEFTBUTTON=UP; 
-
-  switch(button) {
-  case GLUT_LEFT_BUTTON:    // Left button is pressed
-    settings.mouse_x=0;
-    settings.mouse_y=0;   
-    settings.LEFTBUTTON=DOWN;
-    settings.MOVEMENT=true;
-    break;
-
-  case GLUT_MIDDLE_BUTTON:  // Middle button is pressed
-    settings.mouse_x=0;
-    settings.mouse_y=0;
-    settings.MIDDLEBUTTON=DOWN;
-    settings.MOVEMENT=true;
-    break;
-  
-  default:
-    break;
+  // This function quits the program
+  void LGMVisualization::Quit (void)
+  {
+    exit (0);
   }
-}
+
+
+  //Näppäin kutsut
+  void LGMVisualization::Arrows(int key, int x, int y)
+  {
+  }
 
 
 
-void LGMVisualization::MouseMotion(int x, int y)
-{
-  settings.MOVEMENT=true;
+  // This function is called when a key is pressed
+  void LGMVisualization::Keypress(unsigned char key, int x, int y)
+  {
+    switch(key) {
+  
+    case 'q': Quit();             // q to quit  
+      break; 
+    case 'a': settings.lightx++;           // Move the light source 
+      ReDraw();
+      break;    
+    case 'z': settings.lightx--;
+      ReDraw();
+      break;    
+    case 's': settings.lighty++;   
+      ReDraw();
+      break;       
+    case 'x': settings.lighty--;   
+      ReDraw();
+      break;    
+    case 'd': settings.lightz++;   
+      ReDraw();
+      break;
+    case 'c': settings.lightz--;  
+      ReDraw();
+      break;
+    case '4': settings.head_xy--;          // Turn head
+      ReDraw();
+      break;    
+    case '6': settings.head_xy++;
+      ReDraw();
+      break;
+    case '2': settings.cam_z = settings.cam_z - .5;
+      ReDraw();
+      break;    
+    case '8': settings.cam_z = settings.cam_z + .5;//
+      ReDraw();
+      break;
+    case '5': settings.cam_z =  1; //Reset values
+      settings.head_xy = 0;
+      ReDraw();
+      break;
+
+    default:printf("%c",key);fflush(NULL);
+    }
+  }
+
+
+
+  // This function is called when a mouse value is changed
+  void LGMVisualization::ChangeMouseButton(int button, int state, int x, int y)
+  {
+    settings.MIDDLEBUTTON=UP;
+    settings.RIGHTBUTTON=UP;
+    settings.LEFTBUTTON=UP; 
+
+    switch(button) {
+    case GLUT_LEFT_BUTTON:    // Left button is pressed
+      settings.mouse_x=0;
+      settings.mouse_y=0;   
+      settings.LEFTBUTTON=DOWN;
+      settings.MOVEMENT=true;
+      break;
+
+    case GLUT_MIDDLE_BUTTON:  // Middle button is pressed
+      settings.mouse_x=0;
+      settings.mouse_y=0;
+      settings.MIDDLEBUTTON=DOWN;
+      settings.MOVEMENT=true;
+      break;
+  
+    default:
+      break;
+    }
+  }
+
+
+
+  void LGMVisualization::MouseMotion(int x, int y)
+  {
+    settings.MOVEMENT=true;
        
       
-  if (settings.mouse_x != 0 || settings.mouse_y != 0) // If movement has just begun, write the
-    {                               // values down  
-      if (settings.MIDDLEBUTTON == DOWN && settings.mouse_y != y)        // Middle button is pressed 
-	{                               
-	  settings.z_move = settings.z_move + (settings.mouse_y-y);
-	  drawed = false;
-	}
+    if (settings.mouse_x != 0 || settings.mouse_y != 0) // If movement has just begun, write the
+      {                               // values down  
+	if (settings.MIDDLEBUTTON == DOWN && settings.mouse_y != y)        // Middle button is pressed 
+	  {                               
+	    settings.z_move = settings.z_move + (settings.mouse_y-y);
+	    drawed = false;
+	  }
      
-      if (settings.MIDDLEBUTTON == DOWN && settings.mouse_x != x)        // Middle button is pressed 
-	{                               
-	  settings.cam_z += (settings.mouse_x - x)/100.0;
-	  drawed = false;
-	}
+	if (settings.MIDDLEBUTTON == DOWN && settings.mouse_x != x)        // Middle button is pressed 
+	  {                               
+	    settings.cam_z += (settings.mouse_x - x)/100.0;
+	    drawed = false;
+	  }
 
-    // Left button is pressed
-    if (settings.LEFTBUTTON == DOWN && (settings.mouse_x != x || settings.mouse_y != y))  
-	{    
-	  settings.x_move = settings.x_move + (settings.mouse_x-x);
-	  settings.y_move = settings.y_move - (settings.mouse_y-y);
-	  drawed = false;
-	}        
-    }    
-  settings.mouse_x=x;
-  settings.mouse_y=y;
-}
-
-
-void LGMVisualization::Loop(void) 
-{ 
-  if (settings.MOVEMENT == true) // If movement has just stopped the picture is drawn once
-    { 
-      settings.MOVEMENT = false;
-      ReDraw();          
-      return;
-    }
-}
+	// Left button is pressed
+	if (settings.LEFTBUTTON == DOWN && (settings.mouse_x != x || settings.mouse_y != y))  
+	  {    
+	    settings.x_move = settings.x_move + (settings.mouse_x-x);
+	    settings.y_move = settings.y_move - (settings.mouse_y-y);
+	    drawed = false;
+	  }        
+      }    
+    settings.mouse_x=x;
+    settings.mouse_y=y;
+  }
 
 
-void LGMVisualization::Menu(int value)
-{ 
-  switch(value)
-    { 
-    case 1:
-      settings.show_voxel_on = !settings.show_voxel_on;
-      cout << "Voxel on/off" << endl;
-      ReDraw();
-      break;
+  void LGMVisualization::Loop(void) 
+  { 
+    if (settings.MOVEMENT == true) // If movement has just stopped the picture is drawn once
+      { 
+	settings.MOVEMENT = false;
+	ReDraw();          
+	return;
+      }
+  }
 
-    case 2:
-      settings.boolVoxelWithLines = !settings.boolVoxelWithLines;
-      cout << "Voxel lines on/off " << endl;
-      ReDraw();
-      break;
 
-    case 13:
-      glutSetWindow(settings.window1);
-      screenShot ("shot.tga", settings.WINDOW_SIZE_X, settings.WINDOW_SIZE_Y);
-      break;
+  void LGMVisualization::Menu(int value)
+  { 
+    switch(value)
+      { 
+      case 1:
+	settings.show_voxel_on = !settings.show_voxel_on;
+	cout << "Voxel on/off" << endl;
+	ReDraw();
+	break;
+
+      case 2:
+	settings.boolVoxelWithLines = !settings.boolVoxelWithLines;
+	cout << "Voxel lines on/off " << endl;
+	ReDraw();
+	break;
+
+      case 13:
+	glutSetWindow(settings.window1);
+	screenShot ("shot.tga", settings.WINDOW_SIZE_X, settings.WINDOW_SIZE_Y);
+	break;
     
-    case 14:
-      settings.foliage_on = !settings.foliage_on;
-      ReDraw();
-      break;
+      case 14:
+	settings.foliage_on = !settings.foliage_on;
+	ReDraw();
+	break;
 
-    case 15:
-      settings.textures_on = !settings.textures_on;
-      ReDraw();
-      break;
+      case 15:
+	settings.textures_on = !settings.textures_on;
+	ReDraw();
+	break;
 
-    case 16:
-      settings.blackBackGround = !settings.blackBackGround;
-      ReDraw();
-      break;
+      case 16:
+	settings.blackBackGround = !settings.blackBackGround;
+	ReDraw();
+	break;
 
-    } 
-}
+      } 
+  }
 
-void LGMVisualization::InitCallBacks() 
-{
+  void LGMVisualization::InitCallBacks() 
+  {
   
-  glutInitDisplayMode (GLUT_DOUBLE |          // Double buffering        
-                       GLUT_RGB |             // RGBA- color mode
-                       GLUT_DEPTH);           // Depth buffering
+    glutInitDisplayMode (GLUT_DOUBLE |          // Double buffering        
+			 GLUT_RGB |             // RGBA- color mode
+			 GLUT_DEPTH);           // Depth buffering
 
  
 
-  glutInitWindowPosition (400, 20);          // Window size and place
-  glutInitWindowSize(settings.WINDOW_SIZE_X, settings.WINDOW_SIZE_Y);    
-  settings.window1 = glutCreateWindow ("Window"); //argv[0]);                 // Open a window    
-  glutReshapeFunc(StaticNewWindowSize);          // Call this function if the size is changed  
-  glutKeyboardFunc(StaticKeyPress);                // Call this funktion when a key is pressed 
-  glutMouseFunc (StaticChangeMouseButton);                      // Mouse events
-  glutMotionFunc(StaticMouseMotion);
-  glutIdleFunc (StaticLoop);                        // This is called when nothing happens
-  glutSpecialFunc(StaticArrows);
-  glutDisplayFunc(StaticReDraw);                    // The draw-function
-  glutCreateMenu(StaticMenu);                          // Make the menu
+    glutInitWindowPosition (400, 20);          // Window size and place
+    glutInitWindowSize(settings.WINDOW_SIZE_X, settings.WINDOW_SIZE_Y);    
+    settings.window1 = glutCreateWindow ("Window"); //argv[0]);                 // Open a window    
+    glutReshapeFunc(StaticNewWindowSize);          // Call this function if the size is changed  
+    glutKeyboardFunc(StaticKeyPress);                // Call this funktion when a key is pressed 
+    glutMouseFunc (StaticChangeMouseButton);                      // Mouse events
+    glutMotionFunc(StaticMouseMotion);
+    glutIdleFunc (StaticLoop);                        // This is called when nothing happens
+    glutSpecialFunc(StaticArrows);
+    glutDisplayFunc(StaticReDraw);                    // The draw-function
+    glutCreateMenu(StaticMenu);                          // Make the menu
  
-  glutAddMenuEntry("Leaves on/off__________________", 14);
-  glutAddMenuEntry("Textures on/off_________________", 15);
-  glutAddMenuEntry("VoxelSpace on/off_______________", 1);
-  glutAddMenuEntry("VoxelSpace with lines on/off____", 2);
+    glutAddMenuEntry("Leaves on/off__________________", 14);
+    glutAddMenuEntry("Textures on/off_________________", 15);
+    glutAddMenuEntry("VoxelSpace on/off_______________", 1);
+    glutAddMenuEntry("VoxelSpace with lines on/off____", 2);
  
 
-  glutAddMenuEntry("Change background color______________", 16);
-  glutAddMenuEntry("Write image", 13);
+    glutAddMenuEntry("Change background color______________", 16);
+    glutAddMenuEntry("Write image", 13);
   
-  glutAttachMenu(GLUT_RIGHT_BUTTON);  
-  glEnable (GL_DEPTH_TEST); 
-  glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);  // Clear the screen 
-}
+    glutAttachMenu(GLUT_RIGHT_BUTTON);  
+    glEnable (GL_DEPTH_TEST); 
+    glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);  // Clear the screen 
+  }
 
 
-void LGMVisualization::StaticMouseMotion(int x, int y)
-{
-  active_visualization->MouseMotion(x, y);  
-}
+  void LGMVisualization::StaticMouseMotion(int x, int y)
+  {
+    active_visualization->MouseMotion(x, y);  
+  }
 
 
-void LGMVisualization::StaticLoop(void)
-{
-  active_visualization->Loop();  
-}
+  void LGMVisualization::StaticLoop(void)
+  {
+    active_visualization->Loop();  
+  }
 
 
-void LGMVisualization::StaticArrows(int key, int x, int y)
-{
-  active_visualization->Arrows(key, x, y);  
-}
+  void LGMVisualization::StaticArrows(int key, int x, int y)
+  {
+    active_visualization->Arrows(key, x, y);  
+  }
 
 
-void LGMVisualization::StaticReDraw(void)
-{
-  active_visualization->ReDraw();  
-}
+  void LGMVisualization::StaticReDraw(void)
+  {
+    active_visualization->ReDraw();  
+  }
 
 
-void LGMVisualization::StaticMenu(int value)
-{
-  active_visualization->Menu(value);  
-}
+  void LGMVisualization::StaticMenu(int value)
+  {
+    active_visualization->Menu(value);  
+  }
 
-void LGMVisualization::StaticChangeMouseButton(int button, int state, int x, int y)
-{
-  active_visualization->ChangeMouseButton(button,state,x,y);  
-}
-
-
-
-void LGMVisualization::StaticKeyPress(unsigned char key, int x, int y)
-{
-  active_visualization->Keypress(key, x, y);  
-}
+  void LGMVisualization::StaticChangeMouseButton(int button, int state, int x, int y)
+  {
+    active_visualization->ChangeMouseButton(button,state,x,y);  
+  }
 
 
 
-void LGMVisualization::StaticNewWindowSize(int new_x, int new_y)
-{
-  active_visualization->NewWindowSize(new_x, new_y); 
-}
+  void LGMVisualization::StaticKeyPress(unsigned char key, int x, int y)
+  {
+    active_visualization->Keypress(key, x, y);  
+  }
+
+
+
+  void LGMVisualization::StaticNewWindowSize(int new_x, int new_y)
+  {
+    active_visualization->NewWindowSize(new_x, new_y); 
+  }
 
 }
 

@@ -17,9 +17,12 @@ enum DRAWMODE { STEM_MODE, FOLIAGE_MODE };
 
 namespace Lignum{
 
-  class SugarMapleSegment;
-  class SugarMapleBud;
-
+  class Hello{
+  public:
+    void operator()(WrapperBase* wb){
+      wb->hello();
+    }
+  };
 
 class LGMVisualization
 {
@@ -44,7 +47,7 @@ class LGMVisualization
   void Loop(void);
   void Menu(int value);
   void StartVisualization();
-
+  void hello(){for_each(trees.begin(),trees.end(),Hello());}
 private:
   bool drawed;
 

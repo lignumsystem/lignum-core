@@ -16,6 +16,7 @@ public:
   virtual void VisualizeFoliage(int &active_texture)=0; 
   virtual void MakeStemDisplayList()=0;
   virtual void DrawTree()=0;
+  virtual void hello()=0;
 
 
  int intStemTexture;    //texture number of stem
@@ -38,8 +39,7 @@ public:
   void DrawTree();
   virtual void VisualizeStem(int &active_texture);
   virtual void VisualizeFoliage(int &active_texture);
-
- 
+  virtual void hello(){cout << "CfWrapper hello" << endl;}
 
 
   Tree<TS,BUD>& tree;
@@ -57,7 +57,7 @@ public:
 
   virtual void VisualizeStem(int &active_texture);
   virtual void VisualizeFoliage(int &active_texture);
-
+  virtual void hello(){cout << "HwWrapper hello" << endl;;}
 
   Tree<TS,BUD>& tree;
 };

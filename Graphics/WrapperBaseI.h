@@ -63,8 +63,8 @@ void HwWrapper<TS,BUD>::MakeStemDisplayList()
   glGenTextures(1, &intDisplaylistStem);
  
   glPushMatrix();
-  glNewList(intDisplaylistStem);
-  VisualizeTree()
+  //glNewList(intDisplaylistStem);
+  VisualizeTree();
   glEndList();
   glPopMatrix();
 }
