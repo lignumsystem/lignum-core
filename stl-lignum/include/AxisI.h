@@ -25,9 +25,7 @@ TreeSegment<TS, BUD>* GetLastTreeSegment(Axis<TS,BUD>& axis)
 
 template <class TS,class BUD>
 Axis<TS,BUD>::~Axis()  //***
-{
-  MessageBeep(MB_ICONHAND);
-	
+{	
   std::list<TreeCompartment<TS,BUD>*>::iterator first = tc_ls.begin();
   std::list<TreeCompartment<TS,BUD>*>::iterator last = tc_ls.end();
 
