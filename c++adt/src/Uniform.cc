@@ -50,3 +50,30 @@ double Uniform::uran( int* idum)
 #undef FAC
 
 }//close namespace cxxadt
+
+#ifdef UNIFORM
+#include <iostream>
+using namespace cxxadt;
+using namespace std;
+int main(int argc, char* argv[])
+{
+  Uniform u;
+
+  if (argc != 3){
+    cout << "Usage:   uniform init seed"  << endl;
+    return -1;
+  }
+  //initializing with different 'initialize', negative though,  will  
+  //produce different sequences.  The 'seed' in u(seed) is optional.
+  int initialize = atoi(argv[argc-2]);
+  int seed = atoi(argv[argc-1]);
+
+  u.init(initialize);
+  for (int i = 0; i < 1000; i++){
+    cout << u(seed) << endl;
+  }
+  cout << seed << endl;
+  return 0;
+}
+
+#endif
