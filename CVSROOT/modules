@@ -59,4 +59,4 @@ ctree                 -s JariP                ctree
 lignum-core           			      &c++adt &stl-lignum &Firmament
 poplar                -s Alice                poplar
 maple                                         &c++adt &stl-lignum &Firmament &LEngine&Graphics &stl-voxelspace &SugarMaple
-Lignum-Crobas                                 &c++adt &stl-lignum &Firmament &LEngine&Graphics &stl-voxelspace &Pine &Lig-Crobas
+Lignum-Crobas                                 &c++adt &stl-lignum &Firmament &LEngine &Graphics &stl-voxelspace &Pine &ScotsPine &ScotsPineVisual &Lig-Crobas
