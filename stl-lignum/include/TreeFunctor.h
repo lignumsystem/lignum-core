@@ -46,6 +46,8 @@ using namespace std;
 //               Usage: Point p(0,0,0);
 //                      SortLeaves<SH> sorter(p);
 //                      ls.sort(sorter);
+//   CrownVolume
+
 //Functors-functions below used in LIGNUM WorkBench are not listed. 
 
 namespace Lignum{
@@ -603,6 +605,41 @@ namespace Lignum{
     }
     Point p;
   };
+
+
+//   CrownVolume
+// For explanation how it works, look for TreeFunctorI.h
+
+// Helper functor for CrownVolume
+
+  template <class TS, class BUD>
+    class findRFunctor {
+    public:
+    findRFunctor(const double& miH,const double& maH, const double& dire,
+		 const double& ang, const Point& tb):
+      minH(miH), maxH(maH), dir(dire), angle(ang)
+      {treeBase = PositionVector(tb.getX(),tb.getY(),0.0); }
+      //Center of stem in xy-plane 
+    double& operator ()(double& R, TreeCompartment<TS,BUD>* tc)const;
+    PositionVector& getTreeBase() {return treeBase;}
+    private:
+    double minH, maxH, dir, angle;
+    PositionVector treeBase;  //Center of stem in xy-plane
+  };
+
+
+
+  template <class TS, class BUD> 
+    class CrownVolume { 
+    public: 
+    CrownVolume(double hstep = 0.2): step(hstep) {;}
+    double operator()(Tree<TS,BUD>&  tr)const;
+    private:
+    double step;
+  };
+
+
+
 }//closing namespace Lignum
 #include <TreeFunctorI.h>
 

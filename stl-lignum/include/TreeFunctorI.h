@@ -23,9 +23,11 @@
 //   PrintTreeSegmentInformationToFile
 //   PrintTreeSegmentInformationToFileByAxis
 //   DropAllLeaves
+//   CrownVolume
+
+
 
 //Functors-functions below used in LIGNUM WorkBench are not listed. 
-
 
 namespace Lignum{
 
@@ -1416,6 +1418,88 @@ namespace Lignum{
     }
     return ls;
   }
+
+
+//   CrownVolume
+
+// Crown (between carown base and top of tree) is divided into
+// horizontal slices, the height of which is determined by the
+// attribute step. Each slice is divided into four quadrants (angle
+// PI/2, center directions: 0, PI/2, PI, 3PI/2), and maximum distance
+// from stem to segment (middle) that has foliage is determined. The
+// crown volume is calculated as the sum of the quadrants of the
+// slices.
+
+  template <class TS, class BUD>
+    double CrownVolume<TS,BUD>::operator ()(Tree<TS,BUD>&  tr)const 
+{
+  DCLData     dcl;
+  AccumulateDown(tr,dcl,AddBranchWf(),DiameterCrownBase<TS,BUD>());
+  LGMdouble Hc = dcl.HCrownBase();
+
+  LGMdouble H = GetValue(tr, LGAH);
+
+  if(Hc >= H) return -1.0;
+
+  LGMdouble dist = H - Hc;
+
+  int layers = (int)(dist/step) + 1;
+
+  LGMdouble heightOfTop = (double)layers*step - dist;
+
+  TMatrix<double> radii(layers, 4);
+
+  Axis<TS,BUD>& ax = GetAxis(tr);
+  Point treeBase = GetPoint(*GetFirstTreeCompartment(ax));
+
+  for(int i = 0; i < layers; i++) {
+    double minH = (double)i * step;
+    double maxH = minH + step;
+    if(i == layers-1) maxH = H;
+    double angle = PI_VALUE / 2.0;
+    for(int j = 0; j < 4; j++) {
+      double dir = (double)j * angle;
+      findRFunctor<TS,BUD>  findR(minH, maxH, dir, angle,
+ 				  treeBase);
+      double R = 0.0;
+      radii[i][j] = Accumulate(tr, R, findR);
+    }
+  }
+
+  double volume = 0.0;
+  for(int i = 0; i < layers; i++) {
+    double h = step;
+    if(i == layers-1) h = heightOfTop;
+    for(int j = 0; j < 4; j++) {
+      volume += PI_VALUE*radii[i][j]*radii[i][j]*h/4.0;
+    }
+  }
+  return volume;
+}
+
+
+// Helper functor for CrownVolume
+  template <class TS, class BUD>
+  double& findRFunctor<TS,BUD>::operator ()
+     (double& R, TreeCompartment<TS,BUD>* tc)const {
+  if (TS* ts = dynamic_cast<TS*>(tc)){
+    if(GetValue(*ts, LGAWf) < R_EPSILON) return R;
+    Point base = GetPoint(*ts);
+    Point top = GetEndPoint(*ts);
+    Point midP(base + 0.5 *(top-base));
+    if(midP.getZ() > minH && midP.getZ() < maxH) {    
+      PositionVector r = PositionVector(midP.getX(),midP.getY(),0.0)
+	- treeBase;
+      PositionVector middle(cos(dir+angle/2.0),sin(dir+angle/2.0),0.0);
+      if(Dot(r,middle)/r.length() > cos(angle/2.0)) {
+	if(r.length() > R) R = r.length();
+      }
+    }
+  }
+  return R;
+}
+
+
 }//closing namespace Lignum
 
 #endif
