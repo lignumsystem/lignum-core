@@ -158,7 +158,7 @@ public:
 template <class TS,class BUD=DefaultBud<TS> >
 class MyExampleSignal{
 public:
-  TreeCompartment<TS,BUD>* operator ()(int& id,TreeCompartment<TS,BUD>* ts)const;
+  int operator ()(int id,TreeCompartment<TS,BUD>* ts)const;
 };
 
 template <class TS,class BUD> void DisplayStructure(Tree<TS,BUD>& t);
@@ -175,8 +175,8 @@ public:
 template <class TS,class BUD=DefaultBud<TS> >
 class DisplayStructureFunctor{
 public:
-  TreeCompartment<TS,BUD>* operator ()(DisplayStructureData& id,
-				       TreeCompartment<TS,BUD>* ts)const;
+  DisplayStructureData&  operator ()(DisplayStructureData& id,
+				     TreeCompartment<TS,BUD>* ts)const;
 
 
 };

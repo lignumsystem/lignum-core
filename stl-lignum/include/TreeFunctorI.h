@@ -119,9 +119,9 @@ int& CountCompartmentsReverse<TS,BUD>::operator()(int& n,
   return n;
 }
 
-template <class TS,class BUD> TreeCompartment<TS,BUD>* 
-MyExampleSignal<TS,BUD>::operator()(int& n,
-			        TreeCompartment<TS,BUD>* tc)const
+template <class TS,class BUD>  
+int MyExampleSignal<TS,BUD>::operator()(int n,
+					TreeCompartment<TS,BUD>* tc)const
 {
   if (Axis<TS,BUD>* myaxis =  dynamic_cast<Axis<TS,BUD>*>(tc)){
     cout << "Hello, I'm Axis ";
@@ -142,7 +142,7 @@ MyExampleSignal<TS,BUD>::operator()(int& n,
  
   n+=1;
   cout << n << endl;
-  return tc;
+  return n;
 }
 
 
@@ -187,7 +187,7 @@ template <class TS,class BUD> void DisplayStructure(TreeCompartment<TS,BUD>* tc)
   }
 }
 
-template <class TS,class BUD> TreeCompartment<TS,BUD>* 
+template <class TS,class BUD> DisplayStructureData&
 DisplayStructureFunctor<TS,BUD>:: operator ()(DisplayStructureData& id,
 					      TreeCompartment<TS,BUD>* tc)const
 {
@@ -225,7 +225,7 @@ DisplayStructureFunctor<TS,BUD>:: operator ()(DisplayStructureData& id,
       //otherwise ending a branching point and that axis
       cout << "},B]" << flush;
   }
-  return tc;
+  return id;
 }
 
 
