@@ -598,7 +598,7 @@ namespace Lignum{
   class SortLeaves{
   public:
     SortLeaves(const Point& point):p(point){}
-    bool operator()(const BroadLeaf<Ellipse>* l1, const BroadLeaf<Ellipse>* l2){
+    bool operator()(const BroadLeaf<SH>* l1, const BroadLeaf<SH>* l2){
       const Point& p1 = GetCenterPoint(*l1);
       const Point& p2 = GetCenterPoint(*l2);
       return (p1 || p) < (p2 || p);
