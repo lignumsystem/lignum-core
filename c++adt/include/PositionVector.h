@@ -21,6 +21,7 @@ public:
   double beta()const;
   double gamma()const;
   vector<double> getVector()const{return v;}
+  PositionVector& normalize();
 private:
   vector<double> v;
 };
