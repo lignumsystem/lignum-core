@@ -90,7 +90,7 @@ public:
 
 template <class TS,class BUD = DefaultBud<TS> >
 class Tree: public TreeCompartment<TS,BUD>{
-  friend Axis<TS,BUD>& GetAxis(Tree<TS,BUD>& t){return t.axis;}
+  friend Axis<TS,BUD>& GetAxis(Tree<TS,BUD>& t);
   friend TP GetProduction(const Tree<TS,BUD>& t);
   friend void InitializeTree(Tree<TS,BUD>& tree, const CString& meta_file);
   friend TP GetValue(const Tree<TS,BUD>& tree, const TAD name);

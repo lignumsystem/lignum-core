@@ -367,6 +367,12 @@ YEAR SetValue(Tree<TS,BUD>& tree, const TAI name, const YEAR value)
   return old_value;
 }
 
+template <class TS,class BUD>
+Axis<TS,BUD>& GetAxis(Tree<TS,BUD>& t)
+{
+  return t.axis;
+}
+
 //At the moment returns the name of the only (ASCII) file that contains
 //the definition of the initial tree. Later - maybe - several such files.
 template<class TS, class BUD>
