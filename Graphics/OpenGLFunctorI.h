@@ -32,7 +32,7 @@ namespace Lignum{
     {
       if (TS* ts = dynamic_cast<TS *>(tc))
 	{  			
-	  LGMdouble radius = GetValue(*ts, R);
+	  LGMdouble radius = GetValue(*ts, LGAR);
 	  if (radius > min_rad && radius<=max_rad)	
 	    {
 
@@ -75,7 +75,7 @@ namespace Lignum{
     {
       if (RootSegment<TR>* rs = dynamic_cast<RootSegment<TR> *>(rc))
 	{  			
-	  LGMdouble radius = GetValue(*rs, R);
+	  LGMdouble radius = GetValue(*rs, LGAR);
 	 
 	  float length;
 	  float radius_top;
@@ -128,7 +128,7 @@ namespace Lignum{
 	      Point position;
 	      PositionVector direction = GetDirection(*ts);
 
-	      LGMdouble radius = GetValue(*ts, R);
+	      LGMdouble radius = GetValue(*ts, LGAR);
 	      length = GetValue(*ts, L); 
 	      radius_top = GetValue(*ts, LGARTop);
 	      position = GetPoint(*ts);
@@ -253,7 +253,7 @@ TreeCompartment<TS,BUD>* DrawNeedlesFunctor<TS,BUD>::operator()(TreeCompartment<
       rot_x = -1*direction.getVector()[1];
       rot_y =    direction.getVector()[0];
       rot_angle = (360/(2*PI_VALUE))*acos((double)direction.getVector()[2]);
-      radius = GetValue(*cfts, R);
+      radius = GetValue(*cfts, LGAR);
 
       //  cout << "neulasmassa " << GetValue(*cfts, LGAWf) << endl;
       //SetValue(*cfts, LGAWf, 40);
