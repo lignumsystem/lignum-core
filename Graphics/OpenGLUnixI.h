@@ -170,10 +170,7 @@ int VisualizeLGMTree(Tree<TS,BUD> &tree)
  template <class TS,class BUD, class S>
    int VisualizeHwTree(Tree<TS,BUD> &tree)
 { 
-  int argc = 0;
-  glutInit(&argc,NULL);
   init_window();
-  //setLight();
   
   // init_window();
   cout << "InitDrawing.........1.13" << endl;
@@ -189,7 +186,7 @@ int VisualizeLGMTree(Tree<TS,BUD> &tree)
   glTexEnvf(GL_TEXTURE_2D, GL_TEXTURE_ENV_MODE, GL_REPLACE);
   glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
  
-  //stemtexture.Load("koivu.bmp", 512, 512);
+  stemtexture.Load("koivu.bmp", 512, 512);
 
   LoadGLTextures("lehti.tga");  //**** HwLoadGLTextures
   
