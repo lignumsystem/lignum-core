@@ -1,15 +1,16 @@
 #ifndef OPENGLUNIX_H
 #define OPENGLUNIX_H
 
-#include <Tree.h>
+#include <Lignum.h>
 #include "OpenGLinterface.h"
 //#include <VoxelMatrix.h>
-
 
 void init_window (); //int argc, char** argv);
 
 namespace Lignum{
-  
+  template <class TREE>
+    int Initialize3DForest(Forest &f);
+
   /*
   struct SmallCube
   {

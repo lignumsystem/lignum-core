@@ -228,7 +228,7 @@ void DrawAllFoliage(CLignumWBDoc *doc)
 void DrawTree()
 {	
 
-  if (glIsList(FOREST_LIST))
+  //if (glIsList(FOREST_LIST))
     {
       GLfloat mat_amb[] = { 0.5, 0.3, 0, 1.0 }; 
       GLfloat mat_dif[] = { 0.8, 0.4, 0, 1.0 }; 
@@ -253,6 +253,7 @@ void DrawTree()
       
       if (several_species)
 	{
+	  cout << "monta puuta" << endl;
 	  glPushMatrix();
 	  cfstemtexture.use();
 	  glCallList(CFTREES_LIST);
@@ -386,14 +387,19 @@ void DrawFoliage()
       glEnable(GL_CULL_FACE);
       glCullFace(GL_FRONT);  
 
-      glBindTexture(GL_TEXTURE_2D, texIds[0]);
-      glCallList(CFNEEDLES_LIST);  
+      //      glBindTexture(GL_TEXTURE_2D, texIds[0]);
+      //glCallList(CFNEEDLES_LIST);  
+
       glBindTexture(GL_TEXTURE_2D, texIds[1]);
       glCallList(HWLEAVES_LIST);
 
+
       glCullFace(GL_BACK);     	 
-      glBindTexture(GL_TEXTURE_2D, texIds[0]);
-      glCallList(CFNEEDLES_LIST);  
+      //glBindTexture(GL_TEXTURE_2D, texIds[0]);
+      //glCallList(CFNEEDLES_LIST);  
+
+      cout << "text nro 1<< " << texIds[1] << endl;
+      cout << "text nro 0<< " << texIds[0] << endl;
       glBindTexture(GL_TEXTURE_2D, texIds[1]);
       glCallList(HWLEAVES_LIST);
       glDisable(GL_CULL_FACE);

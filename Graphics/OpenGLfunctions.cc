@@ -125,7 +125,7 @@ bool LoadGLTextures(char *name1, char *name2)
 {
   
   char buff[15];
-  tga_t image;
+  tga_t image, image2;
   
   glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
   glEnable(GL_DEPTH_TEST);
@@ -134,8 +134,8 @@ bool LoadGLTextures(char *name1, char *name2)
   texIds[0] = image.GenId(); // let OpenGL give us a texture id
   image.Load(name1, texIds[0]);
 
-  texIds[1] = image.GenId(); 
-  image.Load(name2, texIds[1]);
+  texIds[1] = image2.GenId(); 
+  image2.Load(name2, texIds[1]);
    	
   
    return true;

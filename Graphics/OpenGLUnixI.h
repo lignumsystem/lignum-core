@@ -175,13 +175,13 @@ template <class TREE>
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     
     glTexEnvf(GL_TEXTURE_2D, GL_TEXTURE_ENV_MODE, GL_REPLACE);
-    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
     
     cfstemtexture.Load("Manty.bmp", 512, 512);
     hwstemtexture.Load("koivu.bmp", 512, 512);
     
-    LoadGLTextures("neulaset5.tga", "lehti.tga");
-    MakeLeaveTable();
+    // LoadGLTextures("neulaset5.tga", "lehti.tga");
+    //MakeLeaveTable();
     
     
     list<VTree*>& ls1 =  GetCfTreeList(f);
@@ -198,6 +198,7 @@ template <class TREE>
 	//tree is coniferous or hardwood, how to see what is behind TREE?
 	if (TREE* t = dynamic_cast<TREE*>(*b1))
 	  {
+	    cout << "HAVUPUUN RUNKO" << endl;
 	    MakeForestTree(*t);
 	  }
 	b1++;
@@ -228,7 +229,7 @@ template <class TREE>
    int VisualizeForest(Forest &f)
    {
      
-     list<VTree*>& ls2 =  GetCfTreeList(f);
+     list<VTree*>& ls2 =  GetHwTreeList(f);
      list<VTree*>::iterator b2 = ls2.begin();
      list<VTree*>::iterator e2 = ls2.end();
      
@@ -242,13 +243,15 @@ template <class TREE>
 	 //tree is coniferous or hardwood, how to see what is behind TREE?
 	 if (TREE* t = dynamic_cast<TREE*>(*b2))
 	   {
+	     cout << "lehtipuu " << endl;
 	     MakeForestTree(*t);
 	   }
 	 b2++;
        }
      glEndList();
 
-
+     LoadGLTextures("neulaset5.tga", "lehti.tga");
+     MakeLeaveTable();
 
      b2 = ls2.begin();
      if (glIsList(HWLEAVES_LIST))
@@ -259,8 +262,9 @@ template <class TREE>
        {
 	 //I can  check that the tree type  matches but how to  decide if a
 	 //tree is coniferous or hardwood, how to see what is behind TREE?
-	 if (TREE* t = dynamic_cast<TREE*>(*b1))
+	 if (TREE* t = dynamic_cast<TREE*>(*b2))
 	   {
+	     cout << "LEHTIPUU" << endl;
 	     ForestLeaves(*t,6,6);
 	   }
 	 b2++;
