@@ -1,6 +1,7 @@
 #ifndef LEX_H
 #define LEX_H
 #include <fstream>
+#include <iostream>
 #include <DList.h>
 #include <string>
 
