@@ -43,6 +43,8 @@ char outputpth[PATH_MAX+1];
 
 int main(int argc, char** argv)
 {
+  ios::sync_with_stdio();
+
   if (2==argc)
     strcpy(outputpth, argv[1]);
   else
@@ -107,6 +109,7 @@ void PrintLString(Lstring& s)
     iterator++;
   }
 }
+
 
 void Draw(int i)
 {
