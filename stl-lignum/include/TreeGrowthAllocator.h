@@ -73,13 +73,11 @@ namespace Lignum{
     //2. Simulate  diameter  growth  and  collect  sapwood  and  foliage
     //masses.
     data = AccumulateDown(tree,data,F2());   
-  
-    
+      
     //3. return P-M-G where G = iWs(l) + iWfnew(l) + iWrnew(l)
     //iWs = sapwood mass: new segments + thickening
     //iWfnew = new foliage
     //iWrnew = new roots = ar*iWfnew
- 
     return (P - M - GetValue(data,DGWs) - GetValue(data,DGWfnew) 
 	    - GetValue(tree,LGPar)* GetValue(data,DGWfnew));
   }

@@ -103,6 +103,7 @@ namespace Lignum{
       MJ Io = f.diffuseRegionRadiationSum(i,v);
       //Qin
       vrad[i] = vrad[i]*Io;
+      QinSum += vrad[i];
       //Leaf normal
       const PositionVector& n1 = GetLeafNormal(*leaf);
       //the second parameter - the light beam
@@ -110,7 +111,6 @@ namespace Lignum{
       //The lengths of the vectors n1 and d1 are 1.
       //fabs: take the accute angle.
       LGMdouble alpha = acos(fabs(Dot(n1,d1)));
-      QinSum += vrad[i];
       //Qabs
       vrad[i] = vrad[i]*cos(alpha)*GetValue(*leaf,LGAA);
     }
