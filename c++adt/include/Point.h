@@ -51,8 +51,8 @@ namespace cxxadt{
       Point<T>& operator += (const Point<T>& point); 
       Point<T>& operator -= (const Point<T>& point);
       Point<T>& operator *= (const T scalar);
-//        operator PositionVector ();
-//        operator PositionVector ()const;
+      inline operator PositionVector ();
+      inline operator PositionVector ()const;
     private:
       T x;
       T y;
@@ -77,17 +77,17 @@ inline bool operator == (const Point<T>& p1, const Point<T>& p2)
          (p1.z == p2.z);
 }
 
-//  template <class T>
-//  inline Point<T>::operator PositionVector ()
-//  {
-//    return PositionVector(*this);
-//  }
+template <class T>
+inline Point<T>::operator PositionVector ()
+{
+  return PositionVector(x,y,z);
+}
 
-//  template <class T>
-//  inline Point<T>::operator PositionVector ()const
-//  {
-//    return PositionVector(*this);
-//  }
+template <class T>
+inline Point<T>::operator PositionVector ()const
+{
+  return PositionVector(x,y,z);
+}
 
 } //closing namspace cxxadt
 
