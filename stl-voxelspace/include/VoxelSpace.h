@@ -3,6 +3,7 @@
 
 
 #include <vector>
+#include <string>
 #include <Tree.h>
 #include <TMatrix3D.h>
 #include <VoxelBox.h>
@@ -67,7 +68,7 @@ public:
 
 	Point getLocalPoint(Point p); //Funktio palauttaa globaalissa koordinaatistossa olevan pisteen VoxelSpacen koordinaatistossa
 	
-	void writeVoxBoxesToFile(CString filename);
+	void writeVoxBoxesToFile(string& filename);
 private:
 
 	vector<Tree<ScotsPineVisual,ScotsBud> *> vecScotspines;

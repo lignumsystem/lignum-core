@@ -1,5 +1,5 @@
 #include "stdafx.h"
-
+#include <LGMdecl.h>
 
 
 #include <VoxelBox.h>
@@ -58,9 +58,9 @@ void VoxelBox::setVoxelSpace(VoxelSpace *s, Point c)
 //
 void VoxelBox::UpdateValues()
 {
-	ASSERT(space->Xbox>0);
-	ASSERT(space->Ybox>0);
-	ASSERT(space->Zbox>0);
+	LGMassert(space->Xbox>0);
+	LGMassert(space->Ybox>0);
+	LGMassert(space->Zbox>0);
 
 
 

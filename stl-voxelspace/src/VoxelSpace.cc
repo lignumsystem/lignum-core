@@ -1,9 +1,15 @@
 #include "stdafx.h"
 #include "OpenGL.h"
+
+#ifdef MSC_VER
 #include <gl\gl.h>
 #include <gl\glu.h>
 #include <gl\glaux.h>
-
+#else
+#include <GL/gl.h>
+#include <GL/glu.h>
+//#include <GL/glaux.h>
+#endif
 
 #include <VoxelSpace.h>
 #include <fstream>
@@ -21,13 +27,11 @@ namespace Lignum {
 //	Default constructor
 //
 VoxelSpace::VoxelSpace()
+  :voxboxes(10,10,10)
 {
 	Xn = 10;
 	Yn = 10;
 	Zn = 10;
-
-	TMatrix3D<VoxelBox> v(Xn, Yn, Zn);
-	voxboxes = v; 
 
 
 	for (int i1=0; i1<Xn; i1++)
@@ -50,7 +54,9 @@ VoxelSpace::VoxelSpace()
 //  zn		: number of VoxBoxes in z direction
 //	f		: Firmament
 //
-VoxelSpace::VoxelSpace(Point corner1, Point corner2, int xn, int yn, int zn, Firmament &f)
+VoxelSpace::VoxelSpace(Point corner1, Point corner2, 
+		       int xn, int yn, int zn, Firmament &f)
+  :voxboxes(xn,yn,zn)
 {
 	Xn = xn;
 	Yn = yn;
@@ -60,10 +66,7 @@ VoxelSpace::VoxelSpace(Point corner1, Point corner2, int xn, int yn, int zn, Fir
 	Ybox = (corner2.getY() - corner1.getY()) / yn;
 	Zbox = (corner2.getZ() - corner1.getZ()) / zn;
 
-	TMatrix3D<VoxelBox> v(Xn, Yn, Zn);
-	 
 
-	voxboxes = v;
 	for(int i1=0; i1<Xn; i1++)
 		for(int i2=0; i2<Yn; i2++)
 			for(int i3=0; i3<Zn; i3++)
@@ -247,9 +250,9 @@ VoxelBox& VoxelSpace::getVoxelBox(Point p)
 
 	Point localP = p - corner1;
 
-	int Xi = localP.getX()/Xbox;
-	int Yi = localP.getY()/Ybox;
-	int Zi = localP.getZ()/Zbox;
+	int Xi = static_cast<int>(localP.getX()/Xbox);
+	int Yi = static_cast<int>(localP.getY()/Ybox);
+	int Zi = static_cast<int>(localP.getZ()/Zbox);
 
 /*
 	assert<Xi>-1);
@@ -642,9 +645,9 @@ void VoxelSpace::draw()
 }
 
 
-void VoxelSpace::writeVoxBoxesToFile(CString filename)
+void VoxelSpace::writeVoxBoxesToFile(string& filename)
 {
-	ofstream file(filename);
+	ofstream file(filename.c_str());
 	for(int i1=0; i1<Xn; i1++)
 		for(int i2=0; i2<Yn; i2++)
 			for(int i3=0; i3<Zn; i3++)
