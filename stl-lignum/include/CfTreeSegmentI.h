@@ -24,8 +24,6 @@ CfTreeSegment<TS,BUD>::CfTreeSegment(const Point& p, const PositionVector& d, co
   LGMdouble wf =  sa * GetValue(*t,af);
   SetValue(*this,Wf,wf);
 
-  SetValue(*this,sf, 28.0);     //Initialization of specific leaf area here!
-
   }
 
 
@@ -50,10 +48,7 @@ LGMdouble GetValue(const CfTreeSegment<TS,BUD>& ts, const LGMAD name)
     return ts.cftsa.Wf;
 
   else if (name == Af)
-    return ts.cftsa.sf * ts.cftsa.Wf;
-
-  else if (name == sf)
-    return ts.cftsa.sf;
+    return GetValue(GetTree(ts),sf) * ts.cftsa.Wf;
 
   else
     return GetValue(dynamic_cast<const TreeSegment<TS,BUD>&>(ts), name);
@@ -79,9 +74,6 @@ LGMdouble SetValue(CfTreeSegment<TS,BUD>& ts, const LGMAD name, const LGMdouble 
 
   else if (name == Wf)
     ts.cftsa.Wf = value;
-
-  else if (name == sf)
-    ts.cftsa.sf = value;
 
   else
     old_value = SetValue(dynamic_cast<TreeSegment<TS,BUD>&>(ts), name,value);
