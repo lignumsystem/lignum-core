@@ -31,6 +31,8 @@ namespace cxxadt{
 
       inline friend bool operator == (const Point &point1, 
 				      const Point &point2);
+      inline friend bool operator != (const Point &point1, 
+				      const Point &point2);
     public:
       Point(double x1 = 0.0, double y1 = 0.0, double z1 = 0.0)
 	{x = x1; y =  y1; z =  z1;}
@@ -69,7 +71,11 @@ inline bool operator == (const Point& p1, const Point& p2)
          (p1.z == p2.z);
 }
 
-
+//compare inequality
+inline bool operator != (const Point& p1, const Point& p2)
+{
+  return !(p1 == p2);
+}
 inline Point::operator PositionVector ()
 {
   return PositionVector(x,y,z);
