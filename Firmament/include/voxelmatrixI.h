@@ -80,9 +80,9 @@ Matrix<TS,BUD>::Matrix(vector<Tree<TS, BUD> *> trees, double voxeledge)
 	      {
 		calculateLight(firm, i, j, k);
 		
-		float xx = -(X/2.0)*edge + (i+0.5)*edge;
-		float yy = -(Y/2.0)*edge + (j+0.5)*edge;
-		float zz = 0 + (k+0.5)*edge;
+		float xx = p1.getX() + edge*(i+0.5); 
+		float yy = p1.getY() + edge*(j+0.5);
+		float zz = p1.getZ() + edge*(k+0.5);
 		
 
 		if (matrix[i][j][k].getSTAR() > 0)
@@ -100,6 +100,7 @@ Matrix<TS,BUD>::Matrix(vector<Tree<TS, BUD> *> trees, double voxeledge)
 		total_foliage += matrix[i][j][k].getFoliageMass(); 
 	      }
 	cout << "Foliage mass in voxelspace " << total_foliage << endl;
+	cout << "pulikoita yhteensa voxelspacessa " << partsumsum << endl << endl;
 }
 
 
@@ -463,20 +464,21 @@ void Matrix<TS,BUD>::addTree(Tree<TS,BUD> *tree, Point base)
 template <class TS,class BUD>
 double Matrix<TS,BUD>::getLight(TreeSegment<TS,BUD> *ts)
 {
-  Point startpoint = GetPoint(*ts);
+  Point middlepoint = GetPoint(*ts)+(Point)((0.5*GetValue(*ts,L))*GetDirection(*ts));
+
   double light = 0, tmplen, length = GetValue(*ts, L);
   int i, x, y, z;
-  Point startvoxel, endvoxel, intersection = startpoint;
-  Point last_intersection = startpoint, endpoint, xyz;
+  Point midvoxel; //, endvoxel, intersection = startpoint;
+  Point last_intersection = middlepoint; //
   double tmp_x, tmp_y, tmp_z, dist_x = 9999, dist_y = 9999, dist_z = 9999;
 
   //
   // Calculate the starting voxel
   //
-  startvoxel = calcVoxel(startpoint);
-  x = startvoxel.getX();
-  y = startvoxel.getY();
-  z = startvoxel.getZ();
+  midvoxel = calcVoxel(middlepoint);
+  x = midvoxel.getX();
+  y = midvoxel.getY();
+  z = midvoxel.getZ();
 
   ts->voxel_id = Point(x,y,z);
 
@@ -881,38 +883,38 @@ void Matrix<TS,BUD>::calculateMeanSegment()
   for (i=0;i<X;i++)
     for (j=0;j<Y;j++)
       for (k=0;k<Z;k++) 
-	  {
-		  //tarkistaako osuuko segmentteja voxeliin		
-		  if (matrix[i][j][k].getPartSum() > 0) 
-			{
-				  matrix[i][j][k].setMeanSegment();
-				  matrix[i][j][k].setMeanWoodRadius();
-				  matrix[i][j][k].setMeanTotalRadius();
-				  
-				  
-				  float areaden = matrix[i][j][k].getFoliageArea()  / (edge * edge * edge);
-				  matrix[i][j][k].setAreaDensity(areaden);
-
-				  
-				  // STAR value for the calculation of the transmission
-				  //
-				  double STARtmp = 0;
-				  double r = matrix[i][j][k].getMeanTotalRadius();
-				  double l = matrix[i][j][k].getMeanLength();
-     			
-				  //Sf = shoot->getFoliageCoverage();  
-				  double Sf = 28.0;  //tree(get sf...
-				  double Wf = matrix[i][j][k].getFoliageArea()/matrix[i][j][k].getPartSum();
-				  if (Wf < .0000000001)
-					STARtmp = 0.2;     // ~ limit value when Wf < 0
-				  else  for (double phi=0;phi<PI_VALUE/2;phi+=PI_VALUE/16) {
-					STARtmp += .5 * (S(phi, Sf, Wf, r, l) + S(phi + PI_VALUE/16, Sf, Wf, r, l)) 
-					  * cos(phi + PI_VALUE/32) * PI_VALUE/16;
-				  }
-				  matrix[i][j][k].addSTAR(STARtmp);
-	  
-			}
-      }
+	{
+	  //tarkistaako osuuko segmentteja voxeliin		
+	  if (matrix[i][j][k].getPartSum() > 0) 
+	    {
+	      matrix[i][j][k].setMeanSegment();
+	      matrix[i][j][k].setMeanWoodRadius();
+	      matrix[i][j][k].setMeanTotalRadius();
+	      
+	      
+	      float areaden = matrix[i][j][k].getFoliageArea()  / (edge * edge * edge);
+	      matrix[i][j][k].setAreaDensity(areaden);
+	      
+	      
+	      // STAR value for the calculation of the transmission
+	      //
+	      double STARtmp = 0;
+	      double r = matrix[i][j][k].getMeanTotalRadius();
+	      double l = matrix[i][j][k].getMeanLength();
+	      
+	      //Sf = shoot->getFoliageCoverage();  
+	      double Sf = 28.0;  //tree(get sf...
+	      double Wf = matrix[i][j][k].getFoliageArea()/matrix[i][j][k].getPartSum();
+	      if (Wf < .0000000001)
+		STARtmp = 0.2;     // ~ limit value when Wf < 0
+	      else  for (double phi=0;phi<PI_VALUE/2;phi+=PI_VALUE/16) {
+		STARtmp += .5 * (S(phi, Sf, Wf, r, l) + S(phi + PI_VALUE/16, Sf, Wf, r, l)) 
+		  * cos(phi + PI_VALUE/32) * PI_VALUE/16;
+	      }
+	      matrix[i][j][k].addSTAR(STARtmp);
+	      
+	    }
+	}
 }
 
 
@@ -1000,10 +1002,7 @@ void Matrix<TS,BUD>::calculateLight(Firmament *firm, int x, int y, int z)
   matrix[x][y][z].setRadiationSum(0);
   //
   // Initialize the sky
-  //
-  //Firmament *firm = new Firmament(9, 24); //*****************
-
-  //
+ 
   // Get the number of the regions in the sky
   //
   int num_dirs = firm->numberOfRegions();
@@ -1018,14 +1017,20 @@ void Matrix<TS,BUD>::calculateLight(Firmament *firm, int x, int y, int z)
   Point *point = new Point((x+.5)*edge, (y+.5)*edge, (z+.5)*edge);
   Point *startvoxel = new Point(x, y, z);
 
+
+  double total_radiation = 0.0;
   //
   // Calculate the diffuse radiation
   //
-  for (i=0;i<num_dirs;i++) 
+  //******for (i=0;i<num_dirs;i++) 
+  i = num_dirs - 1;
   {
 	  radiationsum = firm->diffuseRegionRadiationSum(i, direction);
+	  total_radiation += radiationsum;
 	  newTraversePath(direction, radiationsum, *point, *startvoxel);
   }
+
+  cout << "Total radiation " << total_radiation << endl;
 
   //
   // Calculate the direct radiation
@@ -1124,48 +1129,76 @@ void Matrix<TS,BUD>::doBranchingPoint(BranchingPoint<TS,BUD> *bp, Point base)
 template <class TS,class BUD>
 void Matrix<TS,BUD>::placeSegment(TreeSegment<TS,BUD> *ts, Point base)
 {
-  Point startpoint = GetPoint(*ts); // + base;
+  if(TS* tts = dynamic_cast<TS *>(ts)) 
+    {
+      double  w_f = GetValue(*tts, Wf);
+      if (w_f < R_EPSILON)
+	return;
+    }
+
+
+  Point startpoint = GetPoint(*ts); // + base; 
   PositionVector direction = GetDirection(*ts);
   Point endpoint, voxel_coord, startvoxel, endvoxel;
 
-  double length = GetValue(*ts, L);
+  double length = GetValue(*ts, L) * 0.5;
 
   int start_x, start_y, start_z, end_x, end_y, end_z;
 
   //
   // First the ending points...
   //
-  endpoint = Point(	(startpoint.getX() + base.getX() + length*direction.getX()), 
-					(startpoint.getY() + base.getY() + length*direction.getY()), 
-					(startpoint.getZ() + base.getZ() + length*direction.getZ())); 
+  Point middlepoint = Point((startpoint.getX() + base.getX() + length*direction.getX()),
+			    (startpoint.getY() + base.getY() + length*direction.getY()),
+			    (startpoint.getZ() + base.getZ() + length*direction.getZ()));
 
-  //
-  // Calculate the starting voxel.
-  //
-  startvoxel = calcVoxel(startpoint);
-  start_x = (int) startvoxel.getX();
-  start_y = (int) startvoxel.getY();
-  start_z = (int) startvoxel.getZ();
+  Point voxel = calcVoxel(middlepoint);   
+  addValues(voxel, GetValue(*ts, L), ts);
+  
+
+  /* Point startpoint = GetPoint(*ts); // + base;
+/*   PositionVector direction = GetDirection(*ts); */
+/*   Point endpoint, voxel_coord, startvoxel, endvoxel; */
+
+/*   double length = GetValue(*ts, L); */
+
+/*   int start_x, start_y, start_z, end_x, end_y, end_z; */
+
+/*   // */
+/*   // First the ending points... */
+/*   // */
+/*   endpoint = Point(	(startpoint.getX() + base.getX() + length*direction.getX()),  */
+/* 					(startpoint.getY() + base.getY() + length*direction.getY()),  */
+/* 					(startpoint.getZ() + base.getZ() + length*direction.getZ()));  */
+
+/*   // */
+/*   // Calculate the starting voxel. */
+/*   // */
+/*   startvoxel = calcVoxel(startpoint); */
+/*   start_x = (int) startvoxel.getX(); */
+/*   start_y = (int) startvoxel.getY(); */
+/*   start_z = (int) startvoxel.getZ(); */
 
 
-  if (start_z < 0 || startpoint.getZ() < 0)
-	  start_z += 0;
-  //
-  // Calculate the ending voxel of a segment.
-  //
-  endvoxel = calcVoxel(endpoint);
-  end_x = (int) endvoxel.getX();
-  end_y = (int) endvoxel.getY();
-  end_z = (int) endvoxel.getZ();
+/*   if (start_z < 0 || startpoint.getZ() < 0) */
+/* 	  start_z += 0; */
+/*   // */
+/*   // Calculate the ending voxel of a segment. */
+/*   // */
+/*   endvoxel = calcVoxel(endpoint); */
+/*   end_x = (int) endvoxel.getX(); */
+/*   end_y = (int) endvoxel.getY(); */
+/*   end_z = (int) endvoxel.getZ(); */
 
-  //
-  // Check if the segment fits in one voxel
-  // Placing of the segment fitting in one voxel is done here to
-  // avoid the extra calculations
-  if (start_x == end_x && start_y == end_y && start_z == end_z)
-    addValues(startvoxel, GetValue(*ts, L), ts);
-  else 
-    addToVoxel(startpoint, endpoint, startvoxel, endvoxel, ts);
+/*   // */
+/*   // Check if the segment fits in one voxel */
+/*   // Placing of the segment fitting in one voxel is done here to */
+/*   // avoid the extra calculations */
+/*   if (start_x == end_x && start_y == end_y && start_z == end_z) */
+/*     addValues(startvoxel, GetValue(*ts, L), ts); */
+/*   else  */
+/*     addToVoxel(startpoint, endpoint, startvoxel, endvoxel, ts); */
+  
 }
 
 
@@ -1186,13 +1219,11 @@ void Matrix<TS,BUD>::addValues(Point voxel, double length, TreeSegment<TS,BUD> *
 
   LGMdouble r_f = 0.0;
   LGMdouble w_f = 0.0;
-  if(CfTreeSegment<TS,BUD>* cfts = dynamic_cast<CfTreeSegment<TS,BUD>*>(ts))  //****** ei k‰‰nny unixissa
-	{
-		r_f = GetValue(*cfts, Rf);
-		w_f = GetValue(*cfts, Wf);
-
-		cout << " fooliage mass " << w_f << endl;
-	}
+  if(TS* tts = dynamic_cast<TS *>(ts)) 
+    {
+      r_f = GetValue(*tts, Rf);
+      w_f = GetValue(*tts, Wf);
+    }
 
   
   matrix[x][y][z].setMeanLength(matrix[x][y][z].getMeanLength()*matrix[x][y][z].getSumLength());

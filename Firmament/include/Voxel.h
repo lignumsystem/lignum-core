@@ -30,7 +30,9 @@ public:
   };
   Point getMeanSegment() { return meansegment; };
 
-  double getExtinctionCoefficent() { return STAR*areadensity; }
+  double getExtinctionCoefficent() { 
+    return STAR*1.0;
+return STAR*areadensity; }
 
   void setMeanLength(double l) { meanlength = l; };
   double getMeanLength() { return meanlength; };
@@ -71,7 +73,8 @@ public:
  
 double getSTAR() 
 { 
-	return STAR;
+  return 0.2;
+  //***	return STAR;
 };
   void addSTAR(double coeff) { STAR += coeff; }
   void setSTARabsolute(double s) { STAR = s; }
