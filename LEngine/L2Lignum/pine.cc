@@ -1,245 +1,145 @@
-#include <assert.h>
-#include <stdio.h>
-#include <string.h>
-#include <limits.h>
-#include <stdlib.h>
-#include <stdarg.h>
-
-#include <lglobal.h>
-#include <lsysintrfc.h>
-
-#include <succstor.h>
-
-#include <iostream>
+//Include Lignum implementation 
 #include <Lignum.h>
-#include <Collision.h>
-#include <Lstring2Lignum.h>
-#include <Lignum2Lstring.h>
+//Include the implementation of the tree segment and bud
 #include <MyTreeSegment.h>
 #include <MyBud.h>
+#include <VisualFunctor.h>
+
+//Impelements VisualizeLGMTree
 #include <OpenGLUnix.h>
 
-using namespace std;
+//Includes all kinds of stuff, turtle graphics etc.
+#include <lengine.h>
 
-Lstring mainstring;
-Lstring derivedstring;
-
-SuccessorStorage succstrg;
-FILE* fOut;
-
-void PrintLString(Lstring& s);
-
-void _Add(const void* pX, int size)
-{
-  succstrg.Add(pX, size);
-}
-
-void Derive();
-void Draw(int);
-ProdCaller FindIMatch(const LstringIterator&, CallerData&);
-
-ProdCaller  ContextMatch(const LstringIterator& pos,CallerData& caller_data,int& prod);
-
-ProdCaller TryIMatch
-  (const LstringIterator&, CallerData&, const ProductionPrototype&);
-bool Considered(ModuleIdType);
-
-char outputpth[PATH_MAX+1];
-
-template <class TS, class BUD>
-void SaveTree(Axis<TS,BUD> &ax, char* file_name, char* treetype)
-{
-  ofstream file(file_name);
-  file << treetype << endl;
-  SaveAxis(ax, file);
-  file.close();
-}
-
-template <class TS, class BUD >
-void SaveAxis(Axis<TS,BUD> &ax, ofstream& file)
-{
-   bool min_save = false;
-
-   std::list<TreeCompartment<TS, BUD>*>& ls = GetTreeCompartmentList(ax);
-   std::list<TreeCompartment<TS, BUD>*>::iterator I = ls.begin();
-
-   if (!min_save)
-     file << "AXIS"<< endl;
-
-   while(I != ls.end())
-     {
-       TreeSegment<TS, BUD>* myts = dynamic_cast<TreeSegment<TS, BUD>*>(*I);
-       
-       if (TreeSegment<TS, BUD>* myts = dynamic_cast<TreeSegment<TS,BUD>*>(*I))
-	 {
-	   if (TreeSegment<TS, BUD> *ts = dynamic_cast<TreeSegment<TS,BUD>*>(*I))
-	     {
-	       if (!min_save)
-		 file << "TS"<< " ";
-	       file << *ts;    //* otettu en
-	     }
-	 }
-       
-       if (BranchingPoint<TS, BUD>* mybp = dynamic_cast<BranchingPoint<TS,
-	   BUD>*>(*I))
-	 {
-	   std::list<Axis<TS, BUD>*>& axis_ls = GetAxisList(*mybp);
-	   std::list<Axis<TS, BUD>*>::iterator II = axis_ls.begin();
-	   
-	   BranchingPoint<TS, BUD>* bp = dynamic_cast<BranchingPoint<TS,
-	     BUD>*>(*I);
-	   if (!min_save)
-	     {
-	       file << "BP"<< " ";
-	       file << *bp << endl;
-	     }
-	   while(II != axis_ls.end())
-	     {
-	       Axis<TS,BUD> *axis = *II;
-	       SaveAxis(*axis, file);
-	       II++;
-	     }
-	   if (!min_save)
-	     file << "BP_END"<< endl;
-	 }
-
-       if (Bud<TS, BUD>* mybud = dynamic_cast<Bud<TS, BUD>*>(*I))
-	 {
-	   Bud<TS, BUD>* bud = dynamic_cast<Bud<TS, BUD>*>(*I);
-	   if(!min_save)
-	     {
-	       file << "BUD"<< " ";
-	       file << *bud << endl;
-	     }
-	 }
-       I++;
-     }
-   if (!min_save)
-     
-     file << "AXIS_END"<< endl;
+//and for pine, see also pine9bp.L in lsys.
+namespace Pine{
+#include <LSystem.h>
 }
 
 int main(int argc, char** argv)
 {
-  //ios::sync_with_stdio();
-  Tree<MyTreeSegment,MyBud> t1(Point(0,0,0),
-				 PositionVector(0,0,1.0));
-  if (2==argc)
-    strcpy(outputpth, argv[1]);
-  else
-    outputpth[0] = 0;
+
+  //Pine  does not  include data  exchange.  Demonstrate  that several
+  //individuals of  the same  species can be  simulated. Note  you can
+  //leave out  the attribute  name and type  in the  template argument
+  //list.
+  Pine::LSystem<MyCfTreeSegment,MyCfBud> pl1;
+  Pine::LSystem<MyCfTreeSegment,MyCfBud> pl2;
+  Pine::LSystem<MyCfTreeSegment,MyCfBud> pl3;
+  Pine::LSystem<MyCfTreeSegment,MyCfBud> pl4;
+  Pine::LSystem<MyCfTreeSegment,MyCfBud> pl5;
+
+  Tree<MyCfTreeSegment,MyCfBud> pine1(Point(0,3,0),
+				      PositionVector(0,0,1.0));
+  Tree<MyCfTreeSegment,MyCfBud> pine2(Point(0,2.5,0),
+				      PositionVector(0,0,1.0));
+  Tree<MyCfTreeSegment,MyCfBud> pine3(Point(0,1.3,0),
+				      PositionVector(0,0,1.0));
+  Tree<MyCfTreeSegment,MyCfBud> pine4(Point(0,-0.5,0),
+				      PositionVector(0,0,1.0));
+  Tree<MyCfTreeSegment,MyCfBud> pine5(Point(0,-2.8,0),
+				      PositionVector(0,0,1.0));
+  Tree<MyHwTreeSegment,MyHwBud> birch(Point(0,-4,0),
+				      PositionVector(0,0,1.0));
   
-  Start();
-  mainstring.Add(succstrg);
-  Lstring2Lignum<MyTreeSegment,MyBud,LGMAD,LGMdouble>(t1,mainstring);
-  for (int i=0; i<DerivationLength(); i++)
+  //Scots  pines. Demonstrate that several individuals  of the same
+  //species can be simulated.
+  //Expand axioms.
+  pl1.start();
+  pl1.lstringToLignum(pine1);
+  //Naturally, one can use  other termination conditions than just the
+  //derivation length.
+  for (int i=0; i < 1; i++)
   {
     cout << "Step: " << i << endl;
-    Lignum2Lstring<MyTreeSegment,MyBud,LGMAD,LGMdouble>(t1,mainstring);  
-    Derive();
-    Lstring2Lignum<MyTreeSegment,MyBud,LGMAD,LGMdouble>(t1,mainstring);
+    //Update L-strings, no interchange  of information.
+    pl1.lignumToLstring(pine1);
+    //Structural development for the trees.
+    pl1.derive();
+    //Update pine structures, no interchange  of information.
+    pl1.lstringToLignum(pine1);
   }
-  End();  
+  //Clean up.
+  pl1.end();  
 
-  VisualizeLGMTree(t1);
-
-}
-
-void PrintLString(Lstring& s)
-{
-  LstringIterator iterator(s);
-  CallerData caller_data;
-  double arg1;
-  while (!iterator.AtEnd()){
-    const char* name = iterator.GetCurrentModuleName();
-    fprintf(stdout,"%s ",name);
-    if (strcmp(name,"F") == 0){
-      caller_data.Reset();
-      caller_data.Strct.AddModuleAddr(iterator.Ptr());
-      memcpy(&arg1,caller_data.Strct.pArg(0),sizeof(double));
-      fprintf(stdout,"(%f)",arg1);
-    }
-    iterator++;
-  }
-}
-
-
-void Draw(int i)
-{
-  LstringIterator iterator(mainstring);
-  fOut = fopen(outputpth[0] ? outputpth : "dump.txt", "w");
-  while (!iterator.AtEnd())
+  pl2.start();
+  pl2.lstringToLignum(pine2);
+  //Naturally, one can use  other termination conditions than just the
+  //derivation length.
+  for (int i=0; i < 2; i++)
   {
-    CallerData cd;
-    ProdCaller pCaller = FindIMatch(iterator, cd);
-    if (NULL != pCaller)
-      pCaller(&cd);
-    iterator++;
+    cout << "Step: " << i << endl;
+    //Update L-strings, no interchange  of information.
+    pl2.lignumToLstring(pine2);
+    //Structural development for the trees.
+    pl2.derive();
+    //Update pine structures, no interchange  of information.
+    pl2.lstringToLignum(pine2);
   }
-  fclose(fOut);
-  char bf[128];
-/*
-  sprintf(bf, "cp %s str%03d", outputpth, i);
-  system(bf);
-*/
-  //system("echo \"Input|String|text|Input from *\" | command_client 3000");
-}
-
-void Derive()
-{
-  StartEach();
-  LstringIterator iterator(mainstring);
-  derivedstring.Clear();
-
-  while (!iterator.AtEnd())
+  //Clean up.
+  pl2.end();  
+ 
+  pl3.start();
+  pl3.lstringToLignum(pine3);
+  //Naturally, one can use  other termination conditions than just the
+  //derivation length.
+  for (int i=0; i < 3; i++)
   {
-    CallerData cd;
-    int i;
-    //ProdCaller pCaller = FindMatch(iterator, cd);
-    ProdCaller pCaller = ContextMatch(iterator, cd, i);
-    if (NULL == pCaller)
-    {
-      iterator.AppendCurrent(succstrg);
-      iterator++;
-    }
-    else
-    {
-      pCaller(&cd);
-      iterator+=cd.Strct.Count();
-    }
-    derivedstring.Add(succstrg);
+    cout << "Step: " << i << endl;
+    //Update L-strings, no interchange  of information.
+    pl3.lignumToLstring(pine3);
+    //Structural development for the trees.
+    pl3.derive();
+    //Update pine structures, no interchange  of information.
+    pl3.lstringToLignum(pine3);
   }
-  mainstring.Swap(derivedstring);
-  EndEach();
-}
-
-
-ProdCaller FindIMatch(const LstringIterator& citer, CallerData& cd)
-{
-  for (int i=0; i<NumOfIProductions(); i++)
+  //Clean up.
+  pl3.end();  
+  
+  pl4.start();
+  pl4.lstringToLignum(pine4);
+  //Naturally, one can use  other termination conditions than just the
+  //derivation length.
+  for (int i=0; i < 4; i++)
   {
-    ProdCaller res = TryIMatch(citer, cd, GetIProductionPrototype(i));
-    if (NULL != res)
-      return res;
+    cout << "Step: " << i << endl;
+    //Update L-strings, no interchange  of information.
+    pl4.lignumToLstring(pine4);
+    //Structural development for the trees.
+    pl4.derive();
+    //Update pine structures, no interchange  of information.
+    pl4.lstringToLignum(pine4);
   }
-  return NULL;
-}
-
-ProdCaller TryIMatch
-  (
-  const LstringIterator& citer,
-  CallerData& cd,
-  const ProductionPrototype& proto
-  )
-{
-  assert(proto.Strct.count==1);
-  assert(proto.LCntxt.count==0);
-  assert(proto.RCntxt.count==0);
-  if (citer.GetModuleId() == proto.Strct.arr[0])
+  //Clean up.
+  pl4.end();  
+  
+  pl5.start();
+  pl5.lstringToLignum(pine5);
+  //Naturally, one can use  other termination conditions than just the
+  //derivation length.
+  for (int i=0; i < 5; i++)
   {
-    cd.Strct.AddModuleAddr(citer.Ptr());
-    return proto.pCaller;
+    cout << "Step: " << i << endl;
+    //Update L-strings, no interchange  of information.
+    pl5.lignumToLstring(pine5);
+    //Structural development for the trees.
+    pl5.derive();
+    //Update pine structures, no interchange  of information.
+    pl5.lstringToLignum(pine5);
   }
-  else
-    return NULL;
+  //Clean up.
+  pl5.end();
+
+  KGC fm = 0.0;
+  AccumulateDown(pine5,fm,SubtractFoliage<KGC>(0.3),
+		 SampleFoliageMass<MyCfTreeSegment,MyCfBud>(1.00));
+  //Visualize LIGNUM
+  Forest f;
+  InsertCfTree(f,pine1);
+  InsertCfTree(f,pine2);
+  InsertCfTree(f,pine3);
+  InsertCfTree(f,pine4);
+  InsertCfTree(f,pine5);
+  Initialize3DForest<Tree<MyCfTreeSegment, MyCfBud> >(f);
+  VisualizeForest<Tree<MyHwTreeSegment, MyHwBud> >(f);
 }
