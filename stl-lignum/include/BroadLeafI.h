@@ -114,7 +114,7 @@ LGMdouble SetValue(BroadLeaf<SHAPE>& bl, const LGMAD name, const LGMdouble value
     //Given the Wf, set the shape area using SLA: 
     //LeafA = SLA*Wf, i.e m2 = (m2/kgC)*kgC
     //ShapeA = LeafA/dof
-    bl.bla.shape.setArea(GetValue(bl,LGAsf)*value/GetValue(bl,LGAdof);
+    bl.bla.shape.setArea(GetValue(bl,LGAsf)*value/GetValue(bl,LGAdof));
   else 
     cout << "BroadLeaf SetValue uknown attribute: " << name << "returning: "
 	 << old_value << endl;
