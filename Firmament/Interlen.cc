@@ -1,5 +1,5 @@
 #include <stdafx.h>
-#include <math.h>
+#include <cmath>
 #include <interlen.h>
 
 /*****************************************************************************
@@ -13,11 +13,11 @@ using namespace cxxadt;
    a <= b or not. */
 
 
-int startvoxel(float a, float b)
+int startvoxel(double a, double b)
 {
   if(a <= b)
-    return (int)floorf(a);
+    return static_cast<int>(floor(a));
   else
-    return (int)ceilf(a) - 1;
+    return static_cast<int>(ceil(a)) - 1;
 }
 
