@@ -1,0 +1,15 @@
+AR=ar
+
+AROPT=-ruv
+
+CCPPI=g++
+
+CCPP=g++
+
+CPPOPT=-c -Wall -g -O0
+
+DEPEND=g++ -M
+
+LSYSSRC=lsys.ii
+
+

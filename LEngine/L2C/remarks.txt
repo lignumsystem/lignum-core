@@ -1,0 +1,3 @@
+Does not complain if the number of parameters in the Produced module
+is less than required.
+

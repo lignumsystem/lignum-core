@@ -1,0 +1,12 @@
+LINK=g++
+CCPP=g++
+
+CCPPOPT=-c -Wall -g -O0
+
+DEPEND=g++ -M
+
+PLAT_DEFINES=\
+-DLINUX
+
+
+

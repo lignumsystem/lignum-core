@@ -1,0 +1,17 @@
+.SUFFIXES:.cpp
+
+LINK=g++
+CCPP=g++
+
+CCPPOPT=-c -Wall -g -O0
+
+
+DEPEND=CC -M
+
+PLAT_DEFINES=\
+-DIRIX
+
+LINKFLAGS=
+
+PLATLINKDIRS=
+

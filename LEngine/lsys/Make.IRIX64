@@ -1,0 +1,15 @@
+.SUFFIXES:.cpp
+
+AR=ar
+
+AROPT=-ruv
+
+CCPPI=CC
+CCPP=CC
+
+CPPOPT=-c -fullwarn -g -O0 -64 -ptused
+CPPOPT=-c -fullwarn  -O0 -64 -ptused
+DEPEND=CC -M
+
+LSYSSRC=lsys.i
+#LSYSSRC=lsys.ii
