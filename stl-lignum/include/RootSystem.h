@@ -72,8 +72,8 @@ namespace Lignum {
   //hair, i.e. fine roots, is  aggregated as the third third cyndrical
   //layer (c.f foliage for CfTreeSegment)
   class RootSegment:public RootCompartment{
-    friend METER GetValue(const RootSegment& rs, LGMAD name);
-    friend METER SetValue(RootSegment& rs, LGMAD name, METER value);
+    friend LGMdouble GetValue(const RootSegment& rs, LGMAD name);
+    friend LGMdouble SetValue(RootSegment& rs, LGMAD name, LGMdouble value);
   public:
     RootSegment(const Point& pos, const PositionVector& dir,
 		METER Length,METER Radius,METER RTopRadius,
