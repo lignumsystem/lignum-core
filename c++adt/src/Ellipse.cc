@@ -1,7 +1,7 @@
 //Ellipse.cc
 //----------
 #include <Ellipse.h>
-
+#include <cmath>
 namespace cxxadt{
 
   Ellipse::Ellipse(const Point& center0, 
@@ -181,8 +181,8 @@ namespace cxxadt{
    if (semimajoraxis == 0 || semiminoraxis ==0)
      return false;
    
-   if (power(CB.length()*cos(angleBCXu)/semimajoraxis,2)+
-	 power(CB.length()*sin(angleBCXu)/semiminoraxis,2) <= 1)
+   if (pow(CB.length()*cos(angleBCXu)/semimajoraxis,2.0)+
+	 pow(CB.length()*sin(angleBCXu)/semiminoraxis,2.0) <= 1)
        return true;
    else 
      return false;
