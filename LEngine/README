@@ -43,7 +43,7 @@ with l2c. Then  all source files are compiled  with C/C++ compiler and
 linked to a single  executable program. The necessary L-system program
 library is libL.a implementing e.g. so called turtle.
 
-NOTE FOR L-SYSTEM FILES (TODO)
+NOTE FOR L-SYSTEM FILES (USER CAVEATS AND TODO)
 
 Currently you must define at  least one dummy rule for interpretation.
 See  bearberry.L and  pine9bp.L for  an example.   This is  a  ToDo to
@@ -54,7 +54,7 @@ its graphics rendering but for  us LIGNUM is visualized instead so the
 interpretation is more or less unnecessary.
 
 Do not  use any L-language  keywords inside comments in  your L-system
-definition file.  The  lexer part of the compiler  scans the L-file and
+definition file.  The lexer part  of the compiler scans the L-file and
 assumes  C++ source  until a  keyword is  found. When  the  keyword is
 detected the token stream is  directed to the parser that compiles the
 L-language   to   C++   until   the   end  of   L-language   part   is
@@ -65,3 +65,26 @@ remove comments  from L-file with C++ preprocessor  before running the
 file  through  l2c  compiler.    Following  keywords  in  L  are  used
 (including colons): open, close, derivation length:, module, consider:
 ignore:, interpretation:, produce, Start:, StartEach:, EndEach:, End:.
+
+Your compiled L-system  library (see lsys as an  example) must contain
+exactly those L-systems  defintions you will need in  your program; no
+more and no less. Naturally you  can't miss any but you can't have any
+redundant  or spuorius  compiled definitions  either. This  is  due to
+global  variables and  functions  (to be  wrapped  within a  namespace
+naturally in your  program ) defined in LSystems.h;  see succtstrg and
+_Add(). This might  change in the future by  making succtstrg and _Add
+part of  LSystem class  and changing l2c  compiler but  current system
+fulfills current requirement specifications,  i.e. one must be able to
+define L-systems  for several tree  species and individual trees  in a
+single  program. If  you miss  some compiled  L-system  definition you
+program  will not  compile.  If you  have  spurious compiled  L-system
+definitions  you  will  get  an  error from  the  linker  for  missing
+defintion for _Add defined in LSystem.h
+
+Although F, Pith,  Turn, Roll and HRoll are  reserved module names for
+Turtle  interpretation  you must  declare  them  as  modules. This  is
+because you  can declare additional parameteres in  them and implement
+rewriting rules for  interpretation. Thus there is no  way to know the
+exact  definition   of  these  modules   and  what  they   exactly  do
+(rewrite). The name of the module tells how to move the turtle and the
+first parameter how much.
