@@ -1,40 +1,52 @@
 \chapter{Getting Started with LIGNUM}
 
+\section{Getting Lignum}
+
+The development of Lignum is managed by using CVS version control. CVS
+has become a popular  system that allows several people simultaneously
+to develop a program. To get Lignum type:
+\begin{tabbing}
+Tabbing\=\kill
+\>prompt\% cvs checkout c++adt \\
+\>prompt\% cvs checkout stl-lignum
+\end{tabbing}
+If you must obtain the software over the network type on your machine:
+\begin{tabbing}
+Tabbing\=\kill
+\>prompt\% cvs -d <user>@magnolia.metla.fi checkout c++adt \\
+\>prompt\% cvs -d <user>@magnolia.metla.fi checkout stl-lignum
+\end{tabbing}
+Naturally you must have a user  account on the machine that is the CVS
+repository.   In   the  example  the  repository  is   assumed  to  be
+magnolia.metla.fi. For efficient use of  CVS see the manual written by
+Cederqvist \cite{Ced}.
+
 \section{Compiling LIGNUM}
 
-The  program implementing  \lignum\  is written  with  C++ under  $\rm
-UNIX^{TM}$ environment. This section tells  how to compile and run the
-core model of  \lignum\ under Silicon Graphics Irix  6.x machines with
-native SGI $ \rm MIPSpro^{TM}$  C++ 7.x compilers.  The ports to other
-machine architectures will be documented as soon as they are done.
-
-The source  code implementing  the core model  of \lignum\  called LGM
-(libLGM.a) is located in stl-lignum directory. The LGM library depends
-on c++adt  library (libc++adt.a) implementing  general purpose classes
-not found in Standard Template Library.  The source code for c++adt is
-in c++adt directory. The c++adt  and stl-lignum directories must be in
-the same directory level:
-
+Before the compilation the c++adt and the stl-lignum must be at the
+same directory level:
 \begin{tabbing}
-Tabbing\= Tabbing\=\kill
-\>\>prompt\% ls -F \\
-\>\>c++adt/ stl-lignum/
+Tabbing\=\kill
+\>prompt\% ls -F \\
+\>c++adt/ stl-lignum/
 \end{tabbing}
-
-Before  the compilation also  the Standard  Template Library  (STL) is
-needed. The STL library should be part of the C++ compiler system.  To
+The STL  library must  also be  part of the  C++ compiler  system.  To
 compile both the c++adt and  the LGM libraries simply go to stl-lignum
 directory and type make:
-
 \begin{tabbing}
-Tabbing\= Tabbing\=\kill
-\>\>prompt\% cd stl-lignum \\
-\>\>prompt\% make
+Tabbing\=\kill
+\>prompt\% cd stl-lignum \\
+\>prompt\% make
 \end{tabbing}
-
+To compile the test set for various generic algorithms used in Lignum 
+type
+\begin{tabbing}
+Tabbing\=\kill
+\>prompt\% make algorithms
+\end{tabbing} 
 The main  Makefile for the make  utility to build the  LGM library not
 only compiles the LGM library but also assumes the existence of c++adt
-directory and if needed (re)compiles the c++adt library.
+directory and if needed recompiles the c++adt library.
 
 \section{Makefiles for LIGNUM}
 
@@ -47,33 +59,48 @@ prerequisite is newer than the target.
 
 \subsection{Predefined Macros}
 
-There are several Makefiles that are used to compile the core model of
-\lignum\  and the  c++adt library.   To keep  the LGM  and  the c++adt
-libraries consistent  (e.g., to compile for  the 32 or  64 bit machine
-architectures) and to ease the change of a compiler some useful common
-macros throughout the Makefiles are predefined.
+There are several  Makefiles that are used to compile  the LGM and the
+c++adt libraries.  To keep  the libraries consistent (e.g., to compile
+for the 32 or 64 bit  machine architectures) and to ease the change of
+a  compiler some  useful common  macros throughout  the  Makefiles are
+predefined.
 
-\begin{enumerate}
-\item CCC: The compiler. The default value is CC -64 to compile 64 bit code.
-\item CCCFLAGS: General flags for the compiler. The default value is 
- -c  -ptv. The  -c option  must  be present  to tell  the compiler  to
+\begin{itemize}
+\item CCC The compiler.
+\item CCCFLAGS The  -c option  must  be present  to tell  the compiler  to
   generate  only object files  (i.e., no  linkage) from  source files.
-  The  -ptv option  tells the  compiler to  be verbose  when compiling
-  templates.
-\item OPTIMIZE: Flags to optimize the object code. The default value
-is -g to generate information for the debugger.
-\end{enumerate}
-For example to maximize the performance for 64 bit code for IP28
+\item OPTIMIZE Flags to optimize the object code.
+\item ARCOMMAND The program to create a program library.
+\item ARCOMMANDFLAGS Command line flags for the archive program. 
+\end{itemize}
+For example on SGI to maximize the performance for 64 bit code for IP28
 target platform using inter procedural analysis with default settings type:
 \begin{tabbing}
-Tabbing\= Tabbing\=\kill 
-\>\>prompt\% make ``OPTIMIZE=-Ofast=ip28 -IPA''
+Tabbing\=\kill 
+\>prompt\% make ``OPTIMIZE=-Ofast=ip28 -IPA'' algorithms
 \end{tabbing}
 
 In general  the the  appropriate selection for  a SGI platform  can be
 determined by running  ``hinv -c processor". To study inter procedural
-analysis see manual page for ipa.
+analysis see manual page for ipa. To compile on Linux type:
+\begin{tabbing}
+Tabbing\=\kill 
+\>prompt\% make ``CCC=g++'' ``CCCFLAGS=-c'' ``OPTIMIZE=-O'' \\
+\>``ARCOMMAND=ar''  ``ARCOMMANDFLAGS=rv'' algorithms 
+\end{tabbing}
 
+There are some other useful Makefile targets defined.
+\begin{itemize}
+\item html Generate www documentations of the program files. The
+enscript program must be installed.
+\item changelog Generate ChangeLog file containing the summary of the
+cvs logs.
+\item clean Remove compiled files.
+\item distclean Remove compiled files also in c++adt directory.
+\item depend Create file dependencies for LGM library.
+\end{itemize}
+You may find the Makefile for LGM library useful when starting your
+own project. 
 
 \section{Running LIGNUM}
 

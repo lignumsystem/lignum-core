@@ -10,7 +10,7 @@ reliable)  to use  many types  of modern  programming  paradigms, most
 notably  object oriented  and generic  programming.  Secondly,  it has
 language  facilities that  support the  implementation of  large (more
 than 1000  000 line) programs.  It  is possible to  create alone small
-programs containg  1000 or so lines  and make them  work through brute
+programs containing  1000 or so lines  and make them  work through brute
 force breaking each  programming paradigm and rule of  good style. But
 for any  larger program  requiring cooperation of  several programmers
 this  is simply not  possible.  You  will notice  that new  errors are
@@ -28,7 +28,7 @@ visualization and user interface already were implemented in C++.
 Lignum  is   no  exception.   The  basic   data  structures  (classes)
 implementing  a generic  tree  model  don't easily  fit  into a  e.g.,
 Fortran mold. Further  to be of any practical  use at least scientific
-visualization must be providied with elementary user interface so that
+visualization must be provided with elementary user interface so that
 the  results of  the  simulations  can be  studied.   Lignum has  also
 evolved from a small research experiment to a medium size project with
 many international  connections.  In  the future also  the programming
@@ -38,7 +38,7 @@ programming work done  in one team can be shared  by other teams. Thus
 the maintenance of the program will  be important. C++ has been a good
 choice for Lignum  and due to the development of  the language and the
 introduction of  the Standard  Template Library (STL)  it is  now also
-more convinient to use than ever.
+more convenient to use than ever.
 
 \section{Using C++}
 
@@ -47,13 +47,13 @@ excellent textbooks available.  For  example you may find \cite{Str97}
 and  \cite{Brey98} useful. Stroustrup's  book not  only is  a complete
 tutorial  and  reference to  the  language but  also  gives  a lot  of
 practical  programming  advice   how  to  use  and  not   to  use  the
-language. Breymann's book teaches the  use of STL, the essiential tool
+language. Breymann's book teaches the  use of STL, the essential tool
 for any serious C++ programmer.
 
 Many of the  developers of Lignum have and  will have background other
 than computer science but they have some programming experience with C
 or Fortran.  Here  we have tried to collect  some most common mistakes
-and pitfalls made  by the novice C++ progarmmers and  also try to give
+and pitfalls made  by the novice C++ programmers and  also try to give
 some elementary practical  advice what to learn first  to get started.
 You don't have to  learn whole C++ to work with it.  You can grow with
 the language.
@@ -71,7 +71,7 @@ to do instead.
 call overhead and for simple macros defining a constant consider const
 or enum constructs.
 \item Forget malloc and free. The new and delete operators do the
-same job better.  Remeber to use  delete to avoid memory leaks. If you
+same job better.  Remember to use  delete to avoid memory leaks. If you
 seem to  need realloc consider  if some predefined data  structure for
 example vector fulfills your  needs.  In general avoid unnecessary use
 of  new  operator.  Note  that  it  is  possible to  create  temporary
@@ -97,7 +97,7 @@ predefined string and vector classes in the STL library. They simplify
 the programming and you don't loose in efficiency either. For
 numerical computations there is valarray class. 
 \item If you need to use unions, to do complicated pointer arithmetic, bit
-shifting   or   some  other   exotic   language   fieature  hide   the
+shifting   or   some  other   exotic   language   feature  hide   the
 implementation deep in some function or class.  Provide clear and easy
 to use  interface. But when developing  Lignum you are  unlikely to do
 any of these. Lignum is a tree model and you are more likely to create
@@ -112,7 +112,7 @@ The reason to learn C++ is not to learn a new syntax to do things that
 has been previously done with Fortran  or C. The reason is to learn to
 to design and  implement systems better and more  efficiently in a way
 C++ supports the work.  This  is like learning a new natural language;
-it will  take years of  practice to read  or write for  example french
+it will  take years of  practice to read  or write for  example French
 fluently and correctly as a foreign language.
 
 It is not necessary to learn C first to learn C++. In fact it might be
@@ -208,7 +208,7 @@ improving your productivity when editing program source files.
 
 \subsection{Comments and Documentation}
 Needless to say  comments are an essential part of  a good program. But
-remember misused comments can  seriously affect the readibility of the
+remember misused comments can  seriously affect the readability of the
 program. Three self-evident rules of thumb for writing comments are
 
 \begin{itemize}
@@ -225,7 +225,7 @@ program unambiguously. Ambiguous  and incomprehensible comments are no
 use at all.  Too often when the program changes  the comments are left
 untouched. Plain wrong comments are worse than no comments at all. 
 
-Writing good comments is as difficult as writing the progam. Some
+Writing good comments is as difficult as writing the program. Some
 general guidelines may help to nurture this art:
 
 \begin{itemize}
@@ -252,11 +252,19 @@ program  documentation. In short the documentation should describe:
   \item The implementation and the maintenance of the system.
 \end{itemize} 
 
+Software maintenance is a little bit misleading concept. Software does
+not need  oil change,  checking the tire  pressure etc. like  your car
+does.   But the  idea is  that because  software engineering  is human
+activity and thus any  nontrivial software product will contain errors
+you should  aid tracking  down these  errors.  You can  do this  by at
+least designing and  documenting a test set for  your software product
+and its components. 
+
 You    can   study    more   about    software    documentation   from
-\cite{Som85}. Ideally  the documentaiton should run  in parallell with
+\cite{Som85}. Ideally  the documentation should run  in parallel with
 the programming  work.  It will mean  rewritings of the  manual due to
-the changes  in the  program but any  documentation will  require many
-iterations before it is useful anyway.
+the  changes in  the  software but  like  in any  writing process  the
+documentation will require many revisions before it is useful anyway.
 
 
 
