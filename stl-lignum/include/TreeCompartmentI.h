@@ -76,9 +76,8 @@ LGMdouble GetValue(const TreeCompartment<TS,BUD>& tc, const LGMAD name)
 
   else
   {
-		cout << "SetValue: unknown attribute:" << name << endl;
-		//MessageBox(NULL, "Setvalue " + name, NULL, NULL);
-	}
+    cout << "TreeCompartment GetValue: unknown attribute:" << name << endl;
+  }
 
   return unknown_value;
 }
@@ -94,7 +93,7 @@ LGMdouble SetValue(TreeCompartment<TS,BUD>& tc, const LGMAD name, const LGMdoubl
     tc.tc_age = value;
   
   else{
-    cerr << "Tree Compartment GetValue: Unknown attribute " << name << endl;
+    cerr << "Tree Compartment SetValue: Unknown attribute " << name << endl;
   }
 
   return old_value;
