@@ -76,6 +76,36 @@ namespace cxxadt{
   }
 
 
+//getting the ellipse points using the ellipse equation
+//X=Center + a*cos(t)*X1u +b*sin(t)*Y1u
+//where t:[0,2pi] and the step=[2*pi/n];
+//now the n parameter is defined as 50.
+    
+vector<Point>& Ellipse::getVertexVector(vector<Point>& points)const
+{
+  int i,n;
+  double t;
+  Point x;
+
+  n=50;
+
+  double step=(double)(2.0*PI_VALUE/n);
+
+
+    
+  for(i=0; i<n; i++){
+    t=(double)(i*step);
+    x=getCenterPoint()+Point((getSemimajorAxis()*cos(t))*x1u())
+                      +Point((getSemiminorAxis()*sin(t))*y1u());
+    points.push_back(x);
+  }
+
+  return points;
+
+}
+
+
+
 //Creation  a new ellipse from the old one 
 //using the new ellipse area
 //Scaling equation is X'=S*X
@@ -199,6 +229,14 @@ namespace cxxadt{
 using namespace cxxadt;
 
 
+void printing(const  Point& p){
+  
+  cout<<"----------------------------------------------"<<endl;
+  cout<< "x=" << p.getX()<< "  y=" << p.getY()<< "  z=" << p.getZ()<<endl;
+  cout<<"----------------------------------------------"<<endl;
+
+}
+
 int main()
 {
 
@@ -262,6 +300,15 @@ int main()
     cout<<" doesn't cross the ellipse"<<endl;
   }
 
+  vector<Point> points;
+  points=e1.getVertexVector(points);
+
+  cout<<"----------------------------------------------"<<endl;
+  cout << "3.The ellipse points are   "<< endl;
+
+    
+  for_each(points.begin(),points.end(),printing);   
+ 
 
   exit(0);
 }
