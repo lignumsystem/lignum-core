@@ -6,6 +6,9 @@
 
 namespace cxxadt{
 
+
+
+
 class Ellipsis{
 public:
   Ellipsis(double a, double b);
