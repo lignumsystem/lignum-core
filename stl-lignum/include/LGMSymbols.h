@@ -13,9 +13,9 @@ namespace Lignum{
   // LGMPD = LIGNUM Parameter Double
 
   // Wr           dry weight of the roots
-  enum LGMAD {LGAA,LGAAf,LGAAh, LGAAhair,LGAAs,LGAAs0,LGAage,api, LGAcollision,
-              LGADbase,LGADbh,LGAdof, dR, LGAH,LGAHf,Hm,LGAip,
-              lb,LM,LP,LWf,LGAL,lw,LGAM, LGAMaxD,LGAomega,LGAP,
+  enum LGMAD {LGAA,LGAAf,LGAAh, LGAAhair,LGAAs,LGAAs0,LGAage,LGAcollision,
+              LGADbase,LGADbh,LGAdof, LGAdR, LGAH,LGAHf,LGAHTop,LGAip,
+              LGAL,LGAM, LGAMaxD,LGAomega,LGAP,
 	      LGAQabs,LGAQin,R,Rf,Rh, LGARhair,LGARTop,LGASa,LGMstatus, LGAtauL, LGAtype,LGAV,LGAVh,
 	      LGAVhair,LGAvi,LGAVs,LGAWf, LGAWr, LGAWs, LGAWh, LGAWhair};
 
@@ -26,21 +26,16 @@ namespace Lignum{
   //  LGAAs     Sapwood area
   //  LGAAs0    Original sapwood area
   //  LGAage    age of object
-  //  api    ???  
   //  LGAcollision a bud can examine its growth sector if it collides with an obstacle
   //  LGADbase  diameter at base
   //  LGADbh    diameter at breast height
   //  LGAdof    degree of filling
+  //  LGAdR     Change in radius (=difference of two growth rings)
   //  LGAH      height of tree, also the Z coordinate at the segment end point 
   //  LGAHf     height (thickness) of cylindrical layer of foliage in a segment 
-  //  Hm     ???
+  //  LGAHTop   Max height from ground of the tree, segment, etc.
   //  LGAip     degree of interction
-  //  lb     ???
-  //  LM     ???
-  //  LP     ???
-  //  LWf    ???
   //  LGAL      length of segment
-  //  lw     ???
   //  LGAM      rate of respiration (= amount of r. during the time step)
   //  LGAMaxD   maximum diameter of the segments 
   //            forking off and the segment above a 

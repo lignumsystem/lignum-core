@@ -290,8 +290,8 @@ LGMdouble GetValue(const TreeSegment<TS,BUD>& ts, const LGMAD name)
   else if (name == LGAH)
     return ts.point.getZ();
 
-  else if (name == Hm)
-    return ts.point.getZ() + ts.direction.getVector()[2] * GetValue(ts,LGAL);
+  else if (name == LGAHTop)
+    return ts.point.getZ() + ts.direction.getZ() * GetValue(ts,LGAL);
 
   else if (name == LGAL)
     return ts.tsa.L;
@@ -348,7 +348,7 @@ LGMdouble SetValue(TreeSegment<TS,BUD>& ts, const LGMAD name, const LGMdouble va
   else if (name == LGAL)
     ts.tsa.L = value; //segment can be 0
   
-  else if (name == dR)
+  else if (name == LGAdR)
   {
     int size = ts.tsa.annual_rings.size();
     if (size>1)

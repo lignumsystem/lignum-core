@@ -178,7 +178,7 @@ TreeCompartment<GCSegment, GCBud>* StructuralGrowth::operator()
       GCSegment* ts = new GCSegment(base, dir, go, l_new, r_new, rh_new, &tree);
       SetValue(*ts,di_stempX,GetValue(*mother,di_stempX));
       SetValue(*ts,di_stempY,GetValue(*mother,di_stempY));
-      SetValue(*ts,dR,0.0);
+      SetValue(*ts,LGAdR,0.0);
       SetValue(*ts,dAs,0.0);
       SetValue(*ts,dW,0.0);
       SetValue(*ts, LGAage, 0.0);
@@ -213,7 +213,7 @@ TreeCompartment<GCSegment, GCBud>* StructuralGrowth::operator()
       SetValue(*ts,Wh,GetValue(tree,rho)*PI_VALUE*pow(rh_new,2.0)*l_new);
       SetValue(*ts,dAs,0.0);
       SetValue(*ts,dW,0.0);
-      SetValue(*ts,dR,0.0);
+      SetValue(*ts,LGAdR,0.0);
       
       ax_list.insert(ls_i,ts);       //tree segment added to axis
 
