@@ -453,7 +453,7 @@ int LSystem<TS,BUD,T,F>::lstring2Lignum(list<TreeCompartment<TS,BUD>*>& ls,
       //If control reaches here it is an error
     }
   }
-  //Take care of three turtle commands
+  //Take care of  turtle commands
   //Turn
   else if (strcmp(name,"Turn") == 0){
     double arg1 = 0.0;
@@ -498,6 +498,30 @@ int LSystem<TS,BUD,T,F>::lstring2Lignum(list<TreeCompartment<TS,BUD>*>& ls,
   //Up: Rotate the turtle to face up in the world
   else if  (strcmp(name,"Up") == 0){
     turtle_stack.top().up();
+    ltr++;
+  }
+  //Hrz: Rotate turtle so that heading is horizontal
+  else if  (strcmp(name,"Hrz") == 0){
+    turtle_stack.top().hrz();
+    ltr++;
+  }
+  //HDir: Set heading direction to angle 'arg1' measured from world up
+  else if (strcmp(name,"HDir") == 0){
+    double arg1 = 0.0;
+    caller_data.Reset();
+    caller_data.Strct.AddModuleAddr(ltr.Ptr());
+    memcpy(&arg1,caller_data.Strct.pArg(0),sizeof(double));
+    turtle_stack.top().hdir(arg1);
+    ltr++;
+  }
+  //HUp: Set heading direction to  angle 'arg1' measured from world up
+  //if and only if heading is pointing downwards in world cordinates
+  else if (strcmp(name,"HUp") == 0){
+    double arg1 = 0.0;
+    caller_data.Reset();
+    caller_data.Strct.AddModuleAddr(ltr.Ptr());
+    memcpy(&arg1,caller_data.Strct.pArg(0),sizeof(double));
+    turtle_stack.top().hup(arg1);
     ltr++;
   }
   //Ignore  other symbols, go forward in the string
