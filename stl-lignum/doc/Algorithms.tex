@@ -1,30 +1,32 @@
 \section{Algorithms}
 
-So  far all  metabolic  processes and  queries  of the  status of  the
-simulated  tree can  be implemented  using one  of the  following four
-generic   algorithms:    ForEach,   Accumulate,   AccumulateDown   and
+So  far  all metabolic processes   and queries  of  the status  of the
+simulated  tree can  be  implemented using one  of  the following four
+generic     algorithms: ForEach,   Accumulate,  AccumulateDown     and
 PropagateUp.  Each of these algorithms traverse the tree in a slightly
-different manner  and take care  that the actual metabolic  process or
-query implemented  as a functor  is applied to each  tree compartment.
+different manner and take care   that the actual metabolic process  or
+query  implemented as a functor  is applied to  each tree compartment.
 Thus they eliminate the trouble  of writing repetitive and error prone
-explicit loops each  time a metabolic process or  query is implemented
-or refined.
+explicit  loops each time a metabolic  process or query is implemented
+or refined. To use these algorithms include the file Algorithms.h into
+your program.
 
-To  use  these algorithms  include  the  file  Algorithms.h into  your
-program. Sample use  of these algorithms can be  obtained by compiling
-and  running lignum in  its stl-lignum  project directory.  The sample
-tree used also here as an example consists of one main axis containing
-one tree segment, one branch whorl and the terminating bud. The branch
-whorl contains two auxilliary buds. Using the notation from our papers
-the tree can be written as:
+Sample  use  of these  algorithms can   be  obtained by  compiling and
+running  the program algorithms in   stl-lignum project directory.  To
+compile the program type \tt make algorithms\rm.
+
+
+The sample tree   used  as an  example  consists   of  one  main  axis
+containing one tree segment, one branch whorl and the terminating bud.
+The branch whorl contains two auxilliary buds. Using the notation from
+our papers the tree can be written as:
 
 \begin{displaymath}
 [TS,[[B],[B]],B]
 \end{displaymath}
 
-Also the  functors used in subsequent  sections to clarify  the use of
-the  generic algorithms  are the  same as  used in  stl-lignum project
-directory.
+Also the functors used  in subsequent sections to  clarify the use  of
+the generic algorithms are the same as used in the program algorithms.
  
 \subsection{void ForEach(Tree<TS>\& tree, const Function\& f)}
 
@@ -91,10 +93,13 @@ simply
 ForEach(tree,DisplayType2<MyTreeSegment>());
 \end{verbatim}
 
-ForEach algorithm  can be used  to implement e.g.,  photosynthesis and
-respiration.
+ForEach  algorithm can be used to  implement metabolic processes e.g.,
+photosynthesis   and respiration     or some  other   function    like
+visualization where the computations  on   each tree compartment   are
+inherently parallel.  That   is,  tree  compartments can  be   treated
+individually.
 
-\section{T& Accumulate(Tree<TS>\& tree, T\& init, const BinOp\& op)}
+\subsection{T\& Accumulate(Tree<TS>\& tree, T\& init, const BinOp\& op)}
 
 The algorithm Accumulate can be used to collect data or query a status
 of a tree. It  is  similar to STL-library  function  accumulate.  Note
@@ -142,16 +147,146 @@ public:
 };
 \end{verbatim}
 
-The implementation of the overloaded function operator in
-CountCompartments  simply counts the number  of tree compartments in a
+The  implementation   of   the  overloaded   function     operator  in
+CountCompartments simply  counts the number of  tree compartments in a
 tree and echos the type of each compartment.
 
+\begin{verbatim}
+template <class TS>
+int& CountCompartments<TS>::operator()(int& n,TreeCompartment<TS>* tc)const
+{
+  if (Axis<TS>* myaxis =  dynamic_cast<Axis<TS>*>(tc)){
+    cout << "Hello, I'm Axis ";
+  }
+  //checking other tree compartments similarly
+  else if ...  
+  ....
+  n+=1;
+  return n;
+}
+\end{verbatim}
 
+To count all tree compartments in a tree one simply calls Accumulate
+with the functor CountCompartments.
 
+\begin{verbatim}
+int i = 0;
+int n = Accumulate(tree,i,CountCompartments<MyTreeSegment>());
+\end{verbatim}
 
+The  algorithm    Accumulate can be    used,   e.g.,  to   sum up  the
+photosynthates and respiration of all tree segments in a tree. Another
+example could be   a functor that collects all   tree segments into  a
+sequence.  The computations must  not assume in  which order the  tree
+compartments are traversed.
 
+\subsection{T\& AccumulateDown(Tree<TS>\& tree,T\& init, const BinOp\& op)}
 
+The AccumulateDown algorithm can also be used to collect data or query
+the status   of a tree.  However, as   the name  suggests  the tree is
+traversed  from the  tip  of the  branches to  the  base of  the tree.
+More over each    axis  is  traversed   independently  (semantically in
+parallell).   Note that  the initial value  is passed  and returned as
+reference because the computations are not necessarily numerical.
 
+AccumulateDown traverses the tree and  applies the user defined binary
+operator op  to each tree compartment  with the initial value that can
+be modified according to the binary operator.
 
+\begin{description}
+   \item [Arguments] for the function.
+     \begin{description}
+        \item [tree] The tree.
+        \item [init] The initial value. Also called the identity
+     element.
+        \item [op] The binary operator. The functor must take two
+     arguments: the initial value and the pointer to a tree compartment. The
+     operator must return the modified initial value.
+     \end{description} 
+   \item[Returns] The  modified initial value.
+\end{description} 
+
+Because  each axis is   traversed   independently the results of   the
+compuations  are  summed up in  branching   points.  Thus each initial
+element must have the overloaded add and  assign (+=) operator defined
+with  appropriate semantics. Also a  new initial  value is created for
+each  axis  so  the call to   a  constructor  must  be  possible. More
+precisely, if  the type of   the initial value  is  T the call to  the
+constructor T() must succeed.
+
+To  count  the   number of   tree  segments  with  AccumulateDown  and
+CountCompartments one simply writes:
+
+\begin{verbatim}
+int i = 0;
+int n = AccumulateDown(tree,i,CountCompartments<MyTreeSegment>());
+\end{verbatim}
+
+Assuming that  the  add and assign  operator and   the constructor are
+defined   for  the  identity element  one  can   use AccumulateDown as
+Accumulate.  However,  some  metabolic processes  are  depended on the
+information  flowing downwards in  a   tree.  These  processes  can be
+implemented only with  the AccumulateDown algorithm.  One such process
+is diameter growth.  Other examples  can be various models for hormone
+and nutrient flows downwards in a tree.
+
+\subsection{void PropagateUp(Tree<TS>\& tree,T\& init,const BinOp\& op)}
+
+The algorithm PropagateUp  can be thought as  an inverse  operation to
+AccumulateDown. The tree is traversed from the  base to the tip of the
+axis. During the traversal the initial value is modified by the binary
+operarator. Further  more each axis  is computed  independently, i.e.,
+inherently in parallell. In each branching point a copy of the current
+value or status of the  initial element is  sent forward to each axis.
+Note again  that the initial value  is passed as  reference. It is not
+always numerical data one wants to send up in a tree.
+
+\begin{description}
+   \item [Arguments] for the function.
+     \begin{description}
+        \item [tree] The tree.
+        \item [init] The initial value. Also called the identity
+     element.
+        \item [op] The binary operator. The functor must take two
+     arguments: the initial value and the pointer to a tree compartment. The
+     operator must return the pointer to a tree compartment.
+     \end{description} 
+   \item[Returns] Nothing.
+\end{description} 
+ 
+Because  each  axis is computed   independently a copy of  the current
+value  of  the initial  element   is  passed forward   in a  branching
+point. Thus the overloaded assignment operator (=) must be defined for
+the initial element.
+
+As an example of simple signal passing in a  tree consider the functor
+MyExampleSignal. It receives an signal as in integer value and at each
+tree compartment it increases signal's value by one.
+
+\begin{verbatim}
+template <class TS> TreeCompartment<TS>* 
+MyExampleSignal<TS>::operator()(int& n,TreeCompartment<TS>* tc)const
+{
+  if (Axis<TS>* myaxis =  dynamic_cast<Axis<TS>*>(tc)){
+    cout << "Hello, I'm Axis ";
+  }
+  //checking other tree compartments similarly
+  else if ...  
+  ....
+  n+=1;
+  return tc; 
+}
+\end{verbatim}
+
+To pass a signal upwards in a tree starting from zero one simply calls
+PropagateUp with MyExampleSignal.
+
+\begin{verbatim}
+int s = 0;
+PropagateUp(tree,s,MyExampleSignal<MyTreeSegment>());
+\end{verbatim}
+
+Other possible  applications for  PropagateUp   in addition to  signal
+passing can be, e.g., modelling the water flow upwards in a tree.
 
 

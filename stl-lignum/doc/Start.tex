@@ -1,5 +1,7 @@
 \section{Getting Started with LIGNUM}
 
+\subsection{The Units of LIGNUM} 
+
 The  main design  principle in  \lignum is  to model  a tree  with few
 simple  basic units that  correspond to  the organs  of the  tree. The
 units  must  be  such that  they  allow  a  detailed analysis  of  the
@@ -18,15 +20,20 @@ The tree segment consists of  sapwood, heartwood, bark and foliage and
 it captures the main metabolic  functiong in a tree.  The tree segment
 corresponds roughly  to the annual  shoot but in the  strict modelling
 sense  this  is  not  necessarily  always the  case,  especially  when
-modelling heartwood trees.  The branching point is the place where two
-or more  tree segments  are connected  to each other.   The bud  is an
-embryonic shoot, the growing point  of the tree from which new shoots,
-leaves  and flowers  may develop.   Buds can  be further  divided into
-terminal buds located  at the top of axises  and lateral (or axillary)
-buds located in the tree  segment.  More precisely for heartwood trees
-lateral buds are located where the  leaf petiole is attached to a tree
-segment. The aggregate unit axis corresponds  to a stem or a branch of
-a tree.
+modelling heartwood trees.  
+
+The bud  is  an embryonic shoot, the  growing  point of  the tree from
+which new shoots, leaves and flowers may develop.  Buds can be further
+divided into  terminal buds located at the  top of axises  and lateral
+(or axillary) buds  located in the  tree segment.  More  precisely for
+heartwood trees  lateral buds  are located where  the leaf  petiole is
+attached to a tree segment.
+
+The branching point is the place  where two or  more tree segments are
+connected  to  each other.  The  aggregate unit  axis corresponds to a
+stem or a branch of a tree.
+
+\subsection{Design of the Program Architecture}
 
 The  design of  any  computer  program includes  the  decision how  to
 represent information  and concepts from the real  world. C++ supports
@@ -34,10 +41,24 @@ many   programming   methodologies   (perhaps  most   notably   object
 orientation)  but  the  emergence  of the  Standard  Template  Library
 emphasizes   generic   programming   with  abstract   datatypes   that
 encapsulates data and algorithms  working with this data. Two language
+
 constructs  in C++  support this  approach: classes  and  templates. A
 class  defines a  datatype consisting  a  set of  possible states  and
 operations  defining  transitions between  those  states. Template  is
 simply C++ term for a parameterized type.
 
-To st
+As a tree  is represented with five units  in \lignum a natural choice
+is to represent each unit as a class each with a set of attributes and
+operations. Further more as explained   in publications these  classes
+are  organized   in a  hierarchy  with  a  common  base   class called
+TreeCompartment.  This design allows us  to utilize e.g., polymorphism
+when implementing metabolic processes.  
+
+However, one of the problems with the  software used to simulate young
+Scots pine trees, Jack pines, sugar maples etc. is  that it has proved
+to   be difficult to modify.  Typically   when creating and validating
+tree  models   with \lignum  one  needs to   experiment with parameter
+values, different light models, metabolic processes etc.
+
+To be continued....
 
