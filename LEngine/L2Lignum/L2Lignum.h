@@ -82,7 +82,7 @@ int L2Lignum(Axis<TS,BUD>& axis, LstringIterator& iterator,
     memcpy(&arg1,caller_data.Strct.pArg(0),sizeof(double));
     TreeSegment<TS,BUD>* ts = new TreeSegment<TS,BUD>(GetPoint(turtle_stack.top()),
 						      GetHeading(turtle_stack.top()),
-						      0.0,arg1,0.10,0.05,&GetTree(axis));
+						      0.0,arg1,0.01,0.05,&GetTree(axis));
     InsertTreeCompartment(axis,ts);
     turtle_stack.top().forward(arg1);
     iterator++;

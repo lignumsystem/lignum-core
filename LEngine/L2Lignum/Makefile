@@ -25,7 +25,8 @@ INCLUDE = -I. -I../../c++adt/include -I../../Firmament/include \
 STL     = -I/usr/include/CC
 
 LIBFLAGS = -L../../c++adt/lib -L../../stl-lignum/lib -L../../Firmament/lib \
-           -L../Generate/IRIX64.out  -L../../Graphics
+           -L../Generate/IRIX64.out -L../Generate/Linux.out \
+           -L../../Graphics -L/usr/X11R6/lib
 
 LIB1   = libc++adt.a
 LIB2   = libLGM.a
