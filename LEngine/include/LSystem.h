@@ -31,6 +31,7 @@ class LSystem{
  void derive();
  int derivationLength();
  void end();
+ void print(bool arg=false);
  int lignumToLstring(Tree<TS,BUD>& t,int argnum = 0,...);
  int lstringToLignum(Tree<TS,BUD>& t,int argnum = 0,...);
  protected:
@@ -104,6 +105,28 @@ inline void LSystem<TS,BUD,N,F>::derive()
   EndEach();
 }
 
+template <class TS, class BUD, class N, class F>
+inline void LSystem<TS,BUD,N,F>::print(bool arg)
+{
+  LstringIterator iterator(mainstring);
+  CallerData caller_data;
+  double arg1;
+  while (!iterator.AtEnd()){
+    const char* name = iterator.GetCurrentModuleName();
+    fprintf(stdout,"%s ",name);
+    //print the argument value of f.
+    if (arg = true){ 
+      if (strcmp(name,"F") == 0){
+	caller_data.Reset();
+	caller_data.Strct.AddModuleAddr(iterator.Ptr());
+	memcpy(&arg1,caller_data.Strct.pArg(0),sizeof(double));
+	fprintf(stdout,"(%f)",arg1);
+      }
+    }
+    iterator++;
+  }
+  cout << endl;
+}
 
 
 #include <LSystemI.h>
