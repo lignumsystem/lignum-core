@@ -5,7 +5,7 @@ SRCDIR2 = ../include
 SRC = $(SRCDIR1)/CString.cc  $(SRCDIR1)/DList.cc $(SRCDIR1)/DListElement.cc \
       $(SRCDIR1)/Ellipsis.cc $(SRCDIR1)/Lex.cc $(SRCDIR1)/ParametricCurve.cc \
       $(SRCDIR1)/PositionVector.cc $(SRCDIR1)/RMatrix.cc $(SRCDIR1)/HRMatrix.cc \
-      $(SRCDIR1)/rand3.cc  $(SRCDIR1)/gauss.cc
+      $(SRCDIR1)/Gauss.cc $(SRCDIR1)/Uniform.cc $(SRCDIR1)/rand3.cc  $(SRCDIR1)/gauss.cc
 
 OBJ = ${SRC:.cc=.o} 
 
@@ -22,6 +22,8 @@ AR =  $(CCC) -ar
 ARFLAGS =  -o
 ARFILE = libc++adt.a
 
+PROGFILES = program-files.html
+
 sinclude Makedepend
 
 $(ARFILE): $(OBJ)
@@ -34,7 +36,8 @@ hrmatrix: $(ARFILE)
 
 touch:
 	touch $(SRC)
-
+html:
+	enscript -E --color -Whtml --toc -p$(PROGFILES) include/*.h $(SRC)
 clean:
 	rm -f $(OBJ) hrmatrix core
 
