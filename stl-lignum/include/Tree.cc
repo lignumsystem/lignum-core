@@ -128,13 +128,13 @@ TreeSegment<TS>* Tree<TS>::GetTreeSegment(Axis<TS> &ax, long int add)
 
 
 template <class TS>
-void Tree<TS>::UpdateWaterFlow()
+void Tree<TS>::UpdateWaterFlow(TP time_step)
 {
   if (cm == NULL)
     this->BuiltConnectionMatrix();
   cm->print();
 
-
+  // This counts the flow in for every segment
   for (int i=0; i<cm->size; i++)
     {
       TreeSegment<MyTreeSegment> *out;
@@ -149,9 +149,10 @@ void Tree<TS>::UpdateWaterFlow()
 	      TreeSegment<MyTreeSegment> *in = GetTreeSegment(this->axis, cm->pointer[i][a]);
 	      SetTSAttributeValue(*in, Pr, CountFlow(*in, *out));
 	    }
-	}
-	
+	}	
     }
+
+  // This counts the flow out for every segment
   for (i=0; i<cm->size; i++)
     {
       TreeSegment<MyTreeSegment> *out;
@@ -162,13 +163,17 @@ void Tree<TS>::UpdateWaterFlow()
 	  if (i != a && cm->pointer[i][a]!=0)
 	    {
 	      TreeSegment<MyTreeSegment> *in = GetTreeSegment(this->axis, cm->pointer[i][a]);
-	      SetTSAttributeValue(*out, Pr, GetTSAttributeValue(*out, fout)+GetTSAttributeValue(*in, fin));
+	      SetTSAttributeValue(*out, fout, GetTSAttributeValue(*out, fout)+GetTSAttributeValue(*in, fin));
 	    }
 	}
-      
+      TP new_pressure = GetTSAttributeValue(*out, pr) + time_step * ( GetTSAttributeValue(*out, fin) - GetTSAttributeValue(*out, fout) - out->GetTranspiration(time)); 
+      SetTSAttributeValue(*out, pr, new_pressure); 
     }
+
 }
 
+
+// This method counts the flow from the TreeSegment below (out) to the TreeSegment above.
 template <class TS>
 TP Tree<TS>::CountFlow(TreeSegment<TS> &in, TreeSegment<TS> &out)
 {

@@ -97,7 +97,7 @@ class Tree: public TreeCompartment<TS>{
 public:
   Tree();
   Tree(const Point<METER>& p, const PositionVector& d);
-  void UpdateWaterFlow();
+  void UpdateWaterFlow(TP time);
 private:
  
   TreeSegment<TS>* GetTreeSegment(Axis<TS> &ax, long int add);

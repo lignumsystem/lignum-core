@@ -55,6 +55,13 @@ TreeSegment<TS>::~TreeSegment()
 
 
 template <class TS>
+TP TreeSegment<TS>::GetTranspiration(TP time)
+{
+  return 0.0;
+}
+
+
+template <class TS>
 list<METER> GetAnnualRings(const TreeSegment<TS>& ts)
 {
   return ts.tsa.annual_rings;
@@ -117,6 +124,9 @@ TP GetTSAttributeValue(const TreeSegment<TS>& ts, const TAD name)
 
   else if (name == Wf)
     return ts.tsa.Wf;
+
+  else if (name == Wm)
+    return ts.tsa.Wm;
 
   else if (name == Ws)
     return ts.tsa.Ws;

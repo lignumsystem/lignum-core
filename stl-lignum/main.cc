@@ -126,7 +126,7 @@ int main(int argc, char *argv[])
 
   //for_each(ls.begin(),ls.end(),DisplayType<MyTreeSegment>());
   //  for_each(ls.begin(),ls.end(),DisplayType<MyTreeSegment>());
-  tree.UpdateWaterFlow();
+  tree.UpdateWaterFlow(1.0);
 }
 
 
