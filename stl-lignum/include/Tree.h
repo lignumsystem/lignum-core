@@ -7,6 +7,7 @@
 #include <iostream>
 using namespace std;
 
+
 #include <string>
 #include <ParametricCurve.h>
 #include <Point.h>
@@ -78,6 +79,15 @@ namespace Lignum{
     LGMdouble xi;            //Fraction of heartwood in new tree segments
     LGMdouble zbrentEpsilon; //Accuracy    for    finding   root    of
 			     //P-M-dW(lambda), i.e. allocation.
+
+	LGMdouble SLA;			//Spesific leaf area
+	LGMdouble dof_p;			//degree of filling
+	LGMdouble alm;			//Maximum size of a leaf
+
+	LGMdouble yc;				//Foliage mass supported by 1m2 of sapwood
+	LGMdouble ca;				//circulation angle for new buds compared to belowed ones
+	LGMdouble rca;			//random effect of circulation angle [%] 0->
+	LGMdouble rld;			//random effect of leaf distances in a single tree segment
   };
 
   //TreeAttributes  are  in a  (long)  vector  indexed by  enumeration
@@ -184,7 +194,8 @@ namespace Lignum{
       Tree(const Point& p, const PositionVector& d, 
 	   LGMdouble len, LGMdouble rad, int num_buds);
 
-      void photosynthesis();
+      void UpdateWaterFlow(LGMdouble time, const ConnectionMatrix<TS,BUD> &cm);
+	  void photosynthesis();
       void respiration();
 	  TreeFunctions tf;  //cvs update
 	

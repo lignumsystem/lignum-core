@@ -70,6 +70,10 @@ TreeSegment<TS,BUD>::TreeSegment()
   tree = NULL;
 }
 
+template <class TS,class BUD>
+TreeSegment<TS,BUD>::~TreeSegment()
+{
+}
 
 template <class TS,class BUD>
 TreeSegment<TS,BUD>::TreeSegment(const Point& p, const PositionVector& d, const LGMdouble go,

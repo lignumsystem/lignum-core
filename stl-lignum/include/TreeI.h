@@ -1,196 +1,99 @@
 #ifndef TREEI_H
 #define TREEI_H
 
+
 using namespace sky;
 
 namespace Lignum{
 
-
 template <class TS,class BUD>
 Tree<TS,BUD>::Tree()
+  :root_axis(Point(0,0,0),PositionVector(0,0,-1),*this)
 {
   tree = NULL;
-  ttp.lambda = 0.1;
 }
 
-#ifdef _MSC_VER
-//Construct a tree at a certain position to a certain direction
-//with one terminating bud in the main axis
-template <class TS,class BUD>
-Tree<TS,BUD>::Tree(const Point& p, const PositionVector& d) :TreeCompartment<TS,BUD>(p,d,this),axis(p,d,this), f(NUM_OF_AZIM, NUM_OF_INCL)
-{
-  //force the instantiation of BranchingPoint
-  BranchingPoint<TS,BUD>(p,d,this);
-}
-
-#else
 //Construct a tree at a certain position to a certain direction
 //with one terminating bud in the main axis
 template <class TS,class BUD>
 Tree<TS,BUD>::Tree(const Point& p, const PositionVector& d)
-  :TreeCompartment<TS,BUD>(p,d,this),axis(p,d,this),f(5,5)
+  :TreeCompartment<TS,BUD>(p,d,this),f(5,5),axis(p,d,this),
+    root_axis(p,d,*this)
+{
+}
+
+
+template <class TS,class BUD>
+Tree<TS,BUD>::Tree(const Point& p, const PositionVector& d, LGMdouble len, LGMdouble rad, int num_buds)
+  :TreeCompartment<TS,BUD>(p,d,this),f(5,5),axis(p,d,this),
+    root_axis(p,d,*this)
 {
   //force the instantiation of BranchingPoint
   BranchingPoint<TS,BUD>(p,d,this);
-}
-#endif // _MSC_VER
-
-
-
-template <class TS,class BUD>
-void SetFirmament(const Tree<TS,BUD>& tree, const FirmamentWithMask& frmnt)
-{
-  tree.f = frmnt;
-}
-
-template <class TS,class BUD>
-void Tree<TS,BUD>::UpdateWaterFlow(LGMdouble time_step, const ConnectionMatrix<TS,BUD> &cm)
-{
-  int i = 0;
-  // This counts the flow in for every segment
-  for (i=0; i<cm.getSize(); i++){
-    TreeSegment<TS,BUD> *out;
-    if(cm.getTreeSegment(i) != NULL)  
-      out = cm.getTreeSegment(i);
-    
-    for (int a=0; a<cm.getSize(); a++){
-      if (i != a && cm.getTreeSegment(i, a) != 0){
-
-	TreeSegment<TS,BUD> *in = cm.getTreeSegment(i,a);	
-	SetValue(*in, fin, CountFlow(*in, *out));
-      }
-      SetValue(*out, fout, 0);   
-    }	
-  }
-
-  TreeSegment<TS,BUD> *in = cm.getTreeSegment(0);
-  SetValue(*in, fin, cm.getSize() * 0.12e-9);
   
-  // This counts the flow out for every segment
-  for (i=0; i<cm.getSize(); i++){
-    TreeSegment<TS,BUD> *out;
-    if(cm.getTreeSegment(i) != 0)  
-      out = cm.getTreeSegment(i);
-    for (int a=0; a<cm.getSize(); a++){
-      if (i != a && cm.getTreeSegment(i,a) != 0){
-	TreeSegment<TS,BUD> *in = cm.getTreeSegment(i,a);
-	SetValue(*out, fout, GetValue(*out, fout)+GetValue(*in, fin));
-      }
+  TreeSegment<TS,BUD> *ts = new TreeSegment<TS,BUD>(p,d, 0, len, rad,0, this);
+
+  SetValue(*ts, omega, 1);
+  SetValue(*ts, age, 0);
+
+  if(TS* tts = dynamic_cast<TS *>(ts))
+    {
+      SetValue(*tts, Wf, 0.03);
     }
+  SetValue(*ts, Rf, rad + 0.02);
 
-    LGMdouble Dw = GetValue(*out, R);  //diameter of sapwood
-    
-    LGMdouble new_pressure = GetValue(*out, Pr) + time_step * ttp.Er / Dw * 2  /
-      (ttp.rhow * PI_VALUE *  GetValue(*out, L) *  GetValue(*out, R)) *
-      ( GetValue(*out, fin) - GetValue(*out, fout) - 
-	out->GetTranspiration(time_step));  
-    
-   
-     //cout << i << ":virtaus sisään " <<  GetValue(*out, fin)*time_step << " ; ulos " 
-	  << GetValue(*out, fout)*time_step << " haihdunta:" << out->GetTranspiration(time_step)*time_step;
-    //cout << "SUMMA = " <<  (GetValue(*out, fin) - GetValue(*out, fout) -  out->GetTranspiration(time_step))*time_step 
-	 << endl;
-   
-        
-    SetValue(*out, Pr, new_pressure);         
-    SetValue(*out, Wm, GetValue(*out, Wm) + (GetValue(*out, fin)-  GetValue(*out, fout) - out->GetTranspiration(0.0))* time_step); 
-  }
-  //cout << endl; 
+  LGMdouble x_i = GetValue(*this, xi);
+  LGMdouble ts_rad = GetValue(*ts, R);
+  
+  //Sapwood area corresponds to foliage mass
+  LGMdouble A_s = (1.0 - GetValue(*this, xi)) * 
+    GetValue(*ts, Wf)/(2.0*GetValue(*this, af)*
+		       GetValue(*this, lr));
+  
+  if (A_s > PI_VALUE*ts_rad*ts_rad)
+    SetValue(*ts, Rh, 0);
+  
+  
+  LGMdouble r_h = sqrt((PI_VALUE*ts_rad*ts_rad - A_s)/PI_VALUE);
+  SetValue(*ts, Rh, r_h);
+  
+  Point end_point = p + Point(0,0,len);
+  BranchingPoint<TS,BUD> *bp = 
+    new BranchingPoint<TS,BUD>(end_point,
+			       PositionVector(0,0,1), 
+			       this);
+  
+  Bud<TS,BUD> *bud1 = new Bud<TS,BUD>(end_point, d, 1, this);
+  SetValue(*bud1, age, 1);
+  SetValue(*bud1, state, ALIVE);
+
+  Axis<TS,BUD> &axis = GetAxis(*this);
+  InsertTreeCompartment(axis, ts);      
+  InsertTreeCompartment(axis, bp);
+  InsertTreeCompartment(axis , bud1);
+  
+  Axis<TS,BUD> *new_axes[20];
+  int index = 0;
+  
+  PositionVector v2(0, sqrt(2.0)/2.0, sqrt(2.0)/2.0);
+  LGMdouble delta_angle = 2 * PI_VALUE / num_buds;              
+  while(num_buds > 0)
+    {
+      new_axes[index] = new Axis<TS,BUD>();
+      
+      v2.rotate(Point(0,0,0), PositionVector(0,0,1), delta_angle);
+      Bud<TS,BUD> *new_bud = 
+	new Bud<TS,BUD>(GetPoint(*bud1), v2, 2, this);
+      SetValue(*new_bud,age, 1);
+      SetValue(*new_bud,state, ALIVE);
+      
+      InsertTreeCompartment(*new_axes[index], new_bud);
+      index++;
+      num_buds--;
+    }
 }
 
 
-
-// This method counts the flow from the TreeSegment below (out) to the TreeSegment above.
-
-template <class TS,class BUD>
-LGMdouble Tree<TS,BUD>::CountFlow(TreeSegment<TS,BUD> &in, TreeSegment<TS,BUD> &out)
-
-{
-  LGMdouble ar = GetValue(out, A);
-  LGMdouble le = GetValue(out, L);
-  LGMdouble he = GetValue(in, Hm) - GetValue(out, Hm);
-
-  LGMdouble pr_out = GetValue(out, Pr);  // Pressure in the element above
-  LGMdouble pr_in = GetValue(in, Pr);    // Pressure in the element below
- 
-  return ttp.rhow * (ttp.k/ ttp.eta) * (ar / le) * (pr_out - pr_in - (ttp.rhow * ttp.g * he));
-}
-
-
-template <class TS,class BUD>
-FirmamentWithMask& GetFirmament(Tree<TS,BUD>& tree)
-{
-  return tree.f;
-}
-
-
-//The initialization of the tree.
-//Install parameters and functions.
-//TreeMetaFileParser  parsers the 'meta_file'
-//and after that the file names for the parameters and functions 
-//are known. 
-//Parameters: Then the lexer 'lex' can tokenize the parameter files
-//to a list of: [name,value,name,value,...,name,value,ENDFILE]
-//Then install the parameters.
-//Functions: Functions are represented as parametric curves
-//that are given as (x,y) pairs in an ASCII file
-//ParametricCurve can read and create internal representation
-//for a parametric curve and evaluate it in any point.
-template <class TS,class BUD>
-void InitializeTree(Tree<TS,BUD>& tree, const std::string& meta_file)
-{
-	
-  LGMdouble p;
-  std::string file;
-  Lex lex;
-  Token name,value;
-  TreeMetaFileParser tmfp(meta_file);
-  MapTPD maptpd;
-
-  tmfp.parse();
-
-  file = tmfp.getParameterFile("Tree");
-  cout << "Reading parameters for tree from: " << file << endl;
-  lex.scan(file);
-
-  name = lex.getToken();
-  while (name.getType() != VC_ENDFILE)
-	{	
-		value = lex.getToken(); 
-		p = (LGMdouble) atof(value.getValue().c_str());
-		cout << " Parameter: " << name.getValue() << " = " << p << endl;
-		if (name.getValue() == std::string("lambda"))
-			SetValue(tree,lambda,p);
-		
-		else
-		{
-			std::string str = name.getValue();
-			
-			std::map<std::string, LGMPD>::iterator tpdI = maptpd.tpd.find(str);  //* korjaa!!!!!!!!!!!!
-			SetValue(tree,(*tpdI).second,p);		
-		}
-		
-		name = lex.getToken();
-		
-	}
-
-  file = tmfp.getFunctionFile(std::string("Buds"));
-  cout << "Reading function for number of new buds from: " << file << endl;
-  tree.tf.nb.install(file.c_str());
-
-  file = tmfp.getFunctionFile(std::string("DoI"));
-  cout << "Reading function for DoI from: " << file << endl;
-  tree.tf.ip.install(file.c_str());
-
-  file = tmfp.getFunctionFile(std::string("FoliageMortality"));
-  cout << "Reading function for foliage mortality from: " << file << endl;
-  tree.tf.fm.install(file.c_str());
-
-  file = tmfp.getTreeInitializationFile(std::string("Tree"));
-  cout << "Reading tree initialization file from: " << file << endl;
-  tree.tif.install(file.c_str());
-
-}
 
 //Get a parameter value 
 template <class TS,class BUD>
@@ -199,17 +102,8 @@ LGMdouble GetValue(const Tree<TS,BUD>& tree, const LGMPD name)
   if (name == af)
     return tree.tp.af;
 
-  if (name == al)
-    return tree.tp.alm;
-
   else if (name == ar)
      return tree.tp.ar;
-
-  else if (name == ca)
-     return tree.tp.ca;
-
-  else if (name == dofp)
-     return tree.tp.dof_p;
 
   else if (name == lr)
     return tree.tp.lr;
@@ -235,15 +129,6 @@ LGMdouble GetValue(const Tree<TS,BUD>& tree, const LGMPD name)
   else if (name == q)
     return tree.tp.q;
 
-   else if (name == rca)
-     return tree.tp.rca;
-
-   else if (name == rld)
-     return tree.tp.rld;
-
-  else if (name == sla)
-    return tree.tp.SLA;
-
   else if (name == sr)
     return tree.tp.sr;
 
@@ -253,8 +138,11 @@ LGMdouble GetValue(const Tree<TS,BUD>& tree, const LGMPD name)
   else if (name == rho)
     return tree.tp.rho;
 
-   else if (name == yc)
-     return tree.tp.yc;
+  else if (name == rho_root)
+    return tree.tp.rho_root;
+  
+  else if ( name == rho_hair)
+    return tree.tp.rho_hair;
 
   else if (name == xi)
      return tree.tp.xi;
@@ -263,7 +151,7 @@ LGMdouble GetValue(const Tree<TS,BUD>& tree, const LGMPD name)
      return tree.tp.zbrentEpsilon;
 
   else{
-    cerr << "GetValue() uknown parameter: " << name << " returning 0.0" 
+    cerr << "Tree::GetValue() uknown parameter: " << name << " returning 0.0" 
 	 << endl;
   }
   return 0.0;
@@ -278,17 +166,8 @@ LGMdouble SetValue(Tree<TS,BUD>& tree, const LGMPD name, const LGMdouble value)
   if (name == af)
     tree.tp.af = value;
 
-  if (name == al)
-    tree.tp.alm = value;
-
   else if (name == ar)
     tree.tp.ar = value;
-
-  else if (name == ca)
-    tree.tp.ca = value;
-
-  else if (name == dofp)
-	tree.tp.dof_p = value;
 
   else if (name == lr)
     tree.tp.lr = value;
@@ -314,15 +193,6 @@ LGMdouble SetValue(Tree<TS,BUD>& tree, const LGMPD name, const LGMdouble value)
   else if (name == q)
     tree.tp.q = value;
 
-  else if (name == rca)
-    tree.tp.rca = value;
-
-   else if (name == rld)
-    tree.tp.rld = value;
-
-  else if (name == sla)
-    tree.tp.SLA = value;
-
   else if (name == sr)
     tree.tp.sr = value;
 
@@ -332,8 +202,11 @@ LGMdouble SetValue(Tree<TS,BUD>& tree, const LGMPD name, const LGMdouble value)
   else if (name == rho)
     tree.tp.rho = value;
 
-  else if (name == yc)
-    tree.tp.yc = value;
+  else if (name == rho_root)
+    tree.tp.rho_root = value;
+
+  else if (name == rho_hair)
+    tree.tp.rho_hair = value;
 
   else if (name == xi)
     tree.tp.xi = value;
@@ -342,7 +215,7 @@ LGMdouble SetValue(Tree<TS,BUD>& tree, const LGMPD name, const LGMdouble value)
     tree.tp.zbrentEpsilon = value;
 
   else{
-    cerr << "SetValue unknown parameter: " << name << " returning 0.0" 
+    cerr << "Tree::SetValue unknown parameter: " << name << " returning 0.0" 
 	 << endl;
   }
   return old_value;
@@ -376,65 +249,23 @@ LGMdouble SetValue(Tree<TS,BUD>& tree, const LGMTD name, const LGMdouble value)
   return old_value;
 }
 
+//Index the tree attribute vector with range check.
 template <class TS,class BUD>
-LGMdouble GetValue(const Tree<TS,BUD>& tree, const LGMAD name)
+LGMdouble GetValue(const Tree<TS,BUD>& tree, const LGMTAD name)
 { 
-  if (name == lb)
-    return tree.ta.lb;
-
-  else if (name == P)
-     return tree.ta.P;
-
-  else if (name == M)
-     return tree.ta.M;
-
-  else if (name == sf)
-     return tree.ta.sf;
-
-  else if (name == tauL)
-     return tree.ta.tauL;
-
-  else if (name == Wr)
-     return tree.ta.Wr;
-
-  else {
-    //    cerr << "GetValue  unknown attribute: " << name << " returning 0.0" 
-    //	 << endl;
-    return GetValue(dynamic_cast<const TreeCompartment<TS,BUD>&>(tree), name);
-  }
-
-  //  return 0.0;
+  //no need to go to tree compartment, these are tree level attributes
+  return  tree.ta.v[name];
 }
 
+//Index the tree attribute vector with range check.
 template <class TS,class BUD>
-LGMdouble SetValue(Tree<TS,BUD>& tree, const LGMAD name, const LGMdouble value)
+LGMdouble SetValue(Tree<TS,BUD>& tree, const LGMTAD name, const LGMdouble value)
 {
+
   LGMdouble old_value = GetValue(tree,name);
-
-  if (name == lb)
-    tree.ta.lb = value;
-
-  else if (name == P)
-    tree.ta.P = value;
-
-  else if (name == M)
-     tree.ta.M = value;
-
-  else if (name == sf)
-     tree.ta.sf = value;
-
-  else if (name == tauL)
-     tree.ta.tauL = value;
- 
-  else if (name == Wr)
-    tree.ta.Wr = value;
-
-  else{
-//      cerr << "SetValue unknown attribute: " << name << " returning " 
-//  	 << old_value << endl;
-    old_value=SetValue(dynamic_cast<TreeCompartment<TS,BUD>&>(tree),name,value);
-  }
-
+  //no need to go to tree compartment, these are tree level attributes
+  tree.ta.v[name] = value;
+  
   return old_value;
 }
   
@@ -445,30 +276,90 @@ Axis<TS,BUD>& GetAxis(Tree<TS,BUD>& t)
   return t.axis;
 }
 
+template <class TS,class BUD>
+RootAxis<Tree<TS,BUD> >& GetRootAxis(Tree<TS,BUD>& t)
+{
+  return t.root_axis;
+}
 
+//Return a tree function as a ParametricCurve
+template<class TS, class BUD>
+const ParametricCurve& GetFunction(const Tree<TS,BUD>& tree, LGMF name)
+{  
 
+  if (name == LGMAL){
+    return tree.tf.al;
+  }
 
+  else if (name == LGMFM){
+     return tree.tf.fm;
+  }
 
+  else if (name == LGMIP){
+    return tree.tf.ip;
+  }
 
+  else if (name == LGMNB){
+    return tree.tf.nb;
+  }
+
+  else if (name == LGMLONB){
+    return tree.tf.LightOnNumBuds;
+  }
+
+  else if (name == LGMVI){
+    return tree.tf.vi;
+  }
+
+  else if (name == LGMVIONB){
+    return tree.tf.VigourOnNumBuds;
+  }
+
+  else{
+    cerr << "GetFunction unknown function: " << name << endl;
+  }
+  //Error happened throw useless ParametricCurve. 
+  throw ParametricCurve();
+}
+  
 //At the moment returns the name of the only (ASCII) file that contains
 //the definition of the initial tree. Later - maybe - several such files.
 template<class TS, class BUD>
-std::string GetTreeInitializationFile(Tree<TS,BUD>& tree) {
+string GetTreeInitializationFile(Tree<TS,BUD>& tree) {
   return tree.tif.treeFile;
 }
 
 
 template <class TS,class BUD>
-FirmamentWithMask& GetFirmament(const Tree<TS,BUD>& tree) {
-    return tree.f;
+void SetFirmament(const Tree<TS,BUD>& tree, const FirmamentWithMask& frmnt)
+{
+  tree.f = frmnt;
+}
+ 
+template <class TS,class BUD>
+FirmamentWithMask& GetFirmament(Tree<TS,BUD>& tree) {
+  return tree.f;
 }
 
 
 
 
+} //close namespace Lignum
+
+#endif //TREEI_H
 
 
 
-} //closing namespace
+#ifdef TREE
+#include <stdlib.h>
+#include <iostream>
+
+int main()
+{
+  cout << "OK" << endl;
+  exit(0);
+}
+
 
 #endif
+

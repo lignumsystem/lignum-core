@@ -20,7 +20,7 @@ TreeCompartment<TS,BUD>::TreeCompartment(const Point& p, const PositionVector& d
   direction.normalize();
 
   tree = t;
-  age = 0.0;
+  tc_age = 0.0;
 }
 
 template <class TS,class BUD>
@@ -81,7 +81,7 @@ LGMdouble GetValue(const TreeCompartment<TS,BUD>& tc, const LGMAD name)
   LGMdouble unknown_value = 0.0;
 
   if (name == age)
-    return tc.age;
+    return tc.tc_age;
 
   else
   {
@@ -100,7 +100,7 @@ LGMdouble SetValue(TreeCompartment<TS,BUD>& tc, const LGMAD name, const LGMdoubl
   LGMdouble old_value = GetValue(tc,name);
   
   if (name == age)
-    tc.age = value;
+    tc.tc_age = value;
 
   else
   {
