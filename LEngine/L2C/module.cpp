@@ -541,9 +541,10 @@ void GenerateOpenNamespace(const char* id)
   fputs("{ \n", fOut);
 }
 
-extern bool close;
+//defined in l2c.y
+extern bool namespace_close;
 void GenerateCloseNamespace()
 {
-  if (close)
+  if (namespace_close)
     fputs("} //closing namespace\n", fOut);
 }
