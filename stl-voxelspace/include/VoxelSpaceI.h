@@ -4,12 +4,16 @@
 
 namespace Lignum {
 
+    inline 
+    LGMdouble GetValue(const VoxelSpace& s,VAD LGAkb){
+      return s.k_b;
+    }
   //First CfTree & CfTreeSegment==========================
 
   template <class TS,class BUD>
-    void DumpCfTree(VoxelSpace &s, Tree<TS, BUD> &tree)
+    void DumpCfTree(VoxelSpace &s, Tree<TS, BUD> &tree,int num_parts)
     {
-      DumpCfTreeFunctor<TS,BUD> f;
+      DumpCfTreeFunctor<TS,BUD> f(num_parts);
       f.space = &s;
       ForEach(tree, f);
     }
@@ -20,30 +24,29 @@ namespace Lignum {
     {
       if (TS* cfts = dynamic_cast<TS*>(tc))
 	{
-	  DumpCfTreeSegment(*space, *cfts);
+	  DumpCfTreeSegment(*space,*cfts,num_parts);
 	} 
       return tc;
     }
 
   template <class TS,class BUD>
-    void DumpCfTreeSegment(VoxelSpace &s, CfTreeSegment<TS, BUD> &ts)
-    {
-      Point p = GetPoint(ts);
-      PositionVector pv = GetDirection(ts);
-      LGMdouble length = GetValue(ts, LGAL);
-      int num_parts = 1;
+  void DumpCfTreeSegment(VoxelSpace &s, CfTreeSegment<TS, BUD> &ts,double num_parts)
+  {
+    Point p = GetPoint(ts);
+    PositionVector pv = GetDirection(ts);
+    LGMdouble length = GetValue(ts, LGAL);
 
-      for (float i=0; i<num_parts; i++)
-	{
-	  Point p1 = p + (Point)(length * (i/num_parts) * pv);
-	  DumpSegment(s.getVoxelBox(p1), ts, num_parts);
-	}
-    }
-
+    for (int i=1; i<(num_parts+1.0); i++)
+      {
+	Point p1 = p + (Point)(length * (i/(num_parts+1.0)) * pv);
+	DumpSegment(s.getVoxelBox(p1), ts, num_parts);
+      }
+  }
+  
   template <class TS,class BUD>
-    void SetCfTreeQabs(VoxelSpace &s, Tree<TS, BUD> &tree)
+    void SetCfTreeQabs(VoxelSpace &s, Tree<TS, BUD> &tree, int num_parts)
     {
-      SetCfTreeQabsFunctor<TS,BUD> f;
+      SetCfTreeQabsFunctor<TS,BUD> f(num_parts);
       f.space = &s;
       ForEach(tree, f);
     }
@@ -57,7 +60,7 @@ namespace Lignum {
 	  dynamic_cast<CfTreeSegment<TS,BUD>*>(tc))
 	{
 	  LGMdouble fmass = GetValue(*cfts, LGAWf);
-	  //Reset values here
+	  //Reset Qabs Qin  here
 	  SetValue(*cfts, LGAQabs, 0.0);
 	  SetValue(*cfts, LGAQin, 0.0);
 	  if (fmass > R_EPSILON)
@@ -65,17 +68,20 @@ namespace Lignum {
 	      Point p = GetPoint(*cfts);
 	      PositionVector pv = GetDirection(*cfts);
 	      LGMdouble length = GetValue(*cfts, LGAL);
-	      int num_parts = 1;
-
-	      for (float i=0; i<num_parts; i++)
+	      //if the user wants 1 part (whole segment), the loop is executed
+	      //once  and the midpoint  of the  segment is  used; if  the user
+	      //wants 2 parts,  the loop is executed twice  and the points 1/3
+	      //and 2/3 of the segment length are used, and so on
+	      for (int i=1; i<(num_parts+1.0); i++)
 		{
-		  Point p1 = p + (Point)(length * (i/num_parts) * pv);
+		  Point p1 = p + (Point)(length * (i/(num_parts+1.0)) * pv);
 		  VoxelBox box = space->getVoxelBox(p1);
 		  SetSegmentQabs(box, *cfts, num_parts);
 		}		
 	    }
 	}
-      return tc;    }
+      return tc;    
+    }
 
   //Then HwTree & HwTreeSegment ==========================
 
@@ -159,7 +165,7 @@ namespace Lignum {
 	box = space.getVoxelBox(p);
 	bQin = box.getQin();
 	la = GetValue(**I,  LGAA);
-	lQabs = 0.5 * bQin * la;
+	lQabs = GetValue(space,LGAkb) * bQin * la;
 	SetValue(**I, LGAQabs, lQabs);
 	SetValue(**I, LGAQin, bQin);
       }

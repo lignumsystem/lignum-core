@@ -19,6 +19,9 @@ namespace Lignum {
     LGMdouble l;
   };
 
+  //The value for 'kb'  (angle of incidence, c.f.star mean for coniferous)
+  //for broadleaf
+  enum VAD {LGAkb}; 
 
   class VoxelSpace
   {
@@ -28,13 +31,13 @@ namespace Lignum {
     friend class VoxelBox;
 
     template <class TS,class BUD>
-    friend void DumpCfTree(VoxelSpace &s, Tree<TS, BUD> &ts);
+    friend void DumpCfTree(VoxelSpace &s, Tree<TS, BUD> &ts,int num_parts);
 
     template <class TS,class BUD>
-    friend void DumpCfTreeSegment(VoxelSpace &s, CfTreeSegment<TS, BUD> &ts);
+    friend void DumpCfTreeSegment(VoxelSpace &s, CfTreeSegment<TS, BUD> &ts,double num_parts);
 
     template <class TS,class BUD>
-    friend void SetCfTreeQabs(VoxelSpace &s, Tree<TS, BUD> &tree);
+    friend void SetCfTreeQabs(VoxelSpace &s, Tree<TS, BUD> &tree,int num_parts);
      
     template <class TS,class BUD>
     friend void DumpHwTree(VoxelSpace &s, Tree<TS, BUD> &ts);
@@ -50,19 +53,20 @@ namespace Lignum {
     friend void SetHwTreeSegmentQabs(VoxelSpace &space,
 		     HwTreeSegment<TS,BUD,SHAPE>& ts);
 
-
+    friend LGMdouble GetValue(const VoxelSpace& s,VAD LGAkb);
   public:
 
     VoxelSpace(); 
     VoxelSpace(Point corner1, Point corner2, 
 	       int xn, int yn, int zn,
 	       Firmament& f);
-    //constructor defining corner points, voxel box size,
-    //number of boxes (size of the matrix) and the sky.
+    //constructor defining  corner points,  voxel box size,  number of
+    //boxes (size of the matrix), the sky.and the k_b for broad leaf
     VoxelSpace(Point corner1, Point corner2, 
 	       double xsize, double ysize, double zsize,
 	       int xn, int yn, int zn,
-	       Firmament& f);
+	       Firmament& f, LGMdouble k_b=0.50);
+    
     void reset();
     void resize(int nX, int nY, int nZ); //change number of VoxelBoxes
 					 //in x, y, and
@@ -133,6 +137,7 @@ namespace Lignum {
     void writeVoxelBoxesToGnuPlotFile(const string& filename, 
 				      const string& sep=" ");
     void writeVoxelSpaceContents();
+    void writeStarMean();
     double getMeanFoliageAreaDensity();     
 
     LGMdouble Xbox, Ybox, Zbox;
@@ -152,6 +157,8 @@ namespace Lignum {
 
     Firmament* sky;
 
+    LGMdouble k_b; //impact angle of a broad  leaf (c.f. star mean for
+		   //coniferous)
   };
 
 
@@ -159,16 +166,20 @@ namespace Lignum {
   class DumpCfTreeFunctor
   {
   public:
+    DumpCfTreeFunctor(int n):num_parts(n){}
     TreeCompartment<TS,BUD>* operator ()(TreeCompartment<TS,BUD>* tc)const;
     mutable VoxelSpace *space;
+    double num_parts;
   };
 
   template <class TS,class BUD>
   class SetCfTreeQabsFunctor
   {
   public:
+    SetCfTreeQabsFunctor(int n):num_parts(n){}
     TreeCompartment<TS,BUD>* operator ()(TreeCompartment<TS,BUD>* tc)const;
     mutable VoxelSpace *space;
+    double num_parts;
   };
 
   //For deciduous trees, that is, hardwoods

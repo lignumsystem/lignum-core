@@ -19,7 +19,7 @@ namespace Lignum {
   // 
   //	Default constructor
   //
-  VoxelSpace::VoxelSpace():voxboxes(10,10,10),Xn(10),Yn(10),Zn(10)
+  VoxelSpace::VoxelSpace():voxboxes(10,10,10),Xn(10),Yn(10),Zn(10),k_b(0.50)
   {
      sky = NULL;
   }
@@ -37,7 +37,7 @@ namespace Lignum {
   //	f		: Firmament
   //
   VoxelSpace::VoxelSpace(Point c1, Point c2, int xn, int yn, int zn, Firmament &f)
-    :corner1(c1),corner2(c2),voxboxes(xn,yn,zn),Xn(xn),Yn(yn),Zn(zn)
+    :corner1(c1),corner2(c2),voxboxes(xn,yn,zn),Xn(xn),Yn(yn),Zn(zn),k_b(0.50)
   {
     Xbox = (corner2-corner1).getX()/static_cast<int>(Xn);
     Ybox = (corner2-corner1).getY()/static_cast<int>(Yn);
@@ -60,12 +60,13 @@ namespace Lignum {
   //xsize, ysize, zsize: voxel box size
   //xn, yn, zn: number of voxel boxes (size of the matrix)
   //f: the firmament
+  //kb: angle of incidence of a broad leaf (c.f star for coniferous)
   VoxelSpace::VoxelSpace(Point c1, Point c2, 
 			 double xsize, double ysize, double zsize,
 			 int xn, int yn, int zn, 
-			 Firmament &f)
+			 Firmament &f, LGMdouble kb)
     :corner1(c1),corner2(c2),Xbox(xsize),Ybox(ysize),Zbox(zsize),
-     voxboxes(xn,yn,zn),Xn(xn),Yn(yn),Zn(zn)
+     voxboxes(xn,yn,zn),Xn(xn),Yn(yn),Zn(zn),k_b(kb)
   {
     for(int i1=0; i1<Xn; i1++)
       for(int i2=0; i2<Yn; i2++)
@@ -478,7 +479,7 @@ namespace Lignum {
                       int a=1;
 		      bool flag=0;
 		      // long int seed= time(0);
-                      double p, result, test;
+                      double result;
                       Bernoulli ber(seed);
                       
                       while (a<size && flag==0)
@@ -489,7 +490,7 @@ namespace Lignum {
 					
                           LGMdouble starsum=voxboxes[v1.x][v1.y][v1.y].getStarSum();			
 			 
-                          p=min(starsum, 1.0);     //need to work on my
+                          LGMdouble p=min(starsum, 1.0);     //need to work on my
 			  //field data to get the p value
 			  // cout<<starsum<<" ";
                           result=ber(0.3, 1);
@@ -521,7 +522,7 @@ namespace Lignum {
 		      bool flag=0;
 		      // long int seed= time(0);
 		      long int seed = -rand();
-                      double p, result, test;
+                      double result;
                       Bernoulli ber(seed);
                       
                       while (a<size && flag==0)
@@ -532,7 +533,7 @@ namespace Lignum {
 					
                           LGMdouble starsum=voxboxes[v1.x][v1.y][v1.y].getStarSum();			
 			 
-                          p=min(starsum, 1.0);     //need to work on my field data to get the p value
+                          LGMdouble p=min(starsum, 1.0);     //need to work on my field data to get the p value
 			  // cout<<starsum<<" ";
                           result=ber(0.3, 1);
 			  // cout<<result<<" ________________show result____________"<<endl; 
@@ -562,7 +563,6 @@ namespace Lignum {
   //    self_shading determines if the box shades itself or not   
   LGMdouble VoxelSpace::calculateTurbidLight(bool self_shading)
   {
-    //ofstream file("calculateVoxelSpace.txt");
     updateStar();
     for(int i1=0; i1<Xn; i1++)
       for(int i2=0; i2<Yn; i2++)
@@ -624,37 +624,34 @@ namespace Lignum {
 			LGMdouble ext = voxboxes[i1][i2][i3].extinction(inner_length/2.0);
 			iop = iop * ext;
 		      }
-		    //radiation coming to the VoxBox
+		    //radiation coming, Qin,  to the VoxBox
 		    voxboxes[i1][i2][i3].addRadiation(iop); 
-
-						
 		  }
 	      }
-	  }
-    
-    // file.close();
+	  }   
     return 0;
   }
 
   void VoxelSpace::updateStar()
   {
-    for(int i1=0; i1<Xn; i1++)
-      for(int i2=0; i2<Yn; i2++)
-	for(int i3=0; i3<Zn; i3++)
-	  {
+    for(int i1=0; i1<Xn; i1++){
+      for(int i2=0; i2<Yn; i2++){
+	for(int i3=0; i3<Zn; i3++){
 	    voxboxes[i1][i2][i3].updateValues(); 
-	  }
-
+	}
+      }
+    }
   }
 
   void VoxelSpace::reset()
   {
-    for(int i1=0; i1<Xn; i1++)
-      for(int i2=0; i2<Yn; i2++)
-	for(int i3=0; i3<Zn; i3++)
-	  {
+    for(int i1=0; i1<Xn; i1++){
+      for(int i2=0; i2<Yn; i2++){
+	for(int i3=0; i3<Zn; i3++){
 	    voxboxes[i1][i2][i3].reset(); 
-	  }
+	}
+      }
+    }
   } 
 
   LGMdouble VoxelSpace::getQabs()const
@@ -881,6 +878,31 @@ namespace Lignum {
 	      }
 	  }
     return count;
+  }
+
+  void VoxelSpace::writeStarMean()
+  {
+    for(int i1=0; i1<Xn; i1++){
+      for(int i2=0; i2<Yn; i2++){
+	for(int i3=0; i3<Zn; i3++){
+	  if(voxboxes[i1][i2][i3].getNumSegments() > 0){
+	    LGMdouble sm = 0.0;
+	    if (voxboxes[i1][i2][i3].getWeight() > 0.0){
+	      sm = voxboxes[i1][i2][i3].getStarSum()/voxboxes[i1][i2][i3].getWeight();
+	      cerr << "Weighted starm: " << sm << " StarSum: " << voxboxes[i1][i2][i3].getStarSum() 
+		   << " WeightsSum: " << voxboxes[i1][i2][i3].getWeight() 
+		   << " NumSegments: " << voxboxes[i1][i2][i3].getNumSegments() << endl;
+	    }
+	    else{
+	      sm = voxboxes[i1][i2][i3].getStarSum()/voxboxes[i1][i2][i3].getNumSegments();
+	      cerr << "Arithmetic starm: " << sm << " StarSum: " << voxboxes[i1][i2][i3].getStarSum()
+		   << " NumSegments: " << voxboxes[i1][i2][i3].getNumSegments() << endl;
+	    }
+
+	  }
+	}
+      }
+    }
   }
 
 
