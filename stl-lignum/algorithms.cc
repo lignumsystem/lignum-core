@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
   }
   //This is how to access functions, note the ParametricCurve is
   //returned as const
-  const ParametricCurve& pc = GetFunction(hw_tree,FOLIAGEMORTALITY);
+  const ParametricCurve& pc = GetFunction(hw_tree,LGMFM);
   //Example 1.
   //create a tree with a structure [TS,[[B],[B]],B]
   //i.e, [TS,BP,B] which expands to [TS,[A,A],B] and to [TS,[[B],[B]],B]

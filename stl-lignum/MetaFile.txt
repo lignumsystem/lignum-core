@@ -4,6 +4,10 @@ Parameters:
     Tree: Tree.txt 
     Firmament: Firmament.txt
 Functions:
-    FoliageMortality:FoliageMortality.fn
-    NumberOfBuds: Buds.fn
-    DegreeOfInteraction: DoI.fn
+    LGMAL:Al.fn
+    LGMFM: FoliageMortality.fn
+    LGMIP: DoI.fn
+    LGMLONB: LOnB.fn
+    LGMNB: Buds.fn
+    LGMVI: Vi.fn
+    LGMVIONB: ViOnB.fn
