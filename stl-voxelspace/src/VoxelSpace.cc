@@ -883,6 +883,32 @@ namespace Lignum {
     return count;
   }
 
+
+  double VoxelSpace::getMeanFoliageAreaDensity()
+  {
+    double meanD = 0.0;
+    int nb = 0;
+    double vol = Xbox*Ybox*Zbox;
+
+    for(int i1=0; i1<Xn; i1++)
+      for(int i2=0; i2<Yn; i2++)
+	for(int i3=0; i3<Zn; i3++)
+	  {
+	    if(voxboxes[i1][i2][i3].isEmpty() == false)
+	      {
+		nb++;
+		meanD += (voxboxes[i1][i2][i3].getLeafArea()+
+			  voxboxes[i1][i2][i3].getNeedleArea())/vol;
+	      }
+	  }
+    if(nb > 0)
+      return meanD/(double)nb;
+    else
+      return 0.0;
+  }
+
+
+
 }  // closing namespace Lignum
 
 

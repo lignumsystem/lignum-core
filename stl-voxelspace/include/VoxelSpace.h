@@ -133,6 +133,8 @@ namespace Lignum {
     void writeVoxelBoxesToGnuPlotFile(const string& filename, 
 				      const string& sep=" ");
     void writeVoxelSpaceContents();
+    double getMeanFoliageAreaDensity();     
+
     LGMdouble Xbox, Ybox, Zbox;
     int Xn, Yn, Zn;
     TMatrix3D<VoxelBox> voxboxes;
