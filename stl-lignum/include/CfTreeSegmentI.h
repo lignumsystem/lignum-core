@@ -9,18 +9,8 @@ CfTreeSegment<TS,BUD>::CfTreeSegment(const Point& p, const PositionVector& d,
 				     const METER rh, Tree<TS,BUD>* t)
   :TreeSegment<TS,BUD>(p,d,go,l,r,rh,t)
   {
-    //Set radius according to length radius ratio:
-    //As we multiply lr should be [0:1]
-    double r_new = GetValue(*t,lr)*GetValue(*this,L);
-    SetValue(*this,R,r_new);
-    //compute the radius to foliage limit (Rf)
-    //the given parameters are needle length (nl) and the
-    //needle angle (na)
-    //Rf = hf + tsa.R, where hf is height of the foliage (hf = nl * sin(na))
     SetValue(*this,Hf,GetValue(*t,nl)*sin(GetValue(*t,na)));
     SetValue(*this,Rf,GetValue(*this,R)+GetValue(*this,Hf));
-    //Set the initial heartwood radius 
-    SetValue(*this,Rh,sqrt((GetValue(*t,xi)*GetValue(*this,A))/PI_VALUE));
     //compute the initial mass of the foliage
     //1. compute the surface area (Sa) of the segment cylinder
     //2. initial mass of the foliage is then af*Sa ((kg/m2)*m2)
@@ -28,9 +18,6 @@ CfTreeSegment<TS,BUD>::CfTreeSegment(const Point& p, const PositionVector& d,
     SetValue(*this,Wf,wf);
     //Remember original sapwood area As0
     SetValue(*this,As0,GetValue(*this,As));
-    //incoming radiation
-    SetValue(*this,Qin,0.0);
-    
   }
 
 
