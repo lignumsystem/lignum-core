@@ -33,7 +33,7 @@ LIBMATH  = -lm
 
 LIBS     = $(LIBLGM) $(LIBSKY) $(LIBADT) $(LIBMATH)
 
-
+PROGFILES = program-files.html
 .SUFFIXES: .o .cc
 
 lignum: $(OBJ) $(LIB1)  $(LIB2) $(LIB3)
@@ -55,6 +55,10 @@ $(LIB3):
 .cc.o: 
 	$(CCC) $(OPTIMIZE) $(SUPPRESS) $(CCCFLAGS) $(INCLUDE)  $< -o $@
 
+html:
+	enscript -E --color -Whtml --toc -p$(PROGFILES) ./include/*.h ./Axis/*.cc  \
+                  ./BranchingPoint/*.cc ./Bud/*.cc ./Tree/*.cc ./TreeSegment/*.cc . \
+                   ./TreeCompartment/*.cc ./*.cc 
 clean:
 	(cd lib; make clean)
 	rm -rf $(OBJ) $(ALGOBJ) core lignum algorithms broadleaf ii_files
