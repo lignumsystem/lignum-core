@@ -109,6 +109,18 @@ STATUS SetValue(Bud<TS,BUD>& bud, const LGMAS name, const STATUS value)
   return old_value;
 }
 
+template <class TS,class BUD>
+void Bud<TS,BUD>::move(PositionVector dir, LGMdouble length)
+{
+        Point p = GetPoint(*this);
+        Point tmp(dir.getX()*length, dir.getY()*length, dir.getZ()*length);
+	p = p + tmp;
+
+        this->point = p;
+}
+
+
+
 }//closing namespace Lignum
 
 #endif

@@ -40,6 +40,7 @@ public:
   BranchingPoint<TS,BUD>& createBranchingPoint()const;
   virtual void Production(){/*do nothing*/}
   virtual LGMdouble GetProduction(){return 0.0;}
+  void move(PositionVector dir, LGMdouble length);
 private:
   BudAttributes ba;
 };

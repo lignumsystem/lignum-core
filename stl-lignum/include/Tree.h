@@ -29,6 +29,7 @@ using namespace cxxadt;
 #include <ConnectionMatrix.h>
 #include <FirmamentWithMask.h>
 #include <TreeRadiation.h>
+#include <TreeBookkeeping.h>
 
 using namespace sky;
 

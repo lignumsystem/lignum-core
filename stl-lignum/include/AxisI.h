@@ -22,6 +22,23 @@ TreeSegment<TS, BUD>* GetLastTreeSegment(Axis<TS,BUD>& axis)
 	return ret;
 }
 
+template <class TS,class BUD>
+TreeSegment<TS, BUD>* GetFirstTreeSegment(Axis<TS,BUD>& axis)
+{
+        TreeSegment<TS, BUD> *ret = NULL;
+        
+        std::list<TreeCompartment<TS, BUD>*>& ls = axis.tc_ls;
+        std::list<TreeCompartment<TS, BUD>*>::iterator I = ls.begin();
+        while(I != ls.end())
+        {
+                if (TreeSegment<TS, BUD>* myts = dynamic_cast<TreeSegment<TS, BUD>*>(*I))
+                {
+                        return myts;
+                }
+                I++;
+        }
+        return ret;
+}
 
 template <class TS,class BUD>
 Axis<TS,BUD>::~Axis()  //***
@@ -66,8 +83,6 @@ void InsertTreeCompartmentSecondLast(Axis<TS,BUD>& axis, TreeCompartment<TS,BUD>
 	
 	axis.tc_ls.insert(I, ts);	
 	
-
-
 }
 
 
@@ -93,10 +108,35 @@ TreeCompartment<TS,BUD>* GetFirstTreeCompartment(Axis<TS,BUD>& axis)
 {
   return axis.tc_ls.front();
 }
+template <class TS,class BUD>
+LGMdouble GetSumValue(Axis<TS,BUD>& axis, LGMAD name, int Age)
+{
+        LGMdouble sum = 0.0;
 
-
-
+        std::list<TreeCompartment<TS, BUD>*>& ls = axis.tc_ls;
+        std::list<TreeCompartment<TS, BUD>*>::iterator I = ls.begin();
+        while(I != ls.end())
+        {
+              
+	  if (HwTreeSegment<TS,BUD>* hwts = dynamic_cast<HwTreeSegment<TS,BUD>*>(*I))
+                {
+                        if (GetValue(*hwts, age) == Age || Age == -1)
+                                sum += GetValue(*hwts, name);   
+                }
+	  /*
+                else if (CfTreeSegment<TS,BUD>* cfts = dynamic_cast<CfTreeSegment<TS,BUD>*>(*I))
+                {
+                        if (GetValue(*cfts, age) == Age || Age == -1)
+                                sum += GetValue(*cfts, name);
+                }
+	  */
+                I++;
+        }
+        return sum;
 }
+
+
+}//closing namesapce
 
 
 #endif

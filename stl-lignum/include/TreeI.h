@@ -59,7 +59,7 @@ void InitializeTree(Tree<TS,BUD>& tree, const string& meta_file)
       SetValue(tree,lambda,p);
     else{
       string str = name.getValue();
-      map<const char*,LGMPD,cmpstr>::iterator tpd = maptpd.tpd.find(str.c_str());
+      map<string,LGMPD,cmpstr>::iterator tpd = maptpd.tpd.find(str.c_str());
       SetValue(tree,(*tpd).second,p);
     }
     name = lex.getToken();

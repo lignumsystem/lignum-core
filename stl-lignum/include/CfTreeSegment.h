@@ -6,7 +6,7 @@
 #include <Point.h>
 #include <PositionVector.h>
 #include <LGMdecl.h>
-
+#include <CfTreeFunctor.h>
 #include <TreeSegment.h>
 
 namespace Lignum{

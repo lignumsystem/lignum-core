@@ -1,17 +1,18 @@
 #ifndef LGMSYMBOLS_H
 #define LGMSYMBOLS_H
-
+//#include <cstring>
 #include <map>
+#include <string>
 
-using namespace std;
+
 
 namespace Lignum{
 
 
 // Tree Attribute Double, Wm lisätty
 // Wr           dry weight of the roots
-enum LGMAD {A,age,dof,H,Hm,ip,lb,LM,LP,LWf,L,lw,M,omega,P,\
-            Qin,Qabs,R,Rf,Rh,Rtop,sf,sw,tauL,Wf,Ws,Wh,Wr};
+enum LGMAD {A,age,dof, dR, H,Hm,ip,lb,LM,LP,LWf,L,lw,M, omega,P,
+            Qin,Qabs,R,Rf,Rh,RTop,sf,sw,tauL,vi,Wf,Ws,Wh,Wr};  
 
 //  A       0   Area (of what?)
 //  age     1   age of object
@@ -42,7 +43,7 @@ enum LGMAD {A,age,dof,H,Hm,ip,lb,LM,LP,LWf,L,lw,M,omega,P,\
 //  Wh      26  mass of heartwood (kg C)
 //  Wr      27  root mass (kg C)
 
-
+enum LGMFLOW { fin, fout, Pr, Wm };
 
 //Tree Attribute STATUS
 enum LGMAS {state};
@@ -50,21 +51,28 @@ enum LGMAS {state};
 //Tree Parameter Double
 // zbrentEpsilon       Accuracy in solving the root of P - M -dW(lambda)
 enum LGMPD {af,ar,lr,mf,mr,ms,na,nl,pr,q,sr,ss,rho,xi,
-          zbrentEpsilon}; 
+          zbrentEpsilon, Ln_par, n_ang_par}; 
 
 //Tree Transit Variable Double
 enum LGMTD {lambda, g, eta, Er, k, rhow}; 
 
+
+
+
+
 class cmpstr{
 public:
-  bool operator() (const char* s1,const char* s2);
+	bool operator() (const char* s1,const char* s2);
 };
 
 class MapTPD{
 public:
-  MapTPD();
-  map<const char *,LGMPD,cmpstr> tpd;
+	MapTPD();
+	std::map<std::string, LGMPD> tpd;
 };
 
+
 }//closing namespace Lignum
+
+
 #endif
