@@ -42,9 +42,6 @@ public:
   TreeSegment(const Point<METER>& p, const PositionVector& d, const TP go,
 	      const METER l, const METER r, const METER rn, Tree<TS,BUD>* t);
   virtual ~TreeSegment();
-  TP GetTranspiration(TP time);
-  TP GetPressure(){ return tsa.Pr;};
-  TreeSegmentAttributes& getTsa() { return tsa;};
 private:
   TreeSegmentAttributes tsa;
 };
