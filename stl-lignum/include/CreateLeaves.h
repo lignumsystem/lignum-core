@@ -3,6 +3,7 @@
 
 #include <PositionVector.h>
 #include <Sequence.h>
+#include <Ellipse.h>
 
 using namespace cxxadt;
 
@@ -18,7 +19,7 @@ namespace Lignum{
    **************************************************************************/
   //From buds collect directions if they will create a leaf,
   //if segment then create the leaves.
-  template <class TS, class BUD>
+  template <class TS, class BUD, class E>
     class CreateLeaves{
     public:
     CreateLeaves(METER l, METER semi_major, METER semi_minor):pl(l),a(semi_major),b(semi_minor){}
@@ -29,9 +30,9 @@ namespace Lignum{
     METER b; //semi minor axis od leaf ellips
   };
 
-  template <class TS, class BUD>
-    vector<PositionVector>& CreateLeaves<TS,BUD>::operator()(vector<PositionVector>& pdv,
-							     TreeCompartment<TS,BUD>* tc)const
+  template <class TS, class BUD, class E>
+    vector<PositionVector>& CreateLeaves<TS,BUD,E>::operator()(vector<PositionVector>& pdv,
+							       TreeCompartment<TS,BUD>* tc)const
     {
       if (BUD* b = dynamic_cast<BUD*>(tc)){
 	if (GetValue(*b,LGMstatus) == 1){
@@ -44,7 +45,7 @@ namespace Lignum{
 	Point origo(0,0,0);
 	Point point = GetEndPoint(*ts);
 	PositionVector up(0,0,1);
-	Ellipsis shape(a,b); //initial shape of a leaf is Ellips
+	
 	static Uniform u; //uniform random number [0,1] for setting leaf
 	                  //normals;  static makes it  common throughout
 	                  //the  program and  not reinitialized  in each
@@ -61,12 +62,15 @@ namespace Lignum{
 	  PositionVector plane = Cross(pdir,up);
 	  //limit the rotation  of the leaf normal to  [-90,90] degrees so
 	  //that the leaf normal does not point downwards
-	  double ran = (-90.0 +180.0*u(seed))*2.0*PI_VALUE/360; //(radians)
+	  double ran = (-90.0 +180.0*u(seed))*2.0*PI_VALUE/360.0; //(radians)
 	  PositionVector leaf_normal(0,0,1);
 	  leaf_normal.rotate(origo,plane,ran);
-	  BroadLeaf<Ellipsis>* leaf = new BroadLeaf<Ellipsis>(shape,petiole,leaf_normal);
+	  E shape((PositionVector)GetEndPoint(petiole),
+		  leaf_normal,a,b); //initial shape of a leaf is Ellips
+	  BroadLeaf<E>* leaf = new BroadLeaf<E>(shape,petiole,leaf_normal);
 	  //Insert leaf
 	  ts->addLeaf(leaf);
+	  cout << "Leaf inserted" << endl;
 	}
 	//clear the vector; don't create leaves twice
 	pdv.clear();
