@@ -70,6 +70,7 @@ namespace Lignum{
     LGMdouble nl;            //needle length
     LGMdouble pr;            //Propotion of bound solar radiation used in photosynthesis
     LGMdouble q;             //Tree segment shortening factor
+    LGMdouble sf;            //Specific foliage area (=foliage area(total)/weight)
     LGMdouble sr;            //Senescence rate of roots
     LGMdouble ss;            //Senescence rate of sapwood
     LGMdouble rho;           //Density of wood
@@ -79,14 +80,14 @@ namespace Lignum{
     LGMdouble zbrentEpsilon; //Accuracy    for    finding   root    of
 			     //P-M-dW(lambda), i.e. allocation.
 
-	LGMdouble SLA;			//Spesific leaf area
-	LGMdouble dof_p;			//degree of filling
-	LGMdouble alm;			//Maximum size of a leaf
+    LGMdouble SLA;	     //Spesific leaf area
+    LGMdouble dof_p;	     //degree of filling
+    LGMdouble alm;	     //Maximum size of a leaf
 
-	LGMdouble yc;				//Foliage mass supported by 1m2 of sapwood
-	LGMdouble ca;				//circulation angle for new buds compared to belowed ones
-	LGMdouble rca;			//random effect of circulation angle [%] 0->
-	LGMdouble rld;			//random effect of leaf distances in a single tree segment
+    LGMdouble yc;	     //Foliage mass supported by 1m2 of sapwood
+    LGMdouble ca;	     //circulation angle for new buds compared to belowed ones
+    LGMdouble rca;	     //random effect of circulation angle [%] 0->
+    LGMdouble rld;	     //random effect of leaf distances in a single tree segment
   };
 
   //TreeAttributes  are  in a  (long)  vector  indexed by  enumeration
