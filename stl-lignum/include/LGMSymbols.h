@@ -8,11 +8,14 @@ namespace Lignum{
 
   // Tree Attribute Double, Wm lisätty
   // Wr           dry weight of the roots
-  enum LGMAD {A,age,LGMcollision,dof, dR, H,Hm,ip,lb,LM,LP,LWf,L,lw,M, omega,P,
-	      Qin,Qabs,R,Rf,Rh,Rhair,RTop,sf,LGMstatus,sw,tauL,LGMtype,vi,Wf,Ws,Wh,
+  enum LGMAD {A,Ah, Ahair,As,age,LGMcollision,dof, dR, H,Hm,ip,lb,LM,LP,LWf,L,lw,M, omega,P,
+	      Qin,Qabs,R,Rf,Rh,Rhair,RTop,sf,LGMstatus,sw,tauL,LGMtype,V,Vh,Vhair,Vs,vi,Wf,Ws,Wh,
   Af};
 
-  //  A       0   Area (of what?)
+  //  A       0   Segment area based on R (see GetValue)
+  //  Ah          Heartwood area
+  //  Ahair       Root hair area
+  //  As          Sapwood area
   //  age     1   age of object
   //  dof     2   degree of filling?
   //  H       3   height of tree
@@ -41,6 +44,11 @@ namespace Lignum{
   //  Ws      25  mass of sapwood (kg C)
   //  Wh      26  mass of heartwood (kg C)
   //  Af      27  area of foliage
+  //  vi          vigour index
+  //  V           Segment volume based on R
+  //  Vh          Heartwood volume
+  //  Vhair       Root hair volume
+  //  Vs          Sapwood volume
 
 
   enum LGMFLOW { fin, fout, Pr, Wm };
@@ -61,7 +69,7 @@ namespace Lignum{
   //Tree Parameter Double
   // zbrentEpsilon       Accuracy in solving the root of P - M -dW(lambda)
   //Keep this list in synbc with MapLGMPD constructor in TreeFriend.cc
-  enum LGMPD {af,ar,lr,mf,mr,ms,na,nl,pr,q,sr,ss,rho,xi,
+  enum LGMPD {af,ar,lr,mf,mr,ms,na,nl,pr,q,sr,ss,rho,rho_root,rho_hair,xi,
 	      zbrentEpsilon, Ln_par, n_ang_par, fake_forest}; 
   //af = Needle mass - tree segment area (kg/m^2)relationship
   //ar = Foliage - root relationship 
@@ -74,6 +82,8 @@ namespace Lignum{
   //pr = Proportion of bound solar radiation that is used in photosyntheesis
   //q  = segment shortening (becoming obsolete due to vigour index)
   //rho= Density of  wood (carbon = 50% dry weight)
+  //rho_root = Density root sapwood
+  //rho_hair = Density of root hair
   //sr = Senescence rate of roots
   //ss = Senescence rate of sapwood
   //xi = Fraction of heartwood in newly created tree segments
