@@ -42,9 +42,9 @@ int& EvaluateCollisionForThisBud<TS,BUD>::
     operator()(int& coll, TreeCompartment<TS,BUD>* tc)const {
 
   if(coll != 1) {
-    if (TreeSegment<TS,BUD>* ts = dynamic_cast<TreeSegment<TS,BUD>*>(tc))
+    if (TS* ts = dynamic_cast<TS*>(tc))
       ;
-    else if(Bud<TS,BUD>* b = dynamic_cast<Bud<TS,BUD>*>(tc))
+    else if(BUD* b = dynamic_cast<BUD*>(tc))
       ;
     else
       return coll;
