@@ -11,33 +11,31 @@
 */ 
 
 namespace cxxadt{
-  template <class T> class Point;
-  template <class T>
-  Point<T> operator + (const Point<T> &point1, const Point<T> &point2);
-  template <class T>
-  Point<T> operator - (const Point<T> &point1, const Point<T> &point2);
-  template <class T>
-  Point<T> operator *(const T scalar, const Point<T> &point);
-  template <class T>
-  Point<T> operator * (const Point<T>& p, const T scalar);
-  template <class T>
-  T operator || (const Point<T> &point1, const Point<T> &point2);
-  template <class T>
-  ostream& operator << (ostream& os, const Point<T>& point);
-  template <class T>
-  bool operator == (const Point<T> &point1, const Point<T> &point2);
+
   template <class T = double>
     class Point{
-      friend Point<T> operator + (const Point<T> &point1, 
-				  const Point<T> &point2);
-      friend Point<T> operator - (const Point<T> &point1, 
-				  const Point<T> &point2);
-      friend Point<T> operator * (const T scalar, const Point<T> &point);
-      friend Point<T> operator * (const Point<T>& p, const T scalar);
-      friend T operator || (const Point<T> &point1, const Point<T> &point2);
-      friend ostream& operator << (ostream& os, const Point<T>& point);
-      friend bool operator == (const Point<T> &point1, 
-			       const Point<T> &point2);
+      template <class T1>
+      friend Point<T1> operator + (const Point<T1> &point1, 
+				   const Point<T1> &point2);
+      template <class T1>
+      friend Point<T1> operator - (const Point<T1> &point1, 
+				   const Point<T1> &point2);
+
+      template <class T1>
+      friend Point<T1> operator * (const T1 scalar, const Point<T1> &point);
+
+      template <class T1>
+      friend Point<T1> operator * (const Point<T1>& p, const T1 scalar);
+
+      template <class T1>
+      friend T1 operator || (const Point<T1> &point1, const Point<T1> &point2);
+
+      template <class T1>
+      friend ostream& operator << (ostream& os, const Point<T1>& point);
+
+      template <class T1>
+      friend bool operator == (const Point<T1> &point1, 
+			       const Point<T1> &point2);
     public:
       Point(T x1 = 0.0, T y1 = 0.0, T z1 = 0.0)
 	{x = x1; y =  y1; z =  z1;}
