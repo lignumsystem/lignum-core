@@ -11,7 +11,7 @@ template <class TS, class BUD,class S>
 TreeCompartment<TS,BUD>* DropAllLeaves<TS,BUD,S>::operator ()(TreeCompartment<TS,BUD>* tc)const
 {
 
-        if (HwTreeSegment<TS,BUD,S>* hwts = dynamic_cast<HwTreeSegment<TS,BUD>*>(tc))
+        if (HwTreeSegment<TS,BUD,S>* hwts = dynamic_cast<HwTreeSegment<TS,BUD,S>*>(tc))
         {
 	  DropLeaves(*hwts);
         }
@@ -21,7 +21,7 @@ TreeCompartment<TS,BUD>* DropAllLeaves<TS,BUD,S>::operator ()(TreeCompartment<TS
 
 
 
-template <class TS, class BUD>
+template <class TS, class BUD,class S>
 LGMdouble SetVigours(Axis<TS,BUD>& axis, LGMdouble vig_val, LGMdouble max_area)
 {
   bool calculate_new_value = false;
@@ -31,15 +31,15 @@ LGMdouble SetVigours(Axis<TS,BUD>& axis, LGMdouble vig_val, LGMdouble max_area)
   BranchingPoint<TS,BUD> *lastbp = NULL;
 
 
-  std::list<TreeCompartment<TS, BUD>*>& ls =
+  list<TreeCompartment<TS, BUD>*>& ls =
     GetTreeCompartmentList(axis);
-  std::list<TreeCompartment<TS, BUD>*>::iterator I = ls.begin();
+  list<TreeCompartment<TS, BUD>*>::iterator I = ls.begin();
 
   
   while(I != ls.end())
     { 
-      if (HwTreeSegment<TS,BUD>* hwts =
-	  dynamic_cast<HwTreeSegment<TS,BUD>*>(*I))
+      if (HwTreeSegment<TS,BUD,S>* hwts =
+	  dynamic_cast<HwTreeSegment<TS,BUD,S>*>(*I))
 	{
 	  if (calculate_new_value)
 	    {
@@ -62,8 +62,8 @@ LGMdouble SetVigours(Axis<TS,BUD>& axis, LGMdouble vig_val, LGMdouble max_area)
 	      if (area > marea)
 		marea = area;
 	      
-	      std::list<Axis<TS, BUD>*>& axis_ls = GetAxisList(*lastbp);  	  
-	      std::list<Axis<TS, BUD>*>::iterator II = axis_ls.begin();
+	      list<Axis<TS, BUD>*>& axis_ls = GetAxisList(*lastbp);  	  
+	      list<Axis<TS, BUD>*>::iterator II = axis_ls.begin();
 			
 	      while(II != axis_ls.end())
 		{

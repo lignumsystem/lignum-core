@@ -112,7 +112,7 @@ TreeCompartment<TS,BUD>* GetFirstTreeCompartment(Axis<TS,BUD>& axis)
   return axis.tc_ls.front();
 }
 
-template <class TS,class BUD>
+template <class TS,class BUD,class S>
 LGMdouble GetSumValue(Axis<TS,BUD>& axis, LGMAD name, int Age)
 {
 
@@ -123,7 +123,7 @@ LGMdouble GetSumValue(Axis<TS,BUD>& axis, LGMAD name, int Age)
         while(I != ls.end())
         {
               
-	  if (HwTreeSegment<TS,BUD>* hwts = dynamic_cast<HwTreeSegment<TS,BUD>*>(*I))
+	  if (HwTreeSegment<TS,BUD,S>* hwts = dynamic_cast<HwTreeSegment<TS,BUD,S>*>(*I))
                 {
                         if (GetValue(*hwts, age) == Age || Age == -1)
                                 sum += GetValue(*hwts, name);   
