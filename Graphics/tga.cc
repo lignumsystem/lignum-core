@@ -71,7 +71,10 @@ int tga_t::Load(const char *name)
    fseek(iFile, type[0], SEEK_CUR); // skip past image identification
 
    if (type[1] != 0 || (type[2] != 2 && type[2] != 3))
+   {
+       cout << "TGA.cc : BADTYPE _________ ______________ _________" << endl; 
       return Error (badType, iFile);
+   }
 
    width = info[0] + info[1] * 256; 
    height = info[2] + info[3] * 256;
@@ -91,18 +94,21 @@ int tga_t::Load(const char *name)
 
    // no image data 
    if (data == 0)
-      return Error(badData, iFile);
+   {
+       cout << "TGA.cc : BAD DATA _________ ____________ _________" << endl;   
+       return Error(badData, iFile);
+   }
 
    fclose(iFile);
 
+   cout << "TGA-tiedosto " << name << " ladattu" << endl;
    return 1;
 }
 
 int tga_t::Load(const char *name, int texId, int upload, GLenum nf)
 {
    int err;
-   cout << "Load::TGA " << endl;
-
+ 
    if ((err = Load(name)) == 1)
    {
       Id(texId);      
@@ -129,7 +135,11 @@ int tga_t::Upload(void)
       return badData;
 
    if (!CheckSize (width) || !CheckSize (height))
+   {
+       cout << "TGA.cc : BAD SIZE " << width << " " << height  << "  ______ ________ _______" << endl; 
+    
       return badDimension;
+   }
 
    glBindTexture(GL_TEXTURE_2D, id);
    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);

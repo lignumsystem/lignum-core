@@ -34,9 +34,7 @@ bool LoadTgaTexture(int &number, const string &filename)
 	char buff[15];
 	tga_t image;
 	number = image.GenId();
-	image.Load(filename.c_str(), texIds[0]);
-
-//	image.Load(filename, texIds[0]);
+	image.Load(filename.c_str(), number);
 
 	return true;
 }

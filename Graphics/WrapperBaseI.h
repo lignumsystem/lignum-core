@@ -22,7 +22,7 @@ void CfWrapper<TS,BUD>::VisualizeFoliage(int &active_texture)
 template <class TS, class BUD>
 void CfWrapper<TS,BUD>::VisualizeWireModel()
 {
-  cout << "Visualize cf-tree" << endl;
+  cout << "Visualize WireModel cf-tree" << endl;
   
   
   DrawWireModelFunctor<TS,BUD> stemfunctor;
@@ -51,11 +51,20 @@ void HwWrapper<TS,BUD>::VisualizeStem(int &active_texture)
 template <class TS, class BUD>
 void HwWrapper<TS,BUD>::VisualizeFoliage(int &active_texture)
 {
+    glBindTexture(GL_TEXTURE_2D, intFoliageTexture );
+    glPushMatrix();
+    DrawLeavesFunctor<TS, BUD> func(1, 1);
+    ForEach(tree, func);    
+    glPopMatrix();
+
+
+
+/*
     cout << "visualisoidaan lehdet " << endl;
   glEnable(GL_BLEND);
   glEnable(GL_TEXTURE_2D);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-  glBindTexture(GL_TEXTURE_2D, intFoliageTexture);
+  glBindTexture(GL_TEXTURE_2D, intFoliageTexture );
   glDisable(GL_LIGHTING);
   
   glPushMatrix();
@@ -63,13 +72,14 @@ void HwWrapper<TS,BUD>::VisualizeFoliage(int &active_texture)
   DrawLeavesFunctor<TS, BUD> func(1, 1);
   glCullFace(GL_FRONT);
   ForEach(tree, func);    
-  glPopMatrix();
+  // glPopMatrix();
 
-  glPushMatrix();
+  //glPushMatrix();
   glCullFace(GL_BACK);     	 
   ForEach(tree, func);
   glDisable(GL_CULL_FACE);
-  glPopMatrix();	
+  glPopMatrix();
+*/	
 }
 
 
@@ -125,9 +135,8 @@ void CfWrapper<TS,BUD>::VisualizeTree()
 template <class TS, class BUD>
 void HwWrapper<TS,BUD>::VisualizeTree()
 {
-  cout << "Visualize hw-tree" << endl;
-  
-  
+
+
   DrawStemFunctor<TS,BUD> stemfunctor;
   stemfunctor.min_rad = -99;
   stemfunctor.max_rad = 999;
@@ -139,16 +148,17 @@ void HwWrapper<TS,BUD>::VisualizeTree()
 template <class TS, class BUD>
 void HwWrapper<TS,BUD>::MakeDisplayLists()
 {
-    cout << "ei rautalanka mallia. *************************************" << endl;
+   
   if (glIsList(intDisplaylistStem))
     {
       glDeleteLists(intDisplaylistStem,1);
     }
 
   intDisplaylistStem = glGenLists(1);
-//  glGenTextures(1, (GLuint*)&intDisplaylistStem);
+
   glPushMatrix();
   glNewList(intDisplaylistStem, GL_COMPILE);
+
   VisualizeTree();
   glEndList();
   glPopMatrix();
@@ -157,13 +167,13 @@ void HwWrapper<TS,BUD>::MakeDisplayLists()
   // from the camera
  
   intDisplaylistFoliage = glGenLists(1);
-  // glGenTextures(1, (GLuint*)&intDisplaylistFoliage);
   glPushMatrix();
   glNewList(intDisplaylistFoliage, GL_COMPILE);
   int num = -1.0;
   VisualizeFoliage(num);
   glEndList();
   glPopMatrix();
+
  
 }
 
@@ -195,19 +205,18 @@ void CfWrapper<TS,BUD>::DrawTree()
     GLfloat mat_amb[] = { 0.2, 0.3, 0.4, 1.0 }; 
     GLfloat mat_dif[] = { 0.2, 0.4, 0.4, 1.0 }; 
     
-  GLfloat mat_amb2[] = { 1.0, 0.5, 0.4, 1.0 }; 
-  //  GLfloat mat_dif2[] = { 1.0, 0.7, 0.0, 0.8 };
-  glMaterialfv(GL_FRONT, GL_AMBIENT, mat_amb); 
-  glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_dif);
-  
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-  glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);  
-
-  stem_texture.
-  glCallList(intDisplaylistStem);
-  glCallList(intDisplaylistFoliage);
-  //cout << " drawing cftree. List number  " << intDisplaylistStem  << endl;
+    GLfloat mat_amb2[] = { 1.0, 0.5, 0.4, 1.0 }; 
+    glMaterialfv(GL_FRONT, GL_AMBIENT, mat_amb); 
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_dif);
+    
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);  
+    
+    //stem_texture.
+    glCallList(intDisplaylistStem);
+    glCallList(intDisplaylistFoliage);
+    //cout << " drawing cftree. List number  " << intDisplaylistStem  << endl;
 
 }
 
@@ -219,24 +228,27 @@ void HwWrapper<TS,BUD>::DrawTree()
   
   GLfloat mat_amb2[] = { 1.0, 0.5, 0.4, 1.0 }; 
   //  GLfloat mat_dif2[] = { 1.0, 0.7, 0.0, 0.8 };
-  glMaterialfv(GL_FRONT, GL_AMBIENT, mat_amb); 
-  glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_dif);
+  glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_amb); 
+  glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_dif);
   
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
   glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);  
 
-  glBindTexture(GL_TEXTURE_2D, intStemTexture);
-  glCallList(intDisplaylistStem);
+  glBindTexture(GL_TEXTURE_2D,  intStemTexture);
+  glDisable(GL_BLEND);
 
+  //Valaistus ei toimi joten se pois p‰‰lt‰
+  glDisable(GL_LIGHTING);
+  glCallList(intDisplaylistStem);
+ 
+  // Lehdet
   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexEnvf(GL_TEXTURE_2D, GL_TEXTURE_ENV_MODE, GL_REPLACE);
   glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
   glCallList(intDisplaylistFoliage);
   
-
-
 }
 
 

@@ -35,6 +35,7 @@ namespace Lignum
 
   void LGMVisualization::InitVisualization()
   {
+      SetLight();
     InitCallBacks(); 
     glClearColor(0.9f, 0.9f, 0.9f, 0.9f);
 
@@ -45,7 +46,14 @@ namespace Lignum
     glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_FASTEST);
     glShadeModel(GL_SMOOTH);
 
-    SetLight();
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
+    glEnable(GL_TEXTURE_2D);
+
+    
     InitDrawing();
   }
 
@@ -95,6 +103,7 @@ namespace Lignum
     GLfloat lightPosition[] = {settings.lightx, settings.lighty, 
 			       settings.lightz, settings.lightw};
 
+    cout << "LIGHTING " << settings.lightx << settings.lighty << endl; 
     glLightfv (GL_LIGHT0, GL_POSITION, lightPosition);
     glEnable (GL_LIGHT0);
     glEnable (GL_LIGHTING);
@@ -136,7 +145,7 @@ namespace Lignum
  
     glPushMatrix();
     glLoadIdentity(); 
-    SetLight();
+    // SetLight();
     CheckValues(); 
   
   
@@ -171,7 +180,7 @@ namespace Lignum
     
     glPopMatrix();   
     glutSwapBuffers();        // Swap buffers  
-    //glutPostRedisplay ();
+    glutPostRedisplay ();
   }
 
 

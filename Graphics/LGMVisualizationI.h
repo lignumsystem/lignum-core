@@ -15,13 +15,28 @@ namespace Lignum{
 {
     HwWrapper<TS,BUD> *wb = new HwWrapper<TS,BUD>(t);
 
-    wb->intFoliageTexture = GetTgaTexNumber(folTex);
-    //  wb->intStemTexture = GetBmpTexNumber(stemTex);
-    
+
+   
     CTexture stem_texture;
     stem_texture.Load(stemTex.c_str(), 512, 512);
+    stem_texture.use();
 
     wb->intStemTexture = stem_texture.texturenum;
+    cout << " rungon TEXTURE numero "<<  stem_texture.texturenum << endl;
+ 
+    
+    CTexture fol_texture;
+    fol_texture.Load(folTex.c_str(), 512, 512);
+    fol_texture.use();
+    wb->intFoliageTexture = fol_texture.texturenum;
+    cout << " lehden TEXTURE numero "<<  wb->intFoliageTexture << endl;
+
+    //Tätä käytetään jos halutaa visualisoida lehdet läpinäkyvyyden avulla.
+    // Tiedosto-muoto .tga
+/*
+  wb->intFoliageTexture = GetTgaTexNumber(folTex);
+  cout << " lehden TEXTURE numero "<<  wb->intFoliageTexture << endl;
+*/  
     trees.push_back(wb);
 }
 

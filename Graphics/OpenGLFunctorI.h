@@ -63,7 +63,7 @@ namespace Lignum{
 	      float rad_limit = 0.05;
 	      MakeCylinder(radius, radius, length, rad_limit); 
 
-	      //     cout << "makin a cylinder. Radius:" << radius << "Height "<< length << ".  Position "<< position << endl; 
+	 
 	      glPopMatrix();
 			
 	    }
@@ -119,9 +119,8 @@ namespace Lignum{
       if (TS* ts = dynamic_cast<TS*>(tc))
 	{ 
  			
-	    // if (HwTreeSegment<TS,BUD,S>* hwts = dynamic_cast<HwTreeSegment<TS,BUD,S>*>(ts))
 	    {
-		cout << "hwts:::::::::" << endl;		
+		//	cout << "hwts:::::::::" << endl;		
 	      float length;
 	      float radius_top;
 	      float rot_x;
@@ -151,7 +150,48 @@ namespace Lignum{
 	      for(I = leaf_list.begin(); I != leaf_list.end(); I++) 
 		{
 		  LGMdouble area = GetValue(**I, LGAA);   //BroadLeaf returns true area of the leaf
-				
+		
+		  std::vector<Point> points;
+		  GetShape(**I).getVertexVector(points);
+
+		  int aa = points.size();
+
+		
+		  float minx = 9999;
+		  float miny = 9999;
+		  float maxx = -9999;
+		  float maxy = -9999;
+		  for (int bb =0; bb<aa; bb++)
+		  {
+		      Point p = points[bb];
+		      if (p.getX() < minx) minx = p.getX();
+		      if (p.getX() > maxx) maxx = p.getX();
+		      if (p.getY() < miny) miny = p.getY();
+		      if (p.getY() > maxy) maxy = p.getY();
+		  }
+		  
+		  glBegin(GL_POLYGON);
+		  glPushMatrix();
+		  glNormal3f(0,0,1);
+		 
+
+		  
+		  for (int bb =0; bb<aa; bb++)
+		  {
+		      Point p = points[bb];
+
+		      float texx = (p.getX()-minx) / (maxx-minx);
+		      float texy = (p.getY()-miny) / (maxy-miny);
+		      glTexCoord2f(texx, texy);		
+		      glVertex3f(p.getX(), p.getY(), p.getZ());
+
+		      
+		  }
+		  glPopMatrix();
+		  glEnd();
+
+		  /*
+		  //*
 		  Petiole pet = GetPetiole(**I);
 
 		  LGMdouble rx = sqrt(area / 3.14);
@@ -170,8 +210,9 @@ namespace Lignum{
 		  // sivuttaiskallistus
 		  glRotatef( rand()%30-15, 0, 1, 0);
 		  Make3DLeave( rx*leave_size_x, ry*leave_size_y, radius+0.01); 
-		  cout << "lehden koko " <<  rx*leave_size_x << " " <<  ry*leave_size_y << endl;
-		  glPopMatrix();    	
+		 
+		  glPopMatrix();  
+		  */  	
 		}
 	    }
 	} 

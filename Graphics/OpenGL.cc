@@ -33,8 +33,8 @@ float texY_min_odd  = 22;
 float leave_size_x = 1;
 float leave_size_y = 1;
 
-float torus_a = 0.28;
-float torus_b = 1.8;
+float torus_a = 1.8;
+float torus_b = 5.8;
 
 float c_x=0;
 float c_y=0;
@@ -90,7 +90,7 @@ void Make3DLeave(float xodd, float yodd, float rad)
 			PositionVector pp2(p3.getX()-p1.getX(),   p3.getY()-p1.getY(),   p3.getZ()-p1.getZ());
 
 
-			cout << p1 << p2 << p3 << endl;
+			//	cout << p1 << p2 << p3 << endl;
 
 			PositionVector normal = Cross(pp2, pp1);	
 			normal.normalize();
@@ -104,14 +104,14 @@ void Make3DLeave(float xodd, float yodd, float rad)
 			p2 = mapping[a+1][i+1];
 			p3 = mapping[a+1][i];
 
-		    pp1 = PositionVector(p1.getX()-p2.getX(),   p1.getY()-p2.getY(),   p1.getZ()-p2.getZ());
+			pp1 = PositionVector(p1.getX()-p2.getX(),   p1.getY()-p2.getY(),   p1.getZ()-p2.getZ());
 			pp2 = PositionVector(p3.getX()-p2.getX(),   p3.getY()-p2.getY(),   p3.getZ()-p2.getZ());
 			normal = Cross(pp1, pp2);
 			normal.normalize();
 
 			glNormal3f(normal.getX(), normal.getY(), normal.getZ());
-			glTexCoord2f(x, y+.2);		glVertex3f(p1.getX()*xodd, p1.getY()*yodd, p1.getZ());			
-			glTexCoord2f(x+.2, y+.2);	glVertex3f(p2.getX()*xodd, p2.getY()*yodd, p2.getZ());			
+			glTexCoord2f(x, y+.2);		glVertex3f(p1.getX()*xodd, p1.getY()*yodd, p1.getZ());
+			glTexCoord2f(x+.2, y+.2);	glVertex3f(p2.getX()*xodd, p2.getY()*yodd, p2.getZ());
 			glTexCoord2f(x+.2, y);		glVertex3f(p3.getX()*xodd, p3.getY()*yodd, p3.getZ());						
 			
 	  }
@@ -139,17 +139,16 @@ void MakeLeave(float x, float y, float rad)
 
 void MakeLeaveTable()
 {
-    cout << "Alustetaan lehden muoto *********************************" << endl;
-	float x,y;
-	for (int i=0; i<6; i++)
+    float x,y;
+    for (int i=0; i<6; i++)
+    {
+	x = -0.5 + i*0.2;
+	for(int a=0; a<6; a++)
 	{
-		x = -0.5 + i*0.2;
-		for(int a=0; a<6; a++)
-		{
-			float y = a * 0.2;
-			mapping[i][a] = GetPoint(x,y);
-		}
+	    float y = a * 0.2;
+	    mapping[i][a] = GetPoint(x,y);
 	}
+    }
 }
 
 
@@ -385,8 +384,8 @@ void MakeCylinder(float radius, float rad_top, float length, float rad_limit, fl
   float d = tex_x * edges;
   GLfloat tex_y= texY_odd*length;
 
-  tex_x = tex_x * 0.06;
-  tex_y = tex_y * 0.06;
+  tex_x = tex_x * 1.0;
+  tex_y = tex_y * 1.0;
 
   if (rad_limit == 0)
   {
