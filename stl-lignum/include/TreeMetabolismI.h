@@ -52,7 +52,7 @@ void Tree<TS,BUD>::respiration()
 
 	// Root respiration
 	LGMdouble nit_roots = GetValue(*this, nitroRoots);
-    sumM += GetValue(*this,mr)*GetValue(*this,Wr) * this->tf.nitroRespiration(nit_roots);
+    sumM += GetValue(*this,mr)*GetValue(*this,LGAWr) * this->tf.nitroRespiration(nit_roots);
 
   
 	SetValue(*this, M, sumM);

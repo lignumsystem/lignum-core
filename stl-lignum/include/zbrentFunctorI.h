@@ -283,7 +283,7 @@ LGMdouble&  CollectDWAfterGrowth<TS,BUD>::operator()(LGMdouble& WSum, TreeCompar
 			
 			if(GetValue(*cfts, age) < R_EPSILON)
 			{
-				WSum += GetValue(*cfts,Wf) + (GetValue(tt, rho) * PI_VALUE * pow(GetValue(*cfts, R),2))*GetValue(*cfts, L); //GetSapwoodArea(*cfts) + GetValue(*cfts,Wh);
+				WSum += GetValue(*cfts,Wf) + (GetValue(tt, rho) * PI_VALUE * pow(GetValue(*cfts, R),2))*GetValue(*cfts, L); //GetSapwoodArea(*cfts) + GetValue(*cfts,LGAWh);
 			}
 			else
 			{
@@ -304,7 +304,7 @@ LGMdouble&  CollectDWAfterGrowth<TS,BUD>::operator()(LGMdouble& WSum, TreeCompar
 			
 			if(GetValue(*hwts, age) < R_EPSILON)
 			{
-				WSum += GetValue(*hwts,Wf) + (GetValue(tt, rho) * PI_VALUE * pow(GetValue(*hwts, R),2))*GetValue(*hwts, L); //GetSapwoodArea(*hwts) + GetValue(*hwts,Wh);
+				WSum += GetValue(*hwts,Wf) + (GetValue(tt, rho) * PI_VALUE * pow(GetValue(*hwts, R),2))*GetValue(*hwts, L); //GetSapwoodArea(*hwts) + GetValue(*hwts,LGAWh);
 			}
 			else
 			{

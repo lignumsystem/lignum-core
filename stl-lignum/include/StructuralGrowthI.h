@@ -208,7 +208,7 @@ TreeCompartment<GCSegment, GCBud>* StructuralGrowth::operator()
       SetValue(*leaf, A, ellipsis_a);
       InsertLeaf(*ts, leaf);
       SetValue(*ts,Wf,GetValue(tree,dof_p)*ellipsis_a/GetValue(*leaf,sf));
-      SetValue(*ts,Ws,GetValue(tree,rho)*PI_VALUE*
+      SetValue(*ts,LGAWs,GetValue(tree,rho)*PI_VALUE*
 	       (pow(r_new,2.0)-pow(rh_new,2.0))*l_new);
       SetValue(*ts,Wh,GetValue(tree,rho)*PI_VALUE*pow(rh_new,2.0)*l_new);
       SetValue(*ts,dAs,0.0);

@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include <LGMdecl.h>
+#include <LGMSymbols.h>
 #include <TreeCompartment.h>
 #include <BroadLeaf.h>
 #include <Algorithms.h>

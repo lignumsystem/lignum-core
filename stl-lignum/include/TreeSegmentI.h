@@ -317,7 +317,7 @@ LGMdouble GetValue(const TreeSegment<TS,BUD>& ts, const LGMAD name)
   //Personally  I prefer minimum  set of  variables or  attributes and
   //compute others  like Ws  or Wh (we  have to do  these computations
   //anyway). These 3 lines should not be a computational cost.
-  else if (name == Ws){
+  else if (name == LGAWs){
      //volume up to R
     LGMdouble v1 = PI_VALUE*pow(GetValue(ts,R),2.0) * GetValue(ts,L);
     //heartwood volume
@@ -328,7 +328,7 @@ LGMdouble GetValue(const TreeSegment<TS,BUD>& ts, const LGMAD name)
     return GetValue(GetTree(ts),rho) * v3;
   }
   //Perhaps we need own 'rho' for Wh?
-  else if (name == Wh){
+  else if (name == LGAWh){
     LGMdouble v1 = PI_VALUE*pow(GetValue(ts,Rh),2.0) * GetValue(ts,L);
     return GetValue(GetTree(ts),rho) * v1;
   }
@@ -376,10 +376,10 @@ LGMdouble SetValue(TreeSegment<TS,BUD>& ts, const LGMAD name, const LGMdouble va
   else if(name == vi)
 	ts.tsa.vigour = value;
 
-  else if (name == Ws)
+  else if (name == LGAWs)
     ts.tsa.Ws = value;
 
-  else if (name == Wh)
+  else if (name == LGAWh)
     ts.tsa.Wh = value;
 
   else

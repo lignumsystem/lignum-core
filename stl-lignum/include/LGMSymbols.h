@@ -6,12 +6,17 @@ namespace Lignum{
   //OBS: DO NOT USE ENUMERATIONS AS VARIABLE NAMES!
   //For example, _NEVER_ create double Wf;
 
-  // Tree Attribute Double, Wm lisätty
+  //_AND_, if you add a new symbol be sure to document it carefully!
+
+  // LGMAD = LIGNUM Attribute Double
+
+  // LGMPD = LIGNUM Parameter Double
+
   // Wr           dry weight of the roots
   enum LGMAD {A,Af,Ah, Ahair,As,As0,age,api, LGMcollision,Dbase,Dbh,dof, dR, H,Hf,Hm,ip,
               lb,LM,LP,LWf,L,lw,M, MaxD,omega,P,
 	      Qin,Qabs,R,Rf,Rh,Rhair,RTop,Sa,LGMstatus,sw,tauL,LGMtype,V,Vh,Vhair,Vs,vi,
-              Wf,Wr, Ws,Wh,Whair};
+              Wf, LGAWr, LGAWs, LGAWh, LGAWhair};
 
   //  A      Segment area based on R (see GetValue)
   //  Af     area of foliage
@@ -20,7 +25,7 @@ namespace Lignum{
   //  As     Sapwood area
   //  As0    Original sapwood area
   //  age    age of object
-  //  api    ???
+  //  api    ???  
   //  Dbase  diameter at base
   //  Dbh    diameter at breast height
   //  dof    degree of filling?
@@ -49,10 +54,10 @@ namespace Lignum{
   //  sw     ????
   //  tauL   transmission coefficient of leaf (in direction of the ray of light)
   //  Wf     foliage mass (kg C)
-  //  Wr     root mass (kg C)
-  //  Ws     mass of sapwood (kg C)
-  //  Wh     mass of heartwood (kg C)
-  //  Whair  mass of root hair (kg C)
+  //  LGAWr     root mass (kg C)
+  //  LGAWs     mass of sapwood (kg C)
+  //  LGAWh     mass of heartwood (kg C)
+  //  LGAWhair  mass of root hair (kg C)
 
   //  vi     vigour index
   //  V      Segment volume based on R

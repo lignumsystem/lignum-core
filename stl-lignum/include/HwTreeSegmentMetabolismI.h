@@ -45,7 +45,7 @@ void HwTreeSegment<TS,BUD,S>::respiration()
   m_hw *= tt.tf.nitroRespiration(nit_leaves);
 
   // Respiration of wooden part, effect of nitrogen.
-  m_hw += GetValue(t,ms)*GetValue(*this,Ws) * tt.tf.nitroRespiration(nit_wood);
+  m_hw += GetValue(t,ms)*GetValue(*this,LGAWs) * tt.tf.nitroRespiration(nit_wood);
 
  
 
