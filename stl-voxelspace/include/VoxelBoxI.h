@@ -11,7 +11,7 @@ namespace Lignum {
 
 
 template <class TS,class BUD>
-void dumpSegment(VoxelBox &b, const HwTreeSegment<TS,BUD>& ts)
+void dumpSegment(VoxelBox &b, const HwTreeSegment<TS,BUD>& ts, int num_parts)
 {
 
 }
@@ -23,21 +23,33 @@ void dumpSegment(VoxelBox &b, const HwTreeSegment<TS,BUD>& ts)
 //	Updates also the star value 
 //
 template <class TS,class BUD>
-void dumpSegment(VoxelBox &b, const CfTreeSegment<TS,BUD>& ts)
+void dumpSegment(VoxelBox &b, const CfTreeSegment<TS,BUD>& ts, int num_parts)
 {	
 	LGMdouble r_f = GetValue(ts, Rf);
-	LGMdouble lenght = GetValue(ts, L);
-	LGMdouble farea = lenght * r_f * 2 * PI_VALUE;
-	b.addNeedleArea(farea);
+	LGMdouble lenght = GetValue(ts, L) / num_parts;
+	LGMdouble S_f = GetValue(ts, sf);
+	LGMdouble fmass = GetValue(ts, Wf) / num_parts;
 
-	LGMdouble s_f = GetValue(ts, sf);
-	LGMdouble fmass = GetValue(ts, Wf);
+	if (GetValue(ts, sf) == 0)
+		S_f = 28;
+
+	LGMdouble farea = S_f * fmass;	
+	b.addNeedleArea(farea);
+	b.addNeedleMass(fmass);
+
+	
+	
 	LGMdouble needle_rad = GetValue(ts, Rf);
 
+	
+	//Tarkistettu että for-looppi ajetaan tasan 8 kertaa (mika).
 	for (double phi=0; phi<PI_VALUE/2.0; phi+=PI_VALUE/16)
 	{		
-		b.star += b.S(phi, s_f, fmass, needle_rad, lenght)/8.0;
+		b.starSum += b.S(phi, S_f, fmass, needle_rad, lenght)/8.0;
 	}
+
+	b.number_of_segments++;
+	b.needleMass += fmass;
 }
 
 
@@ -46,15 +58,28 @@ void dumpSegment(VoxelBox &b, const CfTreeSegment<TS,BUD>& ts)
 //	Calculates the Qabs value to the CfTreeSegment
 //
 template <class TS,class BUD>
-void setSegmentQabs(VoxelBox &b, CfTreeSegment<TS,BUD>& ts)
+void setSegmentQabs(VoxelBox &b, CfTreeSegment<TS,BUD>& ts, int num_parts)
 {
-	LGMdouble r_f = GetValue(ts, Rf);
-	LGMdouble lenght = GetValue(ts, L);
-	LGMdouble farea = lenght * r_f * 2 * PI_VALUE;
+	//LGMdouble r_f = GetValue(ts, Rf);
+	//LGMdouble lenght = GetValue(ts, L);
+	
+	LGMdouble S_f = GetValue(ts, sf);
+	if (S_f == 0)
+		S_f = 28;
+	LGMdouble farea = S_f * GetValue(ts, Wf) / num_parts;
+	LGMdouble qabs = 0.0;
 
-	LGMdouble qabs = b.Q_abs * (farea/b.needleArea) * (b.star*b.needleArea) / (b.star*b.needleArea+b.k_b*b.leafArea);
+	if (farea>0 && b.needleArea>0 && b.star>0)
+	{
+		qabs = b.Q_abs * (farea / b.needleArea);
+		//qabs = b.interceptedRadiation * (farea / b.needleArea);
+		//qabs = b.Q_abs * (farea/b.needleArea) * (b.star*b.needleArea) / (b.star*b.needleArea+b.k_b*b.leafArea);
+	}
+	LGMdouble lqabs = GetValue(ts, Qabs);
+	SetValue(ts, Qabs, qabs+lqabs);
 
-	//SetValue(ts, Qabs, qabs);
+	LGMdouble lqin = GetValue(ts, Qin);
+	SetValue(ts, Qin, b.Q_in/num_parts+lqin);  
 }
 
 

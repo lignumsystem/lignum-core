@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include <LGMdecl.h>
+
 
 
 #include <VoxelBox.h>
@@ -15,12 +15,7 @@ namespace Lignum {
 VoxelBox::VoxelBox(VoxelSpace *s)
 { 
 	space = s; 
-	needleArea = 10.0;
-	leafArea = 0.0;
-	Q_in = 0.0;
-	Q_abs = 0.0;
-
-	star = 0.0;
+	init();
 }
 
 
@@ -30,13 +25,23 @@ VoxelBox::VoxelBox(VoxelSpace *s)
 VoxelBox::VoxelBox()
 { 
 	space = NULL; 
-	needleArea = 10.0;
+	init();
+}
+
+void VoxelBox::init()
+{ 
+	space = NULL; 
+	needleArea = 0.0;
 	leafArea = 0.0;
 	Q_in = 0.0;
 	Q_abs = 0.0;
 	star = 0.0;
-}
+	starSum = 0.0;
+	needleMass = 0.0;
 
+	number_of_segments = 0;
+	interceptedRadiation = 0.0;
+}
 
 
 //
@@ -58,13 +63,14 @@ void VoxelBox::setVoxelSpace(VoxelSpace *s, Point c)
 //
 void VoxelBox::UpdateValues()
 {
-	LGMassert(space->Xbox>0);
-	LGMassert(space->Ybox>0);
-	LGMassert(space->Zbox>0);
+	ASSERT(space->Xbox>0);
+	ASSERT(space->Ybox>0);
+	ASSERT(space->Zbox>0);
 
+	star = 0.0;
+	if (number_of_segments > 0)
+		star = starSum / number_of_segments;
 
-
-	k_c = star;
 	k_b = 0.5;
 	val_c = star * (needleArea / (space->Xbox * space->Ybox * space->Zbox));
 	val_b = k_b * (leafArea / (space->Xbox * space->Ybox * space->Zbox));
@@ -105,7 +111,8 @@ void VoxelBox::setArea(M2 larea, M2 narea)
 //
 bool VoxelBox::isEmpty()
 {
-	return (needleArea==0 && leafArea==0);
+	
+	return (starSum==0); // && leafArea==0);
 }
 
 
@@ -148,6 +155,7 @@ Point VoxelBox::getCornerPoint()
 //
 LGMdouble VoxelBox::getAreaDen()
 {
+	UpdateValues();
 	return star + val_b;
 }
 
@@ -224,7 +232,9 @@ LGMdouble VoxelBox::K(LGMdouble phi)
 
 ostream& operator << (ostream& os, VoxelBox &b)
 {
-	os << "Qabs " << b.Q_abs << "    Qin " << b.Q_in << "     star " << b.star << "          needleArea " << b.needleArea << "       leafArea " << b.leafArea << endl;
+	//os << "Qabs(Intercepted ratiation)" <<  "    Qin " << "     star " << "   needleArea " << "     leafArea " << endl;
+	
+	os << b.Q_abs << " : " << b.Q_in << " : " << b.star << " : " << b.needleArea << " : " << b.leafArea << " : ";
 	
 	return os;
 }

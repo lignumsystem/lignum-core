@@ -3,7 +3,6 @@
 
 
 #include <vector>
-#include <string>
 #include <Tree.h>
 #include <TMatrix3D.h>
 #include <VoxelBox.h>
@@ -33,10 +32,11 @@ public:
 	LGMdouble Xbox, Ybox, Zbox;
 	VoxelSpace();
 	VoxelSpace(Point corner1, Point corner2, int xn, int yn, int zn, Firmament &f);
-
+	int GetNumBoxes() { return Xn*Yn*Zn; }
+	int getNumTreeSegments();
 
 	VoxelBox& getVoxelBox(Point p);
-	LGMdouble calculateLight();
+	LGMdouble calculateLight(ostream& os);
 
 	std::vector<VoxelMovement>& getRoute(std::vector<VoxelMovement> &vec, int startx, int starty, int startz, PositionVector dir);
 
@@ -54,9 +54,9 @@ public:
 	template <class TS,class BUD>
 	friend void setCfTreeQabs(VoxelSpace &s, Tree<TS, BUD> &tree);
 	
-	BoundingBox& searchDimensions(BoundingBox &bbox);
+	BoundingBox& searchDimensions(BoundingBox &bbox, bool boolDimensionsWithNumBoxes);
 
-	void searchDimensions() { searchDimensions(bbox); };
+	void searchDimensions(bool boolDimensionsWithNumBoxes=true) { searchDimensions(bbox, boolDimensionsWithNumBoxes); };
 
 	void dumpTrees();
 
@@ -68,7 +68,11 @@ public:
 
 	Point getLocalPoint(Point p); //Funktio palauttaa globaalissa koordinaatistossa olevan pisteen VoxelSpacen koordinaatistossa
 	
-	void writeVoxBoxesToFile(string& filename);
+	void writeVoxBoxesToFile(CString filename);
+	void writeVoxBoxesToFile(ofstream &file);
+
+	int getNumVoxBoxes();
+	int Xn, Yn, Zn;
 private:
 
 	vector<Tree<ScotsPineVisual,ScotsBud> *> vecScotspines;
@@ -81,7 +85,7 @@ private:
 	
 	LGMdouble Xspan, Yspan, Zspan;
 
-	int Xn, Yn, Zn;
+	
 
 	
 	int getXindex(LGMdouble xcoord);
@@ -90,6 +94,11 @@ private:
 
 	Firmament* sky;
 
+	
+public:
+
+	// returns the total foliage mass of the tree segments dumped into the VoxelSpace
+	LGMdouble getFoliageMass(void);
 	
 };
 

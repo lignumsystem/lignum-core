@@ -37,12 +37,26 @@ TreeCompartment<TS,BUD>* SetQabsCfTreeFunctor<TS,BUD>::operator ()(TreeCompartme
 {
 	if (CfTreeSegment<TS,BUD>* cfts = dynamic_cast<CfTreeSegment<TS,BUD>*>(tc))
 	{
-		Point p = GetPoint(*cfts);
-		p = space->getLocalPoint(p);
+		LGMdouble fmass = GetValue(*cfts, Wf);
 
-		VoxelBox box = space->getVoxelBox(p);
-		
-		setSegmentQabs(box, *cfts);
+		if (fmass > 0)
+		{
+			SetValue(*cfts, Qabs, 0.0);
+			SetValue(*cfts, Qin, 0.0);
+
+
+			Point p = GetPoint(*cfts);
+			PositionVector pv = GetDirection(*cfts);
+			LGMdouble length = GetValue(*cfts, L);
+			int num_parts = 1;
+
+			for (float i=0; i<num_parts; i++)
+			{
+				Point p1 = p + length * (i/num_parts) * pv;
+				VoxelBox box = space->getVoxelBox(p1);
+				setSegmentQabs(box, *cfts, num_parts);
+			}		
+		}
 	}
 	return tc;
 }
@@ -68,8 +82,16 @@ template <class TS,class BUD>
 void dumpCfTreeSegment(VoxelSpace &s, CfTreeSegment<TS, BUD> &ts)
 {
 	Point p = GetPoint(ts);
+	PositionVector pv = GetDirection(ts);
+	LGMdouble length = GetValue(ts, L);
+	int num_parts = 1;
+
+	for (float i=0; i<num_parts; i++)
+	{
+		Point p1 = p + length * (i/num_parts) * pv;
+		dumpSegment(s.getVoxelBox(p1), ts, num_parts);
+	}
 	
-	dumpSegment(s.getVoxelBox(p), ts);
 }
 
 

@@ -1,15 +1,9 @@
 #include "stdafx.h"
 #include "OpenGL.h"
-
-#ifdef MSC_VER
 #include <gl\gl.h>
 #include <gl\glu.h>
 #include <gl\glaux.h>
-#else
-#include <GL/gl.h>
-#include <GL/glu.h>
-//#include <GL/glaux.h>
-#endif
+
 
 #include <VoxelSpace.h>
 #include <fstream>
@@ -27,11 +21,13 @@ namespace Lignum {
 //	Default constructor
 //
 VoxelSpace::VoxelSpace()
-  :voxboxes(10,10,10)
 {
 	Xn = 10;
 	Yn = 10;
 	Zn = 10;
+
+	TMatrix3D<VoxelBox> v(Xn, Yn, Zn);
+	voxboxes = v; 
 
 
 	for (int i1=0; i1<Xn; i1++)
@@ -54,19 +50,20 @@ VoxelSpace::VoxelSpace()
 //  zn		: number of VoxBoxes in z direction
 //	f		: Firmament
 //
-VoxelSpace::VoxelSpace(Point corner1, Point corner2, 
-		       int xn, int yn, int zn, Firmament &f)
-  :voxboxes(xn,yn,zn)
+VoxelSpace::VoxelSpace(Point corner1, Point corner2, int xn, int yn, int zn, Firmament &f)
 {
 	Xn = xn;
 	Yn = yn;
 	Zn = zn;
 
-	Xbox = (corner2.getX() - corner1.getX()) / xn;
-	Ybox = (corner2.getY() - corner1.getY()) / yn;
-	Zbox = (corner2.getZ() - corner1.getZ()) / zn;
+	Xbox = 1.0;
+	Ybox = 1.0;
+	Zbox = 1.5;
 
+	TMatrix3D<VoxelBox> v(Xn, Yn, Zn);
+	 
 
+	voxboxes = v;
 	for(int i1=0; i1<Xn; i1++)
 		for(int i2=0; i2<Yn; i2++)
 			for(int i3=0; i3<Zn; i3++)
@@ -114,7 +111,7 @@ int VoxelSpace::getXindex(LGMdouble local_xcoord)
 //
 int VoxelSpace::getYindex(LGMdouble local_ycoord)
 {
-	return (int)(local_ycoord/Xbox);
+	return (int)(local_ycoord/Ybox);
 }
 
 
@@ -124,7 +121,7 @@ int VoxelSpace::getYindex(LGMdouble local_ycoord)
 //
 int VoxelSpace::getZindex(LGMdouble local_zcoord)
 {
-	return (int)(local_zcoord/Xbox);
+	return (int)(local_zcoord/Zbox);
 }
 
 
@@ -250,19 +247,19 @@ VoxelBox& VoxelSpace::getVoxelBox(Point p)
 
 	Point localP = p - corner1;
 
-	int Xi = static_cast<int>(localP.getX()/Xbox);
-	int Yi = static_cast<int>(localP.getY()/Ybox);
-	int Zi = static_cast<int>(localP.getZ()/Zbox);
+	int Xi = localP.getX()/Xbox;
+	int Yi = localP.getY()/Ybox;
+	int Zi = localP.getZ()/Zbox;
 
-/*
-	assert<Xi>-1);
-	assert<Yi>-1);
-	assert<Zi>-1);
 
-	assert<Xi<0);
-	assert<Yi<0);
-	assert<Zi<0);
-*/	
+	ASSERT(Xi>-1);
+	ASSERT(Yi>-1);
+	ASSERT(Zi>-1);
+
+	ASSERT(Xi<Xn);
+	ASSERT(Yi<Yn);
+	ASSERT(Zi<Zn);
+
 	return vb[Xi][Yi][Zi]; 
 }
 
@@ -273,72 +270,87 @@ VoxelBox& VoxelSpace::getVoxelBox(Point p)
 //
 //	The function calculates the Qin and Qabs-values to every VoxelBox.
 //
-LGMdouble VoxelSpace::calculateLight()
+LGMdouble VoxelSpace::calculateLight(ostream& os)
 {
-	ofstream file("calculateVoxelSpace.txt");
+	//ofstream file("calculateVoxelSpace.txt");
 
-
+	bool first_time = true;
+	os << "Firmament " << endl;
 	for(int i1=0; i1<Xn; i1++)
 		for(int i2=0; i2<Yn; i2++)
 			for(int i3=0; i3<Zn; i3++)
 			{
-				int num_dirs = 1; //sky->numberOfRegions();
+				double sumiop = 0.0;
+				int num_dirs = sky->numberOfRegions();
 				if (voxboxes[i1][i2][i3].isEmpty() == false)
-				{
-					file << "VoxelBox["<<i1<<"]["<<i2<<"]["<<i3<<"]"<<endl;
-					file << "taivaankannen suuntia " << num_dirs << endl;
-
+				{				
 					for(int i=0; i<num_dirs; i++)
-					{
-						
-						
+					{					
 						std::vector<double> rad_direction(3);
 						LGMdouble iop = sky->diffuseRegionRadiationSum(i,rad_direction);
 						PositionVector radiation_direction(rad_direction[0], rad_direction[1], rad_direction[2]);
 						radiation_direction.normalize();
 
-						file << "suunta "<<i+1<<". Säteily:"<<iop<< endl;
-						
-						file << "Suunta:"<< radiation_direction << endl;
-						file << "Reitti:"<<endl;
-						std::vector<VoxelMovement> vec;
-									
+						std::vector<VoxelMovement> vec;		
 						getRoute(vec, i1, i2, i3, radiation_direction);
 						int size = vec.size();
 
-						file << "Säteily " << iop << endl;
+						sumiop += iop;
+						if (first_time)
+						{
+							os << "Direction "<< i+1 << ".  " << radiation_direction << ", radiation:" << iop << endl;
+						}
+
 						if (size>1)
 							for (int a=1; a<size; a++)
 							{
 								VoxelMovement v1 = vec[a-1];
 								VoxelMovement v2 = vec[a];
 								
-								iop = iop * voxboxes[v1.x][v1.y][v1.z].extinction(v2.l);
-								
-								file << v1.x << "  " << v1.y << "  " << v1.z << "   matka:"<< v2.l << endl;	
-								file << "Säteily " << iop << endl;	
+								LGMdouble ext = voxboxes[v1.x][v1.y][v1.z].extinction(v2.l); 
+								//voxboxes[v1.x][v1.y][v1.z].addInterceptedRadiation(iop*(1.0-ext));
+								iop = iop * ext;
 							}
 
 						if (size>0)
 						{
+							// qin on tässä arvo vokseliboksin pinnalla
 							LGMdouble qin = iop;
-							LGMdouble qout = iop * voxboxes[i1][i2][i3].extinction(vec[0].l*2);
 
+							// Matka jonka säde kulkee boksin sisällä jolle arvoja 
+							// ollaan laskemassa
+							LGMdouble inner_length = vec[0].l*2;
+
+							// vaimennuskerroin boksin läpi kulkiessa
+							LGMdouble ext2 = voxboxes[i1][i2][i3].extinction(inner_length);
+							
+							//säteilyn voimakkuus kun se tulee boksista ulos
+							LGMdouble qout = iop * ext2;
+
+							//ja vaimeneminen boksin sisällä
 							voxboxes[i1][i2][i3].addQabs(qin - qout);
-
-							iop = iop * voxboxes[i1][i2][i3].extinction(vec[0].l);
-							file << "oman boksin matka " << vec[0].l << endl;
-							file << "Säteily " << iop << endl;
+							
+							// Nyt lasketaan vain keskipisteeseen, eli boksin saama säteily
+							// on se arvo joka saadaan boksin keskipisteestä.
+							LGMdouble ext = voxboxes[i1][i2][i3].extinction(inner_length/2.0);
+							//voxboxes[i1][i2][i3].addInterceptedRadiation(iop*(1.0-ext));
+							iop = iop * ext;
 						}
 
-
 						voxboxes[i1][i2][i3].addRadiation(iop);	//säteily joka tulee..
-						file << endl << endl;
+						
 					}
+					if (first_time)
+					{
+						os << "total radiation " << sumiop << endl;
+						first_time = false;
+					}
+
+					
 				}
 			}
 			
-	file.close();
+	// file.close();
 	return 0;
 }
 
@@ -358,7 +370,7 @@ void VoxelSpace::AddScotspine(Tree<ScotsPineVisual, ScotsBud> &tree)
 //	This function searches for the minimum BoundingBox where every tree is included in
 
 //
-BoundingBox& VoxelSpace::searchDimensions(BoundingBox &bbox)
+BoundingBox& VoxelSpace::searchDimensions(BoundingBox &bbox, bool boolDimensionsWithNumBoxes)
 {
 	int size, i;
 
@@ -372,19 +384,26 @@ BoundingBox& VoxelSpace::searchDimensions(BoundingBox &bbox)
 		bbox = Accumulate(*vecScotspines[i], bbox, fbb);
 	}
 
-
 	LGMdouble scaleOdd = 1.1;
 	LGMdouble scaleOdd2 = 0.05;
 
-	LGMdouble dx = (bbox.getMax().getX() - bbox.getMin().getX()) * scaleOdd;
-	LGMdouble dy = (bbox.getMax().getY() - bbox.getMin().getY()) * scaleOdd;
-	LGMdouble dz = (bbox.getMax().getZ() - bbox.getMin().getZ()) * scaleOdd;
+	LGMdouble dx = (0.1 + bbox.getMax().getX() - bbox.getMin().getX()) * scaleOdd;
+	LGMdouble dy = (0.1 + bbox.getMax().getY() - bbox.getMin().getY()) * scaleOdd;
+	LGMdouble dz = (0.1 + bbox.getMax().getZ() - bbox.getMin().getZ()) * scaleOdd;
 
-	Xn = (int)(dx / Xbox)+1;
-	Yn = (int)(dy / Ybox)+1;
-	Zn = (int)(dz / Zbox)+1;
-	
-	
+	if (boolDimensionsWithNumBoxes)
+	{
+		Xbox = dx / (Xn-0.5);
+		Ybox = dy / (Yn-0.5);
+		Zbox = dz / (Zn-0.5);
+	}
+	else
+	{
+		Xn = dx / Xbox + 1;
+		Yn = dy / Ybox + 1;
+		Zn = dz / Zbox + 1;
+	}
+
 	corner1 = Point(bbox.getMin().getX()-dx*scaleOdd2,
 					bbox.getMin().getY()-dy*scaleOdd2,
 					bbox.getMin().getZ()-dz*scaleOdd2); 
@@ -392,7 +411,7 @@ BoundingBox& VoxelSpace::searchDimensions(BoundingBox &bbox)
 	double fx = corner1.getX();
 	double fy = corner1.getY();
 	double fz = corner1.getZ();
-
+	
 
 
 	voxboxes.resize(Xn, Yn, Zn);
@@ -425,6 +444,14 @@ void VoxelSpace::dumpTrees()
 	{
 		dumpCfTree(*this, *vecScotspines[i]);
 	}
+
+	for(int i1=0; i1<Xn; i1++)
+		for(int i2=0; i2<Yn; i2++)
+			for(int i3=0; i3<Zn; i3++)
+			{
+				
+				voxboxes[i1][i2][i3].UpdateValues(); 
+			}
 }
 
 
@@ -645,9 +672,11 @@ void VoxelSpace::draw()
 }
 
 
-void VoxelSpace::writeVoxBoxesToFile(string& filename)
+void VoxelSpace::writeVoxBoxesToFile(CString filename)
 {
-	ofstream file(filename.c_str());
+	ofstream file(filename);
+	file << "Vokselien koko " << Xbox << " " << Ybox << " " << Zbox << endl;
+
 	for(int i1=0; i1<Xn; i1++)
 		for(int i2=0; i2<Yn; i2++)
 			for(int i3=0; i3<Zn; i3++)
@@ -661,6 +690,79 @@ void VoxelSpace::writeVoxBoxesToFile(string& filename)
 
 }	
 
+
+void VoxelSpace::writeVoxBoxesToFile(ofstream &file)
+{
+	file << "Index "; 
+	file << "Qabs " <<  "    Qin " << "     star " << "   needleArea " << " leafarea ";
+	file << "  centerpoint " << endl;
+	
+	LGMdouble sumQabs = 0.0;
+
+	for(int i1=0; i1<Xn; i1++)
+		for(int i2=0; i2<Yn; i2++)
+			for(int i3=0; i3<Zn; i3++)
+			{
+				if(voxboxes[i1][i2][i3].isEmpty() == false)
+				{
+					file <<  i1 << ":" << i2 << ":" << i3 << "   ";
+					Point p;
+					voxboxes[i1][i2][i3].getCenterPoint(p);
+					
+					file << voxboxes[i1][i2][i3];
+					file << "  " << p << " ";
+	
+					sumQabs += voxboxes[i1][i2][i3].getQabs();
+				}
+			}
+	file << endl << endl << "Sum of Qabs " << sumQabs << endl;
+}	
+
+
+LGMdouble VoxelSpace::getFoliageMass(void)
+{
+	LGMdouble ret = 0.0;
+	for(int i1=0; i1<Xn; i1++)
+		for(int i2=0; i2<Yn; i2++)
+			for(int i3=0; i3<Zn; i3++)
+			{
+				ret += voxboxes[i1][i2][i3].getFoliageMass();
+			}
+	return ret;
+}
+
+
+
+
+int VoxelSpace::getNumVoxBoxes()
+{
+	int count = 0;
+	for(int i1=0; i1<Xn; i1++)
+		for(int i2=0; i2<Yn; i2++)
+			for(int i3=0; i3<Zn; i3++)
+			{
+				if(voxboxes[i1][i2][i3].isEmpty() == false)
+				{
+					count++;
+				}
+			}
+	return count;
+}
+
+int VoxelSpace::getNumTreeSegments()
+{
+	int count=0;
+	for(int i1=0; i1<Xn; i1++)
+		for(int i2=0; i2<Yn; i2++)
+			for(int i3=0; i3<Zn; i3++)
+			{
+				if(voxboxes[i1][i2][i3].isEmpty() == false)
+				{
+					count += voxboxes[i1][i2][i3].getNumSegments();
+				}
+			}
+	return count;
+}
 
 
 }  // closing namespace Lignum
