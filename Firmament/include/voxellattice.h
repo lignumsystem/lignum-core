@@ -14,13 +14,16 @@
 template<class T> 
 class Ext
 {
+  template <class T1>
+  friend float interExt(T1& getExt, double edgelen, const PositionVector& v, 
+			const PositionVector& w);
 public:
   void operator()(const PositionVector& v, float l) 
   { 
  	  ext += getExt(v)*l; 
   }
   
-  friend float interExt(T& getExt, double edgelen, const PositionVector& v, const PositionVector& w);
+  
   Ext(T& getExt_) : ext(0), getExt(getExt_) { }
   float ext;
   T& getExt;
