@@ -278,8 +278,37 @@ namespace Lignum{
   }
 
 
+  template <class TS, class BUD>
+    void PrintTreeInformation2<TS,BUD>::operator() (Tree<TS,BUD>&  tr) {
+
+    TreeDataStruct values;
+    TreeData<TS,BUD> getTreeValues;
+  
+    values = Accumulate(tr, values, getTreeValues);
+
+    //Diameter and heigth at the crown base.
+    DCLData dcl;
+    AccumulateDown(tr,dcl,AddBranchWf(),
+    		   DiameterCrownBase<TS,BUD>());
+    LGMdouble d13 = GetValue(tr,LGADbh);
+    LGMdouble d13hw = GetValue(tr,LGADbh);
+    if(d13 < R_EPSILON) d13 = 0.0;
+    if(d13 < R_EPSILON) d13hw = 0.0;
+    LGMdouble  dbhw= GetValue(tr, LGADbaseHw);
+    LGMdouble  db= GetValue(tr, LGADbase);
 
 
+
+    out << values.age << ":" << 100*db << ":" << 100*d13 << ":"
+	<< values.bolLen << ":" << values.Hc << ":" << values.sum_Wf
+	<< ":"
+	<< values.sum_Ws << ":" << values.sum_Wb << ":" << values.sum_Af
+	<< ":"
+	<< 10.0*values.sum_Af/(values.sum_Wf+values.sum_Ws+GetValue(tr,TreeWr))
+	<< ":" << values.max_Qin << ":" <<  values.sum_Qabs << ":"
+	<< GetValue(tr,TreeP) << ":" << GetValue(tr,TreeM)
+	<< endl;
+  }
 
 
   template <class TS,class BUD> void DisplayStructure(Tree<TS,BUD>& t)

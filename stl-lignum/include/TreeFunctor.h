@@ -20,6 +20,7 @@ using namespace std;
 //   CountTreeSegments
 //   ForwardQin (for coniferous)
 //   PrintTreeInformation
+//   PrintTreeInformation2
 //   CountCompartments
 //   CountCompartmentsReverse
 //   DisplayStructure
@@ -153,6 +154,26 @@ namespace Lignum{
       TreeDataStruct& operator()(TreeDataStruct& stru,
 				 TreeCompartment<TS,BUD>* tc)const;
     };
+
+
+  //Functor PrintTreeInformation2 prints out tree information to a
+  //file (given as a parameter to constructor (a ofstream)) one row in
+  //each growth cycle for plotting purposes etc.  Calculates the
+  //values with the same methods as PrintTreeInformation.
+
+  template <class TS, class BUD>
+    class PrintTreeInformation2 {
+    public:
+    PrintTreeInformation2(ofstream& out):
+    out(out)
+      {
+     out << "age:db:d13:H:Hc:Wf:Ws:Wb:Af:LAR:QinM:Qabs:P:M"
+	<< endl;
+      }
+    void operator() (Tree<TS,BUD>&  tr);
+    private:
+    ofstream& out;
+  };
 
 
 
