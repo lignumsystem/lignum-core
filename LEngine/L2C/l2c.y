@@ -131,7 +131,7 @@ ModuleList: tMODULEIDENT
 
 DerivLength: tDERIVLENGTH { StartDerivLength(); } tSEMICOLON
 	{ EndDerivLength(); }
-
+        ;
 
 ProductionPrototype: LContext tLESSTHAN StrictPred tGREATERTHAN RContext tENDPRODPROTO
 	{ 
