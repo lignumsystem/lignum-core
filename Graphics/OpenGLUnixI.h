@@ -99,6 +99,8 @@ int VisualizeLGMTree(Tree<TS,BUD> &tree)
   glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
  
   stemtexture.Load("Manty.bmp", 512, 512);
+
+  LoadGLTextures("neulaset5.tga);
   
 
   cout << "tekstuurit kaytossa******************************************** " << endl;
@@ -108,6 +110,7 @@ int VisualizeLGMTree(Tree<TS,BUD> &tree)
   cout << "rakennetaan puu.." << endl;
   
   MakeTreeList(tree, 0.05);
+  MakeNeedlesList(tree);
   //elavat budit
   MakeBudList(tree, true);
  

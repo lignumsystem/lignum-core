@@ -66,6 +66,9 @@ void MakeLeaveList(Tree<TS,BUD> &tree,int xsize=6, int ysize=6);
 template <class TS,class BUD>
 void MakeTreeList(Tree<TS,BUD> &tree, LGMdouble limit);
 
+template <class TS,class BUD>
+void MakeNeedlesList(Tree<TS,BUD> &tree);
+
 void DrawOrderedFoliage();
 
 

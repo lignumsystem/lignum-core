@@ -34,6 +34,14 @@ public:
 };
 
 
+template <class TS,class BUD>
+class DrawNeedlesFunctor
+{
+public:
+        TreeCompartment<TS,BUD>* operator()(TreeCompartment<TS,BUD>* tc)const; 
+};
+
+
 
 template <class TS,class BUD>
 class DrawLeavesFunctor

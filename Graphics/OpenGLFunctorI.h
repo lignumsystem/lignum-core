@@ -137,4 +137,57 @@ TreeCompartment<TS,BUD>* DrawLeavesFunctor<TS,BUD>::operator()(TreeCompartment<T
 
 }
 
+
+
+template <class TS, class BUD>
+TreeCompartment<TS,BUD>* DrawNeedlesFunctor<TS,BUD>::operator()(TreeCompartment<TS,BUD>* tc)const
+{
+  if (TreeSegment<TS, BUD>* ts = dynamic_cast<TreeSegment<TS, BUD>*>(tc))
+    {                       
+      if (CfTreeSegment<TS,BUD>* cfts = dynamic_cast<CfTreeSegment<TS,BUD>*>(ts))
+	{
+	  float length;
+	  float radius_top;
+	  float radius;
+	  float rot_x;
+	  float rot_y;
+	  float rot_angle;
+	  
+	  Point position;
+	  PositionVector direction = GetDirection(*ts);
+	  
+	  length = GetValue(*ts, L); 
+	  radius_top = GetValue(*ts, RTop);
+	  position = GetPoint(*ts);
+	  
+	  rot_x = -1*direction.getVector()[1];
+	  rot_y =    direction.getVector()[0];
+	  rot_angle = (360/(2*PI_VALUE))*acos((double)direction.getVector()[2]);
+	  radius = GetValue(*ts, R);
+	  
+	  if (GetValue(*cfts, Wf) > 0)
+	    {               
+	      
+	      glPushMatrix();
+	      glTranslatef(position.getX(), position.getY(), position.getZ());
+	      if (rot_angle > 0.01)
+		glRotatef( rot_angle, rot_x, rot_y, 0);
+	      draw_texfoliage_planes(length, radius, GetValue(*cfts, Wf), GetValue(*ts, age));         
+	      glPopMatrix();
+	    }                       
+	}
+      
+    } 
+  return tc;
+}
+
+
+
+
+
+
+
+
+
+
 #endif

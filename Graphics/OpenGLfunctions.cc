@@ -8,7 +8,7 @@
 
 #include <string>
 
-//#include "tga.h"
+#include "tga.h"
 //#include "Functions.h"
 #include "TreeVariables.h"
 #include "OpenGLSymbols.h"
@@ -88,69 +88,39 @@ AUX_RGBImageRec* LoadBMP(string filename)
 	return NULL;
 }
 */
-bool LoadGLTextures()
+
+
+bool LoadGLTextures(char *name)
 {
-   /*
-	char buff[15];
-   tga_t image;
-
-   glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-   glEnable(GL_DEPTH_TEST);
-   //glEnable(GL_BLEND);???
-   glEnable(GL_TEXTURE_2D);
-   // blend func for transparency
-   //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); ???
-
-   
-   texIds[0] = image.GenId(); // let OpenGL give us a texture id
-   texIds[1] = image.GenId(); 
-
-   std::string tmp1 = GetLignumPath()+"textures\\" + fol_texture;
-
-   char *name = const_cast<char *>(tmp1.c_str());
+  
+  char buff[15];
+  tga_t image;
+  
+  glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+  glEnable(GL_DEPTH_TEST);
+  //glEnable(GL_BLEND);???
+  glEnable(GL_TEXTURE_2D);
+  // blend func for transparency
+  //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); ???
+  
+  
+  texIds[0] = image.GenId(); // let OpenGL give us a texture id
+  texIds[1] = image.GenId(); 
+  
+  
    image.Load(name, texIds[0]);
 
 
-  // image.Load("textures\\Lehti.tga", texIds[1]);
-//	image.Load("textures\\vaahtera1.tga", texIds[1]);
-  // 	image.Load("textures\\koivuvk1.tga", texIds[1]);
+   // image.Load("textures\\Lehti.tga", texIds[1]);
+   //	image.Load("textures\\vaahtera1.tga", texIds[1]);
+   // 	image.Load("textures\\koivuvk1.tga", texIds[1]);
   	
-	const int num_textures = 1;
-	AUX_RGBImageRec *TextureImage[num_textures];
-	memset(TextureImage,0, sizeof(void *));
+   const int num_textures = 1;
+   AUX_RGBImageRec *TextureImage[num_textures];
+   memset(TextureImage,0, sizeof(void *));
 
-	
-
-	if (TextureImage[0]=LoadBMP(GetLignumPath()+"textures\\" + stem_texture))  // && (TextureImage[2]=LoadBMP("textures\manty3.bmp")))
-	{
-		glGenTextures(num_textures, &texture[0]);
-
-		for(int i=0; i<num_textures; i++)
-		{
-			glBindTexture(GL_TEXTURE_2D, texture[i]);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-			glTexImage2D(GL_TEXTURE_2D, 0, 3, TextureImage[i]->sizeX, TextureImage[i]->sizeY,
-				0, GL_RGB, GL_UNSIGNED_BYTE, TextureImage[i]->data);
-		}
-
-
-		for (i=0; i<num_textures; i++)
-		{
-			if (TextureImage[i])
-			{
-				if(TextureImage[i]->data)
-				{
-					free(TextureImage[i]->data);
-				}
-				free(TextureImage[i]);
-			}
-		}
-		return true;
-	}
-	*/
-	return false;	
-	
+      
+   return texIds[0];
 }
 
 

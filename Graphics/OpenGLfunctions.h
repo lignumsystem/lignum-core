@@ -17,7 +17,8 @@ bool LoadTextures(string stem1, string stem2, string foliage);
 
 // Loading a bmp-texture
 //AUX_RGBImageRec* LoadBMP(string filename);
-//bool LoadGLTextures();
+
+bool LoadGLTextures(char *name);
 
 void FindPlane(GLfloat plane[4]);
 
