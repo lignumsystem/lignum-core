@@ -87,8 +87,7 @@ namespace Lignum{
   //Keep this list in synbc with MapLGMPD constructor in TreeFriend.cc
   enum LGMPD {af,al,ar,ca, dofp,lr,mf,mr,ms,na,nl,pr,q, rca, rld,sf, 
               sla,sr,ss,rho,rho_root,rho_hair, LGPtauL,yc, xi,
-	      zbrentEpsilon, Ln_par, n_ang_par, fake_forest, nitroRoots, 
-              nitroWood, nitroLeaves};
+	      zbrentEpsilon, Ln_par, n_ang_par, fake_forest};
 
 
  //cvs update

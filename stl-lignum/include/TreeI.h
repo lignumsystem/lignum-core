@@ -20,24 +20,14 @@ Tree<TS,BUD>::Tree()
 template <class TS,class BUD>
 Tree<TS,BUD>::Tree(const Point& p, const PositionVector& d)
   :TreeCompartment<TS,BUD>(p,d,this),f(5,5),axis(p,d,this),
-    root_axis(p,d,*this)
-{
-	// nitrogen functions are set as constant functions by default
-	tf.nitroMaxPhotosynthesis = ParametricCurve(1);   
-    tf.nitroRespiration = ParametricCurve(1);   
-    tf.nitroRootShootRatio = ParametricCurve(1);
-}
+  root_axis(p,d,*this)
+  { }
 
 
 template <class TS,class BUD>
-Tree<TS,BUD>::Tree(const Point& p, const PositionVector& d, LGMdouble len, LGMdouble rad, int num_buds)
-  :TreeCompartment<TS,BUD>(p,d,this),f(5,5),axis(p,d,this),
+Tree<TS,BUD>::Tree(const Point& p, const PositionVector& d, LGMdouble len, LGMdouble rad, int num_buds) :TreeCompartment<TS,BUD>(p,d,this),f(5,5),axis(p,d,this),
     root_axis(p,d,*this)
 {
-    // nitrogen functions are set as constant functions by default
-	tf.nitroMaxPhotosynthesis = ParametricCurve(1);   
-    tf.nitroRespiration = ParametricCurve(1);   
-    tf.nitroRootShootRatio = ParametricCurve(1);
 
   //force the instantiation of BranchingPoint
   BranchingPoint<TS,BUD>(p,d,this);
@@ -164,17 +154,6 @@ LGMdouble GetValue(const Tree<TS,BUD>& tree, const LGMPD name)
   else if (name == zbrentEpsilon)
      return tree.tp.zbrentEpsilon;
 
-  else if (name ==  nitroRoots)
-	  return tree.tp.nitroRoots;
-
-   else if (name == nitroWood)
-	   return tree.tp.nitroWood;
-
-   else if (name == nitroLeaves)
-	   return tree.tp.nitroLeaves;
-
-	
-
   else{
     cerr << "Tree::GetValue() uknown parameter: " << name << " returning 0.0" 
 	 << endl;
@@ -246,15 +225,6 @@ LGMdouble SetValue(Tree<TS,BUD>& tree, const LGMPD name, const LGMdouble value)
 
   else if (name == zbrentEpsilon)
     tree.tp.zbrentEpsilon = value;
-
-   else if (name ==  nitroRoots)
-	tree.tp.nitroRoots = value;
-
-   else if (name == nitroWood)
-	 tree.tp.nitroWood = value;
-
-   else if (name == nitroLeaves)
-	 tree.tp.nitroLeaves = value;
 
   else{
     cerr << "Tree::SetValue unknown parameter: " << name << " returning 0.0" 

@@ -105,26 +105,18 @@ LGMdouble HwBracketFunction(LGMdouble& a, LGMdouble& b,
 				  LGMdouble& fa, LGMdouble& fb, Tree<TS,BUD>& tree)
 {
   LGMdouble a_r = GetValue(tree, ar);
-	LGMdouble AsIni = 0.0;
-  AdjustDiameterHwGrowth<TS,BUD> diamGrowth;
-  
+  LGMdouble AsIni = 0.0;
 
-  
+  AdjustDiameterHwGrowth<TS,BUD> diamGrowth;
+
   a = 0.0;
   b = GetValue(tree, lambda);
   
 
-  LGMdouble deltaiW = GetValue(tree, LGAP) - GetValue(tree, M);  
+  LGMdouble deltaiW = GetValue(tree, LGAP) - GetValue(tree, LGAM); 
+
   fa = deltaiW - wSum_Lambda0;
   
-  debug_file << "photosynteesi: " << GetValue(tree, LGAP) << endl;
-  debug_file << "Hengitys     : " << GetValue(tree, M) << endl;
-  debug_file << "photosynteesi-hengitys: " << GetValue(tree, LGAP)-GetValue(tree, M) << endl;	
-
-  debug_file << endl << endl << "uusi kasvu  deltaiW(0)="<< deltaiW << '\n';
-  debug_file << "P=" << GetValue(tree, LGAP) << '\n';
-  debug_file << "M=" << GetValue(tree, M) << '\n';
-
   AsIni = 0.0;
   AsIni = AccumulateDown(tree, AsIni, diamGrowth);
   
@@ -136,46 +128,32 @@ LGMdouble HwBracketFunction(LGMdouble& a, LGMdouble& b,
   CollectNewHwFoliageMass<TS,BUD> collectNFM;
   sum_nfol = Accumulate(tree,  sum_nfol, collectNFM);
 
+  fb = deltaiW - WSum - sum_nfol - (sum_nfol * a_r);
   
-  LGMdouble nit = GetValue(tree, nitroLeaves);
-  LGMdouble aa_r = GetValue(tree, ar) * tree.tf.nitroRootShootRatio(nit);
-
-  LGMdouble rootGrowth = sum_nfol* aa_r;  
-  
-  fb = deltaiW - WSum - sum_nfol - rootGrowth;
-  
-  debug_file << "fa " << fa << "   fb " << fb << '\n';	
-  debug_file << "haetaaan väliä  iteroidaan..." << '\n';
-
   while ((fb) > 0.0)
   {
     a = b;
     fa = fb;
     b = b * 1.30 + 0.1;
-	ASSERT(b/a > 0);
+    LGMassert(b/a > 0);
 	
     SetValue(tree, lambda, b);
-	AdjustNewLambda(tree);
+    AdjustNewLambda(tree);
  
 
     AsIni = 0.0;
     AccumulateDown(tree, AsIni, diamGrowth);
     
-	identity = 0.0;
+    identity = 0.0;
     WSum = Accumulate(tree,  identity, collectDW);
 
-	sum_nfol = 0;
-	sum_nfol = Accumulate(tree,  sum_nfol, collectNFM);
+    sum_nfol = 0;
+    sum_nfol = Accumulate(tree,  sum_nfol, collectNFM);
 
-	rootGrowth = sum_nfol * a_r;	//****** typpifunktio(lehdista)
-    fb = deltaiW - WSum - sum_nfol - rootGrowth;
+    fb = deltaiW - WSum - sum_nfol - (sum_nfol * a_r);
 
-	debug_file << "lambda " << b << "   Wsum " << WSum << '\n';
-	debug_file << "fa " << fa << "   fb " << fb << '\n';
   }
 
-
-  debug_file << "Nolla-arvo löytyy väliltä [" << a << "," << b << "]" << '\n'; 
   return fb;
 }
 
@@ -312,8 +290,7 @@ LGMdouble HwZbrent(LGMdouble x1,LGMdouble x2,LGMdouble fa, LGMdouble fb, LGMdoub
 		WSum = Accumulate(tree,  identity, collectDW);
 
 
-		LGMdouble nit = GetValue(tree, nitroLeaves);
-		LGMdouble a_r = GetValue(tree, ar) * tree.tf.nitroRootShootRatio(nit);
+		LGMdouble a_r = GetValue(tree, ar);
 
 		LGMdouble sum_nfol = 0.0;
 		CollectNewHwFoliageMass<TS,BUD> collectHwWB;

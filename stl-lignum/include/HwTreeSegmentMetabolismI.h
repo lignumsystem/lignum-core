@@ -35,19 +35,9 @@ void HwTreeSegment<TS,BUD,S>::respiration()
     m_hw += mf_par * GetValue(**i,LGAWf);
   }
 
-  Tree<TS,BUD>& t = dynamic_cast<Tree<TS,BUD>&>(GetTree(*this));
+  // Respiration of wooden part
 
-  // Effect of nitrogen on leaves
-  LGMdouble nit_leaves = GetValue(tt, nitroLeaves);
-  LGMdouble nit_wood = GetValue(tt, nitroWood);
- 
-
-  m_hw *= tt.tf.nitroRespiration(nit_leaves);
-
-  // Respiration of wooden part, effect of nitrogen.
-  m_hw += GetValue(t,ms)*GetValue(*this,LGAWs) * tt.tf.nitroRespiration(nit_wood);
-
- 
+  m_hw += GetValue(tt,ms)*GetValue(*this,LGAWs);
 
   SetValue(*this, LGAM, m_hw);
 }

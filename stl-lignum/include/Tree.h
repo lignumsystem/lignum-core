@@ -88,13 +88,6 @@ namespace Lignum{
     LGMdouble ca;			//circulation angle for new buds compared to belowed ones
     LGMdouble rca;			//random effect of circulation angle [%] 0->
     LGMdouble rld;			//random effect of leaf distances in a single tree segment
-    
- 
-    LGMdouble nitroLeaves;  
-    LGMdouble nitroRoots;
-    LGMdouble nitroWood;
-
-
   };
 
   //TreeAttributes  are  in a  (long)  vector  indexed by  enumeration
@@ -123,10 +116,6 @@ namespace Lignum{
 						  // the  number of the  buds. If no
 						  // effect the value is always 1 of
 						  // this function
-
-    ParametricCurve nitroMaxPhotosynthesis;   
-    ParametricCurve nitroRespiration;   
-    ParametricCurve nitroRootShootRatio;   
   };
 
   class TreeTransitVariables{
