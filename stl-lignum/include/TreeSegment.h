@@ -17,11 +17,11 @@ public:
   double age;               //Age of the tree segment
   METER L;                //Length of the tree segment
   KGC M;                  //Respiration of the tree segment during the time step
-  TP omega;               //Gravelius order
+  LGMdouble omega;               //Gravelius order
   KGC P;                  //Photosythesis of the tree segment during the time step
   PA Pr;                  //Pressure
-  TP fin;                 //Amount of water coming in
-  TP fout;                //Amount of water going out
+  LGMdouble fin;                 //Amount of water coming in
+  LGMdouble fout;                //Amount of water going out
   MJ Qin;                 //Incoming radiation
   MJ Qabs;                //Absorbed radiation
   METER R;                //Radius including bark
@@ -38,14 +38,14 @@ template <class TS,class BUD=DefaultBud<TS> >
 class TreeSegment: public TreeCompartment<TS,BUD>{ 
   friend list<METER> GetAnnualRings(const TreeSegment<TS,BUD>& ts);
   friend KGC GetSapwoodMass(const TreeSegment<TS,BUD>& ts);
-  friend TP GetValue(const TreeSegment<TS,BUD>& ts, const LGMAD name);
-  friend TP SetValue(TreeSegment<TS,BUD>& ts, const LGMAD name, const TP value);
+  friend LGMdouble GetValue(const TreeSegment<TS,BUD>& ts, const LGMAD name);
+  friend LGMdouble SetValue(TreeSegment<TS,BUD>& ts, const LGMAD name, const LGMdouble value);
 public:
   TreeSegment();
-  TreeSegment(const Point<METER>& p, const PositionVector& d, const TP go,
+  TreeSegment(const Point<METER>& p, const PositionVector& d, const LGMdouble go,
 	      const METER l, const METER r, const METER rn, Tree<TS,BUD>* t);
   virtual ~TreeSegment();
-  TP GetTranspiration(TP time);
+  LGMdouble GetTranspiration(LGMdouble time);
   TreeSegmentAttributes& getTsa(){return tsa;}
 private:
   TreeSegmentAttributes tsa;

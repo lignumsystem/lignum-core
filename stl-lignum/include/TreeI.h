@@ -19,7 +19,7 @@ Tree<TS,BUD>::Tree(const Point<METER>& p, const PositionVector& d)
 
 
 template <class TS,class BUD>
-void Tree<TS,BUD>::UpdateWaterFlow(TP time_step, const ConnectionMatrix<TS,BUD> &cm)
+void Tree<TS,BUD>::UpdateWaterFlow(LGMdouble time_step, const ConnectionMatrix<TS,BUD> &cm)
 {
   // This counts the flow in for every segment
   for (int i=0; i<cm.getSize(); i++){
@@ -52,9 +52,9 @@ void Tree<TS,BUD>::UpdateWaterFlow(TP time_step, const ConnectionMatrix<TS,BUD> 
       }
     }
 
-    TP Dw = GetValue(*out, R);  //diameter of sapwood
+    LGMdouble Dw = GetValue(*out, R);  //diameter of sapwood
     
-    TP new_pressure = GetValue(*out, Pr) + time_step * ttp.Er / Dw * 2  /
+    LGMdouble new_pressure = GetValue(*out, Pr) + time_step * ttp.Er / Dw * 2  /
       (ttp.rhow * PI_VALUE *  GetValue(*out, L) *  GetValue(*out, R)) *
       ( GetValue(*out, fin) - GetValue(*out, fout) - 
 	out->GetTranspiration(time_step));  
@@ -77,15 +77,15 @@ void Tree<TS,BUD>::UpdateWaterFlow(TP time_step, const ConnectionMatrix<TS,BUD> 
 // This method counts the flow from the TreeSegment below (out) to the TreeSegment above.
 
 template <class TS,class BUD>
-TP Tree<TS,BUD>::CountFlow(TreeSegment<TS,BUD> &in, TreeSegment<TS,BUD> &out)
+LGMdouble Tree<TS,BUD>::CountFlow(TreeSegment<TS,BUD> &in, TreeSegment<TS,BUD> &out)
 
 {
-  TP ar = GetValue(out, A);
-  TP le = GetValue(out, L);
-  TP he = GetValue(in, Hm) - GetValue(out, Hm);
+  LGMdouble ar = GetValue(out, A);
+  LGMdouble le = GetValue(out, L);
+  LGMdouble he = GetValue(in, Hm) - GetValue(out, Hm);
 
-  TP pr_out = GetValue(out, Pr);  // Pressure in the element above
-  TP pr_in = GetValue(in, Pr);    // Pressure in the element below
+  LGMdouble pr_out = GetValue(out, Pr);  // Pressure in the element above
+  LGMdouble pr_in = GetValue(in, Pr);    // Pressure in the element below
  
   return ttp.rhow * (ttp.k/ ttp.eta) * (ar / le) * (pr_out - pr_in - (ttp.rhow * ttp.g * he));
 }
@@ -108,7 +108,7 @@ TP Tree<TS,BUD>::CountFlow(TreeSegment<TS,BUD> &in, TreeSegment<TS,BUD> &out)
 template <class TS,class BUD>
 void InitializeTree(Tree<TS,BUD>& tree, const CString& meta_file)
 {
-  TP p;
+  LGMdouble p;
   CString file;
   Lex lex;
   Token name,value;
@@ -124,7 +124,7 @@ void InitializeTree(Tree<TS,BUD>& tree, const CString& meta_file)
   name = lex.getToken();
   while (name.getType() != ENDFILE){
     value = lex.getToken(); 
-    p = (TP) atof((const char *)value.getValue());
+    p = (LGMdouble) atof((const char *)value.getValue());
     cout << " Parameter: " << name.getValue() << " = " << p << endl;
     if (name.getValue() == CString("lambda"))
       SetValue(tree,lambda,p);
@@ -156,7 +156,7 @@ void InitializeTree(Tree<TS,BUD>& tree, const CString& meta_file)
 
 //Get a parameter value 
 template <class TS,class BUD>
-TP GetValue(const Tree<TS,BUD>& tree, const LGMPD name)
+LGMdouble GetValue(const Tree<TS,BUD>& tree, const LGMPD name)
 {
   if (name == af)
     return tree.tp.af;
@@ -209,9 +209,9 @@ TP GetValue(const Tree<TS,BUD>& tree, const LGMPD name)
 
 //Change a parameter value, return the old value
 template <class TS,class BUD>
-TP SetValue(Tree<TS,BUD>& tree, const LGMPD name, const TP value)
+LGMdouble SetValue(Tree<TS,BUD>& tree, const LGMPD name, const LGMdouble value)
 {
-  TP old_value = GetValue(tree,name);
+  LGMdouble old_value = GetValue(tree,name);
 
   if (name == af)
     tree.tp.af = value;
@@ -263,7 +263,7 @@ TP SetValue(Tree<TS,BUD>& tree, const LGMPD name, const TP value)
 }
 
 template <class TS,class BUD>
-TP GetValue(const Tree<TS,BUD>& tree, const LGMTD name)
+LGMdouble GetValue(const Tree<TS,BUD>& tree, const LGMTD name)
 {
   if (name == lambda)
     return tree.ttp.lambda;
@@ -277,9 +277,9 @@ TP GetValue(const Tree<TS,BUD>& tree, const LGMTD name)
 }
 
 template <class TS,class BUD>
-TP SetValue(Tree<TS,BUD>& tree, const LGMTD name, const TP value)
+LGMdouble SetValue(Tree<TS,BUD>& tree, const LGMTD name, const LGMdouble value)
 {
-  TP old_value = GetValue(tree,name);
+  LGMdouble old_value = GetValue(tree,name);
   
   if (name == lambda)
     tree.ttp.lambda = value;
@@ -291,7 +291,7 @@ TP SetValue(Tree<TS,BUD>& tree, const LGMTD name, const TP value)
 }
 
 template <class TS,class BUD>
-TP GetValue(const Tree<TS,BUD>& tree, const LGMAD name)
+LGMdouble GetValue(const Tree<TS,BUD>& tree, const LGMAD name)
 { 
   if (name == age)
     return tree.ta.age;
@@ -317,9 +317,9 @@ TP GetValue(const Tree<TS,BUD>& tree, const LGMAD name)
 }
 
 template <class TS,class BUD>
-TP SetValue(Tree<TS,BUD>& tree, const LGMAD name, const TP value)
+LGMdouble SetValue(Tree<TS,BUD>& tree, const LGMAD name, const LGMdouble value)
 {
-  TP old_value = GetValue(tree,name);
+  LGMdouble old_value = GetValue(tree,name);
 
   if (name == age)
     return tree.ta.lb = value;

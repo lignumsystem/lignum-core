@@ -35,20 +35,20 @@ namespace Lignum{
 class TreeParameters{
 public:
   TreeParameters();
-  TP af;            //Needle mass - tree segment area relationship
-  TP ar;            //Foliage - root relationship
-  TP lr;            //L/R for a new tree segment
-  TP mf;            //Maintenance respiration rate of foliage
-  TP mr;            //Maintenance respiration rate of roots
-  TP ms;            //Maintenance respiration rate of sapwood
-  TP na;            //needle angle (radian)
-  TP nl;            //needle length
-  TP pr;            //Propotion of bound solar radiation used in photosynthesis
-  TP q;             //Tree segment shortening factor
-  TP sr;            //Senescence rate of roots
-  TP ss;            //Senescence rate of sapwood
-  TP rho;           //Density of wood
-  TP xi;            //Fraction of heartwood in new tree segments
+  LGMdouble af;            //Needle mass - tree segment area relationship
+  LGMdouble ar;            //Foliage - root relationship
+  LGMdouble lr;            //L/R for a new tree segment
+  LGMdouble mf;            //Maintenance respiration rate of foliage
+  LGMdouble mr;            //Maintenance respiration rate of roots
+  LGMdouble ms;            //Maintenance respiration rate of sapwood
+  LGMdouble na;            //needle angle (radian)
+  LGMdouble nl;            //needle length
+  LGMdouble pr;            //Propotion of bound solar radiation used in photosynthesis
+  LGMdouble q;             //Tree segment shortening factor
+  LGMdouble sr;            //Senescence rate of roots
+  LGMdouble ss;            //Senescence rate of sapwood
+  LGMdouble rho;           //Density of wood
+  LGMdouble xi;            //Fraction of heartwood in new tree segments
 };
 
 class TreeAttributes{
@@ -72,12 +72,12 @@ public:
 class TreeTransitVariables{
 public:
   TreeTransitVariables();
-  TP lambda;        //Variable to balance carbon balance equation
-  TP g;             //Gravity
-  TP eta;           //Dynamic viscosity of water
-  TP k;             //Wood spesific conductivity or permeability
-  TP rhow;          //Density of water
-  TP Er;            //Elastic modulus of wood in radial direction
+  LGMdouble lambda;        //Variable to balance carbon balance equation
+  LGMdouble g;             //Gravity
+  LGMdouble eta;           //Dynamic viscosity of water
+  LGMdouble k;             //Wood spesific conductivity or permeability
+  LGMdouble rhow;          //Density of water
+  LGMdouble Er;            //Elastic modulus of wood in radial direction
 };
 
 class TreeInitializationFiles{
@@ -91,21 +91,21 @@ public:
 template <class TS,class BUD = DefaultBud<TS> >
 class Tree: public TreeCompartment<TS,BUD>{
   friend Axis<TS,BUD>& GetAxis(Tree<TS,BUD>& t);
-  friend TP GetProduction(const Tree<TS,BUD>& t);
+  friend LGMdouble GetProduction(const Tree<TS,BUD>& t);
   friend void InitializeTree(Tree<TS,BUD>& tree, const CString& meta_file);
-  friend TP GetValue(const Tree<TS,BUD>& tree, const LGMAD name);
-  friend TP SetValue(Tree<TS,BUD>& tree, const LGMAD name, const TP value);
-  friend TP GetValue(const Tree<TS,BUD>& tree, const LGMPD name);
-  friend TP SetValue(Tree<TS,BUD>& tree, const LGMPD  name, const TP value);
-  friend TP GetValue(const Tree<TS,BUD>& tree, const LGMTD name);
-  friend TP SetValue(Tree<TS,BUD>& tree, const LGMTD name, const TP value);
+  friend LGMdouble GetValue(const Tree<TS,BUD>& tree, const LGMAD name);
+  friend LGMdouble SetValue(Tree<TS,BUD>& tree, const LGMAD name, const LGMdouble value);
+  friend LGMdouble GetValue(const Tree<TS,BUD>& tree, const LGMPD name);
+  friend LGMdouble SetValue(Tree<TS,BUD>& tree, const LGMPD  name, const LGMdouble value);
+  friend LGMdouble GetValue(const Tree<TS,BUD>& tree, const LGMTD name);
+  friend LGMdouble SetValue(Tree<TS,BUD>& tree, const LGMTD name, const LGMdouble value);
   friend CString GetTreeInitializationFile(Tree<TS,BUD>& tree);
 public:
   Tree();
   Tree(const Point<METER>& p, const PositionVector& d);
-  void UpdateWaterFlow(TP time, const ConnectionMatrix<TS,BUD> &cm);
+  void UpdateWaterFlow(LGMdouble time, const ConnectionMatrix<TS,BUD> &cm);
 private:
-  TP CountFlow(TreeSegment<TS,BUD> &in, TreeSegment<TS,BUD> &out);
+  LGMdouble CountFlow(TreeSegment<TS,BUD> &in, TreeSegment<TS,BUD> &out);
   TreeAttributes ta;
   TreeFunctions tf;
   TreeParameters tp;

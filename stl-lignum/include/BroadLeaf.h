@@ -46,14 +46,14 @@ public:
 
 
 class BroadLeaf{
-  friend BLD GetValue(const BroadLeaf& bl, const LGMAD name);
-  friend BLD SetValue(BroadLeaf& bl, const LGMAD name, const BLD value);
+  friend LGMdouble GetValue(const BroadLeaf& bl, const LGMAD name);
+  friend LGMdouble SetValue(BroadLeaf& bl, const LGMAD name, const LGMdouble value);
   friend Point<> GetCenterPoint(const BroadLeaf& bl);
   friend void SetCenterPoint(BroadLeaf& bl, const Point<>& p);
   friend PositionVector GetLeafNormal(const BroadLeaf& bl);
   friend Petiole& GetPetiole(BroadLeaf& bl);
 public:
-  BroadLeaf(BLD sf,BLD tauL,BLD dof,BLD lw,int number_of_sectors,
+  BroadLeaf(LGMdouble sf,LGMdouble tauL,LGMdouble dof,LGMdouble lw,int number_of_sectors,
 	    const Petiole& petiole, const PositionVector& leaf_normal,
 	    const Ellipsis& shape);
 private:

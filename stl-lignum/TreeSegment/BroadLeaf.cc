@@ -26,7 +26,7 @@ PositionVector GetDirection(const Petiole& p)
   return d;
 }
 
-BroadLeaf::BroadLeaf(BLD sf,BLD tauL,BLD dof,BLD lw,int number_of_sectors,
+BroadLeaf::BroadLeaf(LGMdouble sf,LGMdouble tauL,LGMdouble dof,LGMdouble lw,int number_of_sectors,
 		     const Petiole& petiole,const PositionVector& leaf_normal,const Ellipsis& shape)
   :bla(sf,tauL,dof,petiole,leaf_normal,shape,lw,number_of_sectors)
 {
@@ -59,7 +59,7 @@ BroadLeafAttributes::BroadLeafAttributes(double sf1, double tauL1,
   leaf_normal.normalize();
 }
 
-BLD GetValue(const BroadLeaf& bl, const LGMAD name)
+LGMdouble GetValue(const BroadLeaf& bl, const LGMAD name)
 {
 
   if (name == A)
@@ -98,9 +98,9 @@ BLD GetValue(const BroadLeaf& bl, const LGMAD name)
 }
 
 
-BLD SetValue(BroadLeaf& bl, const LGMAD name, const BLD value)
+LGMdouble SetValue(BroadLeaf& bl, const LGMAD name, const LGMdouble value)
 {
-  BLD old_value= GetValue(bl,name);
+  LGMdouble old_value= GetValue(bl,name);
 
   if (name == A)
     bl.bla.shape.setArea(value);

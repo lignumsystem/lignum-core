@@ -11,7 +11,7 @@ TreeSegment<TS,BUD>::TreeSegment()
 
 
 template <class TS,class BUD>
-TreeSegment<TS,BUD>::TreeSegment(const Point<METER>& p, const PositionVector& d, const TP go,
+TreeSegment<TS,BUD>::TreeSegment(const Point<METER>& p, const PositionVector& d, const LGMdouble go,
 			     const METER l, const METER r, const METER rn, Tree<TS,BUD>* t)
   :TreeCompartment<TS,BUD>(p,d,t)
 {
@@ -27,16 +27,16 @@ TreeSegment<TS,BUD>::TreeSegment(const Point<METER>& p, const PositionVector& d,
   //the given parameters are needle length (nl) and the
   //needle angle (na)
   //Rf = hf + tsa.R, where hf is height of the foliage (hf = nl * sin(na))
-  TP needle_length = GetValue(*t,nl);
-  TP needle_angle = GetValue(*t,na);
+  LGMdouble needle_length = GetValue(*t,nl);
+  LGMdouble needle_angle = GetValue(*t,na);
   SetValue(*this,Rf,needle_length * sin(needle_angle)+ 
 		      GetValue(*this,R));
 
   //compute the initial mass of the foliage
   //1. compute the surface area (sa) of the cylinder representing foliage
-  TP sa =  2.0 * PI_VALUE * GetValue(*this,Rf) * GetValue(*this,L);
+  LGMdouble sa =  2.0 * PI_VALUE * GetValue(*this,Rf) * GetValue(*this,L);
   //2. the mass of the foliage (Wf = sa * af) 
-  TP wf =  sa * GetValue(*t,af);
+  LGMdouble wf =  sa * GetValue(*t,af);
   SetValue(*this,Wf,sa*wf);
 
   //compute the sapwood mass
@@ -56,7 +56,7 @@ TreeSegment<TS,BUD>::~TreeSegment()
 //This method returns the amount[kg] of transpired water. 
 //Time interval[s] is given as parameter
 template <class TS,class BUD>
-TP TreeSegment<TS,BUD>::GetTranspiration(TP time)
+LGMdouble TreeSegment<TS,BUD>::GetTranspiration(LGMdouble time)
 {
   return 0.12e-9;
 }
@@ -72,20 +72,20 @@ template <class TS,class BUD>
 KGC GetSapwoodMass(const TreeSegment<TS,BUD>& ts)
 {
   //volume up to R
-  TP V1 = (PI_VALUE * pow((double)ts.tsa.R,2.0)) * ts.tsa.L;
+  LGMdouble V1 = (PI_VALUE * pow((double)ts.tsa.R,2.0)) * ts.tsa.L;
   //heartwood volume
-  TP V2 = (PI_VALUE * pow((double)ts.tsa.Rn,2.0)) * ts.tsa.L;
+  LGMdouble V2 = (PI_VALUE * pow((double)ts.tsa.Rn,2.0)) * ts.tsa.L;
   //sapwood volume
-  TP V3 = V1 - V2;
+  LGMdouble V3 = V1 - V2;
 
   //mass is density * volume
   return GetValue(*(ts.tree),rho) * V3;
 }
 
 template <class TS,class BUD>
-TP GetValue(const TreeSegment<TS,BUD>& ts, const LGMAD name)
+LGMdouble GetValue(const TreeSegment<TS,BUD>& ts, const LGMAD name)
 {
-  TP unknown_value = 0.0;
+  LGMdouble unknown_value = 0.0;
 
   if (name == A)
     return PI_VALUE*pow(ts.tsa.R,2.0);
@@ -152,9 +152,9 @@ TP GetValue(const TreeSegment<TS,BUD>& ts, const LGMAD name)
 
 
 template <class TS,class BUD>
-TP SetValue(TreeSegment<TS,BUD>& ts, const LGMAD name, const TP value)
+LGMdouble SetValue(TreeSegment<TS,BUD>& ts, const LGMAD name, const LGMdouble value)
 {
-  TP old_value = GetValue(ts,name);
+  LGMdouble old_value = GetValue(ts,name);
   
   if (name == age)
     ts.tsa.age = value;

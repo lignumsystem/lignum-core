@@ -11,26 +11,26 @@ using namespace cxxadt;
 class BudAttributes{
 public:
   BudAttributes();
-  TP ip;             //Photosynthetic light ratio (shadiness)
-  TP omega;          //Gravelius order
+  LGMdouble ip;             //Photosynthetic light ratio (shadiness)
+  LGMdouble omega;          //Gravelius order
   STATUS state;      //LIVE, DEAD or DORMANT
 };
 
 
 template <class TS,class BUD=DefaultBud<TS> >
 class Bud: public TreeCompartment<TS,BUD>{
-friend TP GetValue(const Bud<TS,BUD>& bud, const LGMAD name);
-friend TP SetValue(Bud<TS,BUD>& bud, const LGMAD name, const TP value);
+friend LGMdouble GetValue(const Bud<TS,BUD>& bud, const LGMAD name);
+friend LGMdouble SetValue(Bud<TS,BUD>& bud, const LGMAD name, const LGMdouble value);
 friend STATUS GetValue(const Bud<TS,BUD>& bud, const LGMAS name);
 friend STATUS SetValue(Bud<TS,BUD>& bud, const LGMAS name, const STATUS value);
 public:
   Bud();
-  Bud(const Point<METER>& p, const PositionVector& d, const TP omega, Tree<TS,BUD>* tree);
+  Bud(const Point<METER>& p, const PositionVector& d, const LGMdouble omega, Tree<TS,BUD>* tree);
   TS& createTreeSegment()const;
   Bud<TS,BUD>& createBud()const;
   BranchingPoint<TS,BUD>& createBranchingPoint()const;
   virtual void Production(){/*do nothing*/}
-  virtual TP GetProduction(){return 0.0;}
+  virtual LGMdouble GetProduction(){return 0.0;}
 private:
   BudAttributes ba;
 };

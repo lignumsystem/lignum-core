@@ -16,7 +16,7 @@ Bud<TS,BUD>::Bud()
 //Also to access tree level parameters etc., define
 //the tree this bud is part of
 template <class TS,class BUD>
-Bud<TS,BUD>::Bud(const Point<METER>& p, const PositionVector& d, const TP go, 
+Bud<TS,BUD>::Bud(const Point<METER>& p, const PositionVector& d, const LGMdouble go, 
 	     Tree<TS,BUD>* t)
   :TreeCompartment<TS,BUD>(p,d,t)
 {
@@ -45,7 +45,7 @@ BranchingPoint<TS,BUD>& Bud<TS,BUD>::createBranchingPoint()const
 }
 
 template <class TS,class BUD>   
-TP GetValue(const Bud<TS,BUD>& bud, const LGMAD name)
+LGMdouble GetValue(const Bud<TS,BUD>& bud, const LGMAD name)
 {
   if (name == omega)
     return bud.ba.omega;
@@ -62,10 +62,10 @@ TP GetValue(const Bud<TS,BUD>& bud, const LGMAD name)
 }
 
 template<class TS, class BUD>
-TP SetValue(Bud<TS,BUD>& bud, const LGMAD name, const TP value)
+LGMdouble SetValue(Bud<TS,BUD>& bud, const LGMAD name, const LGMdouble value)
 {
 
-  TP old_value = GetValue(bud,name);
+  LGMdouble old_value = GetValue(bud,name);
 
   if (name == omega)
     bud.ba.omega = value;

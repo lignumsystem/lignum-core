@@ -39,7 +39,7 @@ GetLowerSegment<TS,BUD>::operator()(GLS<TS,BUD>& gls,
   if (TreeSegment<TS,BUD>* myts = dynamic_cast<TreeSegment<TS,BUD>*>(tc)){
     PositionVector pv = GetDirection(*myts);
     vector<double> v = pv.getVector();
-    TP l = GetValue(*myts, L);
+    LGMdouble l = GetValue(*myts, L);
     Point<METER> p(v[0], v[1], v[2]);
     
     if ((GetPoint(*(gls.current)) || (GetPoint(*myts) + l * p)) < odd)
