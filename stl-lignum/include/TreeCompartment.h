@@ -32,10 +32,10 @@ namespace Lignum{
       friend PositionVector GetDirection(const TreeCompartment<TS1,BUD1>& tc);
 
       template <class TS1,class BUD1> 
-      friend void SetPoint(TreeCompartment<TS,BUD>& tc, Point& p);
+      friend void SetPoint(TreeCompartment<TS1,BUD1>& tc, const Point& p);
 	  
       template <class TS1,class BUD1> 
-      friend void SetDirection(TreeCompartment<TS,BUD>& tc, PositionVector& pv);
+      friend void SetDirection(TreeCompartment<TS1,BUD1>& tc, const PositionVector& pv);
 
       template <class TS1,class BUD1> 
       friend Tree<TS1,BUD1>& GetTree(const TreeCompartment<TS1,BUD1>& tc);
