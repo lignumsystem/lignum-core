@@ -1,0 +1,39 @@
+\section{Getting Started with LIGNUM}
+
+The  main design  principle in  \lignum is  to model  a tree  with few
+simple  basic units that  correspond to  the organs  of the  tree. The
+units  must  be  such that  they  allow  a  detailed analysis  of  the
+structure and the development of the tree during its life time and and
+still keeping  the model  computationally manageable to  create forest
+stands consisting of different  tree species. Ideally the units should
+be such that they can  be divided into more detailed tree compartments
+if necessary.
+
+Currently in  \lignum a tree is  modelled with four  units.  The three
+basic units are  tree segment, branching point and  bud and the fourth
+is an aggregate of these basic units called axis. 
+
+The tree segment consists of  sapwood, heartwood, bark and foliage and
+it captures the main metabolic  functiong in a tree.  The tree segment
+corresponds roughly  to the annual  shoot but in the  strict modelling
+sense  this  is  not  necessarily  always the  case,  especially  when
+modelling heartwood trees.  The branching point is the place where two
+or more  tree segments  are connected  to each other.   The bud  is an
+embryonic shoot, the growing point  of the tree from which new shoots,
+leaves  and flowers  may develop.   Buds can  be further  divided into
+terminal buds located  at the top of axises  and lateral (or axillary)
+buds located in the tree  segment.  More precisely for heartwood trees
+lateral buds are located where the  leaf petiole is attached to a tree
+segment. The aggregate unit axis corresponds  to a stem or a branch of
+a tree.
+
+The  design of  any  computer  program includes  the  decision how  to
+represent information  and concepts from the real  world. C++ supports
+many   programming   methodologies   (perhaps  most   notably   object
+orientation)  but  the  emergence  of the  Standard  Template  Library
+emphasizes   generic   programming   with  abstract   datatypes   that
+encapsulates data and algorithms  working with this data. Two language
+constructs  support  this approach:  classes  and  templates. A  class
+defines a datatype consisting a  set of possible states and operations
+defining transitions between those states. Template is simply C++ term
+for a parameterized type. 
