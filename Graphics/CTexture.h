@@ -6,7 +6,7 @@ public:
   char *data;
   int  w, h;
   GLuint texturenum;
-  void Load(char *filename, int fw, int fh);
+  void Load(const char *filename, int fw, int fh);
   void use();
   void do_not_use();
 };

@@ -17,6 +17,12 @@ enum DRAWMODE { STEM_MODE, FOLIAGE_MODE };
 
 //enum STEMMODE { SOLID, WIREMODEL };
 
+struct LoadedTexture
+{
+    string fname;
+    int number;
+};
+
 namespace Lignum{
 enum STEMMODE { SOLID, WIREMODEL };
   class Hello{
@@ -25,6 +31,8 @@ enum STEMMODE { SOLID, WIREMODEL };
       wb->hello();
     }
   };
+
+
 
  class MakeWireModelLists{
   public:
@@ -58,10 +66,10 @@ class LGMVisualization
   public:
 
   template <class TS, class BUD>
-  void AddHwTree(Tree<TS, BUD>& t);
+  void AddHwTree(Tree<TS, BUD>& t, string stemTex, string folTex);
   
   template <class TS, class BUD>
-  void AddCfTree(Tree<TS, BUD>& t);
+  void AddCfTree(Tree<TS, BUD>& t, string stemTex, string folTex);
 
   LGMVisualization();
   void InitVisualization();
@@ -76,6 +84,10 @@ class LGMVisualization
   void Loop(void);
   void Menu(int value);
   void StartVisualization();
+
+  int GetTgaTexNumber(string filename);
+  int GetBmpTexNumber(string filename);
+
 
   void drawTrees(){for_each(trees.begin(),trees.end(),DrawTrees());}
   void hello(){for_each(trees.begin(),trees.end(),Hello());}
@@ -96,6 +108,9 @@ private:
   void SetValues(void);
   void CheckValues(void);
 
+
+  std::vector<LoadedTexture> LoadedTgas;
+  std::vector<LoadedTexture> LoadedBmps;
   std::vector<WrapperBase *> trees;
 
   static void StaticLoop(void);

@@ -51,7 +51,25 @@ void HwWrapper<TS,BUD>::VisualizeStem(int &active_texture)
 template <class TS, class BUD>
 void HwWrapper<TS,BUD>::VisualizeFoliage(int &active_texture)
 {
-	
+    cout << "visualisoidaan lehdet " << endl;
+  glEnable(GL_BLEND);
+  glEnable(GL_TEXTURE_2D);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  glBindTexture(GL_TEXTURE_2D, intFoliageTexture);
+  glDisable(GL_LIGHTING);
+  
+  glPushMatrix();
+  glEnable(GL_CULL_FACE);
+  DrawLeavesFunctor<TS, BUD> func(1, 1);
+  glCullFace(GL_FRONT);
+  ForEach(tree, func);    
+  glPopMatrix();
+
+  glPushMatrix();
+  glCullFace(GL_BACK);     	 
+  ForEach(tree, func);
+  glDisable(GL_CULL_FACE);
+  glPopMatrix();	
 }
 
 
@@ -121,18 +139,32 @@ void HwWrapper<TS,BUD>::VisualizeTree()
 template <class TS, class BUD>
 void HwWrapper<TS,BUD>::MakeDisplayLists()
 {
+    cout << "ei rautalanka mallia. *************************************" << endl;
   if (glIsList(intDisplaylistStem))
     {
       glDeleteLists(intDisplaylistStem,1);
     }
 
-  glGenTextures(1, (GLuint*)&intDisplaylistStem);
- 
+  intDisplaylistStem = glGenLists(1);
+//  glGenTextures(1, (GLuint*)&intDisplaylistStem);
   glPushMatrix();
   glNewList(intDisplaylistStem, GL_COMPILE);
   VisualizeTree();
   glEndList();
   glPopMatrix();
+
+  //Problem with leaves it that they should be drawed ordered by the distance
+  // from the camera
+ 
+  intDisplaylistFoliage = glGenLists(1);
+  // glGenTextures(1, (GLuint*)&intDisplaylistFoliage);
+  glPushMatrix();
+  glNewList(intDisplaylistFoliage, GL_COMPILE);
+  int num = -1.0;
+  VisualizeFoliage(num);
+  glEndList();
+  glPopMatrix();
+ 
 }
 
 template <class TS, class BUD>
@@ -150,6 +182,8 @@ void CfWrapper<TS,BUD>::MakeDisplayLists()
     VisualizeTree();
     glEndList();
     glPopMatrix();
+
+
 }
 
 
@@ -170,8 +204,9 @@ void CfWrapper<TS,BUD>::DrawTree()
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
   glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);  
 
+  stem_texture.
   glCallList(intDisplaylistStem);
-
+  glCallList(intDisplaylistFoliage);
   //cout << " drawing cftree. List number  " << intDisplaylistStem  << endl;
 
 }
@@ -191,11 +226,17 @@ void HwWrapper<TS,BUD>::DrawTree()
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
   glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);  
 
+  glBindTexture(GL_TEXTURE_2D, intStemTexture);
   glCallList(intDisplaylistStem);
 
-  cout << " drawing hwtree. List number  " << intDisplaylistStem  << endl;
+  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexEnvf(GL_TEXTURE_2D, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+  glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
+  glCallList(intDisplaylistFoliage);
+  
 
-  // VisualizeTree();
+
 }
 
 

@@ -30,29 +30,37 @@ tga_t::tga_t()
    data = 0;
 }
 
-tga_t::tga_t(char *name)
+tga_t::tga_t(const char *name)
 {
    lastError = 0;
    bits = width = height = id = size = 0; 
    data = 0;
 
-   Load(name);
+   if(Load(name) != 1)
+   {
+       cout << "Error in loading " << name << endl;
+   }
 }
 
-tga_t::tga_t(char *name, int texId, int upload, GLenum nf)
+tga_t::tga_t(const char *name, int texId, int upload, GLenum nf)
 {
    lastError = 0;
    bits = width = height = id = size = 0; 
    data = 0;
 
-   Load(name, texId, upload, nf);
+   if (Load(name, texId, upload, nf) != 1)
+   {
+       cout << "Error in loading " << name << endl;
+   }
 }
 
-int tga_t::Load(char *name)
+int tga_t::Load(const char *name)
 {
    byte type[4];
    byte info[7];
    FILE *iFile;
+
+   cout << "Load::TGA " << endl;
 
    if (!(iFile = fopen(name, "r+bt")))
       return Error(notFound, 0);
@@ -90,9 +98,10 @@ int tga_t::Load(char *name)
    return 1;
 }
 
-int tga_t::Load(char *name, int texId, int upload, GLenum nf)
+int tga_t::Load(const char *name, int texId, int upload, GLenum nf)
 {
    int err;
+   cout << "Load::TGA " << endl;
 
    if ((err = Load(name)) == 1)
    {

@@ -155,9 +155,9 @@ namespace Lignum
 
   
 
-    cout << "cam coords " << settings.cam_x << "   " << settings.cam_y << "   " << settings.cam_z <<endl; 
+    //  cout << "cam coords " << settings.cam_x << "   " << settings.cam_y << "   " << settings.cam_z <<endl; 
 
-    cout << "hx,hy,hz " << hx << " " << hy << " " << hz << endl;
+    // cout << "hx,hy,hz " << hx << " " << hy << " " << hz << endl;
 
     gluLookAt(settings.cam_x, settings.cam_y, settings.cam_z,// settings.camera x,y,z  
 	      hx, hy, hz-settings.cam_z, // look at x,y,z    
@@ -457,7 +457,38 @@ namespace Lignum
 
 
 
+  int LGMVisualization::GetTgaTexNumber(string filename)
+  {
+     	int s =  LoadedTgas.size();
+	for (int i=0; i<s; i++)
+	{
+	    LoadedTexture lt =  LoadedTgas[i];
+	    if (lt.fname == filename) return lt.number;
+	}
+	
+	int num = -1;
+	LoadTgaTexture(num, filename);
 
+	return num;
+  }
+
+ int LGMVisualization::GetBmpTexNumber(string filename)
+  {
+     	int s =  LoadedBmps.size();
+	for (int i=0; i<s; i++)
+	{
+	    LoadedTexture lt =  LoadedTgas[i];
+	    if (lt.fname == filename) return lt.number;
+	}
+	
+	int num = -1;
+
+//	LoadTgaTexture(num, filename);
+
+	return num;
+  }
+
+  
 }
 
 

@@ -89,6 +89,9 @@ void Make3DLeave(float xodd, float yodd, float rad)
 			PositionVector pp1(p2.getX()-p1.getX(),   p2.getY()-p1.getY(),   p2.getZ()-p1.getZ());
 			PositionVector pp2(p3.getX()-p1.getX(),   p3.getY()-p1.getY(),   p3.getZ()-p1.getZ());
 
+
+			cout << p1 << p2 << p3 << endl;
+
 			PositionVector normal = Cross(pp2, pp1);	
 			normal.normalize();
 			glNormal3f(normal.getX(), normal.getY(), normal.getZ());		
@@ -136,6 +139,7 @@ void MakeLeave(float x, float y, float rad)
 
 void MakeLeaveTable()
 {
+    cout << "Alustetaan lehden muoto *********************************" << endl;
 	float x,y;
 	for (int i=0; i<6; i++)
 	{
@@ -223,6 +227,8 @@ void InitDrawing()
 		s = s * 0.9;
 		odd_table[i] = s;
 	}
+
+	MakeLeaveTable();
 }
 
 /*

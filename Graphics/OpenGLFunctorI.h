@@ -116,11 +116,12 @@ namespace Lignum{
   template <class TS, class BUD,class S>
     TreeCompartment<TS,BUD>* DrawLeavesFunctor<TS,BUD,S>::operator()(TreeCompartment<TS,BUD>* tc)const
     {
-      if (TreeSegment<TS, BUD>* ts = dynamic_cast<TreeSegment<TS, BUD>*>(tc))
-	{  			
-	  if (HwTreeSegment<TS,BUD,S>* hwts = dynamic_cast<HwTreeSegment<TS,BUD,S>*>(ts))
+      if (TS* ts = dynamic_cast<TS*>(tc))
+	{ 
+ 			
+	    // if (HwTreeSegment<TS,BUD,S>* hwts = dynamic_cast<HwTreeSegment<TS,BUD,S>*>(ts))
 	    {
-			
+		cout << "hwts:::::::::" << endl;		
 	      float length;
 	      float radius_top;
 	      float rot_x;
@@ -131,7 +132,7 @@ namespace Lignum{
 	      PositionVector direction = GetDirection(*ts);
 
 	      LGMdouble radius = GetValue(*ts, LGAR);
-	      length = GetValue(*ts, L); 
+	      length = GetValue(*ts,  LGAL); 
 	      radius_top = GetValue(*ts, LGARTop);
 	      position = GetPoint(*ts);
 			
@@ -145,7 +146,7 @@ namespace Lignum{
 
 	      Point np(position.getX()+xx, position.getY()+yy, position.getZ()+zz);		
 
-	      std::list<BroadLeaf<S>*>& leaf_list = GetLeafList(*hwts);
+	      std::list<BroadLeaf<S>*>& leaf_list = GetLeafList(*ts);
 	      typename std::list<BroadLeaf<S>*>::iterator I;
 	      for(I = leaf_list.begin(); I != leaf_list.end(); I++) 
 		{
@@ -169,6 +170,7 @@ namespace Lignum{
 		  // sivuttaiskallistus
 		  glRotatef( rand()%30-15, 0, 1, 0);
 		  Make3DLeave( rx*leave_size_x, ry*leave_size_y, radius+0.01); 
+		  cout << "lehden koko " <<  rx*leave_size_x << " " <<  ry*leave_size_y << endl;
 		  glPopMatrix();    	
 		}
 	    }

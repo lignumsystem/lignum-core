@@ -56,7 +56,7 @@ public:
 
 
 
-template <class TS,class BUD,class S = Ellipsis>
+template <class TS,class BUD,class S = Ellipse>
 class DrawLeavesFunctor
 {
 public:

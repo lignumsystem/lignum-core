@@ -17,6 +17,8 @@
 
 using namespace std;
 
+bool LoadTgaTexture(int &number, const string &filename);
+
 void ShadowMatrix(GLfloat shadowMat[4][4],  GLfloat groundplane[4], GLfloat lightpos[4]);
 
 // Loading tree textures.

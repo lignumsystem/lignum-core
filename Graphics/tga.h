@@ -44,10 +44,10 @@ typedef unsigned char byte;
 struct tga_t
 {
    tga_t();
-   tga_t(char *name);
-   tga_t(char *name, int texId, int upload = uploadYes, GLenum nf = 0);
-   int Load(char *name);
-   int Load(char *name, int texId, int upload = uploadYes, GLenum nf = 0);
+   tga_t(const char *name);
+   tga_t(const char *name, int texId, int upload = uploadYes, GLenum nf = 0);
+   int Load(const char *name);
+   int Load(const char *name, int texId, int upload = uploadYes, GLenum nf = 0);
    void Free(void)        {delete [] data;}
    void Id(int texId)     {id = texId;}
    int Upload(void);

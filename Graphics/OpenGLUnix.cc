@@ -930,7 +930,7 @@ void make_petiole()
 
 
 
-void CTexture::Load(char *filename, int fw, int fh)
+void CTexture::Load(const char *filename, int fw, int fh)
 {
   cout << "Ladataan tekstuuri " << endl;
 
