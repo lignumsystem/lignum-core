@@ -43,6 +43,16 @@ namespace Lignum{
   //Tree Attribute STATUS
   enum LGMAS {state};
 
+  //enlisting tree level attributes
+  enum LGMTAD {Treelb,TreeP,TreeM,TreeWr};
+  //lb = longest branch
+  //P  = tree level photosynthesis
+  //M  = tree level respiration
+  //Wr = root mass
+
+  //Keep this in sync with the number of enumerations in LGMTAD
+  //It will intialize the vector
+#define LGMTADLENGTH 4
   //Tree Parameter Double
   // zbrentEpsilon       Accuracy in solving the root of P - M -dW(lambda)
   //Keep this list in synbc with MapLGMPD constructor in TreeFriend.cc

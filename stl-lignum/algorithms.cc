@@ -249,16 +249,16 @@ int main(int argc, char *argv[])
    SetValue(hw_tree, pr, 1.0);
    hw_tree.photosynthesis();
    cout << endl << "Photosynthesis (should be = ?): "
-	 << GetValue(hw_tree, P) << endl;
+	 << GetValue(hw_tree, TreeP) << endl;
    cf_tree.photosynthesis();
    cout << endl << "Photosynthesis (should be = 1*100): "
-	<< GetValue(cf_tree, P) << endl;
+	<< GetValue(cf_tree, TreeP) << endl;
    cf_tree.respiration();
    cout << endl << "cf_tree Photosynthesis (): "
-	<< GetValue(cf_tree, M) << endl;
+	<< GetValue(cf_tree, TreeM) << endl;
    hw_tree.respiration();
    cout << endl << "hw_tree Respiration (): "
-	<< GetValue(cf_tree, M) << endl;
+	<< GetValue(cf_tree, TreeM) << endl;
 
 
    //Collision

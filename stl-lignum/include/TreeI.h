@@ -236,47 +236,23 @@ LGMdouble SetValue(Tree<TS,BUD>& tree, const LGMTD name, const LGMdouble value)
   return old_value;
 }
 
+//Index the tree attribute vector with range check.
 template <class TS,class BUD>
-LGMdouble GetValue(const Tree<TS,BUD>& tree, const LGMAD name)
+LGMdouble GetValue(const Tree<TS,BUD>& tree, const LGMTAD name)
 { 
-  if (name == lb)
-    return tree.ta.lb;
-
-  else if (name == P)
-     return tree.ta.P;
-
-  else if (name == M)
-     return tree.ta.M;
-
-  else if (name == Wr)
-     return tree.ta.Wr;
-
-  else {
-    return GetValue(dynamic_cast<const TreeCompartment<TS,BUD>&>(tree), name);
-  }
+  //no need to go to tree compartment, these are tree level attributes
+  return  tree.ta.v.at(name);
 }
 
+//Index the tree attribute vector with range check.
 template <class TS,class BUD>
-LGMdouble SetValue(Tree<TS,BUD>& tree, const LGMAD name, const LGMdouble value)
+LGMdouble SetValue(Tree<TS,BUD>& tree, const LGMTAD name, const LGMdouble value)
 {
+
   LGMdouble old_value = GetValue(tree,name);
-
-  if (name == lb)
-    tree.ta.lb = value;
-
-  else if (name == P)
-    tree.ta.P = value;
-
-  else if (name == M)
-     tree.ta.M = value;
- 
-  else if (name == Wr)
-    tree.ta.Wr = value;
-
-  else{
-    old_value=SetValue(dynamic_cast<TreeCompartment<TS,BUD>&>(tree),name,value);
-  }
-
+  //no need to go to tree compartment, these are tree level attributes
+  tree.ta.v.at(name) = value;
+  
   return old_value;
 }
   
