@@ -1,10 +1,12 @@
-\section{Structural units  of LIGNUM} LIGNUM is intended  as a generic
-modelling tool for both  coniferous and broad-leaved trees.  Different
-tree species  can be simulated  by implementing models  of metabolism,
-structural dynamics of birth,  growth and senescence, and by realizing
-branching rules  for distinct tree  architectures \citep{perttunen:96,
-perttunen:01}.  Here we briefly present the main features of the model
-in order to understand how LIGNUM is adapted to use L systems.
+\section{Structural units  of LIGNUM} 
+
+LIGNUM is intended as a generic modelling tool for both coniferous and
+broad-leaved  trees.   Different  tree  species can  be  simulated  by
+implementing  models  of  metabolism,  structural dynamics  of  birth,
+growth and  senescence, and by realizing branching  rules for distinct
+tree   architectures  \citep{perttunen:96,  perttunen:01}.    Here  we
+briefly present the main features  of the model in order to understand
+how LIGNUM is adapted to use L systems.
 
 LIGNUM represents  the three-dimensional aboveground part  of the tree
 with  four  structural  units  called  tree  segment  (TS),  bud  (B),
@@ -16,38 +18,43 @@ crown.
 The most  important functioning unit is the  cylindrical tree segment,
 i.e. the section of woody  material between two branching points.  For
 conifers the needles  are currently modeled as a  cylindrical layer of
-foliage  surrounding  a  tree  segment (Fig.   \ref{fig:model}  left).
-Leaves are attached to recently  formed tree segments and are modelled
-explicitly  using  a simple  geometric  form  such  as an  ellipse  to
-represent the leaf shape (Fig. \ref{fig:model}, middle).
+foliage surrounding a tree  segment (Fig.  \ref{fig:model} left).  For
+broad-leaved  trees  leaves  are  attached  to  recently  formed  tree
+segments  and are modelled  explicitly using  a simple  geometric form
+such as an ellipse to  represent the leaf shape (Fig. \ref{fig:model},
+middle).
 
-An axis is  implemented as a list. For  example, adopting the notation
-from our previous work \citep{perttunen:96} the main axis of the model
-tree for a coniferous species in Figure \ref{fig:model}, consisting of
-three tree  segments, three branching points and  the terminating bud,
-is:
+An  axis is implemented  as a  list.  Adopting  the notation  from our
+previous work \citet{perttunen:96}, let  the left bracket ('[') denote
+the beginning of  the list, the right bracket (']')  denote the end of
+the list, and the list  elements are separated by commas. For example,
+the main  axis of the  model tree for  a coniferous species  in Figure
+\ref{fig:model},  consisting of three  tree segments,  three branching
+points and the terminating bud, writes:
 
 \begin{equation}
 [TS_0,BP_1,TS_2,BP_3,TS_4,BP_5,B_6]
 \end{equation}
 
-A branching point is implemented as  a list of axes. In the example in
-Figure   \ref{fig:model}  the  branching   points  contain   two  axes
-(i.e. branches) each. Thus the main axis can be written:
+The  indices denote  the positions  of the  elements in  the  list.  A
+branching point is implemented as a list of axes.  The three branching
+points in the model tree  contain two axes (i.e.  branches) each. Thus
+the main axis can be written:
 
 \begin{equation}\label{eq:mainax}
-[TS_0,[[A,A]],TS_2,[A,A],TS_4,[A,A],B_6]
+[TS_0,[A,A],TS_2,[A,A],TS_4,[A,A],B_6]
 \end{equation}
 
-The branches of the example  tree in Figure \ref{fig:model} consist of
-a tree segment, branching point  and bud. When these are inserted into
-Eq.  \ref{eq:mainax}, the  structure of  the whole  model tree  can be
-expressed as (omitting the position numbering):
+Each of the  four axes in the first two branching  points consist of a
+tree  segment, branching point  and bud.   The two  axes in  the third
+(last) branching point  contain one bud each. When  these are inserted
+into Eq.  \ref{eq:mainax},  the structure of the whole  model tree can
+be expressed as (omitting the position numbering):
 
 \begin{equation}\label{eq:tree}
 [TS,[[TS,[],B],[TS,[],B]],TS,[[TS,[],B],[TS,[],B]],TS,[[B],[B]],B]
 \end{equation}
 
-The empty lists ([]) for  branching points denote no forking off axes,
-thus maintaining the structural integrity of the model.
+The  empty lists ([]) for  branching points denote  no forking off
+axes, thus maintaining the structural integrity of the model.
 

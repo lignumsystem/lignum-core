@@ -1,25 +1,9 @@
-\section{Principles of L systems}
+\section{Introduction to the L language}
 
 Mathematically L  systems are parallel rewriting  systems operating on
-strings of symbols. An L system  is defined by an alphabet of symbols,
-a set  of rewriting  rules called productions,  and an  initial string
-called an  axiom. In  a production written  as $a \rightarrow  S$, the
-symbol $a$ is called the predecessor and the string $S$ the successor.
-For example, define  the alphabet of two symbols $A$  and $B$, and the
-set of following two rules:
-
-\begin{equation}\label{eq:AB}
-1: A \rightarrow B \qquad 2: B \rightarrow AB 
-\end{equation}
-Starting from the axiom $A$, the  first five strings produced by the L
-system are $A$, $B$, $AB$ and $BAB$ and $ABBAB$.
-
-In context-free  L systems (as in Eq.   \ref{eq:AB}) the predecessor's
-context   does   not  influence   the   production  application.    In
-context-sensitive L systems, written as $S_l < a > S_r \rightarrow S$,
-the symbol $a$ can produce a string $S$ if and only if $a$ is preceded
-by the  string $S_l$ (left context)  and followed by  the string $S_r$
-(right context).
+strings, i.e. sequences  of symbols. An L system is  defined by an \it
+alphabet  \rm  of  symbols,  a  set  of  rewriting  rules  called  \it
+productions\rm, and an initial string  called an \it axiom\rm.  
 
 In the  plant modelling context  the symbols of  the alphabet in  an L
 system represent the units  (internodes, leaves, flowers etc.)  of the
@@ -28,14 +12,53 @@ symbols  their  topological ordering.   To  be  able  to generate  the
 branching  structures  dominant in  the  plant  world,  the notion  of
 strings with brackets  (literally denoting the beginning and  end of a
 branch with '[' and ']') or bracketed L systems was already present in
-the  original  formalism   \citep{lindenmayer:68}.   In  parametric  L
-systems  \citep{pp:90a},  symbols  may  take  numerical  arguments  to
-capture  conveniently  continuous  phenomena  like  the  diffusion  of
-substances in an  organism.  Symbols in parametric L  systems are also
-called modules.
+the  original  formalism   \citep{lindenmayer:68}.   
+
+In  parametric L  systems \citep{pp:90a},  symbols may  take numerical
+arguments  to  capture  conveniently  continuous  phenomena  like  the
+diffusion  of substances  in  an organism.   Symbols  in parametric  L
+systems  are  also called  modules.   In  context-free  L systems  the
+predecessor's context, i.e.  modules on its left and  right side, does
+not  influence  the production  application.  In context-sensitive  L
+systems the preceding and following modules affect the rewriting.
+
+The key concept in the L  system formalism is the rewriting of modules
+or symbols  \citep{pp:89}.  The  L language follows  the same  idea. A
+module in  L has a name  and can take  any number of arguments  of any
+type   in   C++   programming   language   \citep{stroustrup:97}.    A
+syntactically  correct rule  in L  consists of  a  predecessor module,
+possibly with its context ending with colon, and a production defining
+successor  string embraced  within  curly braces.   A special  module,
+$Start$, corresponds to the axiom. For example, define the alphabet of
+two modules $A()$ and $B()$, the  axiom $A()$ and the set of following
+two rules:
+
+\begin{eqnarray}\label{eq:AB}  
+\lefteqn{\mathrm{Start}:\{A();\} \nonumber }\\
+\lefteqn{A():\{\mathrm{produce}\ B();\}   }\\
+\lefteqn{B():\{\mathrm{produce}\ A()B();\nonumber \} }  
+\end{eqnarray}
+
+Starting from the axiom $A()$,  the first five strings produced by the
+L system  in Eq. \ref{eq:AB}  are $A()$, $B()$,  $A()B()$, $B()A()B()$
+and $A()B()B()A()B()$. Note the parallel rewriting of modules.
+
 
 To describe the geometry, and also for the graphical interpretation of
 the  model structures,  \citet{pp:86} introduced  L system  symbols as
 instructions  controlling a  LOGO-style  turtle \citep{abelson:82}  in
-three dimensions, hence the adopted name Turtle graphics.
+three dimensions, hence the adopted name turtle graphics.
+
+For branching structures of plants L predefines two modules $SB()$ and
+$EB()$ denoting  the beginning and  end of a branch  respectively.  To
+control the movements of the turtle (the geometry engine) let us first
+define its orientation in space  by three unit vectors $\vec H$, $\vec
+L$ and $\vec  U$ denoting the turtle's heading,  direction to the left
+and up at right angles to each other such that $\vec U = \vec H \times
+\vec L$.  Then  define module $F(s)$ so as to  move the turtle forward
+along   its  heading   step   of  length   $s$,   and  three   modules
+$Turn(\alpha)$,   $Pitch(\alpha)$,   $Roll(\alpha)$   to  rotate   the
+orientation of  the turtle around $\vec  U$, $\vec L$ and  $\vec H$ by
+$\alpha$.  
+
 

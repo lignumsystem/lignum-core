@@ -1,39 +1,14 @@
-\section{Introduction to the L language}
-
-The key concept in the L  system formalism is the rewriting of modules
-or symbols  \citep{pp:89}.  The  L language follows  the same  idea. A
-module in  L has a name  and can take  any number of arguments  of any
-type   in   C++   programming   language   \citep{stroustrup:97}.    A
-syntactically correct  rule consists  of a predecessor,  possibly with
-its  context ending with  colon, and  a production  defining successor
-string embraced within  curly braces.  For example the  second rule in
-Eq.   \ref{eq:AB} is  written in  L  as: \begin{equation}\label{eq:r3}
-B(): \{\mathrm{produce}\ A()B();\} \end{equation}
-
-For branching structures of plants L predefines two modules $SB()$ and
-$EB()$ denoting  the beginning and  end of a branch  respectively.  To
-control the movements of the turtle (the geometry engine) let us first
-define its orientation in space  by three unit vectors $\vec H$, $\vec
-L$ and $\vec  U$ denoting the turtle's heading,  direction to the left
-and up at right angles to each other such that $\vec U = \vec H \times
-\vec L$.  Then  define module $F(s)$ so as to  move the turtle forward
-along   its  heading   step   of  length   $s$,   and  three   modules
-$Turn(\alpha)$,   $Pitch(\alpha)$,   $Roll(\alpha)$   to  rotate   the
-orientation of  the turtle around $\vec  U$, $\vec L$ and  $\vec H$ by
-$\alpha$.  A special module, $Start$, corresponds to the axiom.
-
-
 \section{Integrating the L language and LIGNUM}\label{sec:pine}
 
 To model tree structures with L as in LIGNUM let the module $F$ denote
 a tree segment and designate module  $B$ for a bud.  Given the modules
 for turtle graphics and branching we can now describe the topology and
 geometry of  the tree structures  of LIGNUM (Eq.   \ref{eq:tree}) with
-rules of  the L  language (Eq.  \ref{eq:r3}).   To accommodate  L with
-LIGNUM we first need to construct an algorithm that translates strings
-of L  into structural  units of LIGNUM  (Section \ref{sec:LToLignum}).
-Second, as the metabolism implemented in LIGNUM will act on structural
-units (segments  and buds most  notably) and produce changes  in their
+rules of the  L language.  To accommodate L with  LIGNUM we first need
+to construct an algorithm that translates strings of L into structural
+units  of  LIGNUM   (Section  \ref{sec:LToLignum}).   Second,  as  the
+metabolism  implemented  in  LIGNUM   will  act  on  structural  units
+(segments  and  buds  most  notably)  and  produce  changes  in  their
 physiological states,  in their dimensions  and in their  positions in
 space  accordingly, this  information  must be  transferred to  turtle
 symbols  and module  $B$ as  this is  necessary in  rewriting (Section
@@ -46,11 +21,12 @@ approximately  the same  way as  it is  in the  LIGNUM  simulations of
 \citet{perttunen:96, perttunen:98}; the L program is shown in Appendix
 \ref{sec:L1}.  In the program the module $B(A,L)$ represents a bud. In
 each iteration  the apical bud ($A  = 1$) moves forward  by the length
-$L$ and forks off four new  side branches.  The branches ($A > 1$) are
+$L$ and produces  four new side branches.  The branches  ($A > 1$) are
 similar, but only two more side branches are created.  Branching stops
-after the third order ($A > 3$).  When the development starts from the
-main  axis consisting  of one  segment, branching  point and  bud, the
-string after two iterations is
+after the third order ($A > 3$), but the extension continues. Also, as
+$A$ records  branching it is updated  as new branches  are added. When
+the development starts  from the main axis consisting  of one segment,
+branching point and bud, the string after two iterations is
 
 \begin{equation}\label{eq:pine2}
 F\;[] F [F[B][B]B]\:[F[B][B]B]\:[F[B][B]B]\:[F[B][B]B]\; F \;[B][B][B][B]\; B
@@ -96,7 +72,7 @@ tree compartments in LIGNUM.
 
 The structural development of the tree described in L does not require
 the regeneration of a LIGNUM representation of trees (deleting the old
-tree and  creating a new  one) after each derivation.   The algorithms
+tree and  creating a  new one) after  each derivation.   The algorithm
 assumes that an  L system indeed generates an  alternating sequence of
 tree segments, branching points and terminating buds, and the terminal
 buds only generate new structural  units.  The algorithm fails if this
@@ -104,7 +80,6 @@ is not the  case.  Thus after each derivation it  is possible to match
 the existing  string and LIGNUM  representation and to insert  the new
 structural units in  the axis lists before the  terminating buds whose
 positions and orientations will be updated.
-
 
 \subsection{From LIGNUM to L}\label{sec:LignumToL}
 
@@ -137,6 +112,14 @@ way the results of computations in  LIGNUM are passed to the L system.
 to  the  variables of  the  corresponding  bud  in LIGNUM  in  Section
 \ref{sec:LToLignum}).
 
+Technically, each  L file is translated  to C++ and the  result of the
+translation  is  a  C++  class providing  an  application  programming
+interface  (API) to  the defined  L  system.  Most  notably, this  API
+includes derivation of the string to model structural development, the
+conversion algorithm  between L system  and the model  LIGNUM (Section
+\ref{sec:LToLignum}) and  vice versa.   The translator also  allows to
+embed C++ statements in the L file.
+
 \subsection{Two-way communication in the Scots pine simulation}
 
 Although  in  our  Scots pine  example  it  is  $L$ in  $B(A,L)$  that
@@ -154,7 +137,9 @@ allocation of  net photosynthates  to growth after  respiration costs:
 where  $P$   and  $M$  are  the  photosynthetic   production  and  the
 respiration of a  tree, $iW_n$ the growth of  new segments, $iW_o$ the
 secondary      growth     and      $iW_r$     the      root     growth
-\citep[c.f.][]{perttunen:96,perttunen:01}.
+\citep[c.f.][]{perttunen:96,perttunen:01}.  We omit some  functions of
+LIGNUM, e.g. the number of secondary buds as a function of the foliage
+mass of the mother segment and let the L system determine branching.
 
 The simulations  show that the  interaction of the L  language program
 and the functioning part of LIGNUM markedly affects the outcome of the

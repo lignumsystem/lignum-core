@@ -8,7 +8,7 @@ the similarity  of how  bracketed L systems  and LIGNUM  represent the
 branching structure  of trees.  Similar  conversions between modelling
 frameworks   and   tools  have   been   reported,   for  example,   by
 \citet{ferraro:02}   and   \citet{dzierzon:03}.    In  fact,   already
-\citet{kurth:em94} reported  convergence between tree  models produced
+\citet{kurth:94b} reported  convergence between tree  models produced
 by AMAP  and the same  models expressed in  L systems.  Also,  a large
 body of  mathematical forms  known as fractals,  used to  depict plant
 structures, have been described with L systems \citep{kurth:99}.
@@ -35,10 +35,10 @@ tree models including LIGNUM Scots pine \citep{perttunen:96} using the
 L system  based tool GROGRA \citep{kurth:94}. The  simulation of plant
 communities has been  reported by \citet{deussen:98}, \citet{kurth:99}
 and with multiset L  systems developed by \citet{lane:02}.  Inevitably
-one has to ask why not reimplement LIGNUM and make L systems the basis
-of its future development?
+one has to  ask why not reimplement LIGNUM with L  or L+C language and
+make L systems the basis of its future development?
 
-Plants are  not closed systems but interaction  with their environment
+Plants are not closed systems since interaction with their environment
 has  an important function  in their  development.  Modelling  of such
 phenomena includes,  for example, computation  of the light  regime in
 plant communities  and competition for growing space  (cf.  example on
@@ -55,21 +55,19 @@ predefined functions are easily used and reused.
 The functionalities  enhancing L system languages make  it possible to
 realize  parts of  the simulations  using general  purpose programming
 languages (e.g.  unit to unit interactions) that would be difficult to
-implement  with the  parallel rewriting  semantics.  The  design  of L
-allows embedding of C++, thus making such constructs unnecessary.  But
-note that  the time  spent in these  environmental models is  the time
+implement with the parallel rewriting  semantics.  The design of L and
+L+C allows embedding of  C++, thus making such constructs unnecessary.
+But note that the time spent in these environmental models is the time
 spent  outside  the  L  system  formalism with  some  general  purpose
 programming language.  Hence, complicated architectural tree and plant
 models, such as FSTM's,  implemented using L systems inevitably employ
 both an L system and  general purpose language parts.  LIGNUM combined
 with  L language  also  contains those  parts,  although in  different
-proportions  than models  realized  with L  system  tools.  It  seems,
-therefore, that  as the quest goes  on to find  optimal formalisms and
-modelling paradigms  to implement  complicated plant and  tree models,
-one  solution is  to mix  L  systems and  general purpose  programming
-languages.   We  believe,  that  this  allows  the  modelling  of  the
-development of a forest stand  (simulating for example a resarch plot)
-throughout its life span.
+proportions than  models realized with L system  tools.  Therefore, as
+the quest goes  on to find optimal formalisms  and modelling paradigms
+to implement  complicated plant and tree models,  our current solution
+is  to  mix  L  systems,  general purpose  programming  languages  and
+programming libraries.
  
 A  further challenge  to  tree  and plant  modelling  is to  implement
 source-sink  relationships  in architectural  tree  and plant  models.
