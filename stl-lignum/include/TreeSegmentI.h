@@ -19,7 +19,7 @@ TreeSegment<TS,BUD>::TreeSegment(const Point<METER>& p, const PositionVector& d,
   SetValue(*this,L,l);
   SetValue(*this,R,r);
   SetValue(*this,Rh,rn);
-  SetValue(*this,Rtop, -1);
+  SetValue(*this,Rtop,r);
 
   //the first annual ring
   tsa.annual_rings.push_back(r);
