@@ -124,24 +124,24 @@ void outPut(float x, float y, char *string);
 Display        *dpy;
 Window          win;
 
-GLboolean       MOVEMENT = TRUE;
-GLboolean       TEXTURES_ON = FALSE;
-GLboolean       FOLIAGE_ON = FALSE;
-GLboolean       SHADOWS = TRUE;
-GLboolean       HEARTWOOD = FALSE;
+GLboolean       MOVEMENT = true;
+GLboolean       TEXTURES_ON = false;
+GLboolean       FOLIAGE_ON = false;
+GLboolean       SHADOWS = true;
+GLboolean       HEARTWOOD = false;
 
-GLboolean       GRAP_ON_ALL_TIME = FALSE;
+GLboolean       GRAP_ON_ALL_TIME = false;
 
-GLboolean       LIGHT_DIRECTION = FALSE;
-GLboolean       LEAVES_ON = FALSE;
-GLboolean       WALL_ON = FALSE;
-GLboolean       GROUND_ON = TRUE;
-GLboolean       ANTIALIASING_ON = TRUE;
+GLboolean       LIGHT_DIRECTION = false;
+GLboolean       LEAVES_ON = false;
+GLboolean       WALL_ON = false;
+GLboolean       GROUND_ON = true;
+GLboolean       ANTIALIASING_ON = true;
 
-GLboolean       LIGHTING_ON = FALSE;
-GLboolean       READ_LEAVES = FALSE;
-GLboolean       drawed = FALSE;
-GLboolean       blackBackGround = TRUE;
+GLboolean       LIGHTING_ON = false;
+GLboolean       READ_LEAVES = false;
+GLboolean       drawed = false;
+GLboolean       blackBackGround = true;
 
 extern CTexture        text;
 
@@ -718,14 +718,14 @@ void mouse_button(int button, int state, int x, int y)
     mouse_x=0;
     mouse_y=0;   
     LEFT_BUTTON=DOWN;
-    MOVEMENT=TRUE;
+    MOVEMENT=true;
     break;
 
   case GLUT_MIDDLE_BUTTON:  // Middle button is pressed
     mouse_x=0;
     mouse_y=0;
     MIDDLE_BUTTON=DOWN;
-    MOVEMENT=TRUE;
+    MOVEMENT=true;
     break;
   
   default:
@@ -737,7 +737,7 @@ void mouse_button(int button, int state, int x, int y)
 // This function is called when mouse moves. The movement is in parametres x and y. 
 void mouse_motion(int x, int y)
 {
-  MOVEMENT=TRUE;
+  MOVEMENT=true;
   
       
       
@@ -746,13 +746,13 @@ void mouse_motion(int x, int y)
       if (MIDDLE_BUTTON == DOWN && mouse_y != y)        // Middle button is pressed 
 	{                               
 	  z_move = z_move + (mouse_y-y);
-	  drawed = FALSE;
+	  drawed = false;
 	}
      
       if (MIDDLE_BUTTON == DOWN && mouse_x != x)        // Middle button is pressed 
 	{                               
 	  cam_z += (mouse_x - x)/100.0;
-	  drawed = FALSE;
+	  drawed = false;
 	}
 
       // Left button is pressed
@@ -760,7 +760,7 @@ void mouse_motion(int x, int y)
 	{    
 	  x_move = x_move + (mouse_x-x);
 	  y_move = y_move - (mouse_y-y);
-	  drawed = FALSE;
+	  drawed = false;
 	}        
     }    
   mouse_x=x;
@@ -774,9 +774,9 @@ void mouse_motion(int x, int y)
 // This funtion is called, when nothing happens. 
 void loop(void) 
 { 
-  if (MOVEMENT == TRUE) // If movement has just stopped the picture is drawn once
+  if (MOVEMENT == true) // If movement has just stopped the picture is drawn once
     { 
-      MOVEMENT = FALSE;
+      MOVEMENT = false;
       redrawAll();          
       return;
     }
@@ -784,7 +784,7 @@ void loop(void)
   if (!drawed)
     {
       redraw();
-      drawed = TRUE;
+      drawed = true;
     }
   */
 }

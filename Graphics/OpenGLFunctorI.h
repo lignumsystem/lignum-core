@@ -118,7 +118,7 @@ namespace Lignum{
 		  pv.getVector()[2] = 0.0;
 		  pv.normalize();
 
-		  LGMdouble ang = (360/(2*PI_VALUE))*acos((double)pv.getVector()[1]);
+		  LGMdouble ang = (360.0/(2.0*PI_VALUE))*asin((double)pv.getVector()[0]);
 
 		  glPushMatrix();  
 		  glTranslatef(np.getX(), np.getY(), np.getZ());          
