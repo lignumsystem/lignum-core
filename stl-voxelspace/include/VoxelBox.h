@@ -42,16 +42,19 @@ public:
 
 	Point& getCenterPoint(Point &point);
 	Point getCornerPoint();
-
 	int getNumSegments() { return number_of_segments; }
+	LGMdouble getAreaDen();
+	LGMdouble getQabs() { return Q_abs; }
+	LGMdouble getQin() { return Q_in; }
+	LGMdouble getStar() { return star; }
+	LGMdouble getNeedleMass(){return needleMass;}
 
 	void setArea(M2 larea, M2 narea);
-	void addRadiation(LGMdouble r);
 	void setVoxelSpace(VoxelSpace *s, Point c);
 
 	// Q_absbox
 	LGMdouble interceptedRadiation;
-	LGMdouble getAreaDen();
+	void addRadiation(LGMdouble r);
 	void addNeedleArea(M2 narea) { needleArea += narea; }
 	void addNeedleMass(M2 nmass) { needleMass += nmass; }
 	void addLeafArea(M2 larea) { leafArea += larea; }
@@ -60,9 +63,7 @@ public:
 	void addStarSum(LGMdouble star){starSum += star;}
 	void increaseNumberOfSegments(){number_of_segments++;}
 	friend ostream &operator << (ostream& os, VoxelBox &b);
-	LGMdouble getQabs() { return Q_abs; }
-	LGMdouble getQin() { return Q_in; }
-	LGMdouble getStar() { return star; }
+
 	LGMdouble S(LGMdouble phi, LGMdouble Sf, LGMdouble Wf, LGMdouble r, LGMdouble l);
 protected:
 	LGMdouble star;
