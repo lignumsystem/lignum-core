@@ -28,6 +28,20 @@ ParametricCurve::ParametricCurve(const ParametricCurve& pc)
 {
 }
 
+//Constant function
+ParametricCurve::ParametricCurve(const double c)
+{
+  v.clear();
+  v.insert(v.end(),0.0);
+  v.insert(v.end(),c);
+  v.insert(v.end(),1.0);
+  v.insert(v.end(),c);
+  //mark the end of (x,y) value pairs with FLT_MAX 
+  //FLT_MAX should be defined in <float.h>
+  v.insert(v.end(),FLT_MAX);
+  num_of_elements = v.size();
+}
+
 bool ParametricCurve::install(const string& file_name)
 {
   read_xy_file(file_name.c_str());
