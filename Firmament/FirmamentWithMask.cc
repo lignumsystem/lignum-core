@@ -43,6 +43,13 @@ void FirmamentWithMask::setMask(int incl_index,double percentage)
   for (j = 0; j < azimDivisions[incl_index]; j++){
     diffuseRad[incl_index][j] = diffuseRad[incl_index][j]*((100.0-percentage)/100.0);
   }
+
+  diffuseRadBall = 0.0;
+
+  TVector<double> radiation_direction;
+  for (j = 0; j < numberOfRegions(); j++){
+    diffuseRadBall += diffuseRegionRadiationSum(j,radiation_direction);
+  }
 }
 
 } //clsoing namespace sky
