@@ -23,7 +23,7 @@ template <class F, class TS, class BUD>
   (TreeCompartment<TS, BUD>* tc)const
 {
 
-  if(TreeSegment<TS,BUD>* ts = dynamic_cast<TreeSegment<TS,BUD>*>(tc)) {
+  if (TS* ts = dynamic_cast<TS*>(tc)) {
     radiation_functor(ts);
   }
 
