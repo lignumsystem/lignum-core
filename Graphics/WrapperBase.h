@@ -16,9 +16,9 @@ public:
   virtual void VisualizeFoliage(int &active_texture){cout << "VisualizeFoliage not found" << endl;} 
   virtual void VisualizeStem(int &active_texture)=0;
   virtual void VisualizeWireModel()=0;
-  virtual void MakeDisplayLists()=0;
+  virtual void MakeDisplayLists(bool orderfoliage)=0;
   virtual void MakeWireModelLists()=0;
-  virtual void DrawTree()=0;
+  virtual void DrawTree(float x, float y, float z)=0;
   virtual void hello()=0;
 
   // CTexture stem_texture;
@@ -26,6 +26,7 @@ public:
  int intFoliageTexture; //texture number of foliage
  int intDisplaylistStem; //displaylists
  int intDisplaylistFoliage;
+ bool ordfoliage;
 };
 
 
@@ -37,11 +38,11 @@ public:
   
   CfWrapper(Tree<TS,BUD>& t):WrapperBase(),tree(t){}
 
-  void MakeDisplayLists();
+  void MakeDisplayLists(bool orderfoliage);
   void MakeWireModelLists();
   void VisualizeTree();
   void VisualizeFoliage(int &active_texture);
-  virtual void DrawTree();
+  virtual void DrawTree(float x, float y, float z);
   void VisualizeWireModel();
   virtual void VisualizeStem(int &active_texture);
 
@@ -51,6 +52,9 @@ public:
   Tree<TS,BUD>& tree;
 };
 
+
+//Shape pit‰‰ lis‰t‰ luokkaan jotta DrawOrderedLeaves ja koko luokka toimii
+
 template <class TS, class BUD>
 class HwWrapper: public WrapperBase 
 {
@@ -58,16 +62,18 @@ public:
   HwWrapper(Tree<TS,BUD>& t):WrapperBase(),tree(t){}
 
 
-  void MakeDisplayLists();
+  void MakeDisplayLists(bool orderfoliage);
   void MakeWireModelLists();
   void VisualizeTree();
   void VisualizeFoliage(int &active_texture);
-  virtual void DrawTree();
+  virtual void DrawTree(float x, float y, float z);
   void VisualizeWireModel();
   virtual void VisualizeStem(int &active_texture);
   
   virtual void hello(){cout << "HwWrapper hello" << endl;;}
-
+ 
+   void DrawOrderedLeaves(float x, float y, float z);
+  
   Tree<TS,BUD>& tree;
 };
 

@@ -45,18 +45,22 @@ enum STEMMODE { SOLID, WIREMODEL };
 
  class MakeDisplayLists{
   public:
-   void operator()(WrapperBase* wb){
-     wb->MakeDisplayLists();
-  cout << "making dp-lists! ********* -------- ********* " << endl;
-   }
+     MakeDisplayLists(bool b) { order = b; };  
+     void operator()(WrapperBase* wb){
+	 wb->MakeDisplayLists(order);}
+     bool order;
+   
   };
 
 
  class DrawTrees{
   public:
-   void operator()(WrapperBase* wb){
-     wb->DrawTree();
-   }
+     DrawTrees(float sx, float sy, float sz){ x=sx; y=sy; z=sz; }
+     void operator()(WrapperBase* wb){ wb->DrawTree(x,y,z);     }
+     float x;
+     float y;
+     float z;
+   
   };
 
 
@@ -84,17 +88,19 @@ class LGMVisualization
   void Loop(void);
   void Menu(int value);
   void StartVisualization();
+  void OrderFoliage(bool v) {  order_foliage = v; }
 
   int GetTgaTexNumber(string filename);
   int GetBmpTexNumber(string filename);
 
 
-  void drawTrees(){for_each(trees.begin(),trees.end(),DrawTrees());}
+  void drawTrees(); /*{for_each(trees.begin(),trees.end(),DrawTrees());}*/
   void hello(){for_each(trees.begin(),trees.end(),Hello());}
-  void makeDisplayLists(){for_each(trees.begin(),trees.end(),MakeDisplayLists());}
+  void makeDisplayLists(){for_each(trees.begin(),trees.end(),MakeDisplayLists(order_foliage));}
  void makeWireModelLists(){for_each(trees.begin(),trees.end(),MakeWireModelLists());}
 private:
   bool drawed;
+  bool order_foliage;
 
   GLSettings settings;
   STEMMODE mode;

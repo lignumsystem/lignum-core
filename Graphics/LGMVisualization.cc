@@ -30,6 +30,7 @@ namespace Lignum
   {
     active_visualization = this;
     mode = SOLID;
+    order_foliage = false;
   }
 
 
@@ -65,8 +66,7 @@ namespace Lignum
     if (mode == SOLID)
     {
 	cout << "solid viz ***********" << endl;
-//	MakeDisplayLists();
-	for_each(trees.begin(),trees.end(),MakeDisplayLists());
+	for_each(trees.begin(),trees.end(),MakeDisplayLists(order_foliage));
     }
     else
     {
@@ -497,7 +497,16 @@ namespace Lignum
 	return num;
   }
 
+ 
+
+void LGMVisualization:: drawTrees()
+{
   
+
+    for_each(trees.begin(),trees.end(),DrawTrees(settings.cam_x,settings.cam_y,
+settings.cam_z));
+}
+ 
 }
 
 
