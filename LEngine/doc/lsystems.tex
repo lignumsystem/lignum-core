@@ -1,0 +1,81 @@
+\documentclass[12pt,a4paper,english]{article}
+%Scandinavian alphabet
+\usepackage{babel}
+\usepackage{t1enc,epsfig,textcomp,supertabular}
+
+%Citation style 
+\usepackage[round,authoryear]{natbib}
+\hyphenation{Linden-mayer meta-bolism} 
+
+\title{Enhancing the Modeling Capabilities of LIGNUM with Lindenmayer systems}
+
+\author{Jari Perttunen
+        \footnote{Corresponding author, email: jari.perttunen@metla.fi.}
+        \footnote{Finnish Forest  Research Institute, Vantaa Research
+                  Station, P.O.Box 18, 01301 Vantaa, Finland.}
+\and Radek Karwowski\footnote{University of Calgary}
+\addtocounter{footnote}{-1}
+\and Przemyslaw Prusinkiewicz\footnotemark
+\addtocounter{footnote}{-3}
+\and Risto Sievänen\footnotemark
+}
+
+
+%suggested running title
+\markright{Perttunen et al. -- Lindenmayer systems in LIGNUM}
+\pagestyle{myheadings}
+%Double line space if needed
+%\linespread{1.65} 
+
+%This is how to get around nonnumerical years (xxxxa,xxxxb, etc.)
+%with natbib when the author has been really energetical. 
+\defcitealias{kurth:em94}{Kurth,~1994b}
+
+%Equation numbers in brackets
+%\makeatletter
+%\renewcommand\@eqnnum{\hb@xt@.01\p@{}%
+%                      \rlap{\normalfont\normalcolor
+%                        \hskip -\displaywidth[\theequation]}}
+%\makeatother
+
+\begin{document}
+
+\maketitle
+\pagebreak
+\abstract{
+
+LIGNUM is  a functional-structural tree  model that represents  a tree
+with  four modelling units  closely resembling  the real  structure of
+trees.  These are  tree segments, the tree axes,  branching points and
+buds.  Metabolic  processes are  explicitly related to  the structural
+units  in  which they  are  taking  place.   Here we  enhance  earlier
+versions  of  LIGNUM  for  conifers  and broadleaved  trees  with  the
+possibility to  formally describe  the architectural development  of a
+tree with Lindenmayer systems.
+
+This  modified version  of  LIGNUM  is then  used  to demonstrate  its
+potential capabilities  to model  not only single  trees but  also the
+development   of   forest    stands.    The   current   implementation
+methodologically mixes the term  rewriting of Lindenmayer systems with
+the LIGNUM model  to represent a tree as an  abstract datatype and the
+functioning of  a tree with  generic programming. Using  some examples
+(from  the  previous and  future  work  with  LIGNUM) we  discuss  our
+approach  identifying from our  point of  view some  important missing
+pieces  in L-systems  to  present  them as  an  overture for  L-system
+community for possible theoretical and practical assessment.
+
+\bf Key words\rm: LIGNUM, Lindenmayer systems, functional-structural tree model.  
+}
+
+\section{Introduction}
+\section{The Language L in LIGNUM}
+\section{Examples}
+\section{Discussion}
+%References 
+%\bibliography{references/text-books,references/misc,references/em98,references/sugar-maple,references/aob96}
+%Annals of Botany bibliographic style
+%\bibliographystyle{plain}
+%Tables and figures.
+\end{document}
+
+
