@@ -63,8 +63,5 @@ private:
 };
 
 
-
-#else
-  #error File already included
 #endif
 
