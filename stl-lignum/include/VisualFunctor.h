@@ -42,6 +42,22 @@ public:
   METER& operator()(METER& r,TreeCompartment<TS,BUD>* tc)const;
 };
 
+template <class TS,class BUD>
+  class SampleFoliageMass{
+  public:
+  SampleFoliageMass(KGC f):fm(f){}
+  KGC& operator()(KGC& fm, TreeCompartment<TS,BUD>* tc)const;
+  KGC fm;
+};
+
+template <class T> 
+ class SubtractFoliage{
+ public:
+  SubtractFoliage(const T f):sub(f){}
+  T operator()(const T t1, const T t2)const{return t2 - sub;}
+  T sub;
+};
+   
 } //closing namespace Lignum
 
 #include <VisualFunctorI.h>

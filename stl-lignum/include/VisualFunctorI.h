@@ -57,10 +57,22 @@ METER& SampleDiameterGrowth<TS,BUD>::operator()(METER& r,TreeCompartment<TS,BUD>
 {
   TreeSegment<TS,BUD>* myts = NULL;
   if (myts = dynamic_cast<TreeSegment<TS,BUD>*>(tc)){
-    SetValue(*myts,R,GetValue(*myts,R)+r*0.10);
+    SetValue(*myts,R,GetValue(*myts,R)+r*0.25);
     r = GetValue(*myts,R);
   }
   return r;
+}
+
+template <class TS,class BUD>
+KGC& SampleFoliageMass<TS,BUD>::operator()(KGC& id,TreeCompartment<TS,BUD>* tc)const
+{
+  if (Bud<TS,BUD>* bud =   dynamic_cast<Bud<TS,BUD>*>(tc)){
+    id = fm;
+  }
+  else if (CfTreeSegment<TS,BUD>* ts = dynamic_cast<CfTreeSegment<TS,BUD>*>(tc)){
+    SetValue(*ts,Wf,maximum(id,0.0));
+  }
+  return id;
 }
 
 }//closing namespace Lignum  
