@@ -249,11 +249,13 @@ int main(int argc, char *argv[])
 			   MyHwTreeSegment,MyHwBud>() );
   //	    MyHwTreeSegment,MyHwBud>("Radiationextinction.txt") );
 
-  EvaluateRadiationForTree(cf_tree,WrapRadiationEvaluations<
-			   EvaluateRadiationForCfTreeSegment<MyCfTreeSegment,MyCfBud>,
-			   MyCfTreeSegment,MyCfBud>("Radiationextinction.txt") );
-
-
+  //Forget wrappers, this is for coniferous segment
+  //Constant extinction for demo
+  ParametricCurve K(0.2);
+  //This computes Qin and Qabs for one segment (pairwise comparison)
+  EvaluateRadiationForCfTreeSegment<MyCfTreeSegment,MyCfBud> R(K);
+  //For all segments simply call ForEach
+  ForEach(cf_tree,R);
   //Photosynthesis
    SetValue(cf_tree, pr, 1.0);      //Set the photosynthesis parameter
    SetValue(hw_tree, pr, 1.0);
