@@ -3,7 +3,7 @@
 
 TreeSegmentAttributes::TreeSegmentAttributes()
   :age(0),M(0.0),L(0.0),omega(0.0),P(0.0),Qin(0.0),Qabs(0.0),
-   R(0.0),Rn(0.0)
+   R(0.0),Rn(0.0),Pr(0.0),fin(0.0),fout(0.0)
 {
 }
 
@@ -12,6 +12,7 @@ TreeSegment<TS>::TreeSegment()
 {
   tree = NULL;
 }
+
 
 template <class TS>
 TreeSegment<TS>::TreeSegment(const Point<METER>& p, const PositionVector& d, const TP go,
@@ -78,8 +79,17 @@ TP GetTSAttributeValue(const TreeSegment<TS>& ts, const TAD name)
 {
   TP unknown_value = 0.0;
   
-  if (name == L)
+  if (name == area)
+    return 3.14*R*R;
+
+ else if (name == H)
+    return ts.point.getZ();
+
+  else if (name == L)
     return ts.tsa.L;
+
+  else if (name == Pr)
+    return ts.tsa.Pr;
 
   else if (name == M)
     return ts.tsa.M;
@@ -137,6 +147,12 @@ TP SetTSAttributeValue(TreeSegment<TS>& ts, const TAD name, const TP value)
   
   if (name == L)
     ts.tsa.L = value;
+  
+  else if (name == fin)
+   ts.tsa.fin = value;
+  
+  else if (name == fout)
+    ts.tsa.fout = value;
 
   else if (name == M)
     ts.tsa.M = value;
@@ -146,6 +162,9 @@ TP SetTSAttributeValue(TreeSegment<TS>& ts, const TAD name, const TP value)
 
   else if (name == P)
     ts.tsa.P = value;
+
+  else if (name == Pr)
+    ts.tsa.Pr = value;
 
   else if (name == Qabs)
     ts.tsa.Qabs = value;

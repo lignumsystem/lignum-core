@@ -16,6 +16,9 @@ public:
   KGC M;                  //Respiration of the tree segment during the time step
   TP omega;               //Gravelius order
   KGC P;                  //Photosythesis of the tree segment during the time step
+  PA Pr;                  //Pressure
+  TP fin;                 //Amount of water coming in
+  TP fout;                //Amount of water going out
   MJ Qin;                 //Incoming radiation
   MJ Qabs;                //Absorbed radiation
   METER R;                //Radius including bark
@@ -25,6 +28,7 @@ public:
   KGC Ws;                 //Sapwood mass of the tree segment
   list<METER> annual_rings; //Annual rings of the tree segment
 };
+
 
 template <class TS>
 class TreeSegment: public TreeCompartment<TS>{ 

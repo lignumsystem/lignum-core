@@ -92,6 +92,101 @@ Tree<TS>::Tree(const Point<METER>& p, const PositionVector& d)
   cm = NULL;
 }
 
+
+
+
+template <class TS>
+TreeSegment<TS>* Tree<TS>::GetTreeSegment(Axis<TS> &ax, long int add)
+{
+  list<TreeCompartment<MyTreeSegment>*>& ls = GetTreeCompartmentList(ax);
+  list<TreeCompartment<MyTreeSegment>*>::iterator I = ls.begin();
+  
+  while(I != ls.end())
+    {
+      if (TreeSegment<MyTreeSegment>* myts = dynamic_cast<TreeSegment<MyTreeSegment>*>(*I))
+	{
+	  if ((long int &)myts == add)
+	    return myts;
+	}
+      if (BranchingPoint<MyTreeSegment>* mybp = dynamic_cast<BranchingPoint<MyTreeSegment>*>(*I))
+      	{	 
+	  list<Axis<TS>*>& axis_ls = GetAxisList(*mybp);  	  
+	  list<Axis<TS>*>::iterator I = axis_ls.begin();
+	  while(I != axis_ls.end())
+	    {
+	      Axis<MyTreeSegment> *axis = *I;
+	      TreeSegment<MyTreeSegment> *ts = GetTreeSegment(*axis, add);
+	      if (ts != NULL)
+		return ts;
+	      I++;	    
+	    }
+	}      
+      I++;
+    }
+  return NULL;
+}
+
+
+template <class TS>
+void Tree<TS>::UpdateWaterFlow()
+{
+  if (cm == NULL)
+    this->BuiltConnectionMatrix();
+  cm->print();
+
+
+  for (int i=0; i<cm->size; i++)
+    {
+      TreeSegment<MyTreeSegment> *out;
+      if(cm->pointer[i][i] != 0)  
+	out = GetTreeSegment(this->axis, cm->pointer[i][i]);
+      if (out == NULL)
+	cout << "ei l;ytynyt" << endl;
+      else for (int a=0; a<cm->size; a++)
+	{
+	  if (i != a && cm->pointer[i][a]!=0)
+	    {
+	      TreeSegment<MyTreeSegment> *in = GetTreeSegment(this->axis, cm->pointer[i][a]);
+	      SetTSAttributeValue(*in, Pr, CountFlow(*in, *out));
+	    }
+	}
+	
+    }
+  for (i=0; i<cm->size; i++)
+    {
+      TreeSegment<MyTreeSegment> *out;
+      if(cm->pointer[i][i] != 0)  
+	out = GetTreeSegment(this->axis, cm->pointer[i][i]);
+      for (int a=0; a<cm->size; a++)
+	{
+	  if (i != a && cm->pointer[i][a]!=0)
+	    {
+	      TreeSegment<MyTreeSegment> *in = GetTreeSegment(this->axis, cm->pointer[i][a]);
+	      SetTSAttributeValue(*out, Pr, GetTSAttributeValue(*out, fout)+GetTSAttributeValue(*in, fin));
+	    }
+	}
+      
+    }
+}
+
+template <class TS>
+TP Tree<TS>::CountFlow(TreeSegment<TS> &in, TreeSegment<TS> &out)
+{
+  TP gravity = 9.81;
+  TP viscosity = 1;
+  TP permiability = 1;
+  TP density = 1000;
+
+  TP ar = GetTSAttributeValue(out, area);
+  TP le = GetTSAttributeValue(out, L);
+  TP he = GetTSAttributeValue(out, H);
+  TP pr_out = GetTSAttributeValue(out, Pr);
+  TP pr_in = GetTSAttributeValue(in, Pr);
+ 
+  return (density * permiability / viscosity) * (ar / le) * (pr_out - pr_in - density*gravity*he);
+}
+
+
 template <class TS>
 int Tree<TS>::CountTreeSegments(Axis<TS> &ax)
 {
@@ -124,7 +219,7 @@ int Tree<TS>::CountTreeSegments(Axis<TS> &ax)
 
 
 template <class TS>
-void Tree<TS>::makeConnectionMatrix()
+void Tree<TS>::BuiltConnectionMatrix()
 {  
   TreeSegment<MyTreeSegment> *lastSegment = NULL;
   list<TreeCompartment<MyTreeSegment>*>& ls = GetTreeCompartmentList(axis);
@@ -152,7 +247,6 @@ void Tree<TS>::makeConnectionMatrix()
 	}
       I++;
     }
-  cm->print();
 }
 
 
@@ -260,8 +354,15 @@ TP GetTreeParameterValue(const Tree<TS>& tree, const TPD name)
   if (name == af)
     return tree.tp.af;
 
+
   else if (name == ar)
      return tree.tp.ar;
+
+  else if (name == fin)
+    return tree.tp.ar;
+  
+  else if (name == fout)
+    return tree.tp.ar;
 
   else if (name == lr)
     return tree.tp.lr;
@@ -364,6 +465,7 @@ TP SetTreeParameterValue(Tree<TS>& tree, const TPD name, const TP value)
 template <class TS>
 TP GetTreeTransitVariableValue(const Tree<TS>& tree, const TTD name)
 {
+ cout << "14"<< endl;
   if (name == lambda)
     return tree.ttp.lambda;
   
@@ -391,7 +493,8 @@ TP SetTreeTransitVariableValue(Tree<TS>& tree, const TTD name, const TP value)
 
 template <class TS>
 TP GetTreeAttributeValue(const Tree<TS>& tree, const TAD name)
-{
+{ 
+  
   if (name == lb)
     return tree.ta.lb;
 
@@ -405,7 +508,7 @@ TP GetTreeAttributeValue(const Tree<TS>& tree, const TAD name)
      return tree.ta.Wr;
 
   else {
-    cerr << "GetAttributeValue unknown attribute: " << name << " returning 0.0" 
+    cerr << "GetAttributeValue  unknown attribute: " << name << " returning 0.0" 
 	 << endl;
   }
 

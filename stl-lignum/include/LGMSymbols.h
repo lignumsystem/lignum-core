@@ -6,9 +6,10 @@
 using namespace std;
 
 enum TPD {af,ar,lr,mf,mr,ms,na,nl,pr,q,sr,ss,rho,xi};
-enum TAD {ip,lb,L,M,omega,P,Qin,Qabs,R,Rf,Rn,Wf,Wr,Ws};
+enum TAD {area, fin, fout, H, ip,lb,L,M,omega,P,Pr,Qin,Qabs,R,Rf,Rn,Wf,Wr,Ws};
 enum TAI {age};
 enum TTD {lambda};
+
 
 class cmpstr{
 public:

@@ -2,6 +2,7 @@
 #ifndef TREE_H
 #define TREE_H
 
+
 #include <list>
 #include <stdlib.h>
 #include <iostream.h>
@@ -23,6 +24,7 @@ public:
   TreeParameters();
   TP af;            //Needle mass - tree segment area relationship
   TP ar;            //Foliage - root relationship
+
   TP lr;            //L/R for a new tree segment
   TP mf;            //Maintenance respiration rate of foliage
   TP mr;            //Maintenance respiration rate of roots
@@ -45,10 +47,12 @@ public:
   bool setValue(int, int, long int);
   long int **pointer;
   void print();
-private:
   int size;
+private:
   int GetRow(long int);
 };
+
+
 
 
 class TreeAttributes{
@@ -74,6 +78,8 @@ public:
   TP lambda;        //Variable to balance carbon balance equation
 };
 
+
+
 template <class TS>
 class Tree: public TreeCompartment<TS>{
   friend Axis<TS>& GetAxis(Tree<TS>& t){return t.axis;}
@@ -91,10 +97,14 @@ class Tree: public TreeCompartment<TS>{
 public:
   Tree();
   Tree(const Point<METER>& p, const PositionVector& d);
-  void makeConnectionMatrix();
+  void UpdateWaterFlow();
 private:
+ 
+  TreeSegment<TS>* GetTreeSegment(Axis<TS> &ax, long int add);
+  void BuiltConnectionMatrix();
   int CountTreeSegments(Axis<TS> &ax);
   void makeAxis(Axis<TS> &ax, TreeSegment<TS> &ts);
+  TP CountFlow(TreeSegment<TS> &in, TreeSegment<TS> &out);
   TreeAttributes ta;
   TreeFunctions tf;
   TreeParameters tp;
