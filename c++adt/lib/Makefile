@@ -20,8 +20,8 @@ CCCFLAGS =   -c
 
 .SUFFIXES: .o .cc
 
-AR = ar  
-ARFLAGS = cvr
+AR = $(CCC) -ar  
+ARFLAGS = -o 
 ARFILE = libc++adt.a
 
 
