@@ -28,9 +28,10 @@ $A$ records  branching it is updated  as new branches  are added. When
 the development starts  from the main axis consisting  of one segment,
 branching point and bud, the string after two iterations is
 
-\begin{equation}\label{eq:pine2}
-F\;[] F [F[B][B]B]\:[F[B][B]B]\:[F[B][B]B]\:[F[B][B]B]\; F \;[B][B][B][B]\; B
-\end{equation}
+\begin{eqnarray}\label{eq:pine2}
+\lefteqn{F\;[] \;F \; [F[B][B]B]\;[F[B][B]B]\;[F[B][B]B]\;[F[B][B]B] \nonumber }\\
+\lefteqn{F \; [B][B][B][B]\; B}
+\end{eqnarray}
 where symbol  [ denotes $SB()$ and  ] denotes $EB()$,  the modules for
 turtle rotations are  not shown, and the arguments  of the modules $B$
 and $F$ are dropped.
@@ -62,9 +63,10 @@ branching point being empty:
 \end{equation}
 
 Finally, recursively constructing the axes we get:
-\begin{equation}
-[TS, [] TS,[TS,[[B],[B]],B],\ldots, [TS,[[B],[B]],B]], TS, [[B],[B],[B],[B]], B]
-\end{equation}
+\begin{eqnarray}
+\lefteqn{[TS, [], TS,[TS,[[B],[B]],B],\ldots, [TS,[[B],[B]],B]], \nonumber} \\
+\lefteqn{\;TS, [[B],[B],[B],[B]], B]}
+\end{eqnarray}
 
 The current status  of the turtle that is  updated according to turtle
 commands in  the string  defines the position  and orientation  of the
@@ -118,13 +120,13 @@ interface  (API) to  the defined  L  system.  Most  notably, this  API
 includes derivation of the string to model structural development, the
 conversion algorithm  between L system  and the model  LIGNUM (Section
 \ref{sec:LToLignum}) and  vice versa.   The translator also  allows to
-embed C++ statements in the L file.
+embed C++ statements in the L file \citep{pp:99a}.
 
 \subsection{Two-way communication in the Scots pine simulation}
 
-Although  in  our  Scots pine  example  it  is  $L$ in  $B(A,L)$  that
-initially determine  the length of a segment,  the metabolic processes
-eventually resolve the amount of growth.
+Although in our  Scots pine example (Appendix \ref{sec:L1})  it is $L$
+in  $B(A,L)$ that  initially determine  the length  of a  segment, the
+metabolic processes eventually resolve the amount of growth.
   
 We interfaced the L language program of Appendix \ref{sec:L1} with the
 functional part of  LIGNUM that incorporates our previous  work on the
@@ -137,9 +139,10 @@ allocation of  net photosynthates  to growth after  respiration costs:
 where  $P$   and  $M$  are  the  photosynthetic   production  and  the
 respiration of a  tree, $iW_n$ the growth of  new segments, $iW_o$ the
 secondary      growth     and      $iW_r$     the      root     growth
-\citep[c.f.][]{perttunen:96,perttunen:01}.  We omit some  functions of
-LIGNUM, e.g. the number of secondary buds as a function of the foliage
-mass of the mother segment and let the L system determine branching.
+\citep[c.f.][]{perttunen:96,perttunen:98, perttunen:01}.  We omit some
+functions of LIGNUM,  e.g. the number of secondary  buds as a function
+of  the foliage  mass  of the  mother  segment and  let  the L  system
+determine branching.
 
 The simulations  show that the  interaction of the L  language program
 and the functioning part of LIGNUM markedly affects the outcome of the
