@@ -24,26 +24,11 @@ TreeSegment<TS,BUD>::TreeSegment(const Point& p, const PositionVector& d, const 
   //the first annual ring
   tsa.annual_rings.push_back(r);
 
-  //compute the sapwood mass
-  SetValue(*this,Ws,GetSapwoodMass(*this)); 
-
-  //compute the initial pressure in the TreeSegment    
-  SetValue(*this, Wm, 0.5 * 1000 * l * r * r * PI_VALUE);
-  SetValue(*this, Pr, -GetValue(*this, Hm) * 9.81 * 1000);   
 }
 
 template <class TS,class BUD>
 TreeSegment<TS,BUD>::~TreeSegment()
 {
-}
-
-
-//This method returns the amount[kg] of transpired water. 
-//Time interval[s] is given as parameter
-template <class TS,class BUD>
-LGMdouble TreeSegment<TS,BUD>::GetTranspiration(LGMdouble time)
-{
-  return 0.12e-9;
 }
 
 
@@ -59,19 +44,6 @@ Point GetEndPoint(const TreeSegment<TS,BUD>& ts)
   return GetPoint(ts)+GetValue(ts,L)*(Point)GetDirection(ts);
 }
 
-template <class TS,class BUD>
-KGC GetSapwoodMass(const TreeSegment<TS,BUD>& ts)
-{
-  //volume up to R
-  LGMdouble V1 = (PI_VALUE * pow((double)ts.tsa.R,2.0)) * ts.tsa.L;
-  //heartwood volume
-  LGMdouble V2 = (PI_VALUE * pow((double)ts.tsa.Rh,2.0)) * ts.tsa.L;
-  //sapwood volume
-  LGMdouble V3 = V1 - V2;
-
-  //mass is density * volume
-  return GetValue(*(ts.tree),rho) * V3;
-}
 
 template <class TS,class BUD>
 LGMdouble GetValue(const TreeSegment<TS,BUD>& ts, const LGMAD name)

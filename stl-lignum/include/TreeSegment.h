@@ -34,8 +34,6 @@ class TreeSegment: public TreeCompartment<TS,BUD>{
   template <class TS1,class BUD1>
   Point GetEndPoint(const TreeSegment<TS1,BUD1>& ts);
   template <class TS1,class BUD1>
-  friend KGC GetSapwoodMass(const TreeSegment<TS1,BUD1>& ts);
-  template <class TS1,class BUD1>
   friend LGMdouble GetValue(const TreeSegment<TS1,BUD1>& ts, const LGMAD name);
   template <class TS1,class BUD1>
   friend LGMdouble SetValue(TreeSegment<TS1,BUD1>& ts, const LGMAD name, const LGMdouble value);

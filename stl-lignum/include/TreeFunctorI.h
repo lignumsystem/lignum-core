@@ -89,18 +89,6 @@ int& CountCompartments<TS,BUD>::operator()(int& n,TreeCompartment<TS,BUD>* tc)co
 
 
 template <class TS,class BUD>
-TreeCompartment<TS,BUD>* FillWithWater<TS,BUD>::operator()(TreeCompartment<TS,BUD>* tc)const
-{
-  if (TreeSegment<TS,BUD>* myts = dynamic_cast<TreeSegment<TS,BUD>*>(tc))
-    {
-      SetValue(*myts, Wm, pow(GetValue(*myts, R), 2) * 
-			  PI_VALUE * GetValue(*myts, L) * 0.5 *  
-			  1000); // korjaaa...1000 GetTree(*myts).ttp.rhow                                                                               
-    }
-  return tc;
-}
-
-template <class TS,class BUD>
 int& CountCompartmentsReverse<TS,BUD>::operator()(int& n,
 					      TreeCompartment<TS,BUD>* tc)const
 {
