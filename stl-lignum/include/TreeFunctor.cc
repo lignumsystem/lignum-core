@@ -52,6 +52,17 @@ TreeCompartment<TS>* DisplayType2<TS>::operator()(TreeCompartment<TS>* tc)const
 }
 
 template <class TS>
+int& CountTreeSegments<TS>::operator()(int& n,TreeCompartment<TS>* tc)const
+{
+  if (TreeSegment<TS>* myts = dynamic_cast<TreeSegment<TS>*>(tc))
+    n+=1;
+  
+  return n;
+}
+
+
+
+template <class TS>
 int& CountCompartments<TS>::operator()(int& n,TreeCompartment<TS>* tc)const
 {
   if (Axis<TS>* myaxis =  dynamic_cast<Axis<TS>*>(tc)){
@@ -74,6 +85,19 @@ int& CountCompartments<TS>::operator()(int& n,TreeCompartment<TS>* tc)const
   n+=1;
   cout << n << endl;
   return n;
+}
+
+template <class TS>
+TreeCompartment<TS>* FillWithWater<TS>::operator()(TreeCompartment<TS>* tc)const
+{
+  if (TreeSegment<TS>* myts = dynamic_cast<TreeSegment<TS>*>(tc))
+    {
+      cout << "Filling water.." << endl;
+      SetTSAttributeValue(*myts, Wm, pow(GetTSAttributeValue(*myts, R), 2) * 
+			  PI_VALUE * GetTSAttributeValue(*myts, L) * 0.5 *  
+			  1000); // korjaaa...1000 GetTree(*myts).ttp.rhow                                                                               
+    }
+  return tc;
 }
 
 template <class TS>

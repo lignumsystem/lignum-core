@@ -77,6 +77,7 @@ public:
   TP eta;           //Dynamic viscosity of water
   TP k;             //Wood spesific conductivity or permeability
   TP rhow;          //Density of water
+  TP Er;            //Elastic modulus of wood in radial direction
 };
 
 
@@ -101,7 +102,7 @@ public:
   void UpdateWaterFlow(TP time, const ConnectionMatrix<TS> &cm);
 private:
  
-  TP CountFlow(TreeSegment<TS> &in, TreeSegment<TS> &out);
+  TP CountFlow(TreeSegment<TS> &in, TreeSegment<TS> &out, TP time);
   TreeAttributes ta;
   TreeFunctions tf;
   TreeParameters tp;

@@ -48,10 +48,8 @@ TreeSegment<TS>::TreeSegment(const Point<METER>& p, const PositionVector& d, con
 
   //compute the initial pressure in the TreeSegment    
   SetTSAttributeValue(*this, Wm, 0.5 * 1000 * l * r * r * PI_VALUE);
-  SetTSAttributeValue(*this, Pr, -p.getZ() * 9.81 * 1000);
+  SetTSAttributeValue(*this, Pr, (-p.getZ() - l/2) * 9.81 * 1000);
 
-  cout << "alku vesimäärä " << GetTSAttributeValue(*this, Wm) << endl;
-   
 }
 
 template <class TS>
@@ -60,12 +58,12 @@ TreeSegment<TS>::~TreeSegment()
 }
 
 
-//This method returns the amount of transpired water. 
-//Time interval is given as parameter
+//This method returns the amount[kg] of transpired water. 
+//Time interval[s] is given as parameter
 template <class TS>
 TP TreeSegment<TS>::GetTranspiration(TP time)
 {
-  return 0.0;
+  return time * 0.12e-9;
 }
 
 

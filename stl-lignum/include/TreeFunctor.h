@@ -19,10 +19,25 @@ public:
 };
 
 template <class TS>
+class CountTreeSegments{
+public:
+  int& operator ()(int& id,TreeCompartment<TS>* ts)const;
+};
+
+template <class TS>
+class FillWithWater:  public AdaptableTCFunction<TS>{
+public:
+  TreeCompartment<TS>* operator()(TreeCompartment<TS>* tc)const;
+};
+
+
+template <class TS>
 class CountCompartments{
 public:
   int& operator ()(int& id,TreeCompartment<TS>* ts)const;
 };
+
+
 
 template <class TS>
 class CountCompartmentsReverse{
