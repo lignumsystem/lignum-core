@@ -4,7 +4,7 @@
 #include <Firmament.h>
 #include <string>
 #include <Lex.h>
-
+using namespace cxxadt;
 namespace sky{
 
 //This class tries to model a gap in a forest.

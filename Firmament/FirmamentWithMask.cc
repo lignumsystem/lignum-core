@@ -34,14 +34,14 @@ namespace sky{
   {
     //get the first inclinatation
     Token t1 = lex.getToken();
-    while (t1.getType() != ENDFILE){
+    while (t1.getType() != VC_ENDFILE){
       string v1str =  t1.getValue();
       //there will be value for inclination (blocking)
       Token t2 = lex.getToken();
       string v2str = t2.getValue();
       //percentage
       double val = atof(v2str.c_str()); 
-      if (t1.getType() == ID){//zenith sector, keyword "zenith"
+      if (t1.getType() == VC_ID){//zenith sector, keyword "zenith"
 	diffuseRadZenith = diffuseRadZenith*((100.0-val)/100.0);
       }
       else{
@@ -61,14 +61,14 @@ namespace sky{
   
     //get the first inclinatation
     Token t1 = lex.getToken();
-    while (t1.getType() != ENDFILE){
+    while (t1.getType() != VC_ENDFILE){
       string v1str =  t1.getValue();
       //there will be value for inclination (blocking)
       Token t2 = lex.getToken();
       string v2str = t2.getValue();
       //percentage
       double val = atof(v2str.c_str()); 
-      if (t1.getType() == ID){//zenith sector, keyword "zenith"
+      if (t1.getType() == VC_ID){//zenith sector, keyword "zenith"
 	diffuseRadZenith = diffuseRadZenith*((100.0-val)/100.0);
       }
       else{
