@@ -1,6 +1,7 @@
 #ifndef __LSYSINTERFACE_H__
 #define __LSYSINTERFACE_H__
 
+#include <stdio.h>
 
 class ActualParameters
 {
@@ -81,7 +82,5 @@ void End();
 extern FILE* fOut;
 
 
-#else
-  #error File already included
 #endif
 
