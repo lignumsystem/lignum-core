@@ -31,7 +31,7 @@ public:
   Point getMeanSegment() { return meansegment; };
 
   double getExtinctionCoefficent() { 
-    return STAR*1.0;
+    return 0.1*1.0;
 return STAR*areadensity; }
 
   void setMeanLength(double l) { meanlength = l; };

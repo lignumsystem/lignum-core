@@ -173,12 +173,10 @@ void InterLen<T>::step(T& setLen, float lendelta, float ydelta, float zdelta)
     else {
       setLen(vox, lendelta - zlen); // z-plane first
       vox += uz;
-	  if (vox.getX() >1 || vox.getY() >1 || vox.getZ() >1)
-		int a=1;
+      
       setLen(vox, zlen - ylen);
       vox += uy;
-	  if (vox.getX() >1 || vox.getY() >1 || vox.getZ() >1)
-		int a=1;
+
       setLen(vox, ylen);
     }
     ypos -= 1.0;
@@ -188,8 +186,7 @@ void InterLen<T>::step(T& setLen, float lendelta, float ydelta, float zdelta)
     ylen = yfactor*ypos;
     setLen(vox, lendelta - ylen);
     vox += uy;
-	if (vox.getX() >1 || vox.getY() >1 || vox.getZ() >1)
-		int a=1;
+
     setLen(vox, ylen);
     ypos -= 1.0;
   }
@@ -197,8 +194,7 @@ void InterLen<T>::step(T& setLen, float lendelta, float ydelta, float zdelta)
     zlen = zfactor*zpos;
     setLen(vox, lendelta - zlen);
     vox += uz;
-	if (vox.getX() >1 || vox.getY() >1 || vox.getZ() >1)
-		int a=1;
+
     setLen(vox, zlen);
     zpos -= 1.0;
   }
@@ -206,8 +202,7 @@ void InterLen<T>::step(T& setLen, float lendelta, float ydelta, float zdelta)
     setLen(vox, lendelta);
 
   vox += ux;
-  if (vox.getX() >1 || vox.getY() >1 || vox.getZ() >1)
-		int a=1;
+ 
 }
 
 

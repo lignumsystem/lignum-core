@@ -500,6 +500,12 @@ double Matrix<TS,BUD>::getLight(TreeSegment<TS,BUD> *ts)
   LGMdouble needle_rad = 0.0;
   if (CfTreeSegment<TS, BUD>* cfts = dynamic_cast<CfTreeSegment<TS, BUD>*>(ts))  	  
     {
+      cout << "TreeSegment   Position:" << GetPoint(*cfts) << "  Direction:" << GetDirection(*cfts) << endl;
+      cout << "Length " << GetValue(*cfts, L) << "  Radius:"<< GetValue(*cfts, R) << endl;
+
+      cout << "FoliageMass:"<< GetValue(*cfts, Wf) << endl;
+
+
       SetValue(*cfts, Qin, q_in);
       W_f = GetValue(*cfts, Wf);
       sf = 2.0 * PI_VALUE * GetValue(*cfts,Rf) * GetValue(*ts,L);
@@ -518,8 +524,14 @@ double Matrix<TS,BUD>::getLight(TreeSegment<TS,BUD> *ts)
       //endl;
       for (double phi=0;phi<PI_VALUE/2;phi+=PI_VALUE/16)
 	{  
-	  star += S(phi, sf, W_f, needle_rad, GetValue(*ts, L))/8;
-	  //file << "S()="<< S(phi, sf, W_f, GetValue(*ts, R),
+	  star += S(phi, sf, W_f, needle_rad, GetValue(*ts, L))/8.0;
+	  
+	  cout << "star += S()/8.0" << endl;
+	  cout << "eli star += S(phi, sf, W_f, needle_rad, GetValue(*ts, L))/8.0; " << endl;
+	  cout << "jossa S() =S(" << phi <<","<<sf<< ","<<W_f<<","<< needle_rad<<","<<GetValue(*ts, L) <<")"<< endl;
+
+
+	  //cout  << "S()="<< S(phi, sf, W_f, GetValue(*ts, R),
 	  //GetValue(*ts, L)) << " parametrit: phi="<<phi<<" sf="<<
 	  //sf<<" Wf="<<W_f<<" R="<<GetValue(*ts, R)<<"
 	  //L="<<GetValue(*ts, L); file << " summa=" << star << endl;
@@ -531,6 +543,10 @@ double Matrix<TS,BUD>::getLight(TreeSegment<TS,BUD> *ts)
   
       SetValue(*cfts, Qabs, Q_abs);
 
+      cout << "pikku kuution indeksit (" << x << ", " << y << ", " << z << endl;
+      cout << "Star segmentille " << star << "  Q_abs = q_in * star * W_f * sf " << endl;  
+      cout << "Qin  " << q_in << endl;
+      cout << "Qabs " << Q_abs << endl << endl << endl;
 
       return Q_abs;
     }
@@ -1025,7 +1041,9 @@ void Matrix<TS,BUD>::calculateLight(Firmament *firm, int x, int y, int z)
   //******for (i=0;i<num_dirs;i++) 
   i = num_dirs - 1;
   {
+          
 	  radiationsum = firm->diffuseRegionRadiationSum(i, direction);
+	  cout << "Taivaankannen suunta " << direction << endl;
 	  total_radiation += radiationsum;
 	  newTraversePath(direction, radiationsum, *point, *startvoxel);
   }
