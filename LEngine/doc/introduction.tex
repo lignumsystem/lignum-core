@@ -23,9 +23,9 @@ sievanen:93} and extend it with structural details.
 
 Linking these  two kinds of  models together rises the  question about
 the suitable way of  expressing them. Physiological models usually are
-realized with the aid of differential or difference equations
-\citep{landsberg:86} whereas architectural models apply Lindenmayer
-systems \citep{kurth:99,pp:90} or other formalisms. Would a FSTM
+realized  with  the  aid   of  differential  or  difference  equations
+\citep{landsberg:86}  whereas architectural  models  apply Lindenmayer
+systems  \citep{kurth:99,pp:90}  or  other  formalisms. Would  a  FSTM
 combine those means or rely on either of them?
 
 The model LIGNUM  approaches FSTM from the physiological  side; it is a
@@ -46,19 +46,20 @@ method to define the architectural development of the tree structure.
 
 Since the pioneering work  by \citet{honda:71} there exist methods for
 treating   plant  architecture   in  models   in  an   efficient  way.
-Lindenmayer-systems  (L-systems, \citet{pp:89})  are  the most  widely
-used method to treat plant architecture although other formalisms also
-exist (e.g.  \citet{dereffye:97, godin:99} ).  L-systems were invented
-in 1968 by  Aristid Lindenmayer \citep{lindenmayer:68, lindenmayer:71}
-and were initially meant  to describe the development of multicellular
-organisms.  L-systems are string  rewriting systems and their research
-is concerned  with the question  what phenomena can be  described with
-formal languages.  The theory,  tools and applications using L-systems
-framework  for  modeling  plants   and  their  environment  have  been
-developed by Prusinkiewicz \citep{pp:89,pp:92}, Kurth \citep{kurth:94}
-and  other scientists.   The  ubiquitous theory  and  the progress  in
-L-systems in modelling plants and trees until the end of '90's is well
-documented in \citet{pp:90,pp:99} and \citet{kurth:99}.
+Lindenmayer-systems or L-systems for  short \citep{pp:89} are the most
+widely  used  method  to   treat  plant  architecture  although  other
+formalisms   also  exist \citep[e.g.][]{dereffye:97,   godin:99}.
+L-systems   were  invented   in   by  Aristid   \citet{lindenmayer:68,
+  lindenmayer:71} and were initially meant to describe the development
+of  multicellular organisms.  L-systems  are string  rewriting systems
+and their research  is concerned with the question  what phenomena can
+be   described  with   formal  languages.    The  theory,   tools  and
+applications using  L-systems framework for modeling  plants and their
+environment have been  developed by Prusinkiewicz \citep{pp:89,pp:92},
+Kurth  \citep{kurth:94} and other  scientists.  The  ubiquitous theory
+and the progress in L-systems  in modelling plants and trees until the
+end   of  '90's   is  well   documented  in   \citet{pp:90,pp:99}  and
+\citet{kurth:99}.
 
 We describe in the following  how the model LIGNUM has been interfaced
 with   L-systems   for   specifying   formally  and   rigorously   the
@@ -74,13 +75,14 @@ the simulated plant.
 
 We first  present the use of L  in LIGNUM based on  the similarity how
 LIGNUM and bracketed L-systems represent branching structures of trees
-\citep{perttunen:96, perttunen:01}.  Second,  we implement an algorithm
+\citep{perttunen:96, perttunen:01}.  Second, we implement an algorithm
 that  translates  the bracketed  string  of  symbols  in L  to  LIGNUM
 representation of  trees (Section \ref{sec:pine}).   Third, we provide
-communication mechanism between the L-string and LIGNUM (Section
-\ref{sec:bearberry}).  Finally,  we present simple  language construct
-that allows  us to model  group of plants  each with its  own L-system
-(Section  \ref{sec:namespace}).   We   give  sample  applications  and
-discuss our approach for its consequences to the future development of
-LIGNUM in modeling trees and forest stands.
+communication  mechanism  between  the  L-string and  LIGNUM  (Section
+\ref{sec:LtoLignum}) and give two  sample applications, Scots pine and
+bearberry.   We present simple  language construct  that allows  us to
+model   group  of  plants   each  with   its  own   L-system  (Section
+\ref{sec:namespace}).   Finally,  we  discuss  our  approach  for  its
+consequences to the future development of LIGNUM in modeling trees and
+forest stands.
 
