@@ -257,7 +257,7 @@ namespace Lignum {
 	  }
   }
 
-  void VoxelSpace::fillVoxelBoxesWithNeedles(LGMdouble fmass, LGMdouble sf, 
+  void VoxelSpace::fillVoxelBoxesWithNeedles(LGMdouble Sf, LGMdouble Wf, LGMdouble Rf, LGMdouble L,
 					     int beginZ, int endZ)
   {
     for(int i1=0; i1<Xn; i1++)
@@ -265,8 +265,17 @@ namespace Lignum {
 	for(int i3=0; i3<Zn; i3++)
 	  {
 	    if (i3 >= beginZ && i3 <= endZ){
-	      voxboxes[i1][i2][i3].addNeedleArea(sf*fmass);
-	      voxboxes[i1][i2][i3].addNeedleMass(fmass);
+	      voxboxes[i1][i2][i3].addNeedleArea(Sf*Wf);
+	      voxboxes[i1][i2][i3].addNeedleMass(Wf);
+	      //for-loop runs eight times (says mika).
+	      for (double phi=0; phi<PI_VALUE/2.0; phi+=PI_VALUE/16)
+		{
+		  //As in dumpSegment
+		  voxboxes[i1][i2][i3].addStarSum(voxboxes[i1][i2][i3].S(phi,Sf,Wf,Rf,L)/8.0);
+		  voxboxes[i1][i2][i3].UpdateValues();
+		}
+	      voxboxes[i1][i2][i3].increaseNumberOfSegments();
+	      voxboxes[i1][i2][i3].UpdateValues();
 	    }
 	  }
   }
@@ -304,29 +313,32 @@ namespace Lignum {
   LGMdouble VoxelSpace::calculateLight()
   {
     //ofstream file("calculateVoxelSpace.txt");
-
-    bool first_time = true;
+    cout << "Caculate Light Begin: " << endl;
     for(int i1=0; i1<Xn; i1++)
       for(int i2=0; i2<Yn; i2++)
 	for(int i3=0; i3<Zn; i3++)
 	  {
 	    double sumiop = 0.0;
 	    int num_dirs = sky->numberOfRegions();
+	    //This might  make the voxel  space slow in  execution: if
+	    //there  is something  is voxboxes  the following  loop is
+	    //executed.
 	    if (voxboxes[i1][i2][i3].isEmpty() == false)
 	      {				
 		for(int i=0; i<num_dirs; i++)
-		  {					
+		  {	
 		    std::vector<double> rad_direction(3);
 		    LGMdouble iop = sky->diffuseRegionRadiationSum(i,rad_direction);
-		    PositionVector radiation_direction(rad_direction[0], rad_direction[1], rad_direction[2]);
+		    PositionVector radiation_direction(rad_direction[0], rad_direction[1], 
+						       rad_direction[2]);
 		    radiation_direction.normalize();
-
+		    
 		    std::vector<VoxelMovement> vec;		
 		    getRoute(vec, i1, i2, i3, radiation_direction);
 		    int size = vec.size();
 
 		    sumiop += iop;
-
+		    
 		    if (size>1)
 		      for (int a=1; a<size; a++)
 			{
@@ -354,6 +366,7 @@ namespace Lignum {
 			LGMdouble qout = iop * ext2;
 
 			//ja vaimeneminen boksin sisällä
+			//cout << "Qin: " << qin << "Qout: " << qout << endl;
 			voxboxes[i1][i2][i3].addQabs(qin - qout);
 							
 			// Nyt lasketaan vain keskipisteeseen, eli boksin saama säteily
