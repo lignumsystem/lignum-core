@@ -1,11 +1,9 @@
 #ifndef _VOXELLATTICE_H_
 #define _VOXELLATTICE_H_
-
+ 
 #include "interlen.h"
 
-
-
-
+#include <math.h>
 /*****************************************************************************
  * extinction calculation                                                    *
  *****************************************************************************/
@@ -37,7 +35,7 @@ float interExt(T& getExt, double edgelen, const PositionVector& v, const Positio
 {
   Ext<T> e(getExt);
   interLen(e, v, w);
-  return expf(-e.ext*edgelen);
+  return exp((double)-e.ext*edgelen);
 }
 
 
