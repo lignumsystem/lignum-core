@@ -222,7 +222,7 @@ TreeCompartment<TS,BUD>* EvaluateRadiationForCfTreeSegment<TS,BUD>::operator() (
     Lk = GetValue(*ts, LGAL);   //length is > 0.0, otherwise we would not bee here
     Rfk = GetValue(*ts, LGARf);  //Radius to foliage limit 
     Wfk = GetValue(*ts, LGAWf); //Foliage mass
-    sfk  = GetValue(tt, sf); //Foliage m2/kg from tree
+    sfk  = GetValue(tt, LGPsf); //Foliage m2/kg from tree
 
     for (int i = 0; i < number_of_sectors; i++){
       firmament.diffuseRegionRadiationSum(i,radiation_direction);

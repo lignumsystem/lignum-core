@@ -13,10 +13,10 @@ namespace Lignum {
     {	
       LGMdouble r_f = GetValue(ts, LGARf);
       LGMdouble lenght = GetValue(ts, LGAL) / num_parts;
-      LGMdouble S_f = GetValue(GetTree(ts), sf);
+      LGMdouble S_f = GetValue(GetTree(ts), LGPsf);
       LGMdouble fmass = GetValue(ts, LGAWf) / num_parts;
 
-      if (GetValue(GetTree(ts), sf) == 0)
+      if (GetValue(GetTree(ts), LGPsf) == 0)
 	S_f = 28;
 
       LGMdouble farea = S_f * fmass;	
@@ -42,10 +42,10 @@ namespace Lignum {
     {	
       LGMdouble r_f = GetValue(ts, LGARf);
       LGMdouble lenghth = GetValue(ts, LGAL) / num_parts;
-      LGMdouble S_f = GetValue(GetTree(ts), sf);
+      LGMdouble S_f = GetValue(GetTree(ts), LGPsf);
       LGMdouble fmass = GetValue(ts, LGAWf) / num_parts;
 
-      if (GetValue(GetTree(ts), sf) == 0)
+      if (GetValue(GetTree(ts), LGPsf) == 0)
 	S_f = 28;
 
       LGMdouble farea = S_f * fmass;	
@@ -82,12 +82,12 @@ namespace Lignum {
       //LGMdouble r_f = GetValue(ts, Rf);
       //LGMdouble lenght = GetValue(ts, L);
 	
-      LGMdouble S_f = GetValue(GetTree(ts), sf);
+      LGMdouble S_f = GetValue(GetTree(ts), LGPsf);
       LGMdouble farea = S_f * GetValue(ts, LGAWf) / num_parts;
       LGMdouble qabs = 0.0;
 
       //Qabs computetd based on Qin, mean star and foliage area.
-      qabs = b.getQin()*0.14*(GetValue(GetTree(ts), sf)*GetValue(ts, LGAWf));
+      qabs = b.getQin()*0.14*(GetValue(GetTree(ts), LGPsf)*GetValue(ts, LGAWf));
 
       SetValue(ts, LGAQabs, GetValue(ts, LGAQabs)+qabs);
 

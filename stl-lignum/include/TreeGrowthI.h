@@ -653,16 +653,16 @@ MotherInfo& AddSugarMapleSegments<TS,BUD>::operator()(MotherInfo& mi, TreeCompar
 		PositionVector normal(rand()%100, rand()%100, 200);
 		normal.normalize();
 
-		BroadLeaf<cxxadt::Ellipse> *leaf1 = new BroadLeaf<cxxadt::Ellipse>(sf_p, v, dof_p, number_of_regions, Petiole((Point)pet_s,(Point)pet_e1), 
+		BroadLeaf<cxxadt::Ellipse> *leaf1 = new BroadLeaf<cxxadt::Ellipse>(sf, v, dof_p, number_of_regions, Petiole((Point)pet_s,(Point)pet_e1), 
 											normal, Ellipse(Ellipse_a, Ellipse_b));
-		BroadLeaf<cxxadt::Ellipse> *leaf2 = new BroadLeaf<cxxadt::Ellipse>(sf_p, v, dof_p, number_of_regions, Petiole((Point)pet_s,(Point)pet_e2), 
+		BroadLeaf<cxxadt::Ellipse> *leaf2 = new BroadLeaf<cxxadt::Ellipse>(sf, v, dof_p, number_of_regions, Petiole((Point)pet_s,(Point)pet_e2), 
 											normal, Ellipse(Ellipse_a, Ellipse_b));
-		SetValue(*leaf1, sf, 28);
-		SetValue(*leaf2, sf, 28);	
+		SetValue(*leaf1, LGAsf, 28);
+		SetValue(*leaf2, LGAsf, 28);	
 	
 
 		LGMdouble A_f = GetValue(*leaf1, A) + GetValue(*leaf2, A);
-		LGMdouble SLA_c = GetValue(tree, sla);
+		LGMdouble SLA_c = GetValue(tree, LGPsf);
 		LGMdouble Y_c = GetValue(tree, LGPyc);
 		LGMdouble A_sf = A_f / (SLA_c*Y_c);
 		LGMdouble x_i = GetValue(tree, LGPxi);
@@ -934,7 +934,7 @@ MotherInfo& AddWhiteBirchSegments<TS,BUD>::operator()(MotherInfo& mi, TreeCompar
 
 			
 			LGMdouble dof_p = GetValue(tree, dofp);
-			LGMdouble sf_p = GetValue(tree, sla);  //specific leaf area
+			LGMdouble sf_p = GetValue(tree, LGPsf);  //specific leaf area
 			LGMdouble v = GetValue(tree, LGAtauL);
 
 			Firmament& f = GetFirmament(tree);
@@ -953,10 +953,10 @@ MotherInfo& AddWhiteBirchSegments<TS,BUD>::operator()(MotherInfo& mi, TreeCompar
 			PositionVector normal(rand()%100, rand()%100, 200);
 			normal.normalize();
 
-			BroadLeaf<cxxadt::Ellipse> *leaf1 = new BroadLeaf<cxxadt::Ellipse>(sf_p, v, dof_p, number_of_regions, Petiole((Point)pet_start,(Point)pet_end), 
+			BroadLeaf<cxxadt::Ellipse> *leaf1 = new BroadLeaf<cxxadt::Ellipse>(sf, v, dof_p, number_of_regions, Petiole((Point)pet_start,(Point)pet_end), 
 											normal, Ellipse(Ellipse_a, Ellipse_b));
 		
-			SetValue(*leaf1, sf, 28); // GetValue(tree, sf));  ///**** onko sama.. sf ja SLA??
+			SetValue(*leaf1, LGAsf, 28); // GetValue(tree, LGPsf));  ///**** onko sama.. sf ja SLA??
 			total_leaf_area += GetValue(*leaf1, A);
 			
 			LGMdouble radius = 1.0;
@@ -1004,7 +1004,7 @@ MotherInfo& AddWhiteBirchSegments<TS,BUD>::operator()(MotherInfo& mi, TreeCompar
 		}
 
 		LGMdouble A_f = total_leaf_area;
-		LGMdouble SLA_c = GetValue(tree, sla);
+		LGMdouble SLA_c = GetValue(tree, LGPsf);
 		LGMdouble Y_c = GetValue(tree, LGPyc);
 		LGMdouble A_sf = A_f / (SLA_c*Y_c);
 		x_i = GetValue(tree, LGPxi);

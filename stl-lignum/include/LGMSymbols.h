@@ -13,7 +13,7 @@ namespace Lignum{
   enum LGMAD {LGAA,LGAAf,LGAAh, LGAAhair,LGAAs,LGAAs0,LGAage,LGAcollision,
               LGADbase,LGADbh,LGAdof, LGAdR, LGAH,LGAHf,LGAHTop,LGAip,
               LGAL,LGAM, LGAMaxD,LGAomega,LGAP,LGAQabs,LGAQin,LGAR,LGARf,
-              LGARh, LGARhair,LGARTop,LGASa,LGAstatus, LGAstate,LGAtauL, 
+              LGARh, LGARhair,LGARTop,LGASa,LGAsf,LGAstatus, LGAstate,LGAtauL, 
               LGAtype,LGAV,LGAVh,LGAVhair,LGAvi,LGAVs,LGAWf, LGAWr, LGAWs, 
               LGAWh,LGAWhair};
 
@@ -50,6 +50,7 @@ namespace Lignum{
   //  LGARhair  Radius including root hair 
   //  LGARTop   Radius of segment at upper end
   //  LGASa     Surface area of the segment cylinder: 2*PI*R*L
+  //  LGAsf     Specific leaf area (=leaf area/ leaf weight)
   //  LGAstatus General counter to control e.g. bud burst.  
   //  LGAstate  Bud state can be dead, alive, dormant etc., see LGMUnits.h
   //  LGPtauL = Transmission coefficient of leaf (in direction of
@@ -85,8 +86,9 @@ namespace Lignum{
 
   //LIGNUM Parameter Double
   //Keep this list in synbc with MapLGMPD constructor in TreeFriend.cc
-  enum LGMPD {LGPaf,al,ar,ca, dofp,lr,mf,mr,ms,na,nl,pr,q, rca, rld,sf, 
-              sla,LGPsr,LGPss,LGPrhoW,LGPrho_root,LGPrho_hair, LGPyc, LGPxi,
+
+  enum LGMPD {LGPaf,al,ar,ca, dofp,lr,mf,mr,ms,na,nl,pr,q, rca, rld,LGPsf, 
+              LGPsr,LGPss,LGPrhoW,LGPrho_root,LGPrho_hair, LGPyc, LGPxi,
 	      LGPzbrentEpsilon, LGPLn_par, LGPn_ang_par};
 
 
@@ -96,7 +98,7 @@ namespace Lignum{
  // rca					random effect on circulation angle
  // rld					random effect on leaf distances in a single segment
  // LGPyc					Foliage mass supported by 1m2 of sapwood
-  // sla					specific leaf area. sf determined for leaf..
+  // LGPsla  specific leaf area. sf determined for leaf..
   // cvs update
   //af = Needle mass - tree segment area (kg/m^2)relationship
   //ar = Foliage - root relationship 
@@ -112,7 +114,7 @@ namespace Lignum{
   //LGPrhoW= Density of  wood in general (is usually used in Segment)
   //rho_root = Density root sapwood
   //LGPrho_hair = Density of root hair
-  //sf = specific leaf area (=leaf area/ leaf weight)
+  //LGPsf = specific leaf area (=leaf area/ leaf weight)
   //LGPsr = Senescence rate of roots
   //LGPss = Senescence rate of sapwood
   //LGPxi = Fraction of heartwood in newly created tree segments

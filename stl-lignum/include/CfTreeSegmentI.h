@@ -27,7 +27,7 @@ LGMdouble GetValue(const CfTreeSegment<TS,BUD>& ts, const LGMAD name)
   if (name == LGAAf){
     //Given Wf use sf to compute foliage area: sf*Wf ((m2/kg)*kg) 
     //see also parameter af
-    return GetValue(GetTree(ts),sf)*GetValue(ts,LGAWf);
+    return GetValue(GetTree(ts),LGPsf)*GetValue(ts,LGAWf);
   }
   else if (name == LGAAs0)
     return ts.cftsa.As0;

@@ -79,8 +79,6 @@ namespace Lignum{
     LGMdouble zbrentEpsilon; //Accuracy    for    finding   root    of
 			     //P-M-dW(lambda), i.e. allocation.
 
-
-    LGMdouble SLA;			//Spesific leaf area
     LGMdouble dof_p;		//degree of filling
     LGMdouble alm;			//Maximum size of a leaf
     
@@ -139,7 +137,9 @@ namespace Lignum{
   template <class TS,class BUD = DefaultBud<TS> >
     class Tree: public TreeCompartment<TS,BUD>{
 
+
       template <class TS1,class BUD1>
+
       friend class InitializeTree;
     
 	  template <class TS1,class BUD1>

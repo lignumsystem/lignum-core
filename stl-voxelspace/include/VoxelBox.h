@@ -71,7 +71,7 @@ namespace Lignum {
     void increaseNumberOfSegments(){number_of_segments++;}
     friend ostream &operator << (ostream& os, VoxelBox &b);
 
-    LGMdouble S(LGMdouble phi, LGMdouble Sf, LGMdouble Wf, LGMdouble r, LGMdouble l);
+    LGMdouble S(LGMdouble phi, LGMdouble sf, LGMdouble Wf, LGMdouble r, LGMdouble l);
   protected:
     LGMdouble star;
     LGMdouble starSum;
