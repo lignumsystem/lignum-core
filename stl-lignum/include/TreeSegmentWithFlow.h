@@ -10,7 +10,8 @@ namespace Lignum{
 
 class TreeSegmentWithFlowAttributes{
 public:
-  TreeSegmentWithFlowAttributes() { Pr = 1.0; Wm = 0; fin = 0; fout = 0; }
+  TreeSegmentWithFlowAttributes()
+    :Pr(1.0),Wm(0.0),fin(0.0),fout(0.0) {}
   PA Pr;                  //Pressure
   LGMdouble fin;          //Amount of water coming in
   LGMdouble fout;         //Amount of water going out
