@@ -1,7 +1,8 @@
-#include <Lignum.h>
-
 #ifndef BEARBERRY_H
 #define BEARBERRY_H
+
+#include <Lignum.h>
+#include <Uniform.h>
 
 class BearberrySegment;
 
@@ -28,7 +29,6 @@ class BearberrySegment: public HwTreeSegment<BearberrySegment,BearberryBud>
       Point origo(0,0,0);
       Point point = GetEndPoint(*this);
       PositionVector up(0,0,1);
-      Ellipsis shape(a,b); //initial shape of a leaf
       static Uniform u; //uniform random number [0,1] for setting leaf
 			//normals;  static makes it  common throughout
 			//the  program and  not reinitialized  in each
@@ -42,14 +42,95 @@ class BearberrySegment: public HwTreeSegment<BearberrySegment,BearberryBud>
 	//Bearberry leaves are on the ground
 	PositionVector leaf_normal(0,1,0);
 	leaf_normal.normalize();
-	BroadLeaf<Ellipsis>* leaf = new BroadLeaf<Ellipsis>(shape,
-							    petiole,
-							    leaf_normal);
+	Ellipse shape(GetEndPoint(petiole),leaf_normal,a,b); //initial shape of a leaf
+	BroadLeaf<Ellipse>* leaf = new BroadLeaf<Ellipse>(shape,
+							  petiole,
+							  leaf_normal);
 	leaf_ls.push_back(leaf);
       }
       //clear the vector; don't create leaves twice
       pd.clear();
     }
 };
+
+
+template <class TS,  class BUD>
+  class Aging{
+  public:
+  TreeCompartment<TS,BUD>* operator()(TreeCompartment<TS,BUD>* tc)const
+    {
+ 
+      if (BUD* b = dynamic_cast<BUD*>(tc)){
+	SetValue(*b,age,GetValue(*b,age)+1);
+      }
+      else if (TS* ts =  dynamic_cast<TS*>(tc)){
+	SetValue(*ts,age,GetValue(*ts,age)+1);
+      }    
+      return tc;
+    }
+};
+
+template <class TS, class BUD>
+class ShortenSegment{
+ public:
+  LGMdouble& operator()(LGMdouble& c, TreeCompartment<TS,BUD>* tc)const;
+};
+
+template <class TS, class BUD>
+  LGMdouble& ShortenSegment<TS,BUD>::operator()(LGMdouble& c, TreeCompartment<TS,BUD>* tc)const
+  {
+    if (BUD* b = dynamic_cast<BUD*>(tc)){
+      if (GetValue(*b,LGMcollision)==1.0)
+	  c = 1.0;
+    }
+    else if (TS* ts =  dynamic_cast<TS*>(tc)){
+      if (c == 0.0){
+	cout << "Shorten segment" << endl;
+	SetValue(*ts,L,0.00001);
+      }
+    }
+    return c;
+  }
+		          
+template <class TS,  class BUD>
+  class KillBud{
+  public:
+  KillBud(LGMdouble p):seed(19988763),die(p){}
+  TreeCompartment<TS,BUD>* operator()(TreeCompartment<TS,BUD>* tc)const;
+  private:
+  Uniform uniform;
+  int seed;  //seed for 'uniform'
+  LGMdouble die; //probability limit for bud to die  
+};
+  
+template<class TS, class BUD>
+TreeCompartment<TS,BUD>* KillBud<TS,BUD>::operator()(TreeCompartment<TS,BUD>* tc)const
+    {
+      static Uniform u;
+      if (BUD* b = dynamic_cast<BUD*>(tc)){
+	if (GetValue(*b,omega) == 0)
+	  return tc;
+	int a = static_cast<int>(GetValue(*b,age));
+	double r = u(seed); //r=[0,1]
+	switch (a){
+	case 0:break;
+	case 1:break;
+	case 2:break;
+	default:
+	  //After the fourth  year side buds (gravelius >  0) start to
+	  //die with  increasing probability.  For  example on sandpit
+	  //year 3 = 0.11 + 0*0.11; year 4 = 0.11 + 1*0.11 and so on.
+	  if (r < die+(a-3)*die){
+	    SetValue(*b,state,DEAD);
+	    cout << "Bud dead " << "Age: " << GetValue(*b,age) 
+		 << " r: "  << r << " Limit: " << die+(a-3)*die<< endl;
+	    SetValue(*b,LGMcollision,1.0);
+	  }
+	  break;
+	}
+      }
+      return tc;
+    }    
+
 
 #endif
