@@ -8,7 +8,7 @@ class HwTreeSegment:public TreeSegment<TS>{
 public:
   HwTreeSegment(const Point<METER>& p,const PositionVector& pv,const TP go,const METER l,
 		const METER r,const METER rn,Tree<TS>* tree)
-    :TreeSegment<TS>(p,pv,go,l,r,rn,tree);
+    :TreeSegment<TS>(p,pv,go,l,r,rn,tree){}
 };
 
 #endif
