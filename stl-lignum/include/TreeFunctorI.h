@@ -640,8 +640,19 @@ namespace Lignum{
     () (TreeCompartment<TS,BUD>* tc)const {
 
     if(TS* ts = dynamic_cast<TS*>(tc)) {
+      Tree<TS,BUD>& tree = GetTree(*tc); 
+      LGMdouble ballRad = GetFirmament(tree).diffuseBallSensor();
+      LGMdouble maxQin = GetValue(tree, TreeQinMax);
+
+      LGMdouble rQin = 0.0, rTQin = 0.0;
+      if(ballRad > R_EPSILON)
+	rQin = GetValue(*ts,LGAQin)/ballRad;
+      if(maxQin > R_EPSILON)
+	rTQin = GetValue(*ts,LGAQin)/maxQin;
+
       Point r = GetPoint(*tc);
       PositionVector di = GetDirection(*tc);
+
       cout << r.getX() << ":" <<
 	r.getY() << ":" <<
 	r.getZ() << ":" <<
@@ -663,6 +674,8 @@ namespace Lignum{
 	GetValue(*ts,LGAAs0) << ":" <<
 	GetValue(*ts,LGAAs) << ":" <<
 	GetValue(*ts,LGAQin) << ":" <<
+	rTQin << ":" <<
+	rQin << ":" <<
 	GetValue(*ts,LGAQabs) << ":" <<
 	GetValue(*ts,LGAP) << ":" <<
 	GetValue(*ts,LGAM) << ":" <<

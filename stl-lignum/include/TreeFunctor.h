@@ -350,7 +350,7 @@ namespace Lignum{
 /* 	file.open(filename.c_str() , ios::app); */
 	cout << "TIME: no time stamp specified" << endl;
 	cout  << "X:Y:Z:diX:diY:diZ:age:omega:R:RTop:Rh:L:Ring:Ws:Wh:"
-                "Wf:W:Af:As0:As:Qin:Qabs:P:M:vigour" << endl;
+                "Wf:W:Af:As0:As:Qin:rTQin:rQin:Qabs:P:M:vigour" << endl;
       }
 
       PrintTreeSegmentInformationToFile(const string& filename, int&
@@ -359,7 +359,7 @@ namespace Lignum{
 /* 	file.open(filename.c_str() , ios::app); */
 	cout << "TIME: " << timeStamp << endl;
 	cout  << "X:Y:Z:diX:diY:diZ:age:omega:R:RTop:Rh:L:Ring:Ws:Wh:"
-                "Wf:W:Af:As0:As:Qin:Qabs:P:M:vigour" << endl;
+                "Wf:W:Af:As0:As:Qin:rTQin:rQin:Qabs:P:M:vigour" << endl;
       }
 
       //~PrintTreeSegmentInformationToFile() {file.close();}
