@@ -20,7 +20,7 @@
 #include <vector>
 #include <math.h>
 
-extern CTexture stemtexture;
+CTexture stemtexture;
 
 GLfloat m_xRotate;   //left button values
 GLfloat m_yRotate;
