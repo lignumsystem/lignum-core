@@ -5,7 +5,7 @@
 #include <time.h>
 #include <Tree.h>
 #include <Ellipse.h>
-
+#include <algorithm>
 using namespace Lignum;
 using namespace sky;
 
@@ -173,75 +173,64 @@ vector<LGMdouble>& ShadingEffectOfLeaf<TS,BUD,S>::operator()(vector<LGMdouble>& 
 //segments to check the shading.
 
 
-template <class TS,class BUD>
-void EvaluateRadiationForCfTreeSegment<TS,BUD>::setExtinction(ParametricCurve& K_in)
-{
-  K = K_in;
-}
-
-
-
 template <class TS, class BUD>
 TreeCompartment<TS,BUD>* EvaluateRadiationForCfTreeSegment<TS,BUD>::operator() (TreeCompartment<TS, BUD>* tc)const
 {
   if (TS* ts = dynamic_cast<TS*>(tc)){
 
-    // Radiation conditions are not evaluated if the segment has no foliage
-    if (GetValue(*ts, Wf) < R_EPSILON)
-      {
+    //Radiation  conditions are not  evaluated if  the segment  has no
+    //foliage (in practice  there would be division by  0 in computing
+    //absorbed radiation)
+    if (GetValue(*ts, Wf) < R_EPSILON){
 	SetValue(*ts, Qin, 0.0);
 	SetValue(*ts, Qabs, 0.0);
 	return tc;
-      }
+    }
 
     Tree<TS,BUD>& tt = GetTree(*ts);
     FirmamentWithMask& firmament = GetFirmament(tt);
     int number_of_sectors = firmament.numberOfRegions();
     double a_dot_b = 0.0;
     vector<double> radiation_direction(3);
-    vector<LGMdouble> shading_vector(number_of_sectors);
-    vector<LGMdouble> result(number_of_sectors);
-    vector<LGMdouble> init(number_of_sectors, 0.0);
 
-    ShadingEffectOfCfTreeSegment<TS,BUD> s_e(ts, K);
-
-    shading_vector = Accumulate(tt, init, s_e);
-
+    vector<double> v(number_of_sectors,0.0); 
+    ShadingEffectOfCfTreeSegment<TS,BUD> s_e(ts,K,v);
+    //This  goes  through  the  tree  and computes  shading  based  on
+    //1)distance  light beam traverses  in foliage,  2)foliage density
+    //and 3) inclination light beam hits the segment.
+    ForEach(tt,s_e);
+    
     MJ Iop = 0.0;
     MJ Q_in = 0.0;
 
-
-    //implement "Ip = Iope^(-Vp)", shading_vector[i] = radiation coming
-    //from direction i after this
-    int i;
-    for (i = 0; i < number_of_sectors; i++){
-      if (shading_vector[i] == HIT_THE_WOOD){
-	shading_vector[i] = 0.0;
+    //implement  "Ip  =  Iope^(-Vp)",  s[i] =  radiation  coming  from
+    //direction i after this
+    vector<double>& s = s_e.getS();
+    for (int i = 0; i < number_of_sectors; i++){
+      if (s[i] == HIT_THE_WOOD){
+	s[i] = 0.0;
       }
       else {
 	Iop = firmament.diffuseRegionRadiationSum(i,radiation_direction);
-	shading_vector[i] = Iop*exp((double)-shading_vector[i]);
+	s[i] = Iop*exp((double)-s[i]);
       }
     }
 
     //Total incoming radiation  
-    for (i = 0; i < number_of_sectors; i++){
-      Q_in += shading_vector[i];
+    for (int i = 0; i < number_of_sectors; i++){
+      Q_in += s[i];
     }
 
-    //Evaluate how much segment absorbs of incoming radation.
-    // shading_vector[i] = amount of radiation absorbed from direction i after this
-
+    //s contains now incoming radiation from each sector. Evaluate how
+    //much segment absorbs from incoming radation.
     LGMdouble Lk, inclination, Rfk, Ack, extinction, sfk, Ask, Wfk;
     Lk = Rfk = Ack =  extinction = sfk = Ask = Wfk = 0.0;
-
-    vector<LGMdouble> absorbed_radiation(number_of_sectors);
     Lk = GetValue(*ts, L);   //length is > 0.0, otherwise we would not bee here
     Rfk = GetValue(*ts, Rf);  //Radius to foliage limit 
     Wfk = GetValue(*ts, Wf); //Foliage mass
     sfk  = GetValue(tt, sf); //Foliage m2/kg from tree
 
-    for (i = 0; i < number_of_sectors; i++){
+    for (int i = 0; i < number_of_sectors; i++){
       Iop = firmament.diffuseRegionRadiationSum(i,radiation_direction);
       a_dot_b = Dot(GetDirection(*ts), PositionVector(radiation_direction));
       inclination = PI_DIV_2 - acos(fabs(a_dot_b));
@@ -254,16 +243,16 @@ TreeCompartment<TS,BUD>* EvaluateRadiationForCfTreeSegment<TS,BUD>::operator() (
 	     << endl;
       }
 
-      //implement I(k)p = Ip*Ask
+      //implement I(k)p = Ip*Ask, Note  Ack must be greater than 0 (it
+      //should if there is any foliage)
       Ask = (1.0 - exp(-extinction*((sfk*Wfk)/Ack)))*Ack;
-      shading_vector[i] *= Ask;
+      s[i] *= Ask;
     }
-
-    //Amount of absorbed radiation
-
+    
+    //s contains now absorbed radiation for each sector. Sum it up.
     LGMdouble Q_abs = 0.0;
-    for (i = 0; i < number_of_sectors; i++){
-      Q_abs += shading_vector[i];
+    for (int i = 0; i < number_of_sectors; i++){
+      Q_abs += s[i];
     }
 
     SetValue(*ts, Qabs, Q_abs);
@@ -279,15 +268,20 @@ TreeCompartment<TS,BUD>* EvaluateRadiationForCfTreeSegment<TS,BUD>::operator() (
 //by a conifer segment on this conifer segment (shaded_s)
 
 template <class TS,class BUD>
-vector<LGMdouble>& ShadingEffectOfCfTreeSegment<TS,BUD>::
-    operator()(vector<LGMdouble>& v, TreeCompartment<TS,BUD>* tc)const {
+TreeCompartment<TS,BUD>* ShadingEffectOfCfTreeSegment<TS,BUD>::operator()(TreeCompartment<TS,BUD>* tc)const {
 
   //  int beamShading(Point& p0, PositionVector& v,
 
   if (CfTreeSegment<TS,BUD>* ts = dynamic_cast<CfTreeSegment<TS,BUD>*>(tc)) {
+    //Don't compare to yourself
     if (ts == shaded_s)
-      return v;
+      return tc;
 
+    //Don't compare to lower segment
+    if (GetPoint(*ts).getZ() < GetPoint(*shaded_s).getZ())
+      return tc;
+
+    //Now go on computing shading
     int i = 0, number_of_sectors = 0, result = NO_HIT;
     double distance = 0.0;
     vector<double> radiation_direction(3);
@@ -298,54 +292,57 @@ vector<LGMdouble>& ShadingEffectOfCfTreeSegment<TS,BUD>::
     
     number_of_sectors = firmament.numberOfRegions();
 
+    //Foliage density: Mass divided by  volume. Perhaps a good idea to
+    //implement it as GetValue?
     LGMdouble fol_dens = GetValue(*ts,Wf)/
       (PI_VALUE*(pow(GetValue(*ts,Rf),2.0)-pow(GetValue(*ts,R),2.0))
        *GetValue(*ts,L));
 
     for (i = 0; i < number_of_sectors; i++) {
-      //if the sector is blocked by another shoot
+      //If the sector is blocked by another shoot
       //do not make computations, check the next sector instead
-      if (v[i] == HIT_THE_WOOD) { 
+      if (S[i] == HIT_THE_WOOD) { 
 	continue;
       }
-      //the radiation from the sector i and direction of sector i
+      //The radiation and its direction of sector i. We need the direction
       firmament.diffuseRegionRadiationSum(i,radiation_direction);
 
       Point r_0 =  GetPoint(*shaded_s)+0.5*GetValue(*shaded_s,L)*
 	(Point)GetDirection(*shaded_s);        //Midpoint of shaded seg
 
       result = cylinderBeamShading(r_0,
-			 radiation_direction,
-			 GetPoint(*ts),
-			 GetDirection(*ts),
-			 GetValue(*ts, Rf),
-			 GetValue(*ts, R),
-			 GetValue(*ts, L),
-			 distance);
+				   radiation_direction,
+				   GetPoint(*ts),
+				   GetDirection(*ts),
+				   GetValue(*ts, Rf),
+				   GetValue(*ts, R),
+				   GetValue(*ts, L),
+				   distance);
 
 
       if (result == HIT_THE_WOOD){
 	//mark the sector blocked 
-	v[i] = HIT_THE_WOOD;
+	S[i] = HIT_THE_WOOD;
       }
       else if (result == HIT_THE_FOLIAGE){
 	//otherwise compute Vp (the shadiness):
-	//1.compute the inclination of the shaded shoot
+	//1. compute the inclination of light beam and the segment
+	//1a. angle between segment and light beam 
 	double a_dot_b = Dot(GetDirection(*ts),
 			     PositionVector(radiation_direction));
-	//      double a_dot_b = ((TVector<double>)shaded_shoot->getDirection().get_position()) *
-	//	               radiation_direction;
+	//1b.  inclination: Perpendicular  (PI_DIV_2) to segment minus
+	//angle between segment and light beam
 	double inclination = PI_DIV_2 - acos(fabs(a_dot_b));
 	//2.the light extinction coefficient according to inclination
 	double extinction = K(inclination);
 	//3.Vp = extinction*distance*foliage_density
 	double Vp = extinction *distance*fol_dens;
-	v[i] += Vp;
+	S[i] += Vp;
       }
   
     }
   }
-  return v;
+  return tc;
 }
 #undef HIT_THE_FOLIAGE
 #undef NO_HIT
