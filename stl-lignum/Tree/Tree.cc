@@ -13,7 +13,7 @@ namespace Lignum{
   //It might capture some situations if user
   //check the value before it is set.
   TreeAttributes::TreeAttributes(int size)
-    :v(size,-1.0)
+    :v(size,0.0)
   {
   }
 
