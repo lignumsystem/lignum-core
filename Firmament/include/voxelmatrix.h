@@ -43,7 +43,7 @@ class getExtCoeff
 {
 public:
 	getExtCoeff() { }
-	float getExtCoeff::operator()(const PositionVector &v)
+	float operator()(const PositionVector &v)
 	{ 
 		int x = (int)v.getX();
 		int y = (int)v.getY();
