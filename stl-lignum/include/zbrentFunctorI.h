@@ -1,3 +1,4 @@
+
 #ifndef ZBRENTFUNCTORI_H
 #define ZBRENTFUNCTORI_H
 
@@ -5,13 +6,36 @@
 #include <fstream>
 #include <mathsym.h>
 
+extern ofstream debug_file;
 
-
-//double diam_hana = 1.0;  //!!!!!!!!!!!!!!!!
+extern ofstream file_out_pl;
 
 
 namespace Lignum{
 
+// This functor evaluates the delta-values of variable(s) in segments
+// that are necessary when when moving one timestep further
+// Set all delta-variables to a meaningful value
+template <class TS, class BUD>
+TreeCompartment<TS,BUD>* EvaluateDeltas<TS,BUD>::operator()
+  (TreeCompartment<TS,BUD>* tc)const
+{
+  if (GCSegment* ts = dynamic_cast<GCSegment*>(tc)) 
+  {
+    SetValue(*ts, dR, 0.0);
+    SetValue(*ts, dW, 0.0);
+    if(GetValue(*ts, age) > R_EPSILON) 
+	{ 
+		//no deltas for new segments
+		Tree<TS,BUD>& tt = dynamic_cast<Tree<TS,BUD>&>(GetTree(*ts));
+		SetValue(*ts, dAs, GetValue(tt, ss)*
+			   PI_VALUE*(pow(GetValue(*ts,R),2.0)-pow(GetValue(*ts,Rh),2.0)));
+    }
+    else
+		SetValue(*ts,dAs,0.0);
+  }
+  return tc;
+}
 
 
 
@@ -36,6 +60,8 @@ LGMdouble& AdjustDiameterCfGrowth<TS,BUD>::operator()(LGMdouble& As, TreeCompart
 				//From equation 14 in Ann Bot 1996
 				LGMdouble Asr = ( 1.0 - GetValue(tree, xi)) * GetValue(*cfsegment, Wf) / (2.0 * GetValue(tree, af) * GetValue(tree, lr)); 
 
+				double t = (Asu + PI_VALUE * pow(r_h, 2.0) + dAs + Asr);
+				double t2 = sqrt(t / PI_VALUE);
 				LGMdouble Rnew = sqrt( ( Asu + PI_VALUE * pow(r_h, 2.0) + dAs + Asr) / PI_VALUE);
 				LGMdouble Rold = GetValue(*cfsegment, R);
 
@@ -45,12 +71,20 @@ LGMdouble& AdjustDiameterCfGrowth<TS,BUD>::operator()(LGMdouble& As, TreeCompart
 
 
 				LGMdouble growth = Rnew - GetValue(*cfsegment, R);
+				if (growth < 0)
+					growth = 0.0;
 				cfsegment->AdjustAnnualGrowth(growth); 
 			
+				r_h = sqrt(pow(GetValue(*cfsegment,Rh), 2) + (dAs / PI_VALUE));
+				SetValue(*cfsegment, Rh, r_h);
+
+				#ifdef _MSC_VER
+				ASSERT(Rnew >= r_h);
+				ASSERT(r_h >= 0);
+				#endif
 
 				LGMdouble sapwood_area = PI_VALUE * (Rnew*Rnew - r_h*r_h) - dAs;
-				sapwood_area = sapwood_area;
-
+			
 				As = maximum(sapwood_area, 0.0);
 		} //CfTreeSegment
 	  }
@@ -59,13 +93,17 @@ LGMdouble& AdjustDiameterCfGrowth<TS,BUD>::operator()(LGMdouble& As, TreeCompart
 		  Tree<TS,BUD> &tree = dynamic_cast<Tree<TS,BUD>&>(GetTree(*tts));
 		  
 		  LGMdouble sapwood_area = GetSapwoodArea(*tts);
-		  sapwood_area = sapwood_area;   
-		  As = sapwood_area;
-		   
+		  
+		  #ifdef _MSC_VER
+		  ASSERT(sapwood_area >= 0);
+		  #endif
+		  
+		  As = sapwood_area; 
 	  }
 	}
 	return As;
 }
+
 
 
 
@@ -80,29 +118,55 @@ LGMdouble& AdjustDiameterHwGrowth<TS,BUD>::operator()(LGMdouble& As, TreeCompart
 			if(HwTreeSegment<TS,BUD> *hwsegment = dynamic_cast<HwTreeSegment<TS,BUD>*>(tts))
 			{
 				Tree<TS,BUD> &tree = dynamic_cast<Tree<TS,BUD>&>(GetTree(*tts));
-				LGMdouble la = GetValue(tree,lambda);
+			//	LGMdouble la = GetValue(tree,lambda);
 
 			
 				LGMdouble Asu = As; //Sapwood area ylhaalta
 				LGMdouble r_h = GetValue(*hwsegment, Rh);  // heartwood radius
-				LGMdouble dAs = GetValue(tree, ss) * PI_VALUE * (pow(GetValue(*hwsegment, R), 2) - pow(r_h, 2));
+				LGMdouble dAs = GetValue(tree, ss) * GetSapwoodArea(*hwsegment);
 			
-				//From equation 14 in Ann Bot 1996
-				LGMdouble Asr = ( 1.0 - GetValue(tree, xi)) * GetValue(*hwsegment, Wf) / (2.0 * GetValue(tree, af) * GetValue(tree, lr)); 
+				if (file_out_pl.is_open())
+				{
+					file_out_pl << "Segmentti:" << "       ikä:" << GetValue(*tts, age) << endl;
+					file_out_pl << " paikka: " << GetPoint(*hwsegment);
+					file_out_pl << ", suunta:" << GetDirection(*hwsegment) << "  ";
+					file_out_pl << "Asu:"<< Asu << "  r_h:" << r_h << "  dAs:" << dAs << endl;
+				}
 
-				LGMdouble Rnew = sqrt( ( Asu + PI_VALUE * pow(r_h, 2.0) + dAs + Asr) / PI_VALUE);
+
 				LGMdouble Rold = GetValue(*hwsegment, R);
+				
+				//Application of the Functional-Structural... equation 20.
+				LGMdouble A_ts = max(Asu + dAs + PI_VALUE * pow(r_h, 2.0), PI_VALUE * pow(Rold, 2.0)); 
+				
+				LGMdouble Rnew = sqrt(A_ts / PI_VALUE);
+				
 
 				if (Rnew < GetValue(*hwsegment, R))
 					Rnew = GetValue(*hwsegment, R);
 
 
-				LGMdouble growth = Rnew - GetValue(*hwsegment, R);	
+				
+				
+
+				LGMdouble growth = Rnew - GetValue(*hwsegment, R);
+				
+			
+
 				hwsegment->AdjustAnnualGrowth(growth); 
 				LGMdouble sapwood_area = PI_VALUE * (Rnew*Rnew - r_h*r_h) - dAs;
-				sapwood_area = sapwood_area;
+			
 
 				As = maximum(sapwood_area, 0.0);
+
+				if (file_out_pl.is_open())
+				{
+					file_out_pl << "Vanha säde:" << Rold << endl;
+					file_out_pl << "Uusi säde: " << Rnew << endl;
+					file_out_pl << "Alas valuva sapwood " << As << endl;
+				}
+
+				
 			} // HwTreeSegment
 	  }
 	  else 
@@ -110,7 +174,6 @@ LGMdouble& AdjustDiameterHwGrowth<TS,BUD>::operator()(LGMdouble& As, TreeCompart
 		  Tree<TS,BUD> &tree = dynamic_cast<Tree<TS,BUD>&>(GetTree(*tts));
 		  
 		  LGMdouble sapwood_area = GetSapwoodArea(*tts);
-		  sapwood_area = sapwood_area;
 		  As = sapwood_area;
 		   
 	  }
@@ -138,6 +201,23 @@ LGMdouble& SetNewRing<TS,BUD>::operator()(LGMdouble& As, TreeCompartment<TS, BUD
 
 
 
+//This functor sets necessary dry weight deltavariables after diameter growth
+template <class TS, class BUD>
+TreeCompartment<TS, BUD>* DiameterGrowthBookkeep<TS,BUD>::operator() (TreeCompartment<TS,BUD>* tc)const
+{
+  if (GCSegment* ts = dynamic_cast<GCSegment*>(tc)) 
+  {
+    if(GetValue(*ts, age) > R_EPSILON) {
+      LGMdouble Rtmp = GetValue(*ts,R);
+      LGMdouble dRtmp = GetValue(*ts,dR);
+      GCTree& tt = dynamic_cast<GCTree&>(GetTree(*ts));
+      SetValue(*ts, dW, GetValue(*ts,L)*GetValue(tt,rho) *
+	       PI_VALUE*(pow((double)(Rtmp+dRtmp),2.0) - pow((double)Rtmp,2.0)) ); 
+    }
+  }
+  return tc;
+}
+
 
 
 
@@ -158,14 +238,12 @@ TreeCompartment<TS,BUD>* adjustSegmentSizeLambda<TS,BUD>::operator()
 		{
 			Tree<TS,BUD>& tree = dynamic_cast<Tree<TS,BUD>&>(GetTree(*cfts));
 			
-			
+			//ASSERT(this->rel_lambda > 0);
 
 			LGMdouble lam = this->rel_lambda;
 			if (lam <= 0)
 			{
-				
-				lam = 0.01;
-			
+				MessageBox(NULL, "lambda == 0", NULL, NULL);
 			}
 
 			
@@ -174,21 +252,36 @@ TreeCompartment<TS,BUD>* adjustSegmentSizeLambda<TS,BUD>::operator()
 			LGMdouble length = GetValue(*cfts, L)*lam;		  //length
 			LGMdouble radius = GetValue(*cfts, R)*lam;		  //radius
 
+			//LGMdouble R_h = GetValue(*cfts,Rh) * lam;
+			
+			LGMdouble R_h = sqrt(x_i) * radius;
 			
 			LGMdouble foliage_mass = a_f * 2 * PI_VALUE * radius * length;
-			LGMdouble R_h = sqrt(x_i) * radius;
 			LGMdouble R_f = radius + GetValue(tree, nl) * sin(GetValue(tree, na));
 
+		//	R_h = sqrt(pow(R_h, 2) + (dAs / PI_VALUE));
+			
 
-			assert(R_f > radius);
+			ASSERT(R_f >= radius);
 				
 			SetValue(*cfts, L, length);
 			SetValue(*cfts, R, radius);
 			SetValue(*cfts, Wf, foliage_mass);	
 			SetValue(*cfts, Rf, R_f);
+
+			#ifdef _MSC_VER
+			
+			ASSERT(R_h >= 0);
+			ASSERT(radius >= R_h);
+			
+			#endif
 			SetValue(*cfts, Rh, R_h);
+
 		}  // CfTreeSegment
-		
+		else if (HwTreeSegment<TS,BUD>* hwts = dynamic_cast<HwTreeSegment<TS,BUD>*>(tts))
+		{
+
+		}
 	  }
 	}
 	
@@ -202,72 +295,86 @@ TreeCompartment<TS,BUD>* adjustSegmentSizeLambda<TS,BUD>::operator()
 
 
 template <class TS, class BUD>
-LGMdouble&  CollectCfDWAfterGrowth<TS,BUD>::operator()(LGMdouble& WSum, TreeCompartment<TS,BUD>* tc)const
+LGMdouble&  CollectDWAfterGrowth<TS,BUD>::operator()(LGMdouble& WSum, TreeCompartment<TS,BUD>* tc)const
 {
-  
 	if (TreeSegment<TS,BUD>* tts = dynamic_cast<TreeSegment<TS,BUD>*>(tc))
 	{
-	  
-	  if (CfTreeSegment<TS,BUD>* cfts = dynamic_cast<CfTreeSegment<TS,BUD>*>(tc))
+		if (CfTreeSegment<TS,BUD>* cfts = dynamic_cast<CfTreeSegment<TS,BUD>*>(tts))
 		{
-		  
-		  Tree<TS,BUD>& tt = dynamic_cast<Tree<TS,BUD>&>(GetTree(*cfts));
+			Tree<TS,BUD>& tt = dynamic_cast<Tree<TS,BUD>&>(GetTree(*cfts));
 			
 			if(GetValue(*cfts, age) < R_EPSILON)
 			{
-				WSum += GetValue(*cfts,Wf) + (GetValue(tt, rho) * PI_VALUE * 
-							      pow(GetValue(*cfts, R),2))*GetValue(*cfts, L); 
-				//GetSapwoodArea(*cfts) + GetValue(*cfts,Wh);
+				WSum += GetValue(*cfts,Wf) + (GetValue(tt, rho) * PI_VALUE * pow(GetValue(*cfts, R),2))*GetValue(*cfts, L); //GetSapwoodArea(*cfts) + GetValue(*cfts,Wh);
 			}
 			else
 			{
 				LGMdouble old_rad = GetValue(*cfts,R);
 				LGMdouble new_rad = GetLastAnnualIncrement(*cfts) + old_rad; 
 
-				LGMdouble w_rho = GetValue(tt,rho);
+				if (new_rad < old_rad)
+					MessageBox(NULL, "newrad<oldrad", NULL, NULL);
+	
+                LGMdouble w_rho = GetValue(tt,rho);
 				WSum += w_rho * (pow(new_rad,2) - pow(old_rad,2)) * PI_VALUE * GetValue(*cfts, L);
 			
 			}
-		  
 		}
-	
-		
-	} 
-  
-  return WSum;
-}
-
-
-template <class TS, class BUD>
-LGMdouble&  CollectHwDWAfterGrowth<TS,BUD>::operator()(LGMdouble& WSum, TreeCompartment<TS,BUD>* tc)const
-{
-	if (TreeSegment<TS,BUD>* tts = dynamic_cast<TreeSegment<TS,BUD>*>(tc))
-	{
-		 if (HwTreeSegment<TS,BUD>* hwts = dynamic_cast<HwTreeSegment<TS,BUD>*>(tts))
+		else if (HwTreeSegment<TS,BUD>* hwts = dynamic_cast<HwTreeSegment<TS,BUD>*>(tts))
 		{
 			Tree<TS,BUD>& tt = dynamic_cast<Tree<TS,BUD>&>(GetTree(*hwts));
 			
 			if(GetValue(*hwts, age) < R_EPSILON)
 			{
-				WSum += GetValue(*hwts,Wf) + (GetValue(tt, rho) * PI_VALUE 
-							      * pow(GetValue(*hwts, R),2))*GetValue(*hwts, L);
+				WSum += GetValue(*hwts,Wf) + (GetValue(tt, rho) * PI_VALUE * pow(GetValue(*hwts, R),2))*GetValue(*hwts, L); //GetSapwoodArea(*hwts) + GetValue(*hwts,Wh);
 			}
 			else
 			{
 				LGMdouble old_rad = GetValue(*hwts,R);
 				LGMdouble new_rad = GetLastAnnualIncrement(*hwts) + old_rad; 
 
-				
+				if (new_rad < old_rad)
+					MessageBox(NULL, "newrad<oldrad", NULL, NULL);
 	
-				LGMdouble w_rho = GetValue(tt,rho);
+                LGMdouble w_rho = GetValue(tt,rho);
 				WSum += w_rho * (pow(new_rad,2) - pow(old_rad,2)) * PI_VALUE * GetValue(*hwts, L);
 			}
 		}
 	} 
+	
+	if (GCSegment* ts = dynamic_cast<GCSegment*>(tc)) 
+	{
+		if(GetValue(*ts, age) < R_EPSILON)  //new segment, collect all
+			WSum += GetValue(*ts,Wf) + GetValue(*ts,Ws) + GetValue(*ts,Wh);
+		else
+			WSum += GetValue(*ts,dW);
+	}
+
   return WSum;
 }
 
+// Bookkeep after distributing the growth
+// NOTE: new segment updated in adjustSegmentSizeLambda
+template <class TS, class BUD>
+TreeCompartment<TS,BUD>* BookkeepAfterZbrent<TS,BUD>::operator ()(TreeCompartment<TS,BUD>* tc)const
+{
+  if (GCSegment* ts = dynamic_cast<GCSegment*>(tc)) {
+    GCTree& tt = dynamic_cast<GCTree&>(GetTree(*ts));
+    SetValue(*ts, R, GetValue(*ts,R)+GetValue(*ts,dR) );
+    SetValue(*ts, dR, 0.0);
+    SetValue(*ts, Rh, GetValue(*ts,Rh)+sqrt(GetValue(*ts,dAs)/PI_VALUE) );
+    SetValue(*ts, dAs, 0.0);
+    SetValue(*ts,Ws,GetValue(tt,rho)*
+	       PI_VALUE*(pow(GetValue(*ts,R),2.0)-pow(GetValue(*ts,Rh),2.0))*
+	       GetValue(*ts,L) );
+    SetValue(*ts,Wh,GetValue(tt,rho)*
+	       PI_VALUE*pow(GetValue(*ts,Rh),2.0)*
+	       GetValue(*ts,L) );
+    SetValue(*ts,dW,0.0);
+  }
 
+  return tc;      
+}
 
 
 

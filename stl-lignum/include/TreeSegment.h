@@ -9,7 +9,7 @@
 #include <LGMdecl.h>
 #include <LGMSymbols.h>
 #include <TreeSegmentWithFlow.h>
-#include <TreeCompartment.h>
+#include <TreeCompartMent.h>
 
 
 
@@ -31,34 +31,34 @@ public:
   METER R;                //Radius including bark
   METER Rtop;             //Radius at top
   METER Rh;               //Heartwood radius
+  METER Rf;               //Radius to foliage limit
+ // KGC Wf;                 //Foliage mass of the tree segment
   KGC Ws;                 //Sapwood mass of the tree segment
   KGC Wh;                 //Dry-weight (kg C) of heartwood
-  vector<METER> annual_rings; //Annual rings of the tree segment
+  std::vector<METER> annual_rings; //Annual rings of the tree segment
   LGMdouble vigour;			//Vigour index
 };
 
 
 template <class TS,class BUD=DefaultBud<TS> >
-class TreeSegment: public TreeCompartment<TS,BUD>{
+class TreeSegment: public TreeCompartment<TS,BUD>, public TreeSegmentWithFlow<TS,BUD>
+{
 #ifdef _MSC_VER
   friend std::vector<METER> GetAnnualRings(const TreeSegment<TS,BUD>& ts);  
   friend KGC GetSapwoodMass(const TreeSegment<TS,BUD>& ts);
-  friend M2 GetSapwoodArea(const TreeSegment<TS,BUD>& ts);
-  friend M2 GetHeartwoodArea(const TreeSegment<TS,BUD>& ts);
+  friend METER GetSapwoodArea(const TreeSegment<TS,BUD>& ts);
   friend METER GetInitialSapwoodArea(const TreeSegment<TS,BUD>& ts);
   friend METER SetRadius(TreeSegment<TS,BUD>& ts);
   friend METER SetLastRing(TreeSegment<TS,BUD>& ts);
   friend METER GetLastAnnualIncrement(const TreeSegment<TS,BUD>& ts);
   friend LGMdouble GetValue(const TreeSegment<TS,BUD>& ts, const LGMAD name);
   friend LGMdouble SetValue(TreeSegment<TS,BUD>& ts, const LGMAD name, const LGMdouble value);
-  friend void AddNewRadiusToAnnualRings(TreeSegment<TS,BUD>& ts, LGMdouble radius);
-
+  friend Point GetEndPoint(const TreeSegment<TS,BUD>& ts);
   friend ostream &operator << (ostream& os, TreeSegment<TS,BUD>& ts);
   friend istream &operator >> (istream& os, TreeSegment<TS,BUD>& ts);
-
 #else
   template <class TS1,class BUD1>
-  friend std::vector<METER> GetAnnualRings(const TreeSegment<TS1,BUD1>& ts);
+  friend vector<METER> GetAnnualRings(const TreeSegment<TS1,BUD1>& ts);
    
   template <class TS1,class BUD1>
   friend LGMdouble GetValue(const TreeSegment<TS1,BUD1>& ts, const LGMAD name);
@@ -91,16 +91,14 @@ class TreeSegment: public TreeCompartment<TS,BUD>{
   friend METER GetLastAnnualIncrement(const TreeSegment<TS1,BUD1>& ts);
   	
   template <class TS1,class BUD1>
-  friend void AddNewRadiusToAnnualRings(TreeSegment<TS1,BUD1>& ts, LGMdouble radius);
-
-#endif
-  template <class TS1,class BUD1>
   friend Point GetEndPoint(const TreeSegment<TS1,BUD1>& ts);
+#endif
 
 public:
   TreeSegment();
   TreeSegment(const Point& p, const PositionVector& d, const LGMdouble go,
-	      const METER l, const METER r, const METER rh, Tree<TS,BUD>* t);
+	      const METER l, const METER r, const METER rn, Tree<TS,BUD>* t);
+  virtual ~TreeSegment();
   LGMdouble GetTranspiration(LGMdouble time);
   void SetYearCircles();
   TreeSegmentAttributes& getTsa(){return tsa;}
@@ -109,7 +107,7 @@ public:
   void SetAnnualGrowth(LGMdouble growth);
   METER AdjustAnnualGrowth(LGMdouble new_growth);
   int id;
-  Point voxel_id;
+  Point voxel_id;  //****temp
   //  void photosynthesis();  OBS! TreeSegment does not have photosynthesis,
   //it is either CfTreeSegment or HwTreeSegment which handle it in their own ways	
 private:
@@ -119,7 +117,7 @@ private:
 };
 
 
-}//close namespace Lignum
+}//closing namespace Lignum
 
 #include "TreeSegmentI.h"
 

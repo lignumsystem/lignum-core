@@ -1,29 +1,44 @@
-#ifndef TREEBOOKKEEPING_I_H
-#define TREEBOOKKEEPING_I_H
+
+#ifndef TREEBOOKKEEPINGI_H
+#define TREEBOOKKEEPINGI_H
 
 #include <typeinfo>
-// Contains functions for evaluating quantities at the level
-// of the tree.
-// At the moment, photosynthesis realized
+
+#include <TreeBookkeeping.h>
+#include <Tree.h>
+
 
 namespace Lignum{
+
 
 
 //Age TreeCompartments by the given delta_age
 template <class TS, class BUD>
 TreeCompartment<TS,BUD>*  Age<TS,BUD>::operator()(TreeCompartment<TS,BUD>* tc)const
 {
-        SetValue(*tc, age, GetValue(*tc,age)+delta_age);
+	SetValue(*tc, age, GetValue(*tc,age)+delta_age);
 
-        
-        return tc;
+	
+	return tc;
 }
 
 
- 
-} //Closing namespace Lignum
+
+//Sum photosynthesis from all segments and update Tree's photosynthesis P
+template <class TS,class BUD>
+LGMdouble UpdateTreePhotosynthesis(Tree<TS,BUD>& tree)
+{
+      //LGMdouble SumTreePhotosynthesis(LGMdouble&,TreeCompartment<TS,BUD>*);
+      LGMdouble initPh = 0.0;
+      LGMdouble sumPh;
+      sumPh = Accumulate(tree, initPh, SumTreePhotosynthesis<TS,BUD>());
+      SetValue(tree, P, sumPh);
+      
+      return sumPh;
+}
+
+
+
+}
 
 #endif
-
-
-

@@ -5,8 +5,12 @@
 #define ITMAX 100
 
 #include <fstream>
+#include "WhiteBirch.h"
+#include "SugarMaple.h"
 
 
+//The value of wsum when lambda = 0
+extern LGMdouble wSum_Lambda0;
 
 
 extern ParametricCurve nol_fun;
@@ -17,11 +21,8 @@ extern ParametricCurve nol_fun;
 using namespace Lignum;
 
 template <class TS,class BUD>
-LGMdouble BracketFunction(LGMdouble& a, LGMdouble& b,
-				  LGMdouble& fa, LGMdouble& fb, Tree<TS,BUD>& tree)
+LGMdouble BracketFunction(LGMdouble& a, LGMdouble& b, LGMdouble& fa, LGMdouble& fb, Tree<TS,BUD>& tree)
 {
-
-  
   adjustSegmentSizeLambda<TS,BUD> adjustSizeL;
   LGMdouble a_r = GetValue(tree, ar);
 
@@ -30,35 +31,41 @@ LGMdouble BracketFunction(LGMdouble& a, LGMdouble& b,
   b = GetValue(tree, lambda);
   
   // deltaiW
-  LGMdouble deltaiW = GetValue(tree, TreeP) - GetValue(tree, TreeM);  
+  LGMdouble deltaiW = GetValue(tree, P) - GetValue(tree, M);  
+
+  debug_file << "photosynteesi: " << GetValue(tree, P) << endl;
+  debug_file << "Hengitys     : " << GetValue(tree, M) << endl;
+  debug_file << "photosynteesi-hengitys: " << deltaiW << endl;	
+  debug_file << "Kasvuun kuluva energia kun(lambda==0) " << wSum_Lambda0 << endl;
 
 
-  fa = deltaiW;
-  
+
+  fa = deltaiW - wSum_Lambda0;
+
 
   LGMdouble AsIni = 0.0;
   AdjustDiameterCfGrowth<TS,BUD> diamGrowth; 
   AsIni = AccumulateDown(tree, AsIni, diamGrowth);
-
   
   LGMdouble identity = 0.0;
-  CollectCfDWAfterGrowth<TS,BUD> collectDW;
+  CollectDWAfterGrowth<TS,BUD> collectDW;
   LGMdouble  WSum = Accumulate(tree,  identity, collectDW);
-  
-  
+
   LGMdouble sum_nfol = 0.0f;
   CollectNewCfFoliageMass<TS,BUD> collectNFM;
   sum_nfol = Accumulate(tree,  sum_nfol, collectNFM);
   
   fb = deltaiW - WSum - (sum_nfol * a_r);
   
-  
+  debug_file << "fa " << fa << "   fb " << fb << '\n';	
+  debug_file << "iteroidaan..." << '\n';
+
   while ((fb) > 0.0)
   {
     a = b;
     fa = fb;
     b = b * 1.30 + 0.1;
-	assert(b/a > 0);
+	ASSERT(b/a > 0);
 	adjustSizeL.rel_lambda = b / a;
 
 	
@@ -71,15 +78,17 @@ LGMdouble BracketFunction(LGMdouble& a, LGMdouble& b,
 	identity = 0.0;
     WSum = Accumulate(tree,  identity, collectDW);
 
-
+	debug_file << "lambda " << b << "   rel_lambda " << b/a << "   Wsum " << WSum << '\n';
 	
 	sum_nfol = 0;
 	sum_nfol = Accumulate(tree,  sum_nfol, collectNFM);
     fb = deltaiW - WSum - (sum_nfol * a_r);
 
+	debug_file << "fa " << fa << "   fb " << fb << '\n';
   }
 
-  
+  debug_file << "Nolla-arvo löytyy väliltä [" << a << "," << b << "]" << '\n'; 
+
   return fb;
 }
 
@@ -105,16 +114,22 @@ LGMdouble HwBracketFunction(LGMdouble& a, LGMdouble& b,
   b = GetValue(tree, lambda);
   
 
-  LGMdouble deltaiW = GetValue(tree, TreeP) - GetValue(tree, TreeM);  
-  fa = deltaiW; 
+  LGMdouble deltaiW = GetValue(tree, P) - GetValue(tree, M);  
+  fa = deltaiW - wSum_Lambda0;
   
-  
+  debug_file << "photosynteesi: " << GetValue(tree, P) << endl;
+  debug_file << "Hengitys     : " << GetValue(tree, M) << endl;
+  debug_file << "photosynteesi-hengitys: " << GetValue(tree, P)-GetValue(tree, M) << endl;	
+
+  debug_file << endl << endl << "uusi kasvu  deltaiW(0)="<< deltaiW << '\n';
+  debug_file << "P=" << GetValue(tree, P) << '\n';
+  debug_file << "M=" << GetValue(tree, M) << '\n';
 
   AsIni = 0.0;
   AsIni = AccumulateDown(tree, AsIni, diamGrowth);
   
   LGMdouble identity = 0.0;
-  CollectHwDWAfterGrowth<TS,BUD> collectDW;
+  CollectDWAfterGrowth<TS,BUD> collectDW;
   LGMdouble  WSum = Accumulate(tree,  identity, collectDW);
 
   LGMdouble sum_nfol = 0.0f;
@@ -123,32 +138,37 @@ LGMdouble HwBracketFunction(LGMdouble& a, LGMdouble& b,
   
   fb = deltaiW - WSum - sum_nfol;
   
-  
+  debug_file << "fa " << fa << "   fb " << fb << '\n';	
+  debug_file << "haetaaan väliä  iteroidaan..." << '\n';
+
   while ((fb) > 0.0)
   {
     a = b;
     fa = fb;
     b = b * 1.30 + 0.1;
-    assert(b/a > 0);
+	ASSERT(b/a > 0);
 	
     SetValue(tree, lambda, b);
-    AdjustNewLambda(tree);
+	AdjustNewLambda(tree);
  
 
     AsIni = 0.0;
     AccumulateDown(tree, AsIni, diamGrowth);
     
-    identity = 0.0;
+	identity = 0.0;
     WSum = Accumulate(tree,  identity, collectDW);
 
-    sum_nfol = 0;
-    sum_nfol = Accumulate(tree,  sum_nfol, collectNFM);
+	sum_nfol = 0;
+	sum_nfol = Accumulate(tree,  sum_nfol, collectNFM);
     fb = deltaiW - WSum - (sum_nfol * a_r);
 
-
+	debug_file << "lambda " << b << "   Wsum " << WSum << '\n';
+	debug_file << "fa " << fa << "   fb " << fb << '\n';
   }
 
- return fb;
+
+  debug_file << "Nolla-arvo löytyy väliltä [" << a << "," << b << "]" << '\n'; 
+  return fb;
 }
 
 
@@ -177,6 +197,8 @@ LGMdouble HwZbrent(LGMdouble x1,LGMdouble x2,LGMdouble fa, LGMdouble fb, LGMdoub
   
   LGMdouble last_lambda = GetValue(tree,lambda);
 
+  if (last_lambda == 0)
+			debug_file << "kohta1: last lambda == 0 !!!!!!!!!!!!!!!!!!!!!!!!!!!!" << endl;
 
   
 
@@ -188,9 +210,9 @@ LGMdouble HwZbrent(LGMdouble x1,LGMdouble x2,LGMdouble fa, LGMdouble fb, LGMdoub
 
   //DiameterGrowthBookkeep<TS,BUD> bookkeep;
   LGMdouble identity = 0.0;
-  CollectHwDWAfterGrowth<TS,BUD> collectDW;
+  CollectDWAfterGrowth<TS,BUD> collectDW;
 
-  LGMdouble deltaiW = GetValue(tree,TreeP)-GetValue(tree,TreeM); // - wSum_LambdaO;
+  LGMdouble deltaiW = GetValue(tree,P)-GetValue(tree,M); // - wSum_LambdaO;
     
   fc=fb;
   for (iter=1;iter<=ITMAX;iter++) 
@@ -221,6 +243,7 @@ LGMdouble HwZbrent(LGMdouble x1,LGMdouble x2,LGMdouble fa, LGMdouble fb, LGMdoub
 			SetValue(tree,lambda, b);
 			AdjustNewLambda(tree);
 
+			debug_file << " Lopullinen lambda=" << b << '\n';
 			return GetValue(tree,lambda);
 		}
 
@@ -274,12 +297,6 @@ LGMdouble HwZbrent(LGMdouble x1,LGMdouble x2,LGMdouble fa, LGMdouble fb, LGMdoub
 		SetValue(tree,lambda, b);
 		AdjustNewLambda(tree);
 
-		
-
-
-		
-
-
 		AsIni = 0.0;
 		LGMdouble result = AccumulateDown(tree, AsIni, diamGrowth);
 
@@ -288,7 +305,7 @@ LGMdouble HwZbrent(LGMdouble x1,LGMdouble x2,LGMdouble fa, LGMdouble fb, LGMdoub
 		fb = deltaiW - WSum;
 	}
 
-  
+  MessageBox(NULL, "Maximum number of iterations", NULL, NULL);
   return GetValue(tree, lambda);	
   
 }
@@ -315,15 +332,23 @@ LGMdouble Zbrent(LGMdouble x1,LGMdouble x2,LGMdouble fa, LGMdouble fb, LGMdouble
 {
   LGMdouble a_r = GetValue(tree, ar);	
 
-  int iter;
-  LGMdouble a=x1,c,d,e,min1,min2;
+  
+  LGMdouble a,c,d,e,min1,min2;
   LGMdouble fc,p,q,r,s,tol1,xm;
+
+  a = x1;
+  c = 0;
+  d = 0;
+  e = 0;
+
   //  DGrowthInfo dgi,dgi_ident;
   adjustSegmentSizeLambda<TS,BUD> adjustSizeL;
   
   LGMdouble last_lambda = GetValue(tree,lambda);
 
-  
+  if (last_lambda == 0)
+			debug_file << "kohta1: last lambda == 0 !!!!!!!!!!!!!!!!!!!!!!!!!!!!" << endl;
+
   adjustSizeL.rel_lambda = 1;
 
   LGMdouble b = x2; // GetValue(tree,lambda);
@@ -334,34 +359,39 @@ LGMdouble Zbrent(LGMdouble x1,LGMdouble x2,LGMdouble fa, LGMdouble fb, LGMdouble
 
   //DiameterGrowthBookkeep<TS,BUD> bookkeep;
   LGMdouble identity = 0.0;
-  CollectCfDWAfterGrowth<TS,BUD> collectDW;
+  CollectDWAfterGrowth<TS,BUD> collectDW;
 
   LGMdouble sum_nfol = 0.0f;
   CollectNewCfFoliageMass<TS,BUD> collectNFM;
   sum_nfol = Accumulate(tree,  sum_nfol, collectNFM);
 
-  LGMdouble deltaiW = GetValue(tree,TreeP)-GetValue(tree,TreeM); // - wSum_LambdaO - (sum_nfol * a_r);
-    
+  LGMdouble deltaiW = GetValue(tree,P)-GetValue(tree,M); // - wSum_LambdaO - (sum_nfol * a_r);
+  
+  // **********************
   fc=fb;
-  for (iter=1;iter<=ITMAX;iter++) 
+  for (int iter=1;iter<=ITMAX;iter++) 
   {
+	  
 		if (fb*fc > 0.0) 
 		{
+			
 			c=a;
 			fc=fa;
-			e=d= b - a;
+			d = b - a;
+			e = d;
+			
 		}
-
-		if (fabs(fc) < fabs(fb)) 
+		
+		if (fc < fb) //fabs(fc) < fabs(fb)) 
 		{
 			a= b; //GetValue(tree,lambda);
 			b= c; //SetValue(tree,lambda,c);
-			c=a;
+			c= a;
 			fa=fb;
 			fb=fc;
-			fc=fa;
+			fc=fa;		
 		}
-
+	
 
 		tol1=2.0*EPS*fabs(GetValue(tree,lambda))+0.5*tol;
 		xm=0.5*(c-b);
@@ -370,10 +400,14 @@ LGMdouble Zbrent(LGMdouble x1,LGMdouble x2,LGMdouble fa, LGMdouble fb, LGMdouble
 		{
 			SetValue(tree,lambda, b);
 
-		
+			if (b==0)
+				debug_file << "kohta2: b == 0 !!!!!!!!!!!!!!!!!!!!!!!!!!!!" << endl;
+
+		//	debug_file << "rel_lambda " << (GetValue(tree,lambda) / last_lambda) << '\n';
 			adjustSizeL.rel_lambda = GetValue(tree,lambda) / last_lambda; 
 			ForEach(tree, adjustSizeL);
 
+			debug_file << " Lopullinen lambda=" << b << '\n';
 			return GetValue(tree,lambda);
 		}
 
@@ -428,9 +462,11 @@ LGMdouble Zbrent(LGMdouble x1,LGMdouble x2,LGMdouble fa, LGMdouble fb, LGMdouble
 		LGMdouble odd = GetValue(tree,lambda) / last_lambda;
 		adjustSizeL.rel_lambda =  odd;
 
-	
+	//	debug_file << "rel_lambda " << odd << '\n';
+
 		last_lambda = GetValue(tree,lambda);
-	
+		if (last_lambda == 0)
+			debug_file << " last lambda == 0 !!!!!!!!!!!!!!!!!!!!!!!!!!!!" << endl;
 
 
 		ForEach(tree, adjustSizeL);
@@ -445,9 +481,10 @@ LGMdouble Zbrent(LGMdouble x1,LGMdouble x2,LGMdouble fa, LGMdouble fb, LGMdouble
 		sum_nfol = 0.0f;
 		sum_nfol = Accumulate(tree,  sum_nfol, collectNFM);
 		fb = deltaiW - WSum -   sum_nfol * a_r;
+		
 	}
 
-  
+  MessageBox(NULL, "Maximum number of iterations", NULL, NULL);
   return GetValue(tree, lambda);	
   
 }
@@ -460,28 +497,33 @@ LGMdouble Zbrent(LGMdouble x1,LGMdouble x2,LGMdouble fa, LGMdouble fb, LGMdouble
 template <class TS,class BUD>
 bool AdjustIncrementZbrent(Tree<TS,BUD>& tree)
 {
-  
+ 
   //Check first if production - consumption is enough to maintain the
   //the tree. That is, if deltaW(lambda=0) < P - M
   //The case deltaW(0) > P - M arises in the cases 1) P - M < 0
   // 2) sapwood senescence is high and dry matter investments are needed to counteract
   //it, i.e. deltaW(0) = large.
-  LGMdouble balance = GetValue(tree, TreeP) - GetValue(tree, TreeM);
+  LGMdouble balance = GetValue(tree, P) - GetValue(tree, M);
   if(balance <= 0.0) 
   {
 		cerr << "M>P, growth not possible" << endl;
 		return false;
   }
 
-  
+  if (debug_file.is_open() == false)
+	debug_file.open("debug.txt");
+
+  debug_file << "\n\n\n\nUusi kasvatus......" << endl;
+
   LGMdouble a=0,b=0,fa=0,fb=0;
   
   BracketFunction(a,b,fa,fb,tree);
-  /*
+
   LGMdouble zBe = 0.001; //GetValue(tree, zbrentEpsilon);
   Zbrent(a,b,fa,fb, zBe, tree );
-  */
 
+
+  //debug_file.close();
   return true;
 }
 
@@ -498,12 +540,17 @@ bool AdjustIncrementHwZbrent(Tree<TS,BUD>& tree)
   //The case deltaW(0) > P - M arises in the cases 1) P - M < 0
   // 2) sapwood senescence is high and dry matter investments are needed to counteract
   //it, i.e. deltaW(0) = large.
-  LGMdouble balance = GetValue(tree, TreeP) - GetValue(tree, TreeM);
+  LGMdouble balance = GetValue(tree, P) - GetValue(tree, M);
   if(balance <= 0.0) 
   {
 		cerr << "M>P, growth not possible" << endl;
 		return false;
   }
+
+  if (debug_file.is_open() == false)
+	debug_file.open("debug.txt");
+
+  debug_file << "\n\n\n\nUusi kasvatus......" << endl;
 
   LGMdouble a=0,b=0,fa=0,fb=0;
   
@@ -513,85 +560,48 @@ bool AdjustIncrementHwZbrent(Tree<TS,BUD>& tree)
   HwZbrent(a,b,fa,fb, zBe, tree );
 
 
+  //debug_file.close();
   return true;
 }
-
-
-/*  template <class TS,class BUD> */
-/*  void AdjustNewLambda(Tree<TS,BUD> &tree) */
-/*  { */
-/*  	Axis<TS,BUD> &axis = GetAxis(tree); */
-
-/*  	int i=0; */
-/*  	Accumulate(tree,i,CountTreeSegments<TS,BUD>()); */
-	
-
-
-/*  	RemoveNewComparments(axis); */
-
-
-/*  	i=0; */
-/*  	Accumulate(tree,i,CountTreeSegments<TS,BUD>()); */
-
-/*  	Firmament& f = GetFirmament(tree); */
-/*  	LGMdouble B = f.diffuseBallSensor(); */
-
-/*  	MotherInfo init; */
-/*  	init.vi = 1.0; */
-/*  	init.Qin = 0.0; */
-/*  	init.B = B; */
-		
-
-/*  	AddNewHwSegments<TS,BUD> functor; */
-/*  	functor.bud_fun = nol_fun; */
-/*  	PropagateUp(tree, init, functor); */
-	
-/*  } */
 
 
 template <class TS,class BUD>
 void AdjustNewLambda(Tree<TS,BUD> &tree)
 {
-  Axis<TS,BUD> &axis = GetAxis(tree);
-  
-  int i=0;
-  Accumulate(tree,i,CountTreeSegments<TS,BUD>());
-  RemoveNewComparments(axis);
+	Axis<TS,BUD> &axis = GetAxis(tree);
+
+	int i=0;
+	Accumulate(tree,i,CountTreeSegments<TS,BUD>());
+	RemoveNewComparments(axis);
 
 
-  i=0;
-  Accumulate(tree,i,CountTreeSegments<TS,BUD>());
-  Firmament& f = GetFirmament(tree);
-  LGMdouble B = f.diffuseBallSensor();
+	i=0;
+	Accumulate(tree,i,CountTreeSegments<TS,BUD>());
+	Firmament& f = GetFirmament(tree);
+	LGMdouble B = f.diffuseBallSensor();
 
-  MotherInfo init;
-  init.vi = 1.0;
-  init.Qin = 0.0;
-  init.B = B;
-  
-
-  //******** tee zbrent abstarktisti ja tämän voi sitten
-  //poistaa.. class zbrent..
- 
-
-  /********* Kommentoitu pois jotta kaantyy
-  TS *tse = new TS(Point(0,0,0),PositionVector(0,0,1), 0, 0, 0, 0,
-		   &tree);
-  if (WhiteBirch *wb = dynamic_cast<WhiteBirch *>(tse))
-    {
-      AddWhiteBirchSegments<TS,BUD> functor;
-      PropagateUp(tree, init, functor);
+	MotherInfo init;
+	init.vi = 1.0;
+	init.Qin = 0.0;
+	init.B = B;
 		
-    }
-  if (SugarMaple* wb = dynamic_cast<SugarMaple *>(tse))
-    {
-      AddSugarMapleSegments<TS,BUD> functor;
-      functor.bud_fun = nol_fun;
-      PropagateUp(tree, init, functor);
+
+	//******** tee zbrent abstarktisti ja tämän voi sitten poistaa.. class zbrent..
+	TS *tse = new TS(Point(0,0,0),PositionVector(0,0,1), 0, 0, 0, 0, &tree);
+	if (WhiteBirch *wb = dynamic_cast<WhiteBirch *>(tse))
+	{
+		AddWhiteBirchSegments<TS,BUD> functor;
+		PropagateUp(tree, init, functor);
 		
-    }
-  delete tse;
-   */
+	}
+	if (SugarMaple* wb = dynamic_cast<SugarMaple *>(tse))
+	{
+		AddSugarMapleSegments<TS,BUD> functor;
+		functor.bud_fun = nol_fun;
+		PropagateUp(tree, init, functor);
+		
+	}
+	delete tse;
 }
 
 
