@@ -11,11 +11,12 @@ using namespace Lignum;
 
 LGMVisualization* LGMVisualization::active_visualization = NULL;
 
-#if defined(__APPLE__) || defined(__MACOSX__)
+#if defined( APPLE ) || defined(MACOSX)
 #include <OpenGL/gl.h>
 #include <OpenGL/glu.h>
 #include <GLUT/glut.h>
 #else
+#include <GL/gl.h>
 #include <GL/glu.h>
 #include <GL/glx.h>
 #include <GL/glut.h>
@@ -208,10 +209,10 @@ void LGMVisualization::ReDrawWindow(void)
     }
 
   if (boolVisualizeVoxelSpace)
-    if (voxel)
+    //if (voxel)
       {
-	//	cout << "Visualization of VoxelSpace " << endl;
-	voxel->draw(true);
+	//cout << "Visualization of VoxelSpace " << endl;
+	//voxel->draw(true);
       }
 
   //vanha tapa

@@ -7,13 +7,19 @@
 #include "OpenGLFunctor.h"
 #include "OpenGL.h"
 
+#include <VoxelSpace.h>
 
+namespace Lignum
+{
 
 class LGMVoxelVisualization
 {
   public:
 
   private:
+  void DrawVoxelSpace(VoxelSpace &space, bool blackBG);
 };
+
+}
 
 #endif

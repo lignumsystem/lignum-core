@@ -16,7 +16,7 @@ using namespace Lignum;
 #include <stdio.h>
 
 //And the vendors just can't agree where the headers are...
-#if defined(__APPLE__) || defined(__MACOSX__)
+#if defined(__APPLE__) || defined(MACOSX)
 #include <OpenGL/gl.h>
 #include <OpenGL/glu.h>
 #include <GLUT/glut.h>
@@ -267,7 +267,7 @@ void redraw(void)
     if (voxel)
       {
 	//	cout << "Visualization of VoxelSpace " << endl;
-	voxel->draw(true);
+	// voxel->draw(true);
       }
 
   //vanha tapa
