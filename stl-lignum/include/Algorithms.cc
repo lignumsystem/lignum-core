@@ -1,6 +1,10 @@
 #include <Algorithms.h>
 #include <algorithm>
 
+
+//Helper functors for generic algorithms 
+
+//Functor for ForEach
 template <class TS,class BUD,class Function>
 ForEachOp2<TS,BUD,Function>::ForEachOp2(const Function& op1)
   :f(op1)
@@ -21,6 +25,7 @@ TreeCompartment<TS,BUD>*  ForEachOp2<TS,BUD,Function>:: operator()(TreeCompartme
   return tc;
 }
 
+//Functor for Accumulate
 template <class TS,class BUD, class T, class BinOp>
 AccumulateOp2<TS,BUD,T,BinOp>::AccumulateOp2(const BinOp& op)
   :op1(op)
@@ -57,6 +62,7 @@ T& AccumulateOp2<TS,BUD,T,BinOp>:: operator()(T& id,TreeCompartment<TS,BUD>* tc)
   return id;
 }
 
+//Functor for AccummulateDown
 template <class TS,class BUD, class T, class BinOp>
 ReverseAccumulateOp2<TS,BUD,T,BinOp>::ReverseAccumulateOp2(const BinOp& op)
   :op1(op)
@@ -97,6 +103,7 @@ T& ReverseAccumulateOp2<TS,BUD,T,BinOp>::operator()(T& id,
   return id;
 }
 
+//Functor for AccumulateDown
 template <class TS,class BUD, class T, class BinOp1, class BinOp2>
 ReverseAccumulateOp3<TS,BUD,T,BinOp1,BinOp2>::ReverseAccumulateOp3(const BinOp1& usr_op1,
 								   const BinOp2& usr_op2)
@@ -143,6 +150,7 @@ T& ReverseAccumulateOp3<TS,BUD,T,BinOp1,BinOp2>::operator()(T& id,
 }
 
 
+//Functor for PropagateUp
 template <class TS,class BUD, class T, class BinOp>
 PropagateUpOp2<TS,BUD,T,BinOp>::PropagateUpOp2(const BinOp& op)
   :op1(op)
@@ -183,6 +191,50 @@ PropagateUpOp2<TS,BUD,T,BinOp>::operator()(T& id,
   return tc;
 }
 
+//Functor for PropagateUp
+template <class TS,class BUD, class T, class BinOp1, class BinOp2>
+PropagateUpOp3<TS,BUD,T,BinOp1,BinOp2>::PropagateUpOp3(const BinOp1& usr_op1, const BinOp2& usr_op2)
+  :op1(usr_op1),op2(usr_op2)
+{
+}
+
+template <class TS,class BUD, class T, class BinOp1, class BinOp2> 
+TreeCompartment<TS,BUD>* 
+PropagateUpOp3<TS,BUD,T,BinOp1,BinOp2>::operator()(T& id,
+					     TreeCompartment<TS,BUD>* tc)const
+{
+  if (TreeSegment<TS,BUD>* ts = dynamic_cast<TreeSegment<TS,BUD>*>(tc))
+    op2(id,ts);
+
+  else if (Bud<TS,BUD>* bud = dynamic_cast<Bud<TS,BUD>*>(tc))
+    op2(id,bud);
+
+  else if (Axis<TS,BUD>* axis = dynamic_cast<Axis<TS,BUD>*>(tc)){
+    op2(id,axis);
+    list<TreeCompartment<TS,BUD>*>& tc_ls = GetTreeCompartmentList(*axis);
+    list<TreeCompartment<TS,BUD>*>::iterator first = tc_ls.begin();
+    list<TreeCompartment<TS,BUD>*>::iterator last = tc_ls.end();
+    while (first != last)
+      (*this)(id,*first++);
+  }
+
+  else if (BranchingPoint<TS,BUD>* bp = dynamic_cast<BranchingPoint<TS,BUD>*>(tc)){
+    op2(id,bp);
+    list<Axis<TS,BUD>*>& axis_ls = GetAxisList(*bp);
+    list<Axis<TS,BUD>*>::iterator first = axis_ls.begin();
+    list<Axis<TS,BUD>*>::iterator last = axis_ls.end();
+    while (first != last){
+      T id_new = T();
+      id_new = op1(id_new,id);
+      (*this)(id_new,*first++);
+    }
+  }
+
+  return tc;
+}
+
+
+//The Generic algorithms themselves
 template <class TS,class BUD, class Function>
 void ForEach(Tree<TS,BUD>& tree, const Function& op1)
 {
@@ -225,4 +277,10 @@ void PropagateUp(Tree<TS,BUD>& tree, T& init, const BinOp& op1)
   op2(init,&axis);
 }
 
-
+template <class TS,class BUD, class T, class BinOp1, class BinOp2>
+void PropagateUp(Tree<TS,BUD>& tree, T& init, const BinOp1& op1,  const BinOp2& op2)
+{
+  PropagateUpOp3<TS,BUD,T,BinOp> op3(op1,op2);
+  Axis<TS,BUD>& axis = GetAxis(tree);
+  op2(init,&axis);
+}
