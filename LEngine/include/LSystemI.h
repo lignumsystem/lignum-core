@@ -104,7 +104,7 @@ int LSystem<TS,BUD,T,F>::lignum2Lstring(list<TreeCompartment<TS,BUD>*>& ls,
     //udate iterators
     else if (TS* ts = dynamic_cast<TS*> (*current)){
       //Get the argument of "F" to update the argument
-      LGMdouble arg1 = GetValue(*ts,L);
+      LGMdouble arg1 = GetValue(*ts,LGAL);
       caller_data.Reset();
       caller_data.Strct.AddModuleAddr(ltr.Ptr());
       //Update the length of turtle forward command to the length of the segment
@@ -382,7 +382,7 @@ int LSystem<TS,BUD,T,F>::lstring2Lignum(list<TreeCompartment<TS,BUD>*>& ls,
       SetDirection(*ts,GetHeading(turtle_stack.top()));
       //Should we update the length may be a matter of discussion
       //But when the turtle is 'in charge' we should (c.f symbodial growth) 
-      SetValue(*ts,L,arg1);
+      SetValue(*ts,LGAL,arg1);
       //Move the turtle
       turtle_stack.top().forward(arg1);
       //Update iterators 
