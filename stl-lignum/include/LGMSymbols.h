@@ -3,11 +3,13 @@
 
 namespace Lignum{
 
+  //OBS: DO NOT USE ENUMERATIONS AS VARIABLE NAMES!
+  //For example, _NEVER_ create double Wf;
 
   // Tree Attribute Double, Wm lisätty
   // Wr           dry weight of the roots
   enum LGMAD {A,age,LGMcollision,dof, dR, H,Hm,ip,lb,LM,LP,LWf,L,lw,M, omega,P,
-	      Qin,Qabs,R,Rf,Rh,RTop,sf,LGMstatus,sw,tauL,LGMtype,vi,Wf,Ws,Wh,Wr};  
+	      Qin,Qabs,R,Rf,Rh,RTop,sf,LGMstatus,sw,tauL,LGMtype,vi,Wf,Ws,Wh};
 
   //  A       0   Area (of what?)
   //  age     1   age of object
@@ -36,7 +38,7 @@ namespace Lignum{
   //  Wf      24  foliage mass (kg C)
   //  Ws      25  mass of sapwood (kg C)
   //  Wh      26  mass of heartwood (kg C)
-  //  Wr      27  root mass (kg C)
+
 
   enum LGMFLOW { fin, fout, Pr, Wm };
 
@@ -57,7 +59,7 @@ namespace Lignum{
   // zbrentEpsilon       Accuracy in solving the root of P - M -dW(lambda)
   //Keep this list in synbc with MapLGMPD constructor in TreeFriend.cc
   enum LGMPD {af,ar,lr,mf,mr,ms,na,nl,pr,q,sr,ss,rho,xi,
-	      zbrentEpsilon, Ln_par, n_ang_par}; 
+	      zbrentEpsilon, Ln_par, n_ang_par, fake_forest}; 
   //af = Needle mass - tree segment area (kg/m^2)relationship
   //ar = Foliage - root relationship 
   //lr = Length - radius relationship of a tree segment
@@ -75,6 +77,7 @@ namespace Lignum{
   //zbrentEpsilon = accuracy in numerical computation in root finding (see Zbrent)
   //Ln_par = ????????????????? 
   //n_ang_par = ??????????????
+  //fake_forest = diffuseForestRegionRadiationSum is used (1 = yes, 0 = no)
 
   //Tree Transit Variable Double
   enum LGMTD {lambda, g, eta, Er, k, rhow}; 

@@ -18,8 +18,8 @@ bool Growth(Tree<TS,BUD>& tree, F& f)
 {	
 	//Structural growth possible only if photosynthesis > respiration
 
-	LGMdouble photo = GetValue(tree, P);
-	LGMdouble respi = GetValue(tree, M);
+	LGMdouble photo = GetValue(tree, TreeP);
+	LGMdouble respi = GetValue(tree, TreeM);
 	
 	LGMdouble P_avail = photo - respi;
 
@@ -163,8 +163,8 @@ bool GrowthOfWhiteBirch<TS,BUD>::operator()(Tree<TS,BUD>& tree)
 	AsIni = AccumulateDown(tree, AsIni, adDiamGrowth);
 
 	
-	LGMdouble photo = GetValue(tree, P);
-	LGMdouble respi = GetValue(tree, M);
+	LGMdouble photo = GetValue(tree, TreeP);
+	LGMdouble respi = GetValue(tree, TreeM);
 	LGMdouble P_avail = photo - respi;
 
 		

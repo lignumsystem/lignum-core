@@ -30,7 +30,7 @@ LGMdouble BracketFunction(LGMdouble& a, LGMdouble& b,
   b = GetValue(tree, lambda);
   
   // deltaiW
-  LGMdouble deltaiW = GetValue(tree, P) - GetValue(tree, M);  
+  LGMdouble deltaiW = GetValue(tree, TreeP) - GetValue(tree, TreeM);  
 
 
   fa = deltaiW;
@@ -105,7 +105,7 @@ LGMdouble HwBracketFunction(LGMdouble& a, LGMdouble& b,
   b = GetValue(tree, lambda);
   
 
-  LGMdouble deltaiW = GetValue(tree, P) - GetValue(tree, M);  
+  LGMdouble deltaiW = GetValue(tree, TreeP) - GetValue(tree, TreeM);  
   fa = deltaiW; 
   
   
@@ -190,7 +190,7 @@ LGMdouble HwZbrent(LGMdouble x1,LGMdouble x2,LGMdouble fa, LGMdouble fb, LGMdoub
   LGMdouble identity = 0.0;
   CollectHwDWAfterGrowth<TS,BUD> collectDW;
 
-  LGMdouble deltaiW = GetValue(tree,P)-GetValue(tree,M); // - wSum_LambdaO;
+  LGMdouble deltaiW = GetValue(tree,TreeP)-GetValue(tree,TreeM); // - wSum_LambdaO;
     
   fc=fb;
   for (iter=1;iter<=ITMAX;iter++) 
@@ -340,7 +340,7 @@ LGMdouble Zbrent(LGMdouble x1,LGMdouble x2,LGMdouble fa, LGMdouble fb, LGMdouble
   CollectNewCfFoliageMass<TS,BUD> collectNFM;
   sum_nfol = Accumulate(tree,  sum_nfol, collectNFM);
 
-  LGMdouble deltaiW = GetValue(tree,P)-GetValue(tree,M); // - wSum_LambdaO - (sum_nfol * a_r);
+  LGMdouble deltaiW = GetValue(tree,TreeP)-GetValue(tree,TreeM); // - wSum_LambdaO - (sum_nfol * a_r);
     
   fc=fb;
   for (iter=1;iter<=ITMAX;iter++) 
@@ -466,7 +466,7 @@ bool AdjustIncrementZbrent(Tree<TS,BUD>& tree)
   //The case deltaW(0) > P - M arises in the cases 1) P - M < 0
   // 2) sapwood senescence is high and dry matter investments are needed to counteract
   //it, i.e. deltaW(0) = large.
-  LGMdouble balance = GetValue(tree, P) - GetValue(tree, M);
+  LGMdouble balance = GetValue(tree, TreeP) - GetValue(tree, TreeM);
   if(balance <= 0.0) 
   {
 		cerr << "M>P, growth not possible" << endl;
@@ -498,7 +498,7 @@ bool AdjustIncrementHwZbrent(Tree<TS,BUD>& tree)
   //The case deltaW(0) > P - M arises in the cases 1) P - M < 0
   // 2) sapwood senescence is high and dry matter investments are needed to counteract
   //it, i.e. deltaW(0) = large.
-  LGMdouble balance = GetValue(tree, P) - GetValue(tree, M);
+  LGMdouble balance = GetValue(tree, TreeP) - GetValue(tree, TreeM);
   if(balance <= 0.0) 
   {
 		cerr << "M>P, growth not possible" << endl;

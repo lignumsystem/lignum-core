@@ -383,8 +383,8 @@ void PrintTreeInformation<TS,BUD>::operator() (Tree<TS,BUD>&  tr) {
   
   values = Accumulate(tr, values, getTreeValues);
   
-  cout << "P: " << GetValue(tr,P) << " M: "
-       << GetValue(tr,M) << endl;
+  cout << "P: " << GetValue(tr,TreeP) << " M: "
+       << GetValue(tr,TreeM) << endl;
   cout << "age: " << values.age << endl;
   cout << "Height: " << values.height << "Height of CB: " <<
     values.Hc << endl;

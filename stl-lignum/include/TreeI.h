@@ -29,7 +29,7 @@ Tree<TS,BUD>::Tree(const Point& p, const PositionVector& d, LGMdouble len, LGMdo
   //force the instantiation of BranchingPoint
   BranchingPoint<TS,BUD>(p,d,this);
   
-  TreeSegment<TS,BUD> *ts = new TreeSegment(p, rad,d, 0,len, 
+  TreeSegment<TS,BUD> *ts = new TreeSegment<TS,BUD>(p, rad,d, 0,len, 
 					    1, 0, *this);
 
   SetValue(*ts, omega, 1);
@@ -78,7 +78,7 @@ Tree<TS,BUD>::Tree(const Point& p, const PositionVector& d, LGMdouble len, LGMdo
   LGMdouble delta_angle = 2 * PI_VALUE / num_buds;              
   while(num_buds > 0)
     {
-      new_axes[index] = new Axis<ScotsPineVisual, ScotsBud>();
+      new_axes[index] = new Axis<TS,BUD>();
       
       v2.rotate(Point(0,0,0), PositionVector(0,0,1), delta_angle);
       Bud<TS,BUD> *new_bud = 
@@ -241,7 +241,7 @@ template <class TS,class BUD>
 LGMdouble GetValue(const Tree<TS,BUD>& tree, const LGMTAD name)
 { 
   //no need to go to tree compartment, these are tree level attributes
-  return  tree.ta.v.at(name);
+  return  tree.ta.v[name];
 }
 
 //Index the tree attribute vector with range check.
@@ -251,7 +251,7 @@ LGMdouble SetValue(Tree<TS,BUD>& tree, const LGMTAD name, const LGMdouble value)
 
   LGMdouble old_value = GetValue(tree,name);
   //no need to go to tree compartment, these are tree level attributes
-  tree.ta.v.at(name) = value;
+  tree.ta.v[name] = value;
   
   return old_value;
 }

@@ -553,7 +553,9 @@ double Matrix<TS,BUD>::getLight(TreeSegment<TS,BUD> *ts)
       SetValue(*cfts, Rf,needle_length * sin(needle_angle)+ GetValue(*ts,R));
       needle_rad = GetValue(*cfts, Rf);
   
-      s_f = GetValue(GetTree(*cfts),sf);
+      //      s_f = GetValue(GetTree(*cfts),sf);
+      s_f = 28;
+
       LGMdouble star = 0;
   
 	
