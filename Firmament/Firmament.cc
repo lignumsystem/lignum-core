@@ -1,7 +1,7 @@
 #include <Firmament.h>
 //#include <mathsym.h>
 
-
+namespace sky{
 
 //The flux of diffuse radiation coming from the sky is accomplished
 //according to J. Ross 1981 The radiation regime and architecture of plant
@@ -686,7 +686,7 @@ int  main(int argc, char* argv[])
 
 #endif
 
-
+}//closing namespace sky
 
 
 

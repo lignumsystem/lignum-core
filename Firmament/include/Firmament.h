@@ -7,6 +7,8 @@
 #include <TMatrix.h>
 #include <LGMUnits.h>
 
+namespace sky{
+
 using namespace cxxadt;
 
 
@@ -232,6 +234,7 @@ private:
   double deltaIncl, halfDeltaIncl;
 };
 
+}//closing namespace sky
 #endif
 
 
