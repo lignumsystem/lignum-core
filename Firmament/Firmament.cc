@@ -459,37 +459,60 @@ MJ Firmament::diffuseForestRegionRadiationSum(int n, float z, float x, float la,
 					      float ke, float H, float Hc,
 					      vector<double>& direction)
 
-   // This method calculates the radiation reaching a segment  in a
-   // tree that is growing in a stand among indentical trees (dens trees/ha).
-   // The idea here is that the tree grows in a "hole" in the stand. The "hole" is
-   // a circular cylinder, the gross-sectional area of which is 10000/dens m2 and height
-   // equal to tree height. Outside this "hole" the foliage area (calculated with
-   // the aid of tree's leaf area and dens) is evenly distributed in the crown volume
-   // (leaf area density) that is between top height and the height of the crown base.
-   // The shading caused by the surrounding stand depends on the distance light beam
-   // travels in the stand volume on its way from a point in the sky to the segment:
-   // travelled distance * leaf area density * extinction coefficient
-   // ( extinction coefficient = 0.14 for Scots pine)
-   // The radiation coming from a point in the sky (sector) is obtained from
-   // method Firmament::regionRadiationSum(int n, vector<double>& direction).
-   //
-   // Both height of the segment and its distance from the tree stem affect the path
-   // lenght in the surrounding canopy. The path length of the beam inside the
-   // canopy depends on the height it hits the mantle of the "hole".
-   // Since the the segment is not in the middle of the (bottom) circle of the "hole",
-   // the distance the beam travels inside the "hole" and consequently the height
-   // at which it hits the wall depends on the direction of the beam. This effect is
-   // treated here in an average manner. For all azimuthal directions of the coming
-   // beam the mean distance from a point (inside the circle) to the circumference of
-   // it is used in calculations. It seems that as an fairly accurate approximation
-   // mean distance = r*(1 - 0.35*(x/r)^2.5), where r is the radius of the circle and
-   // x is the distance of the point from center of the circle (0 <= x <= r).
+//  INPUT:
+//    n        number of region
+//    z        height of the point from ground, m
+//    x        distance of the point from the tree stem,  m
+//    la       needle area (total area) per tree (= sf * Wf),   m2
+//    ke       extinction cofficient  (= 0.14 for Scots pine),  unitless
+//    H        height of tree (h. of stand),  m
+//    Hc       height of the crown base of the tree (stand), m
+//            additionally, method reads from file "density.fun" the density of
+//            the stand (trees/ha), density = 1 if file does not exist.
 
-   // Obs. density is read from file (if exists) "density.fun"
+//  OUTPUT:
+//    The annual radiation sum (MJ) from the nth region of the
+//    firmament as shaded by the neighboring stand
+//    direction  the direction of nth region
+//    If n < 0 or n > total number of regions - 1, return -1.0
+
+
+// This method calculates the radiation reaching a segment in a tree
+// that is growing in a stand among indentical trees (dens trees/ha).
+// The idea here is that the tree grows in a "hole" in the stand. The
+// "hole" is a circular cylinder, the gross-sectional area of which is
+// 10000/dens m2 and height equal to tree height. Outside this "hole"
+// the foliage area (calculated with the aid of tree's leaf area and
+// dens) is evenly distributed in the crown volume (leaf area density)
+// that is between top height and the height of the crown base.  The
+// shading caused by the surrounding stand depends on the distance
+// light beam travels in the stand volume on its way from a point in
+// the sky to the segment: travelled distance * leaf area density *
+// extinction coefficient ( extinction coefficient = 0.14 for Scots
+// pine) The radiation coming from a point in the sky (sector) is
+// obtained from method Firmament::regionRadiationSum(int n,
+// vector<double>& direction).
+//
+// Both height of the segment and its distance from the tree stem
+// affect the path lenght in the surrounding canopy. The path length
+// of the beam inside the canopy depends on the height it hits the
+// mantle of the "hole".  Since the the segment is not in the middle
+// of the (bottom) circle of the "hole", the distance the beam travels
+// inside the "hole" and consequently the height at which it hits the
+// wall depends on the direction of the beam. This effect is treated
+// here in an average manner. For all azimuthal directions of the
+// coming beam the mean distance from a point (inside the circle) to
+// the circumference of it is used in calculations. It seems that as
+// an fairly accurate approximation mean distance = r*(1 -
+// 0.35*(x/r)^2.5), where r is the radius of the circle and x is the
+// distance of the point from center of the circle (0 <= x <= r).
+
+// Obs. density is read from file (if exists) "density.fun"
 
 {
-  // When this method is called first time it reads density (dens, trees/ha) from the
-  // file density.fun. If this file does not exist default density 1 tree/ha is used.
+// When this method is called first time it reads density (dens,
+// trees/ha) from the file density.fun. If this file does not exist
+// default density 1 tree/ha is used.
 
   static bool first_time = true;
   static float dens = 1.0;
@@ -516,9 +539,15 @@ MJ Firmament::diffuseForestRegionRadiationSum(int n, float z, float x, float la,
   float Qunshaded = diffuseRegionRadiationSum(n, direction);
 
   // Inclination angle of the direction (from horizon),
-  // length of direction = 1, hence z coordinate = tan(alpha)
+  // length of direction = 1, hence z coordinate = sin(alpha)
 
-  float tan_alpha = (float) direction[2]; 
+  float sin_alpha = (float) direction[2];
+  float tan_alpha;
+  if(maximum(1.0-sin_alpha,sin_alpha-1.0) < R_EPSILON)
+    return Qunshaded;
+  else
+    tan_alpha = tan(asin(sin_alpha));
+    
 
   // Area (m2) occupied by one tree = 10000/dens => radius of the opening that is
   // occupied by one tree
@@ -543,7 +572,7 @@ MJ Firmament::diffuseForestRegionRadiationSum(int n, float z, float x, float la,
   float distance, shading;
 
   if(Hh < H)
-    distance = (H - Hh) / (float) sin(atan((double)tan_alpha));
+    distance = (H - Hh) / sin_alpha;
   else
     distance = 0.0;
 
