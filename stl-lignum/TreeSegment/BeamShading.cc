@@ -24,7 +24,7 @@ using namespace Lignum;
 //
 
 int ellipsisBeamShading(Point& p0,
-			PositionVector& v, BroadLeaf<Ellipsis>& leaf)
+			PositionVector& v, BroadLeaf<Ellipse>& leaf)
 {
 
   Point pc =  GetCenterPoint(leaf);
@@ -38,7 +38,7 @@ int ellipsisBeamShading(Point& p0,
    return NO_HIT;
   }
 
-  PositionVector n  = GetLeafNormal(leaf);
+  PositionVector n  = GetShape(leaf).getNormal();
 
   //    2. Where does line starting at p0 and having direction b intersect the plane
   //       that contains the ellipsis leaf
