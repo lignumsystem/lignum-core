@@ -8,6 +8,7 @@
 #include "OpenGLFunctor.h"
 #include "OpenGL.h"
 #include <GLSettings.h>
+#include <WrapperBase.h>
 #include <vector>
 
 #include <Lignum.h>
@@ -22,6 +23,10 @@ class LGMVisualization
 {
   static LGMVisualization* active_visualization;
   public:
+
+
+  void AddHwTree(const Tree& t);
+  void AddCfTree(const Tree& t);
 
   LGMVisualization();
   void InitVisualization();
@@ -49,6 +54,8 @@ private:
   void SetLight(void);
   void SetValues(void);
   void CheckValues(void);
+
+  std::vector<WrapperBase *> trees;
 
   static void StaticLoop(void);
   static void StaticMouseMotion(int x, int y);
