@@ -13,6 +13,7 @@
 #include <BranchingPoint.h>
 #include <TreeSegment.h>
 #include <Axis.h>
+#include <ConnectionMatrix.h>
 
 template <class TS>
 TP GetProduction(const Tree<TS>& t);
@@ -41,16 +42,6 @@ public:
 
 
 
-template <class TS>
-class ConnectionMatrix{
-public:
-  ConnectionMatrix(int);
-  void AddConnection(TreeSegment<TS> *ts1, TreeSegment<TS> *ts2);
-  TreeSegment<TS> ***pointer;
-  void print();
-  int size;
-private:
-};
 
 
 
@@ -58,23 +49,6 @@ private:
 
 
 
-
-
-/*
-class ConnectionMatrix{
-public:
-  ConnectionMatrix(int);
-
-  void AddConnection(long int,long int);
-  bool setValue(int, int, long int);
-  long int **pointer;
-  void print();
-  int size;
-
-private:
-  int GetRow(long int);
-};
-*/
 
 
 
@@ -100,6 +74,10 @@ class TreeTransitVariables{
 public:
   TreeTransitVariables();
   TP lambda;        //Variable to balance carbon balance equation
+  TP g;             //Gravity
+  TP eta;           //Dynamic viscosity of water
+  TP k;             //Wood spesific conductivity or permeability
+  TP rhow;          //Density of water
 };
 
 
@@ -123,10 +101,7 @@ public:
   Tree(const Point<METER>& p, const PositionVector& d);
   void UpdateWaterFlow(TP time);
 private:
-  TreeSegment<TS>* GetTreeSegment(Axis<TS> &ax, TreeSegment<TS> *as);
-  void BuiltConnectionMatrix();
-  int CountTreeSegments(Axis<TS> &ax);
-  void makeAxis(Axis<TS> &ax, TreeSegment<TS> &ts);
+  TreeSegment<TS>* GetTreeSegment(Axis<TS> &ax, TreeSegment<TS> *as); 
   TP CountFlow(TreeSegment<TS> &in, TreeSegment<TS> &out);
   TreeAttributes ta;
   TreeFunctions tf;

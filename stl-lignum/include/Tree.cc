@@ -2,89 +2,6 @@
 
 
 
-// The constructor reserves memory for n*n matrix
-template <class TS>
-ConnectionMatrix<TS>::ConnectionMatrix(int n)
-{
-  size = n;
-  pointer = new TreeSegment<TS>**[n];
-  for (int i=0; i<n; i++)
-    pointer[i] = new TreeSegment<TS>*[n];
-
-  for (int x=0; x<n; x++)
-    for (int y=0; y<n; y++)
-      pointer[x][y] = NULL;
-
-}
-
-
-
-
-// This method adds a connection from source (TreeSegment) to the target
-// (TreeSegment).
-template <class TS>
-void ConnectionMatrix<TS>::AddConnection(TreeSegment<TS> *source, TreeSegment<TS> *target)
-{ 
-  if (source == NULL || target == NULL)
-    return;
-
-  int i=0, a=0;
-  while(pointer[i][i] != source) // source [TreeSegment] is not in the matrix yet
-    {
-      if (pointer[i][i] == NULL)
-	{
-	  pointer[i][i] = source;
-	  break;
-	}
-      if (i>=size-1)
-	{
-	  cout << "Error in program (Tree.cc)" << endl;
-	  return;
-	}
-      i++;
-    }
-  while(pointer[a][a]!=target) // target [TreeSegment] is not in the matrix yet
-    {
-      if (pointer[a][a] == NULL) 
-	{
-	  pointer[a][a] = target;
-	  break;
-	}
-
-      if (a>=size-1)
-	{
-	  cout << "Error in program (Tree.cc)" << endl;
-	  return;
-	}
-      a++;
-    }
-  pointer[i][a] = target;
-} 
-
-
-
-// This method prints the information of the matrix
-template<class TS>
-void  ConnectionMatrix<TS>::print()
-{
- for(int i=0; i<size; i++)
-    {
-     
-      for(int a=0; a<size; a++)
-	{
-	  if (i == a)
-	    cout << "   -       ";
-	  else if (pointer[i][a]==NULL)
-	    cout << "  NULL     ";
-	  else cout << " connection";
-	}
-      cout << "  Pressure" << " " << pointer[i][i]->GetPressure() << endl;
-     
-    }
- cout << endl << endl;
-}
-
-
 TreeParameters::TreeParameters()
 {
   af = ar = lr = mf = 0.0;
@@ -99,8 +16,13 @@ TreeAttributes::TreeAttributes()
 
 TreeTransitVariables::TreeTransitVariables()
 {
-  lambda = 0.0;
+  lambda = 0.0;        
+  TP g = 9.81;          
+  TP eta = 1;        
+  TP k = 1;             
+  TP rhow = 1000;
 }
+
 
 template <class TS>
 Tree<TS>::Tree()
@@ -157,32 +79,32 @@ template <class TS>
 void Tree<TS>::UpdateWaterFlow(TP time_step)
 {
   if (cm == NULL)
-    this->BuiltConnectionMatrix();
- 
+    cm = new ConnectionMatrix<MyTreeSegment>(axis);;
   cm->print();
+return;
   // This counts the flow in for every segment
-  for (int i=0; i<cm->size; i++){
+  for (int i=0; i<cm->getSize(); i++){
     TreeSegment<MyTreeSegment> *out;
-    if(cm->pointer[i][i] != NULL)  
-      out = GetTreeSegment(this->axis, cm->pointer[i][i]);
+    if(cm->getTreeSegment(i) != NULL)  
+      out = GetTreeSegment(this->axis, cm->getTreeSegment(i));
     if (out == NULL)
       cout << "ei l;ytynyt" << endl;
-    else for (int a=0; a<cm->size; a++){
-      if (i != a && cm->pointer[i][a]!=0){
-	TreeSegment<MyTreeSegment> *in = GetTreeSegment(this->axis, cm->pointer[i][a]);
+    else for (int a=0; a<cm->getSize(); a++){
+      if (i != a && cm->getTreeSegment(i, a) != 0){
+	TreeSegment<MyTreeSegment> *in = GetTreeSegment(this->axis, cm->getTreeSegment(i,a));
 	SetTSAttributeValue(*in, Pr, CountFlow(*in, *out));
       }
     }	
   }
 
   // This counts the flow out for every segment
-  for (i=0; i<cm->size; i++){
+  for (i=0; i<cm->getSize(); i++){
     TreeSegment<MyTreeSegment> *out;
-    if(cm->pointer[i][i] != 0)  
-      out = GetTreeSegment(this->axis, cm->pointer[i][i]);
-    for (int a=0; a<cm->size; a++){
-      if (i != a && cm->pointer[i][a]!=0){
-	TreeSegment<MyTreeSegment> *in = GetTreeSegment(this->axis, cm->pointer[i][a]);
+    if(cm->getTreeSegment(i) != 0)  
+      out = GetTreeSegment(this->axis, cm->getTreeSegment(i));
+    for (int a=0; a<cm->getSize(); a++){
+      if (i != a && cm->getTreeSegment(i,a) != 0){
+	TreeSegment<MyTreeSegment> *in = GetTreeSegment(this->axis, cm->getTreeSegment(i,a));
 	SetTSAttributeValue(*out, fout, GetTSAttributeValue(*out, fout)+GetTSAttributeValue(*in, fin));
       }
     }
@@ -214,33 +136,7 @@ TP Tree<TS>::CountFlow(TreeSegment<TS> &in, TreeSegment<TS> &out)
 }
 
 
-template <class TS>
-int Tree<TS>::CountTreeSegments(Axis<TS> &ax)
-{
-  int count = 0; 
-  list<TreeCompartment<MyTreeSegment>*>& ls = GetTreeCompartmentList(ax);
-  list<TreeCompartment<MyTreeSegment>*>::iterator I = ls.begin();
-  
-  while(I != ls.end())
-    {
-      if (TreeSegment<MyTreeSegment>* myts = dynamic_cast<TreeSegment<MyTreeSegment>*>(*I))
-	{
-	  count++;
-	}
-      if (BranchingPoint<MyTreeSegment>* mybp = dynamic_cast<BranchingPoint<MyTreeSegment>*>(*I)){	 
-	list<Axis<TS>*>& axis_ls = GetAxisList(*mybp);  	  
-	list<Axis<TS>*>::iterator I = axis_ls.begin();
-	while(I != axis_ls.end()){
-	  Axis<MyTreeSegment> *axis = *I;
-	  count = count + CountTreeSegments(*axis);
-	  I++;	    
-	}
-      }      
-      I++;
-    }
-  return count;
-}
-
+/*
 
 //This method builds the connection matrix, where the structure of the tree
 //is stored. 
@@ -270,40 +166,8 @@ void Tree<TS>::BuiltConnectionMatrix()
     I++;
   }
 }
+*/
 
-
-
-//This method goes throw the given axis, and adds TreeSegments connected each other
-//to the connection matrix. The first found TreeSegment is connected to the 
-//TreeSegment given as parameter.   
-template <class TS>
-void Tree<TS>::makeAxis(Axis<TS>& ax, TreeSegment<TS>& ts)
-{
-  TreeSegment<MyTreeSegment> *lastSegment = &ts;
-  list<TreeCompartment<MyTreeSegment>*>& ls = GetTreeCompartmentList(ax);
-  list<TreeCompartment<MyTreeSegment>*>::iterator I = ls.begin();
-  
-  while(I != ls.end()){      
-    if (TreeSegment<MyTreeSegment>* myts = dynamic_cast<TreeSegment<MyTreeSegment>*>(*I)){
-      cm->AddConnection(lastSegment, myts);
-      lastSegment = myts;
-    }      
-      if (BranchingPoint<MyTreeSegment>* mybp = dynamic_cast<BranchingPoint<MyTreeSegment>*>(*I)){
-	list<Axis<TS>*>& axis_ls = GetAxisList(*mybp);  	  
-	list<Axis<TS>*>::iterator I = axis_ls.begin();
-	while(I != axis_ls.end()){
-	  Axis<MyTreeSegment> *axis = *I;
-	  if (lastSegment)
-	    makeAxis(*axis, *lastSegment);
-	  I++;	    
-	}
-      }
-      if (Bud<MyTreeSegment>* mybud = dynamic_cast<Bud<MyTreeSegment>*>(*I))
-	{	 
-	}
-      I++;
-    }
-}
 
 
 

@@ -119,11 +119,12 @@ int main(int argc, char *argv[])
   InsertTreeCompartment(*axis3, ts);
   
   
- 
+  
   tree.UpdateWaterFlow(1.0);
   tree.UpdateWaterFlow(1.0); 
   tree.UpdateWaterFlow(1.0); 
   tree.UpdateWaterFlow(1.0);
+  
 }
 
 
