@@ -158,7 +158,7 @@ auvaursi: l2c  $(AUVAURSIOBJ) $(LIB1) $(LIB2) $(LIB3)  $(LIB4) $(LIB5) $(LIB6)
 
 gnuauvaursi:
 	make "CCC=g++" "CCCFLAGS=-c" "OPTIMIZE=-g" \
-             "AR=ar"  "ARFLAGS=rvs" "LIBD=lib32" "LSYS=A-UvaUrsiSandpit.L" auvaursi
+             "AR=ar"  "ARFLAGS=rvs" "LIBD=lib32" "LSYS=$(LSYS)" auvaursi
 
 l2c:	
 	(cd ../L2C; make "CCC=$(CCC)" "CCCFLAGS=$(CCCFLAGS)" "OPTIMIZE=$(OPTIMIZE)" \
@@ -190,6 +190,7 @@ changelog:
 	rcs2log . > ChangeLog
 clean:
 	rm -rf *.o  Makedepend core ii_files
+	(cd ../lsys; make clean)
 distclean: clean
 	rm -rf  l2lignum $(LIB4) Makedepend
 	(cd ../../Graphics; make distclean)
