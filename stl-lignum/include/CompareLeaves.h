@@ -63,7 +63,7 @@ namespace Lignum{
   template<class TS, class BUD, class SHAPE> TreeCompartment<TS,BUD>* 
   ForEachLeafCompare<TS,BUD,SHAPE>::operator()(TreeCompartment<TS,BUD>* tc)const
   {
-    if (HwTreeSegment<TS,BUD,SHAPE>* ts = dynamic_cast<HwTreeSegment<TS,BUD,SHAPE>*>(tc)){
+    if (TS* ts = dynamic_cast<TS*>(tc)){
       list<BroadLeaf<SHAPE>*>& ls = GetLeafList(*ts);
       for_each(ls.begin(),ls.end(),HwTreeSegmentLeafCompare<TS,BUD,SHAPE>(GetTree(*ts)));
     }
@@ -83,7 +83,7 @@ namespace Lignum{
   template<class TS,class BUD,class SHAPE> TreeCompartment<TS,BUD>*
   ForEachLeafIntersect<TS,BUD,SHAPE>::operator()(TreeCompartment<TS,BUD>* tc)const
   {
-    if (HwTreeSegment<TS,BUD,SHAPE>* ts = dynamic_cast<HwTreeSegment<TS,BUD,SHAPE>*>(tc)){
+    if (TS* ts = dynamic_cast<TS*>(tc)){
       list<BroadLeaf<SHAPE>*>& ls = GetLeafList(*ts);
       for_each(ls.begin(),ls.end(),HwTreeSegmentLeafIntersect<SHAPE>(GetLeaf(*this),
 								     GetFirmament(GetTree(*ts))));
@@ -101,6 +101,7 @@ namespace Lignum{
   template<class SHAPE>
   void HwTreeSegmentLeafIntersect<SHAPE>::operator()(BroadLeaf<SHAPE>* l)
   {
+    cout << "IN HwTreeSegmentLeafIntersect" << endl;
     vector<double> v(3);
     for (int i = 0; i < f.numberOfRegions();i++){
       f.diffuseRegionRadiationSum(i,v); //direction of the light beam
