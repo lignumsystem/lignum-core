@@ -24,32 +24,35 @@ $Roll(\alpha)$ to  rotate orientation of  the turtle around  $\vec U$,
 $\vec  L$  and $\vec  H$  by  $\alpha$.   One special  module  $Start$
 corresponds to the axiom.
 
+
+\section{Scots pine: integrating L and LIGNUM}\label{sec:pine}
+
 To model tree structures with L as in LIGNUM let the module $F$ denote
 tree segment and designate module  $B$ for bud.  Given the modules for
 turtle  graphics  and  branching  we  can now  describe  topology  and
 geometry of  the tree structures  of LIGNUM (Eq.   \ref{eq:tree}) with
-rules of  L (Eq.  \ref{eq:r3}). To  accommodate L with  LIGNUM we need
-first  to construct  an  algorithm  that translates  strings  of L  to
-structural  units  of  LIGNUM  (Section \ref{sec:pine}).   Second,  as
-metabolism  implemented  in  LIGNUM   will  act  on  structural  units
+rules of  the language  L (Eq.  \ref{eq:r3}).   To accommodate  L with
+LIGNUM we need first to construct an algorithm that translates strings
+of L to structural units of LIGNUM (Section \ref{sec:LToLignum}).  Second,
+as  metabolism implemented  in  LIGNUM will  act  on structural  units
 (segments  and  buds  most  notably)  and produces  changes  in  their
 physiological states,  in their dimensions  and in their  positions in
 space  accordingly, this  information  must be  transferred to  turtle
-symbols  and  module  $B$   (Section  \ref{sec:bearberry})  as  it  is
-necessary in rewriting.
+symbols  and module  $B$  as  it is  necessary  in rewriting  (Section
+\ref{sec:LignumToL}).
 
-\section{Scots pine: integrating L and LIGNUM}\label{sec:pine}
 We present  an algorithm  that translates strings  of L  to structural
 units  of LIGNUM  with  the aid  an  example on  Scots  pine. We  have
 programmed in  language L the architectural development  of Scots pine
 as it  is approximately in LIGNUM  simulations of \citet{perttunen:96,
-perttunen:98}; the L program is shown in Appendix \ref{sec:L1}.  In it
-the module $B(A,L)$ represents a bud. In each iteration the apical bud
-($A =  1$) moves  forward of length  $L$ and  forks off four  new side
-branches.  The branches ($A > 1  $) are similar but only two more side
-branches  are  created.   Branching  stops  after third  order  ($A  >
-3$).  When the  development starts  from main  axis consisting  of one
-segment, branching point and bud, the string after two iterations is
+  perttunen:98}; the L program  is shown in Appendix \ref{sec:L1}.  In
+the program  the module $B(A,L)$  represents a bud. In  each iteration
+the apical  bud ($A =  1$) moves forward  of length $L$ and  forks off
+four new side  branches.  The branches ($A > 1$)  are similar but only
+two more side branches are created.  Branching stops after third order
+($A > 3$).   When the development starts from  main axis consisting of
+one segment, branching point and  bud, the string after two iterations
+is
 
 \begin{equation}\label{eq:pine2}
 F\;[] F [F[B][B]B]\:[F[B][B]B]\:[F[B][B]B]\:[F[B][B]B]\; F \;[B][B][B][B]\; B
@@ -59,7 +62,7 @@ where symbol [ denotes $SB()$ and ] denotes $EB()$, modules for turtle
 rotations are not shown, and the  arguments of the modules $B$ and $F$
 are dropped.
 
-\subsection{From L to LIGNUM}\label{sec:LtoLignum}
+\subsection{From L to LIGNUM}\label{sec:LToLignum}
 
 We can now  outline a straightforward algorithm to  convert the string
 of symbols in L to structural units in LIGNUM using Eq. \ref{eq:pine2}
@@ -96,16 +99,17 @@ tree compartments in LIGNUM.
 
 The structural development of the tree described in L does not require
 the regeneration  of LIGNUM representation of trees  (deleting the old
-tree and  creating a new one)  after each derivation.  In  our case we
-can assume  that an L-system indeed generates  alternating sequence of
-tree segments, branching points  and terminating buds and the terminal
-buds only  generate new structural units.  Thus  after each derivation
-it is possible to match  the existing string and LIGNUM representation
-and  insert the  new structural  units in  the axis  lists  before the
-terminating buds whose positions and orientations will be updated.
+tree and  creating a new  one) after each derivation.   The algorithms
+assumes that an L-system indeed generates alternating sequence of tree
+segments, branching points and  terminating buds and the terminal buds
+only generate  new structural units.   The algorithm fails if  this is
+not the case.  Thus after each  derivation it is possible to match the
+existing  string   and  LIGNUM  representation  and   insert  the  new
+structural units in  the axis lists before the  terminating buds whose
+positions and orientations will be updated.
 
 
-\subsection{From LIGNUM to L}\label{LignumToL}
+\subsection{From LIGNUM to L}\label{sec:LignumToL}
 
 Because architectural  development of a tree is  defined with L-string
 we can assume LIGNUM does not have to change the topology of the tree.
@@ -125,13 +129,13 @@ segment in  LIGNUM the conversion algorithm can  implicitly update the
 value of $s$ using the length of the corresponding tree segment.
 
 But the parameters for module $B$ are model specific.  Thus explicitly
-given  the  (C++)  type  of  the  module  parameters  for  $B$,  their
-assignment statements  and their  variable names (meaning)  in LIGNUM,
-the  conversion algorithm  updates the  module parameter  values using
-corresponding variable values from the associated bud when the results
-of  computations in  LIGNUM are  passed to  L-system.  (Similarly, the
+given  the (C++)  type of  the parameters  for the  module  $B$, their
+assignment statements and their  variable names (meaning) in LIGNUM to
+the  conversion algorithm  updates the  module $B$'s  parameter values
+using corresponding  variable values  from the associated  bud passing
+the results  of computations in  LIGNUM to L-system.   (Similarly, the
 values of  parameters of  module $B$ can  be assigned to  variables of
-corresponding bud in LIGNUM in Section \ref{sec:LtoLignum}).
+corresponding bud in LIGNUM in Section \ref{sec:LToLignum}).
 
 \subsection{Two-way communication in Scots pine simulation}
 
