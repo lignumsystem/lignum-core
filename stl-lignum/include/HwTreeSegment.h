@@ -21,7 +21,6 @@ class HwTreeSegment:public TreeSegment<TS,BUD>
   friend void InsertLeaf(HwTreeSegment<TS,BUD>& ts, BroadLeaf* l);
   friend void InitializeForRadiation(HwTreeSegment<TS,BUD>& ts);
   friend int GetNumberOfLeaves(const HwTreeSegment<TS,BUD>& ts);
-  friend LGMdouble GetLeafArea(const HwTreeSegment<TS,BUD>& ts);
   friend LGMdouble SetLeafArea(HwTreeSegment<TS,BUD>& ts, const LGMdouble value);
   friend LGMdouble SetValue(const HwTreeSegment<TS,BUD>& ts, const LGMAD name, const LGMdouble value);
   friend LGMdouble GetValue(const HwTreeSegment<TS,BUD>& ts, const LGMAD name);

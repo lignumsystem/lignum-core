@@ -9,7 +9,8 @@ namespace Lignum{
   // Tree Attribute Double, Wm lisätty
   // Wr           dry weight of the roots
   enum LGMAD {A,age,LGMcollision,dof, dR, H,Hm,ip,lb,LM,LP,LWf,L,lw,M, omega,P,
-	      Qin,Qabs,R,Rf,Rh,RTop,sf,LGMstatus,sw,tauL,LGMtype,vi,Wf,Ws,Wh};
+	      Qin,Qabs,R,Rf,Rh,RTop,sf,LGMstatus,sw,tauL,LGMtype,vi,Wf,Ws,Wh,
+  Af};
 
   //  A       0   Area (of what?)
   //  age     1   age of object
@@ -38,6 +39,7 @@ namespace Lignum{
   //  Wf      24  foliage mass (kg C)
   //  Ws      25  mass of sapwood (kg C)
   //  Wh      26  mass of heartwood (kg C)
+  //  Af      27  area of foliage
 
 
   enum LGMFLOW { fin, fout, Pr, Wm };

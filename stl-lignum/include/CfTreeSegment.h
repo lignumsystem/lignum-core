@@ -21,6 +21,7 @@ public:
   LGMdouble Qabs;          //Amount of absorbed radiation (MJ) (during time step)
   METER Rf;               //Radius to foliage limit
   KGC Wf;                 //Foliage mass of the tree segment
+  LGMdouble sf;           //Specific foliage area (=foliage area(total)/weight)
 };
 
 
