@@ -601,32 +601,34 @@ namespace Lignum {
 
 		    if (size>0)
 		      {
-			// qin on tässä arvo vokseliboksin pinnalla
+			// qin is here the value on the surface of VoxelBox
 			LGMdouble qin = iop;
 
-			// Matka jonka säde kulkee boksin sisällä jolle arvoja 
-			// ollaan laskemassa
+			//The distance the beam travels inside this
+			//VoxelBox (from surface to middle)
+
 			LGMdouble inner_length = vec[0].l*2;
 
-			// vaimennuskerroin boksin läpi kulkiessa
+			//extinction coefficient on the way through VoxBox
 			LGMdouble ext2 = voxboxes[i1][i2][i3].extinction(inner_length);
 							
-			//säteilyn voimakkuus kun se tulee boksista ulos
+			//radiant intensity of the beam when it comes
+			//out of the VoxBox
 			LGMdouble qout = iop * ext2;
 
-			//ja vaimeneminen boksin sisällä
+			//and attenuation inside the VoxBox
 			voxboxes[i1][i2][i3].addQabs(qin - qout);
 							
-			// Nyt lasketaan vain keskipisteeseen, eli
-			// boksin saama säteily on se arvo joka
-			// saadaan boksin keskipisteestä.
+			//Now we calculate only to the mid point; the
+			//radiation the VoxBox receives is the one at
+			//the mid point.
+
 			LGMdouble ext = voxboxes[i1][i2][i3].extinction(inner_length/2.0);
 			iop = iop * ext;
 		      }
+		    //radiation coming to the VoxBox
+		    voxboxes[i1][i2][i3].addRadiation(iop); 
 
-		    voxboxes[i1][i2][i3].addRadiation(iop); //säteily
-							    //joka
-							    //tulee..
 						
 		  }
 	      }
