@@ -128,9 +128,6 @@ namespace Lignum {
     }
  
     void dumpTrees();
-    //Move drawing (visualization) to Grapichs
-    // void draw();
-    //void draw(bool blackBG);
  
     //Write voxel  boxes to file. If  'all' is true  write all boxes
     //else write only  boxes with foliage. By default  'all' is true
@@ -142,7 +139,7 @@ namespace Lignum {
     void writeVoxelSpaceContents();
     LGMdouble Xbox, Ybox, Zbox;
     int Xn, Yn, Zn;
-TMatrix3D<VoxelBox> voxboxes;
+    TMatrix3D<VoxelBox> voxboxes;
   private:
   
     vector<Tree<ScotsPineVisual,ScotsBud> *> vecScotspines;
