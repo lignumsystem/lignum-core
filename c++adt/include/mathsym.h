@@ -34,9 +34,17 @@ inline RADIAN neg_sin(RADIAN angle){return (RADIAN) -sin(angle);}
 inline RADIAN neg_cos(RADIAN angle){return (RADIAN) -cos(angle);}
 
 
-//useful mathematical random function implemented
+//Useful mathematical random function implemented
 //returns uniformally distributed random number [0.0,1.0]
+//Before use initialize with any negative number. 
 extern double ran3(int *seed);   
+
+//Gauss returns normal distribution random number N(m,s) using seed 'seed'. 
+//Algorithm implements Box-Muller method and uses ran3 to generate 
+//uniformly distributed random numbers [-1,1]. 
+//Thus before the  calls to gauss, ran3 must be initialized with seed < 0.
+//See Numerical Recipes for details.
+extern double gauss(double m, double s, int *seed);
 
 }//closing namespace cxxadt
 
