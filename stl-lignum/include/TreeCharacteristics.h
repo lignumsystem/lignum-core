@@ -207,6 +207,7 @@ namespace Lignum{
     list<double> segment_diameter_ls;
   };
     
+  //VI as a function of diameter 'd'
   inline double ViData::operator()(double d)const
   {
     list<double>::const_iterator maxj = NULL;
