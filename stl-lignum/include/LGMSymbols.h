@@ -8,11 +8,12 @@ namespace Lignum{
 
   // Tree Attribute Double, Wm lisätty
   // Wr           dry weight of the roots
-  enum LGMAD {A,Ah, Ahair,As,As0,age,api, LGMcollision,dof, dR, H,Hm,ip,lb,LM,LP,LWf,L,lw,M, omega,P,
-	      Qin,Qabs,R,Rf,Rh,Rhair,RTop,LGMstatus,sw,tauL,LGMtype,V,Vh,Vhair,Vs,vi,
-              Wf,Wr, Ws,Wh,Whair,Af};
+  enum LGMAD {A,Af,Ah, Ahair,As,As0,age,api, LGMcollision,dof, dR, H,Hf,Hm,ip,lb,LM,LP,LWf,L,lw,M, omega,P,
+	      Qin,Qabs,R,Rf,Rh,Rhair,RTop,Sa,LGMstatus,sw,tauL,LGMtype,V,Vh,Vhair,Vs,vi,
+              Wf,Wr, Ws,Wh,Whair};
 
   //  A       0   Segment area based on R (see GetValue)
+  //  Af          area of foliage
   //  Ah          Heartwood area
   //  Ahair       Root hair area
   //  As          Sapwood area
@@ -20,6 +21,7 @@ namespace Lignum{
   //  age     1   age of object
   //  dof     2   degree of filling?
   //  H       3   height of tree
+  //  Hf          height of foliage 
   //  Hm      4   ???
   //  ip      5   degree of interction
   //  lb      6   ???
@@ -37,8 +39,8 @@ namespace Lignum{
   //  Rf      18  radius of segment cylinder that contains also foliage (cofers)
   //  Rh      19  radius of heartwood
   //  Rhair       Radius including root hair 
-  //  Rtop    20  raqdiaus of segment at upper end
- 
+  //  Rtop    20  radius of segment at upper end
+  //  Sa          Surface area of the segment cylinder: 2*PI*R*L 
   //  sw      22  ????
   //  tauL    23  transmission coefficient of leaf (in direction of the ray of light)
   //  Wf      24  foliage mass (kg C)
@@ -46,7 +48,7 @@ namespace Lignum{
   //  Ws      25  mass of sapwood (kg C)
   //  Wh      26  mass of heartwood (kg C)
   //  Whair       mass of root hair (kg C)
-  //  Af      27  area of foliage
+
   //  vi          vigour index
   //  V           Segment volume based on R
   //  Vh          Heartwood volume
