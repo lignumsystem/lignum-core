@@ -1,46 +1,39 @@
-OS=IRIX64
-TARGET=$(OS).out/liblsys.a
-LSYSL= lsys.L
-LSYSSRC=lsys.cpp
-CPPSRC=
+CCC = CC -64 -LANG:std
+CCCFLAGS =   -c
+   
+AR = $(CCC) -ar
+ARFLAGS= -o
+ARFILE=liblsys.a
 
-OBJECTS=${CPPSRC:.cpp=.o}
+LSYSFILES= lsys.L
+SRC=${LSYSFILES:.L=.cpp}
+OBJ=${SRC:.cpp=.o}
 
-include Make.$(OS)
-CCC = CC -LANG:std
-ARCOMMAND =  $(CCC) -ar  
-ARCOMMANDFLAGS = -o 
+AR =  $(CCC) -ar  
+ARFLAGS = -o 
 
-INCDIRS= -I../Globals -I/usr/include -I../../c++adt/include -I../../stl-lignum/include
+INCLUDE= -I../Globals -I/usr/include -I../../c++adt/include -I../../stl-lignum/include
 
-$(TARGET): $(LSYSSRC) lsys.o
-	$(ARCOMMAND) $(ARCOMMANDFLAGS) $(TARGET) $(OBJECTS) lsys.o
+.SUFFIXES: .cpp .L
 
-$(LSYSSRC): $(LSYSL)
-	../L2C/IRIX64.out/l2c  $(LSYSL)  $(LSYSSRC)
+sinclude Makedepend
 
-lsys.o: $(LSYSSRC) 
-	$(CCC) $(CPPOPT) -I/usr/include $(INCDIRS) $(LSYSSRC)
-
+$(ARFILE): $(SRC) $(OBJ)
+	$(AR) $(ARFLAGS) $(ARFILE)  $(OBJ)
+.L.cpp:
+	../L2C/l2c  $< $@
+	$(CCC) $(OPTIMIZE) $(CCCFLAGS) $(INCLUDE)  $@
 .cpp.o:
-	$(CCC) $(CPPOPT) -I/usr/include $(INCDIRS) $<
+	$(CCC) $(CCCFLAGS) $(OPTIMIZE) $(INCLUDE)  $<
+l2c:
+	(cd ../L2C; make "CCC=$(CCC)" "CCCFLAGS=$(CCCFLAGS)" \
+         "OPTIMIZE=$(OPTIMIZE)" "AR=ar" "ARFLAGS=rv" $@)
 
-#$(LSYSSRC): ../L2C/lsys.i
-#	cp ../L2C/lsys.i $(LSYSSRC)
-
-#$(LSYSSRC): ../L2C/lsys.ii
-#cp ../L2C/lsys.ii $(LSYSSRC)
 clean:
-	-rm -f $(TARGET) $(OBJECTS) lsys.cpp lsys.o
-	-rm -f dependencies
-	touch dependencies
+	rm -rf $(OBJ) $(SRC)  ii_files
+distclean: clean
+	rm -rf  $(ARFILE) Makedepend 
+depend:	l2c $(SRC)
+	$(CCC) -M  $(INCLUDE) $(SRC)  > Makedepend	
 
 
-build:
-	make clean depend
-	make
-
-depend:
-	$(DEPEND) $(DEFINES) $(PLAT_DEFINES) $(INCDIRS) $(CPPSRC) > dependencies
-
-include dependencies
