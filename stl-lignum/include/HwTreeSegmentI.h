@@ -37,7 +37,8 @@ namespace Lignum{
       Firmament& f = GetFirmament(tt);
       int nr =  f.numberOfRegions();
       vector<LGMdouble> one(nr, 1.0);
-      list<BroadLeaf<S>*>& ll = GetLeafList(const_cast<HwTreeSegment<TS,BUD,S>&>(ts));
+      list<BroadLeaf<S>*>& ll = 
+	GetLeafList(const_cast<HwTreeSegment<TS,BUD,S>&>(ts));
       for(typename list<BroadLeaf<S>*>::iterator i = ll.begin();
 	  i != ll.end(); i++) {
 	SetValue(*i, LGAQabs, 0.0);
@@ -51,7 +52,8 @@ namespace Lignum{
   template<class TS, class BUD, class S>
     int GetNumberOfLeaves(const HwTreeSegment<TS,BUD,S>& ts)
     {
-      std::list<BroadLeaf<S>*>& leaf_list = GetLeafList(const_cast<HwTreeSegment<TS,BUD,S>&>(ts));
+      std::list<BroadLeaf<S>*>& leaf_list = 
+	GetLeafList(const_cast<HwTreeSegment<TS,BUD,S>&>(ts));
       if(leaf_list.empty()) {
 	return 0;
       }
@@ -64,7 +66,8 @@ namespace Lignum{
   template<class TS, class BUD, class S>
     void DropLeaves(HwTreeSegment<TS,BUD,S>& ts)
     {
-      std::list<BroadLeaf<S>*>& leaf_list = GetLeafList(const_cast<HwTreeSegment<TS,BUD,S>&>(ts));
+      std::list<BroadLeaf<S>*>& leaf_list = 
+	GetLeafList(const_cast<HwTreeSegment<TS,BUD,S>&>(ts));
       leaf_list.clear();
     }
 

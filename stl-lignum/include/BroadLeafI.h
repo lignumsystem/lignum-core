@@ -86,8 +86,10 @@ LGMdouble SetValue(BroadLeaf<SHAPE>& bl, const LGMAD name, const LGMdouble value
   LGMdouble old_value= GetValue(bl,name);
 
   if (name == LGAA)
-    //Given the true area of the leaf, set the shape area
-    bl.bla.shape.setArea(value/GetValue(bl,LGAdof));  
+    //Given the true area of the leaf, set the shape area, the scaling
+    //center is the petiole end
+    bl.bla.shape.setArea(value/GetValue(bl,LGAdof), 
+			 GetEndPoint(GetPetiole(bl)));  
 
   else if (name == LGAdof)
     bl.bla.degree_of_filling = value;
