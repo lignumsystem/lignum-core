@@ -27,13 +27,13 @@ public:
 template <class TS>
 class CountCompartmentsReverse{
 public:
-  void operator ()(int& id,TreeCompartment<TS>* ts)const;
+  int& operator ()(int& id,TreeCompartment<TS>* ts)const;
 };
 
 template <class TS>
 class MyExampleSignal{
 public:
-  void operator ()(int& id,TreeCompartment<TS>* ts)const;
+  TreeCompartment<TS>* operator ()(int& id,TreeCompartment<TS>* ts)const;
 };
 
 /*

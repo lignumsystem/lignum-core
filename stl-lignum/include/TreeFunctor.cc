@@ -77,7 +77,7 @@ int& CountCompartments<TS>::operator()(int& n,TreeCompartment<TS>* tc)const
 }
 
 template <class TS>
-void CountCompartmentsReverse<TS>::operator()(int& n,
+int& CountCompartmentsReverse<TS>::operator()(int& n,
 					      TreeCompartment<TS>* tc)const
 {
   if (Axis<TS>* myaxis =  dynamic_cast<Axis<TS>*>(tc)){
@@ -100,11 +100,12 @@ void CountCompartmentsReverse<TS>::operator()(int& n,
   //counting them all
   n+=1;
   cout << n << endl;
+  return n;
 }
 
-template <class TS>
-void MyExampleSignal<TS>::operator()(int& n,
-				     TreeCompartment<TS>* tc)const
+template <class TS> TreeCompartment<TS>* 
+MyExampleSignal<TS>::operator()(int& n,
+			        TreeCompartment<TS>* tc)const
 {
   if (Axis<TS>* myaxis =  dynamic_cast<Axis<TS>*>(tc)){
     cout << "Hello, I'm Axis ";
@@ -122,9 +123,10 @@ void MyExampleSignal<TS>::operator()(int& n,
 
   else
     cout << "Who am I??? ";
-  
+ 
   n+=1;
   cout << n << endl;
+  return tc;
 }
 
 
