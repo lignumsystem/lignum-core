@@ -26,6 +26,7 @@ using namespace cxxadt;
 #include <TreeSegment.h>
 #include <HwTreeSegment.h>
 #include <CfTreeSegment.h>
+#include <CreateLeaves.h>
 #include <Axis.h>
 #include <ConnectionMatrix.h>
 #include <FirmamentWithMask.h>
