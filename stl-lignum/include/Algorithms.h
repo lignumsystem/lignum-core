@@ -2,8 +2,10 @@
 #define ALGORITHMS_H
 
 #include <functional>
-#include <LGMdecl.h>
 #include <list>
+#include <LGMdecl.h>
+
+
 namespace Lignum{
 
 template <class TS,class BUD>
