@@ -3,6 +3,7 @@
 
 #include <Point.h>
 #include <PositionVector.h>
+#include <LGMSymbols.h>
 #include <LGMdecl.h>
 #include <TreeCompartment.h>
 
@@ -13,6 +14,7 @@ using namespace cxxadt;
 class BudAttributes{
 public:
   BudAttributes();
+  LGMdouble collision;      //Collision detected or not
   LGMdouble ip;             //Photosynthetic light ratio (shadiness)
   LGMdouble omega;          //Gravelius order
   LGMdouble type;           //dominant, apical, lateral etc.

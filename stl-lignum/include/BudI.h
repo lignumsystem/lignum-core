@@ -47,7 +47,10 @@ BranchingPoint<TS,BUD>& Bud<TS,BUD>::createBranchingPoint()const
 template <class TS,class BUD>   
 LGMdouble GetValue(const Bud<TS,BUD>& bud, const LGMAD name)
 {
-  if (name == omega)
+  if (name == LGMcollision){
+    return bud.ba.collision;
+  }
+  else if (name == omega)
     return bud.ba.omega;
 
   else if (name == ip)
@@ -61,12 +64,7 @@ LGMdouble GetValue(const Bud<TS,BUD>& bud, const LGMAD name)
 
   else{
     return GetValue(dynamic_cast<const TreeCompartment<TS,BUD>&>(bud), name);
-
-    //    cout << "Unknown attribute: " << name << endl;
-    //    cout << "Returning 0.0" << endl;
   }
-
-  //  return 0.0;
 }
 
 template<class TS, class BUD>
@@ -75,7 +73,10 @@ LGMdouble SetValue(Bud<TS,BUD>& bud, const LGMAD name, const LGMdouble value)
 
   LGMdouble old_value = GetValue(bud,name);
 
-  if (name == omega)
+  if (name == LGMcollision){    
+    bud.ba.collision = value;
+  }
+  else if (name == omega)
     bud.ba.omega = value;
 
   else if (name == ip)
@@ -88,9 +89,7 @@ LGMdouble SetValue(Bud<TS,BUD>& bud, const LGMAD name, const LGMdouble value)
     bud.ba.type = value;
 
   else{
-    //    cout << "Unknown attribute: " << name << endl;
-    //    cout << "Returning 0.0" << endl;
-        old_value = SetValue(dynamic_cast<TreeCompartment<TS,BUD>&>(bud), name,value);
+    old_value = SetValue(dynamic_cast<TreeCompartment<TS,BUD>&>(bud), name,value);
   }
 
   return old_value;
