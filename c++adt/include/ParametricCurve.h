@@ -16,9 +16,10 @@ public:
   ParametricCurve();
   ParametricCurve(const string& file_name);
   ParametricCurve(const vector<double>& v);
+  double operator()(double x)const{return eval(x);} 
   bool install(const string& file_name);
-  bool ok();
-  double eval(double x);
+  bool ok()const;
+  double eval(double x)const;
   string getFile()const{return file;}
 private:
   ParametricCurve& read_xy_file(const char *file_name);
