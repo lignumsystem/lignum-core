@@ -31,9 +31,9 @@ LGMdouble BracketFunction(LGMdouble& a, LGMdouble& b, LGMdouble& fa, LGMdouble& 
   b = GetValue(tree, lambda);
   
   // deltaiW
-  LGMdouble deltaiW = GetValue(tree, P) - GetValue(tree, M);  
+  LGMdouble deltaiW = GetValue(tree, LGAP) - GetValue(tree, M);  
 
-  debug_file << "photosynteesi: " << GetValue(tree, P) << endl;
+  debug_file << "photosynteesi: " << GetValue(tree, LGAP) << endl;
   debug_file << "Hengitys     : " << GetValue(tree, M) << endl;
   debug_file << "photosynteesi-hengitys: " << deltaiW << endl;	
   debug_file << "Kasvuun kuluva energia kun(lambda==0) " << wSum_Lambda0 << endl;
@@ -114,15 +114,15 @@ LGMdouble HwBracketFunction(LGMdouble& a, LGMdouble& b,
   b = GetValue(tree, lambda);
   
 
-  LGMdouble deltaiW = GetValue(tree, P) - GetValue(tree, M);  
+  LGMdouble deltaiW = GetValue(tree, LGAP) - GetValue(tree, M);  
   fa = deltaiW - wSum_Lambda0;
   
-  debug_file << "photosynteesi: " << GetValue(tree, P) << endl;
+  debug_file << "photosynteesi: " << GetValue(tree, LGAP) << endl;
   debug_file << "Hengitys     : " << GetValue(tree, M) << endl;
-  debug_file << "photosynteesi-hengitys: " << GetValue(tree, P)-GetValue(tree, M) << endl;	
+  debug_file << "photosynteesi-hengitys: " << GetValue(tree, LGAP)-GetValue(tree, M) << endl;	
 
   debug_file << endl << endl << "uusi kasvu  deltaiW(0)="<< deltaiW << '\n';
-  debug_file << "P=" << GetValue(tree, P) << '\n';
+  debug_file << "P=" << GetValue(tree, LGAP) << '\n';
   debug_file << "M=" << GetValue(tree, M) << '\n';
 
   AsIni = 0.0;
@@ -220,7 +220,7 @@ LGMdouble HwZbrent(LGMdouble x1,LGMdouble x2,LGMdouble fa, LGMdouble fb, LGMdoub
   LGMdouble identity = 0.0;
   CollectDWAfterGrowth<TS,BUD> collectDW;
 
-  LGMdouble deltaiW = GetValue(tree,P)-GetValue(tree,LGAM); // - wSum_LambdaO;
+  LGMdouble deltaiW = GetValue(tree,LGAP)-GetValue(tree,LGAM); // - wSum_LambdaO;
     
   fc=fb;
   for (iter=1;iter<=ITMAX;iter++) 
@@ -381,7 +381,7 @@ LGMdouble Zbrent(LGMdouble x1,LGMdouble x2,LGMdouble fa, LGMdouble fb, LGMdouble
   CollectNewCfFoliageMass<TS,BUD> collectNFM;
   sum_nfol = Accumulate(tree,  sum_nfol, collectNFM);
 
-  LGMdouble deltaiW = GetValue(tree,P)-GetValue(tree,LGAM); // - wSum_LambdaO - (sum_nfol * a_r);
+  LGMdouble deltaiW = GetValue(tree,LGAP)-GetValue(tree,LGAM); // - wSum_LambdaO - (sum_nfol * a_r);
   
   // **********************
   fc=fb;
@@ -519,7 +519,7 @@ bool AdjustIncrementZbrent(Tree<TS,BUD>& tree)
   //The case deltaW(0) > P - M arises in the cases 1) P - M < 0
   // 2) sapwood senescence is high and dry matter investments are needed to counteract
   //it, i.e. deltaW(0) = large.
-  LGMdouble balance = GetValue(tree, P) - GetValue(tree, M);
+  LGMdouble balance = GetValue(tree, LGAP) - GetValue(tree, M);
   if(balance <= 0.0) 
   {
 		cerr << "M>P, growth not possible" << endl;
@@ -556,7 +556,7 @@ bool AdjustIncrementHwZbrent(Tree<TS,BUD>& tree)
   //The case deltaW(0) > P - M arises in the cases 1) P - M < 0
   // 2) sapwood senescence is high and dry matter investments are needed to counteract
   //it, i.e. deltaW(0) = large.
-  LGMdouble balance = GetValue(tree, P) - GetValue(tree, M);
+  LGMdouble balance = GetValue(tree, LGAP) - GetValue(tree, M);
   if(balance <= 0.0) 
   {
 		cerr << "M>P, growth not possible" << endl;

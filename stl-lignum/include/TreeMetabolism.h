@@ -22,7 +22,7 @@ namespace Lignum{
     LGMdouble operator () (LGMdouble& cumPh, TreeCompartment<TS,BUD>* tc)const
     {
       if (TS* tts = dynamic_cast<TS*>(tc)){
-	LGMdouble PP = GetValue(*tts, P);
+	LGMdouble PP = GetValue(*tts, LGAP);
 	cumPh += PP;
       }
       return cumPh;

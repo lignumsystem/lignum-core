@@ -17,7 +17,7 @@ bool Growth(Tree<TS,BUD>& tree, F& f)
 {	
 	//Structural growth possible only if photosynthesis > respiration
 
-	LGMdouble photo = GetValue(tree, P);
+	LGMdouble photo = GetValue(tree, LGAP);
 	LGMdouble respi = GetValue(tree, M);
 	
 	LGMdouble P_avail = photo - respi;
@@ -179,7 +179,7 @@ bool GrowthOfWhiteBirch<TS,BUD>::operator()(Tree<TS,BUD>& tree)
 	file_out_pl << "edellisen kierroksen lambda " << GetValue(tree, lambda) << endl;
 	file_out_pl << "KULUNUT KASVUENERGIA " << wSum_Lambda0 << endl;
 	*/
-	LGMdouble photo = GetValue(tree, P);
+	LGMdouble photo = GetValue(tree, LGAP);
 	LGMdouble respi = GetValue(tree, M);
 	LGMdouble P_avail = photo - respi;
 

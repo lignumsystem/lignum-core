@@ -27,7 +27,7 @@ LGMdouble UpdateTreePhotosynthesis(Tree<TS,BUD>& tree)
       LGMdouble initPh = 0.0;
       LGMdouble sumPh;
       sumPh = Accumulate(tree, initPh, SumTreePhotosynthesis<TS,BUD>());
-      SetValue(tree, P, sumPh);
+      SetValue(tree, LGAP, sumPh);
       
       return sumPh;
 }

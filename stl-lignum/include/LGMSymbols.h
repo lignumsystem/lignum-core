@@ -15,7 +15,7 @@ namespace Lignum{
   // Wr           dry weight of the roots
   enum LGMAD {LGAA,LGAAf,LGAAh, LGAAhair,LGAAs,LGAAs0,LGAage,api, LGAcollision,
               LGADbase,LGADbh,LGAdof, dR, LGAH,LGAHf,Hm,LGAip,
-              lb,LM,LP,LWf,LGAL,lw,LGAM, LGAMaxD,LGAomega,P,
+              lb,LM,LP,LWf,LGAL,lw,LGAM, LGAMaxD,LGAomega,LGAP,
 	      Qin,Qabs,R,Rf,Rh,Rhair,RTop,Sa,LGMstatus,sw,tauL,LGMtype,V,Vh,
 	      Vhair,LGAvi,LGAVs,LGAWf, LGAWr, LGAWs, LGAWh, LGAWhair};
 

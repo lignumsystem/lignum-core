@@ -27,7 +27,7 @@ void Tree<TS,BUD>::photosynthesis()
   LGMdouble nit = GetValue(*this, nitroLeaves);
   sumPh = sumPh * tf.nitroMaxPhotosynthesis(nit);
 
-  SetValue(*this, P, sumPh);
+  SetValue(*this, LGAP, sumPh);
 
 }
 

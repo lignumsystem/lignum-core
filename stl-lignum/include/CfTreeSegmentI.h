@@ -37,7 +37,7 @@ LGMdouble GetValue(const CfTreeSegment<TS,BUD>& ts, const LGMAD name)
   else if (name == LGAHf)
     return ts.cftsa.Hf;
 
-  else if (name == P)
+  else if (name == LGAP)
     return ts.cftsa.P;
 
   else if (name == Qin)
@@ -74,7 +74,7 @@ LGMdouble SetValue(CfTreeSegment<TS,BUD>& ts, const LGMAD name, const LGMdouble 
   else if (name == LGAHf)
     ts.cftsa.Hf = value;
   
-  else if (name == P)
+  else if (name == LGAP)
     ts.cftsa.P = value;
   
   else if (name == Qin)

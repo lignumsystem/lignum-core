@@ -114,11 +114,11 @@ namespace Lignum{
 	  value += GetValue(**I, LGAWf);
 	return value;
       }
-      else if (name == P){
+      else if (name == LGAP){
 	std::list<BroadLeaf<S>*>& leaf_list = GetLeafList(const_cast<HwTreeSegment<TS,BUD,S>&>(ts));
 	typename std::list<BroadLeaf<S>*>::iterator I;
 	for(I = leaf_list.begin(); I != leaf_list.end(); I++)
-	  value += GetValue(**I, P);
+	  value += GetValue(**I, LGAP);
 	return value;
 	}
       else if (name == Qin){
