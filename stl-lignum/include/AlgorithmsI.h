@@ -174,8 +174,6 @@ TreeCompartment<TS,BUD>*
 PropagateUpTreeCompartments<TS,BUD,T,BinOp>::operator()(T& id,
 					     TreeCompartment<TS,BUD>* tc)const
 {
-	#ifdef _MSC_VER //cvs
-	#else
   if (TS* ts = dynamic_cast<TS*>(tc))
     op1(id,ts);
 
@@ -202,7 +200,6 @@ PropagateUpTreeCompartments<TS,BUD,T,BinOp>::operator()(T& id,
       (*this)(id_new,*first++);
     }
   }
-#endif
   return tc;
 }
 
@@ -245,7 +242,8 @@ PropagateUpTreeCompartments2<TS,BUD,T,BinOp1,BinOp2>::operator()(T& id,
       (*this)(id_new,*first++);
     }
   }
-
+  else
+    cout << "PropagateUp 2 Who am i" <<endl;
   return tc;
 }
 
@@ -298,7 +296,7 @@ void PropagateUp(Tree<TS,BUD>& tree, T& init, const BinOp1 op1,  const BinOp2 op
 {
   PropagateUpTreeCompartments2<TS,BUD,T,BinOp1,BinOp2> op3(op1,op2);
   Axis<TS,BUD>& axis = GetAxis(tree);
-  op2(init,&axis);
+  op3(init,&axis);
 }
 
 }//closing namespace Lignum
