@@ -2,7 +2,7 @@
 #include <mathsym.h>
 using namespace cxxadt;
 #include <system-headers.h>
-#include <lsystem.h>
+#include <lsys.h>
 
 
 const int D    = 1.0; //dominant    apical

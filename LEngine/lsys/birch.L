@@ -10,7 +10,7 @@ using namespace cxxadt;
 open Birch;
 
 //Defines the lsystem rewriting process. 
-#include <lsystem.h>
+#include <lsys.h>
 
 const double a0 = 25.0*2.0*PI_VALUE/360.0;
 const double a1 = 25.0*2.0*PI_VALUE/360.0;

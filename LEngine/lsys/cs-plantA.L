@@ -5,7 +5,7 @@ using namespace cxxadt;
 
 open CSPlantA;
 
-#include <lsystem.h>
+#include <lsys.h>
 
 module O();
 module I();

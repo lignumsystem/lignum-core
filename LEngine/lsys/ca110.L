@@ -10,7 +10,7 @@ using namespace cxxadt;
 open ca110;
 
 //Defines the lsystem rewriting process. 
-#include <lsystem.h>
+#include <lsys.h>
 
 module X();
 module O();

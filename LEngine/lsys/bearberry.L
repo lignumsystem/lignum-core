@@ -2,7 +2,7 @@
 #include <mathsym.h>
 using namespace cxxadt;
 
-//Defines headers necessary for lsystem.h
+//Defines headers necessary for lsys.h
 #include <lengine.h>
 
 //Start the namespace Bearberry
@@ -10,7 +10,7 @@ using namespace cxxadt;
 open Bearberry;
 
 //Defines lsystem rewriting process 
-#include <lsystem.h>
+#include <lsys.h>
 
 
 const int D    = 1.0; //dominant    apical

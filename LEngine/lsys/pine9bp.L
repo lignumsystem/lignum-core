@@ -10,7 +10,7 @@ using namespace cxxadt;
 open Pine;
 
 //Defines the lsystem rewriting process. 
-#include <lsystem.h>
+#include <lsys.h>
 
 const double d1 = 0.8;
 const double d2 = 0.6;

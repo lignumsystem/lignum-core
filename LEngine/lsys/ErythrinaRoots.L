@@ -32,7 +32,7 @@ inline pair<double,double> RandomRollAndPitch(double d,int RAMorAXE)
 
 open Erythrina;
 
-#include <lsystem.h>
+#include <lsys.h>
 
 
 const int STEPS=30;
