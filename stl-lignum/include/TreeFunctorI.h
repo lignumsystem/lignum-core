@@ -812,7 +812,7 @@ namespace Lignum{
 	  foliage = 100.0;
       }
       //Collect foliage
-      if (TS* ts = dynamic_cast<TS*>(tc)){
+      else if (TS* ts = dynamic_cast<TS*>(tc)){
 	foliage = foliage + GetValue(*ts,LGAWf);
       }
       //If axis received no foliage it can be deleted.
