@@ -44,12 +44,15 @@ void FirmamentWithMask::setMask(int incl_index,double percentage)
     diffuseRad[incl_index][j] = diffuseRad[incl_index][j]*((100.0-percentage)/100.0);
   }
 
+  cout << "BEFORE: " <<diffuseRadBall << endl;
+
   diffuseRadBall = 0.0;
 
-  vector<double> radiation_direction;
+  vector<double> radiation_direction(3);
   for (j = 0; j < numberOfRegions(); j++){
     diffuseRadBall += diffuseRegionRadiationSum(j,radiation_direction);
   }
+  cout << "AFTER: " << diffuseRadBall << endl;
 }
 
 } //clsoing namespace sky
