@@ -13,9 +13,14 @@ ParametricCurve::ParametricCurve(const string& file_name)
 }
 
 ParametricCurve::ParametricCurve(const vector<double>& v1)
-:v(v1)
+  :v(v1)
 {
   num_of_elements = v1.size();
+}
+
+ParametricCurve::ParametricCurve(const ParametricCurve& pc)
+  :v(pc.v),file(pc.file),num_of_elements(pc.num_of_elements)
+{
 }
 
 bool ParametricCurve::install(const string& file_name)
