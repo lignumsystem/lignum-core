@@ -101,11 +101,11 @@ class Tree: public Lignum::TreeCompartment<TS,BUD>{
   friend LGMdouble GetValue(const Tree<TS,BUD>& tree, const LGMTD name);
   friend LGMdouble SetValue(Tree<TS,BUD>& tree, const LGMTD name, const LGMdouble value);
   friend CString GetTreeInitializationFile(Tree<TS,BUD>& tree);
+  friend Firmament& GetFirmament(Tree<TS,BUD>& tree);
 public:
   Tree();
   Tree(const Point<METER>& p, const PositionVector& d);
   void UpdateWaterFlow(LGMdouble time, const ConnectionMatrix<TS,BUD> &cm);
-  sky::Firmament* getFirmament();
 private:
   LGMdouble CountFlow(TreeSegment<TS,BUD> &in, TreeSegment<TS,BUD> &out);
   TreeAttributes ta;

@@ -91,9 +91,9 @@ LGMdouble Tree<TS,BUD>::CountFlow(TreeSegment<TS,BUD> &in, TreeSegment<TS,BUD> &
 }
 
 template <class TS,class BUD>
-Firmament* Tree<TS,BUD>::getFirmament()
+Firmament& GetFirmament(Tree<TS,BUD>& tree)
 {
-  return &f;
+  return tree.f;
 }
 
 
@@ -361,6 +361,15 @@ template<class TS, class BUD>
 CString GetTreeInitializationFile(Tree<TS,BUD>& tree) {
   return tree.tif.treeFile;
 }
+
+
+//  template <class TS,class BUD>
+//  Firmament& GetFirmament(const Tree<TS,BUD>& tree) {
+//    return tree.f;
+//  }
+
+
+
 
 } //close namespace Lignum
 
