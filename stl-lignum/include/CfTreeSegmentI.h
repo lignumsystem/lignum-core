@@ -8,22 +8,22 @@ CfTreeSegment<TS,BUD>::CfTreeSegment(const Point& p, const PositionVector& d, co
 			     const METER l, const METER r, const METER rn, Tree<TS,BUD>* t)
   :TreeSegment<TS,BUD>(p,d,go,l,r,rn,t)
   {
-  //compute the radius to foliage limit (Rf)
-  //the given parameters are needle length (nl) and the
-  //needle angle (na)
-  //Rf = hf + tsa.R, where hf is height of the foliage (hf = nl * sin(na))
-  LGMdouble needle_length = GetValue(*t,nl);
-  LGMdouble needle_angle = GetValue(*t,na);
-  SetValue(*this,Rf,needle_length * sin(needle_angle)+ 
-		      GetValue(*this,R));
+    //compute the radius to foliage limit (Rf)
+    //the given parameters are needle length (nl) and the
+    //needle angle (na)
+    //Rf = hf + tsa.R, where hf is height of the foliage (hf = nl * sin(na))
+    LGMdouble needle_length = GetValue(*t,nl);
+    LGMdouble needle_angle = GetValue(*t,na);
+    SetValue(*this,Rf,needle_length * sin(needle_angle) + GetValue(*this,R));
 
-  //compute the initial mass of the foliage
-  //1. compute the surface area (sa) of the cylinder representing foliage
-  LGMdouble sa =  2.0 * PI_VALUE * GetValue(*this,Rf) * GetValue(*this,L);
-  //2. the mass of the foliage (Wf = sa * af) 
-  LGMdouble wf =  sa * GetValue(*t,af);
-  SetValue(*this,Wf,wf);
-
+    //Set the initial heartwood radius 
+    SetValue(*this,Rh,sqrt((GetValue(*t,xi)*GetValue(*this,A))/PI_VALUE));
+    //compute the initial mass of the foliage
+    //1. compute the surface area (sa) of the cylinder representing foliage
+    LGMdouble sa =  2.0 * PI_VALUE * GetValue(*this,Rf) * GetValue(*this,L);
+    //2. the mass of the foliage (Wf = sa * af) 
+    LGMdouble wf =  sa * GetValue(*t,af);
+    SetValue(*this,Wf,wf);
   }
 
 
