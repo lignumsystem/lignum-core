@@ -21,9 +21,9 @@ namespace cxxadt{
       fb = f(b);
       if (fa*fb < 0.0) return fb;
     }
-    cout << "Max iterations " << I
+    cerr << "Max iterations " << I
 	 << " exceeded in BracketFunctionForward:" << endl;
-    cout << "Returning: " << fb << endl;
+    cerr << "Returning: " << fb << endl;
     return fb;
   }
 
