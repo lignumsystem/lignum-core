@@ -33,15 +33,15 @@ int main(int argc, char *argv[])
   
   //using explicitely Tree from  namespace Lignum;
   Tree<MyHwTreeSegment,MyHwBud> hw_tree(Point(0,0,0),
-				      PositionVector(0,0,1.0));
+					PositionVector(0,0,1.0));
   //by default the tree is from namespace Lignum
   Tree<MyCfTreeSegment,MyCfBud> cf_tree(Point(0,0,0),
-				      PositionVector(0,0,1.0));
-
+					PositionVector(0,0,1.0));
+  cout << "Created Hw and Cf trees" << endl;
   FTree<FirmamentWithMask,MyCfTreeSegment,MyCfBud> ftree1(Point(0,0,0),
-							PositionVector(0,0,1.0));
+							  PositionVector(0,0,1.0));
   FTree<Firmament,MyCfTreeSegment,MyCfBud> ftree2(Point(0,0,0),
-						PositionVector(0,0,1.0));
+						  PositionVector(0,0,1.0));
 
   Forest f;
 
@@ -50,6 +50,7 @@ int main(int argc, char *argv[])
    
   string clarg,empty;
 
+  cout << "Parse Command Line" << endl;
   clarg = ParseCommandLine(argc,argv,"-configure");
   if (clarg != empty){
     InitializeTree<MyHwTreeSegment,MyHwBud> init_hw(clarg,VERBOSE);
@@ -297,6 +298,16 @@ int main(int argc, char *argv[])
 
    ForEach<Tree<MyCfTreeSegment,MyCfBud> >(f,EvaluateCollisionForAllBuds<MyCfTreeSegment,MyCfBud>());
    ForEach<Tree<MyHwTreeSegment,MyHwBud> >(f,EvaluateCollisionForAllBuds<MyHwTreeSegment,MyHwBud>());
+
+   LGMdouble foliage = 0;
+   cout << "Testing DeleteDeadBranches CfTree" << endl;
+   AccumulateDown(cf_tree,foliage,DeleteDeadBranches<MyCfTreeSegment,MyCfBud>());
+   cout << "Testing DeleteDeadBranches CfTree done" << endl;
+   cout << "Testing DeleteDeadBranches HwTree" << endl;
+   AccumulateDown(hw_tree,foliage,DeleteDeadBranches<MyHwTreeSegment,MyHwBud>());
+   cout << "Testing DeleteDeadBranches HwTree done" << endl;
+
+   return 0;
    
 }
 
