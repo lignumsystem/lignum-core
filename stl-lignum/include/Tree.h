@@ -4,8 +4,8 @@
 #include <numeric>
 #include <list>
 #include <stdlib.h>
-#include <iostream.h>
-#include <stream.h>
+#include <iostream>
+using namespace std;
 
 #include <string>
 #include <ParametricCurve.h>

@@ -1,5 +1,5 @@
 #include <stdlib.h>
-#include <iostream.h>
+#include <iostream>
 #include <list>
 #include <algorithm>
 #include <MyTreeSegment.h>
@@ -7,6 +7,7 @@
 #include <Tree.h>
 #include <Shading.h>
 
+using namespace std;
 using namespace Lignum;
 using namespace sky;
 

@@ -1,7 +1,7 @@
 #ifndef TREEFUNCTOR_H
 #define TREEFUNCTOR_H
 
-#include <iostream.h>
+#include <iostream>
 
 #include <TreeCompartment.h>
 #include <Algorithms.h>

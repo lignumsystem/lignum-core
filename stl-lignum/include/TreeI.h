@@ -312,7 +312,7 @@ FirmamentWithMask& GetFirmament(Tree<TS,BUD>& tree) {
 
 #ifdef TREE
 #include <stdlib.h>
-#include <iostream.h>
+#include <iostream>
 
 int main()
 {

@@ -35,9 +35,9 @@ class Axis: public TreeCompartment<TS,BUD>{
   template <class TS1,class BUD1>
   friend void InsertTreeCompartment(Axis<TS1,BUD1>& axis, TreeCompartment<TS1,BUD1>* ts);
   template <class TS1,class BUD1>
-  friend TreeCompartment<TS,BUD>* GetFirstTreeCompartment(Axis<TS,BUD>& axis);
+  friend TreeCompartment<TS1,BUD1>* GetFirstTreeCompartment(Axis<TS1,BUD1>& axis);
   template <class TS1,class BUD1>
-  friend TreeSegment<TS, BUD>* GetLastTreeSegment(Axis<TS,BUD>& axis);
+  friend TreeSegment<TS1, BUD1>* GetLastTreeSegment(Axis<TS1,BUD1>& axis);
 
 #endif // _MFC_VER
 
