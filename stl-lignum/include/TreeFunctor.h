@@ -3,6 +3,8 @@
 
 #include <Tree.h>
 
+//A functor to print out the datatype
+//of a tree compartment
 template <class TS>
 class DisplayType{
 public:

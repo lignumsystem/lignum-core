@@ -1,6 +1,8 @@
 #include <TreeFunctor.h>
 #include <iostream.h>
 
+//Use built-in operator dynamic_cast
+//to resolve the data_type of a tree compartment
 template <class TS>
 void DisplayType<TS>::operator ()(TreeCompartment<TS>*tc)
 {
