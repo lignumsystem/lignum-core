@@ -4,8 +4,6 @@
 #include <fstream>
 #include <Lignum.h>
 
-
-
 struct VisualCube
 {
   LGMdouble x,y,z;
@@ -13,7 +11,6 @@ struct VisualCube
   float areaden;
   bool ready;
 };
-
 
 namespace Lignum {
 
@@ -24,11 +21,11 @@ namespace Lignum {
   {
 	
     template <class TS,class BUD>
-    friend void dumpSegment(VoxelBox &b, const CfTreeSegment<TS,BUD>& ts, 
+      friend void dumpSegment(VoxelBox &b, const CfTreeSegment<TS,BUD>& ts, 
 			    int num_parts);
 
     template <class TS,class BUD>
-    friend void setSegmentQabs(VoxelBox &b, CfTreeSegment<TS,BUD>& ts, 
+      friend void setSegmentQabs(VoxelBox &b, CfTreeSegment<TS,BUD>& ts, 
 			       int num_parts);
 
   public:
@@ -72,6 +69,10 @@ namespace Lignum {
     friend ostream &operator << (ostream& os, VoxelBox &b);
 
     LGMdouble S(LGMdouble phi, LGMdouble sf, LGMdouble Wf, LGMdouble r, LGMdouble l);
+  public:
+    // returns the foliage mass of the voxel box
+    LGMdouble getFoliageMass(void) { return needleMass; }
+
   protected:
     LGMdouble star;
     LGMdouble starSum;
@@ -85,29 +86,18 @@ namespace Lignum {
 
     LGMdouble needleMass;
     int number_of_segments;
+
   private:
     void init();	
     Point corner1;
-
-	
 
     LGMdouble val_c;
     LGMdouble val_b;
     LGMdouble k_c;
     LGMdouble k_b;
 
-	
-
     VoxelSpace *space;
-  public:
-
-    // returns the foliage mass of the voxel box
-    LGMdouble getFoliageMass(void)
-    {
-      return needleMass;
-    }
   };
-
 
 } //namespace Lignum
 

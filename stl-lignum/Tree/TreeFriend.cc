@@ -7,8 +7,8 @@ namespace Lignum{
   {
     lgmpd["LGPaf"] = LGPaf;
     lgmpd["LGPar"] = LGPar;
+    lgmpd["LGPlr"] = LGPlr;
     lgmpd["LGPdof"] = LGPdof;
-    lgmpd["lr"] = lr;
     lgmpd["LGPmf"] = LGPmf;
     lgmpd["LGPmr"] = LGPmr;
     lgmpd["LGPms"] = LGPms;

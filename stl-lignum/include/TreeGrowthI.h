@@ -287,7 +287,7 @@ void StructuralPineGrowth(Axis<TS,BUD> &ax, const ParametricCurve& bud_fun, Tree
 			if (f_l < 0.01)
 				f_l = 0.01;
 
-			LGMdouble l_r = GetValue(tree, lr);
+			LGMdouble l_r = GetValue(tree, LGPlr);
 			LGMdouble a_f = GetValue(tree, LGPaf);
 			LGMdouble x_i = GetValue(tree, LGPxi);
 
@@ -555,14 +555,9 @@ MotherInfo& AddSugarMapleSegments<TS,BUD>::operator()(MotherInfo& mi, TreeCompar
 		if (f_w < 0)
 			f_w = 0.0;
 
-		LGMdouble l_r = GetValue(tree, lr);
-<<<<<<< TreeGrowthI.h
+		LGMdouble l_r = GetValue(tree, LGPlr);
 		LGMdouble a_f = GetValue(tree, LGPaf);
-		LGMdouble x_i = GetValue(tree, xi);
-=======
-		LGMdouble a_f = GetValue(tree, af);
 		LGMdouble x_i = GetValue(tree, LGPxi);
->>>>>>> 1.15
 
 		//LGMdouble Irel_b = motherQin / mi.B;
 		

@@ -172,7 +172,7 @@ TreeCompartment<GCSegment, GCBud>* StructuralGrowth::operator()
 
       //New GCSegment for the axis
       LGMdouble r_new = GetValue(tree, lambda);
-      LGMdouble l_new = GetValue(tree, lr) * r_new;
+      LGMdouble l_new = GetValue(tree, LGPlr) * r_new;
       LGMdouble go = GetValue(*bud, LGAomega);
       LGMdouble rh_new = sqrt(GetValue(tree,LGPxi))*r_new;
       GCSegment* ts = new GCSegment(base, dir, go, l_new, r_new, rh_new, &tree);
