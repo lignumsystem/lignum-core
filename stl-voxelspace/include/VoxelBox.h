@@ -36,6 +36,7 @@ public:
 	LGMdouble extinction(LGMdouble l);
 
 	void UpdateValues();
+	void resetQinQabs(){Q_in = 0.0; Q_abs = 0.0;}
 
 	bool isEmpty();
 

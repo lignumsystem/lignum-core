@@ -70,6 +70,7 @@ namespace Lignum {
       void searchDimensions(bool boolDimensionsWithNumBoxes=true) { searchDimensions(bbox, boolDimensionsWithNumBoxes); };
       
       void updateStar();
+      void resetQinQabs();
       void dumpTrees();
 
       void setLightValues();
