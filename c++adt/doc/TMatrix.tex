@@ -139,7 +139,7 @@ Add two $n \times m$ matrices $A$ and $B$.
   \item [Returns] New  $n \times m$ matrix $C$ such that $C = A + B$.
 \end{description}
 
-\subsubsection{operator*}
+\subsubsection{operator$*$}
 Multiply $n \times m$ matrix $A$ with $m \times k$ matrix $B$.
 \begin{description} 
   \item[Signature] friend TMatrix<T> operator*(const TMatrix<T>\& m1,
@@ -152,7 +152,7 @@ Multiply $n \times m$ matrix $A$ with $m \times k$ matrix $B$.
    \item [Returns] New $n \times k$ matrix $C$ such that $C = A \times B$.
 \end{description}
 
-\subsubsection{operator*}
+\subsubsection{operator$*$}
 
 Multiply a row vector $v$ of length $n$ with $n \times m$ matrix $A$.
 The \tt vector<T> \rm is a vector type in STL.
@@ -168,7 +168,7 @@ The \tt vector<T> \rm is a vector type in STL.
 \end{description} 
 
 
-\subsubsection{operator*}
+\subsubsection{operator$*$}
 Multiple an $n \times m$ matrix $A$ with a column vector $v$ of length $m$. 
 Result is vector $k$ of size $n$. The \tt vector<T> \rm is a vector 
 type in STL.
@@ -183,8 +183,7 @@ type in STL.
   \item [Returns] New vector $k$ of length $n$ such that  $k = A \times v$.
 \end{description}
 
-\subsubsection{friend TMatrix<T> operator*(const TMatrix<T>\& m,\\
-    	                                   const T scalar);}
+\subsubsection{operator$*$}
 Multiply each element in a matrix by a scalar.
 \begin{description}
   \item[Signature 1] friend TMatrix<T> operator*(const TMatrix<T>\&
