@@ -55,10 +55,23 @@ namespace Lignum{
   //tree. It uses functor TreeData to collect the information with
   //Accumulate
 
-  template <class TS, class BUD>
+   //PrintTreeInformation prints either to file or to console. The
+   //stream is given as a template.
+   //Call constructor basically in two ways:
+   //1) PrintTreeInformation<TS,BUD,ostream> print -- prints to cout
+   //2) PrintTreeInformation<TS,BUD,ofstream> print(const ofstream&)
+   //    -- prints to the file given as parameter.
+   //(print is then the name of the functor)
+
+  template <class TS, class BUD, class STREAM>
     class PrintTreeInformation {
     public:
+    PrintTreeInformation(): out(cout) {}
+    PrintTreeInformation(ofstream& file):
+    out(file) {}
     void operator() (Tree<TS,BUD>&  tr);
+    private:
+    STREAM& out;
   };
 
   //TreeData is used to collect (Accumulate) data on a tree.

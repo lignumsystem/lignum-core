@@ -6,9 +6,9 @@
 //(functions) for Tree. Help functors etc. are not specified. If you
 //add a functor-function please update this list.
 
-//   PrintTreeInformation
 //   CountCompartments
 //   CountCompartmentsReverse
+//   PrintTreeInformation
 //   DisplayStructure
 //   CheckCoordinates
 //   GetBoundingBox     ****is this obsolete?
@@ -82,6 +82,180 @@ namespace Lignum{
       cout << n << endl;
       return n;
     }
+
+
+
+
+
+  //PrintTreeInformation collects and prints out information about the
+  //tree. It uses functor TreeData to collect the information with
+  //Accumulate
+
+  template <class TS, class BUD, class STREAM>
+    void PrintTreeInformation<TS,BUD,STREAM>::operator() (Tree<TS,BUD>&  tr) {
+
+    TreeDataStruct values;
+    TreeData<TS,BUD> getTreeValues;
+  
+    values = Accumulate(tr, values, getTreeValues);
+
+    //Diameter and heigth at the crown base.
+    DCLData dcl;
+    AccumulateDown(tr,dcl,AddBranchWf(),
+    		   DiameterCrownBase<TS,BUD>());
+
+    //out is either equal to cout or a file
+
+    out.setf(ios_base::fixed,ios_base::floatfield);
+    out.precision(2);
+
+    out << endl;
+    out << "age: " << values.age << "  growth cycles" << endl;
+    out << "Tree height: " << values.bolLen << " m,  highest point: "
+	 << values.tHeight << " m, Height of crown base: "
+	 << values.Hc << "  m" << endl;
+    out << "Basal diameter:  " << 200*values.bottom_rad 
+	 << "  cm, diam at CB: " << 100.0*dcl.DCrownBase()
+	 << "  cm,  Hw diam. at CB:  " << 100.0*dcl.DHWCrownBase()
+	 << "  cm" << endl;
+    out.precision(3);
+    out << "Foliage mass:                       " << values.sum_Wf
+	 << "  kg C,  Foliage area:  " << values.sum_Af << " m2" << endl;
+    out << "F. mass in new parts:               " << values.sum_Wf_new
+	 << "  kg C" << endl;
+    out << "Wood m. in new parts:               "
+	 << values.sum_wood_in_newparts << "  kg C" << endl;
+    out << "Wood .m in new parts & annual ring: " << values.sum_wood_new
+	 << "  kg C" << endl;
+    out << "Mass of stemwood:                   " << values.sum_Ws
+	 << "  kg C" << endl;
+    out << "Mass of brancwood:                  " << values.sum_Wb
+	 << "  kg C" << endl;
+    out << "Mass of sapwood:                    " << values.sum_Wsw
+	 << "  kg C" << endl;
+    out << "Mass of heartwood:                  " << values.sum_Whw
+	 << "  kg C" << endl;
+
+    out.precision(2);
+
+    if(values.sum_Wf+values.sum_Wsw+GetValue(tr,TreeWr) > 0.0)
+      out << "Foliage area / Biomass (cm2/g DM):  " << 10.0*values.sum_Af/
+	(values.sum_Wf+values.sum_Ws+GetValue(tr,TreeWr)) << endl;
+    else
+      out << "Foliage area / Biomass (m2/kg C):  " << 0.0 << endl;
+
+
+
+
+    LGMdouble d13 = GetValue(tr,LGADbh);
+    LGMdouble d13hw = GetValue(tr,LGADbh);
+    //    LGMdouble apu = GetValue(tr, LGADbaseHw);
+
+
+
+
+    if(d13 > R_EPSILON) {
+      out << "FolA/Cross-sec A at BH, m2/m2:      "
+	   << values.sum_Af/(PI_VALUE*d13*d13/4.0)
+	   << "FolA/Sapwood A at BH, m2/m2: "
+	   << values.sum_Af/(PI_VALUE*(d13*d13-
+			  d13hw*d13hw)/4.0)
+	   << endl;
+    }
+    else {
+      out << "FolA/Cross-sec A at BH, m2/m2:      "
+	   << 0.0
+	   << " FolA/Sapwood A at BH, m2/m2: "
+	   << 0.0  << endl;
+    }
+
+    if(dcl.DCrownBase() > R_EPSILON) {
+      out << "FolA/Cross-sec A at CB, m2/m2:      "
+	   << values.sum_Af/(PI_VALUE*dcl.DCrownBase()*dcl.DCrownBase()/4.0)
+	   << " FolA/Sapwood A at CB, m2/m2: "
+	   << values.sum_Af/(PI_VALUE*(dcl.DCrownBase()*dcl.DCrownBase()-
+				  dcl.DHWCrownBase()*dcl.DHWCrownBase())/4.0)
+	   << endl;
+    }
+    else {
+    out << "FolA/Cross-sec A at CB, m2/m2:        "
+	   << 0.0
+	   << " FolA/Sapwood A at CB, m2/m2: "
+	   << 0.0
+	   << endl;
+    }
+
+    if(values.num_s_fol > 0) {
+      out << "Qabs:                               "
+	   << values.sum_Qabs <<"  mean_Qabs: " 
+	   << values.sum_Qabs/(double)values.num_s_fol << endl;
+      out << "QinMax:                             "
+	   << values.max_Qin <<  "  mean_Qin: "
+	   << values.sum_Qin/(double)values.num_s_fol << endl;
+    }
+
+    else {
+      out << "Qabs:                               " << values.sum_Qabs 
+	   << "  mean_Qabs: " << 0.0 << endl;
+      out << "QinMax:                             " << values.sum_Qin
+	   << "  mean_Qin: " <<  0.0 << endl;
+    }
+  
+    if(values.sum_Qin > R_EPSILON && values.sum_Wf > R_EPSILON) {
+      LGMdouble Qi = GetFirmament(tr).diffuseBallSensor();
+      if(Qi > R_EPSILON && values.sum_Af > R_EPSILON)
+	out << "Qabs/(Qin*Foliage area) =           "
+	     << values.sum_Qabs/(Qi*values.sum_Af)
+	     << "    (should be < 1 ?)" << endl;
+    }
+
+    out.precision(4);
+    out << "Photosynthesis during growth cycle: " <<
+      GetValue(tr,TreeP) << " kgC,  Respiration: "
+	 << GetValue(tr,TreeM) << "  kgC" << endl;
+    out.precision(2);
+
+    out << "Number of buds:                     "
+	 << values.num_buds << endl;
+    out << "Number of segments:                 "
+	 << values.num_segments 
+	 <<  " Segments w/ foliage: " << values.num_s_fol << endl;
+    out << "No. branches,  living:              "
+	 << values.num_br_l << "   dead: "
+	 << values.num_br_d << endl;
+    if(values.num_br_l > 0)
+      out << "Mean len of living branches:        "
+	   << values.sum_br_len/(double)values.num_br_l << endl;
+    else
+      out << "Mean len of living branches:        " << 0.0 << endl;
+    if(values.num_br_d > 0)
+      out << "Mean len of dead branches:          "
+	   << values.sum_br_len_d/(double)values.num_br_d << endl;
+    else
+      out << "Mean len of dead branches:         " << 0.0 << endl;
+
+    out << "   Height, m    Diameter, cm,   HwDiameter, cm" << endl;
+    for(int i1 = 0; i1 < values.taper_hei.size(); i1++) {
+      out << "     " << values.taper_hei[i1] << "          " <<
+	200.0*values.taper_rad[i1]<< "          " <<
+	200.0*values.taper_radhw[i1] << endl;
+    }
+    out << endl;
+
+    out << "H of whorl, m     Mean branch l, m" << endl;
+    out.setf(ios_base::fixed,ios_base::floatfield);
+    out.precision(2);
+    for(int i1 = 0; i1 < values.mean_br_h.size(); i1++) {
+      out << "     " << values.mean_br_h[i1] << "          " <<
+	values.mean_brl[i1] << endl;
+
+    }
+    out << endl;
+  }
+
+
+
+
 
 
   template <class TS,class BUD> void DisplayStructure(Tree<TS,BUD>& t)
@@ -343,104 +517,6 @@ namespace Lignum{
     }
 
 
-  //PrintTreeInformation collects and prints out information about the
-  //tree. It uses functor TreeData to collect the information with
-  //Accumulate
-
-  template <class TS, class BUD>
-    void PrintTreeInformation<TS,BUD>::operator() (Tree<TS,BUD>&  tr) {
-
-    TreeDataStruct values;
-    TreeData<TS,BUD> getTreeValues;
-  
-    values = Accumulate(tr, values, getTreeValues);
-
-    //Diameter and heigth at the crown base.
-    DCLData dcl;
-    AccumulateDown(tr,dcl,AddBranchWf(),
-    		   DiameterCrownBase<TS,BUD>());
-
-    cout << endl;
-    cout << "age: " << values.age << "  growth cycles" << endl;
-    cout << "Tree height: " << values.bolLen << " m,  highest point: "
-	 << values.tHeight << " m, Height of crown base: "
-	 << values.Hc << "  m" << endl;
-    cout << "Basal diameter:  " << 200*values.bottom_rad 
-	 << "  cm, diam at CB: " << 100.0*dcl.DCrownBase()
-	 << "  cm,  Hw diam. at CB:  " << 100.0*dcl.DHWCrownBase()
-	 << "  cm" << endl;
-    cout << "sum_Wf: " << values.sum_Wf << "  kg C, Foliage area:  " 
-	 << values.sum_Af << " m2" << endl;
-    cout << "sum_Wf_new: " << values.sum_Wf_new << "  kg C" << endl;
-    cout << "sum_wood_in_newparts: " << values.sum_wood_in_newparts
-	 << "  kg C" << endl;
-    cout << "sum_wood_new: " << values.sum_wood_new << "  kg C" << endl;
-    cout << "sum_Ws: " << values.sum_Ws << "  kg C" << endl;
-    cout << "sum_Wb: " << values.sum_Wb << "  kg C" << endl;
-    cout << "sum_Wsw: " << values.sum_Wsw << "  kg C" << endl;
-    cout << "sum_Whw: " << values.sum_Whw << "  kg C" << endl;
-
-    if(values.sum_Wf+values.sum_Wsw+GetValue(tr,TreeWr) > 0.0)
-      cout << "Foliage area / Biomass (m2/kg C):  " << values.sum_Af/
-	(values.sum_Wf+values.sum_Wsw+GetValue(tr,TreeWr)) << endl;
-    else
-      cout << "Foliage area / Biomass (m2/kg C):  " << 0.0 << endl;
-
-
-    if(values.num_s_fol > 0) {
-      cout << "Qabs: " << values.sum_Qabs <<"  mean_Qabs: " 
-	   << values.sum_Qabs/(double)values.num_s_fol << endl;
-      cout << "QinMax: " << values.max_Qin <<  "  mean_Qin: "
-	   << values.sum_Qin/(double)values.num_s_fol << endl;
-    }
-
-    else {
-      cout << "Qabs: " << values.sum_Qabs  << "  mean_Qabs: " << 0.0 << endl;
-      cout << "Qin: " << values.sum_Qin  << "  mean_Qin: " <<  0.0 << endl;
-    }
-  
-    if(values.sum_Qin > R_EPSILON && values.sum_Wf > R_EPSILON) {
-      LGMdouble Qi = GetFirmament(tr).diffuseBallSensor();
-      if(Qi > R_EPSILON && values.sum_Af > R_EPSILON)
-	cout << "Qabs/(Qin*Foliage area) = "
-	     << values.sum_Qabs/(Qi*values.sum_Af)
-	     << "    (should be < 1?)" << endl;
-    }
-    cout << "P: " << GetValue(tr,TreeP) << " kgC,  M: "
-	 << GetValue(tr,TreeM) << "  kgC" << endl;
-
-    cout << "num_buds: " << values.num_buds << endl;
-    cout << "num_segments: " << values.num_segments << 
-      "  no. segments w/ foliage: " << values.num_s_fol << endl;
-    cout << "No. branches,  living: " << values.num_br_l << " dead: "
-	 << values.num_br_d << endl;
-    if(values.num_br_l > 0)
-      cout << "Mean len of living branches: " <<
-	values.sum_br_len/(double)values.num_br_l << endl;
-    else
-      cout << "Mean len of living branches: " << 0.0 << endl;
-    if(values.num_br_d > 0)
-      cout << "Mean len of dead branches: " <<
-	values.sum_br_len_d/(double)values.num_br_d << endl;
-    else
-      cout << "Mean len of dead branches: " << 0.0 << endl;
-
-    cout << "Height, m    Diameter, cm,   HwDiameter, cm" << endl;
-    for(int i1 = 0; i1 < values.taper_hei.size(); i1++) {
-      cout << values.taper_hei[i1] << " " <<
-	200.0*values.taper_rad[i1]<< " " <<
-	200.0*values.taper_radhw[i1] << endl;
-    }
-    cout << endl;
-
-    cout << "Height of whorl, m     Mean branch length, m" << endl;
-    for(int i1 = 0; i1 < values.mean_br_h.size(); i1++) {
-      cout << values.mean_br_h[i1] << " " <<
-	values.mean_brl[i1] << endl;
-
-    }
-
-  }
 
   template <class TS,class BUD>
     TreeDataStruct& TreeData<TS,BUD>::operator()
@@ -665,12 +741,12 @@ namespace Lignum{
 	  //Find them
 	  if (GetValue(**first,LGAstate) == DEAD){
 	    //delete and  erase them from the list
-	    cout << "BranchingPoint erasing axis" << endl;
+	    out << "BranchingPoint erasing axis" << endl;
 	    delete *first;
 	    first = axis_ls.erase(first);
 	  }
 	  else{
-	    cout << "Something behind first" << endl;
+	    out << "Something behind first" << endl;
 	    first++;
 	  }
 	}
