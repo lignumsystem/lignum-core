@@ -27,10 +27,10 @@ BISONOPT=-d --debug -p l
 sinclude Makedepend
 
 l2c: l2c_tab.cpp lex_l.cpp $(OBJ)  
-	$(CCC)  $(OBJ) -o $@
+	$(CCC)  $(OPTIMIZE) $(OBJ) -o $@
 
 gnu:
-	make "CCC=g++" "CCCFLAGS=-c" "OPTIMIZE=-g"  l2c
+	make "CCC=g++" "CCCFLAGS=$(CCCFLAGS)" "OPTIMIZE=$(OPTIMIZE)"  l2c
 lignux: 
 	make "CCC=g++" "CCCFLAGS=-c" "OPTIMIZE=-g"  l2c
 

@@ -21,7 +21,7 @@ lengine:
 	(mv  L2C/l2c bin; mv L2Lignum/libL.a lib)
 
 gnu:
-	make "CCC=g++" "CCCFLAGS=-c" "OPTIMIZE=-g" \
+	make "CCC=g++" "CCCFLAGS=$(CCCFLAGS)" "OPTIMIZE=$(OPTIMIZE)" \
              "AR=ar"  "ARFLAGS=rvs" "LIBD=lib32"  lengine
 lignux: 
 	make "CCC=g++" "CCCFLAGS=-c" "OPTIMIZE=-g" \
