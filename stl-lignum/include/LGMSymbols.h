@@ -11,7 +11,7 @@ namespace Lignum{
 // Tree Attribute Double, Wm lisätty
 // Wr           dry weight of the roots
 enum LGMAD {A,age,dof,fin,fout,H,Hm,ip,lb,LM,LP,LWf,L,lw,M,omega,P,Pr,\
-            Qin,Qabs,R,Rf,Rh,sf,sw,tauL,Wf,Wm,Ws,Wh,Wr};  
+            Qin,Qabs,R,Rf,Rh,sf,sw,tauL,Wf,Wm,Ws,Wh,Wr,nr,order};  
 
 
 //Tree Attribute STATUS
