@@ -896,8 +896,8 @@ namespace Lignum {
   }
 
 
-
-void VoxelSpace::draw(bool blackBG)
+  
+  void VoxelSpace::draw(bool blackBG)
   {
     glEnable(GL_LIGHTING);
     int num = 0;
@@ -926,7 +926,7 @@ void VoxelSpace::draw(bool blackBG)
 		cube.ready = false;
 		cube.areaden = voxboxes[i1][i2][i3].getAreaDen(); 
 
-		nmass = voxboxes[i1][i2][i3].getNeedleMass();
+		LGMdouble nmass = voxboxes[i1][i2][i3].getNeedleMass();
 	      
 		
 		
@@ -962,7 +962,7 @@ void VoxelSpace::draw(bool blackBG)
 		  {
 		    green = 1.0;
 		    red = (max-nmass)/max;
-		    blue= (max-nmass)/max
+		    blue= (max-nmass)/max;
 		  }
 		
 
