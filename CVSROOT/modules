@@ -56,4 +56,5 @@ CityTree              -s JariP                CityTree
 ctree                 -s JariP                ctree
 lignum-core           			      &c++adt &stl-lignum &Firmament
 poplar                -s Alice                poplar
+maple                                         &c++adt &stl-lignum &Firmament &Graphics &stl-voxelspace &SugarMaple
 
