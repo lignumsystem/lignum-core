@@ -6,7 +6,7 @@ SRC = $(SRCDIR1)/VoxelBox.cc  $(SRCDIR1)/VoxelSpace.cc
 OBJ = ${SRC:.cc=.o} 
 
 INCLUDE= -I../include -I../../c++adt/include -I../../stl-lignum/include \
--I../../Firmament/include -I../../ScotsPine/include -I../../Graphics
+-I../../Firmament/include -I../../ScotsPine/include -I/usr/X11R6/include -I../../Graphics
 
 ARFILE=libvoxel.a
 
