@@ -139,6 +139,7 @@ namespace Lignum {
     //Write voxel  boxes to file up to Z index
     void writeVoxBoxesToFile(const string& filename, int z);
     void writeVoxBoxesToFile2(const string& filename);
+    void writeVoxelSpaceContents();
   private:
     LGMdouble Xbox, Ybox, Zbox;
     int Xn, Yn, Zn;
