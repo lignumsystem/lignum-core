@@ -63,9 +63,9 @@ void VoxelBox::setVoxelSpace(VoxelSpace *s, Point c)
 //
 void VoxelBox::UpdateValues()
 {
-	ASSERT(space->Xbox>0);
-	ASSERT(space->Ybox>0);
-	ASSERT(space->Zbox>0);
+	assert(space->Xbox>0);
+	assert(space->Ybox>0);
+	assert(space->Zbox>0);
 
 	star = 0.0;
 	if (number_of_segments > 0)
