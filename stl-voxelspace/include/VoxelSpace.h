@@ -50,7 +50,8 @@ namespace Lignum {
 
       void fillVoxelBoxes(LGMdouble inivalue);
       void fillVoxelBoxes(LGMdouble inivalue, int beginZ, int endZ);
-      void fillVoxelBoxesWithNeedles(LGMdouble fmass, LGMdouble sf, 
+      //First four arguments are for box.S() STAR sum
+      void fillVoxelBoxesWithNeedles(LGMdouble Sf, LGMdouble Wf, LGMdouble Rf, LGMdouble L, 
 				     int beginZ, int endZ);
       
       void AddScotspine(Tree<ScotsPineVisual, ScotsBud> &tree);
