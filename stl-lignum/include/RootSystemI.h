@@ -17,7 +17,7 @@ namespace Lignum{
       return rs.rsa.RTop;  //Radius at top (sapwood)
     case Rh:
       return rs.rsa.Rh;    //Radius heartwood
-    case Rhair:
+    case LGARhair:
       return rs.rsa.Rhair; //Radius root hair
     case LGAomega:
       return rs.rsa.omega;
@@ -29,9 +29,9 @@ namespace Lignum{
     case LGAAs:               //Sapwood Area
       return GetValue(rs,LGAA) - GetValue(rs,LGAAh);
     case LGAAhair:            //Root hair area
-      return PI_VALUE*pow(GetValue(rs,Rhair),2.0) - GetValue(rs,LGAA);
+      return PI_VALUE*pow(GetValue(rs,LGARhair),2.0) - GetValue(rs,LGAA);
       //Compound attributes, volumes
-    case V:                //Segment volume based on A
+    case LGAV:                //Segment volume based on A
       return GetValue(rs,LGAA)*GetValue(rs,LGAL);
     case LGAVh:               //Heartwood volume
       return GetValue(rs,LGAAh)*GetValue(rs,LGAL);
@@ -69,7 +69,7 @@ namespace Lignum{
     case Rh:
       rs.rsa.Rh = value;
       break;
-    case Rhair:
+    case LGARhair:
       rs.rsa.Rhair = value;
       break;
     case LGAomega:

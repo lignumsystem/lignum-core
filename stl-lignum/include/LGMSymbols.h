@@ -16,7 +16,7 @@ namespace Lignum{
   enum LGMAD {LGAA,LGAAf,LGAAh, LGAAhair,LGAAs,LGAAs0,LGAage,api, LGAcollision,
               LGADbase,LGADbh,LGAdof, dR, LGAH,LGAHf,Hm,LGAip,
               lb,LM,LP,LWf,LGAL,lw,LGAM, LGAMaxD,LGAomega,LGAP,
-	      Qin,Qabs,R,Rf,Rh,Rhair,LGARTop,LGASa,LGMstatus,LGAtype,LGAV,LGAVh,
+	      Qin,Qabs,R,Rf,Rh,LGARhair,LGARTop,LGASa,LGMstatus, LGAtauL, LGAtype,LGAV,LGAVh,
 	      LGAVhair,LGAvi,LGAVs,
               LGAWf, LGAWr, LGAWs, LGAWh, LGAWhair};
 
@@ -51,10 +51,12 @@ namespace Lignum{
   //  R      radius of segment (wood)
   //  Rf     radius of segment cylinder that contains also foliage (conifers)
   //  Rh     radius of heartwood
-  //  Rhair  Radius including root hair 
+  //  LGARhair  Radius including root hair 
   //  LGARTop   radius of segment at upper end
   //  LGASa     Surface area of the segment cylinder: 2*PI*R*L 
-  //  LGAtype General type specifier, e.g. Bud:dominant, apical,
+  //LGPtauL = transmission coefficient of leaf (in direction of
+  //          the ray of light) 
+ //  LGAtype General type specifier, e.g. Bud:dominant, apical,
   //          lateral etc. The numerical values and their symbols of
   //          different types given in LGMUnits.h
   //  LGAV      Segment volume based on R
