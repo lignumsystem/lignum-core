@@ -49,6 +49,17 @@ GetLowerSegment<TS,BUD>::operator()(GLS<TS,BUD>& gls,
   }
   return gls;
 }
+
+template <class TS,class BUD>
+METER& SampleDiameterGrowth<TS,BUD>::operator()(METER& r,TreeCompartment<TS,BUD>* tc)const
+{
+  TreeSegment<TS,BUD>* myts = NULL;
+  if (myts = dynamic_cast<TreeSegment<TS,BUD>*>(tc)){
+    SetAttributeValue(*myts,R,GetAttributeValue(*myts,R)+r*0.2);
+    r = GetAttributeValue(*myts,R);
+  }
+  return r;
+}
   
 
 #endif

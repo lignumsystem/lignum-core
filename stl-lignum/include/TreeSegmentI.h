@@ -42,7 +42,7 @@ TreeSegment<TS,BUD>::TreeSegment(const Point<METER>& p, const PositionVector& d,
 
   //compute the initial pressure in the TreeSegment    
   SetAttributeValue(*this, Wm, 0.5 * 1000 * l * r * r * PI_VALUE);
-  SetAttributeValue(*this, Pr, GetAttributeValue(*this, Hm) * 9.81 * 1000);   
+  SetAttributeValue(*this, Pr, -GetAttributeValue(*this, Hm) * 9.81 * 1000);   
 }
 
 template <class TS,class BUD>

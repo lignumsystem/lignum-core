@@ -34,6 +34,16 @@ public:
   GLS<TS,BUD>& operator()(GLS<TS,BUD>& gls,TreeCompartment<TS,BUD>* tc)const;
 };
 
+template <class TS,class BUD>
+class SampleDiameterGrowth{
+public:
+  METER& operator()(METER& r,TreeCompartment<TS,BUD>* tc)const;
+};
+
 #include <VisualFunctorI.h>
 
 #endif
+
+
+
+
