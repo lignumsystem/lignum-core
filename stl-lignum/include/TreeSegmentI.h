@@ -85,16 +85,6 @@ TreeSegment<TS,BUD>::TreeSegment(const Point& p, const PositionVector& d, const 
   
   //the first annual ring
   tsa.annual_rings.push_back(r);
-
-  //compute the radius to foliage limit (Rf)
-  //the given parameters are needle length (nl) and the
-  //needle angle (na)
-  //Rf = hf + tsa.R, where hf is height of the foliage (hf = nl * sin(na))
-   
-  //compute the sapwood mass
-  
-  SetValue(*this,Ws,GetSapwoodMass(*this)); 
-
 }
 
 
@@ -350,17 +340,13 @@ LGMdouble GetValue(const TreeSegment<TS,BUD>& ts, const LGMAD name)
 template <class TS,class BUD>
 LGMdouble SetValue(TreeSegment<TS,BUD>& ts, const LGMAD name, const LGMdouble value)
 {
-  LGMdouble old_value = 0.0; //GetValue(ts,name);
+  LGMdouble old_value = GetValue(ts,name);
   
   if (name == age)
     ts.tc_age = value;
 
   else if (name == L)
-  {
-    if (value == 0)
-      ts.tsa.L = 0.01;
-    else ts.tsa.L = value;
-  }
+    ts.tsa.L = value; //segment can be 0
   
   else if (name == dR)
   {
