@@ -87,16 +87,13 @@ namespace Lignum{
   //LIGNUM Parameter Double
   //Keep this list in synbc with MapLGMPD constructor in TreeFriend.cc
 
-  enum LGMPD {LGPaf,al,ar,ca, dofp,lr,mf,mr,ms,na,nl,pr,q, rca, rld,LGPsf, 
+  enum LGMPD {LGPaf,al,ar,dofp,lr,mf,mr,ms,na,nl,pr,q, LGPsf, 
               LGPsr,LGPss,LGPrhoW,LGPrho_root,LGPrho_hair, LGPyc, LGPxi,
 	      LGPzbrentEpsilon, LGPLn_par, LGPn_ang_par};
 
 
  //cvs update
   // al					Maximun size of a leaf
- // ca					circulation angle
- // rca					random effect on circulation angle
- // rld					random effect on leaf distances in a single segment
  // LGPyc					Foliage mass supported by 1m2 of sapwood
   // LGPsla  specific leaf area. sf determined for leaf..
   // cvs update

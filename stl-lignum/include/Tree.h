@@ -83,9 +83,6 @@ namespace Lignum{
     LGMdouble alm;			//Maximum size of a leaf
     
     LGMdouble yc;			//Foliage mass supported by 1m2 of sapwood
-    LGMdouble ca;			//circulation angle for new buds compared to belowed ones
-    LGMdouble rca;			//random effect of circulation angle [%] 0->
-    LGMdouble rld;			//random effect of leaf distances in a single tree segment
   };
 
   //TreeAttributes  are  in a  (long)  vector  indexed by  enumeration
