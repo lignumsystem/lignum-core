@@ -8,6 +8,7 @@ namespace Lignum{
     lgmpd["LGPaf"] = LGPaf;
     lgmpd["LGPaleafmax"] = LGPaleafmax;
     lgmpd["LGPar"] = LGPar;
+    lgmpd["LGPdof"] = LGPdof;
     lgmpd["LGPlr"] = LGPlr;
     lgmpd["LGPmf"] = LGPmf;
     lgmpd["LGPmr"] = LGPmr;
@@ -16,11 +17,15 @@ namespace Lignum{
     lgmpd["LGPnl"] = LGPnl;
     lgmpd["LGPpr"] = LGPpr;
     lgmpd["LGPq"] = LGPq;
+    lgmpd["LGPrhoW"] = LGPrhoW;
+    lgmpd["LGPrho_hair"] = LGPrho_hair;
+    lgmpd["LGPrho_root"] = LGPrho_root;
     lgmpd["LGPsf"] = LGPsf;
     lgmpd["LGPsr"] = LGPsr;
     lgmpd["LGPss"] = LGPss;
-    lgmpd["LGPrhoW"] = LGPrhoW;
+    lgmpd["LGPtauL"] = LGPtauL;
     lgmpd["LGPxi"] = LGPxi;
+    lgmpd["LGPyc"] = LGPyc;
     lgmpd["LGPzbrentEpsilon"] = LGPzbrentEpsilon;
   }
 
