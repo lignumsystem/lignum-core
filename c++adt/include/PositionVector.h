@@ -33,12 +33,16 @@ public:
   PositionVector& operator += (const PositionVector& point); 
   PositionVector& operator -= (const PositionVector& point);
   PositionVector& operator *= (const double scalar);
+  operator Point<double> () { return Point<double>(v[0], v[1], v[2]); }
   double length()const;
   double alpha()const;
   double beta()const;
   double gamma()const;
   vector<double> getVector()const{return v;}
   PositionVector& normalize();
+  double getX() { return v[0]; }
+  double getY() { return v[1]; }
+  double getZ() { return v[2]; }
 private:
   vector<double> v;
 };
