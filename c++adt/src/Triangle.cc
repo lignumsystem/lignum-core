@@ -10,12 +10,12 @@ namespace cxxadt{
 //Getting the center of the triangle
 
 
-Triangle::Triangle(const Point& p1,const  Point& p2,const Point& p3)
-{
-  leftcorner=p1; rightcorner=p2; apexcorner=p3;
+  Triangle::Triangle(const Point& p1,const  Point& p2,const Point& p3)
+  {
+    leftcorner=p1; rightcorner=p2; apexcorner=p3;
+    
+  }
   
-}
-
   Triangle& Triangle::operator=(const Triangle& t)
   {
     leftcorner = t.leftcorner; rightcorner= t.rightcorner; 
@@ -23,7 +23,18 @@ Triangle::Triangle(const Point& p1,const  Point& p2,const Point& p3)
     return *this;
   }
 
-vector<Point>& Triangle::getTriangleCorners(vector<Point>& corners)
+  PositionVector Triangle::getNormal()const
+  {
+    PositionVector tmpa(apexcorner);
+    PositionVector tmpl(leftcorner);
+    //Two vectors from center point: to apex and to left corner
+    const PositionVector p1(tmpa - PositionVector(getCenterPoint()));
+    const PositionVector p2(tmpl - PositionVector(getCenterPoint()));
+    //return cross product  
+    return Cross(p1,p2).normalize();
+  }
+
+vector<Point>& Triangle::getTriangleCorners(vector<Point>& corners)const
 {
   corners.push_back(leftcorner);
   corners.push_back(rightcorner);
@@ -32,11 +43,10 @@ vector<Point>& Triangle::getTriangleCorners(vector<Point>& corners)
 }
 
 
-
 //the center of the triangle according 
 // equation Pc=(P1+P2+P3)/3
 
-Point Triangle::getCenterPoint() 
+Point Triangle::getCenterPoint()const 
 {                            
   Point center;
 
