@@ -1386,7 +1386,25 @@ namespace Lignum{
   return tc;
 }
 
-
+  //Collect leaves from segments
+  template <class TS, class BUD, class SH>
+  list<BroadLeaf<SH>*>& 
+  CollectLeaves<TS,BUD,SH>::operator()(list<BroadLeaf<SH>*>& ls,
+				       TreeCompartment<TS,BUD>* tc)const
+  {
+    if (TS* ts = dynamic_cast<TS*>(tc)){
+      list<BroadLeaf<SH>*>& leaf_ls = GetLeafList(*ts);
+      typename list<BroadLeaf<SH>*>::iterator it = leaf_ls.begin();
+      //STL accumulate takes real objects, not references; so avoid
+      //it now because we have a list of leaves.
+      while (it != leaf_ls.end()){
+	//insert the leaf to the list of leaves
+	ls.push_back(*it);
+	advance(it,1);
+      }
+    }
+    return ls;
+  }
 }//closing namespace Lignum
 
 #endif

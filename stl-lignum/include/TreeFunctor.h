@@ -38,7 +38,13 @@ using namespace std;
 //   PrintTreeSegmentInformationToFile
 //   PrintTreeSegmentInformationToFileByAxis
 //   DropAllLeaves
-
+//   CollectLeaves: return a 'list<BroadLeaf<SH>*> ls' of leaves in a tree
+//                  Usage: Accumulate(t,ls,CollectLeaves<TS,BUD,SH>());
+//   SortLeaves: sort leaves (returned by CollectLeaves), leaves closest to the 
+//               point 'p' appear first
+//               Usage: Point p(0,0,0);
+//                      SortLeaves<SH> sorter(p);
+//                      ls.sort(sorter);
 //Functors-functions below used in LIGNUM WorkBench are not listed. 
 
 namespace Lignum{
@@ -569,7 +575,26 @@ namespace Lignum{
     TreeCompartment<TS,BUD>* operator ()(TreeCompartment<TS,BUD>* tc)const;
   };
 
+  //Collect all leaves in a tree into one list
+  template <class TS, class BUD, class SH>
+  class CollectLeaves{
+  public:
+    list<BroadLeaf<SH>*>& operator()(list<BroadLeaf<SH>*>& ls,
+				     TreeCompartment<TS,BUD>* tc)const;
+  };
 
+  //Sort leaves, leaves closest to the point 'p' appear first
+  template <class SH>
+  class SortLeaves{
+  public:
+    SortLeaves(const Point& point):p(point){}
+    bool operator()(const BroadLeaf<Ellipse>* l1, const BroadLeaf<Ellipse>* l2){
+      const Point& p1 = GetCenterPoint(*l1);
+      const Point& p2 = GetCenterPoint(*l2);
+      return (p1 || p) < (p2 || p);
+    }
+    Point p;
+  };
 }//closing namespace Lignum
 #include <TreeFunctorI.h>
 
