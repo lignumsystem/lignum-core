@@ -1,16 +1,12 @@
 \section{Introduction to language L}
 
-The  L-system  formalism  is   the  foundation  on  which  programming
-languages  for  plant modeling  tools  have  been  built. Though  they
-usually include constructs  from general purpose programming languages
-the key concept of these tools is the rewriting of modules or symbols.
-The language L is no exception.
-
-A module in L  has a name and can take any  number of arguments of any
+The key concept in the  L-system formalism is the rewriting of modules
+or symbols \citep{pp:89}.  The language  L follows the same concept. A
+module in  L has a name  and can take  any number of arguments  of any
 type   in   C++   programming   language   \citep{stroustrup:97}.    A
 syntactically correct rule consists of a predecessor possibly with its
 context ending  with colon and a production  defining successor string
-embraced  within curly  braces.  For  example  the third  rule in  Eq.
+embraced within curly braces.  For example the third rule in Eq.
 \ref{eq:ca110} is written in L as:
 \begin{equation}\label{eq:r3}
  O() < X() > O(): \{\mathrm{produce}\ X();\}
@@ -43,47 +39,60 @@ symbols  and  module  $B$   (Section  \ref{sec:bearberry})  as  it  is
 necessary in rewriting.
 
 \section{Scots pine: integrating L and LIGNUM}\label{sec:pine}
-To present algorithm that translates  strings of L to structural units
-of LIGNUM  the first  example mimics the  growth of young  Scots pine.
-First,  introduce  module $B(A,L)$  representing  a  bud.  The  module
-definition implements development for  the main stem and the branching
-evolution.  In each  iteration the apical bud ($A  = 1$) moves forward
-of length $L$ and forks off  four new side branches.  The branches ($A
-> 1  $) are  similar  but only  two  more side  branches are  created.
-Branching stops after third order  ($A > 3$).  The definition for this
-pine growth in L is  in Appendix \ref{sec:L1} (The explanation of open
-and  close   statements  is  in   Section  \ref{sec:namespace}).   The
-development starts from main axis consisting of one segment, branching
-point  and   bud.   The  string   after  two  iterations  is   in  Eq.
-\ref{eq:pine2} . Symbol [ denotes $SB()$ and ] denotes $EB()$, modules
-for turtle rotations are not shown:
+We present  an algorithm  that translates strings  of L  to structural
+units  of LIGNUM  with  the aid  an  example on  Scots  pine. We  have
+programmed in  language L the architectural development  of Scots pine
+as it  is approximately in LIGNUM  simulations of \citet{perttunen:96,
+perttunen:98}; the L program is shown in Appendix \ref{sec:L1}.  In it
+the module $B(A,L)$ represents a bud. In each iteration the apical bud
+($A =  1$) moves  forward of length  $L$ and  forks off four  new side
+branches.  The branches ($A > 1  $) are similar but only two more side
+branches  are  created.   Branching  stops  after third  order  ($A  >
+3$).  When the  development starts  from main  axis consisting  of one
+segment, branching point and bud, the string after two iterations is
+
 \begin{equation}\label{eq:pine2}
 F\;[] F [F[B][B]B]\:[F[B][B]B]\:[F[B][B]B]\:[F[B][B]B]\; F \;[B][B][B][B]\; B
 \end{equation}
 
-We can now outline straightforward  algorithm to convert the string of
-symbols in L to structural units in LIGNUM using Eq. \ref{eq:pine2} as
-a particular example.   To start with, interpret the  symbol $F(s)$ as
+where symbol [ denotes $SB()$ and ] denotes $EB()$, modules for turtle
+rotations are  not shown, and  arguments of module $B$  ($B(A,L)$) are
+dropped.
+
+{\large From L to LIGNUM}
+
+We can now  outline a straightforward algorithm to  convert the string
+of symbols in L to structural units in LIGNUM using Eq. \ref{eq:pine2}
+as a particular example.  The  algorithm is based on first recognizing
+the main axis  of the tree, then finding the  other axes (branches and
+sub-brances), and finally grouping them together as branhcing points.
+
+First,  the symbol $F(s)$ in Eq.  \ref{eq:pine2} is interpreted as
 tree segment  of length $s$.  The  symbol B corresponds  to bud.  Each
 consecutive  set of $n$  branches between  two $F$  symbols will  be a
 branching  point with  $n$ axes.   The string  in  Eq.  \ref{eq:pine2}
 becomes  first the  main  axis with  three  segments, three  branching
 points and the terminating bud:
+
 \begin{equation}
 [TS, BP, TS, BP, TS, BP, B]
 \end{equation}
-The  two last  branching  points  contains four  axes  each the  first
+
+The  two  last branching  points  contain  four  axes each,  the  first
 branching point being empty:
+
 \begin{equation}
 [TS, [], TS, [A,A,A,A], TS, [A,A,A,A], B]
 \end{equation}
+
 Finally, recursively constructing the axes we get:
 \begin{equation}
 [TS, [] TS,[TS,[[B],[B]],B],\ldots, [TS,[[B],[B]],B]], TS, [[B],[B],[B],[B]], B]
 \end{equation}
-Current status of  the turtle updated according to  turtle commands in
-the  string   defines  the  position  and  orientation   of  the  tree
-compartments in LIGNUM.
+
+Current  status of  the turtle  that  is updated  according to  turtle
+commands in  the string  defines the position  and orientation  of the
+tree compartments in LIGNUM.
 
 The structural development of the tree described in L does not require
 the regeneration  of LIGNUM representation of trees  (deleting the old
@@ -95,24 +104,44 @@ it is possible to match  the existing string and LIGNUM representation
 and  insert the  new structural  units in  the axis  lists  before the
 terminating buds whose positions and orientations will be updated.
 
-The development  of three pines after eight  development steps (years)
-is in  Fig.  \ref{fig:pine}.  The leftmost  pine is the  result of the
-L-system (Appendix \ref{sec:L1}) rewriting only.  The two pines in the
-middle and  in the right incorporate  our previous work  on Scots pine
-metabolism  to  that  L-system  \citep{perttunen:98}.   Most  notably,
-recall the pairwise comparison of segments to compute the intercept of
-solar radiation and the  iterative allocation of net photosynthates to
-growth  after  respiration  costs.   The  parameter  values  are  from
-\citet[Table  1]{perttunen:98}.  We  omit the  function for  number of
-secondary  buds \citep[][Fig.  2]{perttunen:98}  and let  the L-system
-determine branching.
 
-The  simulations show the  effect of  two different  foliage mortality
-models. The foliage in the  pine in the middle of Fig.  \ref{fig:pine}
-remain five years \citep[][Fig.   2]{perttunen:98}. The foliage in the
-pine  in  the  right   remains  one  year  only  (admittedly  slightly
-unrealistic scenario).  The simulation  shows much shorter and slimmer
-stem due  to less need  for diameter growth  for the pine of  one year
-foliage.
+{\large From LIGNUM to L}
+
+As  the  physiological  part  and  the architectural  part  in  LIGNUM
+interact  \citep{perttunen:96}, it  is necessary  that  information be
+transferred from LIGNUM  to the interpretation of the  L program. This
+is  accomplished  so  that   LIGNUM  (i.e.  results  of  physiological
+processes) can modify the parameters of the modules in L. In our Scots
+pine example it is $L$ in  $B(A,L)$ corresponding to the fact that the
+metabolical processes detemrmine the amount of growth.
+  
+The  conversion  algorithm includes  a  way  of communication  between
+LIGNUM and L-string; the  algorithm allows to enumerate the parameters
+of module $B$  that will be used in communication.   Given type of the
+module  parameter  for $B$,  its  assignment  statement  and its  name
+(meaning) in  LIGNUM, the  conversion algorithm updates  the attribute
+value of a corresponding bud  using the appropriate parameter value in
+module  $B$ [JOS  PUHUTAAN LIGNUM  -> L  MITÄ TÄMÄ  TARKOITTAA?or vice
+versa]  when the  results  of  computations in  LIGNUM  are passed  to
+L-system.
+
+{\large Two-way communication in Scots pine simulation}
+
+We  interfaced the L  language program  of Appendix  \ref{sec:L1} with
+functional part of LIGNUM that incorporates our previous work on Scots
+pine    functioning    \citep{perttunen:96,   perttunen:98},    Figure
+\ref{fig:pine}.   The  calculations  in  LIGNUM include  the  pairwise
+comparison of segments to  compute the interception of solar radiation
+and  the iterative allocation  of net  photosynthates to  growth after
+respiration costs.
+
+The simulations  show that the  interaction of the L  language program
+and  the  functioning  part  of  LIGNUM affects  the  outcome  of  the
+simulation  markedly, Figure  \ref{fig:pine}. Also  the effect  of two
+extreme   cases   of  foliage   mortality   show  that   physiological
+characteristics have a  great effect on  the architecture  of the
+trees.  The simulation shows much shorter and slimmer stem due to less
+need for diameter growth for the pine with short living foliage in
+comparison to pine with long living foliage.
 
 

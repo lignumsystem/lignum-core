@@ -1,23 +1,25 @@
 \section{Bearberry}\label{sec:bearberry}
 
-The   evergreen   horizontally    spreading   shrub   bearberry   (\it
-Arctostaphylos  uva-ursi \rm  L.)   grows in  variety  of habitats  in
-Northern  Europe  and Northern  North  America.   It  is a  pioneering
-species  growing best  in  high light  conditions colonizing  gravelly
-soils,  sandy  dunes,  heathlands   etc.   but  appears  also  in  the
-understory of open pine forests \citep{salemaa:99}.  It is adapted for
-growth with limited water and  nutrient supply.  Bearberry is a clonal
-species, its reproduction is mainly vegetative.
+The  second example  depict the  capabilities of  L language  - LIGNUM
+combination  to  deal with  various  modelling  tasks.  The  evergreen
+horizontally  spreading shrub  bearberry (\it  Arctostaphylos uva-ursi
+\rm L.)  grows in variety  of habitats in Northern Europe and Northern
+North America.  It is a  pioneering species growing best in high light
+conditions  colonizing gravelly  soils, sandy  dunes,  heathlands etc.
+but   appears  also   in   the  understory   of   open  pine   forests
+\citep{salemaa:99}.  It  is adapted for growth with  limited water and
+nutrient supply.   Bearberry is a clonal species,  its reproduction is
+mainly vegetative.
 
 \citet{salemaa:02} have studied growth habits, axillary bud activation
 and  branching  architecture of  bearberry  growing  in South  Western
 Finland in  varying pollution, nutrient  and light levels.   They have
 designed an L-system model  to study qualitative features of branching
-patterns of bearberry by simulation.   Here we enhance their model for
-clone  growing on  sandpit with  an algorithm  to detect  if  a clonal
-branch blockades the  growth space of an active  bud. This also serves
-as  an example  of  a  stochastic L-system  \citep{pp:90}  and how  to
-implement global sensitivity \citep{kurth:94} in LIGNUM.
+patterns of bearberry by simulation.   Here their model is realized so
+that the algorithm  to detect if a clonal  branch blockades the growth
+space of an active bud is  accomplished by LIGNUM. This also serves as
+an example of a stochastic L-system \citep{pp:90} and how to implement
+global sensitivity \citep{kurth:94} in LIGNUM.
 
 In  their L-system  model for  bearberry \citep{salemaa:02}  the plant
 grows horizontally and consists of annual growth units holding lateral
@@ -37,30 +39,42 @@ sandpit the colonizing plant  shows intensive lateral branching due to
 favorable light  conditions.  Outline of  the L-system is  in Appendix
 \ref{sec:L2}.  For details see \citet{salemaa:02}.
 
-The collition detection algorithm  simply examines given opening angle
-symmetric to both sides of the growth direction of a bud and checks if
-its  free  of other  shoots  and  buds  within given  distance.   More
-precisly, define $\vec {P_1}$ as the  position of the bud and $\vec D$
-as  its growth  direction. Define  $\vec  {P_2}$ the  position of  the
-potential obstacle. Then $\vec {P_3} = \vec {P_2} - \vec {P_1}$ is the
-direction  from the  bud  to  the obstacle.  Given  the opening  angle
+The  collision detection  algorithm  of LIGNUM  simply examines  given
+opening angle symmetric to both sides of the growth direction of a bud
+and checks if its free of other shoots and buds within given distance.
+More  precisly, define $\vec  {P_1}$ as  the position  of the  bud and
+$\vec D$ as its growth  direction. Define $\vec {P_2}$ the position of
+the potential obstacle. Then $\vec {P_3} = \vec {P_2} - \vec {P_1}$ is
+the direction from  the bud to the obstacle.   Given the opening angle
 $\alpha$ and the  distance $l$ the obstacle hinders  the growth of the
 bud  if $\cos(\alpha/2) =  \frac{{\vec D}  \cdot {\vec  {P_3}}} {|\vec
-  D||\vec {P_3}|}$ and $|\vec {P_3}| < l$.
+D||\vec {P_3}|}$ and $|\vec {P_3}| < l$.
 
-If a bud collides another plant compartment is implemented as pairwise
-comparison  of  structural units  in  LIGNUM,  i.e. \textsl{not}  with
-rewriting rules  in L-system.  Thus the  conversion algorithm (Section
-\ref{sec:pine}) must include a way of communication between LIGNUM and
-L-string. The  algorithm allows to enumerate the  parameters of module
-$B$  that will be  used in  communication.  Given  type of  the module
-parameter for $B$, its assignment  statement and its name (meaning) in
-LIGNUM the  conversion algorithm can  update the attribute value  of a
-corresponding bud using the  appropriate parameter value in module $B$
-or  vice  versa  if  the  results  of  computations  (e.g.   collision
-detection) in  LIGNUM must be passed  to L-system. The  results of the
-development  of the  bearberry model  after 15  iterations  with three
-different collision models are  in Fig.  \ref{fig:a-uva-ursi}.  As one
-can  expect the  bearberry  models show  less  lateral branching  with
-increasing opening angle for collision detection.
+Investigation of  whether a bud collides another  plant compartment is
+implemented  as pairwise  comparison  of structural  units in  LIGNUM,
+i.e. \textsl{not}  with rewriting rules in L  language.  The attribute
+value of  the corresponding module $B$  in L language  side is updated
+using  the result of  collision detection  calculation in  LIGNUM. The
+results of the development of  the bearberry model after 15 iterations
+with     three      different     collision     models      are     in
+Fig.  \ref{fig:a-uva-ursi}.  As  one can  expect the  bearberry models
+show  less  lateral  branching   with  increasing  opening  angle  for
+collision detection.
  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -7,13 +7,6 @@ architectures  \citep{perttunen:96,  perttunen:01}.   Here we  present
 shortly the main model features to understand how LIGNUM is adapted to
 use L-systems.
 
-The metabolic  activities incorporated in LIGNUM  are interception and
-attenuation  of  photosynthetically  active  solar radiation  in  tree
-crown,  photosynthetic  production,  respiration and  partitioning  of
-growth  between  new parts  and  existing  structure. Some  mechanical
-interactions,  like bending of  branches or  collision of  branch tips
-have also been implemented.
-
 LIGNUM represents the three-dimensional  above ground part of the tree
 with  four  structural  units  called  tree  segment  (TS),  bud  (B),
 branching point  (BP) and  axis (A).   A branching point  is a  set of
@@ -27,27 +20,30 @@ needles are  at the  moment modeled as  cylindrical layers  of foliage
 surrounding  tree   segments  (Fig.   \ref{fig:model}   left)  .   For
 deciduous species leaves attached  to tree segments are considered and
 studied explicitly  using simple geometric  form like ellipse  as leaf
-shape (Fig. \ref{fig:model} middle).
+shape (Fig. \ref{fig:model}, middle).
 
 An axis  is implemented as a  list. For example  adopting the notation
 from our previous work \citep{perttunen:96} the main axis of the model
-tree for coniferous species (Fig. \ref{fig:model}) consisting of three
-tree segments, three branching points and the terminating bud writes:
+tree for  coniferous species  in Figure \ref{fig:model}  consisting of
+three tree  segments, three branching  points and the  terminating bud
+writes:
 
 \begin{equation}
 [TS_0,BP_1,TS_2,BP_3,TS_4,BP_5,B_6]
 \end{equation}
 
-A branching  point is implemented as  list of axes. In  the model tree
-the branching points contain two axes  each. Thus the main axis can be
-written:
+A branching  point is implemented as  list of axes. In  the example of
+Figure   \ref{fig:model}  the  branching   points  contain   two  axes
+(i.e. branches) each. Thus the main axis can be written:
 
-\begin{equation}
+\begin{equation}\label{eq:mainax}
 [TS_0,[[A,A]],TS_2,[A,A],TS_4,[A,A],B_6]
 \end{equation}
 
-Finally,  the  structure of  the  whole  model  tree is  expressed  as
-(omitting the position numbering):
+The branches of the example  tree in Figure \ref{fig:model} consist of
+tree  segment, branching  point and  bud. When  these are  inserted in
+Eq. \ref{eq:mainax},  the structure  of  the whole  model  tree can  be
+expressed as (omitting the position numbering):
 
 \begin{equation}\label{eq:tree}
 [TS,[[TS,[],B],[TS,[],B]],TS,[[TS,[],B],[TS,[],B]],TS,[[B],[B]],B]
