@@ -1,5 +1,5 @@
 #include <Lex.h>
-#include <fstream.h>
+#include <fstream>
 #include <stdlib.h>
 
 namespace cxxadt{
