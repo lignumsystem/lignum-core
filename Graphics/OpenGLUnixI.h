@@ -368,6 +368,62 @@ void drawBud(Bud<TS,BUD> *bud, DRAW_TYPE mode)
 }
 
 
+ template <class TS,class BUD>
+   int VisualizeCfTree(Tree<TS,BUD> &tree)
+{ 
+  // init_window();
+  cout << "InitDrawing.........1.13" << endl;
+  InitDrawing();
+  InitOpenGL();
+      
+  init_window();
+  //setLight();
+  
+  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+  glTexEnvf(GL_TEXTURE_2D, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+  glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
+ 
+  stemtexture.Load("Manty.bmp", 512, 512);
+  LoadGLTextures("neulaset5.tga");  //**** CFLoadGLTextures
+  
+
+
+   cout << "rakennetaan puu.." << endl;
+  
+  MakeTreeList(tree, 0.05);
+  MakeNeedlesList(tree);
+  //elavat budit
+  MakeBudList(tree, true);
+ 
+  
+ //kuolleet budit
+  MakeBudList(tree, false);
+
+  /*
+
+  MakeTreeList(tree, 0.05);
+
+  
+  cout << "rakennetaan lehdet " << endl;
+  MakeLeaveList<TS,BUD,S>(tree, 2, 2);
+ 
+
+  //elavat budit
+  MakeBudList(tree, true);
+  
+ //kuolleet budit
+  MakeBudList(tree, false);
+  */
+ 
+  glutMainLoop ();
+  cout << "Exiting ...." << endl;
+  return 0;
+}
+
 
 
 }//closing namespace Lignum

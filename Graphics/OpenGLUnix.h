@@ -24,6 +24,8 @@ namespace Lignum{
   template <class TS,class BUD, class S>
     int VisualizeHwTree(Tree<TS,BUD> &tree);
 
+  template <class TS,class BUD>
+    int VisualizeCfTree(Tree<TS,BUD> &tree);
 
   template <class TS, class BUD>
     void drawBud(Bud<TS,BUD> *bud, DRAW_TYPE mode);
