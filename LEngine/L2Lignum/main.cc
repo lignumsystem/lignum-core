@@ -132,11 +132,11 @@ int main(int argc, char** argv)
   Start();
   mainstring.Add(succstrg);
   Lstring2Lignum<MyTreeSegment,MyBud,LGMAD,LGMdouble>(t1,mainstring,3,LGMtype,LGMstatus,LGMcollision);
-
   for (int i=0; i<DerivationLength(); i++)
   {
+    cout << "Step: " << i << endl;
     ForEach(t1,EvaluateCollisionForAllBuds<MyTreeSegment,MyBud>(90.0*2.0*PI_VALUE/360.0,0.10));
-    Lignum2Lstring<MyTreeSegment,MyBud,LGMAD,LGMdouble>(t1,mainstring,3,LGMtype,LGMstatus,LGMcollision);    
+    Lignum2Lstring<MyTreeSegment,MyBud,LGMAD,LGMdouble>(t1,mainstring,3,LGMtype,LGMstatus,LGMcollision);  
     Derive();
     Lstring2Lignum<MyTreeSegment,MyBud,LGMAD,LGMdouble>(t1,mainstring,3,LGMtype,LGMstatus,LGMcollision);
   }
