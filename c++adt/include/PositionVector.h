@@ -1,11 +1,7 @@
 #ifndef POSITIONVECTOR_H
 #define POSITIONVECTOR_H
 
-//#include <iostream>
-#include <math.h>
 #include <mathsym.h>
-//#include <vector>
-//#include <Point.h>
 #include <RMatrix.h>
 #include <TMatrix.h>
 #include <fstream>

@@ -1,7 +1,6 @@
 
 #ifndef RMATRIX_H
 #define RMATRIX_H
-#include <math.h>
 #include <mathsym.h>
 #include <Rotation.h>
 #include <TMatrix.h>

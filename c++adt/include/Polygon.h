@@ -1,6 +1,6 @@
 #ifndef POLYGON_H
 #define POLYGON_H
-#include <math.h>
+#include <cmath>
 #include <numeric>
 using namespace std;
 #include <Point.h>

@@ -1,7 +1,6 @@
 #ifndef ELLIPSIS_H
 #define ELLIPSIS_H
 
-#include <math.h>
 #include <mathsym.h>
 
 namespace cxxadt{

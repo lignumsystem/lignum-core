@@ -1,6 +1,5 @@
 #ifndef BISECTION_H
 #define BISECTION_H
-#include <cmath>
 #include <mathsym.h>
 using namespace std;
 namespace cxxadt{

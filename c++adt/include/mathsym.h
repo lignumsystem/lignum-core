@@ -1,6 +1,7 @@
 #ifndef MATHSYM_H
 #define MATHSYM_H
-#include <math.h>
+#include <cmath>
+using namespace std;
 namespace cxxadt{
 
 #define PI_VALUE 3.14159265358979323846
