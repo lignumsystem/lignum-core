@@ -18,7 +18,11 @@ void HwTreeSegment<TS,BUD,S>::photosynthesis()
 
 }
 
-//RESPIRATION rate of HwTreeSegment (sum of leaves + segment sapwood resp.)
+//RESPIRATION rate  of HwTreeSegment (sum of leaves  + segment sapwood
+//resp.)  This  is NOT a good  way to implement  metabolism. We should
+//have a  simple basic method  (say, parameter times biomass)  and all
+//the experiments with  N or P or whatever nutrient  should be done in
+//subclasses plugged in to a final program.
 template <class TS,class BUD,class S>
 void HwTreeSegment<TS,BUD,S>::respiration()
 {
@@ -27,12 +31,11 @@ void HwTreeSegment<TS,BUD,S>::respiration()
   LGMdouble m_hw = 0.0;
   LGMdouble mf_par = GetValue(tt, mf);
 
-  for(typename list<BroadLeaf<S>*>::iterator i = leaf_ls.begin();
-	i != leaf_ls.end(); i++) {
+  for(typename list<BroadLeaf<S>*>::iterator i = leaf_ls.begin(); i != leaf_ls.end(); i++) {
     m_hw += mf_par * GetValue(**i,Wf);
   }
 
- Tree<TS,BUD>& t = dynamic_cast<Tree<TS,BUD>&>(GetTree(*this));
+  Tree<TS,BUD>& t = dynamic_cast<Tree<TS,BUD>&>(GetTree(*this));
 
   // Effect of nitrogen on leaves
   LGMdouble nit_leaves = GetValue(tt, nitroLeaves);
