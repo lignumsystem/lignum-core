@@ -39,7 +39,7 @@ GetLowerSegment<TS,BUD>::operator()(GLS<TS,BUD>& gls,
   if (TreeSegment<TS,BUD>* myts = dynamic_cast<TreeSegment<TS,BUD>*>(tc)){
     PositionVector pv = GetDirection(*myts);
     vector<double> v = pv.getVector();
-    TP l = GetAttributeValue(*myts, L);
+    TP l = GetValue(*myts, L);
     Point<METER> p(v[0], v[1], v[2]);
     
     if ((GetPoint(*(gls.current)) || (GetPoint(*myts) + l * p)) < odd)
@@ -55,8 +55,8 @@ METER& SampleDiameterGrowth<TS,BUD>::operator()(METER& r,TreeCompartment<TS,BUD>
 {
   TreeSegment<TS,BUD>* myts = NULL;
   if (myts = dynamic_cast<TreeSegment<TS,BUD>*>(tc)){
-    SetAttributeValue(*myts,R,GetAttributeValue(*myts,R)+r*0.2);
-    r = GetAttributeValue(*myts,R);
+    SetValue(*myts,R,GetValue(*myts,R)+r*0.2);
+    r = GetValue(*myts,R);
   }
   return r;
 }

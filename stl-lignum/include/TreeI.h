@@ -31,14 +31,14 @@ void Tree<TS,BUD>::UpdateWaterFlow(TP time_step, const ConnectionMatrix<TS,BUD> 
       if (i != a && cm.getTreeSegment(i, a) != 0){
 
 	TreeSegment<TS,BUD> *in = cm.getTreeSegment(i,a);	
-	SetAttributeValue(*in, fin, CountFlow(*in, *out));
+	SetValue(*in, fin, CountFlow(*in, *out));
       }
-      SetAttributeValue(*out, fout, 0);   
+      SetValue(*out, fout, 0);   
     }	
   }
 
   TreeSegment<TS,BUD> *in = cm.getTreeSegment(0);
-  SetAttributeValue(*in, fin, cm.getSize() * 0.12e-9);
+  SetValue(*in, fin, cm.getSize() * 0.12e-9);
   
   // This counts the flow out for every segment
   for (i=0; i<cm.getSize(); i++){
@@ -48,26 +48,26 @@ void Tree<TS,BUD>::UpdateWaterFlow(TP time_step, const ConnectionMatrix<TS,BUD> 
     for (int a=0; a<cm.getSize(); a++){
       if (i != a && cm.getTreeSegment(i,a) != 0){
 	TreeSegment<TS,BUD> *in = cm.getTreeSegment(i,a);
-	SetAttributeValue(*out, fout, GetAttributeValue(*out, fout)+GetAttributeValue(*in, fin));
+	SetValue(*out, fout, GetValue(*out, fout)+GetValue(*in, fin));
       }
     }
 
-    TP Dw = GetAttributeValue(*out, R);  //diameter of sapwood
+    TP Dw = GetValue(*out, R);  //diameter of sapwood
     
-    TP new_pressure = GetAttributeValue(*out, Pr) + time_step * ttp.Er / Dw * 2  /
-      (ttp.rhow * PI_VALUE *  GetAttributeValue(*out, L) *  GetAttributeValue(*out, R)) *
-      ( GetAttributeValue(*out, fin) - GetAttributeValue(*out, fout) - 
+    TP new_pressure = GetValue(*out, Pr) + time_step * ttp.Er / Dw * 2  /
+      (ttp.rhow * PI_VALUE *  GetValue(*out, L) *  GetValue(*out, R)) *
+      ( GetValue(*out, fin) - GetValue(*out, fout) - 
 	out->GetTranspiration(time_step));  
     
    
-     cout << i << ":virtaus sisään " <<  GetAttributeValue(*out, fin)*time_step << " ; ulos " 
-	  << GetAttributeValue(*out, fout)*time_step << " haihdunta:" << out->GetTranspiration(time_step)*time_step;
-    cout << "SUMMA = " <<  (GetAttributeValue(*out, fin) - GetAttributeValue(*out, fout) -  out->GetTranspiration(time_step))*time_step 
+     cout << i << ":virtaus sisään " <<  GetValue(*out, fin)*time_step << " ; ulos " 
+	  << GetValue(*out, fout)*time_step << " haihdunta:" << out->GetTranspiration(time_step)*time_step;
+    cout << "SUMMA = " <<  (GetValue(*out, fin) - GetValue(*out, fout) -  out->GetTranspiration(time_step))*time_step 
 	 << endl;
    
         
-    SetAttributeValue(*out, Pr, new_pressure);         
-    SetAttributeValue(*out, Wm, GetAttributeValue(*out, Wm) + (GetAttributeValue(*out, fin)-  GetAttributeValue(*out, fout) - out->GetTranspiration(0.0))* time_step); 
+    SetValue(*out, Pr, new_pressure);         
+    SetValue(*out, Wm, GetValue(*out, Wm) + (GetValue(*out, fin)-  GetValue(*out, fout) - out->GetTranspiration(0.0))* time_step); 
   }
   cout << endl; 
 }
@@ -80,12 +80,12 @@ template <class TS,class BUD>
 TP Tree<TS,BUD>::CountFlow(TreeSegment<TS,BUD> &in, TreeSegment<TS,BUD> &out)
 
 {
-  TP ar = GetAttributeValue(out, area);
-  TP le = GetAttributeValue(out, L);
-  TP he = GetAttributeValue(in, Hm) - GetAttributeValue(out, Hm);
+  TP ar = GetValue(out, area);
+  TP le = GetValue(out, L);
+  TP he = GetValue(in, Hm) - GetValue(out, Hm);
 
-  TP pr_out = GetAttributeValue(out, Pr);  // Pressure in the element above
-  TP pr_in = GetAttributeValue(in, Pr);    // Pressure in the element below
+  TP pr_out = GetValue(out, Pr);  // Pressure in the element above
+  TP pr_in = GetValue(in, Pr);    // Pressure in the element below
  
   return ttp.rhow * (ttp.k/ ttp.eta) * (ar / le) * (pr_out - pr_in - (ttp.rhow * ttp.g * he));
 }
@@ -127,11 +127,11 @@ void InitializeTree(Tree<TS,BUD>& tree, const CString& meta_file)
     p = (TP) atof((const char *)value.getValue());
     cout << " Parameter: " << name.getValue() << " = " << p << endl;
     if (name.getValue() == CString("lambda"))
-      SetTransitVariableValue(tree,lambda,p);
+      SetValue(tree,lambda,p);
     else{
       CString str = name.getValue();
       map<const char*,TPD,cmpstr>::iterator tpd = maptpd.tpd.find(str);
-      SetParameterValue(tree,(*tpd).second,p);
+      SetValue(tree,(*tpd).second,p);
     }
     name = lex.getToken();
   }
@@ -156,7 +156,7 @@ void InitializeTree(Tree<TS,BUD>& tree, const CString& meta_file)
 
 //Get a parameter value 
 template <class TS,class BUD>
-TP GetParameterValue(const Tree<TS,BUD>& tree, const TPD name)
+TP GetValue(const Tree<TS,BUD>& tree, const TPD name)
 {
   if (name == af)
     return tree.tp.af;
@@ -201,7 +201,7 @@ TP GetParameterValue(const Tree<TS,BUD>& tree, const TPD name)
      return tree.tp.xi;
 
   else{
-    cerr << "GetParameterValue() uknown parameter: " << name << " returning 0.0" 
+    cerr << "GetValue() uknown parameter: " << name << " returning 0.0" 
 	 << endl;
   }
   return 0.0;
@@ -209,9 +209,9 @@ TP GetParameterValue(const Tree<TS,BUD>& tree, const TPD name)
 
 //Change a parameter value, return the old value
 template <class TS,class BUD>
-TP SetParameterValue(Tree<TS,BUD>& tree, const TPD name, const TP value)
+TP SetValue(Tree<TS,BUD>& tree, const TPD name, const TP value)
 {
-  TP old_value = GetParameterValue(tree,name);
+  TP old_value = GetValue(tree,name);
 
   if (name == af)
     tree.tp.af = value;
@@ -256,20 +256,20 @@ TP SetParameterValue(Tree<TS,BUD>& tree, const TPD name, const TP value)
     tree.tp.xi = value;
 
   else{
-    cerr << "SetParameterValue unknown parameter: " << name << " returning 0.0" 
+    cerr << "SetValue unknown parameter: " << name << " returning 0.0" 
 	 << endl;
   }
   return old_value;
 }
 
 template <class TS,class BUD>
-TP GetTransitVariableValue(const Tree<TS,BUD>& tree, const TTD name)
+TP GetValue(const Tree<TS,BUD>& tree, const TTD name)
 {
   if (name == lambda)
     return tree.ttp.lambda;
   
   else{
-    cerr << "GetTransitVariableValue unknown parameter: " << name << " returning 0.0" 
+    cerr << "GetValue unknown parameter: " << name << " returning 0.0" 
 	 << endl;
   }
 
@@ -277,21 +277,21 @@ TP GetTransitVariableValue(const Tree<TS,BUD>& tree, const TTD name)
 }
 
 template <class TS,class BUD>
-TP SetTransitVariableValue(Tree<TS,BUD>& tree, const TTD name, const TP value)
+TP SetValue(Tree<TS,BUD>& tree, const TTD name, const TP value)
 {
-  TP old_value = GetTransitVariableValue(tree,name);
+  TP old_value = GetValue(tree,name);
   
   if (name == lambda)
     tree.ttp.lambda = value;
   else{
-    cerr << "SetTransitVariableValue unknown parameter: " << name << " returning "
+    cerr << "SetValue unknown parameter: " << name << " returning "
 	 << old_value << endl;
   }
   return old_value;
 }
 
 template <class TS,class BUD>
-TP GetAttributeValue(const Tree<TS,BUD>& tree, const TAD name)
+TP GetValue(const Tree<TS,BUD>& tree, const TAD name)
 { 
   
   if (name == lb)
@@ -307,7 +307,7 @@ TP GetAttributeValue(const Tree<TS,BUD>& tree, const TAD name)
      return tree.ta.Wr;
 
   else {
-    cerr << "GetAttributeValue  unknown attribute: " << name << " returning 0.0" 
+    cerr << "GetValue  unknown attribute: " << name << " returning 0.0" 
 	 << endl;
   }
 
@@ -315,12 +315,12 @@ TP GetAttributeValue(const Tree<TS,BUD>& tree, const TAD name)
 }
 
 template <class TS,class BUD>
-YEAR GetAttributeValue(const Tree<TS,BUD>& tree, const TAI name)
+YEAR GetValue(const Tree<TS,BUD>& tree, const TAI name)
 {
   if (name == age)
     return  tree.ta.age;
   else{
-     cerr << "GetAttributeValue unknown attribute: " << name << " returning 0.0"
+     cerr << "GetValue unknown attribute: " << name << " returning 0.0"
 	  << endl;
   }
 
@@ -328,9 +328,9 @@ YEAR GetAttributeValue(const Tree<TS,BUD>& tree, const TAI name)
 }
 
 template <class TS,class BUD>
-TP SetAttributeValue(Tree<TS,BUD>& tree, const TAD name, const TP value)
+TP SetValue(Tree<TS,BUD>& tree, const TAD name, const TP value)
 {
-  TP old_value = GetAttributeValue(tree,name);
+  TP old_value = GetValue(tree,name);
 
   if (name == lb)
     tree.ta.lb = value;
@@ -345,7 +345,7 @@ TP SetAttributeValue(Tree<TS,BUD>& tree, const TAD name, const TP value)
     tree.ta.Wr = value;
 
   else{
-    cerr << "SetAttributeValue unknown attribute: " << name << " returning " 
+    cerr << "SetValue unknown attribute: " << name << " returning " 
 	 << old_value << endl;
   }
 
@@ -353,14 +353,14 @@ TP SetAttributeValue(Tree<TS,BUD>& tree, const TAD name, const TP value)
 }
   
 template <class TS,class BUD>
-YEAR SetAttributeValue(Tree<TS,BUD>& tree, const TAI name, const YEAR value)
+YEAR SetValue(Tree<TS,BUD>& tree, const TAI name, const YEAR value)
 {
-  YEAR old_value = GetAttributeValue(tree,name);
+  YEAR old_value = GetValue(tree,name);
 
   if (name == age)
     tree.ta.age = value;
   else{
-    cerr << "SetAttributeValue unknown attribute: " << name << " returning " 
+    cerr << "SetValue unknown attribute: " << name << " returning " 
 	 << old_value << endl;
   }
 

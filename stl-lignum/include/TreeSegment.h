@@ -38,10 +38,10 @@ template <class TS,class BUD=DefaultBud<TS> >
 class TreeSegment: public TreeCompartment<TS,BUD>{ 
   friend list<METER> GetAnnualRings(const TreeSegment<TS,BUD>& ts);
   friend KGC GetSapwoodMass(const TreeSegment<TS,BUD>& ts);
-  friend TP GetAttributeValue(const TreeSegment<TS,BUD>& ts, const TAD name);
-  friend YEAR GetAttributeValue(const TreeSegment<TS,BUD>& ts, const TAI name);
-  friend TP SetAttributeValue(TreeSegment<TS,BUD>& ts, const TAD name, const TP value);
-  friend YEAR SetAttributeValue(TreeSegment<TS,BUD>& ts, const TAI name, 
+  friend TP GetValue(const TreeSegment<TS,BUD>& ts, const TAD name);
+  friend YEAR GetValue(const TreeSegment<TS,BUD>& ts, const TAI name);
+  friend TP SetValue(TreeSegment<TS,BUD>& ts, const TAD name, const TP value);
+  friend YEAR SetValue(TreeSegment<TS,BUD>& ts, const TAI name, 
 				const YEAR  value);
 public:
   TreeSegment();

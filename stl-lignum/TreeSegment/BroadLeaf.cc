@@ -59,7 +59,7 @@ BroadLeafAttributes::BroadLeafAttributes(double sf1, double tauL1,
   leaf_normal.normalize();
 }
 
-BLD GetAttributeValue(const BroadLeaf& bl, const BLA name)
+BLD GetValue(const BroadLeaf& bl, const BLA name)
 {
 
   if (name == Larea)
@@ -90,7 +90,7 @@ BLD GetAttributeValue(const BroadLeaf& bl, const BLA name)
     return  bl.bla.Qin;
 
   else if (name == LWf)
-    return  bl.bla.lw*GetAttributeValue(bl,Larea);
+    return  bl.bla.lw*GetValue(bl,Larea);
   else
     cout << "BroadLeaf unknown attribute: " << name << " returning 0.0" << endl;
  
@@ -98,9 +98,9 @@ BLD GetAttributeValue(const BroadLeaf& bl, const BLA name)
 }
 
 
-BLD SetAttributeValue(BroadLeaf& bl, const BLA name, const BLD value)
+BLD SetValue(BroadLeaf& bl, const BLA name, const BLD value)
 {
-  BLD old_value= GetAttributeValue(bl,name);
+  BLD old_value= GetValue(bl,name);
 
   if (name == Larea)
     bl.bla.shape.setArea(value);

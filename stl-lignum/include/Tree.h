@@ -93,14 +93,14 @@ class Tree: public TreeCompartment<TS,BUD>{
   friend Axis<TS,BUD>& GetAxis(Tree<TS,BUD>& t){return t.axis;}
   friend TP GetProduction(const Tree<TS,BUD>& t);
   friend void InitializeTree(Tree<TS,BUD>& tree, const CString& meta_file);
-  friend TP GetAttributeValue(const Tree<TS,BUD>& tree, const TAD name);
-  friend YEAR GetAttributeValue(const Tree<TS,BUD>& tree, const TAI name);
-  friend TP SetAttributeValue(Tree<TS,BUD>& tree, const TAD name, const TP value);
-  friend YEAR SetAttributeValue(Tree<TS,BUD>& tree, const TAI name, const YEAR value);
-  friend TP GetParameterValue(const Tree<TS,BUD>& tree, const TPD name);
-  friend TP SetParameterValue(Tree<TS,BUD>& tree, const TPD  name, const TP value);
-  friend TP GetTransitVariableValue(const Tree<TS,BUD>& tree, const TTD name);
-  friend TP SetTransitVariableValue(Tree<TS,BUD>& tree, const TTD name, const TP value);
+  friend TP GetValue(const Tree<TS,BUD>& tree, const TAD name);
+  friend YEAR GetValue(const Tree<TS,BUD>& tree, const TAI name);
+  friend TP SetValue(Tree<TS,BUD>& tree, const TAD name, const TP value);
+  friend YEAR SetValue(Tree<TS,BUD>& tree, const TAI name, const YEAR value);
+  friend TP GetValue(const Tree<TS,BUD>& tree, const TPD name);
+  friend TP SetValue(Tree<TS,BUD>& tree, const TPD  name, const TP value);
+  friend TP GetValue(const Tree<TS,BUD>& tree, const TTD name);
+  friend TP SetValue(Tree<TS,BUD>& tree, const TTD name, const TP value);
   friend CString GetTreeInitializationFile(Tree<TS,BUD>& tree);
 public:
   Tree();

@@ -15,10 +15,10 @@ TreeSegment<TS,BUD>::TreeSegment(const Point<METER>& p, const PositionVector& d,
 			     const METER l, const METER r, const METER rn, Tree<TS,BUD>* t)
   :TreeCompartment<TS,BUD>(p,d,t)
 {
-  SetAttributeValue(*this,omega,go);
-  SetAttributeValue(*this,L,l);
-  SetAttributeValue(*this,R,r);
-  SetAttributeValue(*this,Rn,rn);
+  SetValue(*this,omega,go);
+  SetValue(*this,L,l);
+  SetValue(*this,R,r);
+  SetValue(*this,Rn,rn);
 
   //the first annual ring
   tsa.annual_rings.push_back(r);
@@ -27,24 +27,24 @@ TreeSegment<TS,BUD>::TreeSegment(const Point<METER>& p, const PositionVector& d,
   //the given parameters are needle length (nl) and the
   //needle angle (na)
   //Rf = hf + tsa.R, where hf is height of the foliage (hf = nl * sin(na))
-  TP needle_length = GetParameterValue(*t,nl);
-  TP needle_angle = GetParameterValue(*t,na);
-  SetAttributeValue(*this,Rf,needle_length * sin(needle_angle)+ 
-		      GetAttributeValue(*this,R));
+  TP needle_length = GetValue(*t,nl);
+  TP needle_angle = GetValue(*t,na);
+  SetValue(*this,Rf,needle_length * sin(needle_angle)+ 
+		      GetValue(*this,R));
 
   //compute the initial mass of the foliage
   //1. compute the surface area (sa) of the cylinder representing foliage
-  TP sa =  2.0 * PI_VALUE * GetAttributeValue(*this,Rf) * GetAttributeValue(*this,L);
+  TP sa =  2.0 * PI_VALUE * GetValue(*this,Rf) * GetValue(*this,L);
   //2. the mass of the foliage (Wf = sa * af) 
-  TP wf =  sa * GetParameterValue(*t,af);
-  SetAttributeValue(*this,Wf,sa*wf);
+  TP wf =  sa * GetValue(*t,af);
+  SetValue(*this,Wf,sa*wf);
 
   //compute the sapwood mass
-  SetAttributeValue(*this,Ws,GetSapwoodMass(*this)); 
+  SetValue(*this,Ws,GetSapwoodMass(*this)); 
 
   //compute the initial pressure in the TreeSegment    
-  SetAttributeValue(*this, Wm, 0.5 * 1000 * l * r * r * PI_VALUE);
-  SetAttributeValue(*this, Pr, -GetAttributeValue(*this, Hm) * 9.81 * 1000);   
+  SetValue(*this, Wm, 0.5 * 1000 * l * r * r * PI_VALUE);
+  SetValue(*this, Pr, -GetValue(*this, Hm) * 9.81 * 1000);   
 }
 
 template <class TS,class BUD>
@@ -79,11 +79,11 @@ KGC GetSapwoodMass(const TreeSegment<TS,BUD>& ts)
   TP V3 = V1 - V2;
 
   //mass is density * volume
-  return GetParameterValue(*(ts.tree),rho) * V3;
+  return GetValue(*(ts.tree),rho) * V3;
 }
 
 template <class TS,class BUD>
-TP GetAttributeValue(const TreeSegment<TS,BUD>& ts, const TAD name)
+TP GetValue(const TreeSegment<TS,BUD>& ts, const TAD name)
 {
   TP unknown_value = 0.0;
 
@@ -148,7 +148,7 @@ TP GetAttributeValue(const TreeSegment<TS,BUD>& ts, const TAD name)
 }
 
 template <class TS,class BUD>
-YEAR GetAttributeValue(const TreeSegment<TS,BUD>& ts,const TAI name)
+YEAR GetValue(const TreeSegment<TS,BUD>& ts,const TAI name)
 {
   int unknown_value = 0;
 
@@ -162,9 +162,9 @@ YEAR GetAttributeValue(const TreeSegment<TS,BUD>& ts,const TAI name)
 }
 
 template <class TS,class BUD>
-TP SetAttributeValue(TreeSegment<TS,BUD>& ts, const TAD name, const TP value)
+TP SetValue(TreeSegment<TS,BUD>& ts, const TAD name, const TP value)
 {
-  TP old_value = GetAttributeValue(ts,name);
+  TP old_value = GetValue(ts,name);
   
   if (name == L)
     ts.tsa.L = value;
@@ -218,9 +218,9 @@ TP SetAttributeValue(TreeSegment<TS,BUD>& ts, const TAD name, const TP value)
 }
 
 template <class TS,class BUD>
-YEAR SetAttributeValue(TreeSegment<TS,BUD>& ts, const TAI name, const YEAR  value)
+YEAR SetValue(TreeSegment<TS,BUD>& ts, const TAI name, const YEAR  value)
 {
-  YEAR old_value = GetAttributeValue(ts,name);
+  YEAR old_value = GetValue(ts,name);
 
   if (name == age)
     ts.tsa.age = value;

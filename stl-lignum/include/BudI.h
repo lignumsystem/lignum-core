@@ -20,7 +20,7 @@ Bud<TS,BUD>::Bud(const Point<METER>& p, const PositionVector& d, const TP go,
 	     Tree<TS,BUD>* t)
   :TreeCompartment<TS,BUD>(p,d,t)
 {
-  SetAttributeValue(*this,omega,go);
+  SetValue(*this,omega,go);
 }
 
 template <class TS,class BUD>
@@ -45,7 +45,7 @@ BranchingPoint<TS,BUD>& Bud<TS,BUD>::createBranchingPoint()const
 }
 
 template <class TS,class BUD>   
-TP GetAttributeValue(const Bud<TS,BUD>& bud, const TAD name)
+TP GetValue(const Bud<TS,BUD>& bud, const TAD name)
 {
   if (name == omega)
     return bud.ba.omega;
@@ -62,10 +62,10 @@ TP GetAttributeValue(const Bud<TS,BUD>& bud, const TAD name)
 }
 
 template<class TS, class BUD>
-TP SetAttributeValue(Bud<TS,BUD>& bud, const TAD name, const TP value)
+TP SetValue(Bud<TS,BUD>& bud, const TAD name, const TP value)
 {
 
-  TP old_value = GetAttributeValue(bud,name);
+  TP old_value = GetValue(bud,name);
 
   if (name == omega)
     bud.ba.omega = value;
@@ -82,7 +82,7 @@ TP SetAttributeValue(Bud<TS,BUD>& bud, const TAD name, const TP value)
 }
 
 template<class TS, class BUD>
-STATUS GetAttributeValue(const Bud<TS,BUD>& bud, const TAS name)
+STATUS GetValue(const Bud<TS,BUD>& bud, const TAS name)
 {
   if (name == state)
     return bud.ba.state;
@@ -96,9 +96,9 @@ STATUS GetAttributeValue(const Bud<TS,BUD>& bud, const TAS name)
 }
 
 template <class TS,class BUD>    
-STATUS SetAttributeValue(Bud<TS,BUD>& bud, const TAS name, const STATUS value)
+STATUS SetValue(Bud<TS,BUD>& bud, const TAS name, const STATUS value)
 {
-  STATUS old_value = GetAttributeValue(bud,name);
+  STATUS old_value = GetValue(bud,name);
 
   if(name == state)
     bud.ba.state = value;
