@@ -24,6 +24,7 @@ public:
   MJ Qin;                 //Incoming radiation
   MJ Qabs;                //Absorbed radiation
   METER R;                //Radius including bark
+  METER Rtop;             //Radius at top
   METER Rh;               //Heartwood radius
   METER Rf;               //Radius to foliage limit
   KGC Wm;                 //Water mass of the tree segment 
