@@ -11,10 +11,10 @@ namespace Lignum {
 //segment. This functor uses functor ShadingEffectOfLeaf<TS,BUD> to
 //go through all leaves and to check the shading.
 
-template <class TS, class BUD,class S= Ellipsis>
+template <class TS, class BUD,class S= Ellipse>
 class EvaluateRadiationForHwTreeSegment {
 public:
-  void operator()(TreeSegment<TS,BUD>* ts)const;
+  void operator()(TS* ts)const;
   void setExtinction(ParametricCurve& K); //not needed really for
  //hardwoods, included only to quarantee that program compiles also in
  //the case when constructor of WrapRadiationEvaluations<F,TS,BUD> is
@@ -25,7 +25,7 @@ public:
 //by all leaves of a hardwood segment on a leaf (shaded_l) of a
 //hardwood segment (shaded_s). 
 
-template <class TS,class BUD,class S=Ellipsis>
+template <class TS,class BUD,class S=Ellipse>
 class ShadingEffectOfLeaf{
 public:
   ShadingEffectOfLeaf(HwTreeSegment<TS,BUD,S>* ts, BroadLeaf<S>* lf);

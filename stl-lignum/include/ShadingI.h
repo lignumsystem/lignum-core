@@ -12,10 +12,10 @@ using namespace sky;
 #define HIT_THE_WOOD -1
 
 int ellipsisBeamShading(Point& p0, PositionVector& v,
-			BroadLeaf<Ellipsis>& leaf);
+			BroadLeaf<Ellipse>& leaf);
 int cylinderBeamShading(const Point& r0, const PositionVector& b, 
-		       const Point& rs, const PositionVector& a,
-		       double Rs, double Rw, double L, 
+			const Point& rs, const PositionVector& a,
+			double Rs, double Rw, double L, 
 			double& distance );
 
 
@@ -43,15 +43,14 @@ void EvaluateRadiationForHwTreeSegment<TS,BUD,S>::setExtinction(ParametricCurve&
 
 template <class TS,class BUD,class S>
 void EvaluateRadiationForHwTreeSegment<TS,BUD,S>::operator()
-  (TreeSegment<TS,BUD>* ts)const
+  (TS* hwts)const
 {
-  HwTreeSegment<TS,BUD,S>* hwts = dynamic_cast<HwTreeSegment<TS,BUD,S>*>(ts);
 
   // Radiation conditions are not evaluated if the segment has no leaves
   list<BroadLeaf<S>*> leaves = GetLeafList(*hwts);
   if (leaves.empty()) return;
 
-  Tree<TS,BUD>& tt = GetTree(*ts);
+  Tree<TS,BUD>& tt = GetTree(*hwts);
   FirmamentWithMask& firmament = GetFirmament(tt);
   int number_of_sectors = firmament.numberOfRegions();
   double tmp_adotb = 0, a_dot_b = 0.0;
@@ -118,7 +117,7 @@ vector<LGMdouble>& ShadingEffectOfLeaf<TS,BUD,S>::operator()(vector<LGMdouble>& 
   //  int beamShading(Point& p0, PositionVector& v,
   //	BroadLeaf& leaf);
 
-  if (HwTreeSegment<TS,BUD,S>* ts = dynamic_cast<HwTreeSegment<TS,BUD,S>*>(tc)) {
+  if (TS* ts = dynamic_cast<TS*>(tc)) {
     if (ts == shaded_s)
       return v;
 
