@@ -37,15 +37,18 @@ Matrix<TS,BUD>::Matrix(vector<Tree<TS, BUD> *> trees, double voxeledge)
 	cout << "span " << span << endl;
 	cout << "edge " << edge << endl;
 
-	//Nyt tiedetaan todellinen pikkukuutioiden lukumaara. Lasketaan sivujen pituudet isossa kuutiossa.
+	//Nyt tiedetaan todellinen pikkukuutioiden
+	//lukumaara. Lasketaan sivujen pituudet isossa kuutiossa.
 	float dx = edge * X;
 	float dy = edge * Y;
 	float dz = edge * Z;
 
 	cout << "dx dy dz " << dx << " " << dy << " " << dz << endl;
 
-	p1 = Point(middlepoint.getX()-dx/2, middlepoint.getY()-dy/2, middlepoint.getZ()-dz/2);
-	p2 = Point(middlepoint.getX()+dx/2, middlepoint.getY()+dy/2, middlepoint.getZ()+dz/2);
+	p1 = Point(middlepoint.getX()-dx/2, middlepoint.getY()-dy/2,
+		   middlepoint.getZ()-dz/2);
+	p2 = Point(middlepoint.getX()+dx/2, middlepoint.getY()+dy/2,
+		   middlepoint.getZ()+dz/2);
 
 	cout << " alakulma " << p1 << endl;
 	cout << " ylakulma " << p2 << endl;
@@ -507,22 +510,37 @@ double Matrix<TS,BUD>::getLight(TreeSegment<TS,BUD> *ts)
 
       SetValue(*cfts, Qin, q_in);
       W_f = GetValue(*cfts, Wf);
+
+      //Move this to a place where the tree is initialized***************
+      LGMdouble needle_length = GetValue(GetTree(*cfts),nl);
+      LGMdouble needle_angle = GetValue(GetTree(*cfts),na);
+      SetValue(*cfts, Rf, needle_length * sin(needle_angle)+ GetValue(*cfts, R));
+      //***********************
+
+ 
+
       needle_rad = GetValue(*cfts, Rf);
-  
+ 
       sf = 28.1;  //***Add sf to parameters of the tree********
       LGMdouble star = 0;
+
+
   
+      //Do clean up work here****************************************
 	
       //ofstream file("starsum.txt"); file << "kaava : star += S(phi,
       //sa, W_f, GetValue(*ts, R), GetValue(*ts, L))/8;" << endl <<
       //endl;
+
+      LGMdouble s_c = 0.0;
       for (double phi=0;phi<PI_VALUE/2;phi+=PI_VALUE/16)
 	{  
-	  star += S(phi, sf, W_f, needle_rad, GetValue(*ts, L))/8.0;
+	  star += S(phi, sf, W_f, needle_rad, GetValue(*ts, L));
+	  s_c += 1.0;
 	  
-	  cout << "star += S()/8.0" << endl;
-	  cout << "eli star += S(phi, sf, W_f, needle_rad, GetValue(*ts, L))/8.0; " << endl;
-	  cout << "jossa S() =S(" << phi <<","<<sf<< ","<<W_f<<","<< needle_rad<<","<<GetValue(*ts, L) <<")"<< endl;
+	  //	  cout << "star += S()/8.0" << endl;
+	  //	  cout << "eli star += S(phi, sf, W_f,needle_rad,GetValue(*ts, L))/8.0; " << endl;
+	  //	  cout << "jossa S() =S(" << phi <<","<<sf<< ","<<W_f<<","<< needle_rad<<","<<GetValue(*ts, L) <<")"<< endl;
 
 
 	  //cout  << "S()="<< S(phi, sf, W_f, GetValue(*ts, R),
@@ -530,6 +548,10 @@ double Matrix<TS,BUD>::getLight(TreeSegment<TS,BUD> *ts)
 	  //sf<<" Wf="<<W_f<<" R="<<GetValue(*ts, R)<<"
 	  //L="<<GetValue(*ts, L); file << " summa=" << star << endl;
 	}
+      if(s_c > 0.0)
+	star /= s_c;
+      else
+	star = 0.0;
       LGMdouble Q_abs = q_in * star * W_f * sf;
       //file << "Q_abs = q_in * star * wf * sf: " << q_in << " * " <<
       //star << " * " << W_f << " * " << sf << " = " << Q_abs << endl;
@@ -537,10 +559,11 @@ double Matrix<TS,BUD>::getLight(TreeSegment<TS,BUD> *ts)
   
       SetValue(*cfts, Qabs, Q_abs);
 
-      cout << "pikku kuution indeksit (" << x << ", " << y << ", " << z << endl;
-      cout << "Star segmentille " << star << "  Q_abs = q_in * star * W_f * sf " << endl;  
-      cout << "Qin  " << q_in << endl;
-      cout << "Qabs " << Q_abs << endl << endl << endl;
+      //      cout << "pikku kuution indeksit (" << x << ", " << y << ", " << z << endl;
+      //      cout << "Star segmentille " << star << "  Q_abs = q_in * star * W_f * sf " <<
+      //	"s_c: " << s_c << endl;  
+      //      cout << "Qin  " << q_in << endl;
+      //      cout << "Qabs " << Q_abs << endl << endl << endl;
 
       return Q_abs;
     }
