@@ -1,7 +1,13 @@
 #include <TreeMetaFileParser.h>
-using namespace cxxadt;
+
 //Define the default files for parameters and functions
 //initialize file_mode to PARAMETER
+//I must rethink the functions part: it could become too complicated
+//to remember to update here and in TreeFriend.cc whenever new functions
+//emerge. One could have a list or vector of functions and let the 
+//user define the meaning of each one when implementing metabolic
+//processes. To access functions GetFunction(tree,1), GetFunction(tree,2)
+//or use of mnemonic enumerations should be implemented 
 TreeMetaFileParser::TreeMetaFileParser(const string& file)
   :meta_file(file),file_mode(PARAMETER)
 {
@@ -9,15 +15,16 @@ TreeMetaFileParser::TreeMetaFileParser(const string& file)
   file_tables[PARAMETER].insert("Tree","Tree.txt");
   file_tables[PARAMETER].insert("Firmament","Firmament.txt");
   
-  //Default file names for different functions
+  //Default file names (keyword file name pair) for different functions
   //1.Foliage mortality
   file_tables[FUNCTION].insert("FoliageMortality","pf.fn");
   //2.Number of New Buds
-  file_tables[FUNCTION].insert("Buds","fnb.fn");
+  file_tables[FUNCTION].insert("NumberOfBuds","fnb.fn");
   //3.Degree of Interaction (relative shadiness)
-  file_tables[FUNCTION].insert("DoI","ip.fn");
+  file_tables[FUNCTION].insert("DegreeOfInteraction","ip.fn");
+
+  //Initial tree. Possibly getting obsolete due to L-systems
   file_tables[INITIAL].insert("Tree","");
-  
 }
 
 //Install the functions and parameters of the tree
