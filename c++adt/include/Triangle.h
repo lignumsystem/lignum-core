@@ -25,7 +25,7 @@ namespace cxxadt{
     Point  getLeftCorner()  { return leftcorner;};
     Point  getRightCorner() { return rightcorner;};
     Point  getApexCorner()  { return apexcorner;};
-    vector<Point>&  getTriangleCorners(vector<Point>& corners)const;
+    vector<Point>&  getVertexVector(vector<Point>& points)const;
     void   setLeftCorner(const Point& p){ leftcorner=p;};
     void   setRightCorner(const Point& p){ rightcorner=p;};
     void   setApexCorner(const Point& p){ apexcorner=p;};

@@ -4,7 +4,7 @@
 
 namespace cxxadt{
 
-//Construct a triangle by defining three triangle corners;
+//Construct a triangle by defining three triangle points;
 //Getting the triangle area
 //Construct a triangle by defining the triangle area
 //Getting the center of the triangle
@@ -25,12 +25,12 @@ namespace cxxadt{
 
 
 
-vector<Point>& Triangle::getTriangleCorners(vector<Point>& corners)const
+vector<Point>& Triangle::getVertexVector(vector<Point>& points)const
 {
-  corners.push_back(leftcorner);
-  corners.push_back(rightcorner);
-  corners.push_back(apexcorner);
-  return corners;
+  points.push_back(leftcorner);
+  points.push_back(rightcorner);
+  points.push_back(apexcorner);
+  return points;
 }
 
 
@@ -41,13 +41,13 @@ Point Triangle::getCenterPoint()const
 {                            
   Point center;
 
-  vector<Point> corners;
-  corners=getTriangleCorners(corners);
+  vector<Point> points;
+  points=getVertexVector(points);
 
   for(int i=0; i<3; i++){
-   center.setX( ( (Point)corners[i] ).getX() /3);
-   center.setY( ( (Point)corners[i] ).getY() /3);
-   center.setZ( ( (Point)corners[i] ).getZ() /3);
+   center.setX( ( (Point)points[i] ).getX() /3);
+   center.setY( ( (Point)points[i] ).getY() /3);
+   center.setZ( ( (Point)points[i] ).getZ() /3);
   }
   return center ;
 }
@@ -75,7 +75,7 @@ PositionVector Triangle::getNormal()const
 } 
 
 //set up the triangle center point
-//end change the triangle corners
+//end change the triangle points
 //according the center point 
 
 void  Triangle::setCenterPoint(const Point& center0){
@@ -148,12 +148,12 @@ double Triangle::setArea(double area)
 
 
 
-  vector<Point> corners;
-  corners=getTriangleCorners(corners);
+  vector<Point> points;
+  points=getVertexVector(points);
   Point x,p;
 
   for(int i=0; i<3; i++){
-   p=(Point)corners[i];
+   p=(Point)points[i];
    x.setX(p.getX() *scalcoef  + adbasex);
    x.setY(p.getY() *scalcoef  + adbasey);
    x.setZ(p.getZ() *scalcoef  + adbasez);
@@ -193,12 +193,12 @@ double Triangle::setArea(double area, const Point& base )
 
 
 
-  vector<Point> corners;
-  corners=getTriangleCorners(corners);
+  vector<Point> points;
+  points=getVertexVector(points);
   Point x,p; 
 
   for(int i=0; i<3; i++){
-   p=(Point)corners[i];
+   p=(Point)points[i];
    x.setX(p.getX() *scalcoef  + adbasex);
    x.setY(p.getY() *scalcoef  + adbasey);
    x.setZ(p.getZ() *scalcoef  + adbasez);
@@ -233,7 +233,7 @@ double Triangle::setArea(double area, const Point& base )
  //2.calculation the vector OPc position,
  //  the  vector  crossing the POB plane 
  //  with the T1OT2 plane, where T1 and T2 the 
- //  other corners of triangle, not P  
+ //  other points of triangle, not P  
  //3.calculation the first angle,a angle between the vector OP and OB   
  //4.calculation the second angle,a angle  between the OP and OPc
  //5.compare these angles.
@@ -248,8 +248,8 @@ double Triangle::setArea(double area, const Point& base )
    int i,j,k;
    int counter=0;
    double cos1, cos2, angle1, angle2;
-   vector<Point> corners;
-   corners=getTriangleCorners(corners);
+   vector<Point> points;
+   points=getVertexVector(points);
 
    Point pt,p2,p3,pc;
 
@@ -260,17 +260,17 @@ double Triangle::setArea(double area, const Point& base )
                                     //o to b
    
    for(i=0; i<3; i++){
-    pt=(Point)corners[i];  //the arbitrary triangle corner
+    pt=(Point)points[i];  //the arbitrary triangle corner
     PositionVector ptv(pt);                     
-    if (i==0){              //for the other of the remaining corners 
+    if (i==0){              //for the other of the remaining points 
          j=1; k=2;          //of the triangle(p2 and p3) 
     }
     else{
       j=0;k=3-i;
     };
-                           //the other of the remaining corners are p2 and p3
-    p2=(Point)corners[j]; 
-    p3=(Point)corners[k]; 
+                           //the other of the remaining points are p2 and p3
+    p2=(Point)points[j]; 
+    p3=(Point)points[k]; 
 
     PositionVector p2v(p2);
     PositionVector p3v(p3);  
@@ -342,13 +342,13 @@ int main()
   
 
 
-  vector<Point> corners;
-  corners=t1.getTriangleCorners(corners);
+  vector<Point> points;
+  points=t1.getVertexVector(points);
 
   cout<<"----------------------------------------------"<<endl;
   cout << "0.The triangle points are   "<< endl;
     
-  for_each(corners.begin(),corners.end(),printing);   
+  for_each(points.begin(),points.end(),printing);   
   
   cout << "1.For these points  " << endl;  
   cout << "2.Area is   " << t1.getArea() << endl;
@@ -365,10 +365,10 @@ int main()
   cout << "5.Area is   " <<     t1.getArea() << endl;
   cout << "6.Center is " <<     t1.getCenterPoint().getX() << endl;
 
-  corners.clear();
-  corners=t1.getTriangleCorners(corners);
+  points.clear();
+  points=t1.getVertexVector(points);
   
-  for_each(corners.begin(),corners.end(),printing);   
+  for_each(points.begin(),points.end(),printing);   
 
   cout<<endl;
 
