@@ -70,6 +70,7 @@ void VoxelBox::UpdateValues()
 	k_b = 0.5;
 	star = 0.14; //FOR NEEDLES
 	//DO NOT FORGET TO RESET!!!
+	
 	val_c = star * (needleArea / (space->Xbox * space->Ybox * space->Zbox));
 	//val_b = k_b * (leafArea / (space->Xbox * space->Ybox * space->Zbox));
 	val_b = 0.0;        //FOR TESTING ONLY!!!!

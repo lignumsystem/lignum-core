@@ -11,7 +11,7 @@
 
 #include <VoxelBox.h>
 #include <VoxelSpace.h>
-#include <bernoulli.h>
+#include <berncreator.h>
 #include <Bernoulli.h>
 
 #include <fstream>
@@ -314,14 +314,14 @@ namespace Lignum {
   LGMdouble VoxelSpace::calculatePopLight()
   {
     //ofstream file("calculateVoxelSpace.txt");
-    cout << " VoxelSpace::calculateLight Begin for poplar: " << endl;
+    cout << " VoxelSpace::calculatePopLight Begin for poplar: " << endl;
     updateStar();
-    cout << " Star values updated " <<Zn<<"Xn value"<< endl;    
 
     for(int i1=0; i1<Xn; i1++)
       for(int i2=0; i2<Yn; i2++)
 	for(int i3=0; i3<Zn; i3++)
 	  {
+
 	    double sumiop = 0.0;
 	    int num_dirs = sky->numberOfRegions();
 	    //This might  make the voxel  space slow in  execution: if
@@ -329,6 +329,7 @@ namespace Lignum {
 	    //executed.
 	    if (voxboxes[i1][i2][i3].isEmpty() == false)
 	      {				
+		voxboxes[i1][i2][i3].UpdateValues();
 		for(int i = 0; i < num_dirs; i++)
 		  {	
 		    vector<double> rad_direction(3);
@@ -342,7 +343,7 @@ namespace Lignum {
 		    int size = vec.size();
 
 		    sumiop += iop; //WHERE IS THIS NEEDED??
-		    	   
+  
 		      if (size>1)
 		      {
                       int a=1;
@@ -360,7 +361,7 @@ namespace Lignum {
                           LGMdouble starsum=voxboxes[v1.x][v1.y][v1.y].getStarSum();			
 			 
                           p=min(starsum, 1.0);     //need to work on my field data to get the p value
-			  cout<<starsum<<" ";
+			  // cout<<starsum<<" ";
                           result=obj.Bernoulli(p);
 			  // cout<<result<<" ________________show result____________"<<endl; 
   			  if (result>0.5)
@@ -368,15 +369,57 @@ namespace Lignum {
                           else 
                             a++;
 			}
-		      cout<<endl;
+		      //   cout<<endl;
                       if (a==size-1)
                       {
                            voxboxes[i1][i2][i3].addRadiation(iop);
-			   cout<<a<<"________-the hit voxelbox:"<<size<<endl;
+			   //  cout<<a<<"________-the hit voxelbox:"<<size<<endl;
 		      }
 		
 		      }	
 		  }
+                // cout<<sumiop<<" is sumiop value"<<endl;
+		
+		//calculate the light for direct beam
+
+		vector<double> direct_direction(3);
+		LGMdouble iop= sky->directRadiation(direct_direction);
+                 vector<VoxelMovement> vec;
+		  getRoute(vec, i1, i2, i3, direct_direction);
+	          int size = vec.size();
+		      if (size>1)
+		      {
+                      int a=1;
+		      bool flag=0;
+		      long int seed= time(0);
+                      double p, result, test;
+                      StochasticLib obj(seed);
+                      
+                      while (a<size && flag==0)
+			{
+			  
+			  VoxelMovement v1 = vec[a-1];
+			  //  VoxelMovement v2 = vec[a];
+					
+                          LGMdouble starsum=voxboxes[v1.x][v1.y][v1.y].getStarSum();			
+			 
+                          p=min(starsum, 1.0);     //need to work on my field data to get the p value
+			  // cout<<starsum<<" ";
+                          result=obj.Bernoulli(p);
+			  // cout<<result<<" ________________show result____________"<<endl; 
+  			  if (result>0.5)
+			    flag=1;
+                          else 
+                            a++;
+			}
+
+                      if (a==size-1)
+                      {
+                           voxboxes[i1][i2][i3].addRadiation(iop);
+			   //  cout<<a<<"________-the hit voxelbox:"<<size<<endl;
+		      }
+		      }
+		      //calculate the light for direct beam done 
               }             	      
 	  }   
     // file.close();

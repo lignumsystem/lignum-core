@@ -52,9 +52,9 @@ namespace Lignum {
       b.addNeedleArea(farea);
       b.addNeedleMass(fmass);
 
-      // LGMdouble needle_rad = GetValue(ts, Rf); //Rf get 0 for HwTree?
+      // LGMdouble needle_rad = GetValue(ts, Rf); //get Rf= 0 for HwTree?
      LGMdouble needle_rad = GetValue(ts, R);
-       cout<<S_f<<" "<<fmass<<" "<<needle_rad<<" Radius "<<lenghth<<"test>>>>>>>>>>>>>>>>>>"<<endl;
+     //  cout<<S_f<<" "<<fmass<<" "<<needle_rad<<" Radius "<<lenghth<<"test>>>>>>>>>>>>>>>>>>"<<endl;
       //Tarkistettu että for-looppi ajetaan tasan 8 kertaa (mika).
       for (double phi=0; phi<PI_VALUE/2.0; phi+=PI_VALUE/16)
 	{		
