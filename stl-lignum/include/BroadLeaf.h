@@ -40,7 +40,7 @@ public:
   Point<> center;             //the center point of the leaf
 
   //vector for shading (must be synchronized with firmament)
-  vector<double>  sv; //the length of the vector == number of sectors 
+  vector<LGMdouble>  sv; //the length of the vector == number of sectors 
 };
 
 
@@ -52,13 +52,14 @@ class BroadLeaf{
   friend PositionVector GetLeafNormal(const BroadLeaf& bl);
   friend Petiole& GetPetiole(BroadLeaf& bl);
   friend Ellipsis& GetEllipsis(BroadLeaf& bl);
+  friend void SetRadiationVector(BroadLeaf& bl, vector<LGMdouble>& v);
 public:
 
   BroadLeaf(LGMdouble sf,LGMdouble tauL,LGMdouble dof,int number_of_sectors,
 	    const Petiole& petiole, const PositionVector& leaf_normal,
 	    const Ellipsis& shape);
 private:
-  void initsv(){for (int i = 0; i < bla.sv.size(); i++)bla.sv[i] = 1.0;}
+  //  void initsv(){for (int i = 0; i < bla.sv.size(); i++)bla.sv[i] = 1.0;}
   BroadLeafAttributes bla;
 };
 

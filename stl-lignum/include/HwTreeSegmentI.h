@@ -18,6 +18,8 @@ void InitializaForRadiation(HwTreeSegment<TS,BUD>& ts)
 {
   Tree<TS,BUD>& tt = dynamic_cast<Tree<TS,BUD>&>(GetTree(*ts));
   Firmament& f = GetFirmament(tt);
+  int nr =  f.numberOfRegions();
+  vector<LGMdouble> one(nr, 1.0);
   SetValue(ts, Qin, 0.0);
   SetValue(ts, Qabs, 0.0);
   list<BroadLeaf*> ll = GetLeafList(ts);
@@ -25,10 +27,9 @@ void InitializaForRadiation(HwTreeSegment<TS,BUD>& ts)
 	i != ll.end(), i++) {
     SetValue(*i, Qabs, 0.0);
     SetValue(*i, Qin, 0.0);
+    SetRadiationVector(*i, one);
   }
-  for(int j = 0; j < f.numberOfRegions(); j++) {
-    ts.bla.sv[j] = 0.0;
-  }
+
 }
 
 #endif
