@@ -46,7 +46,8 @@ namespace Lignum{
 	//Unkonown, parameter (check MapLGMPD and listing in TreeFriend.cc)
 	else{
 	  if (verbose){
-	    cerr << "Unknown parameter for tree: " << name.getValue().c_str()
+	    cerr << "Unknown parameter for tree: check MapLGMPD listing in TreeFriend.cc" 
+		 << name.getValue().c_str()
 		 << endl;
 	  }
 	}
@@ -98,6 +99,14 @@ namespace Lignum{
 	tree.tf.ip.install(file);
       }
       //4.
+      file = tmfp.getFunctionFile("LGMNLEAF");
+      if (file != ""){
+	if (verbose){
+	  cout << "Reading LGMNLEAF from: " << file << endl;
+	}
+	tree.tf.nleaves.install(file);
+      }
+      //5.
       file = tmfp.getFunctionFile("LGMLONB");
       if (file != ""){
 	if (verbose){
@@ -105,7 +114,7 @@ namespace Lignum{
 	}
 	tree.tf.LightOnNumBuds.install(file);
       }
-      //5.
+      //6.
       file = tmfp.getFunctionFile("LGMNB");
       if (file != ""){
 	if (verbose){
@@ -113,7 +122,7 @@ namespace Lignum{
 	}
 	tree.tf.nb.install(file);
       }
-      //6.
+      //7.
       file = tmfp.getFunctionFile("LGMVI");
       if (file != ""){
 	if (verbose){
@@ -121,7 +130,7 @@ namespace Lignum{
 	}
 	tree.tf.vi.install(file);
       }
-      //7.
+      //8.
       file = tmfp.getFunctionFile("LGMVIONB");
       if (file != ""){
 	if (verbose){
