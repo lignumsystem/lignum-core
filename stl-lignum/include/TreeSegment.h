@@ -7,6 +7,9 @@
 #include <Point.h>
 #include <TreeCompartment.h>
 
+class TreeSegment;
+TP SetAttributeValue(TreeSegment& ts, const TAD name, const TP value);
+
 class TreeSegmentAttributes{
 public:
   TreeSegmentAttributes();
@@ -37,6 +40,8 @@ public:
   TreeSegment(const Point<METER>& p, const PositionVector& d, const TP go,
 	      const METER l, const METER r, const METER rn, Tree* t);
   virtual ~TreeSegment();
+  virtual void Production();
+  virtual TP GetProduction();
 private:
   TreeSegmentAttributes tsa;
 };

@@ -6,6 +6,7 @@ TreeSegmentAttributes::TreeSegmentAttributes()
    R(0.0),Rn(0.0)
 {
 }
+
 TreeSegment::TreeSegment()
 {
   tree = NULL;
@@ -15,10 +16,10 @@ TreeSegment::TreeSegment(const Point<METER>& p, const PositionVector& d, const T
 			 const METER l, const METER r, const METER rn, Tree* t)
   :TreeCompartment(p,d,t)
 {
-  tsa.omega = go;
-  tsa.L = l;
-  tsa.R = r;
-  tsa.Rn = rn;
+  SetAttributeValue(*this,omega,go);
+  SetAttributeValue(*this,L,l);
+  SetAttributeValue(*this,R,r);
+  SetAttributeValue(*this,Rn,rn);
 
   //the first annual ring
   tsa.annual_rings.push_back(r);
@@ -27,19 +28,33 @@ TreeSegment::TreeSegment(const Point<METER>& p, const PositionVector& d, const T
   //the given parameters are needle length (nl) and the
   //needle angle (na)
   //Rf = hf + tsa.R, where hf is height of the foliage (ihf = nl * sin(na))
-  tsa.Rf = GetParameterValue(*tree,nl) * sin((double)GetParameterValue(*tree,na)) + 
-    tsa.R;
+  SetAttributeValue(*this,Rf,
+		    GetParameterValue(*t,nl) * 
+		    sin((double)GetParameterValue(*t,na)) + 
+		    GetAttributeValue(*this,R));
 
   //compute the initial mass of the foliage
-  //1. compute the surface area (Af) of the cylinder representing foliage
-  TP Af =  (2.0 * PI_VALUE * tsa.Rf) * tsa.L;
-  //2. the mass of the foliage (Wf = Af * af) 
-  tsa.Wf = Af * GetParameterValue(*tree,af);
+  //1. compute the surface area (sa) of the cylinder representing foliage
+  TP sa =  2.0 * PI_VALUE * GetAttributeValue(*this,Rf) * GetAttributeValue(*this,L);
+  //2. the mass of the foliage (Wf = sa * af) 
+  TP wf =  sa * GetParameterValue(*t,af);
+  SetAttributeValue(*this,Wf,sa*GetParameterValue(*t,af));
 
   //compute the sapwood mass
-  tsa.Ws = GetSapwoodMass(*this); 
+  SetAttributeValue(*this,Ws,GetSapwoodMass(*this)); 
 }
 
 TreeSegment::~TreeSegment()
 {
+}
+
+void TreeSegment::Production()
+{
+  TP p = 5.0; //GetParameterValue(*tree,pr) * GetAttributeValue(*this,Qabs);
+  SetAttributeValue(*this,P,p);
+}
+
+TP TreeSegment::GetProduction()
+{
+  return GetAttributeValue(*this,P);
 }

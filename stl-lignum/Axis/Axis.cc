@@ -1,5 +1,9 @@
 
 #include <Axis.h>
+#include <TreeFunctor.h>
+#include <algorithm>
+#include <numeric>
+
 
 //default constructor
 Axis::Axis()
@@ -24,4 +28,14 @@ Axis::~Axis()
     delete *first++;
 }
 
+void Axis::Production()
+{
+  Prod p;
+  for_each(tc_ls.begin(),tc_ls.end(),p);
+}
 
+TP Axis::GetProduction()
+{
+  GetProd gp;
+  return accumulate(tc_ls.begin(),tc_ls.end(),0.0,gp);
+}

@@ -30,6 +30,9 @@ TP GetAttributeValue(const TreeSegment& ts, const TAD name)
   else if (name == M)
     return ts.tsa.M;
 
+  else if (name == omega)
+    return ts.tsa.omega;
+
   else if (name == P)
     return ts.tsa.P;
 
@@ -42,14 +45,20 @@ TP GetAttributeValue(const TreeSegment& ts, const TAD name)
   else if (name == R)
     return ts.tsa.R;
 
+  else if (name == Rf)
+    return ts.tsa.Rf;
+
   else if (name == Rn)
     return ts.tsa.Rn;
 
   else if (name == Wf)
     return ts.tsa.Wf;
 
+  else if (name == Ws)
+    return ts.tsa.Ws;
+
   else
-    cout << "Unknown parameter returning" << unknown_value << endl;
+    cout << "Unknown attribute returning" << unknown_value << endl;
 
   return unknown_value;
 }
@@ -62,7 +71,7 @@ YEAR GetAttributeValue(const TreeSegment& ts,const TAI name)
     return ts.tsa.age;
 
   else
-     cout << "Unknown parameter returning" << unknown_value << endl;
+     cout << "Unknown attribute returning" << unknown_value << endl;
 
   return unknown_value;
 }
@@ -92,14 +101,21 @@ T2 SetAttributeValue(TreeSegment& ts, const T1 name, const T2 value)
 
   else if (name == R)
     ts.tsa.R = value;
-  
+
+  else if (name == Rf)
+    ts.tsa.Rf = value;
+
   else if (name == Rn)
     ts.tsa.Rn = value;
 
   else if (name == Wf)
     ts.tsa.Rn = value;
+
+  else if (name == Ws)
+    ts.tsa.Ws = value;
+
   else
-    cerr << "TreeSegment: Unknown attribute " << name << end;
+    cerr << "TreeSegment: Unknown attribute " << name << endl;
 
   return old_value;
 }
@@ -113,7 +129,6 @@ YEAR SetAttributeValue(TreeSegment& ts, const TAI name, const YEAR value)
 
   return old_value;
 }
-
 
 
 

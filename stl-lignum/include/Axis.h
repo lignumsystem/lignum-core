@@ -14,6 +14,8 @@ public:
   Axis();
   Axis(const Point<METER>& p, const PositionVector& d, Tree* t);
   virtual ~Axis();
+  virtual void Production();
+  virtual TP GetProduction();
 private:
   list<TreeCompartment*> tc_ls;
 };

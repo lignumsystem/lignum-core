@@ -30,5 +30,7 @@ int main(int argc, char *argv[])
   clarg = ParseCommandLine(argc,argv,"-file");
   if (clarg != empty)
     InitializeTree(tree,clarg);
+  tree.Production();
+  cout << "Prod: " << tree.GetProduction() << endl;
 }
 

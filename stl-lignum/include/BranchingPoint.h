@@ -13,6 +13,8 @@ public:
   BranchingPoint();
   BranchingPoint(const Point<METER>& p, const PositionVector& d, Tree* t);
   virtual ~BranchingPoint();
+  virtual void Production();
+  virtual TP GetProduction();
 private:
   list<Axis*> axis_ls;
 };

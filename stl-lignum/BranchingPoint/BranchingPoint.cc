@@ -1,5 +1,8 @@
 
 #include <BranchingPoint.h>
+#include <TreeFunctor.h>
+#include <algorithm>
+#include <numeric>
 
 BranchingPoint::BranchingPoint()
 {
@@ -22,3 +25,14 @@ BranchingPoint::~BranchingPoint()
   }
 }
 
+void BranchingPoint::Production()
+{
+  Prod p;
+  for_each(axis_ls.begin(),axis_ls.end(),p);
+}
+
+TP BranchingPoint::GetProduction()
+{
+  GetProd gp;
+  return accumulate(axis_ls.begin(),axis_ls.end(),0.0,gp);
+}

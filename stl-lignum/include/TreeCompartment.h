@@ -4,7 +4,6 @@
 #include <LGMUnits.h>
 #include <Point.h>
 #include <PositionVector.h>
-
 class Tree;
 
 class TreeCompartment{
@@ -14,6 +13,8 @@ public:
   TreeCompartment();
   TreeCompartment(const Point<METER>& p, const PositionVector& d, Tree* t);
   virtual ~TreeCompartment();
+  virtual void Production() = 0;
+  virtual TP GetProduction() = 0;
 protected:
   Point<METER> point;
   PositionVector direction;

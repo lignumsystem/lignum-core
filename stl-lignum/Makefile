@@ -1,7 +1,7 @@
 MAIN = main.cc
 OBJ  = main.o
 
-CCC = CC -64  -ptv -ptused -prelink
+CCC = CC -64  -ptv -prelink 
 
 SUPPRESS = #-w 1155 -w 1183
 
@@ -57,15 +57,16 @@ main.o: /usr/include/CC/stl_algobase.h /usr/include/CC/stl_config.h
 main.o: /usr/include/CC/stl_relops.h /usr/include/CC/stl_pair.h
 main.o: /usr/include/CC/type_traits.h /usr/include/string.h
 main.o: /usr/include/limits.h /usr/include/CC/new.h
-main.o: /usr/include/CC/stl_iterator.h /usr/include/CC/stl_alloc.h
-main.o: /usr/include/assert.h /usr/include/mutex.h /usr/include/time.h
-main.o: /usr/include/CC/stl_construct.h /usr/include/CC/stl_uninitialized.h
-main.o: /usr/include/CC/stl_list.h include/Tree.h ../c++adt/include/CString.h
-main.o: /usr/include/stdio.h /usr/include/ctype.h /usr/include/locale_attr.h
-main.o: /usr/include/CC/stream.h /usr/include/CC/iomanip.h
-main.o: /usr/include/CC/generic.h /usr/include/CC/stdiostream.h
-main.o: /usr/include/CC/fstream.h ../c++adt/include/ParametricCurve.h
-main.o: /usr/include/CC/vector /usr/include/CC/stl_vector.h
+main.o: /usr/include/CC/stl_iterator_base.h /usr/include/CC/stl_iterator.h
+main.o: /usr/include/CC/stl_alloc.h /usr/include/stdio.h
+main.o: /usr/include/assert.h /usr/include/CC/stl_construct.h
+main.o: /usr/include/CC/stl_uninitialized.h /usr/include/CC/stl_list.h
+main.o: include/Tree.h ../c++adt/include/CString.h /usr/include/ctype.h
+main.o: /usr/include/locale_attr.h /usr/include/CC/stream.h
+main.o: /usr/include/CC/iomanip.h /usr/include/CC/generic.h
+main.o: /usr/include/CC/stdiostream.h /usr/include/CC/fstream.h
+main.o: ../c++adt/include/ParametricCurve.h /usr/include/CC/vector
+main.o: /usr/include/CC/stl_range_errors.h /usr/include/CC/stl_vector.h
 main.o: /usr/include/CC/stl_bvector.h /usr/include/float.h
 main.o: ../c++adt/include/Point.h /usr/include/math.h include/LGMSymbols.h
 main.o: /usr/include/CC/map /usr/include/CC/stl_tree.h

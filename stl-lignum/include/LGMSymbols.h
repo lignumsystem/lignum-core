@@ -6,7 +6,7 @@
 using namespace std;
 
 enum TPD {af,ar,lr,mf,mr,ms,na,nl,pr,q,sr,ss,rho,xi};
-enum TAD {ip,lb,L,M,omega,P,Qin,Qabs,R,Rn,Wf,Wr};
+enum TAD {ip,lb,L,M,omega,P,Qin,Qabs,R,Rf,Rn,Wf,Wr,Ws};
 enum TAI {age};
 enum TTD {lambda};
 

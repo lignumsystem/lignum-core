@@ -30,6 +30,8 @@ class TreeSegment;
 #include <TreeSegment.h>
 #include <RootSystem.h>
 
+TP GetProduction(const Tree& t);
+
 class TreeParameters{
 public:
   TreeParameters();
@@ -73,6 +75,7 @@ public:
 };
 
 class Tree: public TreeCompartment{
+friend TP GetProduction(const Tree& t);
 friend void InitializeTree(Tree& tree, const CString& meta_file);
 friend TP GetAttributeValue(const Tree& tree, const TAD name);
 friend YEAR GetAttributeValue(const Tree& tree, const TAI name);
@@ -85,6 +88,8 @@ friend TP SetTransitVariableValue(Tree& tree, const TTD name, const TP value);
 public:
   Tree();
   Tree(const Point<METER>& p, const PositionVector& d);
+  virtual void Production(){axis.Production();}
+  virtual TP GetProduction(){return axis.GetProduction();}
 private:
   TreeAttributes ta;
   TreeFunctions tf;

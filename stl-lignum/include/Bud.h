@@ -24,6 +24,8 @@ public:
   TreeSegment& createTreeSegment()const;
   Bud& createBud()const;
   BranchingPoint& createBranchingPoint()const;
+  virtual void Production(){/*do nothing*/}
+  virtual TP GetProduction(){return 0.0;}
 private:
   BudAttributes ba;
 };
