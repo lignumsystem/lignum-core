@@ -45,3 +45,4 @@
 ^YellowBirch Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi eero.nikinmaa@helsinki.fi  mln52@mizzou.edu
 ^Gliricidia Mail -s %s risto.sievanen@metla.fi jari.perttunen@metla.fi
 ^decay Mail -s %s theikura@cc.hut.fi jari.perttunen@metla.fi
+^DataTree Mail -s %s  risto.sievanen@metla.fi jari.perttunen@metla.fi
