@@ -30,9 +30,9 @@ public:
   
   CfWrapper(const Tree<TS,BUD>& t):WrapperBase(),tree(t){}
 
-  void VisualizeTree();
-  void VisualizeStem(int &active_texture);
-  void VisualizeFoliage(int &active_texture);
+  virtual void VisualizeTree();
+  virtual void VisualizeStem(int &active_texture);
+  virtual void VisualizeFoliage(int &active_texture);
 
 
   Tree<TS,BUD>& tree;
@@ -44,9 +44,9 @@ class HwWrapper: public WrapperBase
 public:
   HwWrapper(Tree<TS,BUD>& t):WrapperBase(),tree(t){}
 
-  void VisualizeTree();
-  void VisualizeStem(int &active_texture);
-  void VisualizeFoliage(int &active_texture);
+  virtual void VisualizeTree();
+  virtual void VisualizeStem(int &active_texture);
+  virtual void VisualizeFoliage(int &active_texture);
   
  
   Tree<TS,BUD>& tree;
