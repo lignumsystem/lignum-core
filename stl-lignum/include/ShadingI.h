@@ -61,7 +61,7 @@ void EvaluateRadiationForHwTreeSegment<TS,BUD,S>::operator()
   
   vector<LGMdouble> result(number_of_sectors);
   vector<LGMdouble> init(number_of_sectors);
-  list<BroadLeaf<S>*>::iterator Il = leaves.begin();
+  typename list<BroadLeaf<S>*>::iterator Il = leaves.begin();
 
   ShadingEffectOfLeaf<TS,BUD>  s_e(hwts, *Il);
 
@@ -135,7 +135,7 @@ vector<LGMdouble>& ShadingEffectOfLeaf<TS,BUD,S>::operator()(vector<LGMdouble>& 
     //to each sector
 
     list<BroadLeaf<S>*>& llshding = GetLeafList(*ts);
-    list<BroadLeaf<S>*>::iterator Ishding;
+    typename list<BroadLeaf<S>*>::iterator Ishding;
     PositionVector tmp;
     mp = GetCenterPoint(*shaded_l);
 
