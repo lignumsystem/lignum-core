@@ -4,13 +4,9 @@
 #include <vector>
 #include <Point.h>
 #include <LGMUnits.h>
-
+#include <LGMdecl.h>
 
 namespace Lignum{
-
-template <class TS,class BUD=DefaultBud<TS> > class TreeCompartment;
-
-template <class TS,class BUD=DefaultBud<TS> > class TreeSegment;
 
 template <class TS, class BUD>
 class GUS{
