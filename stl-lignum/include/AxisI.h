@@ -141,7 +141,27 @@ LGMdouble GetSumValue(Axis<TS,BUD>& axis, LGMAD name, int Age)
 }
 
 
+template<class TS, class BUD>
+void Delete2ndLastTreeCompartment(Axis<TS,BUD>& axis)
+{
+  std::list<TreeCompartment<TS, BUD>*>& ls = axis.tc_ls;
+  std::list<TreeCompartment<TS, BUD>*>::iterator I = ls.end();
+
+  if(axis.tc_ls.size() > 1) {
+    I--;
+    I--;
+    delete *I;
+    axis.tc_ls.erase(I);
+  }
+  return;
+}
+
+
+
+
 }//closing namesapce
 
 
 #endif
+
+

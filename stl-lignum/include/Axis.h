@@ -28,6 +28,8 @@ class Axis: public TreeCompartment<TS,BUD>{
   friend TreeSegment<TS, BUD>* GetFirstTreeSegment(Axis<TS,BUD>& axis);
   friend TreeSegment<TS, BUD>* GetLastTreeSegment(Axis<TS,BUD>& axis);
   friend LGMdouble GetSumValue(Axis<TS,BUD>& axis, LGMAD name, int Age=-1);
+  friend void Delete2ndLastTreeCompartment(Axis<TS,BUD>& axis);
+
 #else
   template <class TS1,class BUD1>
   friend Bud<TS1,BUD1>* GetTerminatingBud(const Axis<TS1,BUD1>& axis);
@@ -46,7 +48,8 @@ class Axis: public TreeCompartment<TS,BUD>{
   friend TreeSegment<TS1, BUD1>* GetFirstTreeSegment(Axis<TS1,BUD1>& axis);
   template <class TS1,class BUD1>
   friend LGMdouble GetSumValue(Axis<TS1,BUD1>& axis, LGMAD name, int Age);
-
+  template <class TS1,class BUD1>
+  friend void Delete2ndLastTreeCompartment(Axis<TS1,BUD1>& axis);
 #endif // _MFC_VER
 
 
