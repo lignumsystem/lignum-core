@@ -2,14 +2,14 @@
 #include <TreeCompartment.h>
 #include <stream.h>
 
-template <class TS>
-TreeCompartment<TS>::TreeCompartment()
+template <class TS,class BUD>
+TreeCompartment<TS,BUD>::TreeCompartment()
 {
 }
 
-template <class TS>
-TreeCompartment<TS>::TreeCompartment(const Point<METER>& p, const PositionVector& d, 
-				 Tree<TS>* t)
+template <class TS,class BUD>
+TreeCompartment<TS,BUD>::TreeCompartment(const Point<METER>& p, const PositionVector& d, 
+				 Tree<TS,BUD>* t)
   :point(p),direction(d)
 {
   //normalize the direction vector
@@ -20,20 +20,20 @@ TreeCompartment<TS>::TreeCompartment(const Point<METER>& p, const PositionVector
   tree = t;
 }
 
-template <class TS>
-TreeCompartment<TS>::~TreeCompartment()
+template <class TS,class BUD>
+TreeCompartment<TS,BUD>::~TreeCompartment()
 {
 }
 
 
-template <class TS>
-Point<METER> GetPoint(const TreeCompartment<TS>& tc)
+template <class TS,class BUD>
+Point<METER> GetPoint(const TreeCompartment<TS,BUD>& tc)
 {
   return tc.point;
 }
 
-template <class TS>
-PositionVector GetDirection(const TreeCompartment<TS>& tc)
+template <class TS,class BUD>
+PositionVector GetDirection(const TreeCompartment<TS,BUD>& tc)
 {
   return  tc.direction;
 }

@@ -4,10 +4,10 @@
 #include <list>
 #include <Point.h>
 #include <TreeCompartment.h>
+#include <DefaultBud.h>
 
-
-template<class TS>
-TP GetTreeParameterValue(const Tree<TS>& tree, const TPD name);
+template<class TS,class BUD>
+TP GetTreeParameterValue(const Tree<TS,BUD>& tree, const TPD name);
 
 
 class TreeSegmentAttributes{
@@ -33,19 +33,19 @@ public:
 };
 
 
-template <class TS>
-class TreeSegment: public TreeCompartment<TS>{ 
-  friend list<METER> GetAnnualRings(const TreeSegment<TS>& ts);
-  friend KGC GetSapwoodMass(const TreeSegment<TS>& ts);
-  friend TP GetTSAttributeValue(const TreeSegment<TS>& ts, const TAD name);
-  friend YEAR GetTSAttributeValue(const TreeSegment<TS>& ts, const TAI name);
-  friend TP SetTSAttributeValue(TreeSegment<TS>& ts, const TAD name, const TP value);
-  friend YEAR SetTSAttributeValue(TreeSegment<TS>& ts, const TAI name, 
+template <class TS,class BUD=DefaultBud<TS> >
+class TreeSegment: public TreeCompartment<TS,BUD>{ 
+  friend list<METER> GetAnnualRings(const TreeSegment<TS,BUD>& ts);
+  friend KGC GetSapwoodMass(const TreeSegment<TS,BUD>& ts);
+  friend TP GetTSAttributeValue(const TreeSegment<TS,BUD>& ts, const TAD name);
+  friend YEAR GetTSAttributeValue(const TreeSegment<TS,BUD>& ts, const TAI name);
+  friend TP SetTSAttributeValue(TreeSegment<TS,BUD>& ts, const TAD name, const TP value);
+  friend YEAR SetTSAttributeValue(TreeSegment<TS,BUD>& ts, const TAI name, 
 				  const YEAR  value);
 public:
   TreeSegment();
   TreeSegment(const Point<METER>& p, const PositionVector& d, const TP go,
-	      const METER l, const METER r, const METER rn, Tree<TS>* t);
+	      const METER l, const METER r, const METER rn, Tree<TS,BUD>* t);
   virtual ~TreeSegment();
   TP GetTranspiration(TP time);
   TP GetPressure(){ return tsa.Pr;};

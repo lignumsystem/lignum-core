@@ -20,51 +20,49 @@ TreeTransitVariables::TreeTransitVariables()
 }
 
 
-template <class TS>
-Tree<TS>::Tree()
+template <class TS,class BUD>
+Tree<TS,BUD>::Tree()
 {
   tree = NULL;
 }
 
 //Construct a tree at a certain position to a certain direction
 //with one terminating bud in the main axis
-template <class TS>
-Tree<TS>::Tree(const Point<METER>& p, const PositionVector& d)
-  :TreeCompartment<TS>(p,d,this),axis(p,d,this)
+template <class TS,class BUD>
+Tree<TS,BUD>::Tree(const Point<METER>& p, const PositionVector& d)
+  :TreeCompartment<TS,BUD>(p,d,this),axis(p,d,this)
 {
 }
 
 
-
-
-template <class TS>
-void Tree<TS>::UpdateWaterFlow(TP time_step, const ConnectionMatrix<TS> &cm)
+template <class TS,class BUD>
+void Tree<TS,BUD>::UpdateWaterFlow(TP time_step, const ConnectionMatrix<TS,BUD> &cm)
 {
   // This counts the flow in for every segment
   for (int i=0; i<cm.getSize(); i++){
-    TreeSegment<TS> *out;
+    TreeSegment<TS,BUD> *out;
     if(cm.getTreeSegment(i) != NULL)  
       out = cm.getTreeSegment(i);
     
     for (int a=0; a<cm.getSize(); a++){
       if (i != a && cm.getTreeSegment(i, a) != 0){
-	TreeSegment<TS> *in = cm.getTreeSegment(i,a);	
+	TreeSegment<TS,BUD> *in = cm.getTreeSegment(i,a);	
 	SetTSAttributeValue(*in, fin, CountFlow(*in, *out,  time_step));
       }
       SetTSAttributeValue(*out, fout, 0);  // 
     }	
   }
-  TreeSegment<TS> *in = cm.getTreeSegment(0);
+  TreeSegment<TS,BUD> *in = cm.getTreeSegment(0);
   SetTSAttributeValue(*in, fin, 3* 0.12e-9);
   
   // This counts the flow out for every segment
   for (i=0; i<cm.getSize(); i++){
-    TreeSegment<TS> *out;
+    TreeSegment<TS,BUD> *out;
     if(cm.getTreeSegment(i) != 0)  
       out = cm.getTreeSegment(i);
     for (int a=0; a<cm.getSize(); a++){
       if (i != a && cm.getTreeSegment(i,a) != 0){
-	TreeSegment<TS> *in = cm.getTreeSegment(i,a);
+	TreeSegment<TS,BUD> *in = cm.getTreeSegment(i,a);
 	SetTSAttributeValue(*out, fout, GetTSAttributeValue(*out, fout)+GetTSAttributeValue(*in, fin));
       }
     }
@@ -87,9 +85,10 @@ void Tree<TS>::UpdateWaterFlow(TP time_step, const ConnectionMatrix<TS> &cm)
 }
 
 
+
 // This method counts the flow from the TreeSegment below (out) to the TreeSegment above.
-template <class TS>
-TP Tree<TS>::CountFlow(TreeSegment<TS> &in, TreeSegment<TS> &out, TP time_step)
+template <class TS,class BUD>
+TP Tree<TS,BUD>::CountFlow(TreeSegment<TS,BUD> &in, TreeSegment<TS,BUD> &out, TP time_step)
 {
   
 
@@ -109,8 +108,8 @@ TP Tree<TS>::CountFlow(TreeSegment<TS> &in, TreeSegment<TS> &out, TP time_step)
 
 //This method builds the connection matrix, where the structure of the tree
 //is stored. 
-template <class TS>
-void Tree<TS>::BuiltConnectionMatrix()
+template <class TS,class BUD>
+void Tree<TS,BUD>::BuiltConnectionMatrix()
 {  
   TreeSegment<MyTreeSegment> *lastSegment = NULL;
   list<TreeCompartment<MyTreeSegment>*>& ls = GetTreeCompartmentList(axis);
@@ -123,8 +122,8 @@ void Tree<TS>::BuiltConnectionMatrix()
       lastSegment = myts;
     }      
     if (BranchingPoint<MyTreeSegment>* mybp = dynamic_cast<BranchingPoint<MyTreeSegment>*>(*I)){
-      list<Axis<TS>*>& axis_ls = GetAxisList(*mybp);  	  
-      list<Axis<TS>*>::iterator I = axis_ls.begin();
+      list<Axis<TS,BUD>*>& axis_ls = GetAxisList(*mybp);  	  
+      list<Axis<TS,BUD>*>::iterator I = axis_ls.begin();
       while(I != axis_ls.end()){	      
 	Axis<MyTreeSegment> *axis = *I;
 	if (lastSegment)
@@ -155,8 +154,8 @@ void Tree<TS>::BuiltConnectionMatrix()
 //that are given as (x,y) pairs in an ASCII file
 //ParametricCurve can read and create internal representation
 //for a parametric curve and evaluate it in any point.
-template <class TS>
-void InitializeTree(Tree<TS>& tree, const CString& meta_file)
+template <class TS,class BUD>
+void InitializeTree(Tree<TS,BUD>& tree, const CString& meta_file)
 {
   TP p;
   CString file;
@@ -201,8 +200,8 @@ void InitializeTree(Tree<TS>& tree, const CString& meta_file)
 }
 
 //Get a parameter value 
-template <class TS>
-TP GetTreeParameterValue(const Tree<TS>& tree, const TPD name)
+template <class TS,class BUD>
+TP GetTreeParameterValue(const Tree<TS,BUD>& tree, const TPD name)
 {
   if (name == af)
     return tree.tp.af;
@@ -254,8 +253,8 @@ TP GetTreeParameterValue(const Tree<TS>& tree, const TPD name)
 }
 
 //Change a parameter value, return the old value
-template <class TS>
-TP SetTreeParameterValue(Tree<TS>& tree, const TPD name, const TP value)
+template <class TS,class BUD>
+TP SetTreeParameterValue(Tree<TS,BUD>& tree, const TPD name, const TP value)
 {
   TP old_value = GetTreeParameterValue(tree,name);
 
@@ -308,8 +307,8 @@ TP SetTreeParameterValue(Tree<TS>& tree, const TPD name, const TP value)
   return old_value;
 }
 
-template <class TS>
-TP GetTreeTransitVariableValue(const Tree<TS>& tree, const TTD name)
+template <class TS,class BUD>
+TP GetTreeTransitVariableValue(const Tree<TS,BUD>& tree, const TTD name)
 {
   if (name == lambda)
     return tree.ttp.lambda;
@@ -322,8 +321,8 @@ TP GetTreeTransitVariableValue(const Tree<TS>& tree, const TTD name)
   return 0.0;
 }
 
-template <class TS>
-TP SetTreeTransitVariableValue(Tree<TS>& tree, const TTD name, const TP value)
+template <class TS,class BUD>
+TP SetTreeTransitVariableValue(Tree<TS,BUD>& tree, const TTD name, const TP value)
 {
   TP old_value = GetTreeTransitVariableValue(tree,name);
   
@@ -336,8 +335,8 @@ TP SetTreeTransitVariableValue(Tree<TS>& tree, const TTD name, const TP value)
   return old_value;
 }
 
-template <class TS>
-TP GetTreeAttributeValue(const Tree<TS>& tree, const TAD name)
+template <class TS,class BUD>
+TP GetTreeAttributeValue(const Tree<TS,BUD>& tree, const TAD name)
 { 
   
   if (name == lb)
@@ -360,8 +359,8 @@ TP GetTreeAttributeValue(const Tree<TS>& tree, const TAD name)
   return 0.0;
 }
 
-template <class TS>
-YEAR GetTreeAttributeValue(const Tree<TS>& tree, const TAI name)
+template <class TS,class BUD>
+YEAR GetTreeAttributeValue(const Tree<TS,BUD>& tree, const TAI name)
 {
   if (name == age)
     return  tree.ta.age;
@@ -373,8 +372,8 @@ YEAR GetTreeAttributeValue(const Tree<TS>& tree, const TAI name)
   return 0;
 }
 
-template <class TS,class T1,class T2>
-T2 SetTreeAttributeValue(Tree<TS>& tree, const T1 name, const T2 value)
+template <class TS,class BUD,class T1,class T2>
+T2 SetTreeAttributeValue(Tree<TS,BUD>& tree, const T1 name, const T2 value)
 {
   TP old_value = GetAttributeValue(tree,name);
 
@@ -398,8 +397,8 @@ T2 SetTreeAttributeValue(Tree<TS>& tree, const T1 name, const T2 value)
   return old_value;
 }
   
-template <class TS>
-YEAR SetTreeAttributeValue(Tree<TS>& tree, const TAI name, const YEAR value)
+template <class TS,class BUD>
+YEAR SetTreeAttributeValue(Tree<TS,BUD>& tree, const TAI name, const YEAR value)
 {
   YEAR old_value = GetTreeAttributeValue(tree,name);
 

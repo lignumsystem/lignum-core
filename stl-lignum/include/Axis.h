@@ -6,18 +6,19 @@
 #include <PositionVector.h>
 #include <TreeCompartment.h>
 #include <Bud.h>
+#include <DefaultBud.h>
 
-template <class TS>
-class Axis: public TreeCompartment<TS>{
-  friend Bud<TS>* GetTerminatingBud(const Axis<TS>& axis);
-  friend list<TreeCompartment<TS>*>& GetTreeCompartmentList(Axis<TS>& axis);
-  friend void InsertTreeCompartment(Axis<TS>& axis, TreeCompartment<TS>* ts);
+template <class TS,class BUD = DefaultBud<TS> >
+class Axis: public TreeCompartment<TS,BUD>{
+  friend Bud<TS,BUD>* GetTerminatingBud(const Axis<TS,BUD>& axis);
+  friend list<TreeCompartment<TS,BUD>*>& GetTreeCompartmentList(Axis<TS,BUD>& axis);
+  friend void InsertTreeCompartment(Axis<TS,BUD>& axis, TreeCompartment<TS,BUD>* ts);
 public:
   virtual ~Axis();
   Axis();
-  Axis(const Point<METER>& p, const PositionVector& d, Tree<TS>* t);
+  Axis(const Point<METER>& p, const PositionVector& d, Tree<TS,BUD>* t);
 private:
-  list<TreeCompartment<TS>*> tc_ls;
+  list<TreeCompartment<TS,BUD>*> tc_ls;
 };
 
 #endif

@@ -10,13 +10,14 @@
 #include <TreeMetaFileParser.h>
 #include <RootSystem.h>
 #include <Bud.h>
+#include <DefaultBud.h>
 #include <BranchingPoint.h>
 #include <TreeSegment.h>
 #include <Axis.h>
 #include <ConnectionMatrix.h>
 
-template <class TS>
-TP GetProduction(const Tree<TS>& t);
+template <class TS,class BUD>
+TP GetProduction(const Tree<TS,BUD>& t);
 
 
 class TreeParameters{
@@ -37,20 +38,6 @@ public:
   TP rho;           //Density of wood
   TP xi;            //Fraction of heartwood in new tree segments
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 class TreeAttributes{
 public:
@@ -82,33 +69,33 @@ public:
 
 
 
-template <class TS>
-class Tree: public TreeCompartment<TS>{
-  friend Axis<TS>& GetAxis(Tree<TS>& t){return t.axis;}
-  friend TP GetProduction(const Tree<TS>& t);
-  friend void InitializeTree(Tree<TS>& tree, const CString& meta_file);
-  friend TP GetTreeAttributeValue(const Tree<TS>& tree, const TAD name);
+template <class TS,class BUD = DefaultBud<TS> >
+class Tree: public TreeCompartment<TS,BUD>{
+  friend Axis<TS,BUD>& GetAxis(Tree<TS,BUD>& t){return t.axis;}
+  friend TP GetProduction(const Tree<TS,BUD>& t);
+  friend void InitializeTree(Tree<TS,BUD>& tree, const CString& meta_file);
+  friend TP GetTreeAttributeValue(const Tree<TS,BUD>& tree, const TAD name);
   
-  friend YEAR GetTreeAttributeValue(const Tree<TS>& tree, const TAI name);
+  friend YEAR GetTreeAttributeValue(const Tree<TS,BUD>& tree, const TAI name);
   template <class T1,class T2>
-  friend T2 SetTreeAttributeValue(Tree<TS>& tree, const T1 name, const T2 value);
-  friend TP GetTreeParameterValue(const Tree<TS>& tree, const TPD name);
-  friend TP SetTreeParameterValue(Tree<TS>& tree, const TPD  name, const TP value);
-  friend TP GetTreeTransitVariableValue(const Tree<TS>& tree, const TTD name);
-  friend TP SetTreeTransitVariableValue(Tree<TS>& tree, const TTD name, const TP value);
+  friend T2 SetTreeAttributeValue(Tree<TS,BUD>& tree, const T1 name, const T2 value);
+  friend TP GetTreeParameterValue(const Tree<TS,BUD>& tree, const TPD name);
+  friend TP SetTreeParameterValue(Tree<TS,BUD>& tree, const TPD  name, const TP value);
+  friend TP GetTreeTransitVariableValue(const Tree<TS,BUD>& tree, const TTD name);
+  friend TP SetTreeTransitVariableValue(Tree<TS,BUD>& tree, const TTD name, const TP value);
 public:
   Tree();
   Tree(const Point<METER>& p, const PositionVector& d);
-  void UpdateWaterFlow(TP time, const ConnectionMatrix<TS> &cm);
+  void UpdateWaterFlow(TP time, const ConnectionMatrix<TS,BUD> &cm);
 private:
  
-  TP CountFlow(TreeSegment<TS> &in, TreeSegment<TS> &out, TP time);
+  TP CountFlow(TreeSegment<TS,BUD> &in, TreeSegment<TS,BUD> &out, TP time);
   TreeAttributes ta;
   TreeFunctions tf;
   TreeParameters tp;
   TreeTransitVariables ttp;
  
-  Axis<TS> axis;
+  Axis<TS,BUD> axis;
   RootSystem rs;
 };
 #endif

@@ -7,18 +7,18 @@
 #include <PositionVector.h>
 
 
-template <class TS> 
+template <class TS,class BUD> 
 class TreeCompartment{
-  friend Point<METER> GetPoint(const TreeCompartment<TS>& tc);
-  friend PositionVector GetDirection(const TreeCompartment<TS>& tc);
+  friend Point<METER> GetPoint(const TreeCompartment<TS,BUD>& tc);
+  friend PositionVector GetDirection(const TreeCompartment<TS,BUD>& tc);
 public:
   TreeCompartment();
-  TreeCompartment(const Point<METER>& p, const PositionVector& d, Tree<TS>* t);
+  TreeCompartment(const Point<METER>& p, const PositionVector& d, Tree<TS,BUD>* t);
   virtual ~TreeCompartment();
 protected:
   Point<METER> point;
   PositionVector direction;
-  Tree<TS>* tree;
+  Tree<TS,BUD>* tree;
 };
 
 #endif

@@ -3,46 +3,46 @@
 
 //Use built-in operator dynamic_cast
 //to resolve the data_type of a tree compartment
-template <class TS>
-void DisplayType<TS>::operator ()(TreeCompartment<TS>*tc)
+template <class TS,class BUD>
+void DisplayType<TS,BUD>::operator ()(TreeCompartment<TS,BUD>*tc)
 {
-  if (Axis<TS>* myaxis =  dynamic_cast<Axis<TS>*>(tc)){
+  if (Axis<TS,BUD>* myaxis =  dynamic_cast<Axis<TS,BUD>*>(tc)){
     cout << "Hello, I'm Axis" << endl;
-    list<TreeCompartment<TS>*>& tc_ls = GetTreeCompartmentList(*myaxis);
-    for_each(tc_ls.begin(),tc_ls.end(),DisplayType<TS>());
+    list<TreeCompartment<TS,BUD>*>& tc_ls = GetTreeCompartmentList(*myaxis);
+    for_each(tc_ls.begin(),tc_ls.end(),DisplayType<TS,BUD>());
   }
 
-  else if (BranchingPoint<TS>* mybp = dynamic_cast<BranchingPoint<TS>*>(tc)){
+  else if (BranchingPoint<TS,BUD>* mybp = dynamic_cast<BranchingPoint<TS,BUD>*>(tc)){
     cout << "Hello, I'm BranchingPoint" << endl;
-    list<Axis<TS>*>& axis_ls = GetAxisList(*mybp);
-    for_each(axis_ls.begin(),axis_ls.end(),DisplayType<TS>());
+    list<Axis<TS,BUD>*>& axis_ls = GetAxisList(*mybp);
+    for_each(axis_ls.begin(),axis_ls.end(),DisplayType<TS,BUD>());
   }
 
-  else if (TreeSegment<TS>* myts = dynamic_cast<TreeSegment<TS>*>(tc))
+  else if (TreeSegment<TS,BUD>* myts = dynamic_cast<TreeSegment<TS,BUD>*>(tc))
     cout << "Hello, I'm TreeSegment" << endl;
 
-  else if (Bud<TS>* mybud =  dynamic_cast<Bud<TS>*>(tc))
+  else if (Bud<TS,BUD>* mybud =  dynamic_cast<Bud<TS,BUD>*>(tc))
     cout << "Hello, I'm Bud" << endl;
 
   else
     cout << "Who am I???" << endl;
 }
 
-template <class TS>
-TreeCompartment<TS>* DisplayType2<TS>::operator()(TreeCompartment<TS>* tc)const
+template <class TS,class BUD>
+TreeCompartment<TS,BUD>* DisplayType2<TS,BUD>::operator()(TreeCompartment<TS,BUD>* tc)const
 {
-  if (Axis<TS>* myaxis =  dynamic_cast<Axis<TS>*>(tc)){
+  if (Axis<TS,BUD>* myaxis =  dynamic_cast<Axis<TS,BUD>*>(tc)){
     cout << "Hello, I'm Axis" << endl;
   }
 
-  else if (BranchingPoint<TS>* mybp = dynamic_cast<BranchingPoint<TS>*>(tc)){
+  else if (BranchingPoint<TS,BUD>* mybp = dynamic_cast<BranchingPoint<TS,BUD>*>(tc)){
     cout << "Hello, I'm BranchingPoint" << endl;
   }
 
-  else if (TreeSegment<TS>* myts = dynamic_cast<TreeSegment<TS>*>(tc))
+  else if (TreeSegment<TS,BUD>* myts = dynamic_cast<TreeSegment<TS,BUD>*>(tc))
     cout << "Hello, I'm TreeSegment" << endl;
 
-  else if (Bud<TS>* mybud =  dynamic_cast<Bud<TS>*>(tc))
+  else if (Bud<TS,BUD>* mybud =  dynamic_cast<Bud<TS,BUD>*>(tc))
     cout << "Hello, I'm Bud" << endl;
 
   else
@@ -51,10 +51,10 @@ TreeCompartment<TS>* DisplayType2<TS>::operator()(TreeCompartment<TS>* tc)const
   return tc;
 }
 
-template <class TS>
-int& CountTreeSegments<TS>::operator()(int& n,TreeCompartment<TS>* tc)const
+template <class TS,class BUD>
+int& CountTreeSegments<TS,BUD>::operator()(int& n,TreeCompartment<TS,BUD>* tc)const
 {
-  if (TreeSegment<TS>* myts = dynamic_cast<TreeSegment<TS>*>(tc))
+  if (TreeSegment<TS,BUD>* myts = dynamic_cast<TreeSegment<TS,BUD>*>(tc))
     n+=1;
   
   return n;
@@ -62,21 +62,21 @@ int& CountTreeSegments<TS>::operator()(int& n,TreeCompartment<TS>* tc)const
 
 
 
-template <class TS>
-int& CountCompartments<TS>::operator()(int& n,TreeCompartment<TS>* tc)const
+template <class TS,class BUD>
+int& CountCompartments<TS,BUD>::operator()(int& n,TreeCompartment<TS,BUD>* tc)const
 {
-  if (Axis<TS>* myaxis =  dynamic_cast<Axis<TS>*>(tc)){
+  if (Axis<TS,BUD>* myaxis =  dynamic_cast<Axis<TS,BUD>*>(tc)){
     cout << "Hello, I'm Axis ";
   }
 
-  else if (BranchingPoint<TS>* mybp = dynamic_cast<BranchingPoint<TS>*>(tc)){
+  else if (BranchingPoint<TS,BUD>* mybp = dynamic_cast<BranchingPoint<TS,BUD>*>(tc)){
     cout << "Hello, I'm BranchingPoint ";
   }
 
-  else if (TreeSegment<TS>* myts = dynamic_cast<TreeSegment<TS>*>(tc))
+  else if (TreeSegment<TS,BUD>* myts = dynamic_cast<TreeSegment<TS,BUD>*>(tc))
     cout << "Hello, I'm TreeSegment ";
 
-  else if (Bud<TS>* mybud =  dynamic_cast<Bud<TS>*>(tc))
+  else if (Bud<TS,BUD>* mybud =  dynamic_cast<Bud<TS,BUD>*>(tc))
     cout << "Hello, I'm Bud ";
 
   else
@@ -87,10 +87,10 @@ int& CountCompartments<TS>::operator()(int& n,TreeCompartment<TS>* tc)const
   return n;
 }
 
-template <class TS>
-TreeCompartment<TS>* FillWithWater<TS>::operator()(TreeCompartment<TS>* tc)const
+template <class TS,class BUD>
+TreeCompartment<TS,BUD>* FillWithWater<TS,BUD>::operator()(TreeCompartment<TS,BUD>* tc)const
 {
-  if (TreeSegment<TS>* myts = dynamic_cast<TreeSegment<TS>*>(tc))
+  if (TreeSegment<TS,BUD>* myts = dynamic_cast<TreeSegment<TS,BUD>*>(tc))
     {
       cout << "Filling water.." << endl;
       SetTSAttributeValue(*myts, Wm, pow(GetTSAttributeValue(*myts, R), 2) * 
@@ -100,22 +100,22 @@ TreeCompartment<TS>* FillWithWater<TS>::operator()(TreeCompartment<TS>* tc)const
   return tc;
 }
 
-template <class TS>
-int& CountCompartmentsReverse<TS>::operator()(int& n,
-					      TreeCompartment<TS>* tc)const
+template <class TS,class BUD>
+int& CountCompartmentsReverse<TS,BUD>::operator()(int& n,
+					      TreeCompartment<TS,BUD>* tc)const
 {
-  if (Axis<TS>* myaxis =  dynamic_cast<Axis<TS>*>(tc)){
+  if (Axis<TS,BUD>* myaxis =  dynamic_cast<Axis<TS,BUD>*>(tc)){
     cout << "Hello, I'm Axis ";
   }
 
-  else if (BranchingPoint<TS>* mybp = dynamic_cast<BranchingPoint<TS>*>(tc)){
+  else if (BranchingPoint<TS,BUD>* mybp = dynamic_cast<BranchingPoint<TS,BUD>*>(tc)){
     cout << "Hello, I'm BranchingPoint ";
   }
 
-  else if (TreeSegment<TS>* myts = dynamic_cast<TreeSegment<TS>*>(tc))
+  else if (TreeSegment<TS,BUD>* myts = dynamic_cast<TreeSegment<TS,BUD>*>(tc))
     cout << "Hello, I'm TreeSegment ";
 
-  else if (Bud<TS>* mybud =  dynamic_cast<Bud<TS>*>(tc))
+  else if (Bud<TS,BUD>* mybud =  dynamic_cast<Bud<TS,BUD>*>(tc))
     cout << "Hello, I'm Bud ";
 
   else
@@ -127,22 +127,22 @@ int& CountCompartmentsReverse<TS>::operator()(int& n,
   return n;
 }
 
-template <class TS> TreeCompartment<TS>* 
-MyExampleSignal<TS>::operator()(int& n,
-			        TreeCompartment<TS>* tc)const
+template <class TS,class BUD> TreeCompartment<TS,BUD>* 
+MyExampleSignal<TS,BUD>::operator()(int& n,
+			        TreeCompartment<TS,BUD>* tc)const
 {
-  if (Axis<TS>* myaxis =  dynamic_cast<Axis<TS>*>(tc)){
+  if (Axis<TS,BUD>* myaxis =  dynamic_cast<Axis<TS,BUD>*>(tc)){
     cout << "Hello, I'm Axis ";
   }
 
-  else if (BranchingPoint<TS>* mybp = dynamic_cast<BranchingPoint<TS>*>(tc)){
+  else if (BranchingPoint<TS,BUD>* mybp = dynamic_cast<BranchingPoint<TS,BUD>*>(tc)){
     cout << "Hello, I'm BranchingPoint ";
   }
 
-  else if (TreeSegment<TS>* myts = dynamic_cast<TreeSegment<TS>*>(tc))
+  else if (TreeSegment<TS,BUD>* myts = dynamic_cast<TreeSegment<TS,BUD>*>(tc))
     cout << "Hello, I'm TreeSegment ";
 
-  else if (Bud<TS>* mybud =  dynamic_cast<Bud<TS>*>(tc))
+  else if (Bud<TS,BUD>* mybud =  dynamic_cast<Bud<TS,BUD>*>(tc))
     cout << "Hello, I'm Bud ";
 
   else

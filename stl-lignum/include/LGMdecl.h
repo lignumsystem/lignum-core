@@ -1,13 +1,13 @@
 #ifndef LGMDECL_H
 #define LGMDECL_H
 
-template <class TS> class TreeCompartment;
-template <class TS> class Tree;
-template <class TS> class Axis;
-template <class TS> class Bud;
-template <class TS> class BranchingPoint;
-template <class TS> class Bud;
-template <class TS> class TreeSegment;
+template <class TS,class BUD> class TreeCompartment;
+template <class TS,class BUD> class Tree;
+template <class TS,class BUD> class Axis;
+template <class TS,class BUD> class Bud;
+template <class TS,class BUD> class BranchingPoint;
+template <class TS,class BUD> class Bud;
+template <class TS,class BUD> class TreeSegment;
 
 #include <LGMSymbols.h>
 #include <LGMUnits.h>

@@ -7,17 +7,17 @@ TreeSegmentAttributes::TreeSegmentAttributes()
 {
 }
 
-template <class TS>
-TreeSegment<TS>::TreeSegment()
+template <class TS,class BUD>
+TreeSegment<TS,BUD>::TreeSegment()
 {
   tree = NULL;
 }
 
 
-template <class TS>
-TreeSegment<TS>::TreeSegment(const Point<METER>& p, const PositionVector& d, const TP go,
-			     const METER l, const METER r, const METER rn, Tree<TS>* t)
-  :TreeCompartment<TS>(p,d,t)
+template <class TS,class BUD>
+TreeSegment<TS,BUD>::TreeSegment(const Point<METER>& p, const PositionVector& d, const TP go,
+			     const METER l, const METER r, const METER rn, Tree<TS,BUD>* t)
+  :TreeCompartment<TS,BUD>(p,d,t)
 {
   SetTSAttributeValue(*this,omega,go);
   SetTSAttributeValue(*this,L,l);
@@ -52,29 +52,29 @@ TreeSegment<TS>::TreeSegment(const Point<METER>& p, const PositionVector& d, con
 
 }
 
-template <class TS>
-TreeSegment<TS>::~TreeSegment()
+template <class TS,class BUD>
+TreeSegment<TS,BUD>::~TreeSegment()
 {
 }
 
 
 //This method returns the amount[kg] of transpired water. 
 //Time interval[s] is given as parameter
-template <class TS>
-TP TreeSegment<TS>::GetTranspiration(TP time)
+template <class TS,class BUD>
+TP TreeSegment<TS,BUD>::GetTranspiration(TP time)
 {
   return time * 0.12e-9;
 }
 
 
-template <class TS>
-list<METER> GetAnnualRings(const TreeSegment<TS>& ts)
+template <class TS,class BUD>
+list<METER> GetAnnualRings(const TreeSegment<TS,BUD>& ts)
 {
   return ts.tsa.annual_rings;
 }
 
-template <class TS>
-KGC GetSapwoodMass(const TreeSegment<TS>& ts)
+template <class TS,class BUD>
+KGC GetSapwoodMass(const TreeSegment<TS,BUD>& ts)
 {
   //volume up to R
   TP V1 = (PI_VALUE * pow((double)ts.tsa.R,2.0)) * ts.tsa.L;
@@ -87,8 +87,8 @@ KGC GetSapwoodMass(const TreeSegment<TS>& ts)
   return GetTreeParameterValue(*(ts.tree),rho) * V3;
 }
 
-template <class TS>
-TP GetTSAttributeValue(const TreeSegment<TS>& ts, const TAD name)
+template <class TS,class BUD>
+TP GetTSAttributeValue(const TreeSegment<TS,BUD>& ts, const TAD name)
 {
   TP unknown_value = 0.0;
 
@@ -148,8 +148,8 @@ TP GetTSAttributeValue(const TreeSegment<TS>& ts, const TAD name)
 
   return unknown_value;
 }
-template <class TS>
-YEAR GetTSAttributeValue(const TreeSegment<TS>& ts,const TAI name)
+template <class TS,class BUD>
+YEAR GetTSAttributeValue(const TreeSegment<TS,BUD>& ts,const TAI name)
 {
   int unknown_value = 0;
 
@@ -162,8 +162,8 @@ YEAR GetTSAttributeValue(const TreeSegment<TS>& ts,const TAI name)
   return unknown_value;
 }
 
-template <class TS>
-TP SetTSAttributeValue(TreeSegment<TS>& ts, const TAD name, const TP value)
+template <class TS,class BUD>
+TP SetTSAttributeValue(TreeSegment<TS,BUD>& ts, const TAD name, const TP value)
 {
   TP old_value = GetTSAttributeValue(ts,name);
   
@@ -218,8 +218,8 @@ TP SetTSAttributeValue(TreeSegment<TS>& ts, const TAD name, const TP value)
   return old_value;
 }
 
-template <class TS>
-YEAR SetTSAttributeValue(TreeSegment<TS>& ts, const TAI name, const YEAR  value)
+template <class TS,class BUD>
+YEAR SetTSAttributeValue(TreeSegment<TS,BUD>& ts, const TAI name, const YEAR  value)
 {
   YEAR old_value = GetTSAttributeValue(ts,name);
 

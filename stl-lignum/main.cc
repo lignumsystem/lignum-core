@@ -117,7 +117,8 @@ int main(int argc, char *argv[])
   int count2 = 0;
   char aa = 'a';
 
-  ConnectionMatrix<MyTreeSegment> *cm = new ConnectionMatrix<MyTreeSegment>(GetAxis(tree)); 
+  ConnectionMatrix<MyTreeSegment,DefaultBud<MyTreeSegment> > *cm = 
+    new ConnectionMatrix<MyTreeSegment,DefaultBud<MyTreeSegment> >(GetAxis(tree)); 
   Accumulate(tree, count1, CountTreeSegments<MyTreeSegment>()); 
   while (aa != 'q')
     {       
@@ -125,7 +126,7 @@ int main(int argc, char *argv[])
       if (count1 != count2)
 	{
 	  delete cm;
-	  cm = new ConnectionMatrix<MyTreeSegment>(GetAxis(tree));
+	  cm = new ConnectionMatrix<MyTreeSegment,DefaultBud<MyTreeSegment> >(GetAxis(tree));
 	  count1 = count2;
 	}
      

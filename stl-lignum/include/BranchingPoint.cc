@@ -4,24 +4,24 @@
 #include <algorithm>
 #include <numeric>
 
-template <class TS>
-BranchingPoint<TS>::BranchingPoint()
+template <class TS,class BUD>
+BranchingPoint<TS,BUD>::BranchingPoint()
 {
   tree = NULL;
 }
 
-template <class TS>
-BranchingPoint<TS>::BranchingPoint(const Point<METER>& p, const PositionVector& d,
-				   Tree<TS>* t)
-  :TreeCompartment<TS>(p,d,t)
+template <class TS,class BUD>
+BranchingPoint<TS,BUD>::BranchingPoint(const Point<METER>& p, const PositionVector& d,
+				   Tree<TS,BUD>* t)
+  :TreeCompartment<TS,BUD>(p,d,t)
 {
 }
 
-template <class TS>
-BranchingPoint<TS>::~BranchingPoint()
+template <class TS,class BUD>
+BranchingPoint<TS,BUD>::~BranchingPoint()
 {
-  list<Axis<TS>*>::iterator first = axis_ls.begin();
-  list<Axis<TS>*>::iterator last = axis_ls.end();
+  list<Axis<TS,BUD>*>::iterator first = axis_ls.begin();
+  list<Axis<TS,BUD>*>::iterator last = axis_ls.end();
 
   while (first != last){
     delete *first++;
@@ -29,18 +29,18 @@ BranchingPoint<TS>::~BranchingPoint()
 }
 
 //create new axis and insert the bud into it
-template <class TS>
-void InsertTerminatingBud(BranchingPoint<TS>& bp, Bud<TS>* bud)
+template <class TS,class BUD>
+void InsertTerminatingBud(BranchingPoint<TS,BUD>& bp, Bud<TS,BUD>* bud)
 {
-  Axis<TS> *axis = new Axis<TS>();
+  Axis<TS,BUD> *axis = new Axis<TS,BUD>();
   
   InsertTreeCompartment(*axis,bud);
   InsertAxis(bp,axis);
 }
 
 //insert the axis to the end of the list
-template <class TS>
-void InsertAxis(BranchingPoint<TS>& bp, Axis<TS>* axis)
+template <class TS,class BUD>
+void InsertAxis(BranchingPoint<TS,BUD>& bp, Axis<TS,BUD>* axis)
 {
   bp.axis_ls.push_back(axis);
 }
