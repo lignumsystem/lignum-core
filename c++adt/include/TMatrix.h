@@ -1,6 +1,6 @@
 #ifndef TMATRIX_H
 #define TMATRIX_H
-#include <stream.h>
+#include <iostream>
 #include <vector>
 
 namespace cxxadt{
@@ -31,6 +31,8 @@ template <class T> class TMatrix {
 
   template <class T1>
   friend ostream& operator << (ostream& os, const TMatrix<T1>& v1);
+
+
 public:
   TMatrix();    
   TMatrix(const int rows,const int cols);

@@ -3,10 +3,11 @@
 
 #include <vector>
 #include <stdio.h>
-#include <fstream.h>
+#include <fstream>
 #include <float.h>
 #include <string.h>
 #include <string>
+#include <iostream>
 
 namespace cxxadt{
 

@@ -1,7 +1,7 @@
 #ifndef POINT_H
 #define POINT_H
 #include <math.h>
-#include <iostream.h>
+#include <iostream>
 #include <PositionVector.h>
 /*========================================================================
 ** Point is a class to represent a single point in 3-D world.

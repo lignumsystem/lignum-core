@@ -5,10 +5,10 @@
 #include <string.h>
 #include <stdio.h>
 #include <ctype.h>
-#include <stream.h>
+#include <iostream>
 
 namespace cxxadt{
-
+  using namespace std;
 /*======================================================================================
 **Class CString implements some operations on string
 **A friends:

@@ -1,6 +1,7 @@
 #ifndef POSITIONVECTOR_H
 #define POSITIONVECTOR_H
 
+#include <iostream>
 #include <math.h>
 #include <mathsym.h>
 #include <vector>
@@ -22,7 +23,6 @@ class PositionVector{
   friend PositionVector operator * (const double scalar, const PositionVector &pv);
   friend PositionVector operator * (const PositionVector& pv, const double scalar);
   friend double operator || (const PositionVector &pv1, const PositionVector &pv2);
-  //  friend T operator && (const PositionVector &pv1, const PositionVector &pv2);
   friend ostream& operator << (ostream& os, const PositionVector& pv);
   friend bool operator == (const PositionVector &pv1, const PositionVector &pv2);
 public:
