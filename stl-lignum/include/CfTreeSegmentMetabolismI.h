@@ -1,5 +1,5 @@
-#ifndef CFTREESEGMENTMETABOLISMI_H
-#define CFTREESEGMENTMETABOLISMI_H
+#ifndef CF_TREESEGMENT_METABOLISMI_H
+#define CF_TREESEGMENT_METABOLISMI_H
 
 namespace Lignum{
 
@@ -11,8 +11,7 @@ template <class TS,class BUD>
 void CfTreeSegment<TS,BUD>::photosynthesis()
 {
   Tree<TS,BUD>& t = dynamic_cast<Tree<TS,BUD>&>(GetTree(*this));
-  cftsa.P = GetValue(t, pr) * cftsa.Qabs;
-
+  SetValue(*this,P, GetValue(t, pr) * GetValue(*this,Qabs));
 }
 
 } //Closing namespace Lignum
