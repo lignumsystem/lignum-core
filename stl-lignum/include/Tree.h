@@ -41,6 +41,7 @@ struct SmallCube
     int x,y,z;
     float dist;
     float areaden;
+    float edge;
 
     float x_coord;
     float y_coord;
