@@ -37,24 +37,26 @@ int main(int argc, char** argv)
 
   int x = 0; int y = 0;
   for (int i = 0; i < N; i++){
-    pineV[i] = new Tree<MyCfTreeSegment,MyCfBud>(Point(x,y,0),
-						 PositionVector(0,0,1));
-    y+=2.0;
     birchV[i] = new Tree<MyHwTreeSegment,MyHwBud>(Point(x,y,0),
 						  PositionVector(0,0,1));
-    x+=2;
-    if (y == 6)
-      y = 0;
+    x+=2.0;
+    pineV[i] = new Tree<MyCfTreeSegment,MyCfBud>(Point(x,y,0),
+						 PositionVector(0,0,1));
+    x+=2.0;
+    if (x == 8){
+      x = 0;
+      y += 2;
+    }
     cout << "i: " << i << endl;
   }
 
   for (int i = 0; i <  birchLV.size(); i++){
-    cout << "pine i: " << i << endl;
+    cout << "Pine start i: " << i << endl;
     pineLV[i]->start();
     pineLV[i]->lstringToLignum(*pineV[i]);
   }
   for (int i = 0; i <  birchLV.size(); i++){
-    cout << "birch i: " << i << endl;
+    cout << "Birch start i: " << i << endl;
     birchLV[i]->start();
     birchLV[i]->lstringToLignum(*birchV[i]);
   }
@@ -75,7 +77,7 @@ int main(int argc, char** argv)
     }
   }
 
-  const int PDL = 5;
+  const int PDL = 7;
   for (int s = 0; s < PDL; s++){
     for (int i = 0; i <  pineLV.size(); i++){
       cout << "Pine step: " << s << endl;    
@@ -87,11 +89,11 @@ int main(int argc, char** argv)
 
   Forest f;
 
-  for (int i = 0; i <  pineV.size(); i++){
+  for (int i = 0; i < pineV.size(); i++){
     InsertCfTree(f,*(pineV[i]));
   }
 
-  for (int i = 0; i <  birchV.size(); i++){
+  for (int i = 0; i < birchV.size(); i++){
     InsertHwTree(f,*(birchV[i]));
   }
   METER d = 0;
