@@ -14,7 +14,9 @@ public:
   virtual void VisualizeTree(){cout << "WrapperBase::VisualizeTree()" << endl;}
   virtual void VisualizeStem(int &active_texture)=0;
   virtual void VisualizeFoliage(int &active_texture)=0; 
+  virtual void VisualizeWireModel()=0;
   virtual void MakeDisplayLists()=0;
+  virtual void MakeWireModelLists()=0;
   virtual void DrawTree()=0;
   virtual void hello()=0;
 
@@ -35,9 +37,12 @@ public:
   CfWrapper(const Tree<TS,BUD>& t):WrapperBase(),tree(t){}
 
   void MakeDisplayLists();
+  void MakeWireModelLists();
   void VisualizeTree();
   virtual void DrawTree();
+  void VisualizeWireModel();
   virtual void VisualizeStem(int &active_texture);
+
   virtual void VisualizeFoliage(int &active_texture);
   virtual void hello(){cout << "CfWrapper hello" << endl;}
 
@@ -53,9 +58,10 @@ public:
 
 
   void MakeDisplayLists();
+  void MakeWireModelLists();
   void VisualizeTree();
   virtual void DrawTree();
-
+  void VisualizeWireModel();
   virtual void VisualizeStem(int &active_texture);
   virtual void VisualizeFoliage(int &active_texture);
   virtual void hello(){cout << "HwWrapper hello" << endl;;}

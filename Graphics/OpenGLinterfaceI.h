@@ -185,4 +185,51 @@ inline void SetViewPort()
 			   0.0, 0.0, 1.0);					   // which way up 	
 }
 
+template <class TS, class BUD>
+    TreeCompartment<TS,BUD>* DrawWireModelFunctor<TS,BUD>::operator()(TreeCompartment<TS,BUD>* tc)const
+    {
+      if (TS* ts = dynamic_cast<TS *>(tc))
+	{  			
+	  LGMdouble radius = GetValue(*ts, LGAR);
+	
+	  //cout << "radius " << radius << endl;
+
+	      float length;
+	      float radius_top;
+	      float rot_x;
+	      float rot_y;
+	      float rot_angle;
+
+	      Point position;
+	      PositionVector direction = GetDirection(*ts);
+
+	      length = GetValue(*ts, LGAL); 
+			
+	      radius_top = GetValue(*ts, LGARTop);
+	      position = GetPoint(*ts);
+		
+	      direction.normalize();
+	      rot_x = -1*direction.getVector()[1];
+	      rot_y =    direction.getVector()[0];
+	      rot_angle = (360/(2*PI_VALUE))*acos((double)direction.getVector()[2]);
+	      glPushMatrix();
+	      glTranslatef(position.getX(), position.getY(), position.getZ());
+	      if (rot_angle == 180.0){
+		rot_y = 1.0;
+	      }
+	      glRotatef( rot_angle, rot_x, rot_y, 0);
+	      float rad_limit = 0.05;
+	      //   MakeWireModel(0.05, 0.1); 
+	        MakeWireModel(radius, length); 
+
+	      //     cout << "makin a cylinder. Radius:" << radius << "Height "<< length << ".  Position "<< position << endl; 
+	      glPopMatrix();
+			
+	    
+		
+	} 
+      return tc;
+    }
+
+
 #endif

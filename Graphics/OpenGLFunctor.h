@@ -31,6 +31,12 @@ public:
 	LGMdouble min_rad;
 };
 
+template <class TS,class BUD>
+class DrawWireModelFunctor
+{
+public:
+	TreeCompartment<TS,BUD>* operator()(TreeCompartment<TS,BUD>* tc)const; 
+};
 
 template <class TR>
 class DrawRootFunctor

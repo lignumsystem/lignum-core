@@ -15,8 +15,10 @@
 
 enum DRAWMODE { STEM_MODE, FOLIAGE_MODE };
 
-namespace Lignum{
+//enum STEMMODE { SOLID, WIREMODEL };
 
+namespace Lignum{
+enum STEMMODE { SOLID, WIREMODEL };
   class Hello{
   public:
     void operator()(WrapperBase* wb){
@@ -24,11 +26,20 @@ namespace Lignum{
     }
   };
 
+ class MakeWireModelLists{
+  public:
+   void operator()(WrapperBase* wb){
+     wb->MakeWireModelLists();
+     cout << "making wiremodels! ********* -------- ********* " << endl;
+   }
+  };
+
 
  class MakeDisplayLists{
   public:
    void operator()(WrapperBase* wb){
      wb->MakeDisplayLists();
+  cout << "making dp-lists! ********* -------- ********* " << endl;
    }
   };
 
@@ -55,6 +66,7 @@ class LGMVisualization
   LGMVisualization();
   void InitVisualization();
   void SetAntialising(bool antialisingOn);
+  void SetMode(STEMMODE m) { mode = m; }
   void NewWindowSize(GLsizei new_x, GLsizei new_y);
   void Quit(void);
   void Arrows(int key, int x, int y);
@@ -67,11 +79,13 @@ class LGMVisualization
 
   void drawTrees(){for_each(trees.begin(),trees.end(),DrawTrees());}
   void hello(){for_each(trees.begin(),trees.end(),Hello());}
-void makeDisplayLists(){for_each(trees.begin(),trees.end(),MakeDisplayLists());}
+  void makeDisplayLists(){for_each(trees.begin(),trees.end(),MakeDisplayLists());}
+ void makeWireModelLists(){for_each(trees.begin(),trees.end(),MakeWireModelLists());}
 private:
   bool drawed;
 
   GLSettings settings;
+  STEMMODE mode;
 
   void InitCallBacks();
   void ReDrawWindow(void);

@@ -52,11 +52,11 @@ GLSettings::GLSettings()
 
 	cam_x = 4.5;
 	cam_y = 0;
-	cam_z = 0.5;
+	cam_z = 0.05;
 
 	lookat_x = 0;
 	lookat_y = 0;
-	lookat_z = 5;
+	lookat_z = 0.5;
 
 	m_xRotate = 0;
 	m_yRotate = 0;

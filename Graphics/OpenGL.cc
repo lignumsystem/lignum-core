@@ -678,6 +678,7 @@ void draw_texfoliage_planes(float lenght, float radius, float fol_mas, int age)
 
 void MakeWireModel(float radius, float length)
 {
+    // cout << "drawing a wiremodel cylinder " << radius << "  " << length << endl;
   const float PI = (float)3.14159265;
   GLfloat cosine,sine, sine_next, cosine_next, sine_opp, cosine_opp; 
  

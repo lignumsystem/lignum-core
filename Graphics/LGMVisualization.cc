@@ -29,6 +29,7 @@ namespace Lignum
   LGMVisualization::LGMVisualization()
   {
     active_visualization = this;
+    mode = SOLID;
   }
 
 
@@ -43,6 +44,8 @@ namespace Lignum
     glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_FASTEST);
     glShadeModel(GL_SMOOTH);
 
+    SetLight();
+    InitDrawing();
     InitCallBacks();
   }
 
@@ -50,7 +53,20 @@ namespace Lignum
   {
     cout << "Launch OpenGL........" << endl;
 
-    MakeDisplayLists();
+   
+    if (mode == SOLID)
+    {
+	cout << "solid viz ***********" << endl;
+//	MakeDisplayLists();
+	for_each(trees.begin(),trees.end(),MakeDisplayLists());
+    }
+    else
+    {
+	cout << "wire viz ************" << endl;
+//	MakeWireModelLists();
+	for_each(trees.begin(),trees.end(), MakeWireModelLists());
+    }
+   
 
     glutMainLoop ();
   }
@@ -150,37 +166,9 @@ namespace Lignum
   
  
 
-    //Drawing
-    /*
-      if (glIsList(FOREST_LIST_STEMS))
-      {
-      glCallList(FOREST_LIST_STEMS);
-      glCallList(FOREST_LIST_NEEDLES);
-      }
-      else
-      {
-       this->drawTrees();
-      DrawBuds();
-      DrawFoliage();
-      }
-
-      if (boolVisualizeVoxelSpace)
-      //if (voxel)
-      {
-      //cout << "Visualization of VoxelSpace " << endl;
-      //voxel->draw(true);
-      }
-
-      //vanha tapa
-      //if (boolShowVoxel)
-      //  DrawVoxelCubes();  
-      */
-
-
    
     drawTrees();
     
-
     glPopMatrix();   
     glutSwapBuffers();        // Swap buffers  
     //glutPostRedisplay ();

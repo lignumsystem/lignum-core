@@ -20,6 +20,29 @@ void CfWrapper<TS,BUD>::VisualizeFoliage(int &active_texture)
 }
 
 template <class TS, class BUD>
+void CfWrapper<TS,BUD>::VisualizeWireModel()
+{
+  cout << "Visualize cf-tree" << endl;
+  
+  
+  DrawWireModelFunctor<TS,BUD> stemfunctor;
+  ForEach(tree, stemfunctor);
+  
+}
+
+template <class TS, class BUD>
+void HwWrapper<TS,BUD>::VisualizeWireModel()
+{
+  cout << "Visualize wiremodel of hw-tree" << endl;
+   
+  DrawWireModelFunctor<TS,BUD> stemfunctor;
+  ForEach(tree, stemfunctor);
+  
+}
+
+
+
+template <class TS, class BUD>
 void HwWrapper<TS,BUD>::VisualizeStem(int &active_texture)
 {
 	
@@ -30,6 +53,49 @@ void HwWrapper<TS,BUD>::VisualizeFoliage(int &active_texture)
 {
 	
 }
+
+
+
+template <class TS, class BUD>
+void HwWrapper<TS,BUD>::MakeWireModelLists()
+{
+  if (glIsList(intDisplaylistStem))
+    {
+      glDeleteLists(intDisplaylistStem,1);
+    }
+  glGenTextures(1, (GLuint*)&intDisplaylistStem);
+
+//  cout << "making a wiremodel to a HwTree ********** **********" << endl;
+  glPushMatrix();
+  glNewList(intDisplaylistStem, GL_COMPILE);
+  VisualizeWireModel();
+  glEndList();
+  glPopMatrix();
+
+
+  //  cout << "dp-number  " <<  intDisplaylistStem << endl;
+}
+
+
+
+template <class TS, class BUD>
+void CfWrapper<TS,BUD>::MakeWireModelLists()
+{
+    if (glIsList(intDisplaylistStem))
+    {
+	glDeleteLists(intDisplaylistStem,1);
+    }
+    glGenTextures(1, (GLuint*)&intDisplaylistStem);
+    
+//  cout << "making a wiremodel to a HwTree ********** **********" << endl;
+    glPushMatrix();
+    glNewList(intDisplaylistStem, GL_COMPILE);
+    VisualizeWireModel();
+    glEndList();
+    glPopMatrix();
+}
+
+
 
 template <class TS, class BUD>
 void CfWrapper<TS,BUD>::VisualizeTree()
@@ -72,13 +138,42 @@ void HwWrapper<TS,BUD>::MakeDisplayLists()
 template <class TS, class BUD>
 void CfWrapper<TS,BUD>::MakeDisplayLists()
 {
+    if (glIsList(intDisplaylistStem))
+    {
+	glDeleteLists(intDisplaylistStem,1);
+    }
+    
+    glGenTextures(1, (GLuint*)&intDisplaylistStem);
+    
+    glPushMatrix();
+    glNewList(intDisplaylistStem, GL_COMPILE);
+    VisualizeTree();
+    glEndList();
+    glPopMatrix();
 }
 
 
 template <class TS, class BUD>
 void CfWrapper<TS,BUD>::DrawTree()
 {
-cout << " drawing cftree " << endl;
+    //   cout << " drawing cftree " << endl;
+    
+    GLfloat mat_amb[] = { 0.2, 0.3, 0.4, 1.0 }; 
+    GLfloat mat_dif[] = { 0.2, 0.4, 0.4, 1.0 }; 
+    
+  GLfloat mat_amb2[] = { 1.0, 0.5, 0.4, 1.0 }; 
+  //  GLfloat mat_dif2[] = { 1.0, 0.7, 0.0, 0.8 };
+  glMaterialfv(GL_FRONT, GL_AMBIENT, mat_amb); 
+  glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_dif);
+  
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);  
+
+  glCallList(intDisplaylistStem);
+
+  //cout << " drawing cftree. List number  " << intDisplaylistStem  << endl;
+
 }
 
 template <class TS, class BUD>
@@ -100,7 +195,7 @@ void HwWrapper<TS,BUD>::DrawTree()
 
   cout << " drawing hwtree. List number  " << intDisplaylistStem  << endl;
 
-  VisualizeTree();
+  // VisualizeTree();
 }
 
 
