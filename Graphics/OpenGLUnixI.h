@@ -8,11 +8,17 @@
 #include "OpenGLSymbols.h"
 
 #include "CTexture.h"
-
+//And the vendors just can't agree where the headers are...
+#if defined(__APPLE__) || defined(MACOSX)
+#include <OpenGL/gl.h>
+#include <OpenGL/glu.h>
+#include <GLUT/glut.h>
+#else
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <GL/glx.h>
 #include <GL/glut.h>
+#endif
 
 #include <vector>
 
@@ -164,14 +170,17 @@ int VisualizeLGMTree(Tree<TS,BUD> &tree)
  template <class TS,class BUD, class S>
    int VisualizeHwTree(Tree<TS,BUD> &tree)
 { 
+  int argc = 0;
+  glutInit(&argc,NULL);
+  init_window();
+  //setLight();
+  
   // init_window();
   cout << "InitDrawing.........1.13" << endl;
   InitDrawing();
   InitOpenGL();
       
-  init_window();
-  //setLight();
-  
+
   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -180,7 +189,7 @@ int VisualizeLGMTree(Tree<TS,BUD> &tree)
   glTexEnvf(GL_TEXTURE_2D, GL_TEXTURE_ENV_MODE, GL_REPLACE);
   glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
  
-  stemtexture.Load("koivu.bmp", 512, 512);
+  //stemtexture.Load("koivu.bmp", 512, 512);
 
   LoadGLTextures("lehti.tga");  //**** HwLoadGLTextures
   
