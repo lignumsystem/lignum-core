@@ -23,7 +23,7 @@ module F(double);
 module B(double,double,double); //type, status and collision
 module Turn(double);
 
-derivation length: 20;
+derivation length: 10;
 int seed = 0;
 
 Start:

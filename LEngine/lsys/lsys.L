@@ -2,7 +2,6 @@
 #include <mathsym.h>
 using namespace cxxadt;
 
-namespace Bearberry{
 
 const int D    = 1.0; //dominant    apical
 const int S    = 2.0; //subdominant apical
@@ -24,7 +23,7 @@ module F(double);
 module B(double,double,double); //type, status and collision
 module Turn(double);
 
-derivation length: 10;
+derivation length: 5;
 int seed = 0;
 
 Start:
@@ -187,8 +186,7 @@ F(s) :
 }
 
 
-}
-using namespace Bearberry;
+
 
 
 
