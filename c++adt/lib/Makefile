@@ -48,6 +48,6 @@ distclean: clean
 etags:
 	$(ETAGS)   TAGSFILE ../src/*.cc ../include/*.h
 depend:
-	$(CCC) -M  $(INCLUDE) $(SRC) ../src/hrmatrix.cc > Makedepend
+	$(CCC) -M  $(INCLUDE) $(SRC) > Makedepend
 #Do not delete this line -- make depend adds dependencies at the end of it
 #If committing Makefile to cvs please remove the dependencies first
