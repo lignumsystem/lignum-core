@@ -473,6 +473,7 @@ namespace Lignum {
 		    PositionVector 
 		      radiation_direction(rad_direction[0], rad_direction[1], 
 					  rad_direction[2]);
+		    
 		    radiation_direction.normalize();
 		    //cout <<  iop << endl;
 		    vector<VoxelMovement> vec;		
@@ -583,8 +584,7 @@ namespace Lignum {
 	    //executed.
 	    if (voxboxes[i1][i2][i3].isEmpty() == false)
 	      {				
-		//		for(int i = 0; i < num_dirs; i++)
-		for(int i = 0; i < 1; i++)
+		for(int i = 0; i < num_dirs; i++)
 		  {	
 		    vector<double> rad_direction(3);
 		    LGMdouble iop = sky->
@@ -592,6 +592,7 @@ namespace Lignum {
 		    PositionVector
 		      radiation_direction(rad_direction[0],
 					  rad_direction[1], rad_direction[2]);
+
 		    radiation_direction.normalize();
 		    vector<VoxelMovement> vec;		
 		    getRoute(vec, i1, i2, i3, radiation_direction);
@@ -673,7 +674,7 @@ namespace Lignum {
     for (i = 0; i<size; i++)
       {
 		
-	FindBoundingBox<ScotsPineVisual, ScotsBud> fbb;	
+	FindCfBoundingBox<ScotsPineVisual, ScotsBud> fbb;	
 	bbox = Accumulate(*vecScotspines[i], bbox, fbb);
       }
 
@@ -1037,6 +1038,8 @@ namespace Lignum {
     }
 
 
+  //Write utilities for VoxelSpace ==================================
+
   //Write voxel boxes  to file. If 'all' is true  write all boxes else
   //write  only boxes  with foliage.  By  default 'all'  is true  (old
   //beaviour)
@@ -1094,8 +1097,7 @@ namespace Lignum {
       for(int i2=0; i2<Yn; i2++)
 	for(int i3=0; i3<Zn; i3++)
 	  {
-	    //	    if(voxboxes[i1][i2][i3].isEmpty() == false)
-	    if(voxboxes[i1][i2][i3].isEmpty() == true)
+	    if(voxboxes[i1][i2][i3].isEmpty() == false)
 	      {
 		file <<  i1 << ":" << i2 << ":" << i3 << "   ";
 		Point p;
@@ -1108,8 +1110,35 @@ namespace Lignum {
 	      }
 	  }
     file << endl << endl << "Sum of Qabs " << sumQabs << endl;
-  }	
+  }
 
+
+  //Calculate some key variables of VoxelSpace contetnts and output to
+  //console
+
+  void VoxelSpace::writeVoxelSpaceContents() {
+
+    LGMdouble laSum = 0.0, naSum = 0.0, lmSum = 0.0, nmSum = 0.0;
+
+    for(int i1=0; i1<Xn; i1++)
+      for(int i2=0; i2<Yn; i2++)
+	for(int i3=0; i3<Zn; i3++)
+	  {
+	    laSum += voxboxes[i1][i2][i3].getLeafArea();
+	    naSum += voxboxes[i1][i2][i3].getNeedleArea();
+	    lmSum += voxboxes[i1][i2][i3].getLeafMass();
+	    nmSum += voxboxes[i1][i2][i3].getNeedleMass();
+	    }
+
+    cout << endl;
+    cout << " Foliage contents of Voxelspace (m2 and kg C):" << endl;
+    cout << " Needle area: " << naSum << "  Needle mass: " << nmSum
+	 << " Leaf area: " << laSum << "  Leaf mass: " << lmSum << endl;
+  }
+
+
+
+  // This sums up needle mass + leaf mass
 
   LGMdouble VoxelSpace::getFoliageMass(void)
   {
