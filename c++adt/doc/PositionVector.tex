@@ -64,6 +64,9 @@ moves the end point to the position $(0,1,0)$.
 \begin{verbatim}
  
 class PositionVector{
+  friend double Dot(const PositionVector& p1, const PositionVector& p2);
+  friend PositionVector Cross(const PositionVector& p1, 
+                              const PositionVector& p2);  
 public:
   PositionVector();
   PositionVector(const double x, const double y, const double z);
@@ -75,11 +78,19 @@ public:
   double alpha()const;
   double beta()const;
   double gamma()const;
+  PositionVector& normalize(); 
   vector<double> getVector()const{return v;}
 private:
   vector <double> v;
 };
 \end{verbatim}
+
+\subsection{Functions and Operations}
+\subsubsection{Dot}
+The  dot product of two vectors.
+
+\subsubsection{Cross}
+The cross product of two vectors.
 
 \subsection{Public Methods}
 \subsubsection{PositionVector()}
@@ -152,6 +163,10 @@ vector and $z$-axis.
        \item [Returns] The angle $\gamma$ defined as $\arccos (z / l)$
                        where $l$ is the length of the vector.
   \end{description} 
+
+\subsubsection{normalize}
+Normalizes the vector. The vector can be then used as a direction
+vector, i.e., the length of the vector will be 1 (one).
  
 \subsubsection{vector<double> getVector()const;} 
 Return a copy of the internal vector containing the end points 
@@ -166,4 +181,6 @@ of the position vector.
  \item [vector<double> v] The end point of the position vector.
 
  \end{description} 
+
+
 
