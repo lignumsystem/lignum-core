@@ -10,6 +10,7 @@ Turtle::Turtle()
 Turtle::Turtle(const Turtle& t)
   :h(t.h),l(t.l),u(t.u),p(t.p)
 {
+  normalize();
 }
 
 //Rotation round Up axis
@@ -17,6 +18,8 @@ Turtle& Turtle::turn(const RADIAN angle)
 {
   h.rotate(p,u,angle);
   l.rotate(p,u,angle);
+  normalize();
+  
   return *this;
 }
 
@@ -25,6 +28,8 @@ Turtle& Turtle::pitch(const RADIAN angle)
 {
   u.rotate(p,l,angle);
   h.rotate(p,l,angle);
+  normalize();
+  
   return *this;
 }
 
@@ -33,6 +38,8 @@ Turtle& Turtle::roll(const RADIAN angle)
 {
    u.rotate(p,h,angle);
    l.rotate(p,h,angle);
+   normalize();
+   
    return *this;
 }
 
@@ -45,6 +52,14 @@ Turtle& Turtle::roll(const RADIAN angle)
 Turtle& Turtle::forward(const double d)
 {
   p = p + static_cast<Point> (d*h);
+  return *this;
+}
+
+Turtle& Turtle::normalize()
+{
+  u.normalize();
+  l.normalize();
+  h.normalize();
   return *this;
 }
 
@@ -77,6 +92,9 @@ int main()
 {
   Turtle t;
   cout << "Turtle : " << t << endl;
+
+  t.forward(1.456);
+  cout << "After forward 1.456 : " << t << endl;
 
   t.turn(PI_VALUE/2.0);
   cout << "After turn PI/2: " << t << endl;
