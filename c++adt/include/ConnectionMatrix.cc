@@ -81,7 +81,7 @@ void ConnectionMatrix<TS,BUD>::TraverseAxis(Axis<TS,BUD>& ax, TreeSegment<TS,BUD
 }
 
 template <class TS,class BUD>
-TP ConnectionMatrix<TS,BUD>::getDeltaPressure(TreeSegment<TS,BUD> *ts)
+LGMdouble ConnectionMatrix<TS,BUD>::getDeltaPressure(TreeSegment<TS,BUD> *ts)
 {
   int i=0;
 
@@ -100,7 +100,7 @@ TP ConnectionMatrix<TS,BUD>::getDeltaPressure(TreeSegment<TS,BUD> *ts)
  
 
 template <class TS,class BUD>
-void ConnectionMatrix<TS,BUD>::saveDeltaPressure(TreeSegment<TS,BUD> *ts, TP delta_pressure)
+void ConnectionMatrix<TS,BUD>::saveDeltaPressure(TreeSegment<TS,BUD> *ts, LGMdouble delta_pressure)
 {
   int i=0;
 

@@ -14,8 +14,8 @@ public:
   int getNumberOfAxes(void)const;
   bool lastTreeSegment(TreeSegment<TS,BUD> *ts)const;
   TreeSegment<TS,BUD>* getTreeSegment(int,int)const;
-  void saveDeltaPressure(TreeSegment<TS,BUD> *ts, TP delta_pressure);
-  TP getDeltaPressure(TreeSegment<TS,BUD> *ts);
+  void saveDeltaPressure(TreeSegment<TS,BUD> *ts, LGMdouble delta_pressure);
+  LGMdouble getDeltaPressure(TreeSegment<TS,BUD> *ts);
   TreeSegment<TS,BUD>* getTreeSegment(int i)const{ return pointer[i][i];}
 private:
   TreeSegment<TS,BUD> ***pointer;
