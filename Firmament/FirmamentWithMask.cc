@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <ParametricCurve.h>
 #include <FirmamentWithMask.h>
 
 
@@ -49,26 +50,51 @@ namespace sky{
   {
     //get the first inclinatation
     Token t1 = lex.getToken();
-    while (t1.getType() != VC_ENDFILE){
-      string v1str =  t1.getValue();
-      //there will be value for inclination (blocking)
-      Token t2 = lex.getToken();
-      string v2str = t2.getValue();
-      //percentage
-      double val = atof(v2str.c_str()); 
-      if (t1.getType() == VC_ID){//zenith sector, keyword "zenith"
-	diffuseRadZenith = diffuseRadZenith*((100.0-val)/100.0);
+    //There are two options: the user  has described the gap in a file
+    //as   ParametricCurve   or  listed   the   gap   data  for   each
+    //inclination.  The  former  is  recommended, the  latter  is  for
+    //backward compatibility.
+    //The mask is in a file
+    if (t1.getType() == VC_ID){
+      //The mask is in a ParametricCurve
+      ParametricCurve fgap(t1.getValue());
+      int nincl = getNoOfInclinations();
+      //The inclinations  are expressed in  degrees, the horizon  is 0
+      //and  the zenith  is 90.  The  mask value  is [0:100]  (0 =  no
+      //mask,100 = full mask).
+      for (int i=0; i < nincl; i++){
+	//Now we need to match [0:90) with [0:nincl], e.g. 45 degrees is nincl/2.
+	double x = 90.0*i/nincl;
+	double val = fgap(x);
+	setMask(i,val);
       }
-      else{
-	//index
-	int index = atoi(v1str.c_str());
-	//loop through one inclination denoted by index
-	setMask(index,val);
-      }
-      t1 = lex.getToken();
+      //The zenith
+      double val = fgap(90.0);
+      diffuseRadZenith = diffuseRadZenith*((100.0-val)/100.0);
+      return;
     }
+    //There will be a mask explicitely fo each inclination. Backward compatibility
+    else{
+      while (t1.getType() != VC_ENDFILE){
+	string v1str =  t1.getValue();
+	//there will be value for inclination (blocking)
+	Token t2 = lex.getToken();
+	string v2str = t2.getValue();
+	//percentage
+	double val = atof(v2str.c_str()); 
+	if (t1.getType() == VC_ID){//zenith sector, keyword "zenith"
+	  diffuseRadZenith = diffuseRadZenith*((100.0-val)/100.0);
+	}
+	else{
+	  //index
+	  int index = atoi(v1str.c_str());
+	  //loop through one inclination denoted by index
+	  setMask(index,val);
+	}
+	t1 = lex.getToken();
+      }//while
+    }//else
   }
-  
   void FirmamentWithMask::readMaskFile(const string& file)
   {
     Lex lex;
