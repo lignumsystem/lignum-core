@@ -16,6 +16,13 @@ Triangle::Triangle(const Point& p1,const  Point& p2,const Point& p3)
   
 }
 
+  Triangle& Triangle::operator=(const Triangle& t)
+  {
+    leftcorner = t.leftcorner; rightcorner= t.rightcorner; 
+    apexcorner = t.apexcorner;
+    return *this;
+  }
+
 vector<Point>& Triangle::getTriangleCorners(vector<Point>& corners)
 {
   corners.push_back(leftcorner);
