@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
 #include <VoxelBox.h>
-#include <Voxelspace.h>
+#include <VoxelSpace.h>
 
 namespace Lignum {
 //
