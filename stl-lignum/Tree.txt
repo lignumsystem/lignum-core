@@ -13,7 +13,7 @@ nl      0.10        #Needle length (10 cm = 0.10 m)
 q       0.10        #Tree segment shortening factor
 sr      0.330       #Senescence rate of roots
 ss      0.07        #Senescence rate of sapwood
-rho     400.0       #Density of wood in tree segment
+rho     200.0       #Density (kg C/m3) of wood in tree segment
 pr      0.0010      #Proportion of bound solar radiation that is
                     #used in photosynthesis
 xi      0.60        #Fraction of heartwood in tree segments
