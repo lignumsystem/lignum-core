@@ -495,6 +495,11 @@ int LSystem<TS,BUD,T,F>::lstring2Lignum(list<TreeCompartment<TS,BUD>*>& ls,
     turtle_stack.top().forward(arg1);
     ltr++;
   }
+  //Up: Rotate the turtle to face up in the world
+  else if  (strcmp(name,"Up") == 0){
+    turtle_stack.top().up();
+    ltr++;
+  }
   //Ignore  other symbols, go forward in the string
   else{
     ltr++;
