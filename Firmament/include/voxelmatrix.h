@@ -17,7 +17,7 @@ using namespace std;
 
 using namespace Lignum;
 
-/*
+
 struct SmallCube
 {
 	int x,y,z;
@@ -25,7 +25,7 @@ struct SmallCube
 	float areaden;
 	bool ready;
 };
-*/
+
 
 
 
