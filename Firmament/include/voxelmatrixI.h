@@ -458,7 +458,7 @@ Matrix<TS,BUD>::Matrix(Tree<TS,BUD> *tree, double voxeledge)
       for (k=0;k<Z;k++)
 	calculateLight(i, j, k);
 
-	delete point;
+  delete point;
 }
 
 
@@ -554,8 +554,9 @@ double Matrix<TS,BUD>::getLight(TreeSegment<TS,BUD> *ts)
       SetValue(*cfts, Rf,needle_length * sin(needle_angle)+ GetValue(*ts,R));
       needle_rad = GetValue(*cfts, Rf);
   
-      //      s_f = GetValue(GetTree(*cfts),sf);
-      s_f = 28;
+      //implement first!!
+      //s_f = GetValue(GetTree(*cfts),sf);
+      s_f = 28.0;
 
       LGMdouble star = 0;
   
@@ -1058,6 +1059,8 @@ void Matrix<TS,BUD>::calculateLight(Firmament *firm, int x, int y, int z)
 {
   matrix[x][y][z].setIncomingRadiation(0);
   matrix[x][y][z].setRadiationSum(0);
+
+
   //
   // Initialize the sky
  
@@ -1072,8 +1075,10 @@ void Matrix<TS,BUD>::calculateLight(Firmament *firm, int x, int y, int z)
   //
   // Middlepoint of the voxel
   //
-  Point *point = new Point((x+.5)*edge, (y+.5)*edge, (z+.5)*edge);
-  Point *startvoxel = new Point(x, y, z);
+
+  Point point((x+0.5)*edge, (y+0.5)*edge, (z+0.5)*edge);
+
+  Point startvoxel(x, y, z);
 
 
   double total_radiation = 0.0;
@@ -1086,7 +1091,7 @@ void Matrix<TS,BUD>::calculateLight(Firmament *firm, int x, int y, int z)
       radiationsum = firm->diffuseRegionRadiationSum(i, direction);
 /*       cout << "Taivaankannen suunta " << direction << endl; */
       total_radiation += radiationsum;
-      newTraversePath(direction, radiationsum, *point, *startvoxel);
+      newTraversePath(direction, radiationsum, point, startvoxel);
     }
 
   //  cout << "Total radiation " << total_radiation << endl;
@@ -1098,8 +1103,6 @@ void Matrix<TS,BUD>::calculateLight(Firmament *firm, int x, int y, int z)
   //traversePath(direction, radiationsum, *point, *startvoxel);
 
  // delete firm;
-  delete point;
-  delete startvoxel;
 }
 
 
