@@ -589,10 +589,12 @@ void Firmament::setDiffuseToUniform() {
   diffuseRadBall += diffuseRadZenith;
 
 }
+}//closing namespace sky
 
 
 #ifdef  FIRMAMENT
 #define LINE_LENGTH 255
+using namespace sky;
 int  main(int argc, char* argv[])
 {
   double alphaA, betaA, alphaB, betaB;
@@ -761,7 +763,6 @@ int  main(int argc, char* argv[])
 
 #endif
 
-}//closing namespace sky
 
 
 
