@@ -24,11 +24,9 @@ public:
   // Functions to handle the private data
   //
   void setMeanSegment() {
-    //meansegment.set_x(sumvector.get_x() / sumlength);
-    //meansegment.set_y(sumvector.get_y() / sumlength);
-    //meansegment.set_z(sumvector.get_z() / sumlength);
-
-	meansegment = Point(sumvector.getX() / sumlength, sumvector.getY() / sumlength, sumvector.getZ() / sumlength);
+	meansegment = Point(sumvector.getX() / sumlength, 
+			    sumvector.getY() / sumlength, 
+			    sumvector.getZ() / sumlength);
   };
   Point getMeanSegment() { return meansegment; };
 

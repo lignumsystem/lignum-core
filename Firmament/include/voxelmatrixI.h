@@ -15,17 +15,19 @@ Matrix<TS,BUD>::Matrix(vector<Tree<TS, BUD> *> trees, double voxeledge)
 	Tree<ScotsPineVisual, ScotsBud > *tree;
 
 	for(i=0; i<num; i++)
-    {
+	  {
 		tree = trees[i];
 		bbox = Accumulate(*tree, bbox, fbb);
-    }
+	  }
  
 	Point span = bbox.getMax() - bbox.getMin();
 
+	
 
 	Point middlepoint = bbox.getMax() + bbox.getMin();
 	middlepoint = Point(middlepoint.getX()/2.0, middlepoint.getY()/2.0, middlepoint.getZ()/2.0);
 	
+	cout << "keskipiste " << middlepoint << endl;
 
 	float xx,yy,zz;
 	X = xx = span.getX() / edge + 1;
@@ -33,14 +35,23 @@ Matrix<TS,BUD>::Matrix(vector<Tree<TS, BUD> *> trees, double voxeledge)
 	Z = zz = span.getZ() / edge + 1;
 
 	
+	cout << "span " << span << endl;
+	cout << "edge " << edge << endl;
+
 	//Nyt tiedetaan todellinen pikkukuutioiden lukumaara. Lasketaan sivujen pituudet isossa kuutiossa.
 	float dx = edge * X;
 	float dy = edge * Y;
 	float dz = edge * Z;
-	 
+
+	cout << "dx dy dz " << dx << " " << dy << " " << dz << endl;
+
 	p1 = Point(middlepoint.getX()-dx/2, middlepoint.getY()-dy/2, middlepoint.getZ()-dz/2);
 	p2 = Point(middlepoint.getX()+dx/2, middlepoint.getY()+dy/2, middlepoint.getZ()+dz/2);
 
+	cout << " alakulma " << p1 << endl;
+	cout << " ylakulma " << p2 << endl;
+
+	cout << " koko " << X << "  " << Y << "  " << Z << endl;
 	matrix = new Voxel**[X];
 	for (j=0;j<Y;j++)
 		matrix[j] = new Voxel*[Y];
@@ -48,13 +59,47 @@ Matrix<TS,BUD>::Matrix(vector<Tree<TS, BUD> *> trees, double voxeledge)
 		for(j=0;j<Y;j++)
 			matrix[i][j] = new Voxel[Z];
 
+	cout << " viedaan puut " << endl;
 	Point base(0,0,0);
 	for(i=0; i<num; i++)
-    {
-		tree = trees[i];
-		importTree(tree, base);	
-    }
-	calculateMeanSegment();
+	  {
+	    tree = trees[i];
+	    importTree(tree, base);
+	    calculateMeanSegment();
+	  }
+
+	cout << "puut viety " << endl;
+	//calculateMeanSegment();
+
+	Firmament *firm = &GetFirmament(*trees[0]);
+	double partsumsum = 0.0;
+	double total_foliage = 0.0;
+	for (i=0;i<X;i++)
+	  for (j=0;j<Y;j++)
+	    for (k=0;k<Z;k++) 
+	      {
+		calculateLight(firm, i, j, k);
+		
+		float xx = -(X/2.0)*edge + (i+0.5)*edge;
+		float yy = -(Y/2.0)*edge + (j+0.5)*edge;
+		float zz = 0 + (k+0.5)*edge;
+		
+
+		if (matrix[i][j][k].getSTAR() > 0)
+		  {
+		    cout << "(" << i << "," << j << "," << k << ")   Koordinaatit: (" 
+			 << xx << "," << yy << "," << zz << ")	incoming: " 
+		       << matrix[i][j][k].getRadiationSum() << "  area density "
+			 << matrix[i][j][k].getAreaDensity()  << " Foliage mass " 
+			 << matrix[i][j][k].getFoliageMass() <<
+		      endl;
+		  }
+		
+		
+		partsumsum += matrix[i][j][k].getPartSum();
+		total_foliage += matrix[i][j][k].getFoliageMass(); 
+	      }
+	cout << "Foliage mass in voxelspace " << total_foliage << endl;
 }
 
 
@@ -723,7 +768,7 @@ Point Matrix<TS,BUD>::calcVoxel(Point point)
 	int y = (int)(point.getY() - p1.getY()) / edge;
 	int z = (int)(point.getZ() - p1.getZ()) / edge;
 
-	if (x<0 || x>X)
+	if (x<0 || x>X-1)
 	{
 #ifdef _MSC_VER
 		MessageBox(NULL, "Pisteen x-koordinaatti menee vokselin yli (liian pieni arvo)", NULL, NULL);	
@@ -733,7 +778,7 @@ Point Matrix<TS,BUD>::calcVoxel(Point point)
 	}
 
 
-	if (y<0 || y>Y)
+	if (y<0 || y>Y-1)
 	{
 #ifdef _MSC_VER
 		MessageBox(NULL, "Pisteen y-koordinaatti menee vokselin yli (liian pieni arvo)", NULL, NULL);	
@@ -743,7 +788,7 @@ Point Matrix<TS,BUD>::calcVoxel(Point point)
 	}
 
 
-	if (z<0 || z>Z)
+	if (z<0 || z>Z-1)
 	{
 #ifdef _MSC_VER
 		MessageBox(NULL, "Pisteen z-koordinaatti menee vokselin yli (liian pieni arvo)", NULL, NULL);	
@@ -1145,8 +1190,11 @@ void Matrix<TS,BUD>::addValues(Point voxel, double length, TreeSegment<TS,BUD> *
 	{
 		r_f = GetValue(*cfts, Rf);
 		w_f = GetValue(*cfts, Wf);
+
+		cout << " fooliage mass " << w_f << endl;
 	}
 
+  
   matrix[x][y][z].setMeanLength(matrix[x][y][z].getMeanLength()*matrix[x][y][z].getSumLength());
   matrix[x][y][z].addSumVector(length * GetDirection(*ts));
   double part_sum = length / GetValue(*ts, L);
