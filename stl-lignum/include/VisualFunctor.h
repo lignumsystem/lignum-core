@@ -4,6 +4,8 @@
 #include <vector>
 #include <Point.h>
 
+namespace Lignum{
+
 template <class TS, class BUD>
 class GUS{
 public:
@@ -39,6 +41,8 @@ class SampleDiameterGrowth{
 public:
   METER& operator()(METER& r,TreeCompartment<TS,BUD>* tc)const;
 };
+
+}
 
 #include <VisualFunctorI.h>
 

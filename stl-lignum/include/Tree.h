@@ -28,7 +28,7 @@ using namespace cxxadt;
 #include <Axis.h>
 #include <ConnectionMatrix.h>
 #include <Firmament.h>
-using sky::Firmament;
+using namespace sky;
 
 
 namespace Lignum{
@@ -90,7 +90,7 @@ public:
 
 
 template <class TS,class BUD = DefaultBud<TS> >
-class Tree: public TreeCompartment<TS,BUD>{
+class Tree: public Lignum::TreeCompartment<TS,BUD>{
   friend Axis<TS,BUD>& GetAxis(Tree<TS,BUD>& t);
   friend LGMdouble GetProduction(const Tree<TS,BUD>& t);
   friend void InitializeTree(Tree<TS,BUD>& tree, const CString& meta_file);

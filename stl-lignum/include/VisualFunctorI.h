@@ -1,6 +1,8 @@
 #ifndef VISUAL_FUNCTORI_H
 #define VISUAL_FUNCTORI_H
 
+namespace Lignum{
+
 template <class TS,class BUD> GUS<TS,BUD>& 
 GetUpperSegment<TS,BUD>::operator()(GUS<TS,BUD>& gus, 
 				    TreeCompartment<TS,BUD>* tc)const
@@ -60,7 +62,8 @@ METER& SampleDiameterGrowth<TS,BUD>::operator()(METER& r,TreeCompartment<TS,BUD>
   }
   return r;
 }
-  
+
+}  
 
 #endif
 
