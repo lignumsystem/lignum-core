@@ -3,7 +3,6 @@
 #include <vector>
 #include <mathsym.h>
 #include <math.h>
-#include <math.h>
 
 namespace cxxadt{
 
