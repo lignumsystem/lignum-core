@@ -19,7 +19,8 @@
 //   CollectQabs
 //   MoveTree
 //   DeleteDeadBranches
-//   PrintTreeSegmentInformationToFile(const string& filenae)
+//   PrintTreeSegmentInformationToFile
+//   PrintTreeSegmentInformationToFileByAxis
 
 //Functors-functions below used in LIGNUM WorkBench are not listed. 
 
@@ -636,61 +637,76 @@ namespace Lignum{
 
   template <class TS,class BUD>
     TreeCompartment<TS,BUD>*
-    PrintTreeSegmentInformationToFile<TS,BUD>::operator
-    () (TreeCompartment<TS,BUD>* tc)const {
+    PrintTreeSegmentInformationToFile<TS,BUD>::operator()
+    (TreeCompartment<TS,BUD>* tc)const {
 
-    if(TS* ts = dynamic_cast<TS*>(tc)) {
-      Tree<TS,BUD>& tree = GetTree(*tc); 
-      LGMdouble ballRad = GetFirmament(tree).diffuseBallSensor();
-      LGMdouble maxQin = GetValue(tree, TreeQinMax);
+     if(TS* ts = dynamic_cast<TS*>(tc)) {
+       ofstream f(fname.c_str(),ios_base::app);
+       Tree<TS,BUD>& tree = GetTree(*tc); 
+       LGMdouble ballRad = GetFirmament(tree).diffuseBallSensor();
+       LGMdouble maxQin = GetValue(tree, TreeQinMax);
 
-      LGMdouble rQin = 0.0, rTQin = 0.0;
-      if(ballRad > R_EPSILON)
-	rQin = GetValue(*ts,LGAQin)/ballRad;
-      if(maxQin > R_EPSILON)
-	rTQin = GetValue(*ts,LGAQin)/maxQin;
+       LGMdouble rQin = 0.0, rTQin = 0.0;
+       if(ballRad > R_EPSILON)
+	 rQin = GetValue(*ts,LGAQin)/ballRad;
+       if(maxQin > R_EPSILON)
+	 rTQin = GetValue(*ts,LGAQin)/maxQin;
 
-      Point r = GetPoint(*tc);
-      PositionVector di = GetDirection(*tc);
+       Point r = GetPoint(*tc);
+       PositionVector di = GetDirection(*tc);
 
-      cout << r.getX() << ":" <<
-	r.getY() << ":" <<
-	r.getZ() << ":" <<
-	di.getX() << ":" <<
-	di.getY() << ":" <<
-	di.getZ() << ":" <<
-	GetValue(*ts, LGAage) << ":" <<
-	GetValue(*ts,LGAomega) << ":" <<
-	GetValue(*ts,LGAR) << ":" <<
-	GetValue(*ts,LGARTop) << ":" <<
-	GetValue(*ts,LGARh) << ":" <<
-	GetValue(*ts,LGAL) << ":" <<
-	GetLastAnnualIncrement(*ts) << ":" <<
-	GetValue(*ts,LGAWs) << ":" <<
-	GetValue(*ts,LGAWh) << ":" <<
-	GetValue(*ts,LGAWf) << ":" <<
-	GetValue(*ts,LGAWh)+GetValue(*ts,LGAWs)+GetValue(*ts,LGAWf) << ":" <<
-	GetValue(*ts,LGAAf) << ":" <<
-	GetValue(*ts,LGAAs0) << ":" <<
-	GetValue(*ts,LGAAs) << ":" <<
-	GetValue(*ts,LGAQin) << ":" <<
-	rTQin << ":" <<
-	rQin << ":" <<
-	GetValue(*ts,LGAQabs) << ":" <<
-	GetValue(*ts,LGAP) << ":" <<
-	GetValue(*ts,LGAM) << ":" <<
-	GetValue(*ts,LGAvi)
-	   << endl;
+       f << r.getX() << ":" <<
+	 r.getY() << ":" <<
+	 r.getZ() << ":" <<
+	 di.getX() << ":" <<
+	 di.getY() << ":" <<
+	 di.getZ() << ":" <<
+	 GetValue(*ts, LGAage) << ":" <<
+	 GetValue(*ts,LGAomega) << ":" <<
+	 GetValue(*ts,LGAR) << ":" <<
+	 GetValue(*ts,LGARTop) << ":" <<
+	 GetValue(*ts,LGARh) << ":" <<
+	 GetValue(*ts,LGAL) << ":" <<
+	 GetLastAnnualIncrement(*ts) << ":" <<
+	 GetValue(*ts,LGAWs) << ":" <<
+	 GetValue(*ts,LGAWh) << ":" <<
+	 GetValue(*ts,LGAWf) << ":" <<
+	 GetValue(*ts,LGAWh)+GetValue(*ts,LGAWs)+GetValue(*ts,LGAWf) << ":" <<
+	 GetValue(*ts,LGAAf) << ":" <<
+	 GetValue(*ts,LGAAs0) << ":" <<
+	 GetValue(*ts,LGAAs) << ":" <<
+	 GetValue(*ts,LGAQin) << ":" <<
+	 rTQin << ":" <<
+	 rQin << ":" <<
+	 GetValue(*ts,LGAQabs) << ":" <<
+	 GetValue(*ts,LGAP) << ":" <<
+	 GetValue(*ts,LGAM) << ":" <<
+	 GetValue(*ts,LGAvi) <<
+	 endl;
+
+       f.close();
+
+     } 
+     return tc; 
+  }
+
+  template <class TS,class BUD>
+    TreeCompartment<TS,BUD>*
+    PrintTreeSegmentInformationToFileByAxis<TS,BUD>::operator()
+    (TreeCompartment<TS,BUD>* tc)const {
+
+    if(Axis<TS,BUD>* ax = dynamic_cast<Axis<TS,BUD>*>(tc)) {
+      PrintTreeSegmentInformationToFile<TS,BUD> print(fname,false);
+      ForAllTreeCompartments<TS,BUD,
+	PrintTreeSegmentInformationToFile<TS,BUD> > printAx(print);
+      printAx(ax);
     }
-    return tc; 
+    
+    return tc;
   }
 
 
-
-
-
-
-
+  
 
   template <class TS,class BUD>
     int& SetOmega<TS,BUD>::operator()(int& oomega,

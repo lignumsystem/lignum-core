@@ -29,7 +29,8 @@ using namespace std;
 //   GetQinMax
 //   MoveTree
 //   DeleteDeadBranches
-//   PrintTreeSegmentInformationToFile(const string& filenae)
+//   PrintTreeSegmentInformationToFile
+//   PrintTreeSegmentInformationToFileByAxis
 
 //Functors-functions below used in LIGNUM WorkBench are not listed. 
 
@@ -297,13 +298,14 @@ namespace Lignum{
   template <class TS, class BUD>
     class GetQinMax{
     public:
-    LGMdouble operator()(LGMdouble qin,TreeCompartment<TS,BUD>* tc)const{
+    LGMdouble& operator()(LGMdouble& qin, TreeCompartment<TS,BUD>* tc)const{
       if (TS* ts = dynamic_cast<TS*>(tc)){
 	LGMdouble qin_ts = GetValue(*ts,LGAQin);
 	qin = max(qin,qin_ts);
       }
       return qin;
     }
+
   };
 
 
@@ -340,37 +342,81 @@ namespace Lignum{
     };
 
 
-
+  //Functors for printing information on TreeSegments to file
 
   template <class TS,class BUD=DefaultBud<TS> >
     class PrintTreeSegmentInformationToFile {
       public:
-      PrintTreeSegmentInformationToFile(const string& filename)
+
+      PrintTreeSegmentInformationToFile(const string& filename,
+					const bool& title)
+      :fname(filename)
       {
-/* 	file.open(filename.c_str() , ios::app); */
-	cout << "TIME: no time stamp specified" << endl;
-	cout  << "X:Y:Z:diX:diY:diZ:age:omega:R:RTop:Rh:L:Ring:Ws:Wh:"
-                "Wf:W:Af:As0:As:Qin:rTQin:rQin:Qabs:P:M:vigour" << endl;
+	if(title) {
+	  ofstream f(fname.c_str(),ios_base::app);
+	  f << "TIME: no time stamp specified" << endl;
+	  f  << "X:Y:Z:diX:diY:diZ:age:omega:R:RTop:Rh:L:Ring:Ws:Wh:"
+	  "Wf:W:Af:As0:As:Qin:rTQin:rQin:Qabs:P:M:vigour" << endl;
+	  f.close();
+	}
       }
-
-      PrintTreeSegmentInformationToFile(const string& filename, int&
-					timeStamp)
+      
+      PrintTreeSegmentInformationToFile(const string& filename, const int&
+					timeStamp, const bool title)
+      : fname(filename)
       {
-/* 	file.open(filename.c_str() , ios::app); */
-	cout << "TIME: " << timeStamp << endl;
-	cout  << "X:Y:Z:diX:diY:diZ:age:omega:R:RTop:Rh:L:Ring:Ws:Wh:"
-                "Wf:W:Af:As0:As:Qin:rTQin:rQin:Qabs:P:M:vigour" << endl;
+	if(title) {
+	  ofstream f(filename.c_str() , ios_base::app);
+	  f << "TIME: " << timeStamp << endl;
+	  f  << "X:Y:Z:diX:diY:diZ:age:omega:R:RTop:Rh:L:Ring:Ws:Wh:"
+	  "Wf:W:Af:As0:As:Qin:rTQin:rQin:Qabs:P:M:vigour" << endl;
+	  f.close();
+	}
       }
-
-      //~PrintTreeSegmentInformationToFile() {file.close();}
-
+      
       TreeCompartment<TS,BUD>* operator ()(TreeCompartment<TS,BUD>* tc)const;
-
+      
       private:
-      //      fstream f;
+      string fname;
     };
+  
+  
+  template <class TS,class BUD=DefaultBud<TS> >
+      class PrintTreeSegmentInformationToFileByAxis {
+	public:
+	PrintTreeSegmentInformationToFileByAxis(const string& filename,
+						const bool& title)
+	:fname(filename)
+	{
+	  if(title) {
+	    ofstream f(fname.c_str(),ios_base::app);
+	    f << "By Axis - TIME: no time stamp specified" << endl;
+	    f  << "X:Y:Z:diX:diY:diZ:age:omega:R:RTop:Rh:L:Ring:Ws:Wh:"
+	    "Wf:W:Af:As0:As:Qin:rTQin:rQin:Qabs:P:M:vigour" << endl;
+	    f.close();
+	  }
+	}
+	
+	PrintTreeSegmentInformationToFileByAxis(const string& filename, int&
+						timeStamp, const bool& title)
+	: fname(filename)
+	{
+	  if(title) {
+	    ofstream f(filename.c_str() , ios_base::app);
+	    f << "By Axis - TIME: " << timeStamp << endl;
+	    f  << "X:Y:Z:diX:diY:diZ:age:omega:R:RTop:Rh:L:Ring:Ws:Wh:"
+	    "Wf:W:Af:As0:As:Qin:rTQin:rQin:Qabs:P:M:vigour" << endl;
+	    f.close();
+	  }
+      }
+	
+	TreeCompartment<TS,BUD>* operator ()(TreeCompartment<TS,BUD>* tc)const;
+	
+	private:
+	string fname;
+      };
 
-
+      
 
 
 
