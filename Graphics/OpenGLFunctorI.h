@@ -265,7 +265,10 @@ TreeCompartment<TS,BUD>* DrawNeedlesFunctor<TS,BUD>::operator()(TreeCompartment<
 	  glTranslatef(position.getX(), position.getY(), position.getZ());
 	  if (rot_angle > 0.01)
 	    glRotatef( rot_angle, rot_x, rot_y, 0);
-	  draw_texfoliage_planes(length, radius, GetValue(*cfts, Wf), GetValue(*cfts, age));         
+
+	  glDisable(GL_LIGHTING);
+	  draw_texfoliage_planes(length, radius, GetValue(*cfts, Wf), GetValue(*cfts, age));
+	  glEnable(GL_LIGHTING);
 	  glPopMatrix();
 	}                       
     }

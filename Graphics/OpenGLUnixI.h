@@ -384,6 +384,16 @@ void AddScotsPine(Tree<TS,BUD> &tree, int mode)
   
   if (mode == 2) //neulaset
     {
+      /*
+      // Jos piirretaan ilman l‰pin‰kyvyytta niin muistia s‰‰styy
+      DrawNeedlesFunctor<TS, BUD> needles_functor;
+      glDisable(GL_LIGHTING);
+      glPushMatrix();
+      ForEach(tree, needles_functor);
+      glPopMatrix();
+      */
+
+      // t‰ss‰ l‰pin‰kyvyydell‰      
       glEnable(GL_BLEND);
       //UseTextures();
       DrawNeedlesFunctor<TS, BUD> needles_functor;
@@ -399,11 +409,10 @@ void AddScotsPine(Tree<TS,BUD> &tree, int mode)
       ForEach(tree, needles_functor); 
       
       glDisable(GL_CULL_FACE);
-      glPopMatrix();
-      
+      glPopMatrix();    
     
       glDisable(GL_BLEND);
-      
+         
     }
 }
 

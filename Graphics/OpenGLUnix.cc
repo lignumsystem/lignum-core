@@ -284,7 +284,7 @@ void redraw(void)
 {
   float hx=0,hy=0, hz=0;  
 
-  
+ 
   glutSetWindow(window1);
   //glLoadIdentity();
   if (blackBackGround)
@@ -1171,6 +1171,8 @@ void UseTgaTexture(char *filename)
  
   int num = image.GenId(); // let OpenGL give us a texture id
   image.Load(filename, num);
+
+  cout << "Loading tga-texture!!!!!!!!!!!!!!!!!!!!!!!!!! " << filename << endl;
 
   glBindTexture(GL_TEXTURE_2D,num);
 }
