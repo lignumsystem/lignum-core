@@ -44,12 +44,10 @@ public:
 template <class TS, class BUD>
 class EvaluateRadiationForCfTreeSegment {
 public:
-  EvaluateRadiationForCfTreeSegment(){}
   EvaluateRadiationForCfTreeSegment(const ParametricCurve& k):K(k){}
   TreeCompartment<TS,BUD>* operator()(TreeCompartment<TS,BUD>* tc)const;
-  void setExtinction(ParametricCurve& K);
 private:
-  ParametricCurve K;
+  const ParametricCurve& K;
 };
 
 
@@ -59,14 +57,18 @@ private:
 template <class TS,class BUD>
 class ShadingEffectOfCfTreeSegment {
 public:
-  ShadingEffectOfCfTreeSegment(CfTreeSegment<TS,BUD>* ts, const ParametricCurve& K_in) {
-    shaded_s = ts;
-    K = K_in;
-  }
-  vector<LGMdouble>& operator()(vector<LGMdouble>& v,TreeCompartment<TS,BUD>* tc)const;
+  ShadingEffectOfCfTreeSegment(CfTreeSegment<TS,BUD>* ts, const ParametricCurve& K_in, 
+			       vector<double>& sectors)
+    :shaded_s(ts), K(K_in),S(sectors){}
+  //ForEach functor to compute shadiness
+  TreeCompartment<TS,BUD>*  operator()(TreeCompartment<TS,BUD>* tc)const;
+  //Get vector for S (shadiness) 
+  vector<double>& getS(){return S;}
 private:
   CfTreeSegment<TS,BUD>* shaded_s;
-  ParametricCurve K;
+  //Avoid unnecessary constructor calls in generic algorithms
+  const ParametricCurve& K;
+  vector<double>& S;
 };
 
 
