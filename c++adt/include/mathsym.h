@@ -10,6 +10,7 @@ namespace cxxadt{
 
 #define EPS       3.0e-8
 #define R_EPSILON 1.0e-20
+#define R_HUGE 1.0e+20
 
 template <class T>
 inline T maximum(T A, T B)
