@@ -11,15 +11,20 @@ namespace Lignum{
 
 template <class TS, class BUD=DefaultBud<TS> >
 class HwTreeSegment:public TreeSegment<TS,BUD>{
-  friend list<BroadLeaf*>& GetLeafList(HwTreeSegment<TS,BUD>& ts);
-  friend void InsertLeaf(HwTreeSegment<TS,BUD>& ts, BroadLeaf* l);
-  friend void InitializeForRadiation(HwTreeSegment<TS,BUD>& ts);
-  friend int GetNumberOfLeaves(const HwTreeSegment<TS,BUD>& ts);
-  friend LGMdouble GetLeafArea(const HwTreeSegment<TS,BUD>& ts);
-  friend LGMdouble SetLeafArea(HwTreeSegment<TS,BUD>& ts, const LGMdouble value);
-  friend LGMdouble GetValue(const HwTreeSegment<TS,BUD>& ts, const LGMAD name);
-  
-
+  template <class TS1,class BUD1>
+  friend list<BroadLeaf*>& GetLeafList(HwTreeSegment<TS1,BUD1>& ts);
+  template <class TS1,class BUD1>
+  friend void InsertLeaf(HwTreeSegment<TS1,BUD1>& ts, BroadLeaf* l);
+  template <class TS1,class BUD1>
+  friend void InitializeForRadiation(HwTreeSegment<TS1,BUD1>& ts);
+  template <class TS1,class BUD1>
+  friend int GetNumberOfLeaves(const HwTreeSegment<TS1,BUD1>& ts);
+  template <class TS1,class BUD1>
+  friend LGMdouble GetLeafArea(const HwTreeSegment<TS1,BUD1>& ts);
+  template <class TS1,class BUD1>
+  friend LGMdouble SetLeafArea(HwTreeSegment<TS1,BUD1>& ts, const LGMdouble value);
+  template <class TS1,class BUD1>
+  friend LGMdouble GetValue(const HwTreeSegment<TS1,BUD1>& ts, const LGMAD name);
 public:
   HwTreeSegment(const cxxadt::Point<METER>& p,const PositionVector& pv,
 		const LGMdouble go,const Lignum::METER l, const Lignum::METER r,

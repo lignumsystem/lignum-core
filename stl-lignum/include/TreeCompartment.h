@@ -11,14 +11,21 @@ namespace Lignum{
   using cxxadt::Point;
   template <class TS,class BUD=DefaultBud<TS> > 
     class TreeCompartment{
-      friend Point<METER> GetPoint(const TreeCompartment<TS,BUD>& tc);
-      friend PositionVector GetDirection(const TreeCompartment<TS,BUD>& tc);
-      friend Tree<TS,BUD>& GetTree(const TreeCompartment<TS,BUD>& tc);
-      friend LGMdouble GetValue(const TreeCompartment<TS,BUD>& tc, const LGMAD name);
-      friend LGMdouble SetValue(TreeCompartment<TS,BUD>& tc, const LGMAD name,
+      template <class TS1,class BUD1> 
+      friend Point<METER> GetPoint(const TreeCompartment<TS1,BUD1>& tc);
+      template <class TS1,class BUD1> 
+      friend PositionVector GetDirection(const TreeCompartment<TS1,BUD1>& tc);
+      template <class TS1,class BUD1> 
+      friend Tree<TS1,BUD1>& GetTree(const TreeCompartment<TS1,BUD1>& tc);
+      template <class TS1,class BUD1>
+      friend LGMdouble GetValue(const TreeCompartment<TS1,BUD1>& tc, const LGMAD name);
+      template <class TS1,class BUD1>
+      friend LGMdouble SetValue(TreeCompartment<TS1,BUD1>& tc, const LGMAD name,
 				const LGMdouble value);
-      friend void SetDirection(TreeCompartment<TS,BUD>& tc, const PositionVector& d);
-      friend void SetPoint(TreeCompartment<TS,BUD>& tc, const Point<LGMdouble>& p);
+      template <class TS1,class BUD1>
+      friend void SetDirection(TreeCompartment<TS1,BUD1>& tc, const PositionVector& d);
+      template <class TS1,class BUD1>
+      friend void SetPoint(TreeCompartment<TS1,BUD1>& tc, const Point<LGMdouble>& p);
     public:
       TreeCompartment();
       TreeCompartment(const Point<METER>& p, const PositionVector& d, Tree<TS,BUD>* t);

@@ -44,6 +44,12 @@ void InsertAxis(BranchingPoint<TS,BUD>& bp, Axis<TS,BUD>* axis)
   bp.axis_ls.push_back(axis);
 }
 
+template <class TS,class BUD>
+list<Axis<TS,BUD>*>& GetAxisList(BranchingPoint<TS,BUD>& bp)
+{
+  return bp.axis_ls;
+}
+
 }//close namespace Lignum
 
 #endif

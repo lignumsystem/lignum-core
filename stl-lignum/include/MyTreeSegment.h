@@ -3,9 +3,11 @@
 
 #include <HwTreeSegment.h>
 #include <CfTreeSegment.h>
-#include <MyBud.h>
+
 
 namespace Lignum{
+
+class MyBud;
 
 class MyTreeSegment:public TreeSegment<MyTreeSegment,MyBud>
 {

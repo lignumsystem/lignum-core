@@ -10,17 +10,14 @@
 namespace Lignum{
 
 using namespace cxxadt;
-template <class TS,class BUD>
-Bud<TS,BUD>* GetTerminatingBud(const Axis<TS,BUD>& axis);
-template <class TS,class BUD>
-list<TreeCompartment<TS,BUD>*>& GetTreeCompartmentList(Axis<TS,BUD>& axis);
-template <class TS,class BUD>
-void InsertTreeCompartment(Axis<TS,BUD>& axis, TreeCompartment<TS,BUD>* ts);
 template <class TS,class BUD=DefaultBud<TS> >
 class Axis: public TreeCompartment<TS,BUD>{
-  friend Bud<TS,BUD>* GetTerminatingBud(const Axis<TS,BUD>& axis);
-  friend list<TreeCompartment<TS,BUD>*>& GetTreeCompartmentList(Axis<TS,BUD>& axis);
-  friend void InsertTreeCompartment(Axis<TS,BUD>& axis, TreeCompartment<TS,BUD>* ts);
+  template <class TS1,class BUD1>
+  friend Bud<TS1,BUD1>* GetTerminatingBud(const Axis<TS1,BUD1>& axis);
+  template <class TS1,class BUD1>
+  friend list<TreeCompartment<TS1,BUD1>*>& GetTreeCompartmentList(Axis<TS1,BUD1>& axis);
+  template <class TS1,class BUD1>
+  friend void InsertTreeCompartment(Axis<TS1,BUD1>& axis, TreeCompartment<TS1,BUD1>* ts);
 public:
   virtual ~Axis();
   Axis();
