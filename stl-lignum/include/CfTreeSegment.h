@@ -35,7 +35,6 @@ class CfTreeSegment:public TreeSegment<TS,BUD>{
 public:
   CfTreeSegment(const Point& p,const PositionVector& pv,const LGMdouble go,const METER l,
                 const METER r,const METER rn,Tree<TS,BUD>* tree);
-  //    :TreeSegment<TS,BUD>(p,pv,go,l,r,rn,tree){}
   void photosynthesis();
   void respiration();
 private:
