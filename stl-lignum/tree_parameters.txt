@@ -1,6 +1,8 @@
 #Parameters for tree compartments according to Annals of Botany and 
 #paper accepted in Ecological Modelling 1996
 
+
+per     1.0         #Permibiliaty of tree  --mika--    
 af      1.30        #Needle mass - tree segment area relationship
 ar      0.50        #Foliage - root relationship 
 lr      100.0       #Length - radius relationship of a tree segment

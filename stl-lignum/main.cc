@@ -124,9 +124,9 @@ int main(int argc, char *argv[])
 
     }
 
-  for_each(ls.begin(),ls.end(),DisplayType<MyTreeSegment>());
+  //for_each(ls.begin(),ls.end(),DisplayType<MyTreeSegment>());
   //  for_each(ls.begin(),ls.end(),DisplayType<MyTreeSegment>());
-  tree.makeConnectionMatrix();
+  tree.UpdateWaterFlow();
 }
 
 
