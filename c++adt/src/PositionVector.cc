@@ -60,6 +60,20 @@ PositionVector& PositionVector::rotate(ROTATION direction, RADIAN angle)
   return *this;
 }
 
+//Normalize the vector
+//by making its length 1.
+//The vector is now directon vector
+PositionVector& PositionVector::normalize()
+{
+  double l = length();
+  
+  v[0] = v[0] / l;
+  v[1] = v[1] / l;
+  v[2] = v[2] / l ;
+
+  return *this;
+}
+
 #ifdef PV
 
 ostream& operator << (ostream& os, const vector<double>& v1)
@@ -131,6 +145,24 @@ int main()
   cout << "  beta: "  << pv2.beta() << endl;
   cout << "  gamma: " << pv2.gamma() << endl;
   cout << "  (x,y,z): " << pv2.getVector() << endl;
+
+
+  PositionVector pv3(2,2,2);
+  cout << "PositionVector pv3" << endl;
+  cout << " length: " << pv3.length() << endl;
+  cout << " alpha: " << pv2.alpha() << endl;
+  cout << " beta: "  << pv3.beta() << endl;
+  cout << " gamma: " << pv3.gamma() << endl;
+  cout << " (x,y,z): " << pv3.getVector() << endl;
+
+  
+  cout << "Normalizing pv3" << endl;
+  pv3.normalize();
+  cout << " length:" << pv3.length() <<endl;
+  cout << " alpha: " << pv2.alpha() << endl;
+  cout << " beta: "  << pv3.beta() << endl;
+  cout << " gamma: " << pv3.gamma() << endl;
+  cout << " (x,y,z): " << pv3.getVector() << endl;
 }
 
 #endif
