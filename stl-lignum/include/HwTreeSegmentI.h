@@ -132,8 +132,8 @@ namespace Lignum{
       }
       else if(name == LGAAf){
 	LGMdouble area = 0.0;
-	std::list<BroadLeaf<S>*>& leaf_list = GetLeafList(const_cast<HwTreeSegment<TS,BUD,S>&>(ts));
-	typename std::list<BroadLeaf<S>*>::iterator I;
+	list<BroadLeaf<S>*>& leaf_list = GetLeafList(const_cast<HwTreeSegment<TS,BUD,S>&>(ts));
+	typename list<BroadLeaf<S>*>::iterator I;
 	for(I = leaf_list.begin(); I != leaf_list.end(); I++) {
 	    area += GetValue(**I,LGAA);   //BroadLeaf returns true area of the leaf
 	}
