@@ -34,23 +34,29 @@ namespace cxxadt{
                  {semimajoraxis=semimajoraxis0;}
     void   setSemiminorAxis( const double& semiminoraxis0)
                  {semiminoraxis=semiminoraxis0;} ;
-                                       //the ellipse area calculation
+                                      
+                                  //the ellipse area calculation
     double getArea()const{return semimajoraxis*semiminoraxis*PI_VALUE;}; 
 
-    inline double setArea(double area);   //it defines a new ellipse from
-                                          // the old one
-                                          //using the scaling method with the 
-                                          //ellipse center point as the scaling center
-
-    double setArea(double area,       //it defines a new triangle from 
-                                      //  the old one 
-		   const Point& base );// with the base point as the center
-    
-    bool intersectEllipse(const Point& o,//checking the ellipse intersection 
-                                          // with "a light beam"  
-			   const Point& b);//the light beam is the ob vector 
-                                           // o - the observer position
-                                           // b - the vector beam end
+                                   //it defines a new ellipse from
+                                   // the old one
+                                   //using the scaling method with the 
+                                   //ellipse center point as the scaling center
+    inline double setArea(double area);
+                                 
+                                   //it defines a new triangle from 
+                                   //  the old one 
+                                   // with the base point as the center
+    double setArea(double area,       
+		   const Point& base );
+                                   
+                                     //checking the ellipse intersection 
+                                     // with "a light beam"
+                                     //the light beam is the ob vector 
+                                     // o - the observer position
+                                     // b - the vector beam
+    bool intersectShape(const Point& o,
+ 		   const PositionVector& beam);
     
 					   				       
     PositionVector x1u()const;      //unit vector x-axis in the ellipse plane
