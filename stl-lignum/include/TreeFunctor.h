@@ -8,6 +8,22 @@
 
 namespace Lignum{
 
+class InfoStruct
+{
+public:
+//      inline InfoStruct& operator += (const InfoStruct& st1);
+
+        int age;
+        LGMdouble sum_Wf;
+        LGMdouble sum_Qabs;
+        int num_buds;
+        int num_segments;
+        LGMdouble height;
+        LGMdouble bottom_rad;
+        std::vector<LGMdouble> taper_rad;
+        std::vector<LGMdouble> taper_hei;
+};
+
 //A functor to print out the datatype
 //of a tree compartment
 template <class TS,class BUD=DefaultBud<TS> >
@@ -125,6 +141,34 @@ public:
   BoundingBox& operator ()(BoundingBox& b_box,
 				       TreeCompartment<TS,BUD>* tc)const;
 };
+
+
+
+template <class TS,class BUD>
+class TreeHeight
+{
+public:
+  LGMdouble& operator ()(LGMdouble& max_height, TreeCompartment<TS,BUD>* tc)const;
+  
+};
+
+
+
+template <class TS,class BUD>
+class CollectFoliageMass
+{ 
+public:
+        LGMdouble& operator()(LGMdouble &sum, TreeCompartment<TS,BUD>* tc)const;
+};
+
+
+template <class TS,class BUD>
+class TreeInfo
+{ 
+public:
+        InfoStruct& operator()(InfoStruct &stru, TreeCompartment<TS,BUD>* tc)const;
+};
+
 
 
 }//closing namespace Lignum

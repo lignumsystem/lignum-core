@@ -3,6 +3,10 @@
 
 namespace Lignum{
 
+
+
+
+
 //Use built-in operator dynamic_cast
 //to resolve the data_type of a tree compartment
 template <class TS,class BUD>
@@ -374,6 +378,65 @@ FindBoundingBox<TS,BUD>::operator ()(BoundingBox& b_box,
 
 
 
+
+
+
+
+
+
+
+template <class TS,class BUD>
+InfoStruct& TreeInfo<TS,BUD>::operator()(InfoStruct& stru, TreeCompartment<TS,BUD>* tc)const
+{
+	if (TS* ts = dynamic_cast<TS *>(tc))
+	{
+		stru.num_segments++;
+		Point ep = GetEndPoint(*ts);
+		if (stru.height < ep.getZ())
+			stru.height = ep.getZ();
+
+		if (GetPoint(*ts).getZ() == 0)
+		{
+			stru.bottom_rad = GetValue(*ts, R);
+		}
+
+		int _age = GetValue(*ts, age);
+		if (_age > stru.age)
+		  stru.age = _age;
+		
+		
+		
+		stru.sum_Qabs += GetValue(*cfts, Qabs);
+	
+
+		// if main axis
+		if (ep.getX() == 0 && ep.getY() == 0)
+		{
+		  stru.taper_rad.push_back(GetValue(*ts, R));
+		  stru.taper_hei.push_back(ep.getZ());
+		}
+
+
+
+	}
+	else if (Bud<TS,BUD>* bud = dynamic_cast<Bud<TS,BUD>*>(tc))
+	  {
+	    stru.num_buds++;
+	  }
+	return stru;
+}
+
+
+template <class TS, class BUD>
+  LGMdouble& CollectFoliageMass<TS,BUD>::operator()(LGMdouble &sum, 
+						    TreeCompartment<TS,BUD>* tc)const
+{
+  if(TS *segment = dynamic_cast<TS *>(tc))
+    {
+      sum += GetValue(*segment, Wf);
+    }
+  return sum;
+}
 
 
 
