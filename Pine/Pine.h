@@ -33,7 +33,7 @@ class PineSegment: public CfTreeSegment<TS,BUD>{
     :CfTreeSegment<TS,BUD>(p,d,go,l,r,rh,tree)
     {
       //Set radius according to length radius ratio:
-      //As we multiply lr should be [0:1]
+      //As we multiply lr should be in [0,1]
       double r_new = GetValue(*tree,LGPlr)*GetValue(*this,LGAL);
       SetValue(*this,LGAR,r_new);
       //compute the radius to foliage limit (Rf)
@@ -49,6 +49,8 @@ class PineSegment: public CfTreeSegment<TS,BUD>{
       //2. initial mass of the foliage is then af*Sa ((kg/m2)*m2)
       LGMdouble wf =  GetValue(*tree,LGPaf)*GetValue(*this,LGASa);
       SetValue(*this,LGAWf,wf);
+      //Remember the original foliage
+      SetValue(*this,LGAWf0,wf);
       //Remember original sapwood area As0
       SetValue(*this,LGAAs0,GetValue(*this,LGAAs));
       //incoming radiation
@@ -232,6 +234,8 @@ public:
 	 SetValue(*ts,LGARh,sqrt((GetValue(GetTree(*ts),LGPxi)*GetValue(*ts,LGAAs))/PI_VALUE));
 	 //Initial foliage
 	 SetValue(*ts,LGAWf,GetValue(GetTree(*ts),LGPaf)*GetValue(*ts,LGASa));
+	 //Remember initial foliage!!
+	 SetValue(*ts,LGAWf0,GetValue(*ts,LGAWf));
  	 //Remember original sapwood area As0
 	 SetValue(*ts,LGAAs0,GetValue(*ts,LGAAs));
        }
