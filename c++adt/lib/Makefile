@@ -7,12 +7,9 @@ SRC = $(SRCDIR1)/CString.cc  $(SRCDIR1)/DList.cc $(SRCDIR1)/DListElement.cc \
       $(SRCDIR1)/PositionVector.cc $(SRCDIR1)/RMatrix.cc $(SRCDIR1)/HRMatrix.cc \
       $(SRCDIR1)/rand3.cc  $(SRCDIR1)/gauss.cc
 
-OBJ = $(SRCDIR1)/CString.o $(SRCDIR1)/DList.o $(SRCDIR1)/DListElement.o \
-      $(SRCDIR1)/Ellipsis.o $(SRCDIR1)/Lex.o $(SRCDIR1)/ParametricCurve.o \
-      $(SRCDIR1)/PositionVector.o $(SRCDIR1)/RMatrix.o $(SRCDIR1)/HRMatrix.o \
-      $(SRCDIR1)/rand3.o $(SRCDIR1)/gauss.o
+OBJ = ${SRC:.cc=.o} 
 
-INCLUDE= -I../include -I/usr/include/CC 
+INCLUDE= -I../include 
 
 CCC = CC -64 -LANG:std
 ETAGS = etags -d -T -C -o
@@ -21,10 +18,8 @@ OPTIMIZE = -O
 CCCFLAGS =   -c
 
 .SUFFIXES: .o .cc
-ARCOMMAND=$(CCC) -ar 
-ARCOMMANDFLAGS = -o
-AR =  $(ARCOMMAND)
-ARFLAGS =  $(ARCOMMANDFLAGS)
+AR =  $(CCC) -ar 
+ARFLAGS =  -o
 ARFILE = libc++adt.a
 
 
@@ -48,4 +43,8 @@ distclean: clean
 etags:
 	$(ETAGS)   TAGSFILE ../src/*.cc ../include/*.h
 depend:
-	makedepend $(INCLUDE) $(SRC) ../src/hrmatrix.cc
+	$(CCC) -M  $(INCLUDE) $(SRC) ../src/hrmatrix.cc >> Makefile
+#Do not delete this line -- make depend adds dependencies at the end of it
+#If committing Makefile to cvs please remove the dependencies first
+
+

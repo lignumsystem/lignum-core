@@ -1,53 +1,38 @@
-
 SRCDIR1 = ./src
-SRCDIR2 = ./include
 
 SRC = $(SRCDIR1)/CString.cc  $(SRCDIR1)/DList.cc $(SRCDIR1)/DListElement.cc \
       $(SRCDIR1)/Ellipsis.cc $(SRCDIR1)/Lex.cc $(SRCDIR1)/ParametricCurve.cc \
-      $(SRCDIR1)/PositionVector.cc $(SRCDIR1)/RMatrix.cc  $(SRCDIR1)/gauss.cc \
-      $(SRCDIR1)/rand3.cc
-
-OBJ = $(SRCDIR1)/CString.o $(SRCDIR1)/DList.o $(SRCDIR1)/DListElement.o \
-      $(SRCDIR1)/Ellipsis.o $(SRCDIR1)/Lex.o $(SRCDIR1)/ParametricCurve.o \
-      $(SRCDIR1)/PositionVector.o $(SRCDIR1)/RMatrix.o $(SRCDIR1)/gauss.o \
-      $(SRCDIR1)/rand3.o
-
-INCLUDE= -Iinclude -I/usr/include/CC 
+      $(SRCDIR1)/PositionVector.cc $(SRCDIR1)/RMatrix.cc $(SRCDIR1)/HRMatrix.cc \
+      $(SRCDIR1)/rand3.cc  $(SRCDIR1)/gauss.cc
 
 CCC = CC -64 -LANG:std
 ETAGS = etags -d -T -C -o
 
-OPTIMIZE = -O
+OPTIMIZE = -g
 CCCFLAGS =   -c 
 
 .SUFFIXES: .o .cc
-ARCOMMAND = $(CCC) -ar  
-ARCOMMANDFLAGS = -o
-AR = $(ARCOMMAND)
-ARFLAGS = $(ARCOMMANDFLAGS)
-ARFILE = lib/libc++adt.a
+AR = $(CCC) -ar  
+ARFLAGS = -o
+ARFILE = libc++adt.a
 
 PROGFILES = program-files.html
 
-$(ARFILE): $(OBJ)
-	$(AR) $(ARFLAGS) $(ARFILE) $(OBJ)
-
-.cc.o: 
-	$(CCC)  $(OPTIMIZE) $(CCCFLAGS) $(INCLUDE) $<  -o $@  
-
+$(ARFILE): 
+	(cd lib; make "CCC=$(CCC)" "CCCFLAGS=$(CCCFLAGS)" "OPTIMIZE=$(OPTIMIZE)" \
+                      "AR=$(AR)"  "ARFLAGS=$(ARFLAGS)") 
 touch:
-	touch $(SRC)
+	(cd lib; make touch)
 
 html:
 	enscript -E --color -Whtml --toc -p$(PROGFILES) include/*.h $(SRC)
 clean:
-	rm -f $(OBJ) core
+	(cd lib; make clean) 
 
-distclean: clean
-	rm -rf src/ii_files include/ii_files ii_files $(ARFILE)
+distclean: 
+	(cd lib; make distclean)
 
 etags:
-	$(ETAGS)   TAGSFILE ../src/*.cc ../include/*.h
+	(cd lib; make etags)
 depend:
 	(cd lib; make depend)
-	makedepend $(INCLUDE) $(SRC)
