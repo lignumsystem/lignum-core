@@ -28,16 +28,16 @@ namespace cxxadt{
   bool operator == (const Point<T> &point1, const Point<T> &point2);
   template <class T = double>
     class Point{
-      friend Point<T> operator + <T>(const Point<T> &point1, 
-				     const Point<T> &point2);
-      friend Point<T> operator - <T>(const Point<T> &point1, 
-				     const Point<T> &point2);
-      friend Point<T> operator * <T>(const T scalar, const Point<T> &point);
-      friend Point<T> operator * <T>(const Point<T>& p, const T scalar);
-      friend T operator || <T>(const Point<T> &point1, const Point<T> &point2);
-      friend ostream& operator << <T>(ostream& os, const Point<T>& point);
-      friend bool operator == <T>(const Point<T> &point1, 
+      friend Point<T> operator + (const Point<T> &point1, 
 				  const Point<T> &point2);
+      friend Point<T> operator - (const Point<T> &point1, 
+				  const Point<T> &point2);
+      friend Point<T> operator * (const T scalar, const Point<T> &point);
+      friend Point<T> operator * (const Point<T>& p, const T scalar);
+      friend T operator || (const Point<T> &point1, const Point<T> &point2);
+      friend ostream& operator << (ostream& os, const Point<T>& point);
+      friend bool operator == (const Point<T> &point1, 
+			       const Point<T> &point2);
     public:
       Point(T x1 = 0.0, T y1 = 0.0, T z1 = 0.0)
 	{x = x1; y =  y1; z =  z1;}
