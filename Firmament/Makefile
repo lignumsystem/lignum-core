@@ -3,9 +3,12 @@ OBJ  = Firmament.o  FirmamentWithMask.o MineSet.o Interlen.o Voxel.o voxellattic
  
 CCC = CC -64 -LANG:std
 
+ARCOMMAND=$(CCC) -ar
+ARCOMMANDFLAGS= -o
 AR = $(ARCOMMAND)  
 ARFLAGS = $(ARCOMMANDFLAGS) 
 ARFILE = lib/libsky.a
+
 
 #OPTIMIZE = -Ofast=ip28 -IPA
 OPTIMIZE   = -g 
