@@ -291,9 +291,18 @@ int Lstring2Lignum(list<TreeCompartment<TS,BUD>*>& ls,
   return Lstring2Lignum<TS,BUD,T,F>(ls,current,tree,ltr,turtle_stack,vav);
 }
 
-//Structural development of a tree
-//The lstring 's' has been expanded and 
-//the changes will be added to Lignum structure
+/*******************************************************************************
+ *Update the structure of Lstring to  LIGNUM.                                  * 
+ *Currently the length of the segment i.e., the argument                       *
+ *of turtle command F is updated implicetly.                                   *
+ *User can keep the symbol B for bud in sync with Lignum                       *
+ *by giving the meaning of the symbols in order of                             *
+ *appearance in the argument list. For example the call                        *
+ *Lstring2Lignum<MySegment,MyBud,LGMAD,LGMdouble(t,Lstring,2,LGMtype,LGMstatus)*
+ *will update the type  and the status of the bud from Lstring to LIGNUM.      *
+ *The algorithm is essentially the same as Lignum2Lstring                      *
+ *so other operations are easily added and kept in sync.                       *
+ ******************************************************************************/ 
 template <class TS, class BUD, class T, class F>
 int Lstring2Lignum(Tree<TS,BUD>& t, const Lstring& s, int argnum = 0,...)
 {

@@ -182,13 +182,18 @@ int Lignum2Lstring(list<TreeCompartment<TS,BUD>*>& ls,
   return Lignum2Lstring<TS,BUD,T,F>(ls,current,ltr,vav);
 }
 
-/*********************************************************
- *Update the structure of LIGNUM and Lstring             *
- *Currently only the length of the segment i.e.,         *
- *the argument of turtle command F is updated.           *
- *The algorithm is essentially the same as Lstring2Lignum*
- *so other operations are easily added                   *
- *********************************************************/ 
+/*******************************************************************************
+ *Update the structure of LIGNUM to  Lstring.                                  * 
+ *Currently the length of the segment i.e., the argument                       *
+ *of turtle command F is updated implicetly.                                   *
+ *User can keep the symbol B for bud in sync with Lignum                       *
+ *by giving the meaning of the symbols in order of                             *
+ *appearance in the argument list. For example the call                        *
+ *Lignum2Lstring<MySegment,MyBud,LGMAD,LGMdouble(t,Lstring,2,LGMtype,LGMstatus)*
+ *will update the type  and the status of the bud from LIGNUM to Lstring.      *
+ *The algorithm is essentially the same as Lstring2Lignum                      *
+ *so other operations are easily added and kept in sync.                       *
+ ******************************************************************************/ 
 template <class TS, class BUD, class T, class F>
 int Lignum2Lstring(Tree<TS,BUD>& t, const Lstring& s,int argnum = 0,...)
 {
@@ -204,7 +209,7 @@ int Lignum2Lstring(Tree<TS,BUD>& t, const Lstring& s,int argnum = 0,...)
     vav.push_back(va_arg(ap,T));
   }
   va_end(ap);
-  copy(vav.begin(),vav.end(),ostream_iterator<int>(cout, " "));
+  copy(vav.begin(),vav.end(),ostream_iterator<T>(cout, " "));
 
   return Lignum2Lstring<TS,BUD,T,F>(ls,ls.begin(),ltr,vav);
 }
