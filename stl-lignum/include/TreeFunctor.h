@@ -11,7 +11,7 @@ using namespace std;
 #include <BroadLeaf.h>
 #include <Algorithms.h>
 #include <TreeCharacteristics.h>
-
+#include <TreeMetabolism.h>
 
 //This file declares the following functors (functions) for Tree. Help
 //functors etc. are not specified. If you add a functor-function
@@ -167,6 +167,7 @@ namespace Lignum{
     out(out)
       {
      out << "age db d13 H Hc Wf Ws Wb Af LAR QinM Qabs P M NoSeg NoBud"
+       " NoSegN NSegNZ"
 	<< endl;
       }
     void operator() (Tree<TS,BUD>&  tr);
@@ -174,8 +175,40 @@ namespace Lignum{
     ofstream& out;
   };
 
-
-
+  
+  template <class TS,class BUD=DefaultBud<TS> >
+    class GetNewZeroSegments{
+      public:
+      int& operator ()(int& id,TreeCompartment<TS,BUD>* tc)const {
+	if (TS* ts = dynamic_cast<TS*>(tc)) {
+	  if(GetValue(*ts, LGAage) < R_EPSILON &&
+	     GetValue(*ts,LGAL) < R_EPSILON) {
+	       id++;
+	     }
+	}
+	
+	return id;
+      }
+      
+    };
+  
+  template <class TS,class BUD=DefaultBud<TS> >
+    class GetNewSegments{
+      public:
+      int& operator ()(int& id,TreeCompartment<TS,BUD>* tc)const {
+	if (TS* ts = dynamic_cast<TS*>(tc)) {
+	  if(GetValue(*ts, LGAage) < R_EPSILON) {
+	    id++;
+	  }
+	}
+	
+	return id;
+      }
+      
+    };
+  
+  
+  
   template <class TS,class BUD=DefaultBud<TS> >
     class CountCompartments{
     public:

@@ -1,7 +1,6 @@
 #ifndef TREE_FUNCTORI_H
 #define TREE_FUNCTORI_H
 
-
 //This file contains implementation of the following functors
 //(functions) for Tree. Help functors etc. are not specified. If you
 //add a functor-function please update this list.
@@ -302,6 +301,14 @@ namespace Lignum{
     if(d13 < R_EPSILON) d13hw = 0.0;
     LGMdouble  dbhw= GetValue(tr, LGADbaseHw);
     LGMdouble  db= GetValue(tr, LGADbase);
+    LGMdouble p = 0.0, m = 0.0;
+    LGMdouble P = Accumulate(tr,p,SumTreePhotosynthesis<TS,BUD>());
+    LGMdouble M =  Accumulate(tr,m,SumTreeRespiration<TS,BUD>());
+
+    int noSeg0 = 0;
+    noSeg0 = Accumulate(tr,noSeg0,GetNewZeroSegments<TS,BUD>());
+    int noSegAll = 0;
+    noSegAll = Accumulate(tr,noSegAll,GetNewSegments<TS,BUD>());
 
     out << values.age << " " << 100*db << " " << 100*d13 << " "
 	<< values.bolLen << " " << values.Hc << " " << values.sum_Wf
@@ -310,9 +317,9 @@ namespace Lignum{
 	<< " "
 	<< 10.0*values.sum_Af/(values.sum_Wf+values.sum_Ws+GetValue(tr,TreeWr))
 	<< " " << values.max_Qin << " " <<  values.sum_Qabs << " "
-	<< GetValue(tr,TreeP) << " " << GetValue(tr,TreeM)
+	<< P << " " << M
 	<< " " <<  values.num_segments << " " << values.num_buds
-	<< endl;
+	<< " " << noSegAll << " " << noSeg0 << endl;
   }
 
 
