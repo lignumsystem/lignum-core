@@ -4,6 +4,7 @@
 #include <math.h>
 #include <mathsym.h>
 #include <vector>
+#include <Point.h>
 #include <RMatrix.h>
 
 using namespace std;
@@ -16,6 +17,7 @@ public:
   PositionVector(const double x, const double y, const double z);
   PositionVector(const PositionVector& pv);
   PositionVector(const vector<double>& v1):v(v1){}
+  PositionVector(const Point<>& p);
   PositionVector& rotate(ROTATION direction, RADIAN angle);
   PositionVector& operator = (const PositionVector& pv);
   double length()const;
