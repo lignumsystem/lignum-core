@@ -8,9 +8,9 @@
 /*********************************************************************
  *This  file implements pairwise  comparison of  leaves in  a hardwood
  *tree. Essentially the algorithms  consists of two ForEach calls. The
- *first,  ForEach(tree,ForEachLeafCompare()), makes  one  pass of  the
- *tree calling  the second, ForEach(tree,ForEachLeafIntersect(l)), for
- *each leaf 'l' in a tree found in the first ForEach call.
+ *first, ForEach(tree,ForEachLeafCompare<TS,BUD,SH>()), makes one pass
+ *tree calling  the second, ForEach(tree,ForEachLeafIntersect<TS,BUD,SH>(l)), 
+ *for each leaf 'l' in a tree found in the first ForEach call.
  *********************************************************************/
 
 namespace Lignum{
@@ -127,7 +127,7 @@ namespace Lignum{
       //now check if the light beam hits the leaf 'l'.
       if (GetShape(*l).intersectShape(p1,p2))
       {                
-	
+	//The attenuation of the light beam
       }
  
     }
