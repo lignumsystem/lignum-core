@@ -65,6 +65,14 @@ namespace Lignum{
     Firmament& f;
   };
 
+  //Sum of Qabs in leaves 
+  template<class SH>
+  class SumLeafQabs{
+  public:
+    LGMdouble operator()(LGMdouble qabs,BroadLeaf<SH>* l){
+      return qabs + GetValue(*l,LGAQabs);
+    }
+  };
 
   //Implementation of function operators of the functors follows
 
@@ -75,8 +83,12 @@ namespace Lignum{
   ForEachLeafComputeQabs<TS,BUD,SH>::operator()(TreeCompartment<TS,BUD>* tc)const
   {
     if (TS* ts = dynamic_cast<TS*>(tc)){
+      //Compute Qabs for each leaf in this segment
       list<BroadLeaf<SH>*>& ls = GetLeafList(*ts);
       for_each(ls.begin(),ls.end(),LeafComputeQabs<TS,BUD,SH>(GetTree(*ts)));
+      //Collect and assign the sum of Qabs's to the segment
+      LGMdouble qabs = accumulate(ls.begin(),ls.end(),0.0,SumLeafQabs<SH>());
+      SetValue(*ts,LGAQabs,qabs);
     }
     return tc;
   }
