@@ -1,4 +1,4 @@
-\section{The Design of LIGNUM}
+\chapter{The Design of LIGNUM}
 
 The  design of  any  computer  program includes  the  decision how  to
 represent information  and concepts from the real  world. C++ supports
@@ -13,144 +13,188 @@ consisting   a  set of   possible   states  and  operations   defining
 transitions between those states. Template  is simply the C++ term for
 a parameterized type.
 
-\subsection{Units of LIGNUM} 
+\section{Units of LIGNUM} 
 
-The main design  principle in  \lignum\ is to   model a tree with  few
-simple  basic units  that correspond to   the organs of  the tree. The
-units must  be   such that  they allow   a  detailed analysis  of  the
-structure and the development of the tree during its life time and and
-still keeping  the  model computationally manageable to  create forest
-stands consisting of different tree species.  Ideally the units should
-be such that they can be divided  into more detailed tree compartments
-if necessary.
+The main design principle  in  \lignum\ is to  model  a tree with  few
+simple basic units that correspond to the organs of the tree. Two main
+critearias must  be met.  For the first,  the  units must capture both
+the  three  dimensional   structure of  the   tree   and its metabolic
+processes.   This is simply because  structural  development of a tree
+effects  its metabolic processes and  vice versa.  For the second, the
+model must  be  computationally  manageable  to create   forest stands
+consisting of  different  tree species.   Ideally  the units should be
+such that they can be divided  into more detailed tree compartments if
+necessary.
 
-Currently  a tree is  modeled in  \lignum\ with  five units.   The two
-basic units  (i.e., they are not  aggregates of other  units) are tree
-segment (TS)  and bud (B).   Axis (A) is  an aggregate or  sequence of
-tree  segments sepaterated  by  branching points  (BP)  ending with  a
-terminating  bud  and models  one  single  branch  in a  tree  (Figure
-\ref{fig:struct}). Branching  point is an aggregate  of axes capturing
-the branching  structure of a tree.   The fifth unit  is naturally the
+Currently a tree is  modeled in \lignum\  with five units called  tree
+compartments.  The two basic units are  tree segment (TS) and bud (B).
+They are called basic  units because they  are not aggregates of other
+units.   Axis  (A) models one   single  branch in a    tree.  It is an
+aggregate or more precisely a  sequence of tree segments and branching
+points (BP) ending with  a  terminating bud.   Each tree segment  only
+must be followed by exactly one branching point (Figure
+\ref{fig:struct}).  Branching point is an  aggregate of axes capturing
+the branching structure of  a tree.  The fifth  unit is  naturally the
 tree itself, an aggregate of all its tree compartments.
 
 \begin{figure}[h]
 \begin{center}
 \includegraphics[width=0.8\textwidth,height=0.5\textwidth]{Lignum3D.eps}
 \caption{\label{fig:struct} A model tree presented in \lignum\
-(left). Cf. young Scots pine produced by \lignum\ (right).}
+(left). Cf. young Scots pine produced by \lignum\ (right). A = Axis, 
+TS = Tree segment, BP = Branching Point, B =Bud.}
 \end{center}
 \end{figure}
 
 The main functioning unit tree segment consists of sapwood, heartwood,
-bark and  foliage and it  captures the main  metabolic functiong  in a
-tree.  The tree segment corresponds roughly to the annual shoot but in
-the   strict modeling sense this is   not necessarily always the case,
-especially when modelling heartwood trees.
+bark and foliage and it  captures the main  metabolic functioning in a
+tree.  The  tree segment  corresponds roughly  to the  annual shoot in
+trees but in the strict modeling sense this  is not necessarily always
+the case, especially when modelling heartwood trees. Also annual rings
+are modeled.  In real the annual rings  are a result of differences in
+diameter growth in the spring and later in the autumn.  In \lignum\ an
+annual ring  is a number  that is the  radius without bark of the tree
+after the growing period.  Thus to be precise the annual rings are not
+structural components  in \lignum\ but merely  a book keeping process.
+For coniferous trees all the structural components of the tree segment
+including foliage can be   modeled as (hollow) cylinders  (Figure ??A)
+but for heartwood trees the foliage needs another approach.  Clearly a
+more detailed description for the leaf is needed.
 
-The bud is  an  embryonic shoot, the  growing  point of the tree  from
-which new shoots, leaves and flowers may develop.  Buds can be further
-divided  into terminal buds located at  the top of  axes and lateral
-(or   axillary) buds  located   in the  tree   segment.  Further,  for
-heartwood trees the lateral buds are located where the leaf petiole is
-attached to a tree segment.
+To start  with one  can identify two  main structural  components in a
+leaf: the leaf itself and the petiole that connects a leaf to a shoot.
+Leaves in heartwood trees come in all shapes and sizes but in \lignum\
+the ellips is chosen to  be the form of a  model leaf.  More precisely
+an individual leaf of a   specific tree species   is modeled with  the
+smallest ellips that encloses the leaf.  For  some species this can be
+too rough of  an approximation.  The position  of the petiole in space
+is defined by  its starting and end  points.  The position of the leaf
+itself in space is defined by the end  point of the petiole connecting
+to one of the axes of the  leaf (ellips) and the  leaf normal.  One or
+more leaves can be connected to a tree segment.   The tree segment for
+heartwood trees is in Figure ??B.
+
+The bud is  an embryonic shoot,  the  growing point  of the  tree from
+which new shoots, leaves and flowers may develop.  Buds can be divided
+into  terminal buds   located at the   top of  axes  and  lateral  (or
+axillary)  buds located in the  tree segment.  For heartwood trees the
+lateral buds are located where the petiole of  a leaf is attached to a
+tree segment (Figure ??B).
 
 From the modeling point of view the branching point is the place where
 two or more  tree  segments are  connected  to each other.   The  axis
-corresponds to a stem or a branch of a tree.
+corresponds to a stem or a single branch of a tree.
 
-\subsection{Program Architecture}
+\section{Program Architecture}
 
-As a tree is represented with  five units in \lignum\ a natural choice
+As a tree is represented with five units  in \lignum\ a natural choice
 is to represent each unit as a class.  Each unit will have its own set
-of attributes  and operations.   An axis being  a dynamic  sequence of
-alternating  tree   segments  and  branching  points   ending  with  a
-terminating  bud can be  straightforwardly represented  by a  list.  A
-common notation for a list is to denote the beginning of a list with a
-left  bracket ($[$)  and the  end  of the  list with  a right  bracket
-($]$). The elements  in the list are separated  by commas ($,$).  With
-this formal notation the the sample tree can be now expressed as:
-
+of attributes  and operations.  An axis  being  a dynamic  sequence of
+alternating tree  segments   and  branching   points  ending  with   a
+terminating  bud  can  be easily   represented by a   list.  A  common
+notation for a list is  to denote the beginning  of a list with a left
+bracket ($[$) and the end of the list with  a right bracket ($]$). The
+elements in the list are separated by  commas ($,$).  With this formal
+notation  the the  sample tree  in Figure \ref{fig:struct}  can be now
+expressed as:
 \begin{displaymath}
-[TS,BP,TS,BP,B]
+[TS,BP,TS,BP,TS,BP,B]
 \end{displaymath}
 
-Branching  point connects a  set of axes  in a tree.  Thus a logical
-and consistent design choice is to define branching point as a list of
-axes. For   example, a more  detailed structural  description of the
-sample tree folds out the branching points in the main stem:
-
+Branching point connects a set of axes in a tree.   Thus a logical and
+consistent design  choice is  to define branching  point  as a list of
+axes.  For example, a   more detailed  structural description  of  the
+sample tree  folds out the branching points  in the main stem. The two
+axes containing only terminating   buds in the last (third)  branching
+point are also folded out:
 \begin{displaymath}
-[TS,[A,A],TS,[A,A],B]
+[TS,[A,A],TS,[A,A],[[B],[B]],B]
 \end{displaymath}
  
-Further more the classes for the  units of \lignum\ are organized in a
-hierarchy with  a common (abstract) base  class called TreeCompartment
-(TC) (Figure \ref{fig:omt} on page \pageref{fig:omt}).  This design allows
-us  to  utilize polymorphism  when  implementing metabolic  processes.
-Polymorphism means  that a  programming language allows  operations of
-the  same  name (e.g.,  photosynthesis)  to  take  different forms  or
+Further more the classes for the units of \lignum\  are organized in a
+hierarchy with a common (abstract)  base class called  TreeCompartment
+(Figure \ref{fig:omt} on page  \pageref{fig:omt}).  This design allows
+us to  utilize  polymorphism  when  implementing metabolic  processes.
+Polymorphism means that  a  programming language allows operations  of
+the   same name (e.g.,  photosynthesis)   to  take different forms  or
 implementations in different units.
-
-
-By defining attributes, methods and  functions that describe different
-tree   compartments  one  could start   to    implement different tree
-species. This is in fact how the first tree  species, Scots pine, Jack
-pine and sugar  maple were implemented.   However, one of the problems
-with the software used to  simulate these tree  species is that it has
-proven to   be difficult  to modify.     Typically  when creating  and
-validating  tree models with \lignum\    one needs to experiment   with
-parameter values, different light models, metabolic processes etc. The
-reason why the program has been difficult  and time consuming to adapt
-for different tree species is that  the data types defined (Tree, Axis
-etc.) are still concret data types.
 
 \begin{figure}[h]
 \begin{center}
 \includegraphics[width=0.7\textwidth,height=0.5\textwidth]{lignum-classes.eps}
-\caption{\label{fig:omt} The class hierarchy in \lignum.}
+\caption{\label{fig:omt} The class hierarchy in \lignum\ with OMT
+notation. Triangles and diamonds denote subclass relationship and 
+aggregation respectively. Hw = Heartwood, Cf = Coniferous.}
 \end{center}
 \end{figure}
 
-To improve the usability of the software one more level of abstraction
-is needed. Instead of concrete datatypes the tree compartments must be
-defined as abstract datatypes. This means type parameterization of the
-tree  compartments.   One  could   naturally  parameterize  all   tree
-compartments  but so  far   the two  most important   functional  tree
-compartments  are the tree  segment  and the  bud.   The axis  and the
-branch whorl are  essentially containers and have  not been subject to
-any modeling work per se.
+By defining attributes,  methods and functions that describe different
+tree compartments  one    could start  to  implement  different   tree
+species. This is in fact how the first  tree species, Scots pine, Jack
+pine and  sugar maple were implemented.  However,  one of the problems
+with the software  used to simulate these  tree species is that it has
+proven to  be  difficult  to   modify  and maintain.   
 
-The type  parameterization of the tree  segment and the  bud defines a
-tree as an abstract datatype.  Each tree species is parameterized with
-the structure and  function of tree segments and  buds.  As an example
-suppose a modeler  wants to study the development  of Scots pine.  The
-first thing to do is to create a subclass of CfTreeSegment\footnote{Cf
-for Coniferous}, say  PinusSylvestrisTreeSegment.  Then if the default
-methods implementing the metabolic  processes are not satisfactory the
-modeler must redefine the  appropriate methods.  After the changes and
-possible  additions  in the  class  PinusSylvestrisTreeSegment a  tree
-modeling a Scots pine can be created simply:
+Typically when creating  and validating tree  models with \lignum\ one
+needs to   experiment with parameter  values,  different light models,
+metabolic processes etc. The reason why it  has been time consuming to
+adapt the program  for  different tree   species is  that  the classes
+defined (Tree, Axis etc.)  are still concret data types.
+
+To  improve  the  flexibility  of   the software  one   more level  of
+abstraction  is  needed.   Instead of  concrete    datatypes the  tree
+compartments must be defined  as  abstract datatypes. This  means type
+parameterization of  the    tree compartments.  One  could   naturally
+parameterize all tree  compartments but so far  the two most important
+functional tree  compartments are the tree segment   and the bud.  The
+axis and the branch whorl are essentially containers and have not been
+subject to any modeling work per se.
+
+The type  parameterization of the tree  segment and the bud  defines a
+tree as an abstract datatype.  Each tree  species is an abstraction of
+the structure and  function of tree segments  and buds.  
+
+As  an  example suppose a  modeler wants  to  study the development of
+Scots  pine.  The first  thing to  do is to   create a subclass of the
+coniferous   tree segment  (CfTreeSegment, Figure  \ref{fig:omt}) say, 
+PinusSylvestrisTreeSegment.  Then if  the default methods implementing
+the metabolic processes are not satisfactory the modeler must redefine
+the appropriate  methods.  After the  necessary  changes in the  class
+PinusSylvestrisTreeSegment a tree modeling a Scots pine can be spawned
+simply:
 
 \begin{center}
-\tt Tree<PinusSylvestrisTreeSegment> pinus\_sylvestris;\rm
+\tt Tree<PinusSylvestrisTreeSegment> pinus;\rm
 \end{center}
 
-If also  the structure  and functioning of   the bud need  changes the
-modeler creates similarly a subclass  of Bud, say  PinusSylvestrisBud,
-and then creates a Scots pine tree:
+Similarly when modeling a birch the  first thing to do  is to create a
+subclass    of  heartwood    tree  segment    (HwTreeSegment,   Figure
+\ref{fig:omt}) say,  BetulaPubescensTreeSegment.      After   the
+appropriate metabolic processes are  redefined a tree modeling a birch
+can be set up:
 
 \begin{center}
-\tt Tree<PinusSylvestrisTreeSegment,PinusSylvestrisBud> pinus\_sylvestris;\rm
+\tt Tree<BetulaPubescensTreeSegment> betula;\rm
 \end{center}
 
-One could  argue  that  also axes   and  branching points  should be
-abstracted too.  But so   far there has   not  been a need   to assign
-metabolic   processes to  these  tree  compartments.   However, it  is
-possible due to  so called  default  template parameters to add  these
-tree    compartments for the class  Tree   later  without breaking the
+
+If  also the structure and  functioning of the  bud  need changes when
+modeling  for  example  the Scots pine  a   subclass of   Bud  , e.g.,
+PinusSylvestrisBud, is required.  After that a new model for the Scots
+pine can be brought into being:
+
+\begin{center}
+\tt Tree<PinusSylvestrisTreeSegment,PinusSylvestrisBud> pinus;\rm
+\end{center}
+
+Once more one could argue  that also axes  and branching points should
+be abstracted too.  But  so far there  has not been  a need  to assign
+metabolic  processes  to these   tree   compartments.  However, it  is
+possible   due to so called  default  template parameters to add these
+tree  compartments for the    class Tree later  without   breaking the
 existing programming interface.
 
-\subsection{Algorithms and Methods}
+\section{Algorithms and Methods}
 
 To  complete the   design  of    \lignum\ the necessery     algorithms
 implemented  either   as generic   functions     or methods must    be

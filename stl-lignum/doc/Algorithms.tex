@@ -1,4 +1,4 @@
-\section{Algorithms}
+\chapter{Algorithms}
 
 So  far all   metabolic processes and   queries  of the  status of the
 simulated  tree can be  implemented using  one  of the following  four
@@ -32,7 +32,7 @@ the generic algorithms are the same as used in the sample program. The
 tree segment  used in the examples  is called MyTreeSegment  and it is
 simply an subclass of TreeSegment.
  
-\subsection{ForEach}
+\section{ForEach}
 
 ForEach is similar to  STL-library  function  for\_each.  In fact   it
 applies  for\_each to  each  list  of  tree  compartments  in a  tree.
@@ -105,7 +105,7 @@ visualization where the computations  on   each tree compartment   are
 inherently parallel.  That   is,  tree  compartments can  be   treated
 individually.
 
-\subsection{Accumulate}
+\section{Accumulate}
 
 The algorithm Accumulate can be used to collect data, pass information
 from one tree compartment to another or query the status of a tree. It
@@ -190,7 +190,7 @@ tree  compartments  are   traversed.   Algorithms  AccumulateDown  and
 PropagateUp can be  used to traverse the tree  explicitely from top to
 bottom and from below upwards respectively.
 
-\subsection{AccumulateDown}
+\section{AccumulateDown}
 
 The AccumulateDown  algorithm can also  be used to collect  data, pass
 information from one tree compartment to anoter or query the status of
@@ -243,7 +243,7 @@ implemented only with the  AccumulateDown algorithm.  One such process
 is diameter growth.  Other examples  can be various models for hormone
 and nutrient flows downwards in a tree.
 
-\subsection{PropagateUp}
+\section{PropagateUp}
 
 The algorithm PropagateUp  can be thought as  an inverse  operation to
 AccumulateDown. The tree is traversed from the  base to the tip of the
