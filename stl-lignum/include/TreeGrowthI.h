@@ -634,7 +634,7 @@ MotherInfo& AddSugarMapleSegments<TS,BUD>::operator()(MotherInfo& mi, TreeCompar
 		v2.rotate(Point(0,0,0), direction, PI_VALUE/2);
 
 		LGMdouble dof_p = 0.5;
-		LGMdouble sf_p = 0.0;
+		LGMdouble sf = 0.0;
 		LGMdouble v = 0.06;
 		Firmament& f = GetFirmament(tree);
 		int number_of_regions = f.numberOfRegions();

@@ -8,6 +8,22 @@
 
 #include <VoxelSpace.h>
 
+
+  struct SmallCube
+  {
+    int x,y,z;
+    float dist;
+    float areaden;
+    float edge;
+
+    float x_coord;
+    float y_coord;
+    float z_coord;
+
+    bool ready;
+  };
+
+
 //#include <VoxelMatrix.h>
 
 void init_window (); //int argc, char** argv);

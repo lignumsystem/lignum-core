@@ -6,9 +6,9 @@ namespace Lignum{
   MapParameterType<LGMPD>::MapParameterType()
   {
     lgmpd["LGPaf"] = LGPaf;
+    lgmpd["LGPaleafmax"] = LGPaleafmax;
     lgmpd["LGPar"] = LGPar;
     lgmpd["LGPlr"] = LGPlr;
-    lgmpd["LGPdof"] = LGPdof;
     lgmpd["LGPmf"] = LGPmf;
     lgmpd["LGPmr"] = LGPmr;
     lgmpd["LGPms"] = LGPms;

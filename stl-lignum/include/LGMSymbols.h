@@ -89,33 +89,34 @@ namespace Lignum{
   //in TreeFriend.cc. MapLGMPD maps the names of  the parameters found
   //in configuration files to the symbolic names in LGMPD.
 
-  enum LGMPD {LGPaf, LGPar, LGPdof, LGPlr, LGPmf, LGPmr, LGPms, LGPna,
+  enum LGMPD {LGPaf, LGPaleafmax, LGPar, LGPdof, LGPlr, LGPmf, LGPmr, LGPms, LGPna,
 	      LGPnl, LGPpr, LGPq, LGPrhoW, LGPrho_hair, LGPrho_root, LGPsf,
 	      LGPsr, LGPss, LGPyc, LGPxi, LGPzbrentEpsilon };
 
   // 1  LGPaf  Needle mass - tree segment area (kgC/m^2)relationship
-  // 2  LGPar  Foliage - root relationship
-  // 3  LGPdof Degree of filling (proportion leaf surface fills of geometric
+  // 2  LGPaleafmax  Maximum size of a leaf (m2)
+  // 3  LGPar  Foliage - root relationship
+  // 4  LGPdof Degree of filling (proportion leaf surface fills of geometric
   //          shape - e.g. ellipsis - of the leaf). 
-  // 4  LGPlr  Length - radius relationship of a tree segment
-  // 5  LGPmf  Maintenance respiration rate of foliage
-  // 6  LGPmr  Maintenance respiration rate of roots
-  // 7  LGPms  Maintenance respiration rate of sapwood
-  // 8  LGPna  Needle angle (radians)
-  // 9  LGPnl  Needle length (na and nl define the cylinder of foliage in
+  // 5  LGPlr  Length - radius relationship of a tree segment
+  // 6  LGPmf  Maintenance respiration rate of foliage
+  // 7  LGPmr  Maintenance respiration rate of roots
+  // 8  LGPms  Maintenance respiration rate of sapwood
+  // 9  LGPna  Needle angle (radians)
+  // 10 LGPnl  Needle length (na and nl define the cylinder of foliage in
   //           CfTreeSegment)
-  // 10 LGPpr  Photsynthetic efficiency (=photos. rate = pr * intercepted rad.)
-  // 11 LGPq   Segment shortening factor (becoming obsolete due to vigour
+  // 11 LGPpr  Photsynthetic efficiency (=photos. rate = pr * intercepted rad.)
+  // 12 LGPq   Segment shortening factor (becoming obsolete due to vigour
   //           index)
-  // 12 LGPrhoW      Density of  wood in general (is usually used in Segment)
-  // 13 LGPrho_hair  Density of root hair
-  // 14 LGPrho_root  Density root sapwood
-  // 15 LGPsf        Specific leaf area (=leaf area/ leaf weight)
-  // 16 LGPsr        Senescence rate of roots
-  // 17 LGPss        Senescence rate of sapwood
-  // 18 LGPyc	  Foliage mass (kgC) supported by 1 m^2 of sapwood
-  // 19 LGPxi        Fraction of heartwood in newly created tree segments
-  // 20 LGPzbrentEpsilon  Accuracy in numerical computation in root finding
+  // 13 LGPrhoW      Density of  wood in general (is usually used in Segment)
+  // 14 LGPrho_hair  Density of root hair
+  // 15 LGPrho_root  Density root sapwood
+  // 16 LGPsf        Specific leaf area (=leaf area/ leaf weight)
+  // 17 LGPsr        Senescence rate of roots
+  // 18 LGPss        Senescence rate of sapwood
+  // 19 LGPyc	  Foliage mass (kgC) supported by 1 m^2 of sapwood
+  // 20 LGPxi        Fraction of heartwood in newly created tree segments
+  // 21 LGPzbrentEpsilon  Accuracy in numerical computation in root finding
   //              (see Zbrent)
 
 

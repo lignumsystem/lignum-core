@@ -40,21 +40,6 @@ using namespace sky;
 
 namespace Lignum{
 
-	//cvs update
-
-  struct SmallCube
-  {
-    int x,y,z;
-    float dist;
-    float areaden;
-    float edge;
-
-    float x_coord;
-    float y_coord;
-    float z_coord;
-
-    bool ready;
-  };
 
   class TreeParameters{
   public:
@@ -79,8 +64,9 @@ namespace Lignum{
     LGMdouble zbrentEpsilon; //Accuracy    for    finding   root    of
 			     //P-M-dW(lambda), i.e. allocation.
 
-    LGMdouble dof_p;		//degree of filling
-    LGMdouble alm;			//Maximum size of a leaf
+    LGMdouble dof;    //Degree of filling (proportion leaf surface fills
+                      // of geometric shape - e.g. ellipsis - of the leaf).
+    LGMdouble aleafmax;    //Maximum size of a leaf (m2)
     
     LGMdouble yc;			//Foliage mass supported by 1m2 of sapwood
   };

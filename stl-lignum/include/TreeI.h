@@ -101,8 +101,14 @@ LGMdouble GetValue(const Tree<TS,BUD>& tree, const LGMPD name)
   if (name == LGPaf)
     return tree.tp.af;
 
+  if (name == LGPaleafmax)
+    return tree.tp.aleafmax;
+
   else if (name == LGPar)
      return tree.tp.ar;
+
+  else if (name == LGPdof)
+     return tree.tp.dof;
 
   else if (name == LGPlr)
     return tree.tp.lr;		 
@@ -169,8 +175,14 @@ LGMdouble SetValue(Tree<TS,BUD>& tree, const LGMPD name, const LGMdouble value)
   if (name == LGPaf)
     tree.tp.af = value;
 
+  if (name == LGPaleafmax)
+    tree.tp.aleafmax = value;
+
   else if (name == LGPar)
     tree.tp.ar = value;
+
+  else if (name == LGPdof)
+    tree.tp.dof = value;
 
   else if (name == LGPlr)
     tree.tp.lr = value;
