@@ -28,31 +28,33 @@ directory.
  
 \subsection{void ForEach(Tree<TS>\& tree, const Function\& f)}
 
-ForEach  is similar  to STL-library  function for\_each.   In  fact it
-applies for\_each to  each list (i.e., the axis)  of tree compartments
-in a tree.  for\_each in turn simply applies a functor to each element
-in a sequence.
+ForEach is similar to  STL-library  function  for\_each.  In fact   it
+applies  for\_each to  each  list  of  tree  compartments  in a  tree.
+for\_each in turn simply applies a user defined functor f to each tree
+compartment in a list.
 
 \begin{description}
     \item [Arguments] for the function.
       \begin{description}
         \item [tree] The tree.
-        \item [f] The unary functor taking a pointer to a tree compartment as an
-      argument. The functor must return the pointer to atree compartment.
+        \item [f]  The unary   functor  taking a   pointer to a   tree
+      compartment as an argument. The functor  must return the pointer
+      to a tree compartment.
      \end{description} 
    \item[Returns] The tree and tree compartments possibly modified by f.
 \end{description} 
 
-The implementation of ForEach uses the notion function composition. 
-That is, it defines  functions h and g such that given the user defined
+The implementation of ForEach uses   the notion function  composition.
+That is, it defines functions h and g such that given the user defined
 function f:
 
 \begin{displaymath}
 h = (g \circ f)(x) = g(f(x))
 \end{displaymath}
 
-The purpose of the function g is simply to traverse the tree.
-As an example consider the following functor DisplayType2:
+The purpose of the function g is  simply to traverse  the tree.  As an
+example consider the  following functor DisplayType2 playing  the role
+of the function f:
 
 \begin{verbatim}
 template <class TS>
@@ -62,11 +64,11 @@ public:
 };
 \end{verbatim}
 
-The  easiest way  to  ensure proper  argument  and return  type for  a
-functor is  to inherit from  AdaptableTCFunction<TS>.  It is  an empty
-class   but  predefines   right   argument  and   return  types.   The
-implementation  of  the  sample  overloaded function  operator  simply
-prints out the type of a tree compartment.
+The easiest  way  to ensure proper   argument  and return  type  for a
+functor  is to inherit from  AdaptableTCFunction<TS>.   It is an empty
+class   but predefines   right    argument  and return   types.    The
+implementation of  the overloaded function  operator simply prints out
+the type of a tree compartment.
 
 \begin{verbatim}
 template <class TS> TreeCompartment<TS>* 
@@ -91,3 +93,65 @@ ForEach(tree,DisplayType2<MyTreeSegment>());
 
 ForEach algorithm  can be used  to implement e.g.,  photosynthesis and
 respiration.
+
+\section{T& Accumulate(Tree<TS>\& tree, T\& init, const BinOp\& op)}
+
+The algorithm Accumulate can be used to collect data or query a status
+of a tree. It  is  similar to STL-library  function  accumulate.  Note
+however,  that  in  Accumulate  the  initial  value (also  called  the
+identitity element) is passed and returned  as reference, not by value
+as in accumulate.  The  reason for this design  decision is that it is
+not always numerical data a modeller may want collect.
+
+Accumulate traverses  the tree  and  applies the user  defined  binary
+operator op to each  tree compartment with the  initial value that can
+be modified according to the binary operator.
+
+\begin{description}
+   \item [Arguments] for the function.
+     \begin{description}
+        \item [tree] The tree.
+        \item [init] The initial value. Also called the identity
+     element.
+        \item [op] The binary operator. The functor must take two
+     arguments: the initial value and the pointer to a tree compartment. The
+     operator must return the modified initial value.
+     \end{description} 
+   \item[Returns] The  modified initial value.
+\end{description} 
+
+More formally, the implementation of Accumulate uses the notion of
+function composition. It defines functions h and g such that given the
+user defined function f:
+
+\begin{displaymath}
+h = (g \circ f)(x,y) =  g(f(x,y),y)
+\end{displaymath}
+
+In practice the x is the  identity and y  is the tree compartment. The
+purpose of the function g  is simply to  traverse the tree and it does
+not modify the identity element or the tree compartment. As an example
+of   the use  of  Accumulate  consider  the  following binary operator
+CountCompartments:
+
+\begin{verbatim}
+template <class TS>
+class CountCompartments{
+public:
+  int& operator ()(int& id,TreeCompartment<TS>* ts)const;
+};
+\end{verbatim}
+
+The implementation of the overloaded function operator in
+CountCompartments  simply counts the number  of tree compartments in a
+tree and echos the type of each compartment.
+
+
+
+
+
+
+
+
+
+
