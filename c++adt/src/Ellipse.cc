@@ -96,45 +96,6 @@ namespace cxxadt{
 //scalcoef=sqrt(areanew/areaold);
 
 
-//This case  with the ellipse center as the scaling center 
-
-  double Ellipse::setArea(double area){
-
-   double areaold, areanew,
-         scalcoef; 
-   double adbasex, adbasey, adbasez;
-  
-   areaold=getArea();
-   areanew=area; 
-
-   scalcoef=sqrt(areanew/areaold);
-
-   adbasex=getCenterPoint().getX()*(1-scalcoef);
-   adbasey=getCenterPoint().getY()*(1-scalcoef);
-   adbasez=getCenterPoint().getZ()*(1-scalcoef);
-
-   vector<Point> points;
-   points.push_back(getSemimajorAxisPoint());
-   points.push_back(getSemiminorAxisPoint());
-   Point x,p;
-
-   for(int i=0; i< points.size(); i++){
-    p=(Point)points[i];
-    x.setX(p.getX() *scalcoef  + adbasex);
-    x.setY(p.getY() *scalcoef  + adbasey);
-    x.setZ(p.getZ() *scalcoef  + adbasez);
-    switch(i){
-     case 0:
-      setSemimajorAxis(getCenterPoint() || x);
-      break;
-     case 1:
-      setSemiminorAxis(getCenterPoint() || x);
-      break;
-    };
-   };
-
-   return getArea();
-  }
 
 
 //This case  with the base point as the scaling center 
