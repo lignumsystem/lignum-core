@@ -1219,7 +1219,7 @@ void Matrix<TS,BUD>::placeSegment(TreeSegment<TS,BUD> *ts, Point base)
   addValues(voxel, GetValue(*ts, L), ts);
   
 
-  /* Point startpoint = GetPoint(*ts); // + base;
+  /* Point startpoint = GetPoint(*ts); // + base;*/
 /*   PositionVector direction = GetDirection(*ts); */
 /*   Point endpoint, voxel_coord, startvoxel, endvoxel; */
 
