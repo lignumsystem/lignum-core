@@ -83,8 +83,10 @@ namespace Lignum {
       Point getLocalPoint(Point p);
       //Write voxel  boxes to file. If  'all' is true  write all boxes
       //else write only  boxes with foliage. By default  'all' is true
-      //(old beaviour).
+      //(old behaviour).
       void writeVoxBoxesToFile(const string& filename, bool all = true);
+      //Write voxel  boxes to file up to Z index
+      void writeVoxBoxesToFile(const string& filename, int z);
       void writeVoxBoxesToFile2(ofstream &file);
 
       int getNumVoxBoxes();
