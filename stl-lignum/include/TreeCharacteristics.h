@@ -19,8 +19,25 @@
 //Each segment will have its vigour index ('vi') updated.
 //The complexity is 2O(n). See  TreePhysiologyVigourIndex below.
 
+//AccumulateDown for CollectCrownLimitData. DiameterCrownBase does not
+//always produce  good results for  crown limit. CollectCrownLimitData
+//produces a list  of foliage masses in branches  forking off from the
+//branching points  in the main  axis and a  list of heights  of those
+//branching points.  Then  one can print out those  two lists, and the
+//beauty is in the eyes of the beholder.  
+//Usage is something like:
+//   CrownLimitData cld;
+//   AccumulateDown(tree,cld,AddCrownLimitData(),CollectCrownLimitData<TS,BUD>());
+//CrownLimitData  will contain  a  list of  foliage  masses and  their
+//heights in  the crown.   Retrieve the list  for printing  by calling
+//const list<pair<double,double> >&  p = cld.WfHList().  pair.first is
+//the foliage mass and pair.second its height.
+
+
 #include <cmath>
 #include <list>
+#include <vector>
+#include <utility>
 #include <algorithm>
 
 namespace Lignum{
@@ -125,7 +142,7 @@ namespace Lignum{
     }
   };
 
-
+  //Helper functor for assigning max diameter of segments  connected to a branching point
   template<class TS,class BUD>
   class MaxSegmentDiameter{
   public:
@@ -136,6 +153,7 @@ namespace Lignum{
     }
   };
 
+  //Helper functor for assigning max diameter of segments  connected to a branching point
   template<class TS,class BUD>
   class SegmentDiameter{
   public:
@@ -160,7 +178,7 @@ namespace Lignum{
   //VI_j = (d_j/d_M)^2*VI_below
   //Usage is with PropagateUp:
   //   ViData data(1);
-  //   PropagateUp(tree,data,TreePhysiologyVigourIndex<TS,BUD>());
+  //   PropagateUp(tree,data,TPVigourIndex<TS,BUD>());
   class ViData{
   public:
     ViData(double init = 1)
@@ -286,5 +304,79 @@ namespace Lignum{
     PropagateUp(t,vi,TPVigourIndex<TS,BUD>());
   }
 
+  class CrownLimitData{
+  public:
+    CrownLimitData():wf_bp(0.0){}
+    CrownLimitData(const CrownLimitData& data)
+      :wf_bp(data.wf_bp),wf_h_bp_ls(data.wf_h_bp_ls){}
+    CrownLimitData& operator=(const CrownLimitData& data)
+    {
+      wf_bp = data.wf_bp;
+      wf_h_bp_ls = data.wf_h_bp_ls;
+      return *this;
+    }
+    CrownLimitData& addWf(double wf)
+    {
+      wf_bp += wf; 
+      return *this;
+    }
+    CrownLimitData& Wf(double wf)
+    {
+      wf_bp = wf; 
+      return *this;
+    }
+    double Wf()const{return wf_bp;}
+    CrownLimitData& addWfH(const pair<double,double>& wf_h)
+    {
+      wf_h_bp_ls.push_front(wf_h);
+      return *this;
+    }
+    const list<pair<double,double> >& WfHList()const{return wf_h_bp_ls;}
+  private:
+    double wf_bp;
+    list<pair<double,double> > wf_h_bp_ls;//list of the foliage masses in the branches 
+                                            //forking   off   from   a
+                                            //branching  point  in the
+                                            //main   axis,   and   the
+                                            //heights     of     those
+                                            //branching points: pair<wf,h>
+  }; 
+
+  //Helper functor to add foliage masses in branching points  
+  class AddCrownLimitData{
+  public:
+    CrownLimitData& operator()(CrownLimitData& data1,CrownLimitData& data2)const
+    {
+      data1.addWf(data2.Wf());
+      return data1;
+    }
+  };
+
+  template <class TS, class BUD>
+  class CollectCrownLimitData{
+  public:
+    CrownLimitData& operator()(CrownLimitData& data,TreeCompartment<TS,BUD>* tc)const
+    {
+      if (TS* ts = dynamic_cast<TS*>(tc)){
+	//main axis
+	if (GetValue(*ts,omega) == 1){
+	  double wf = data.Wf();
+	  double z = GetEndPoint(*ts).getZ();
+	  //foliage collected from the branches forking off 
+	  //from  the branching point  above, and  the height  of that
+	  //branching point (is the end point of this segment)
+	  data.addWfH(pair<double,double>(wf,z));
+	  //Clear foliage, so it does not add up to foliage to be collected from
+	  //the branches below
+	  data.Wf(0.0);
+	}
+	//in side branches, collect foliage
+	else{
+	  data.addWf(GetValue(*ts,Wf));
+	}
+      }  
+      return data;
+    }//functor operator()
+  };//class CollectCrownLimitData
 }//namespace Lignum
 #endif
