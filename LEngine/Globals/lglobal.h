@@ -1,5 +1,6 @@
 #ifndef __LGLOBAL_H__
 #define __LGLOBAL_H__
+#include <string.h>
 
 #define CountOf(arr) (int)(sizeof(arr)/sizeof(arr[0])) 
 
