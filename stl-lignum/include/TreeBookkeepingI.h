@@ -2,11 +2,6 @@
 #ifndef TREEBOOKKEEPINGI_H
 #define TREEBOOKKEEPINGI_H
 
-#include <typeinfo>
-
-#include <TreeBookkeeping.h>
-#include <Tree.h>
-
 
 namespace Lignum{
 
