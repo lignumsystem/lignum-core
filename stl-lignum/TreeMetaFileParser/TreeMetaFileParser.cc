@@ -9,7 +9,7 @@
 //processes. To access functions GetFunction(tree,1), GetFunction(tree,2)
 //or use of mnemonic enumerations should be implemented 
 TreeMetaFileParser::TreeMetaFileParser(const string& file)
-  :meta_file(file),file_mode(PARAMETER)
+  :file_mode(PARAMETER),meta_file(file)
 {
   //Default paramenter files for different tree compartments and firmament
   file_tables[PARAMETER].insert("Tree","Tree.txt");

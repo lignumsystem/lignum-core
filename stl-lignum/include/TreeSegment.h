@@ -24,7 +24,8 @@ public:
   TreeSegmentAttributes();
   KGC As0;                //Original sapwood area
   METER L;                //Length of the tree segment
-  KGC M;                  //Respiration of the tree segment during the time step
+  KGC M;                  //Respiration of the tree segment during the
+			  //time step
   LGMdouble omega;        //Gravelius order
   METER R;                //Radius including bark
   METER Rtop;             //Radius at top

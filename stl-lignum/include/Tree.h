@@ -45,35 +45,36 @@ namespace Lignum{
   public:
     TreeParameters();
     LGMdouble af;            //Needle mass - tree segment area relationship
+    LGMdouble aleafmax;      //Maximum size of a leaf (m2)
     LGMdouble ar;            //Foliage - root relationship
-    LGMdouble lr;            //L/R for a new tree segment
+    LGMdouble dof;           //Degree  of   filling  (proportion  leaf
+			     //surface  fills  of  geometric  shape  -
+			     //e.g. ellipsis - of the leaf).
+    LGMdouble lr;            //L/R for a new tree segment, R=lr*L
     LGMdouble mf;            //Maintenance respiration rate of foliage
     LGMdouble mr;            //Maintenance respiration rate of roots
     LGMdouble ms;            //Maintenance respiration rate of sapwood
     LGMdouble na;            //needle angle (radian)
     LGMdouble nl;            //needle length
-    LGMdouble pr;            //Propotion of bound solar radiation used in photosynthesis
+    LGMdouble pr;            //Propotion of bound solar radiation used
+			     //in photosynthesis
     LGMdouble q;             //Tree segment shortening factor
-    LGMdouble sf;            //Specific foliage area (=foliage area(total)/weight)
+    LGMdouble rhoW;          //Density of wood
+    LGMdouble rho_hair;      //Density of root hair
+    LGMdouble rho_root;      //Density of root sapwood
+    LGMdouble sf;            //Specific    foliage    area   (=foliage
+			     //area(total)/weight)
     LGMdouble sr;            //Senescence rate of roots
     LGMdouble ss;            //Senescence rate of sapwood
-    LGMdouble rhoW;          //Density of wood
-    LGMdouble rho_root;      //Density of root sapwood
-    LGMdouble rho_hair;      //Density of root hair
+    LGMdouble tauL;          //Transmission   coeffient  (light)   for  leaf,
+		             //should be about 0.06  for green leaf. NOTE: be
+		             //careful  here, the attenuation  coefficient is
+		             //the opposite (1-tauL)
     LGMdouble xi;            //Fraction of heartwood in new tree segments
+    LGMdouble yc;            //Foliage mass supported by 1m2 of sapwood
     LGMdouble zbrentEpsilon; //Accuracy    for    finding   root    of
 			     //P-M-dW(lambda), i.e. allocation.
 
-    LGMdouble dof;    //Degree of filling (proportion leaf surface fills
-                      // of geometric shape - e.g. ellipsis - of the leaf).
-    LGMdouble tauL;   //Transmission   coeffient  (light)   for  leaf,
-		      //should be about 0.06  for green leaf. NOTE: be
-		      //careful  here, the attenuation  coefficient is
-		      //the opposite (1-tauL)
-
-    LGMdouble aleafmax;    //Maximum size of a leaf (m2)
-    
-    LGMdouble yc;     //Foliage mass supported by 1m2 of sapwood
   };
  
   //TreeAttributes  are  in a  (long)  vector  indexed by  enumeration

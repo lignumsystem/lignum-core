@@ -47,7 +47,7 @@ T& AccumulateTreeCompartments<TS,BUD,T,BinOp>:: operator()(T& id,TreeCompartment
   //SGI? For  g++ it can be.  Also, in other algorithms  the type cast
   //can be to BUD*.
   else if (Bud<TS,BUD>* bud = dynamic_cast<Bud<TS,BUD>*>(tc))
-    id = op1(id,tc);
+    id = op1(id,bud);
 
   else if (Axis<TS,BUD>* axis = dynamic_cast<Axis<TS,BUD>*>(tc)){
     id = op1(id,axis);
@@ -98,7 +98,7 @@ T& AccumulateDownTreeCompartments<TS,BUD,T,BinOp>::operator()(T& id,
       (*this)(id_new,*last++);
       id += id_new;
     }
-    id = op1(id,tc);
+    id = op1(id,bp);
   }
 
   //traverse the axis before applying op1 to the axis
@@ -109,7 +109,7 @@ T& AccumulateDownTreeCompartments<TS,BUD,T,BinOp>::operator()(T& id,
     while (last != first){
       (*this)(id,*last++);
     }
-    id = op1(id,tc);
+    id = op1(id,axis);
   }
   return id;
 }
@@ -146,7 +146,7 @@ T& AccumulateDownTreeCompartments2<TS,BUD,T,BinOp1,BinOp2>::operator()(T& id,
       (*this)(id_new,*last++);
       id = op1(id,id_new); //applying user defined op1 for the identity elements
     }
-    id = op2(id,tc); //now calling user defined operator op2
+    id = op2(id,bp); //now calling user defined operator op2
   }
 
   else if (Axis<TS,BUD>* axis = dynamic_cast<Axis<TS,BUD>*>(tc)){
@@ -156,7 +156,7 @@ T& AccumulateDownTreeCompartments2<TS,BUD,T,BinOp1,BinOp2>::operator()(T& id,
     while (last != first){
       (*this)(id,*last++);
     }
-    id = op2(id,tc);
+    id = op2(id,axis);
   }
   return id;
 }

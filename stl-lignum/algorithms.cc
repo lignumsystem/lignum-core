@@ -256,8 +256,8 @@ int main(int argc, char *argv[])
   //For all segments simply call ForEach
   //ForEach(cf_tree,R);
   //Photosynthesis
-  SetValue(cf_tree, pr, 1.0);      //Set the photosynthesis parameter
-  SetValue(hw_tree, pr, 1.0);
+  SetValue(cf_tree, LGPpr, 1.0);      //Set the photosynthesis parameter
+  SetValue(hw_tree, LGPpr, 1.0);
   //hw_tree.photosynthesis();
   //    cout << endl << "Photosynthesis (should be = ?): "
   // 	 << GetValue(hw_tree, TreeP) << endl;
@@ -276,7 +276,7 @@ int main(int argc, char *argv[])
   ForEach(cf_tree,TreeRespiration<MyCfTreeSegment,MyCfBud>());
   LGMdouble sumM = 0.0;
   sumM = Accumulate(cf_tree,sumM,SumTreeRespiration<MyCfTreeSegment,MyCfBud>());
-  sumM += GetValue(cf_tree,mr)*GetValue(cf_tree,LGAWr);
+  sumM += GetValue(cf_tree,LGPmr)*GetValue(cf_tree,TreeWr);
   cout << "M for CfTree is: " << sumM << endl; 
    //hw_tree.respiration();
    cout << endl << "hw_tree Respiration (): "

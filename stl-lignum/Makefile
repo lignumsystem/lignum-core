@@ -42,7 +42,7 @@ PROGFILES = program-files.html
 algorithms: $(ALGOBJ) $(LIB1) $(LIB3)  $(LIB2) 
 	$(CCC)  -o $@ $(INCLUDE) $(OPTIMIZE) $(ALGOBJ) $(LIBFLAGS) $(LIBS)
 gnu:
-	make "CCC=g++" "CCCFLAGS=-c" "OPTIMIZE=-g" "AR=ar" "ARFLAGS=rvs" algorithms
+	make "CCC=g++ -Wall" "CCCFLAGS=-c" "OPTIMIZE=-g" "AR=ar" "ARFLAGS=rvs" algorithms
 lignux: 
 	make "CCC=g++" "CCCFLAGS=-c" "OPTIMIZE=-g" "AR=ar" "ARFLAGS=rvs" algorithms
 
