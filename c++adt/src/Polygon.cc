@@ -1,5 +1,6 @@
 //Polygon.cc
 
+#include <Polygon.h>
 
 namespace cxxadt{
 
