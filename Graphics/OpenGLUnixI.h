@@ -64,9 +64,9 @@ template <class TS,class BUD>
         ForEach(*tree, stemfunctor);      
       }
     glEndList();
-
+    
     cout << "puu esityslistat luotu " << endl;
-    glEndList();
+   
     
     glutMainLoop ();
 
@@ -101,7 +101,7 @@ int VisualizeLGMTree(Tree<TS,BUD> &tree)
   //  TreeHeight<TS,BUD> th;
 
   cout << "rakennetaan puu.." << endl;
-
+  
   MakeTreeList(tree, 0.05);
   //elavat budit
   MakeBudList(tree, true);

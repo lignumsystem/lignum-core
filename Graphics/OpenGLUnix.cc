@@ -336,7 +336,12 @@ void DrawVoxelCubes()
 {
   int num = cubes.size();
   
-  cout << "kuutiota " << num << endl;
+  if (num == 0)
+    return;
+
+
+  
+  //cout << "kuutiota " << num << endl;
   vector<SmallCube> ordered_cubes;
 
   for (int i=0; i<num; i++)
@@ -382,6 +387,11 @@ void DrawVoxelCubes()
 	}
     }
 
+  glPushMatrix();
+  glPolygonMode(GL_FRONT, GL_FILL);
+  glPolygonMode(GL_BACK, GL_LINE);
+  glDisable(GL_LIGHTING);
+  
   glLineWidth(1);
   glColor3f(1,0.2,0.2);
   
@@ -503,6 +513,10 @@ void DrawVoxelCubes()
       
       glDisable(GL_BLEND); 
     }
+
+  glEnable(GL_LIGHTING);
+  glPopMatrix();
+
 }
 
 
