@@ -22,7 +22,7 @@ void Tree<TS,BUD>::photosynthesis()
   LGMdouble sumPh;
   sumPh = Accumulate(*this, initPh, SumTreePhotosynthesis<TS,BUD>());
   
-  SetValue(*this, LGAP, sumPh);
+  SetValue(*this, TreeP, sumPh);
 
 }
 
