@@ -819,7 +819,7 @@ namespace Lignum{
     (TreeCompartment<TS,BUD>* tc)const {
 
      if(TS* ts = dynamic_cast<TS*>(tc)) {
-       ofstream f(fname.c_str(),ios_base::app);
+       ofstream f(fname.c_str(),ofstream::app);
        Tree<TS,BUD>& tree = GetTree(*tc); 
        LGMdouble ballRad = GetFirmament(tree).diffuseBallSensor();
        LGMdouble maxQin = GetValue(tree, TreeQinMax);

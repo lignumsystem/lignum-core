@@ -365,7 +365,7 @@ namespace Lignum{
       :fname(filename)
       {
 	if(title) {
-	  ofstream f(fname.c_str(),ios_base::app);
+	  ofstream f(fname.c_str(),ofstream::app);
 	  f << "TIME: no time stamp specified" << endl;
 	  f  << "X:Y:Z:diX:diY:diZ:age:omega:R:RTop:Rh:L:Ring:Ws:Wh:"
 	  "Wf:W:Af:As0:As:Qin:rTQin:rQin:Qabs:P:M:vigour" << endl;
@@ -378,7 +378,7 @@ namespace Lignum{
       : fname(filename)
       {
 	if(title) {
-	  ofstream f(filename.c_str() , ios_base::app);
+	  ofstream f(filename.c_str() , ofstream::app);
 	  f << "TIME: " << timeStamp << endl;
 	  f  << "X:Y:Z:diX:diY:diZ:age:omega:R:RTop:Rh:L:Ring:Ws:Wh:"
 	  "Wf:W:Af:As0:As:Qin:rTQin:rQin:Qabs:P:M:vigour" << endl;
@@ -401,7 +401,7 @@ namespace Lignum{
 	:fname(filename)
 	{
 	  if(title) {
-	    ofstream f(fname.c_str(),ios_base::app);
+	    ofstream f(fname.c_str(),ofstream::app);
 	    f << "By Axis - TIME: no time stamp specified" << endl;
 	    f  << "X:Y:Z:diX:diY:diZ:age:omega:R:RTop:Rh:L:Ring:Ws:Wh:"
 	    "Wf:W:Af:As0:As:Qin:rTQin:rQin:Qabs:P:M:vigour" << endl;
@@ -414,7 +414,7 @@ namespace Lignum{
 	: fname(filename)
 	{
 	  if(title) {
-	    ofstream f(filename.c_str() , ios_base::app);
+	    ofstream f(filename.c_str() , ofstream::app);
 	    f << "By Axis - TIME: " << timeStamp << endl;
 	    f  << "X:Y:Z:diX:diY:diZ:age:omega:R:RTop:Rh:L:Ring:Ws:Wh:"
 	    "Wf:W:Af:As0:As:Qin:rTQin:rQin:Qabs:P:M:vigour" << endl;
