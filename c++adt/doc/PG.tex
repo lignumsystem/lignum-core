@@ -1,0 +1,100 @@
+\section{Programming Style}
+
+Lignum has evolved from  a small research experiment  to a medium size
+project with many international connections.   Thus in the future also
+the programming work to develop the model for diverse purposes will be
+done by several  independent teams of programmers \footnote{Motto:  Do
+not ask what Lignum can do for you; ask  what you can do for Lignum.}.
+Hopefully the result of  the programming work done  in one team can be
+shared by  other teams.  A  few simple  guidelines for the programming
+work are presented to aid in this.  Please adapt  them so it is easier
+for you to read and understand programs  written by others (and others
+to  read the  programs  written  by  you).  First,   a   few lines  of
+fictitious C++ code provides an example of the things to consider.
+
+\begin{verbatim}
+//A sample header (.h) for a class
+typedef int METER;
+typedef double KG;
+
+class AClass{
+friend AFriendFunction(METER first_argument, double second_argument);
+public:
+   AClass();
+   METER firstMethodForTheClass();
+private:
+   KG Wf;
+   double rho;
+};
+
+//A sample source (.cc) file for class methods
+//The purpose of the method is to...
+METER AClass::firstMethodForTheClass()
+{
+}
+\end{verbatim}
+
+There are many  suffixes to  denote C++  source and  header files. The
+most common are probably .cc and .h. But the suffixes  you are used to
+will do.
+
+The C++ class names are capitalized.  If  the class name is a compound
+word each word is capitalized. The method names  in a class start with
+a  lower letter.  If the method   name is a    compound word the  each
+following word is capitalized. The class attributes names are in lower
+case. If the class  attribute name is a  compound  word the words  are
+separated with the under score letter.
+
+To choose a name for  a class attribute try  to be consistent with the
+paper published or to be published.  For example  in a tree segment we
+need to  have a state variable  for foliage mass.  In publications the
+symbol for the foliage mass is $W_f$.  So the name of the attribute in
+the class TreeSegment should be \tt Wf\rm.  If a  Greek letter is used
+in a paper as a state variable or a parameter write it out as the name
+of the class attribute.  For example the symbol  $\rho$ is used as the
+wood density.  So the name of the attribute  should be \tt rho\rm.  In
+general we use \LaTeX \ style to write out the mathematical symbols.
+
+All   functions are   written as class   names,  i.e.,   each word  is
+capitalized.   The    arguments to  functions  are  written   as class
+attributes.  Try to  avoid macros.  Use  inline functions instead. All
+user  defined types (so   called typedef declarations) are written  in
+capital letters.
+
+The indentation of  a program code is  also important. Lignum has been
+developed in an  UNIX system so the  proper indentation is the one you
+get simply by using emacs.  In fact emacs  is a powerful editor and it
+provides   you with features  like     automatic coloring of   program
+components, listing  of  methods and  functions in  a source file etc.
+But if you have used other programming  environment (in a PC) and want
+to port the  code  to Lignum  we  don't  require you to   reindent the
+code. However  you can do  this  easily by  using emacs  function that
+(re)indents the whole file according to the programming language used.
+
+And  finally  a  few word  about comments.   Needles  to say  they are
+important and you  can also use  them when creating the documentation.
+But  remember comments are \it  not \rm a documentation. To understand
+the  use  of a class,   a method  or  a  function examples  are always
+valuable.
+
+Don't  bother to explain trivial pieces  of program (like ``this is an
+assignment'',  ``this statement increases the  loop variable by one'')
+but try to answer questions like \it why \rm and \it how \rm I'm doing
+a method or  a  function or  a tricky  algorithm in  it, what  are the
+preconditions and postconditions of a method (what must be true before
+the  method is called and  what is true after  the method has finished
+respectively).  
+
+Naturally you  can place the comments where  ever they are  needed but
+describe the  purpose of the method or  a function in a comment placed
+just  before the beginning of  the method  or function.  Remember that
+what may seem obvious for you is not necessarily clear for others.
+
+These  few guidelines should  be enough.  Note   that these are merely
+textual issues that aid  in reading and understanding programs written
+by others. Good programming practices are presented in C/C++ textbooks
+and especially good  programming methodology suitable  for C++  can be
+learned by studying Standard Template Library (STL).
+
+Additional requirements will be explained in this section if they turn
+out to be necessary.
