@@ -8,7 +8,7 @@ namespace Lignum{
 
   // Tree Attribute Double, Wm lisätty
   // Wr           dry weight of the roots
-  enum LGMAD {A,Ah, Ahair,As,age,api, LGMcollision,dof, dR, H,Hm,ip,lb,LM,LP,LWf,L,lw,M, omega,P,
+  enum LGMAD {A,Ah, Ahair,As,As0,age,api, LGMcollision,dof, dR, H,Hm,ip,lb,LM,LP,LWf,L,lw,M, omega,P,
 	      Qin,Qabs,R,Rf,Rh,Rhair,RTop,LGMstatus,sw,tauL,LGMtype,V,Vh,Vhair,Vs,vi,
               Wf,Wr, Ws,Wh,Whair,Af};
 
@@ -16,6 +16,7 @@ namespace Lignum{
   //  Ah          Heartwood area
   //  Ahair       Root hair area
   //  As          Sapwood area
+  //  As0         Original sapwood area
   //  age     1   age of object
   //  dof     2   degree of filling?
   //  H       3   height of tree
