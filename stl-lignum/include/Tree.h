@@ -132,7 +132,6 @@ public:
   Tree(const Point& p, const PositionVector& d);
   void photosynthesis();
   void respiration();
-  //  bool structuralGrowth();
 
 private:
   LGMdouble CountFlow(TreeSegment<TS,BUD> &in, TreeSegment<TS,BUD> &out);
@@ -152,7 +151,6 @@ private:
 
 #include <TreeI.h>
 #include <TreeMetabolismI.h>
-//#include <TreeBookkeepingI.h>
 #include <TreeRadiationI.h>
 
 #endif
