@@ -10,6 +10,7 @@ namespace cxxadt{
 
 #define EPS       3.0e-8
 #define R_EPSILON 1.0e-20
+#define EPS1      1.0e-10
 #define R_HUGE 1.0e+20
 
 //Light year is about this many meters
