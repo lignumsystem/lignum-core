@@ -5,9 +5,9 @@ AR = $(CCC) -ar
 ARFLAGS= -o
 ARFILE=liblsys.a
 
-LSYSFILES= bearberry.L pine9bp.L cs-plantA.L cs-plantB.L  cs-plantC.L \
-           cs-plantD.L cs-plant.L birch.L
-SRC=${LSYSFILES:.L=.cpp}
+LSYS= bearberry.L pine9bp.L cs-plantA.L cs-plantB.L  cs-plantC.L \
+      cs-plantD.L cs-plant.L 
+SRC=${LSYS:.L=.cpp}
 OBJ=${SRC:.cpp=.o}
 
 AR =  $(CCC) -ar  
@@ -31,7 +31,7 @@ l2c:
 	(cd ../L2C; make "CCC=$(CCC)" "CCCFLAGS=$(CCCFLAGS)" \
          "OPTIMIZE=$(OPTIMIZE)" "AR=ar" "ARFLAGS=rv" $@)
 clean:
-	rm -rf $(OBJ) $(SRC)  ii_files
+	rm -rf *.o *.cpp  ii_files
 distclean: clean
 	rm -rf  $(ARFILE) Makedepend *.c 
 depend:	l2c $(SRC)
