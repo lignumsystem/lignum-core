@@ -37,8 +37,8 @@ $(LIB2):
 
 .cc.o: 
 	$(CCC) $(OPTIMIZE) $(SUPPRESS) $(CCCFLAGS) $(INCLUDE) $(STL) $(OPTIMIZE) $< -o $@
+
 clean:
-	(cd ../c++adt/lib; make clean)
 	(cd lib; make clean)
 	rm -rf $(OBJ) core lignum ii_files
 distclean:
@@ -61,6 +61,8 @@ main.o: /usr/include/CC/stl_iterator_base.h /usr/include/CC/stl_iterator.h
 main.o: /usr/include/CC/stl_alloc.h /usr/include/stdio.h
 main.o: /usr/include/assert.h /usr/include/CC/stl_construct.h
 main.o: /usr/include/CC/stl_uninitialized.h /usr/include/CC/stl_list.h
+main.o: /usr/include/CC/algorithm /usr/include/CC/stl_tempbuf.h
+main.o: /usr/include/CC/stl_algo.h /usr/include/CC/stl_heap.h
 main.o: include/MyTreeSegment.h include/Tree.h ../c++adt/include/CString.h
 main.o: /usr/include/ctype.h /usr/include/locale_attr.h
 main.o: /usr/include/CC/stream.h /usr/include/CC/iomanip.h
@@ -80,5 +82,4 @@ main.o: include/TreeCompartment.h include/LGMdecl.h include/LGMUnits.h
 main.o: ../c++adt/include/PositionVector.h ../c++adt/include/mathsym.h
 main.o: ../c++adt/include/RMatrix.h ../c++adt/include/TMatrix.h
 main.o: include/BranchingPoint.h include/Axis.h include/TreeFunctor.h
-main.o: /usr/include/CC/algorithm /usr/include/CC/stl_tempbuf.h
-main.o: /usr/include/CC/stl_algo.h /usr/include/CC/stl_heap.h
+main.o: include/Algorithms.h /usr/include/CC/functional

@@ -1,10 +1,11 @@
 #include <stdlib.h>
 #include <iostream.h>
 #include <list>
-#include <MyTreeSegment.h>
-#include <TreeFunctor.h>
 #include <algorithm>
 #include <list>
+#include <MyTreeSegment.h>
+#include <TreeFunctor.h>
+#include <Algorithms.h>
 
 using namespace std;
 
@@ -27,13 +28,6 @@ CString ParseCommandLine(int argc, char *argv[],const CString& flag)
   return clarg;
 }
 
-MyTreeSegment::MyTreeSegment(const Point<METER>& p, const PositionVector& d, const TP go,
-			     const METER l, const METER r, const METER rn, 
-			     Tree<MyTreeSegment>* t)
-  :TreeSegment<MyTreeSegment>(p,d,go,l,r,rn,t)
-{
-  cout << "Hello from MyTreeSegment!!!" <<endl;
-}
 
 int main(int argc, char *argv[])
 {
@@ -47,12 +41,10 @@ int main(int argc, char *argv[])
   //create a tree with a structure [TS,[[B],[B]],B]
   //i.e, [TS,BP,B] which expands to [TS,[A,A],B] and to [TS,[[B],[B]],B]
   //A= Axis, BP = BranchingPoint, TS = TreeSegment and B = Bud 
-  Axis<MyTreeSegment>* axis2 = new Axis<MyTreeSegment>();
-  Axis<MyTreeSegment>* axis3 = new Axis<MyTreeSegment>();
   Axis<MyTreeSegment>& axis = GetAxis(tree);
   //create the first tree segment
   TreeSegment<MyTreeSegment> *ts = 
-    new TreeSegment<MyTreeSegment>(Point<METER>(0,0,0.2),PositionVector(0,0,1.0),
+    new TreeSegment<MyTreeSegment>(Point<METER>(0,0,0),PositionVector(0,0,1.0),
 				   0,1,0.5,0.2,&tree);
   //create the branching point
   BranchingPoint<MyTreeSegment> *bp = 
@@ -76,58 +68,36 @@ int main(int argc, char *argv[])
 
 
   //The tree will now look as  [TS,[[B],[B]],B]
-
-  InsertAxis(*bp, axis2);
-  InsertAxis(*bp, axis3);
-
-
-
   InsertTreeCompartment(axis,ts);
   InsertTreeCompartment(axis,bp);
   InsertTreeCompartment(axis,bud);
-  
-  ts = 
-    new TreeSegment<MyTreeSegment>(Point<METER>(0,0,0.3),PositionVector(0,0,1.0),
-				   0,1,0.5,0.2,&tree);
 
-  bud = new  Bud<MyTreeSegment>(Point<METER>(0,0,0),
-				PositionVector(0,0,1.0),
-				0,
-				&tree);
+  //traverse the tree and print out  the datatypes of tree compartments
+  //using the ForEach algorithm
+  cout << "Testing ForEach algorithm" << endl;
+  ForEach(tree,DisplayType2<MyTreeSegment>());
 
-  InsertTreeCompartment(*axis2, ts);
+  cout << endl;
+  int i;
 
- ts = 
-    new TreeSegment<MyTreeSegment>(Point<METER>(0,0,0.5),PositionVector(0,0,1.0),
-				   0,1,0.5,0.2,&tree);
+  //traverse the tree, echo  and count the number of tree compartments
+  cout << "Testing Accumulate algorithm" << endl;
+  Accumulate(tree,i,CountCompartments<MyTreeSegment>());
+  cout << "Number of Compartments: " << i << endl;
 
- 
+  cout << endl;
+  i = 0;
 
-  InsertTreeCompartment(*axis2, ts);
+  //traverse the tree, echo  and count the number of tree compartments
+  cout << "Testing AccumulateDown algorithm" << endl;
+  AccumulateDown(tree,i,CountCompartmentsReverse<MyTreeSegment>());
+  cout << "Number of Compartments: " << i << endl;
 
-  InsertTreeCompartment(*axis2,bud);
-
-
-  ts = 
-    new TreeSegment<MyTreeSegment>(Point<METER>(0,0,0.2),PositionVector(0,0,1.0),
-  				   0,1,0.5,0.2,&tree);
-  
-  InsertTreeCompartment(*axis3, ts);
-  
-  ts =   new TreeSegment<MyTreeSegment>(Point<METER>(0,0,0.4),PositionVector(0,0,1.0),
-					0,1,0.5,0.2,&tree);
-  InsertTreeCompartment(*axis3, ts);
-  
-  char aa = 'a';
-
-  while (aa != 'q')
-    { 
-      for (int i=0; i<10; i++)
-	tree.UpdateWaterFlow(180.4);
-      cout << endl << endl;
-      cin >> aa;
-    }
-  
+  cout << endl;
+  i = 0;
+  //traverse the tree, echo  and count the number branches
+  cout << "Testing PropagateUp algorithm" << endl;
+  PropagateUp(tree,i,MyExampleSignal<MyTreeSegment>());
 }
 
 
