@@ -191,7 +191,6 @@ namespace Lignum{
 		  glEnd();
 
 		  /*
-		  //*
 		  Petiole pet = GetPetiole(**I);
 
 		  LGMdouble rx = sqrt(area / 3.14);
