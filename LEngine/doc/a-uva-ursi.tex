@@ -3,12 +3,12 @@
 
 \citet{salemaa:02}  have  studied  the  growth  habits,  axillary  bud
 activation  and branching architecture  of the  horizontally spreading
-clonal shrub  bearberry (\it Arctostaphylos uva-ursi  \rm L.)  growing
+clonal shrub  bearberry (\textit{Arctostaphylos uva-ursi} L.)  growing
 in  South Western  Finland in  varying pollution,  nutrient  and light
 levels.  They have designed an L system model to study the qualitative
 features of  the branching patterns of bearberry  by simulation.  Here
 their bearberry  model growing  in sandpit is  realized in such  a way
-that a  collition detection  algorithm can detect  if a  clonal branch
+that a  collision detection  algorithm can detect  if a  clonal branch
 blockades the growth  space of an active bud.  This  also serves as an
 example  of a  stochastic  L  system \citep{pp:90}  and  about how  to
 implement global sensitivity \citep{kurth:94} in LIGNUM.
@@ -34,7 +34,7 @@ details see \citet{salemaa:02}.
 The  collision detection  algorithm  of LIGNUM  simply examines  given
 opening angle symmetrical  to both sides of the  growth direction of a
 bud and  checks whether it is free  of other shoots and  buds within a
-given distance.  More precisly, define $\vec {P_1}$ as the position of
+given distance.  More precisely, define $\vec {P_1}$ as the position of
 the bud and $\vec D$ as  its growth direction.  Define $\vec {P_2}$ as
 the position of the potential  obstacle. Then $\vec {P_3} = \vec {P_2}
 - \vec {P_1}$  is the direction from  the bud to  the obstacle.  Given
