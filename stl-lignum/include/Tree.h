@@ -28,7 +28,7 @@ using namespace cxxadt;
 #include <Axis.h>
 #include <ConnectionMatrix.h>
 #include <Firmament.h>
-
+using sky::Firmament;
 
 
 namespace Lignum{
@@ -105,7 +105,7 @@ public:
   Tree();
   Tree(const Point<METER>& p, const PositionVector& d);
   void UpdateWaterFlow(LGMdouble time, const ConnectionMatrix<TS,BUD> &cm);
-  Firmament* getFirmament();
+  sky::Firmament* getFirmament();
 private:
   LGMdouble CountFlow(TreeSegment<TS,BUD> &in, TreeSegment<TS,BUD> &out);
   TreeAttributes ta;
@@ -113,7 +113,7 @@ private:
   TreeParameters tp;
   TreeTransitVariables ttp;
   TreeInitializationFiles tif;
-  Firmament f;
+  sky::Firmament f;
 
   Axis<TS,BUD> axis;
   RootSystem rs;
