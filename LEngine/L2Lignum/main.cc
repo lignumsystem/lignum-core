@@ -104,14 +104,14 @@ void PrintLString(Lstring& s)
 {
   LstringIterator iterator(s);
   CallerData caller_data;
-  float arg1;
+  double arg1;
   while (!iterator.AtEnd()){
     const char* name = iterator.GetCurrentModuleName();
     fprintf(stdout,"%s ",name);
     if (strcmp(name,"F") == 0){
       caller_data.Reset();
       caller_data.Strct.AddModuleAddr(iterator.Ptr());
-      memcpy(&arg1,caller_data.Strct.pArg(0),sizeof(float));
+      memcpy(&arg1,caller_data.Strct.pArg(0),sizeof(double));
       fprintf(stdout,"(%f)",arg1);
     }
     iterator++;
