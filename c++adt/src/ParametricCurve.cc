@@ -66,7 +66,7 @@ ParametricCurve& ParametricCurve::read_xy_file(const char *file_name)
   //clear the previous function
   v.clear();
 
-  file = string(file);
+  file = string(file_name);
 
   in_file.setf(ios::fixed,ios::floatfield);
 
