@@ -1,8 +1,13 @@
 #ifndef TREEFUNCTOR_H
 #define TREEFUNCTOR_H
 
-#include <TreeCompartment.h>
+#include <Tree.h>
 
+template <class TS>
+class DisplayType{
+public:
+  void operator ()(TreeCompartment<TS>* ts);
+}; 
 
 #endif
 

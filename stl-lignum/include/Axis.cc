@@ -35,8 +35,13 @@ Axis<TS>::Axis(const Point<METER>& p, const PositionVector& d, Tree<TS>* t)
 template <class TS>
 void InsertTreeCompartment(Axis<TS>& axis, TreeCompartment<TS>* tc)
 {
-  list<TreeCompartment<TS>*>::iterator iter = axis.tc_ls.end();
-  axis.tc_ls.insert(--iter,tc);
+  axis.tc_ls.push_back(tc);
+}
+
+template <class TS>
+list<TreeCompartment<TS>*>&  GetTreeCompartmentList(Axis<TS>& axis)
+{
+  return  axis.tc_ls;
 }
 
 //Return the terminating bud of the axis

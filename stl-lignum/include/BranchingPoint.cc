@@ -35,7 +35,7 @@ void InsertTerminatingBud(BranchingPoint<TS>& bp, Bud<TS>* bud)
   Axis<TS> *axis = new Axis<TS>();
   
   InsertTreeCompartment(*axis,bud);
-  bp.axis_ls.push_back(axis);
+  InsertAxis(bp,axis);
 }
 
 //insert the axis to the end of the list
@@ -44,6 +44,8 @@ void InsertAxis(BranchingPoint<TS>& bp, Axis<TS>* axis)
 {
   bp.axis_ls.push_back(axis);
 }
+
+
 
 
 

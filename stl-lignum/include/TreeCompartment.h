@@ -9,8 +9,8 @@
 
 template <class TS> 
 class TreeCompartment{
-  friend Point<METER> GetPoint(const TreeCompartment& tc);
-  friend PositionVector GetDirection(const TreeCompartment& tc);
+  friend Point<METER> GetPoint(const TreeCompartment<TS>& tc);
+  friend PositionVector GetDirection(const TreeCompartment<TS>& tc);
 public:
   TreeCompartment();
   TreeCompartment(const Point<METER>& p, const PositionVector& d, Tree<TS>* t);

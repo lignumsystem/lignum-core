@@ -10,6 +10,7 @@
 template <class TS>
 class Axis: public TreeCompartment<TS>{
   friend Bud<TS>* GetTerminatingBud(const Axis<TS>& axis);
+  friend list<TreeCompartment<TS>*>& GetTreeCompartmentList(Axis<TS>& axis);
   friend void InsertTreeCompartment(Axis<TS>& axis, TreeCompartment<TS>* ts);
 public:
   virtual ~Axis();

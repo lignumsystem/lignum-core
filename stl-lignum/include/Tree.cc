@@ -29,12 +29,6 @@ template <class TS>
 Tree<TS>::Tree(const Point<METER>& p, const PositionVector& d)
   :TreeCompartment<TS>(p,d,this),axis(p,d,this)
 {
-  TS *ts = new TS(p,d,1,0.5,0.01,0.001,this);
-  BranchingPoint<TS> *bp = new BranchingPoint<TS>(Point<METER>(0,0,1),d,this);
-  Bud<TS>* bud = new Bud<TS>(p,d,1.0,this);
-  InsertTreeCompartment(axis,ts);
-  InsertTreeCompartment(axis,bp);
-  InsertTreeCompartment(axis,bud);
 }
 
 

@@ -7,10 +7,9 @@
 
 template <class TS>
 class BranchingPoint: public TreeCompartment<TS>{
-  friend Axis<TS>* GetFirstAxis();
-  friend Axis<TS>* GetNextAxis();
   friend void InsertTerminatingBud(BranchingPoint<TS>& bp, Bud<TS>* bud);
   friend void InsertAxis(BranchingPoint<TS>& bp, Axis<TS>* axis);
+  friend  list<Axis<TS>*>& GetAxisList(BranchingPoint<TS>& bp){return bp.axis_ls;}
 public:
   BranchingPoint();
   BranchingPoint(const Point<METER>& p, const PositionVector& d, Tree<TS>* t);
