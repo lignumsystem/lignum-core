@@ -14,7 +14,7 @@ void InsertLeaf(HwTreeSegment<TS,BUD>& ts, BroadLeaf* l)
 }
 
 template<class TS, class BUD >
-void InitializaForRadiation(HwTreeSegment<TS,BUD>& ts)
+void InitializeForRadiation(HwTreeSegment<TS,BUD>& ts)
 {
   Tree<TS,BUD>& tt = dynamic_cast<Tree<TS,BUD>&>(GetTree(*ts));
   Firmament& f = GetFirmament(tt);
@@ -22,7 +22,7 @@ void InitializaForRadiation(HwTreeSegment<TS,BUD>& ts)
   vector<LGMdouble> one(nr, 1.0);
   SetValue(ts, Qin, 0.0);
   SetValue(ts, Qabs, 0.0);
-  list<BroadLeaf*> ll = GetLeafList(ts);
+  list<BroadLeaf*>& ll = GetLeafList(const_cast<HwTreeSegment<TS,BUD>&>(ts));
   for(list<BroadLeaf*>::iterator i = ll.begin(),
 	i != ll.end(), i++) {
     SetValue(*i, Qabs, 0.0);
@@ -34,16 +34,79 @@ void InitializaForRadiation(HwTreeSegment<TS,BUD>& ts)
 
 
 template<class TS, class BUD >
-bool HasLeaves(HwTreeSegment<TS,BUD>& ts)
+int GetNumberOfLeaves(const HwTreeSegment<TS,BUD>& ts)
 {
-  list<BroadLeaf*>& leaf_list = GetLeafList(ts);
+  list<BroadLeaf*>& leaf_list = GetLeafList(const_cast<HwTreeSegment<TS,BUD>&>(ts));
   if(leaf_list.empty()) {
-    return false;
+    return 0;
   }
   else
-    return true;
+    return (int)leaf_list.size();
+
+}
+
+//Sets the area of the all leaf ellipses, when the (true) area of the
+//all leaves is given as input. That is, every leaf gets the same (true) area
+//that is equal to input/# of leaves.  Area of the ellipse
+//= leaf area / degree_of_filling. Return old (true) leaf area, return
+//0.0, and do nothing if no leaves
+template<class TS, class BUD >
+LGMdouble SetLeafArea(HwTreeSegment<TS,BUD>& ts, const LGMdouble value)
+{
+  int no_leaves = GetNumberOfLeaves(ts);
+  if(no_leaves == 0)
+    return 0.0;
+
+  LGMdouble old_area = 0.0;
+  list<BroadLeaf*>& leaf_list = GetLeafList(ts);
+  list<BroadLeaf*>::iterator I;
+  LGMdouble LA = value / (double)no_leaves;
+  for(I = leaf_list.begin(); I != leaf_list.end(); I++) {
+    old_area += GetValue(**I, A);   //BroadLeaf returns true area of the leaf
+    SetValue(**I, A, LA);
+  }
+  return old_area;
+}
+
+//Returns total leaf area of the segment, return 0.0 if no leaves.
+template<class TS, class BUD >
+LGMdouble GetLeafArea(const HwTreeSegment<TS,BUD>& ts)
+{
+
+  LGMdouble area = 0.0;
+  list<BroadLeaf*>& leaf_list = GetLeafList(const_cast<HwTreeSegment<TS,BUD>&>(ts));
+  list<BroadLeaf*>::iterator I;
+  for(I = leaf_list.begin(); I != leaf_list.end(); I++) {
+    area += GetValue(**I, A);   //BroadLeaf returns true area of the leaf
+  }
+
+  return area;
+}
+
+template<class TS, class BUD >
+LGMdouble GetValue(const HwTreeSegment<TS,BUD>& ts, const LGMAD name)
+{
+
+  LGMdouble value = 0.0;
+
+  if (name == Wf) {
+    list<BroadLeaf*>& leaf_list = GetLeafList(const_cast<HwTreeSegment<TS,BUD>&>(ts));
+    list<BroadLeaf*>::iterator I;
+    for(I = leaf_list.begin(); I != leaf_list.end(); I++)
+      value += GetValue(**I, Wf);
+    
+    return value;
+  }
+  else
+    return GetValue(dynamic_cast<const TreeSegment<TS,BUD>&>(ts), name);
 
 }
 
 
+
+
+
+
+
 #endif
+

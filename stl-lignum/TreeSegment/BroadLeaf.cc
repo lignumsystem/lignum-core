@@ -125,7 +125,7 @@ LGMdouble SetValue(BroadLeaf& bl, const LGMAD name, const LGMdouble value)
     bl.bla.Qin = value;
 
   if (name == Wf)
-    bl.bla.shape.setArea(bl.bla.sf*value/bla.degree_of_filling);
+    bl.bla.shape.setArea(bl.bla.sf*value/bl.bla.degree_of_filling);
                   //sf * Wf specifies the true area of the leaf
 
   else 
