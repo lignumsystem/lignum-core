@@ -8,6 +8,7 @@ typedef double KGC;        //Kilogram Carbon (dry weight)
 typedef double METER;      //Meter
 typedef double MJ;         //Mega Joule
 typedef double TP;         //TreeParameter values are in double precision
-typedef double PA;         //Pressure in 
+typedef double PA;         //Pressure in
+enum STATUS {DEAD,ALIVE,DORMANT};    //States of the bud 
 
 #endif 

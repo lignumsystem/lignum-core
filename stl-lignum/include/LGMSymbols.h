@@ -9,6 +9,7 @@ enum TPD {af,ar,lr,mf,mr,ms,na,nl,pr,q,sr,ss,rho,xi};
 enum TAD {area,fin,fout,H,Hm,ip,lb,L,M,omega,P,Pr,Qin,Qabs,R,Rf,Rn,Wf,Wm,Ws};  // Wm lisätty..Wr pois
 enum TAI {age};
 enum TTD {lambda, g, eta, Er, k, rhow};
+enum TAS {state};     // Tree Attribute STATUS
 
 
 class cmpstr{
