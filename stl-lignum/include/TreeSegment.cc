@@ -48,7 +48,7 @@ TreeSegment<TS,BUD>::TreeSegment(const Point<METER>& p, const PositionVector& d,
 
   //compute the initial pressure in the TreeSegment    
   SetTSAttributeValue(*this, Wm, 0.5 * 1000 * l * r * r * PI_VALUE);
-  SetTSAttributeValue(*this, Pr, (-p.getZ()-l/2) * 9.81 * 1000);   
+  SetTSAttributeValue(*this, Pr, GetTSAttributeValue(*this, Hm) * 9.81 * 1000);   
 }
 
 template <class TS,class BUD>
@@ -102,6 +102,9 @@ TP GetTSAttributeValue(const TreeSegment<TS,BUD>& ts, const TAD name)
   
   else if (name == H)
     return ts.point.getZ();
+
+  else if (name == Hm)
+    return ts.point.getZ() + ts.direction.getVector()[2] * ts.tsa.L;
 
   else if (name == L)
     return ts.tsa.L;

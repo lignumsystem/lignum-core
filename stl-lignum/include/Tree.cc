@@ -97,7 +97,7 @@ TP Tree<TS,BUD>::CountFlow(TreeSegment<TS,BUD> &in, TreeSegment<TS,BUD> &out)
 {
   TP ar = GetTSAttributeValue(out, area);
   TP le = GetTSAttributeValue(out, L);
-  TP he = GetTSAttributeValue(in, H) - GetTSAttributeValue(out, H);
+  TP he = GetTSAttributeValue(in, Hm) - GetTSAttributeValue(out, Hm);
 
   TP pr_out = GetTSAttributeValue(out, Pr);  // Pressure in the element above
   TP pr_in = GetTSAttributeValue(in, Pr);    // Pressure in the element below
