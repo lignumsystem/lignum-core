@@ -1,18 +1,20 @@
-#To compile "algorithms" on SGI type 
-#    make algorithms
-#To compile with g++ in Linux type (or copy paste)
-#    make "CCC=g++" "CCCFLAGS=-c" "OPTIMIZE=-O" "ARCOMMAND=ar"  "ARCOMMANDFLAGS=rv" algorithms 
+#To compile "l2lignum" on SGI type 
+#    make l2lignum
+#To compile with g++ on SGI or on Linux type 
+#    make gnu 
+#or copy paste
+#    make "CCC=g++" "CCCFLAGS=-c" "OPTIMIZE=-O" "AR=ar"  "ARDFLAGS=rv" l2lignum
 
 SRC= Turtle.cc main.cc
-OBJ  = Turtle.o main.o
+OBJ  = ${SRC:.cc=.o}
 
 CCC = CC -64 -LANG:std
 
 #OPTIMIZE = -Ofast=ip28 -IPA
 OPTIMIZE   = -g 
 
-ARCOMMAND =  $(CCC) -ar  
-ARCOMMANDFLAGS = -o 
+AR =  $(CCC) -ar  
+ARFLAGS = -o 
 
 SUPPRESS = #-w 1155 -w 1183
 
@@ -20,14 +22,13 @@ CCCFLAGS = -c  #-prelink -ptused   -ptv  #  -fullwarn
 
 INCLUDE = -I. -I../../c++adt/include -I../../Firmament/include \
           -I../../stl-lignum/include -I../Generate -I../Globals \
-           -I../../Graphics
+          -I../../Graphics -I/usr/freeware/include/
 
 STL     = -I/usr/include/CC
 
+LIBD = lib64
 LIBFLAGS = -L../../c++adt/lib -L../../stl-lignum/lib -L../../Firmament/lib \
-           -L../Generate/IRIX64.out -L../Generate/Linux.out \
-	   -L../lsys/IRIX64.out -L../lsys/Linux.out \
-           -L../../Graphics -L/usr/X11R6/lib
+           -L../Generate -L../lsys -L../../Graphics -L/usr/X11R6/lib -L/usr/freeware/$(LIBD)
 
 LIB1   = libc++adt.a
 LIB2   = libLGM.a
@@ -45,6 +46,7 @@ LIBVISUAL = -lVisual
 LIBL = -llsys
 
 LIBOGL =  -lglut -lGL -lGLU -lX11 -lXext -lXmu 
+
 LIBS     =  $(LIBVISUAL) $(LIBLENGINE) $(LIBL) $(LIBLGM) $(LIBSKY) $(LIBADT) $(LIBOGL) \
             $(LIBMATH) 
 
@@ -52,35 +54,40 @@ PROGFILES = program-files.html
 
 .SUFFIXES: .o .cc
 
+sinclude Makedepend
+
 l2lignum: $(OBJ) l2c $(LIB1) $(LIB2) $(LIB3)  $(LIB4)  $(LIB5)  $(LIB6) 
 	$(CCC)  -o $@ $(INCLUDE) $(OPTIMIZE) $(OBJ) $(LIBFLAGS) $(LIBS)
 
+gnu:
+	make "CCC=g++" "CCCFLAGS=-c" "OPTIMIZE=-g" \
+             "AR=ar"  "ARFLAGS=rv" "LIBD=lib32"  l2lignum
 lignux: 
-	make "CCC=g++" "CCCFLAGS=-c" "OPTIMIZE=-O" "ARCOMMAND=ar"  "ARCOMMANDFLAGS=rv" l2lignum
+	make "CCC=g++" "CCCFLAGS=-c" "OPTIMIZE=-g" \
+             "AR=ar"  "ARFLAGS=rv" "LIBD=lib32" l2lignum
 
 l2c:
-	(cd ../L2C; make "CCC=$(CCC)" "CCCFLAGS=$(CCCFLAGS)" \
-	 "OPTIMIZE=$(OPTIMIZE)")
+	(cd ../L2C; make "CCC=$(CCC)" "CCCFLAGS=$(CCCFLAGS)" "OPTIMIZE=$(OPTIMIZE)" \
+                          "AR=ar" "ARFLAGS=rv" $@)
 $(LIB1):
-	(cd ../../c++adt/lib; make "CCC=$(CCC)" "CCCFLAGS=$(CCCFLAGS)" \
-         "OPTIMIZE=$(OPTIMIZE)" "AR=$(ARCOMMAND)"  "ARFLAGS = $(ARCOMMANDFLAGS)" $@)
+	(cd ../../c++adt; make "CCC=$(CCC)" "CCCFLAGS=$(CCCFLAGS)" \
+                               "OPTIMIZE=$(OPTIMIZE)" "AR=$(AR)" "ARFLAGS=$(ARFLAGS)" $@)
 $(LIB2):
-	(cd ../../stl-lignum/lib; make "CCC=$(CCC)" "CCCFLAGS=$(CCCFLAGS)" "OPTIMIZE=$(OPTIMIZE)" "AR=$(ARCOMMAND)" \
-         "ARFLAGS = $(ARCOMMANDFLAGS)" $@)
-
+	(cd ../../stl-lignum; make "CCC=$(CCC)" "CCCFLAGS=$(CCCFLAGS)" \
+                                   "OPTIMIZE=$(OPTIMIZE)" "AR=$(AR)" "ARFLAGS = $(ARFLAGS)" $@)
 $(LIB3):
 	(cd ../../Firmament; make "CCC=$(CCC)" "CCCFLAGS=$(CCCFLAGS)" \
-         "OPTIMIZE=$(OPTIMIZE)"  "AR=$(ARCOMMAND)"  "ARFLAGS = $(ARCOMMANDFLAGS)" $@)
+         "OPTIMIZE=$(OPTIMIZE)"  "AR=$(AR)"  "ARFLAGS = $(ARFLAGS)" $@)
 $(LIB4):
 	(cd ../Generate; make "CCC=$(CCC)" "CCCFLAGS=$(CCCFLAGS)" \
-         "OPTIMIZE=$(OPTIMIZE)"  "AR=$(ARCOMMAND)"  "ARFLAGS = $(ARCOMMANDFLAGS)")
+         "OPTIMIZE=$(OPTIMIZE)"  "AR=$(AR)"  "ARFLAGS = $(ARFLAGS)" $@)
 $(LIB5):
 	(cd ../../Graphics; make "CCC=$(CCC)" "CCCFLAGS=$(CCCFLAGS)" \
-         "OPTIMIZE=$(OPTIMIZE)"  "AR=$(ARCOMMAND)"  "ARFLAGS = $(ARCOMMANDFLAGS)" )
+         "OPTIMIZE=$(OPTIMIZE)"  "AR=$(AR)"  "ARFLAGS = $(ARFLAGS)" $@)
 
 $(LIB6):
 	(cd ../lsys; make "CCC=$(CCC)" "CCCFLAGS=$(CCCFLAGS)" \
-         "OPTIMIZE=$(OPTIMIZE)"  "AR=$(ARCOMMAND)"  "ARFLAGS = $(ARCOMMANDFLAGS)" )
+         "OPTIMIZE=$(OPTIMIZE)"  "AR=$(AR)"  "ARFLAGS = $(ARFLAGS)" $@ )
 .cc.o: 
 	$(CCC) $(OPTIMIZE) $(SUPPRESS) $(CCCFLAGS) $(INCLUDE)  $< -o $@
 
@@ -90,14 +97,19 @@ changelog:
 	rm -rf ChangeLog
 	rcs2log . > ChangeLog
 clean:
-	rm -rf $(OBJ)  core l2lignum ii_files
-	rm -rf ./*/ii_files
+	rm -rf $(OBJ) Makedepend core ii_files
 distclean: clean
-	(cd ../../stl-lignum/lib; make distclean)
+	rm -rf  l2lignum  Makedepend
 	(cd ../../Graphics; make distclean)
-	(cd ../Generate; make clean)
-	(cd ../L2C; make clean)
-	(cd ../lsys; make clean)
+	(cd ../Generate; make distclean)
+	(cd ../L2C; make distclean)
+	(cd ../lsys; make distclean)
+#When creating dependencies leave out lsys directory.
+#lsys directory contains only L-files that are
+#to be compiled to C++ with l2c. It does not contain project program files. 
 depend:
-	makedepend $(INCLUDE) $(CCCINCLUDE) $(STL) $(SRC)  
+	(cd ../../Graphics; make "CCC=$(CCC)"  depend)
+	(cd ../Generate; make "CCC=$(CCC)"  depend)
+	(cd ../L2C; make "CCC=$(CCC)"  depend)
+	$(CCC) -M $(INCLUDE) $(SRC)  > Makedepend
 
