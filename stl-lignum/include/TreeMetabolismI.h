@@ -4,22 +4,20 @@
 namespace Lignum{
 
 template <class TS,class BUD>
-TreeCompartment<TS,BUD>* TreePhotosynthesis(TreeCompartment<TS,BUD>* tc)
-{
-  tc->photosynthesis();
-  return tc;
-}
-
-
+  class TreePhotosynthesis{
+  public:
+  TreeCompartment<TS,BUD>* operator()(TreeCompartment<TS,BUD>* tc)const{
+    tc->photosynthesis();
+    return tc;
+  }
+};
 
 template <class TS,class BUD>
 void Tree<TS,BUD>::photosynthesis()
 {
-  TreeCompartment<TS,BUD>* TreePhotosynthesis(TreeCompartment<TS,BUD>* tc);
-
   //Have TreeCompartments to do photosynthesis
 
-  ForEach(*this, TreePhotosynthesis);
+  ForEach(*this, TreePhotosynthesis<TS,BUD>());
  
 }
 
