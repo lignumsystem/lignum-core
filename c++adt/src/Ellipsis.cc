@@ -1,3 +1,5 @@
+
+#include "stdafx.h"
 #include <Ellipsis.h>
 
 namespace cxxadt{

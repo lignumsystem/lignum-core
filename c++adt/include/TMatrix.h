@@ -3,39 +3,38 @@
 #include <iostream>
 #include <vector>
 
+
+
+
+
+#include <vector>
+#include <iostream>
+
+
+
 namespace cxxadt{
 
 using namespace std;
 
-template <class T> class TMatrix;
+template <class T> 
+class TMatrix {
 
+  friend TMatrix<T> operator + (const TMatrix<T>& m1,const TMatrix<T>& m2);
 
-template <class T> class TMatrix {
-  template <class T1>
-  friend TMatrix<T1> operator + (const TMatrix<T1>& m1,const TMatrix<T1>& m2);
+  friend TMatrix<T> operator * (const TMatrix<T>& m1,const TMatrix<T>& m2);  
 
-  template <class T1>
-  friend TMatrix<T1> operator * (const TMatrix<T1>& m1,const TMatrix<T1>& m2);
+  friend std::vector<T> operator * (const std::vector<T>& v1, const TMatrix<T>& m1);
 
-  template <class T1>
-  friend vector<T1> operator * (const vector<T1>& v1, const TMatrix<T1>& m1);
+  friend std::vector<T> operator * (const TMatrix<T>& m1, const std::vector<T>& v1);
 
-  template <class T1>
-  friend vector<T1> operator * (const TMatrix<T1>& m1, const vector<T1>& v1);
+  friend TMatrix<T> operator * (const TMatrix<T>& m1,const T scalar);
 
-  template <class T1>
-  friend TMatrix<T1> operator * (const TMatrix<T1>& m1,const T1 scalar);
+  friend TMatrix<T> operator * (const T scalar,const TMatrix<T>& m1);
 
-  template <class T1>
-  friend TMatrix<T1> operator * (const T1 scalar,const TMatrix<T1>& m1);
-
-  template <class T1>
-  friend ostream& operator << (ostream& os, const TMatrix<T1>& v1);
-
-
+  friend std::ostream& operator << (std::ostream& os, const TMatrix<T>& v1);
 public:
   TMatrix();    
-  TMatrix(const int rows,const int cols);
+  TMatrix(const int rows, const int cols);
   TMatrix(const TMatrix<T>& m);
   ~TMatrix();
   TMatrix<T>& operator = (const TMatrix<T>& m);
@@ -44,14 +43,19 @@ public:
   TMatrix<T> transpose()const;
   int rows() const {return n_of_rows;}
   int cols() const {return n_of_cols;}
-  void resize( const int rows, const int cols);  //This destroys the existing contents
+  void resize( const int rows, const int cols);  //This destroys the existing content
+ 
   TMatrix<T>& unitize(); //makes diag(1 1 1 ... 1) matrix
   TMatrix<T>& zero(); //makes all elements = (T)0
-private:
-  T* matrix_table;
+
+
   int n_of_rows;
   int n_of_cols;
+private:
+  T* matrix_table;
 };
+
+
 
 }//closing namespace cxxadt
 

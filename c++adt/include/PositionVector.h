@@ -25,6 +25,7 @@ class PositionVector{
   friend PositionVector operator * (const PositionVector& pv, const double scalar);
   friend double operator || (const PositionVector &pv1, const PositionVector &pv2);
   friend ostream& operator << (ostream& os, const PositionVector& pv);
+  friend istream& operator >> (istream& os, PositionVector& pv);
   friend bool operator == (const PositionVector &pv1, const PositionVector &pv2);
 public:
   PositionVector();

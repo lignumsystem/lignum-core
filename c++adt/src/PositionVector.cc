@@ -1,6 +1,8 @@
+#include "stdafx.h"
 #include <Point.h>
 #include <PositionVector.h>
 
+using namespace std;
 
 namespace cxxadt{
 
@@ -248,9 +250,29 @@ PositionVector& PositionVector::normalize()
 }
 
 
-std::ostream& operator << (std::ostream& os, const PositionVector& pv)
+istream& operator >> (istream& os, PositionVector& pv)
 {
-  cout << pv.getVector();
+  char tmpX[255];
+  char tmpY[255];	
+  char tmpZ[255];
+  double x,y,z;
+
+  os  >> tmpX >> tmpY >> tmpZ;
+
+  x = atof(tmpX);
+  y = atof(tmpY);
+  z = atof(tmpZ);
+
+  PositionVector p(x,y,z);	
+  pv = p;
+  return os;
+}
+
+
+ostream& operator << (std::ostream& os, const PositionVector& pv)
+{
+	std::vector<double> vv = pv.getVector();
+  os  << " " << vv[0] << " " << vv[1] << " " << vv[2];
   return os;
 }
 

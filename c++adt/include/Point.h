@@ -29,6 +29,8 @@ namespace cxxadt{
 
       inline friend ostream& operator << (ostream& os, const Point& point);
 
+	  inline friend istream& operator >> (istream& os, Point& p);
+
       inline friend bool operator == (const Point &point1, 
 				      const Point &point2);
       inline friend bool operator != (const Point &point1, 

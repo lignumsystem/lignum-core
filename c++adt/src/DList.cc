@@ -1,10 +1,14 @@
+#include "stdafx.h"
+
 #include <iostream>
-using namespace std;
 #include <stdlib.h>
 
 #include <DList.h>
 
-namespace cxxadt{
+namespace cxxadt
+{
+
+using namespace std;
 
 //Create an empty list 
 DList::DList()
@@ -553,6 +557,10 @@ void* DList::booleanReverseReduce(void *(*reduce_fn)(BOOLEAN (*b_fn)(void *,void
 
 }//closing namespace cxxadt
 
+
+
+
+
 #ifdef DLIST
 #define NL '\n'
 
@@ -806,6 +814,7 @@ int  main()
     l2->reverse();
     exit(0);
 }
+
 #endif
 
 

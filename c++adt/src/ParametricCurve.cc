@@ -1,7 +1,12 @@
 
+#include "stdafx.h"
+#include <iostream>
+
 #include <ParametricCurve.h>
 
 namespace cxxadt{
+
+using namespace std;
 
 ParametricCurve::ParametricCurve()
 {

@@ -1,33 +1,45 @@
 #ifndef LEX_H
 #define LEX_H
-#include <fstream>
-#include <iostream>
-#include <DList.h>
+
+
+
 #include <string>
+#include <DList.h>
+#include <fstream>
+
+
+
+using namespace std;
 
 namespace cxxadt{
-using namespace std;
+
 #define MAXSTRING 255
-enum TOKEN_TYPE {COLON,DOT,FLOAT,ENDFILE,HYPHEN,ID,INT,SLASH};
+
+enum VC_TOKEN_TYPE {VC_COLON,VC_DOT,VC_FLOAT,VC_ENDFILE,VC_HYPHEN,VC_ID,VC_INT,VC_SLASH};
+
+class Token;
+class Lex;
 
 class Token{
 public:
-  Token():value(""),type(ENDFILE){}
-  Token(const string& token_value, TOKEN_TYPE token_type);
+  Token():value(""),type(VC_ENDFILE){}; 
+  Token(const std::string& token_value, VC_TOKEN_TYPE token_type);
   Token(const Token& token);
-  string getValue()const{return value;}
-  TOKEN_TYPE getType()const{return type;}
+  std::string getValue()const{return value;}
+  VC_TOKEN_TYPE getType()const{return type;}
   Token& operator = (const Token& token);
 private:
-  string value;
-  TOKEN_TYPE type;
+  std::string value;
+  VC_TOKEN_TYPE type;
 };
+
+
 
 
 class Lex{
 public:
   ~Lex();
-  inline Lex& scan(const string& f);
+  inline Lex& scan(const std::string& f);
   Lex& scan(const char *file);
   Token peek();
   Token getToken();
@@ -41,12 +53,14 @@ private:
   DList token_ls;
 };
 
-inline Lex& Lex::scan(const string& f)
+inline Lex& Lex::scan(const std::string& f)
 {
   scan(f.c_str());
   return *this;
 }
 			 
+
 }//close namespace cxxadt
+
 
 #endif

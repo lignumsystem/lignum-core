@@ -1,3 +1,5 @@
+#include "stdafx.h"
+
 #include <DListElement.h>
 #include <stdlib.h>
 

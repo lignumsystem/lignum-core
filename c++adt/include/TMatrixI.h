@@ -3,8 +3,12 @@
 
 
 #include <stdlib.h>
+#include <vector>
+#include <iostream>
 
 namespace cxxadt{
+
+using namespace std;
 
 template <class T> TMatrix<T>::TMatrix()
 {
@@ -188,7 +192,7 @@ template <class T> TMatrix<T> operator * (const TMatrix<T>& m1,
 }
 
 template <class T> 
-vector<T> operator * (const vector<T>& v1, const TMatrix<T>& m1)
+std::vector<T> operator * (const std::vector<T>& v1, const TMatrix<T>& m1)
 {
   vector<T> v_tmp(m1.cols());
   T entry = T();
@@ -212,7 +216,7 @@ vector<T> operator * (const vector<T>& v1, const TMatrix<T>& m1)
 }
 
 template <class T> 
-vector<T> operator * (const TMatrix<T>& m1, const vector<T>& v1)
+std::vector<T> operator * (const TMatrix<T>& m1, const std::vector<T>& v1)
 {
   vector<T> v_tmp(m1.rows());
   T entry = T();
@@ -258,7 +262,7 @@ template <class T> TMatrix<T> operator * (const T scalar,
   return m1 * scalar;
 }
 
-template <class T>  ostream& operator << (ostream& os, const TMatrix<T>& m1)
+template <class T>  std::ostream& operator << (std::ostream& os, const TMatrix<T>& m1)
 {
   int i=0,j=0;
 
@@ -273,7 +277,7 @@ template <class T>  ostream& operator << (ostream& os, const TMatrix<T>& m1)
 }
 
 template <class T>  
-ostream& operator << (ostream& os, const vector<T>& v1)
+std::ostream& operator << (std::ostream& os, const std::vector<T>& v1)
 {
   for (int i = 0; i < v1.size(); i++){
     os << v1[i] << " ";

@@ -1,3 +1,6 @@
+#include "stdafx.h"
+
+
 #include <RMatrix.h>
 
 namespace cxxadt{

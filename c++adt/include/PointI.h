@@ -107,6 +107,27 @@ inline ostream& operator << (ostream& os, const Point& point)
   return os;
 }
 
+
+
+
+inline istream& operator >> (istream& os, Point& p)
+{
+  char tmpX[255];
+  char tmpY[255];	
+  char tmpZ[255];
+
+  os  >> tmpX >> tmpY >> tmpZ;
+
+  p.setX(atof(tmpX));
+  p.setY(atof(tmpY));
+  p.setZ(atof(tmpZ));
+
+  return os;
+}
+
+
+
+
 } //close namespace cxxadt
 
 #endif //POINTI_H
