@@ -9,7 +9,8 @@
 #include <fstream>
 #include <vector>
 #include <ScotsPineVisual.h>
-#include <OpenGLUnix.h>
+//
+//#include <OpenGLUnix.h>
 
 using namespace std;
 
