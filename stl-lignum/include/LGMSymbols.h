@@ -88,8 +88,9 @@ namespace Lignum{
   //Keep the LGMPD enumeration in sync with MapLGMPD table constructor
   //in TreeFriend.cc. MapLGMPD maps the names of  the parameters found
   //in configuration files to the symbolic names in LGMPD.
- 
- enum LGMPD {LGPaf,LGPar,dofp,lr,LGPmf,LGPmr,LGPms,LGPna,LGPnl,LGPpr, LGPq, LGPsf, LGPsr,LGPss,LGPrhoW,LGPrho_root,LGPrho_hair, LGPyc, LGPxi,
+  enum LGMPD {LGPaf,LGPar,LGPdof,lr,LGPmf,LGPmr,LGPms,LGPna,
+	      LGPnl,LGPpr, LGPq, LGPsf, LGPsr,LGPss,LGPrhoW,
+	      LGPrho_root,LGPrho_hair, LGPyc, LGPxi,
 	      LGPzbrentEpsilon, LGPLn_par, LGPn_ang_par};
 
   // LGPaf     Needle mass - tree segment area (kgC/m^2)relationship
