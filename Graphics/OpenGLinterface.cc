@@ -230,6 +230,7 @@ void DrawTree()
 
   //if (glIsList(FOREST_LIST))
     {
+      /*
       GLfloat mat_amb[] = { 0.5, 0.3, 0, 1.0 }; 
       GLfloat mat_dif[] = { 0.8, 0.4, 0, 1.0 }; 
       
@@ -238,21 +239,14 @@ void DrawTree()
       
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+      */
       
-      
-      if (TEXTURES_ON)
-	{
-	  stemtexture.use();
-	  glDisable(GL_LIGHTING);
-	}
-      else
-	{
-	  glEnable(GL_LIGHTING);
-	}
+     
       
       
       if (several_species)
 	{
+	  glDisable(GL_LIGHTING);
 	  cout << "monta puuta" << endl;
 	  glPushMatrix();
 	  cfstemtexture.use();
@@ -266,6 +260,15 @@ void DrawTree()
 	}
       else
 	{
+	  if (TEXTURES_ON)
+	    {
+	      stemtexture.use();
+	      glDisable(GL_LIGHTING);
+	    }
+	  else
+	    {
+	      glEnable(GL_LIGHTING);
+	    }
 	  glPushMatrix();
 	  
 	  if (glIsList(FOREST_LIST)==false)
@@ -379,29 +382,29 @@ void DrawFoliage()
     {
       glEnable(GL_BLEND);
       glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-      
-      
       glDisable(GL_LIGHTING);
       
       glPushMatrix();
+      glBindTexture(GL_TEXTURE_2D, texIds[0]);
       glEnable(GL_CULL_FACE);
       glCullFace(GL_FRONT);  
 
-      //      glBindTexture(GL_TEXTURE_2D, texIds[0]);
-      //glCallList(CFNEEDLES_LIST);  
-
-      glBindTexture(GL_TEXTURE_2D, texIds[1]);
-      glCallList(HWLEAVES_LIST);
-
-
+      glCallList(CFNEEDLES_LIST);  
       glCullFace(GL_BACK);     	 
-      //glBindTexture(GL_TEXTURE_2D, texIds[0]);
-      //glCallList(CFNEEDLES_LIST);  
+      glCallList(CFNEEDLES_LIST); 
+      glDisable(GL_CULL_FACE);
+      glPopMatrix();
 
-      cout << "text nro 1<< " << texIds[1] << endl;
-      cout << "text nro 0<< " << texIds[0] << endl;
+      
+      glPushMatrix();
       glBindTexture(GL_TEXTURE_2D, texIds[1]);
+      glEnable(GL_CULL_FACE);
+      glCullFace(GL_FRONT); 
+
       glCallList(HWLEAVES_LIST);
+      glCullFace(GL_BACK); 
+      glCallList(HWLEAVES_LIST);
+
       glDisable(GL_CULL_FACE);
       glPopMatrix();
     }
