@@ -28,6 +28,7 @@ BranchingPoint<TS>::~BranchingPoint()
   }
 }
 
+//create new axis and insert the bud into it
 template <class TS>
 void InsertTerminatingBud(BranchingPoint<TS>& bp, Bud<TS>* bud)
 {
@@ -36,3 +37,13 @@ void InsertTerminatingBud(BranchingPoint<TS>& bp, Bud<TS>* bud)
   InsertTreeCompartment(*axis,bud);
   bp.axis_ls.push_back(axis);
 }
+
+//insert the axis to the end of the list
+template <class TS>
+void InsertAxis(BranchingPoint<TS>& bp, Axis<TS>* axis)
+{
+  bp.axis_ls.push_back(axis);
+}
+
+
+

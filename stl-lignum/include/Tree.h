@@ -61,6 +61,7 @@ public:
 
 template <class TS>
 class Tree: public TreeCompartment<TS>{
+  friend Axis<TS>& GetAxis(Tree<TS>& t){return t.axis;}
   friend TP GetProduction(const Tree<TS>& t);
   friend void InitializeTree(Tree<TS>& tree, const CString& meta_file);
   friend TP GetTreeAttributeValue(const Tree<TS>& tree, const TAD name);

@@ -10,6 +10,7 @@ class BranchingPoint: public TreeCompartment<TS>{
   friend Axis<TS>* GetFirstAxis();
   friend Axis<TS>* GetNextAxis();
   friend void InsertTerminatingBud(BranchingPoint<TS>& bp, Bud<TS>* bud);
+  friend void InsertAxis(BranchingPoint<TS>& bp, Axis<TS>* axis);
 public:
   BranchingPoint();
   BranchingPoint(const Point<METER>& p, const PositionVector& d, Tree<TS>* t);
