@@ -72,12 +72,6 @@ TreeSegment<TS,BUD>::TreeSegment()
 
 
 template <class TS,class BUD>
-TreeSegment<TS,BUD>::~TreeSegment()
-{
-}
-
-
-template <class TS,class BUD>
 TreeSegment<TS,BUD>::TreeSegment(const Point& p, const PositionVector& d, const LGMdouble go,
 			     const METER l, const METER r, const METER rh, Tree<TS,BUD>* t)
   :TreeCompartment<TS,BUD>(p,d,t)
