@@ -40,8 +40,7 @@ sky: $(MAIN)
 
 
 .cc.o: 
-	$(CCC) $(OPTIMIZE) $(SUPPRESS) $(CCCFLAGS) $(INCLUDE) -I../abstypes/include \
-        -I../lignum/include  $< -o $@
+	$(CCC) $(OPTIMIZE) $(SUPPRESS) $(CCCFLAGS) $(INCLUDE) $< -o $@
 
 clean:
 	rm -rf $(OBJ) core sky ii_files
