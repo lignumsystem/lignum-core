@@ -75,7 +75,7 @@ Lex& Lex::scanId()
   int i = 0;
 
   while (ifile.get(c)){
-    if (isalnum(c) || c=='.')
+    if (isalnum(c) || c=='.' || c=='_')
       buffer[i++]=c;
     else{
       ifile.putback(c);
