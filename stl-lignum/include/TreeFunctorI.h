@@ -875,9 +875,8 @@ namespace Lignum{
 
     if(Axis<TS,BUD>* ax = dynamic_cast<Axis<TS,BUD>*>(tc)) {
       PrintTreeSegmentInformationToFile<TS,BUD> print(fname,false);
-      ForAllTreeCompartments<TS,BUD,
-	PrintTreeSegmentInformationToFile<TS,BUD> > printAx(print);
-      printAx(ax);
+      list<TreeCompartment<TS,BUD>*>& ls = GetTreeCompartmentList(*ax);
+      for_each(ls.begin(), ls.end(),print);
     }
     
     return tc;
