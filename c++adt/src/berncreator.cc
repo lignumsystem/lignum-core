@@ -1,4 +1,4 @@
-//<<<<<<< bernoulli.cc
+// <<<<<<< bernoulli.cc
 /***********************************************************************
                      bernoulli.cc
  bernoulli is a member function of StochasticLib Class, and can create a
