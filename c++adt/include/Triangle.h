@@ -25,12 +25,13 @@ namespace cxxadt{
     Point  getLeftCorner()  { return leftcorner;};
     Point  getRightCorner() { return rightcorner;};
     Point  getApexCorner()  { return apexcorner;};
-    vector<Point>&  getTriangleCorners(vector<Point>& corners);
+    PositionVector getNormal()const;
+    vector<Point>&  getTriangleCorners(vector<Point>& corners)const;
     void   setLeftCorner(const Point& p){ leftcorner=p;};
     void   setRightCorner(const Point& p){ rightcorner=p;};
     void   setApexCorner(const Point& p){ apexcorner=p;};
     double getArea()const;               //the triangle area calculation
-    Point  getCenterPoint();     //getting the triangle center 
+    Point  getCenterPoint()const;     //getting the triangle center 
 
                                  //set up the triangle center point
                                  //end change the triangle corners
