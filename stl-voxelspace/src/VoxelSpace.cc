@@ -1,11 +1,15 @@
 #include "stdafx.h"
 #include "OpenGL.h"
+
+#ifdef _MSC_VER
 #include <GL/gl.h>
 #include <GL/glu.h>
 //#include <GL/glaux.h>
+#endif
 
-
+#include <VoxelBox.h>
 #include <VoxelSpace.h>
+
 #include <fstream>
 
 
@@ -39,8 +43,8 @@ namespace Lignum {
   //  zn		: number of VoxBoxes in z direction
   //	f		: Firmament
   //
-  VoxelSpace::VoxelSpace(Point corner1, Point corner2, int xn, int yn, int zn, Firmament &f)
-    :voxboxes(xn,yn,zn),Xn(xn),Yn(yn),Zn(zn)
+  VoxelSpace::VoxelSpace(Point c1, Point c2, int xn, int yn, int zn, Firmament &f)
+    :corner1(c1),corner2(c2),voxboxes(xn,yn,zn),Xn(xn),Yn(yn),Zn(zn)
   {
 
     Xbox = 1.0;
@@ -230,13 +234,13 @@ namespace Lignum {
     int Zi = static_cast<int>(localP.getZ()/Zbox);
 
 
-    assert(Xi>-1);
-    assert(Yi>-1);
-    assert(Zi>-1);
+    LGMassert(Xi>-1);
+    LGMassert(Yi>-1);
+    LGMassert(Zi>-1);
 
-    assert(Xi<Xn);
-    assert(Yi<Yn);
-    assert(Zi<Zn);
+    LGMassert(Xi<Xn);
+    LGMassert(Yi<Yn);
+    LGMassert(Zi<Zn);
 
     return voxboxes[Xi][Yi][Zi]; 
   }
