@@ -34,7 +34,7 @@ public:
  // KGC Wf;                 //Foliage mass of the tree segment
   KGC Ws;                 //Sapwood mass of the tree segment
   KGC Wh;                 //Dry-weight (kg C) of heartwood
-  std::vector<METER> annual_rings; //Annual rings of the tree segment
+  vector<METER> annual_rings; //Annual rings of the tree segment
   LGMdouble vigour;			//Vigour index
 };
 
@@ -100,7 +100,7 @@ class TreeSegment: public TreeCompartment<TS,BUD>{
 public:
   TreeSegment();
   TreeSegment(const Point& p, const PositionVector& d, const LGMdouble go,
-	      const METER l, const METER r, const METER rn, Tree<TS,BUD>* t);
+	      const METER l, const METER r, const METER rh, Tree<TS,BUD>* t);
   virtual ~TreeSegment();
   LGMdouble GetTranspiration(LGMdouble time);
   void SetYearCircles();

@@ -41,7 +41,7 @@ namespace Lignum{
     protected:
       Point point;
       PositionVector direction;
-      LGMdouble age;
+      LGMdouble tc_age;
       Tree<TS,BUD>* tree;
     };
 }//closing namespace Lignum

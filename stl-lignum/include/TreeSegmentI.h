@@ -79,13 +79,13 @@ TreeSegment<TS,BUD>::~TreeSegment()
 
 template <class TS,class BUD>
 TreeSegment<TS,BUD>::TreeSegment(const Point& p, const PositionVector& d, const LGMdouble go,
-			     const METER l, const METER r, const METER rn, Tree<TS,BUD>* t)
+			     const METER l, const METER r, const METER rh, Tree<TS,BUD>* t)
   :TreeCompartment<TS,BUD>(p,d,t)
 {	
   SetValue(*this,omega,go);
   SetValue(*this,L,l);
   SetValue(*this,R,r);
-  SetValue(*this,Rh,rn);
+  SetValue(*this,Rh,rh);
   SetValue(*this,RTop,r);
   
   //the first annual ring
@@ -117,10 +117,10 @@ LGMdouble TreeSegment<TS,BUD>::GetTranspiration(LGMdouble time)
 template <class TS,class BUD>
 void TreeSegment<TS,BUD>::SetYearCircles()
 {
-  int age = this->age;
-  float r = this->tsa.R;
-  float delta_r = r / (age);
-  for (int i=0; i<age-1; i++)
+  int ts_age = GetValue(*this,age);
+  float r = GetValue(*this,R);
+  float delta_r = r / (ts_age);
+  for (int i=0; i<ts_age-1; i++)
   {
     r = r - delta_r;
 	//tsa.annual_rings.push_back(r);
@@ -289,7 +289,7 @@ LGMdouble GetValue(const TreeSegment<TS,BUD>& ts, const LGMAD name)
     return PI_VALUE*pow(GetValue(ts,R), 2.0);
 
   if (name == age)
-    return ts.age; 
+    return ts.tc_age; 
 
   else if (name == H)
     return ts.point.getZ();
@@ -342,7 +342,7 @@ LGMdouble SetValue(TreeSegment<TS,BUD>& ts, const LGMAD name, const LGMdouble va
   LGMdouble old_value = 0.0; //GetValue(ts,name);
   
   if (name == age)
-    ts.age = value;
+    ts.tc_age = value;
 
   else if (name == L)
   {
