@@ -83,7 +83,7 @@ template <class TS,class BUD>
 int VisualizeLGMTree(Tree<TS,BUD> &tree)
 { 
   // init_window();
-  cout << "InitDrawing******************************************************" << endl;
+  cout << "InitDrawing***********************" << endl;
   InitDrawing();
   InitOpenGL();
       
@@ -100,7 +100,7 @@ int VisualizeLGMTree(Tree<TS,BUD> &tree)
  
   stemtexture.Load("Manty.bmp", 512, 512);
 
-  LoadGLTextures("neulaset5.tga");
+    LoadGLTextures("neulaset5.tga");
   
 
   cout << "tekstuurit kaytossa******************************************** " << endl;
@@ -170,7 +170,7 @@ template <class TS,class BUD>
 int VisualizeHwTree(Tree<TS,BUD> &tree)
 { 
   // init_window();
-  cout << "InitDrawing******************************************************" << endl;
+  cout << "InitDrawing.........1.13" << endl;
   InitDrawing();
   InitOpenGL();
       
@@ -191,13 +191,14 @@ int VisualizeHwTree(Tree<TS,BUD> &tree)
   
 
 
-  cout << "rakennetaan puu.." << endl;
+  cout << "ei lehtiä, rakennetaan puu.." << endl;
 
   MakeTreeList(tree, 0.05);
 
-  cout << "rakennetaan lehdet " << endl;
-  MakeLeaveList(tree, 6, 6);
   
+  cout << "rakennetaan lehdet " << endl;
+  MakeLeaveList(tree, 2, 2);
+ 
 
   //elavat budit
   MakeBudList(tree, true);

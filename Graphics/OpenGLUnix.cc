@@ -1000,15 +1000,21 @@ void CTexture::Load(char *filename, int fw, int fh)
 
   w = fw;
   h = fh;
+  
   glGenTextures(1, &texturenum);
+
   glBindTexture(GL_TEXTURE_2D, texturenum);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexImage2D(GL_TEXTURE_2D, 0, 3, w, h, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 }
 
 void CTexture::use()
 {
-  glBindTexture(GL_TEXTURE_2D, texturenum);
   glEnable(GL_TEXTURE_2D);
+  glBindTexture(GL_TEXTURE_2D, texturenum);
+  //cout << "vaihdetaan runkotekstuuriksi, jonka nro on " << texturenum << endl;
+ 
 }
 
 void CTexture::do_not_use()

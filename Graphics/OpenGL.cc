@@ -362,7 +362,7 @@ void MakeCylinder(float radius, float rad_top, float length, float rad_limit, fl
 	  edges=16;
   else edges = 36;
 
-  edges = 16;
+  edges = 36;
   if (rad_top == 0 || rad_top > radius)
 	  rad_top = radius;
 

@@ -263,6 +263,7 @@ void DrawTree()
   
   extern bool TEXTURES_ON;
 
+  /*
   GLfloat mat_amb[] = { 0.5, 0.3, 0, 1.0 }; 
   GLfloat mat_dif[] = { 0.8, 0.4, 0, 1.0 }; 
   
@@ -271,16 +272,18 @@ void DrawTree()
   
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	   
+  */   
  //glDisable(GL_TEXTURE_2D);
   
   if (TEXTURES_ON)
     {
+      cout << "piirretään puu tekstuureilla" << endl;
       stemtexture.use();
       glDisable(GL_LIGHTING);
     }
   else
     {
+      cout << "puu ilman tekstuureita " << endl;
       glEnable(GL_LIGHTING);
     }
 
@@ -343,11 +346,14 @@ void DrawOrderedFoliage()
 
 
 void DrawFoliage()
-{	
+{
+  
      glEnable(GL_BLEND);
      glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	 glBindTexture(GL_TEXTURE_2D, texIds[0]);
-	 glDisable(GL_LIGHTING);
+     
+     cout << "piirretään lehdet, tekstuuri numero " << texIds[0] << endl;
+     glBindTexture(GL_TEXTURE_2D, texIds[0]);
+     glDisable(GL_LIGHTING);
 
 	 glPushMatrix();
 	 glEnable(GL_CULL_FACE);
