@@ -32,7 +32,7 @@ int main(int argc, char** argv)
   
   l.start();
   l.lstring2Lignum<MyTreeSegment,MyBud,LGMAD,LGMdouble>(t1,3,LGMtype,LGMstatus,LGMcollision);
-  for (int i=0; i < DerivationLength(); i++)
+  for (int i=0; i < l.derivationLength(); i++)
   {
     cout << "Step: " << i << endl;
     ForEach(t1,EvaluateCollisionForAllBuds<MyTreeSegment,MyBud>(90.0*2.0*PI_VALUE/360.0,0.10));
