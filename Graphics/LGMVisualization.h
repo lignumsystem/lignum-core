@@ -13,9 +13,10 @@
 
 #include <Lignum.h>
 
+enum DRAWMODE { STEM_MODE, FOLIAGE_MODE };
+
 namespace Lignum{
 
-enum DRAWMODE { STEM_MODE, FOLIAGE_MODE };
 
 
 
@@ -24,9 +25,11 @@ class LGMVisualization
   static LGMVisualization* active_visualization;
   public:
 
-
-  void AddHwTree(const Tree& t);
-  void AddCfTree(const Tree& t);
+  template <class TS, class BUD>
+  void AddHwTree(Tree<TS, BUD>& t);
+  
+  template <class TS, class BUD>
+  void AddCfTree(Tree<TS, BUD>& t);
 
   LGMVisualization();
   void InitVisualization();
@@ -68,6 +71,9 @@ private:
 };
 
 
+
 } 
+
+#include <LGMVisualizationI.h>
 
 #endif

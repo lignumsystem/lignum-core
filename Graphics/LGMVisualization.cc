@@ -56,20 +56,6 @@ void LGMVisualization::SetAntialising(bool antialisingOn)
 }
 
 
-void LGMVisualization::AddHwTree(const Tree& t)
-{	
-	CfWrapper *wb = new CfWrapper(t);
-
-	trees.push_back((WrapperBase *)wb);
-}
-
-void LGMVisualization::AddCfTree(const Tree& t)
-{
-	HwWrapper *wb = new HwWrapper(t);
-
-	trees.push_back((WrapperBase *)wb);
-}
-
 
 //Draw-funktions
 void LGMVisualization::CountCamera(void)

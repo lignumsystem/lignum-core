@@ -20,31 +20,40 @@ public:
 };
 
 
+
+template <class TS, class BUD> 
 class CfWrapper: public WrapperBase 
 {
 public:
-  CfWrapper(const Tree& t):tree(t){}
+  
+  CfWrapper(const Tree<TS,BUD>& t):tree(t){}
 
   void VisualizeTree();
   void VisualizeStem(int &active_texture);
   void VisualizeFoliage(int &active_texture);
-  Tree& tree;
+
+
+  Tree<TS,BUD>& tree;
 };
 
-
+template <class TS, class BUD>
 class HwWrapper: public WrapperBase 
 {
 public:
-  HwWrapper(const Tree& t):tree(t){}
+  HwWrapper(Tree<TS,BUD>& t):tree(t){}
 
   void VisualizeTree();
   void VisualizeStem(int &active_texture);
   void VisualizeFoliage(int &active_texture);
-  Tree& tree;
+  
+ 
+  Tree<TS,BUD>& tree;
 };
 
 
 
 }
+
+#include <WrapperBaseI.h>
 
 #endif
