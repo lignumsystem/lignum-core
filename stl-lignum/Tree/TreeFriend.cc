@@ -1,4 +1,5 @@
-#include <InitializeTree.h>
+#include <MapParameterType.h>
+#include <LGMSymbols.h>
 
 namespace Lignum{
 
@@ -31,6 +32,7 @@ namespace Lignum{
     lgmpd["LGPapical"] = LGPapical;
     
   }
+
 
 
 }//closing namespace Lignum
