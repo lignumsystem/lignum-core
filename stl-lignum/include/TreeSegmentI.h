@@ -109,6 +109,19 @@ Point GetEndPoint(const TreeSegment<TS,BUD>& ts)
   return GetPoint(ts)+GetValue(ts,LGAL)*(Point)GetDirection(ts);
 }
 
+template <class TS,class BUD>
+Point GetMidPoint(const TreeSegment<TS,BUD>& ts)
+{
+  return GetPoint(ts)+0.5*GetValue(ts,LGAL)*(Point)GetDirection(ts);
+}
+
+//Return point in the segment at the 'fraction' distance. For example
+//GetMidPoint(ts) == GetPoint(ts,0.5). The fraction must be in [0,1]
+template <class TS,class BUD>
+Point GetPoint(const TreeSegment<TS,BUD>& ts, double fraction)
+{
+  return GetPoint(ts)+fraction*GetValue(ts,LGAL)*(Point)GetDirection(ts);
+}
 
 template <class TS,class BUD>
 void TreeSegment<TS,BUD>::SetAnnualRings(std::vector<METER> rings)

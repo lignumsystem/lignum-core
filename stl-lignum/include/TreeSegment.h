@@ -94,8 +94,11 @@ class TreeSegment: public TreeCompartment<TS,BUD>{
 
 #endif
   template <class TS1,class BUD1>
+  friend Point GetPoint(const TreeSegment<TS1,BUD1>& ts,double fraction);
+  template <class TS1,class BUD1>
   friend Point GetEndPoint(const TreeSegment<TS1,BUD1>& ts);
-
+  template <class TS1,class BUD1>
+  friend Point GetMidPoint(const TreeSegment<TS1,BUD1>& ts);
 public:
   TreeSegment();
   TreeSegment(const Point& p, const PositionVector& d, const LGMdouble go,
