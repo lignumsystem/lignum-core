@@ -168,9 +168,13 @@ namespace Lignum{
 	SetValue(*bp,LGAMaxD,d);
       }
       if (TS* ts = dynamic_cast<TS*>(tc)){
-	//Get the diameter of the segment an pass it to the 
-	//branching point below
-	d = 2.0*GetValue(*ts,LGAR);
+	//Get the diameter of the  segment an pass it to the branching
+	//point below.  Do not  take the diameter  of a  newly created
+	//segment
+	if (GetValue(*ts,LGAage) > 0.0)
+	  d = 2.0*GetValue(*ts,LGAR);
+	else
+	  d = 0.0;
       }
       return d;
     }
