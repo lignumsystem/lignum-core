@@ -25,7 +25,7 @@ private:
   void _Prepend(const SuccessorStorage&);
   char* _mem;
   enum
-  { eInitSize = 10240 };
+    { eInitSize = 10240*10 }; //for trees 10240 is a bit small
   int _size;
   int _lastByte;
   DerivationDirection _direction;

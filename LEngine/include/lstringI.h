@@ -26,7 +26,9 @@ inline void Lstring::Clear(DerivationDirection dir)
 
 inline void Lstring::_Grow()
 {
+#ifdef DEBUG_STRING
   cout << "Reallocating string\n";
+#endif
   int newsize = _size * 2;
   char* aNew = (char*) realloc(_mem, newsize);
   if (NULL == aNew)
