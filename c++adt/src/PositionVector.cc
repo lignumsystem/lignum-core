@@ -19,8 +19,16 @@ PositionVector::PositionVector(const double x, const double y, const double z)
 
 //copy constructor
 PositionVector::PositionVector(const PositionVector& pv)
+  :v(3)
 {
   v = pv.v;
+}
+
+
+PositionVector::PositionVector(const Point<>& p)
+  :v(3)
+{
+  PositionVector(p.getX(),p.getY(),p.getZ());
 }
 
 //The assignment
@@ -88,23 +96,16 @@ PositionVector& PositionVector::normalize()
   return *this;
 }
 
-#ifdef PV
-
-ostream& operator << (ostream& os, const vector<double>& v1)
-{
-  for (int i = 0; i < v1.size(); i++){
-    os << v1[i] << " ";
-  }
-  os << endl;
-
-  return os;
-}
 
 ostream& operator << (ostream& os, const PositionVector& pv)
 {
   cout << pv.getVector();
   return os;
 }
+
+#ifdef PV
+
+
 int main()
 {
   PositionVector pv1;
