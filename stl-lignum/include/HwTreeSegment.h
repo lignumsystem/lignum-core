@@ -2,14 +2,10 @@
 #define HWTREESEGMENT_HPP
 #include <list>
 
-//#include <TreeSegment.h>
 #include <BroadLeaf.h>
-//#include <BetulaTortuosa.h>
 #include <LGMdecl.h>
 #include <LGMUnits.h>
 #include <LGMSymbols.h>
-
-//class BroadLeaf;
 
 
 namespace Lignum{
