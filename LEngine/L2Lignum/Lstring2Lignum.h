@@ -169,6 +169,9 @@ int Lstring2Lignum(list<TreeCompartment<TS,BUD>*>& ls,
       //Update point and direction
       SetPoint(*ts,GetPoint(turtle_stack.top()));
       SetDirection(*ts,GetHeading(turtle_stack.top()));
+      //Should we update the length may be a matter of discussion
+      //But when the turtle is 'in charge' we should (c.f symbodial growth) 
+      SetValue(*ts,L,arg1);
       //Move the turtle
       turtle_stack.top().forward(arg1);
       //Update iterators 

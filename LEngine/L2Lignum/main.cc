@@ -13,6 +13,7 @@
 #include <iostream>
 #include <L2Lignum.h>
 #include <Lstring2Lignum.h>
+#include <Lignum2Lstring.h>
 #include <MyTreeSegment.h>
 #include <MyBud.h>
 #include <OpenGLUnix.h>
@@ -170,9 +171,10 @@ int main(int argc, char** argv)
     //PrintLString(mainstring);
     //cout << "\n\n";
   }
-
-  Tree<MyTreeSegment,MyBud> tree(Point(0,0,0),
-				    PositionVector(0,0,1.0));
+  //Lignum2Lstring(t1,mainstring);
+  //Lstring2Lignum(t1,mainstring);
+  //Tree<MyTreeSegment,MyBud> tree(Point(0,0,0),
+  //				 PositionVector(0,0,1.0));
   //L2Lignum(tree,mainstring);
   //DisplayStructureData id;
   //PropagateUp(tree,id,DisplayStructureFunctor<MyCfTreeSegment,MyBud>());
