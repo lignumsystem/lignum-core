@@ -22,13 +22,13 @@ ostream& operator << (ostream& os, const TMatrix<T>& v1);
 
 
 template <class T> class TMatrix {
-  friend TMatrix<T> operator + <T>(const TMatrix<T>& m1,const TMatrix<T>& m2);
-  friend TMatrix<T> operator * <T>(const TMatrix<T>& m1,const TMatrix<T>& m2);
-  friend vector<T> operator * <T>(const vector<T>& v1, const TMatrix<T>& m1);
-  friend vector<T> operator * <T>(const TMatrix<T>& m1, const vector<T>& v1);
-  friend TMatrix<T> operator * <T>(const TMatrix<T>& m1,const T scalar);
-  friend TMatrix<T> operator * <T>(const T scalar,const TMatrix<T>& m1);
-  friend ostream& operator << <T>(ostream& os, const TMatrix<T>& v1);
+  friend TMatrix<T> operator + (const TMatrix<T>& m1,const TMatrix<T>& m2);
+  friend TMatrix<T> operator * (const TMatrix<T>& m1,const TMatrix<T>& m2);
+  friend vector<T> operator * (const vector<T>& v1, const TMatrix<T>& m1);
+  friend vector<T> operator * (const TMatrix<T>& m1, const vector<T>& v1);
+  friend TMatrix<T> operator * (const TMatrix<T>& m1,const T scalar);
+  friend TMatrix<T> operator * (const T scalar,const TMatrix<T>& m1);
+  friend ostream& operator << (ostream& os, const TMatrix<T>& v1);
 public:
   TMatrix();    
   TMatrix(const int rows,const int cols);

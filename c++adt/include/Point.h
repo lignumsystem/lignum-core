@@ -38,9 +38,9 @@ namespace cxxadt{
       friend ostream& operator << <T>(ostream& os, const Point<T>& point);
       friend bool operator == <T>(const Point<T> &point1, 
 				  const Point<T> &point2);
-      public:
+    public:
       Point(T x1 = 0.0, T y1 = 0.0, T z1 = 0.0)
-      {x = x1; y =  y1; z =  z1;}
+	{x = x1; y =  y1; z =  z1;}
       inline Point(const Point<T>& point);
       T getX()const{ return x;}
       T getY()const{ return y;}
@@ -52,12 +52,12 @@ namespace cxxadt{
       Point<T>& operator += (const Point<T>& point); 
       Point<T>& operator -= (const Point<T>& point);
       Point<T>& operator *= (const T scalar);
-      private:
+    private:
       T x;
       T y;
       T z;
     };
-
+	  
 //make a point from another point
 template <class T>
 inline Point<T>::Point(const Point<T>& point)
