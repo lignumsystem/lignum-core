@@ -144,6 +144,9 @@ LGMdouble GetValue(const TreeSegment<TS,BUD>& ts, const LGMAD name)
   else if (name == Ws)
     return ts.tsa.Ws;
 
+  else if (name == Wh)
+    return ts.tsa.Wh;
+
   else
     cout << "Unknown attribute returning" << unknown_value << endl;
 
@@ -203,6 +206,9 @@ LGMdouble SetValue(TreeSegment<TS,BUD>& ts, const LGMAD name, const LGMdouble va
 
   else if (name == Ws)
     ts.tsa.Ws = value;
+
+  else if (name == Wh)
+    ts.tsa.Wh = value;
 
   else
     cerr << "TreeSegment: Unknown attribute " << name << endl;

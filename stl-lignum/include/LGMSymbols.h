@@ -10,7 +10,7 @@ namespace Lignum{
 
 // Tree Attribute Double, Wm lisätty..Wr pois
 enum LGMAD {A,age,dof,fin,fout,H,Hm,ip,lb,LM,LP,LWf,L,lw,M,omega,P,Pr,\
-            Qin,Qabs,R,Rf,Rh,sf,sw,tauL,Wf,Wm,Ws};  
+            Qin,Qabs,R,Rf,Rh,sf,sw,tauL,Wf,Wm,Ws,Wh};  
 
 
 //Tree Attribute STATUS
