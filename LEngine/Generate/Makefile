@@ -28,11 +28,13 @@ $(PLATLINKDIRS)
 CPPFILES=\
 ${OBJECTS:.o=.cpp}
 
+lib:
+	make $(LIBTRG)
+
 $(TARGET): test.o $(OBJECTS) ../lsys/lsys.o
 	$(LINK) $(LINKFLAGS) test.o $(OBJECTS) ../lsys/lsys.o $(LINKDIRS) $(LIBS) -o $(TARGET)
 
-lib:
-	make $(LIBTRG)
+
 
 $(LIBTRG): $(OBJECTS)
 	ar -ruv $(LIBTRG) $(OBJECTS)
@@ -45,7 +47,7 @@ build:
 	make depend $(TARGET)
 
 clean:
-	-rm $(TARGET) $(OBJECTS) dependencies core
+	-rm -f $(TARGET) $(OBJECTS) dependencies core
 	touch dependencies
 
 depend: 
