@@ -6,6 +6,13 @@ Turtle::Turtle()
 {
 }
 
+//Initial turtle heading up at point p. Different trees start growing
+//in different positions
+Turtle::Turtle(const Point& p1)
+  :h(0,0,1),l(1,0,0),u(0,1,0),p(p1)
+{
+}
+
 //copy constructor
 Turtle::Turtle(const Turtle& t)
   :h(t.h),l(t.l),u(t.u),p(t.p)
@@ -84,6 +91,11 @@ const PositionVector& GetHeading(const Turtle& t)
 const Point& GetPoint(const Turtle& t)
 {
   return t.p;
+}
+
+void SetPoint(Turtle& t, const Point& p)
+{
+  t.p = p;
 }
 
 //print the status of the turtle
