@@ -218,25 +218,6 @@ void DrawAllFoliage(CLignumWBDoc *doc)
 */
 
 
-template <class TS,class BUD>
-void MakeNeedlesList(Tree<TS,BUD> &tree)
-{
-
-        if (glIsList(NEEDLES_TEX))
-                glDeleteLists(NEEDLES_TEX, 1);
-
-        glPushMatrix();
-        glNewList(NEEDLES_TEX, GL_COMPILE);     
-        UseTextures();
-        DrawNeedlesFunctor<TS, BUD> needles_functor;
-        ForEach(tree, needles_functor);
-                
-        glEndList();
-        glPopMatrix();
-}
-
-
-
 
 
 void DrawTree()
