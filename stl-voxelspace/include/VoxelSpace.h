@@ -41,6 +41,8 @@ namespace Lignum {
 		 Firmament& f);
       int GetNumBoxes() { return Xn*Yn*Zn; }
       int getNumTreeSegments();
+      LGMdouble getQabs();
+      LGMdouble getQin();
 
 
       VoxelBox& getVoxelBox(Point p);
