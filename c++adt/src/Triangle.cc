@@ -26,10 +26,10 @@ vector<Point>& Triangle::getTriangleCorners(vector<Point>& corners)
 
 
 
-//the centroid of the triangle according 
+//the center of the triangle according 
 // equation Pc=(P1+P2+P3)/3
 
-Point Triangle::getCentroidPoint() 
+Point Triangle::getCenterPoint() 
 {                            
   Point center;
 
@@ -44,12 +44,25 @@ Point Triangle::getCentroidPoint()
   return center ;
 }
 
+//set up the triangle center point
+//end change the triangle corners
+//according the center point 
+
+void  Triangle::setCenterPoint(const Point& center0){
+   Point center;
+   center.setX(center0.getX());
+   center.setY(center0.getY());
+   center.setZ(center0.getZ());
+   setArea(getArea(),center);
+}
+
+
 //Calculation  the triangle area 
 // using equation 
 //A=1/2*|((leftcorner,rightcorner)X(leftcorner,apexcorner))|
 //where X is  the cross operation between vectors
 
-double Triangle::getArea(){
+double Triangle::getArea()const{
 
   double area;
    
@@ -64,7 +77,7 @@ double Triangle::getArea(){
  PositionVector p12=p1-p2;
  PositionVector p13=p1-p3;
  
- area=( abs( Cross(p12,p13).length() ) )/2;
+ area=( fabs( Cross(p12,p13).length() ) )/2.0;
  
  return ( area );
  
@@ -97,9 +110,9 @@ double Triangle::setArea(double area)
 
   scalcoef=sqrt(areanew/areaold);
 
-  adbasex=getCentroidPoint().getX()*(1-scalcoef);
-  adbasey=getCentroidPoint().getY()*(1-scalcoef);
-  adbasez=getCentroidPoint().getZ()*(1-scalcoef);
+  adbasex=getCenterPoint().getX()*(1-scalcoef);
+  adbasey=getCenterPoint().getY()*(1-scalcoef);
+  adbasez=getCenterPoint().getZ()*(1-scalcoef);
 
 
 
@@ -309,7 +322,7 @@ int main()
   
   cout << "1.For these points  " << endl;  
   cout << "2.Area is   " << t1.getArea() << endl;
-  cout << "3.Center is " << t1.getCentroidPoint().getX()
+  cout << "3.Center is " << t1.getCenterPoint().getX()
        << endl<<endl;
 
 
@@ -319,7 +332,7 @@ int main()
   cout << "4.After scaling the triangle  " << endl;
 
   cout << "5.Area is   " <<     t1.getArea() << endl;
-  cout << "6.Center is " <<     t1.getCentroidPoint().getX() << endl;
+  cout << "6.Center is " <<     t1.getCenterPoint().getX() << endl;
 
   corners.clear();
   corners=t1.getTriangleCorners(corners);
