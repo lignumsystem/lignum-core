@@ -21,12 +21,17 @@
 #include <vector>
 #include <math.h>
 
+CTexture cfstemtexture;
+CTexture hwstemtexture;
 CTexture stemtexture;
 
 GLfloat m_xRotate;   //left button values
 GLfloat m_yRotate;
 GLfloat m_xrRotate;  //right button values
 GLfloat m_yrRotate;
+
+
+bool several_species = false;
 
 LIGHT_VAL light;
 GLfloat LightPosition[4];
@@ -246,12 +251,34 @@ void DrawTree()
 	}
       
       
-      glPushMatrix();
-      
-      if (glIsList(FOREST_LIST)==false)
-	cout << "Virhe:puulistaa ei maaritelty " << endl;
-      glCallList(FOREST_LIST);
-      glPopMatrix();
+      if (several_species)
+	{
+	  glPushMatrix();
+	  cfstemtexture.use();
+	  glCallList(CFTREES_LIST);
+	  glPopMatrix();
+	  
+	  glPushMatrix();
+	  hwstemtexture.use();
+	  glCallList(HWTREES_LIST);
+	  glPopMatrix();
+	}
+      else
+	{
+	  glPushMatrix();
+	  
+	  if (glIsList(FOREST_LIST)==false)
+	    cout << "Virhe:puulistaa ei maaritelty " << endl;
+	  glCallList(FOREST_LIST);
+	  glPopMatrix();
+	}
+
+
+     
+
+
+
+
       return;
     }
   
@@ -347,35 +374,40 @@ void DrawOrderedFoliage()
 
 void DrawFoliage()
 {
-  
-     glEnable(GL_BLEND);
-     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-     
-     cout << "piirretään lehdet, tekstuuri numero " << texIds[0] << endl;
-     glBindTexture(GL_TEXTURE_2D, texIds[0]);
-     glDisable(GL_LIGHTING);
-
-	 glPushMatrix();
-	 glEnable(GL_CULL_FACE);
-     glCullFace(GL_FRONT);     
-	 glCallList(NEEDLES_TEX); 
-	 
-	 glCullFace(GL_BACK);     	 
-	 glCallList(NEEDLES_TEX);
-     glDisable(GL_CULL_FACE);
-	 glPopMatrix();
-
-	 glEnable(GL_LIGHTING);	 
-	 glPushMatrix();
-	 glEnable(GL_CULL_FACE);
-     glCullFace(GL_FRONT);     
-	 glCallList(FOLIAGE); 		  
-	 glCullFace(GL_BACK);     	 
-	 glCallList(FOLIAGE);
-     glDisable(GL_CULL_FACE);
-	 glPopMatrix();
-
-	 return;
+  if (several_species)
+    {
+      
+    }
+  else
+    {
+      glEnable(GL_BLEND);
+      glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+      
+      //  cout << "piirretään lehdet, tekstuuri numero " << texIds[0] << endl;
+      glBindTexture(GL_TEXTURE_2D, texIds[0]);
+      glDisable(GL_LIGHTING);
+      
+      glPushMatrix();
+      glEnable(GL_CULL_FACE);
+      glCullFace(GL_FRONT);     
+      glCallList(NEEDLES_TEX); 
+      
+      glCullFace(GL_BACK);     	 
+      glCallList(NEEDLES_TEX);
+      glDisable(GL_CULL_FACE);
+      glPopMatrix();
+      
+      glEnable(GL_LIGHTING);	 
+      glPushMatrix();
+      glEnable(GL_CULL_FACE);
+      glCullFace(GL_FRONT);     
+      glCallList(FOLIAGE); 		  
+      glCullFace(GL_BACK);     	 
+      glCallList(FOLIAGE);
+      glDisable(GL_CULL_FACE);
+      glPopMatrix();
+    }
+  return;
 }
 
 void DrawFirmament()

@@ -257,7 +257,10 @@ if (clarg != empty)
    cout << endl << "hw_tree Respiration (): "
 	<< GetValue(cf_tree, M) << endl;
 
-   VisualizeLGMTree(cf_tree);
+   //VisualizeLGMTree(cf_tree);
+   Forest f;
+   InsertCfTree(f,cf_tree);
+   VisualizeForest<Tree<MyCfTreeSegment, MyCfBud> >(f);
 }
 
 

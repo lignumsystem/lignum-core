@@ -88,6 +88,19 @@ void MakeBudList(Tree<TS,BUD> &tree, bool alive)
 
 
 template <class TS,class BUD>
+void MakeForestTree(Tree<TS,BUD> &tree)
+{
+  glPushMatrix();
+  
+  DrawStemFunctor<TS,BUD> stemfunctor;
+  stemfunctor.min_rad = 0;
+  stemfunctor.max_rad = 999;
+  ForEach(tree, stemfunctor);
+  
+  glPopMatrix();
+}
+
+template <class TS,class BUD>
 void MakeTreeList(Tree<TS,BUD> &tree, LGMdouble limit)
 {
   
