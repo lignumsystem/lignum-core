@@ -197,7 +197,15 @@ namespace Lignum{
     //formula for vi from Nikinmaa et al 2003 Tree Physiology 
     //Note: if you write "d/*maxj"  the '/*' would be the beginning of
     //a comment!!
-    double vi = pow(d / *maxj,2.0)*vi_segment_below;
+    //ALSO NOTE: the division will hit you hard if maxj is 0 or
+    //a very small number. Probably resulting NaN.
+    double vi = 0.0;
+    if (*maxj > R_EPSILON)
+      vi = pow(d / *maxj,2.0)*vi_segment_below;
+    else
+      vi = vi_segment_below;
+    cerr << "D: " << d << " Maxj: " << *maxj << " VIbelow: "  
+	 << vi_segment_below << " VI: " << vi << endl;
     return vi;
   }
   
