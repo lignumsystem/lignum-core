@@ -8,7 +8,6 @@
 #include <Lignum.h>
 #include <fstream>
 #include <vector>
-#include <ScotsPineVisual.h>
 
 //#include <OpenGLUnix.h>
 
