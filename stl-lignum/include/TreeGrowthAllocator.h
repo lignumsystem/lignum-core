@@ -72,10 +72,8 @@ namespace Lignum{
   template <class TS,class BUD>
   void TreeGrowthAllocatorBase<TS,BUD>::init()
   {
-    double p = 0.0;
-    P = Accumulate(tree,p,SumTreePhotosynthesis<TS,BUD>());
-    double m = 0.0;
-    M =  Accumulate(tree,m,SumTreeRespiration<TS,BUD>());
+    P = GetValue(tree,TreeP);
+    M =  GetValue(tree,TreeM);
     if (P-M <= 0.0)
       throw TreeGrowthAllocatorException(P,M);
   } 
