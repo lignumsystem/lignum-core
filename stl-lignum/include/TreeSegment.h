@@ -44,7 +44,8 @@ class TreeSegment: public TreeCompartment<TS,BUD>{
 #ifdef _MSC_VER
   friend std::vector<METER> GetAnnualRings(const TreeSegment<TS,BUD>& ts);  
   friend KGC GetSapwoodMass(const TreeSegment<TS,BUD>& ts);
-  friend METER GetSapwoodArea(const TreeSegment<TS,BUD>& ts);
+  friend M2 GetSapwoodArea(const TreeSegment<TS,BUD>& ts);
+  friend M2 GetHeartwoodArea(const TreeSegment<TS,BUD>& ts);
   friend METER GetInitialSapwoodArea(const TreeSegment<TS,BUD>& ts);
   friend METER SetRadius(TreeSegment<TS,BUD>& ts);
   friend METER SetLastRing(TreeSegment<TS,BUD>& ts);

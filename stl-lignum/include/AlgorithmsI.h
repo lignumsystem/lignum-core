@@ -179,21 +179,21 @@ PropagateUpOp2<TS,BUD,T,BinOp>::operator()(T& id,
 
   //when propagating up apply op1 before continuing along the axis.
   else if (Axis<TS,BUD>* axis = dynamic_cast<Axis<TS,BUD>*>(tc)){
-    op1(id,axis);
+    T id_new = op1(id,axis);
     list<TreeCompartment<TS,BUD>*>& tc_ls = GetTreeCompartmentList(*axis);
     list<TreeCompartment<TS,BUD>*>::iterator first = tc_ls.begin();
     list<TreeCompartment<TS,BUD>*>::iterator last = tc_ls.end();
     while (first != last)
-      (*this)(id,*first++);
+      (*this)(id_new,*first++);
   }
   //when propagating up apply op1 before continuing to the axes.
   else if (BranchingPoint<TS,BUD>* bp = dynamic_cast<BranchingPoint<TS,BUD>*>(tc)){
-    op1(id,bp);
+    T id_changed = op1(id,bp);
     list<Axis<TS,BUD>*>& axis_ls = GetAxisList(*bp);
     list<Axis<TS,BUD>*>::iterator first = axis_ls.begin();
     list<Axis<TS,BUD>*>::iterator last = axis_ls.end();
     while (first != last){
-      T id_new = id;
+      T id_new = id_changed;
       (*this)(id_new,*first++);
     }
   }

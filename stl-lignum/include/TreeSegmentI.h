@@ -234,16 +234,22 @@ KGC GetSapwoodMass(const TreeSegment<TS,BUD>& ts)
 
 
 template <class TS,class BUD>
-METER GetSapwoodArea(const TreeSegment<TS,BUD>& ts)
+M2 GetSapwoodArea(const TreeSegment<TS,BUD>& ts)
 {
-  //volume up to R
-  LGMdouble A1 = (PI_VALUE * pow((double)ts.tsa.R,2.0));
-  //heartwood volume
-  LGMdouble A2 = (PI_VALUE * pow((double)ts.tsa.Rh,2.0));
-  //sapwood volume
+  //area up to R, wood radius up to foliage
+  LGMdouble A1 = PI_VALUE*pow(GetValue(ts,R),2.0);
+  //heartwood area
+  LGMdouble A2 = PI_VALUE*pow(GetValue(ts,Rh),2.0);
+  //sapwood area
   LGMdouble A3 = A1 - A2;
 
   return A3;
+}
+
+template <class TS,class BUD>
+M2 GetHeartwoodArea(const TreeSegment<TS,BUD>& ts)
+{
+  return PI_VALUE*pow(GetValue(ts,Rh),2.0);
 }
 
 template <class TS,class BUD>
