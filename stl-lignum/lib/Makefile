@@ -10,7 +10,8 @@ SRC = ../Axis/AxisFriend.cc  \
       ../TreeCompartment/TreeCompartmentFriend.cc\
       ../Tree/TreeFriend.cc \
       ../Tree/Tree.cc \
-      ../TreeSegment/CfTreeSegment.cc
+      ../TreeSegment/CfTreeSegment.cc \
+      ../TreeSegment/BroadLeafMetabolism.cc
   
 OBJ = ../Axis/AxisFriend.o \
       ../BetulaWithFlow/BetulaWithFlow.o \
@@ -24,7 +25,9 @@ OBJ = ../Axis/AxisFriend.o \
       ../TreeCompartment/TreeCompartmentFriend.o \
       ../Tree/TreeFriend.o \
       ../Tree/Tree.o \
-      ../TreeSegment/CfTreeSegment.o
+      ../TreeSegment/CfTreeSegment.o \
+      ../TreeSegment/BroadLeafMetabolism.o
+
 
 INCLUDE = -I../include  -I../../c++adt/include -I../../Firmament/include
 STL = -I/usr/include/CC

@@ -45,7 +45,6 @@ public:
   vector<LGMdouble>  sv; //the length of the vector == number of sectors 
 };
 
-
 class BroadLeaf{
   friend LGMdouble GetValue(const BroadLeaf& bl, const LGMAD name);
   friend LGMdouble SetValue(BroadLeaf& bl, const LGMAD name, const LGMdouble value);
@@ -59,16 +58,18 @@ class BroadLeaf{
   friend void TranslateLeaf(BroadLeaf& bl, const PositionVector& t);
   friend void SetLeafPosition(BroadLeaf& bl, const Point<>& p);
 public:
-
   BroadLeaf(LGMdouble sf,LGMdouble tauL,LGMdouble dof,int number_of_sectors,
 	    const Petiole& petiole, const PositionVector& leaf_normal,
 	    const Ellipsis& shape);
+  void photosynthesis(const LGMdouble& p0);
 private:
   //  void initsv(){for (int i = 0; i < bla.sv.size(); i++)bla.sv[i] = 1.0;}
   BroadLeafAttributes bla;
 };
 
+
 }//closing namespace Lignum 
+
 #endif
 
 

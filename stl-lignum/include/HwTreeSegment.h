@@ -8,6 +8,8 @@
 #include <Firmament.h>
 
 namespace Lignum{
+using namespace cxxadt;
+
 
 template <class TS, class BUD=DefaultBud<TS> >
 class HwTreeSegment:public TreeSegment<TS,BUD>{
@@ -27,17 +29,27 @@ class HwTreeSegment:public TreeSegment<TS,BUD>{
   friend LGMdouble GetValue(const HwTreeSegment<TS1,BUD1>& ts, const LGMAD name);
 public:
   HwTreeSegment(const cxxadt::Point<METER>& p,const PositionVector& pv,
-		const LGMdouble go,const Lignum::METER l, const Lignum::METER r,
-		const Lignum::METER rn,Tree<TS,BUD>* tree)
+		const LGMdouble go, const Lignum::METER l, const METER r,
+		const METER rn,Tree<TS,BUD>* tree)
     :TreeSegment<TS,BUD>(p,pv,go,l,r,rn,tree){}
+  void photosynthesis();
 private:
   list<BroadLeaf*> leaf_ls;
 };
 
 #include <HwTreeSegmentI.h>
+#include <HwTreeSegmentMetabolismI.h>
 
 } //close namespace Lignum
 
 
 
 #endif
+
+
+
+
+
+
+
+

@@ -112,12 +112,14 @@ class Tree: public Lignum::TreeCompartment<TS,BUD>{
   friend string GetTreeInitializationFile(Tree<TS1,BUD1>& tree);
   template <class TS1,class BUD1>
   friend sky::Firmament& GetFirmament(Tree<TS1,BUD1>& tree);
+  template <class TS1,class BUD1>
+  friend LGMdouble UpdateTreePhotosynthesis(Tree<TS1,BUD1>& tree);
+
 public:
   Tree();
   Tree(const Point<METER>& p, const PositionVector& d);
   void UpdateWaterFlow(LGMdouble time, const ConnectionMatrix<TS,BUD> &cm);
   void photosynthesis();
-  void sumPhotosynthesis();
 
 private:
   LGMdouble CountFlow(TreeSegment<TS,BUD> &in, TreeSegment<TS,BUD> &out);
@@ -132,26 +134,13 @@ private:
   RootSystem rs;
 };
 
-template<class TS, class BUD=DefaultBud<TS> > 
-  class TreePhotosynthesis:  public AdaptableTCFunction<TS,BUD>{
-  public:
-    TreeCompartment<TS,BUD>* operator() (TreeCompartment<TS,BUD>* tc)const;
-  };
-
-template <class TS,class BUD=DefaultBud<TS> >
-  class SumTreePhotosynthesis {
-  public:
-    LGMdouble& operator() (LGMdouble& cumPh, TreeCompartment<TS,BUD>* tc)const;
-
-  };
-
 
 
 }//closing namespace Lignum
 
 #include <TreeI.h>
 #include <TreeMetabolismI.h>
-
+#include <TreeBookkeepingI.h>
 
 #endif
 

@@ -42,17 +42,6 @@ LGMdouble SetValue(CfTreeSegment<TS,BUD>& ts, const LGMAD name, const LGMdouble 
 }
 
 
-//Calculate and set the photosynthetic rate of the segment as
-//as the function of absorbed radiation
-
-template <class TS,class BUD>
-void CfTreeSegment<TS,BUD>::photosynthesis()
-{
-  Tree<TS,BUD>& t = dynamic_cast<Tree<TS,BUD>&>(GetTree(*this));
-  cftsa.P = GetValue(t, pr) * cftsa.Qabs;
-
-}
-
 
 } //closing namespace Lignum
 

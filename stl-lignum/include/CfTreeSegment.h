@@ -39,5 +39,10 @@ private:
 }//close namespace Lignum
 
 #include <CfTreeSegmentI.h>
+#include <CfTreeSegmentMetabolismI.h>
+
 
 #endif
+
+
+

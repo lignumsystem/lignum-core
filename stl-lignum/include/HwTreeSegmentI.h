@@ -1,6 +1,7 @@
 #ifndef HWTREESEGMENTI_H
 #define HWTREESEGMENTI_H
 
+
 template<class TS, class BUD >
 list<BroadLeaf*>& GetLeafList(HwTreeSegment<TS,BUD>& ts)
 {
@@ -95,7 +96,7 @@ LGMdouble GetValue(const HwTreeSegment<TS,BUD>& ts, const LGMAD name)
     
     return value;
   }
-  elseif (name == P) {
+  else if (name == P) {
     list<BroadLeaf*>& leaf_list = GetLeafList(const_cast<HwTreeSegment<TS,BUD>&>(ts));
     list<BroadLeaf*>::iterator I;
     for(I = leaf_list.begin(); I != leaf_list.end(); I++)
@@ -103,7 +104,7 @@ LGMdouble GetValue(const HwTreeSegment<TS,BUD>& ts, const LGMAD name)
     
     return value;
   }
-  elseif (name == Qin) {
+  else if (name == Qin) {
     list<BroadLeaf*>& leaf_list = GetLeafList(const_cast<HwTreeSegment<TS,BUD>&>(ts));
     list<BroadLeaf*>::iterator I;
     for(I = leaf_list.begin(); I != leaf_list.end(); I++)
@@ -111,7 +112,7 @@ LGMdouble GetValue(const HwTreeSegment<TS,BUD>& ts, const LGMAD name)
     
     return value;
   }
-  elseif (name == Qabs) {
+  else if (name == Qabs) {
     list<BroadLeaf*>& leaf_list = GetLeafList(const_cast<HwTreeSegment<TS,BUD>&>(ts));
     list<BroadLeaf*>::iterator I;
     for(I = leaf_list.begin(); I != leaf_list.end(); I++)
@@ -126,4 +127,6 @@ LGMdouble GetValue(const HwTreeSegment<TS,BUD>& ts, const LGMAD name)
 
 
 #endif
+
+
 

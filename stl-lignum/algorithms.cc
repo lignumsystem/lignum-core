@@ -2,9 +2,9 @@
 #include <iostream.h>
 #include <list>
 #include <algorithm>
-#include <Tree.h>
 #include <MyTreeSegment.h>
 #include <MyBud.h>
+#include <Tree.h>
 
 using namespace Lignum;
 
@@ -135,6 +135,7 @@ int main(int argc, char *argv[])
   MyCfTreeSegment *cf_ts = 
     new MyCfTreeSegment(Point<METER>(0,0,0),PositionVector(0,0,1.0),
 			0,1,0.5,0.2,&cf_tree);
+  SetValue(*cf_ts, Qabs, 100.0);                //this segment has absorbed radiation
   //create the branching point
   BranchingPoint<MyCfTreeSegment,MyBud> *cf_bp = 
     new BranchingPoint<MyCfTreeSegment,MyBud>(Point<METER>(0,0,0),
@@ -218,9 +219,11 @@ int main(int argc, char *argv[])
   cout << endl;
 
   //Phtosynthesis
+  SetValue(cf_tree, pr, 1.0);      //Set the photosynthesis parameter
   cf_tree.photosynthesis();
-  cf_tree.sumPhotosynthesis();
-  cout << endl << "Photosynthesis (should be = 0): " << GetValue(cf_tree, P) << endl;
+  UpdateTreePhotosynthesis(cf_tree);
+  cout << endl << "Photosynthesis (should be = 1*100): "
+       << GetValue(cf_tree, P) << endl;
 }
 
 

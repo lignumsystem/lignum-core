@@ -50,7 +50,8 @@ public:
   virtual ~TreeSegment();
   LGMdouble GetTranspiration(LGMdouble time);
   TreeSegmentAttributes& getTsa(){return tsa;}
-  //  void photosynthesis();
+  //  void photosynthesis();  OBS! TreeSegment does not have photosynthesis,
+  //it is either CfTreeSegment or HwTreeSegment which handle it in their own ways
 private:
   TreeSegmentAttributes tsa;
 };
