@@ -1,10 +1,80 @@
-\chapter{Using Lignum}
-\section{Command Line Arguments}
-\section{Visualizing Results}
-\subsection{The Visualization Program}
-\subsection{MineSet Program}
+\chapter{Getting Started with LIGNUM}
 
-\section{Initialization of the Tree}
+\section{Compiling LIGNUM}
+
+The  program implementing  \lignum\  is written  with  C++ under  UNIX
+environment. This guide tells how to compile and run the core model of
+\lignum\  under Silicon  Graphics Irix  6.x machines with native SGI
+$ \rm MIPSpro^{TM}$ C++ 7.x compilers.  As \lignum\ is ported to other
+machine  architectures  they  will  be  documented  as  well.   
+
+
+The source  code implementing  the core model  of \lignum\  called LGM
+(libLGM.a) is located in stl-lignum directory. The LGM library depends
+on c++adt  library (libc++adt.a) implementing  general purpose classes
+not found in Standard Template Library.  The source code for c++adt is
+in c++adt directory. The c++adt  and stl-lignum directories must be in
+the same directory level:
+
+\begin{tabbing}
+Tabbing\= Tabbing\=\kill
+\>\>prompt\% ls -F \\
+\>\>c++adt/ stl-lignum/
+\end{tabbing}
+
+Before  the compilation also  the Standard  Template Library  (STL) is
+needed. The STL library should be part of the C++ compiler system.  To
+compile both the c++adt and  the LGM libraries simply go to stl-lignum
+directory and type make:
+
+\begin{tabbing}
+Tabbing\= Tabbing\=\kill
+\>\>prompt\% cd stl-lignum \\
+\>\>prompt\% make
+\end{tabbing}
+
+The main  Makefile for the make  utility to build the  LGM library not
+only compiles the LGM library but also assumes the existence of c++adt
+directory and if needed (re)compiles the c++adt library.
+
+\section{Makefiles for LIGNUM}
+
+The make utility  is used as an integral  part of software development
+in Unix environment.   A description file for the  make utility called
+Makefile contains  a set of macros  and a set  of specifications. Each
+specification  consists of  a target,  optional prerequisites  for the
+target  and optional commands  to be  executed by  the utility  when a
+prerequisite is newer than the target.
+
+\subsection{Predefined Macros}
+
+There are several Makefiles that are used to compile the core model of
+\lignum\ and the c++adt library.   To  keep  these  two
+libraries consistent,  e.g., to compile for  the 32 or  64 bit machine
+architectures some useful common macros are predefined.
+
+\begin{enumerate}
+\item CCC: The compiler. The default value is CC -64 to compile 64 bit code.
+\item CCCFLAGS: General flags for the compiler. The default value is 
+ -c -ptv -prelink to be verbose (-ptv) when compiling templates.
+\item OPTIMIZE: Flags to optimize the object code. The default value
+is -g.
+\end{enumerate}
+For example to maximize the performance for 64 bit code for IP28 target platform type:
+\begin{tabbing}
+Tabbing\= Tabbing\=\kill 
+\>\>prompt\% make ``OPTIMIZE=-Ofast=ip28''
+\end{tabbing}
+
+In general  the the  appropriate selection for  a SGI platform  can be
+determined by running  ``hinv -c processor". 
+
+
+
+
+\section{Running LIGNUM}
+
+\subsection{Initialization of the Tree}
 
 The parameters and functions of the tree for the simulation 
 must be given in files. The file that is given as command 
@@ -86,3 +156,17 @@ will be implemented if necessary.
 Currently directory paths are not parsed so all the files,
 the schema file and the files defining the parameters and functions,
 must be in the same directory where \lignum\ is started.
+
+
+\section{Visualizing Results}
+
+\subsection{The Visualization Program}
+\subsection{MineSet Program}
+
+
+
+
+
+
+
+
