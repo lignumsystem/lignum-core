@@ -21,17 +21,17 @@
 
 //AccumulateDown for CollectCrownLimitData. DiameterCrownBase does not
 //always produce  good results for  crown limit. CollectCrownLimitData
-//produces a list  of foliage masses in branches  forking off from the
-//branching points  in the main  axis and a  list of heights  of those
-//branching points.  Then  one can print out those  two lists, and the
-//beauty is in the eyes of the beholder.  
-//Usage is something like:
-//   CrownLimitData cld;
-//   AccumulateDown(tree,cld,AddCrownLimitData(),CollectCrownLimitData<TS,BUD>());
-//CrownLimitData  will contain  a  list of  foliage  masses and  their
-//heights in  the crown.   Retrieve the list  for printing  by calling
-//const list<pair<double,double> >&  p = cld.WfHList().  pair.first is
-//the height and pair.second its foliage mass.
+//produces a list of foliage masses and Qabs's in branches forking off
+//from the branching points in the  main axis and a list of heights of
+//those branching points.  Then one can print out those two lists, and
+//the beauty is in the eyes of the beholder.  Usage is:
+//CrownLimitData  cld;
+//AccumulateDown(tree,cld,AddCrownLimitData(),CollectCrownLimitData<TS,BUD>());
+//CrownLimitData will contain lists  of foliage masses and Qabs's and
+//their  heights in  the crown.   Retrieve  the lists for printing  by
+//calling  for example: 
+//const   list<pair<double,double>  >&  p   =  cld.WfHList().
+//pair.first is the height and pair.second its foliage mass.
 
 
 #include <cmath>
@@ -314,13 +314,19 @@ namespace Lignum{
 
   class CrownLimitData{
   public:
-    CrownLimitData():wf_bp(0.0){}
+    CrownLimitData():wf_bp(0.0),qabs_bp(0.0){}
     CrownLimitData(const CrownLimitData& data)
-      :wf_bp(data.wf_bp),wf_h_bp_ls(data.wf_h_bp_ls){}
+      :wf_bp(data.wf_bp),qabs_bp(data.qabs_bp),
+       wf_h_bp_ls(data.wf_h_bp_ls),dh_dwf_ls(data.dh_dwf_ls),
+       h_qabs_ls(data.h_qabs_ls),dh_dqabs_ls(data.dh_dqabs_ls){}
     CrownLimitData& operator=(const CrownLimitData& data)
     {
       wf_bp = data.wf_bp;
+      qabs_bp = data.qabs_bp;
       wf_h_bp_ls = data.wf_h_bp_ls;
+      dh_dwf_ls = data.dh_dwf_ls;
+      h_qabs_ls = data.h_qabs_ls;
+      dh_dqabs_ls = data.dh_dqabs_ls;
       return *this;
     }
     CrownLimitData& addWf(double wf)
@@ -334,32 +340,82 @@ namespace Lignum{
       return *this;
     }
     double Wf()const{return wf_bp;}
+
+    CrownLimitData& addQabs(double qabs)
+    {
+      qabs_bp += qabs; 
+      return *this;
+    }
+    CrownLimitData& Qabs(double qabs)
+    {
+      qabs_bp = qabs; 
+      return *this;
+    }
+    double Qabs()const{return qabs_bp;}
+
     CrownLimitData& addWfH(const pair<double,double>& hwf)
     {
       wf_h_bp_ls.push_front(hwf);
       return *this;
     }
     const list<pair<double,double> >& WfHList()const{return wf_h_bp_ls;}
+    
+    CrownLimitData& adddHdWf(const pair<double,double>& dhdwf)
+    {
+      dh_dwf_ls.push_front(dhdwf);
+      return *this;
+    }
+    const list<pair<double,double> >& dHdWfList()const{return dh_dwf_ls;}
+    
+    CrownLimitData& addHQabs(const pair<double,double>& hqabs)
+    {
+      h_qabs_ls.push_front(hqabs);
+      return *this;
+    }
+    const list<pair<double,double> >& HQabsList()const{return h_qabs_ls;}
+    
+    CrownLimitData& adddHdQabs(const pair<double,double>& dhdqabs)
+    {
+      dh_dqabs_ls.push_front(dhdqabs);
+      return *this;
+    }
+    const list<pair<double,double> >& dHdQabsList()const{return dh_dqabs_ls;}
   private:
-    double wf_bp;
-    list<pair<double,double> > wf_h_bp_ls;//list of the foliage masses in the branches 
-                                            //forking   off   from   a
-                                            //branching  point  in the
-                                            //main   axis,   and   the
-                                            //heights     of     those
-                                            //branching points: pair<wf,h>
+    double wf_bp;//collects  foliage  mass  in  an axis,  sums  up  in
+		 //branching points.
+    double qabs_bp;//collects Qabs  in an  axis, sums up  in branching
+		   //points.
+    list<pair<double,double> > wf_h_bp_ls;//list of the foliage masses
+                                          //in  the  branches  forking
+                                          //off from a branching point
+                                          //in the  main axis, and the
+                                          //heights of those branching
+                                          //points: pair<h,Wf>
+    list<pair<double,double> > dh_dwf_ls;//same as  wf_h_bp_ls but now
+					 //the         list        has
+					 //pair<dh,dWf/dh>          (in
+					 //practice  dWf is Wf  and dh
+					 //is the segment length)
+    list<pair<double,double> > h_qabs_ls;//list  of pair<h,Qabs> in
+					 //branching   points   (as
+					 //above)
+    list<pair<double,double> > dh_dqabs_ls;//same as wf_dh_dqabs_ls
+					   //but  now the  list has
+					   //pair<dh,dQabs/dh>
   }; 
 
-  //Helper functor to add foliage masses in branching points  
+  //Helper functor to add foliage masses and Qabs's in branching points  
   class AddCrownLimitData{
   public:
     CrownLimitData& operator()(CrownLimitData& data1,CrownLimitData& data2)const
     {
       data1.addWf(data2.Wf());
+      data1.addQabs(data2.Qabs());
       return data1;
     }
   };
 
+  //Collect Wf and Qabs branchwise in the main axis
   template <class TS, class BUD>
   class CollectCrownLimitData{
   public:
@@ -369,18 +425,33 @@ namespace Lignum{
 	//main axis
 	if (GetValue(*ts,LGAomega) == 1){
 	  double wf = data.Wf();
+	  double qabs = data.Qabs();
 	  double z = GetEndPoint(*ts).getZ();
-	  //foliage collected from the branches forking off 
-	  //from  the branching point  above, and  the height  of that
-	  //branching point (is the end point of this segment)
+	  double dz = GetValue(*ts,LGAL);
+	  //foliage collected  from the branches forking  off from the
+	  //branching point  above, and  the height of  that branching
+	  //point (is the end point of this segment)
 	  data.addWfH(pair<double,double>(z,wf));
-	  //Clear foliage, so it does not add up to foliage to be collected from
-	  //the branches below
+	  //the same as above but now, mathematically speaking, if you
+	  //sum the foliage  massess over the height of  the tree, you
+	  //will get the total foliage mass in the tree crown
+	  data.adddHdWf(pair<double,double>(dz,wf/dz));
+	  //collect also the absorbed radiation in a tree by branching
+	  //points
+	  data.addHQabs(pair<double,double>(z,qabs));
+	  //the same as above but now, mathematically speaking, if you
+	  //sum the Qabs's  over the height of the  tree, you will get
+	  //the total Qabs  in the tree crown
+	  data.adddHdQabs(pair<double,double>(dz,qabs/dz));
+	  //Clear  foliage, so it  does not  add up  to foliage  to be
+	  //collected from the branches below
 	  data.Wf(0.0);
+	  data.Qabs(0.0);
 	}
 	//in side branches, collect foliage
 	else{
 	  data.addWf(GetValue(*ts,LGAWf));
+	  data.addQabs(GetValue(*ts,LGAQabs));
 	}
       }  
       return data;
