@@ -12,7 +12,7 @@ TreeCompartment<TS,BUD>::TreeCompartment()
 template <class TS,class BUD>
 TreeCompartment<TS,BUD>::TreeCompartment(const Point& p, const PositionVector& d, 
 				 Tree<TS,BUD>* t)
-  :point(p),direction(d)
+  :point(p),direction(d), tc_age(0.0)
 {
   //normalize the direction vector
   //to avoid domain problems e.g., with visualization
@@ -20,7 +20,7 @@ TreeCompartment<TS,BUD>::TreeCompartment(const Point& p, const PositionVector& d
   direction.normalize();
 
   tree = t;
-  tc_age = 0.0;
+
 }
 
 template <class TS,class BUD>
