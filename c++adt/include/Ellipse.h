@@ -17,16 +17,18 @@ namespace cxxadt{
   class Ellipse{
   public:
     Ellipse(const Point& center, const PositionVector& normal, 
-	     const double& semimajoraxis,  const double& semiminoraxis);
+	    const double& semimajoraxis,  const double& semiminoraxis);
     Ellipse(const PositionVector& petiole0,
-             const PositionVector& normal, 
-	     const double& semimajoraxis,  const double& semiminoraxis);
+	    const PositionVector& normal, 
+	    const double& semimajoraxis,  const double& semiminoraxis);
+    Ellipse(const Ellipse& e);
+    Ellipse& operator=(const Ellipse& e);
     Point  getCenterPoint() const { return center;};
     PositionVector getNormal()const { return normal;};
     double getSemimajorAxis()const{ return semimajoraxis;};
-    Point  getSemimajorAxisPoint();
+    Point  getSemimajorAxisPoint()const;
     double getSemiminorAxis()const{return semiminoraxis;};
-    Point  getSemiminorAxisPoint();
+    Point  getSemiminorAxisPoint()const;
     void   setCenterPoint(const Point& center0){center=center0;};
     void   setSemimajorAxis( const double& semimajoraxis0)
                  {semimajoraxis=semimajoraxis0;}
@@ -51,9 +53,9 @@ namespace cxxadt{
                                            // b - the vector beam end
     
 					   				       
-    PositionVector x1u();      //unit vector x-axis in the ellipse plane
+    PositionVector x1u()const;      //unit vector x-axis in the ellipse plane
 
-    PositionVector y1u();     //unit vector y-axis in the ellipse plane
+    PositionVector y1u()const;     //unit vector y-axis in the ellipse plane
 
    
 
