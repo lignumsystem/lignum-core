@@ -14,10 +14,10 @@
 
 //The Vigour Index as in Nikinmaa et al. 2003 Tree Physiology
 //VI_j = (d_j/d_M)^2*VI_below
-//Usage is with PropagateUp:
-//   ViData data(1);
-//   PropagateUp(tree,data,TreePhysiologyVigourIndex<TS,BUD>());
+//Usage is: 
+//    TreePhysiologyVigourIndex(tree);
 //Each segment will have its vigour index ('vi') updated.
+//The complexity is 2O(n). See  TreePhysiologyVigourIndex below.
 
 #include <cmath>
 #include <list>
@@ -126,6 +126,33 @@ namespace Lignum{
   };
 
 
+  template<class TS,class BUD>
+  class MaxSegmentDiameter{
+  public:
+    double& operator()(double& d,TreeCompartment<TS,BUD>* tc)const
+    {
+      if (BranchingPoint<TS,BUD>* bp = dynamic_cast<BranchingPoint<TS,BUD>*>(tc)){
+	//Update the maximum of segment diameters 
+	SetValue(*bp,MaxD,max(GetValue(bp,MaxD),d));
+      }
+      return d;
+    }
+  };
+
+  template<class TS,class BUD>
+  class SegmentDiameter{
+  public:
+    double& operator()(double& d,TreeCompartment<TS,BUD>* tc)const
+    {
+      if (TS* ts = dynamic_cast<TS*>(tc)){
+	//Get the diameter of the segment an pass it to the 
+	//branching point below
+	d = 2.0*GetValue(*ts,R);
+      }
+      return d;
+    }
+  };
+
 
   //The vigour index as in Nikinmaa et al. 2003 Tree Physiology
   //VI_j = (d_j/d_M)^2*VI_below
@@ -135,11 +162,10 @@ namespace Lignum{
   class ViData{
   public:
     ViData(double init = 1)
-      :diameter_segment_above(0.0),vi_segment_below(init){}
+      :vi_segment_below(init){}
     //Copy constructor, required by PropagateUp
     ViData(const ViData& vi_data)
-      :diameter_segment_above(vi_data.diameter_segment_above),
-       vi_segment_below(vi_data.vi_segment_below),
+      :vi_segment_below(vi_data.vi_segment_below),
        segment_diameter_ls(vi_data.segment_diameter_ls){}     
     //Assignment, required by PropagateUp
     ViData& operator=(const ViData& vi_data);    
@@ -155,15 +181,7 @@ namespace Lignum{
       vi_segment_below = vi;
       return *this;
     }
-    ViData& diameterSegmentAbove(double d){
-      diameter_segment_above = d;
-      return *this;
-    }
-    double diameterSegmentAbove()const{
-      return diameter_segment_above;
-    }
   private:
-    double diameter_segment_above;
     double vi_segment_below;
     list<double> segment_diameter_ls;
   };
@@ -174,64 +192,32 @@ namespace Lignum{
     //maximum of the diameters
     maxj = max_element(segment_diameter_ls.begin(),segment_diameter_ls.end());
     //formula for vi from Nikinmaa et al 2003 Tree Physiology 
-    //Note: if you write d/*maxj the '/*' would be the beginning of
-    //a comment
+    //Note: if you write "d/*maxj"  the '/*' would be the beginning of
+    //a comment!!
     double vi = pow(d / *maxj,2.0)*vi_segment_below;
     return vi;
   }
   
   inline ViData& ViData::operator=(const ViData& vi_data)
   {
-    diameter_segment_above = vi_data.diameter_segment_above;
     vi_segment_below = vi_data.vi_segment_below;
     segment_diameter_ls = vi_data.segment_diameter_ls;
     return *this;
   }
   
   template <class TS, class BUD>
-  class TreePhysiologyVigourIndex{
+  class TPVigourIndex{
   public:
-    ViData& operator()(ViData& data, TreeCompartment<TS,BUD>* tc)const
+    ViData& operator()(ViData& vi_data, TreeCompartment<TS,BUD>* tc)const
     {
-      //peek "the segment above" diameter
-      if (Axis<TS,BUD>* axis = dynamic_cast<Axis<TS,BUD>*>(tc)){
-	list<TreeCompartment<TS,BUD>*>& ls = GetTreeCompartmentList(*axis);
-	//If there is a second segment
-	if (ls.size() > 3){
-	  //Get the second segment: [TS_0,BP_1,TS_2,....,B] 
-	  TS* ts = dynamic_cast<TS*>(*(ls.begin()+2));
-	  if (ts != NULL){
-	    double d = 2.0*GetValue(*ts,R);
-	    //set the segment above diameter
-	    data.diameterSegmentAbove(d);
-	  }
-	  //We should not get here!
-	  else{
-	    cout << "Error TreePhysiologyVigourIndex, no segment" << endl;
-	  }
-	}
-	//no segment above
-	else{
-	  data.diameterSegmentAbove(0.0);
-	}
-      }
-      //peek diameters of the segments in the branching point 
-      else if (BranchingPoint<TS,BUD>* bp = 
-	       dynamic_cast<BranchingPoint<TS,BUD>*>(tc)){
-	list<Axis<TS,BUD>*>& axis_ls = GetAxisList(*bp);
-	typename list<Axis<TS,BUD>*>::iterator iter = NULL;
-	for (iter = axis_ls.begin(); iter != ls.end(); iter++){
-	  Axis<TS,BUD>* axis = *iter;
-	  list<TreeCompartment<TS,BUD>*>& ls = GetTreeCompartmentList(*axis);
-	  TS* ts = dynamic_cast<TS*>(*(ls.begin()));
-	  if (ts != NULL){
-	    double d = 2.0*GetValue(*ts,R);
-	    data.addSegmentDiameter(d);
-	  }
-	}
-	//add the 'segment above diameter' seen and set by axis
-	data.addSegmentDiameter(data.segmentAboveDiameter());
-	//now there are all segment diameters needed in 'data'
+      if (BranchingPoint<TS,BUD>* bp = dynamic_cast<BranchingPoint<TS,BUD>*>(tc)){
+	//clear the list of diameters
+	vi_data.reset();
+	//The maximum of segment diameters of segments forking 
+	//off from this branching point and the segment above
+	vi_data.addSegmentDiameter(GetValue(*bp,MaxD));
+	//Reset the MaxD!!
+	SetValue(*bp,MaxD,0.0);
       }
       //compute the VI for the segment
       else if (TS* ts = dynamic_cast<TS>(tc)){
@@ -242,20 +228,46 @@ namespace Lignum{
 	//segment itself is needed.  If  the diameter is twice it does
 	//not  matter  (more troublesome  to  explicitely program  the
 	//special case in the beginning)
-	data.addSegmentDiameter(2.0*GetValue(*ts,R));
-	//ViData has diameters of all the segments we need to compare with
-	//to compute the VI, comopute the VI
-	double vi_value = data(2.0*GetValue(*ts,R));
+	vi_data.addSegmentDiameter(2.0*GetValue(*ts,R));
+	//ViData has the max diameter of the segments we need to compare with
+	//to  compute the  VI (see  TreePhysiologyVigourIndex). Compute
+	//the VI.
+	double vi_value = vi_data(2.0*GetValue(*ts,R));
 	//Update VI
 	SetValue(*ts,vi,vi_value);
 	//This will be the new segment below VI
-	data.viSegmentBelow(vi_value);
-	//clear the list of diameters
-	data.reset();
+	vi_data.viSegmentBelow(vi_value);
       }
       //We are done
-      return data;
-    }//funtor operator()
-  };//class TreeCharacteristics 
+      return vi_data;
+    }//functor operator()
+  };//class TPVigourIndex
+
+
+  //Interface to VigourIndex (VI) as in Nikinmaa et al 2003 Tree  Physiology   
+  //paper.  The design  of LIGNUM hits back when  implementing the VI.
+  //First,  AccumulateDown  segment   diameters  and  assign  in  each
+  //branching  point the  maximum  of the  diameters  of the  segments
+  //forking off from the branching  point and the segment above.  Then
+  //PropagateUp   the  VI   according  to   its  formula.    Thus  the
+  //computational  complexity  is  2O(n).    The  problem  is  that  a
+  //branching point cannot see the segment above, only the segments in
+  //the branches.   So two traversals are needed,  first assigning the
+  //maximum of  the diameters (going from  tip of the  branches to the
+  //base of the tree ) and  then actually computing the VI (going from
+  //the base  to the  branch tips).  Perhaps  it would be  possible to
+  //construct  an   algorithm  for  VI  with   single  traversal  only
+  //(i.e. O(n) complexity) but I could not come up any straightforward
+  //way of  doing it.  It  is the clarity versus  efficiency tradeoff,
+  //where I chose clarity.
+  template <class TS,class BUD>
+  void TreePhysiologyVigourIndex(Tree<TS,BUD>& t)
+  {
+    double d = 0.0;
+    AccumulateDown(t,d,MaxSegmentDiameter<TS,BUD>(),SegmentDiameter<TS,BUD>());
+    ViData vi(1.0);
+    PropagateUp(t,vi,TPVigourIndex<TS,BUD>());
+  }
+
 }//namespace Lignum
 #endif
