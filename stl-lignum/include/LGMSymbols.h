@@ -58,7 +58,7 @@ namespace Lignum{
               LGAL,LGAM, LGAMaxD,LGAomega,LGAP,LGAQabs,LGAQin,LGAR,LGARf,
               LGARh, LGARhair,LGARTop,LGASa,LGAsf,LGAstarm,LGAstatus, 
               LGAstate,LGAtauL, LGAtype,LGAV,LGAVh,LGAVhair,LGAvi,LGAVs,
-              LGAWf, LGAWs, LGAWh,LGAWhair, LGAT};
+              LGAWf, LGAWf0, LGAWs, LGAWh,LGAWhair, LGAT};
 
 
   //  0 LGAA      Segment base area based on R 
@@ -111,9 +111,10 @@ namespace Lignum{
   //  40 LGAvi     Vigour index
   //  41 LGAVs     Sapwood volume
   //  42 LGAWf     Foliage mass (kg C)
-  //  43 LGAWs     Mass of sapwood (kg C)
-  //  44 LGAWh     Mass of heartwood (kg C)
-  //  45 LGAWhair  Mass of root hair (kg C)
+  //  43 LGAWf0    Initial foliage mass (kg C)
+  //  44 LGAWs     Mass of sapwood (kg C)
+  //  45 LGAWh     Mass of heartwood (kg C)
+  //  46 LGAWhair  Mass of root hair (kg C)
 
   // LGMAD = LIGNUM Attribute Double
 
@@ -132,7 +133,8 @@ namespace Lignum{
   //in TreeFriend.cc. MapLGMPD maps the names of  the parameters found
   //in configuration files to the symbolic names in LGMPD.
 
-  enum LGMPD {LGPaf, LGPaleafmax, LGPapical, LGPar, LGPdof, LGPlr, LGPmf, LGPmr, LGPms,
+  enum LGMPD {LGPaf, LGPaleafmax, LGPapical, LGPar, LGPdof, LGPLmin, 
+	      LGPlr, LGPmf, LGPmr, LGPms,
 	      LGPna, LGPnl, LGPpr, LGPq, LGPrhoW, LGPrho_hair, LGPrho_root,
 	      LGPsf, LGPsr, LGPss, LGPtauL,LGPxi, LGPyc,LGPzbrentEpsilon };
 
@@ -142,27 +144,28 @@ namespace Lignum{
   //                LGPapical * Len of not forking off
   // 3  LGPar  Foliage - root relationship
   // 4  LGPdof Degree of filling (proportion leaf surface fills of geometric
-  //          shape - e.g. ellipsis - of the leaf). 
-  // 5  LGPlr  Length - radius relationship of a tree segment
-  // 6  LGPmf  Maintenance respiration rate of foliage
-  // 7  LGPmr  Maintenance respiration rate of roots
-  // 8  LGPms  Maintenance respiration rate of sapwood
-  // 9  LGPna  Needle angle (radians)
-  // 10  LGPnl  Needle length (na and nl define the cylinder of foliage in
+  //          shape - e.g. ellipsis - of the leaf).
+  // 5. LGPLmin Minimum length (m) allowed for a new segment
+  // 6  LGPlr  Length - radius relationship of a tree segment
+  // 7  LGPmf  Maintenance respiration rate of foliage
+  // 8  LGPmr  Maintenance respiration rate of roots
+  // 9  LGPms  Maintenance respiration rate of sapwood
+  // 10  LGPna  Needle angle (radians)
+  // 11  LGPnl  Needle length (na and nl define the cylinder of foliage in
   //           CfTreeSegment)
-  // 11 LGPpr  Photsynthetic efficiency (=photos. rate = pr * intercepted rad.)
-  // 12 LGPq   Segment shortening factor (becoming obsolete due to vigour
+  // 12 LGPpr  Photsynthetic efficiency (=photos. rate = pr * intercepted rad.)
+  // 13 LGPq   Segment shortening factor (becoming obsolete due to vigour
   //           index)
-  // 13 LGPrhoW      Density of  wood in general (is usually used in Segment)
-  // 14 LGPrho_hair  Density of root hair
-  // 15 LGPrho_root  Density root sapwood
-  // 16 LGPsf        Specific leaf area (=leaf area/ leaf weight)
-  // 17 LGPsr        Senescence rate of roots
-  // 18 LGPss        Senescence rate of sapwood
-  // 19 LGPtauL      Transmission coefficient (light) for leaf
-  // 20 LGPxi        Fraction of heartwood in newly created tree segments
-  // 21 LGPyc	     Foliage mass (kgC) supported by 1 m^2 of sapwood
-  // 22 LGPzbrentEpsilon  Accuracy in numerical computation in root finding
+  // 14 LGPrhoW      Density of  wood in general (is usually used in Segment)
+  // 15 LGPrho_hair  Density of root hair
+  // 16 LGPrho_root  Density root sapwood
+  // 17 LGPsf        Specific leaf area (=leaf area/ leaf weight)
+  // 18 LGPsr        Senescence rate of roots
+  // 19 LGPss        Senescence rate of sapwood
+  // 20 LGPtauL      Transmission coefficient (light) for leaf
+  // 21 LGPxi        Fraction of heartwood in newly created tree segments
+  // 22 LGPyc	     Foliage mass (kgC) supported by 1 m^2 of sapwood
+  // 23 LGPzbrentEpsilon  Accuracy in numerical computation in root finding
   //              (see Zbrent)
 
 
