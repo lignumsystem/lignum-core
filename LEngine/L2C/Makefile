@@ -44,7 +44,7 @@ lex_l.cpp: l2c.l
 	mv lex.l.c lex_l.cpp
 
 .cpp.o:
-	$(CCC) -c  $(OPTIMIZE) $(SUPPRESS) $(CCCFLAGS) $(INCLUDE)  -o $@ $<
+	$(CCC)   $(OPTIMIZE) $(CCCFLAGS) $(SUPPRESS)  $(INCLUDE)  -o $@ $<
 
 clean:
 	rm -rf  $(OBJ) l2c_tab.cpp l2c_tab.h lex_l.cpp core ii_files
@@ -53,4 +53,6 @@ distclean:clean
 
 depend: l2c_tab.cpp lex_l.cpp 
 	$(CCC) -M  $(INCLUDE) $(SRC) > Makedepend
+
+
 
