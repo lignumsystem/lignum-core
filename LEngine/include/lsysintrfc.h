@@ -7,6 +7,7 @@ public:
   void AddModuleAddr(const char*);
   int Count() const
   { return _count; }
+  int hasParameters()const{return _arr[0] != NULL;}  
   void Reset();
 private:
   const char* _arr[eMaxFormalModules];

@@ -1,8 +1,8 @@
 
 template <class TS, class BUD, class T, class F>
-int LSystem::lignum2Lstring(list<Axis<TS,BUD>*>& ls, 
-			    typename list<Axis<TS,BUD>*>::iterator current, 
-			    LstringIterator& ltr, vector<T>& vav)
+int LSystem<TS,BUD,T,F>::lignum2Lstring(list<Axis<TS,BUD>*>& ls, 
+					typename list<Axis<TS,BUD>*>::iterator current, 
+					LstringIterator& ltr, vector<T>& vav)
 {
 
   //Lstring must not end in a branching point 
@@ -22,7 +22,7 @@ int LSystem::lignum2Lstring(list<Axis<TS,BUD>*>& ls,
       ltr++;
       //Proceed to the axis
       list<TreeCompartment<TS,BUD>*>& tc_ls = GetTreeCompartmentList(*axis);
-      lignum2Lstring<TS,BUD,T,F>(tc_ls,tc_ls.begin(),ltr,vav);
+      lignum2Lstring(tc_ls,tc_ls.begin(),ltr,vav);
       //Proceed to next axis
       current++;
     }
@@ -43,7 +43,7 @@ int LSystem::lignum2Lstring(list<Axis<TS,BUD>*>& ls,
     return 0; //end of bp
   }
   //Proceed to next axis
-  return lignum2Lstring<TS,BUD,T,F>(ls,current,ltr,vav);
+  return lignum2Lstring(ls,current,ltr,vav);
 }
       
 /*********************************************************
@@ -54,9 +54,9 @@ int LSystem::lignum2Lstring(list<Axis<TS,BUD>*>& ls,
  *so other operations are easily added                   *
  *********************************************************/ 
 template <class TS, class BUD,class T, class F>
-int LSystem::lignum2Lstring(list<TreeCompartment<TS,BUD>*>& ls,
-			    typename list<TreeCompartment<TS,BUD>*>::iterator current,
-			    LstringIterator& ltr, vector<T>& vav)
+int LSystem<TS,BUD,T,F>::lignum2Lstring(list<TreeCompartment<TS,BUD>*>& ls,
+					typename list<TreeCompartment<TS,BUD>*>::iterator current,
+					LstringIterator& ltr, vector<T>& vav)
 {
   CallerData caller_data;
 
@@ -82,7 +82,7 @@ int LSystem::lignum2Lstring(list<TreeCompartment<TS,BUD>*>& ls,
       //Proceed into the branching point
       list<Axis<TS,BUD>*>& al= GetAxisList(*bp);
       //Note we DO NOT return here but will construct the branching point
-      lignum2Lstring<TS,BUD,T,F>(al,al.begin(),ltr,vav);
+      lignum2Lstring(al,al.begin(),ltr,vav);
       //Branching point done, move the current to the next tree segment
       current++;
     }
@@ -133,11 +133,14 @@ int LSystem::lignum2Lstring(list<TreeCompartment<TS,BUD>*>& ls,
     else if (BUD* bud = dynamic_cast<BUD*> (*current)){
       caller_data.Reset();
       caller_data.Strct.AddModuleAddr(ltr.Ptr());
-      const char* pArg = caller_data.Strct.pArg(0);
-      for (int i = 0; i < vav.size(); i++){
-	F arg = GetValue(*bud,vav[i]);
-	memcpy(const_cast<char*>(pArg),&arg,sizeof(F));
-	pArg += sizeof(F);
+      //Check if Bud indeed has parameters (it may not!)
+      if (caller_data.Strct.hasParameters() > 0){
+	const char* pArg = caller_data.Strct.pArg(0);
+	for (int i = 0; i < vav.size(); i++){
+	  F arg = GetValue(*bud,vav[i]);
+	  memcpy(const_cast<char*>(pArg),&arg,sizeof(F));
+	  pArg += sizeof(F);
+	}
       }
       ltr++;
     }
@@ -164,7 +167,7 @@ int LSystem::lignum2Lstring(list<TreeCompartment<TS,BUD>*>& ls,
     ltr++;
   }
   //Deal with the  next symbol
-  return lignum2Lstring<TS,BUD,T,F>(ls,current,ltr,vav);
+  return lignum2Lstring(ls,current,ltr,vav);
 }
 
 /*******************************************************
@@ -172,13 +175,13 @@ int LSystem::lignum2Lstring(list<TreeCompartment<TS,BUD>*>& ls,
  * start syncing LIGNUM and Lstring                    *
  *******************************************************/
 template <class TS, class BUD, class N, class F>
-int LSystem::lignum2Lstring(Tree<TS,BUD>& t, vector<N>& vav)
+int LSystem<TS,BUD,N,F>::lignum2Lstring(Tree<TS,BUD>& t, vector<N>& vav)
 {
   LstringIterator ltr(mainstring);
   Axis<TS,BUD>& axis = GetAxis(t);
   list<TreeCompartment<TS,BUD>*>& ls = GetTreeCompartmentList(axis);
 
-  return lignum2Lstring<TS,BUD,N,F>(ls,ls.begin(),ltr,vav);
+  return lignum2Lstring(ls,ls.begin(),ltr,vav);
 }
 
 /*******************************************************************************
@@ -194,7 +197,7 @@ int LSystem::lignum2Lstring(Tree<TS,BUD>& t, vector<N>& vav)
  *so other operations are easily added and kept in sync.                       *
  ******************************************************************************/ 
 template <class TS, class BUD, class N, class F>
-int LSystem::lignum2Lstring(Tree<TS,BUD>& t, int argnum,...)
+int LSystem<TS,BUD,N,F>::lignumToLstring(Tree<TS,BUD>& t, int argnum,...)
 {
   va_list ap;
   vector<N> vav;
@@ -212,7 +215,7 @@ int LSystem::lignum2Lstring(Tree<TS,BUD>& t, int argnum,...)
   }
   va_end(ap);
 
-  return lignum2Lstring<TS,BUD,N,F>(t,vav);
+  return lignum2Lstring(t,vav);
 }
 
 /************************************************************************
@@ -220,10 +223,10 @@ int LSystem::lignum2Lstring(Tree<TS,BUD>& t, int argnum,...)
  *Scan for SB's and EB's for the beginning and end of axes respectively.*
  ************************************************************************/
 template <class TS, class BUD,class T,class F>
-int LSystem::lstring2Lignum(list<Axis<TS,BUD>*>& ls, 
-			    typename list<Axis<TS,BUD>*>::iterator current, 
-			    Tree<TS,BUD>& tree, LstringIterator& ltr, 
-			    stack<Turtle>& turtle_stack, vector<T>& vav)
+int LSystem<TS,BUD,T,F>::lstring2Lignum(list<Axis<TS,BUD>*>& ls, 
+					typename list<Axis<TS,BUD>*>::iterator current, 
+					Tree<TS,BUD>& tree, LstringIterator& ltr, 
+					stack<Turtle>& turtle_stack, vector<T>& vav)
 {
 
   //Lstring must not end in a branching point 
@@ -247,7 +250,7 @@ int LSystem::lstring2Lignum(list<Axis<TS,BUD>*>& ls,
       //Go to the first symbol of the new axis
       ltr++;
       list<TreeCompartment<TS,BUD>*>& tc_ls = GetTreeCompartmentList(*axis);
-      lstring2Lignum<TS,BUD,T,F>(tc_ls,tc_ls.begin(),tree,ltr,turtle_stack,vav);
+      lstring2Lignum(tc_ls,tc_ls.begin(),tree,ltr,turtle_stack,vav);
     }
     //If axis exists no new structure is needed
     //Note: this assumes that if new axes emerge 
@@ -260,7 +263,7 @@ int LSystem::lstring2Lignum(list<Axis<TS,BUD>*>& ls,
       //Go to the first symbol of the new axis
       ltr++;
       list<TreeCompartment<TS,BUD>*>& tc_ls = GetTreeCompartmentList(*axis);
-      lstring2Lignum<TS,BUD,T,F>(tc_ls,tc_ls.begin(),tree,ltr,turtle_stack,vav);
+      lstring2Lignum(tc_ls,tc_ls.begin(),tree,ltr,turtle_stack,vav);
       //Proceed to next axis
       current++;
     }
@@ -283,7 +286,7 @@ int LSystem::lstring2Lignum(list<Axis<TS,BUD>*>& ls,
     return 0; //end of bp
   }
   //Proceed to next axis
-  return lstring2Lignum<TS,BUD,T,F>(ls,current,tree,ltr,turtle_stack,vav);
+  return lstring2Lignum(ls,current,tree,ltr,turtle_stack,vav);
 }
       
 /**************************************************************
@@ -293,7 +296,7 @@ int LSystem::lstring2Lignum(list<Axis<TS,BUD>*>& ls,
  *adds only the new structure in Lstring into Lignum          *
  **************************************************************/
 template <class TS, class BUD, class T, class F>
-int LSystem::lstring2Lignum(list<TreeCompartment<TS,BUD>*>& ls,
+int LSystem<TS,BUD,T,F>::lstring2Lignum(list<TreeCompartment<TS,BUD>*>& ls,
 			    typename list<TreeCompartment<TS,BUD>*>::iterator current,
 			    Tree<TS,BUD>& tree,
 			    LstringIterator& ltr,
@@ -326,7 +329,7 @@ int LSystem::lstring2Lignum(list<TreeCompartment<TS,BUD>*>& ls,
       //Proceed into the branching point
       list<Axis<TS,BUD>*>& al= GetAxisList(*bp);
       //Note we DO NOT return here but will construct the branching point
-      lstring2Lignum<TS,BUD,T,F>(al,al.begin(),tree,ltr,turtle_stack,vav);
+      lstring2Lignum(al,al.begin(),tree,ltr,turtle_stack,vav);
       //Branching point done, move the current to the next tree segment
       current++;
     }
@@ -339,7 +342,7 @@ int LSystem::lstring2Lignum(list<TreeCompartment<TS,BUD>*>& ls,
       list<Axis<TS,BUD>*>& al= GetAxisList(*bp);
       //Proceed into the branching point
       //Note we DO NOT return here but will deal with the brannching point
-      lstring2Lignum<TS,BUD,T,F>(al,al.begin(),tree,ltr,turtle_stack,vav);
+      lstring2Lignum(al,al.begin(),tree,ltr,turtle_stack,vav);
     }
     else{
       //We don't have other choices
@@ -361,15 +364,7 @@ int LSystem::lstring2Lignum(list<TreeCompartment<TS,BUD>*>& ls,
       BUD* bud = new BUD(GetPoint(turtle_stack.top()),
 			 GetHeading(turtle_stack.top()),
 			 turtle_stack.size(),&tree);
-      caller_data.Reset();
-      caller_data.Strct.AddModuleAddr(ltr.Ptr());
-      const char* pArg = caller_data.Strct.pArg(0);
-      for (int i = 0; i < vav.size(); i++){
-	F arg = GetValue(*bud,vav[i]);
-	memcpy(&arg,pArg,sizeof(F));
-	SetValue(*(BUD*)bud,vav[i],arg);
-	pArg += sizeof(F);
-      }
+      //We will update this bud when its possible (matching bud in the string)
       ls.insert(ls.begin(),bud);
       //Initialize current!!
       current = ls.begin();
@@ -424,12 +419,15 @@ int LSystem::lstring2Lignum(list<TreeCompartment<TS,BUD>*>& ls,
 			 turtle_stack.size(),&tree);
       caller_data.Reset();
       caller_data.Strct.AddModuleAddr(ltr.Ptr());
-      const char* pArg = caller_data.Strct.pArg(0);
-      for (int i = 0; i < vav.size(); i++){
-	F arg = GetValue(*bud,vav[i]);
-	memcpy((char*)&arg,pArg,sizeof(F));
-	SetValue(*bud,vav[i],arg);
-	pArg += sizeof(F);
+      //Check if Bud indeed has parameters (it may not)
+      if (caller_data.Strct.hasParameters() ){
+	const char* pArg = caller_data.Strct.pArg(0);
+	for (int i = 0; i < vav.size(); i++){
+	  F arg = GetValue(*bud,vav[i]);
+	  memcpy((char*)&arg,pArg,sizeof(F));
+	  SetValue(*bud,vav[i],arg);
+	  pArg += sizeof(F);
+	}
       }
       ls.insert(ls.begin(),bud);
       current = ls.begin();
@@ -443,12 +441,15 @@ int LSystem::lstring2Lignum(list<TreeCompartment<TS,BUD>*>& ls,
       SetDirection(*bud,GetHeading(turtle_stack.top()));
       caller_data.Reset();
       caller_data.Strct.AddModuleAddr(ltr.Ptr());
-      const char* pArg = caller_data.Strct.pArg(0);
-      for (int i = 0; i < vav.size(); i++){
-	F arg = GetValue(*bud,vav[i]);
-	memcpy((char*)&arg,pArg,sizeof(F));
-	SetValue(*bud,vav[i],arg);
-	pArg += sizeof(F);
+      //Check if the Bud indeed has parameters (it may not!)
+      if (caller_data.Strct.hasParameters()){
+	const char* pArg = caller_data.Strct.pArg(0);
+	for (int i = 0; i < vav.size(); i++){
+	  F arg = GetValue(*bud,vav[i]);
+	  memcpy((char*)&arg,pArg,sizeof(F));
+	  SetValue(*bud,vav[i],arg);
+	  pArg += sizeof(F);
+	}
       }
       ltr++;
     }
@@ -490,7 +491,7 @@ int LSystem::lstring2Lignum(list<TreeCompartment<TS,BUD>*>& ls,
     ltr++;
   }
   //Deal with the  next symbol
-  return lstring2Lignum<TS,BUD,T,F>(ls,current,tree,ltr,turtle_stack,vav);
+  return lstring2Lignum(ls,current,tree,ltr,turtle_stack,vav);
 }
 
 /****************************************************************************
@@ -498,7 +499,7 @@ int LSystem::lstring2Lignum(list<TreeCompartment<TS,BUD>*>& ls,
  *updated start syncing lstring and LIGNUM.                                 *
  ****************************************************************************/
 template <class TS, class BUD, class N, class F>
-int LSystem::lstring2Lignum(Tree<TS,BUD>& t, vector<N>& vav)
+int LSystem<TS,BUD,N,F>::lstring2Lignum(Tree<TS,BUD>& t, vector<N>& vav)
 {
 
   Turtle turtle;
@@ -508,7 +509,7 @@ int LSystem::lstring2Lignum(Tree<TS,BUD>& t, vector<N>& vav)
   turtle_stack.push(turtle);
   list<TreeCompartment<TS,BUD>*>& ls = GetTreeCompartmentList(axis);
 
-  return lstring2Lignum<TS,BUD,N,F>(ls,ls.begin(),t,ltr,turtle_stack,vav);
+  return lstring2Lignum(ls,ls.begin(),t,ltr,turtle_stack,vav);
 }
 
 /*******************************************************************************
@@ -524,7 +525,7 @@ int LSystem::lstring2Lignum(Tree<TS,BUD>& t, vector<N>& vav)
  *so other operations are easily added and kept in sync.                       *
  ******************************************************************************/ 
 template <class TS, class BUD, class N, class F>
-int LSystem::lstring2Lignum(Tree<TS,BUD>& t, int argnum,...)
+int LSystem<TS,BUD,N,F>::lstringToLignum(Tree<TS,BUD>& t, int argnum,...)
 {
   va_list ap;
   vector<N> vav;
@@ -541,6 +542,5 @@ int LSystem::lstring2Lignum(Tree<TS,BUD>& t, int argnum,...)
     vav.push_back(static_cast<N>(va_arg(ap,int)));
   }
   va_end(ap);
-  return lstring2Lignum<TS,BUD,N,F>(t,vav);
+  return lstring2Lignum(t,vav);
 }
-
