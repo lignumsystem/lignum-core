@@ -255,12 +255,12 @@ TreeCompartment<TS,BUD>* DrawNeedlesFunctor<TS,BUD>::operator()(TreeCompartment<
       rot_angle = (360/(2*PI_VALUE))*acos((double)direction.getVector()[2]);
       radius = GetValue(*cfts, R);
 
-      //  cout << "neulasmassa " << GetValue(*cfts, Wf) << endl;
-      //SetValue(*cfts, Wf, 40);
+      //  cout << "neulasmassa " << GetValue(*cfts, LGAWf) << endl;
+      //SetValue(*cfts, LGAWf, 40);
 
       //if a very short segment do not visualize foliage
       //it just eats up memory
-      if (GetValue(*cfts, Wf) > R_EPSILON && (GetValue(*cfts,L) > 0.01))
+      if (GetValue(*cfts, LGAWf) > R_EPSILON && (GetValue(*cfts,L) > 0.01))
 	{               
 	      
 	  glPushMatrix();
@@ -269,7 +269,7 @@ TreeCompartment<TS,BUD>* DrawNeedlesFunctor<TS,BUD>::operator()(TreeCompartment<
 	    glRotatef( rot_angle, rot_x, rot_y, 0);
 	  
 	  glDisable(GL_LIGHTING);
-	  draw_texfoliage_planes(length, radius, GetValue(*cfts, Wf), 
+	  draw_texfoliage_planes(length, radius, GetValue(*cfts, LGAWf), 
 				 GetValue(*cfts, LGAage));
 	  glEnable(GL_LIGHTING);
 	  glPopMatrix();

@@ -17,7 +17,7 @@ namespace Lignum{
               LGADbase,LGADbh,LGAdof, dR, H,Hf,Hm,ip,
               lb,LM,LP,LWf,L,lw,M, MaxD,omega,P,
 	      Qin,Qabs,R,Rf,Rh,Rhair,RTop,Sa,LGMstatus,sw,tauL,LGMtype,V,Vh,Vhair,Vs,vi,
-              Wf, LGAWr, LGAWs, LGAWh, LGAWhair};
+              LGAWf, LGAWr, LGAWs, LGAWh, LGAWhair};
 
   //  LGAA   Segment area based on R (see GetValue)
   //  LGAAf     area of foliage
@@ -60,12 +60,11 @@ namespace Lignum{
   //  Vh     Heartwood volume
   //  Vhair  Root hair volume
   //  Vs     Sapwood volume
-  //  Wf     foliage mass (kg C)
+  //  LGAWf     foliage mass (kg C)
   //  LGAWr     root mass (kg C)
   //  LGAWs     mass of sapwood (kg C)
   //  LGAWh     mass of heartwood (kg C)
   //  LGAWhair  mass of root hair (kg C)
-
 
 
   enum LGMFLOW { fin, fout, Pr, Wm };

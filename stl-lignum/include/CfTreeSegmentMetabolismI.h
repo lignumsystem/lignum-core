@@ -24,7 +24,7 @@ void CfTreeSegment<TS,BUD>::respiration()
   LGMdouble resp = 0.0;
   Tree<TS,BUD>& t = GetTree(*this);
   //Rtot = Rfoliage + Rsapwood
-  resp = GetValue(t, mf)*GetValue(*this,Wf) + GetValue(t,ms)*GetValue(*this,LGAWs);
+  resp = GetValue(t, mf)*GetValue(*this,LGAWf) + GetValue(t,ms)*GetValue(*this,LGAWs);
   SetValue(*this,M, resp);
 }
 
@@ -43,8 +43,8 @@ void CfTreeSegment<TS,BUD>::aging()
   //Foliage senescence
   const ParametricCurve& fm = GetFunction(GetTree(*this),LGMFM);
   //This implementation assumes declining function of age from 1 to 0.
-  LGMdouble Wf_new = fm(GetValue(*this,LGAage))*GetValue(*this,Wf);
-  SetValue(*this,Wf,Wf_new);  
+  LGMdouble Wf_new = fm(GetValue(*this,LGAage))*GetValue(*this,LGAWf);
+  SetValue(*this,LGAWf,Wf_new);  
 }
 
 template <class TS, class BUD>

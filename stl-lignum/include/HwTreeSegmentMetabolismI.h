@@ -32,7 +32,7 @@ void HwTreeSegment<TS,BUD,S>::respiration()
   LGMdouble mf_par = GetValue(tt, mf);
 
   for(typename list<BroadLeaf<S>*>::iterator i = leaf_ls.begin(); i != leaf_ls.end(); i++) {
-    m_hw += mf_par * GetValue(**i,Wf);
+    m_hw += mf_par * GetValue(**i,LGAWf);
   }
 
   Tree<TS,BUD>& t = dynamic_cast<Tree<TS,BUD>&>(GetTree(*this));

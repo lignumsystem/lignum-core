@@ -240,7 +240,7 @@ void StructuralPineGrowth(Axis<TS,BUD> &ax, const ParametricCurve& bud_fun, Tree
 		LGMdouble tswf = 0.0;
 		if (CfTreeSegment<TS,BUD>* cfts = dynamic_cast<CfTreeSegment<TS,BUD>*>(treesegment))
 		{
-			tswf = GetValue(*cfts, Wf);
+			tswf = GetValue(*cfts, LGAWf);
 		}
 		//MessageBox(NULL, "grammoja "+GetStr(tswf*1000, 3), NULL, NULL);
 		
@@ -307,7 +307,7 @@ void StructuralPineGrowth(Axis<TS,BUD> &ax, const ParametricCurve& bud_fun, Tree
 
 			SetValue(*ts, omega, 1);
 			SetValue(*ts, LGAage, 0);
-			SetValue(*ts, Wf, foliage_mass);	
+			SetValue(*ts, LGAWf, foliage_mass);	
 			SetValue(*ts, Rf, R_f);
 			SetValue(*ts, Rh, R_h);
 			
@@ -406,7 +406,7 @@ TreeCompartment<TS,BUD>* FoliageLossOfPineTree<TS,BUD>::operator()(TreeCompartme
 		{
 			
 
-			LGMdouble foliage_mass = GetValue(*cfts, Wf); 
+			LGMdouble foliage_mass = GetValue(*cfts, LGAWf); 
 			int ag = GetValue(*cfts, LGAage);
 			if (foliage_mass > 0 && ag>0)
 			{
@@ -416,7 +416,7 @@ TreeCompartment<TS,BUD>* FoliageLossOfPineTree<TS,BUD>::operator()(TreeCompartme
 				next = fol_mor(ag);
 
 				foliage_mass = foliage_mass * next/pre;
-				SetValue(*cfts, Wf, foliage_mass); 
+				SetValue(*cfts, LGAWf, foliage_mass); 
 			}
 		}
 	}
@@ -1032,7 +1032,7 @@ LGMdouble& CollectNewCfFoliageMass<TS,BUD>::operator()(LGMdouble &sum, TreeCompa
 	if(CfTreeSegment<TS,BUD> *cfsegment = dynamic_cast<CfTreeSegment<TS,BUD>*>(tc))
 	{
 		if (GetValue(*cfsegment, LGAage) == 0)
-			sum += GetValue(*cfsegment, Wf);
+			sum += GetValue(*cfsegment, LGAWf);
 	}
 
 	return sum;
@@ -1046,7 +1046,7 @@ LGMdouble& CollectNewHwFoliageMass<TS,BUD>::operator()(LGMdouble &sum, TreeCompa
 	if(HwTreeSegment<TS,BUD> *hwsegment = dynamic_cast<HwTreeSegment<TS,BUD>*>(tc))
 	{
 		if (GetValue(*hwsegment, LGAage) == 0)
-			sum += GetValue(*hwsegment, Wf);
+			sum += GetValue(*hwsegment, LGAWf);
 	}
 
 	return sum;

@@ -49,7 +49,7 @@ Tree<TS,BUD>::Tree(const Point& p, const PositionVector& d, LGMdouble len, LGMdo
 
   if(TS* tts = dynamic_cast<TS *>(ts))
     {
-      SetValue(*tts, Wf, 0.03);
+      SetValue(*tts, LGAWf, 0.03);
     }
   SetValue(*ts, Rf, rad + 0.02);
 
@@ -58,7 +58,7 @@ Tree<TS,BUD>::Tree(const Point& p, const PositionVector& d, LGMdouble len, LGMdo
   
   //Sapwood area corresponds to foliage mass
   LGMdouble A_s = (1.0 - GetValue(*this, xi)) * 
-    GetValue(*ts, Wf)/(2.0*GetValue(*this, af)*
+    GetValue(*ts, LGAWf)/(2.0*GetValue(*this, af)*
 		       GetValue(*this, lr));
   
   if (A_s > PI_VALUE*ts_rad*ts_rad)

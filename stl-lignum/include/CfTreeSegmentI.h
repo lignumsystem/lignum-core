@@ -15,7 +15,7 @@ CfTreeSegment<TS,BUD>::CfTreeSegment(const Point& p, const PositionVector& d,
     //1. compute the surface area (Sa) of the segment cylinder
     //2. initial mass of the foliage is then af*Sa ((kg/m2)*m2)
     LGMdouble wf =  GetValue(*t,af)*GetValue(*this,Sa);
-    SetValue(*this,Wf,wf);
+    SetValue(*this,LGAWf,wf);
     //Remember original sapwood area As0
     SetValue(*this,LGAAs0,GetValue(*this,LGAAs));
   }
@@ -29,7 +29,7 @@ LGMdouble GetValue(const CfTreeSegment<TS,BUD>& ts, const LGMAD name)
   if (name == LGAAf){
     //Given Wf use sf to compute foliage area: sf*Wf ((m2/kg)*kg) 
     //see also parameter af
-    return GetValue(GetTree(ts),sf)*GetValue(ts,Wf);
+    return GetValue(GetTree(ts),sf)*GetValue(ts,LGAWf);
   }
   else if (name == LGAAs0)
     return ts.cftsa.As0;
@@ -56,7 +56,7 @@ LGMdouble GetValue(const CfTreeSegment<TS,BUD>& ts, const LGMAD name)
     return 2.0*PI_VALUE*GetValue(ts,R)*GetValue(ts,L);
 
   //Return simply foliage mass
-  else if (name == Wf)
+  else if (name == LGAWf)
     return ts.cftsa.Wf;
 
   else
@@ -86,7 +86,7 @@ LGMdouble SetValue(CfTreeSegment<TS,BUD>& ts, const LGMAD name, const LGMdouble 
   else if (name == Rf)
     ts.cftsa.Rf = value;
 
-  else if (name == Wf)
+  else if (name == LGAWf)
     ts.cftsa.Wf = value;
 
   else

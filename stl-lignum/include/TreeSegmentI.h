@@ -182,7 +182,7 @@ METER SetRadius(TreeSegment<TS,BUD>& ts)
 
 	/*
 	Tree<TS,BUD> &tree = GetTree(ts);
-	LGMdouble A_s = (1.0 - GetValue(tree, xi)) * GetValue(ts, Wf)/(2.0*GetValue(tree, af)*GetValue(tree, lr));
+	LGMdouble A_s = (1.0 - GetValue(tree, xi)) * GetValue(ts, LGAWf)/(2.0*GetValue(tree, af)*GetValue(tree, lr));
 	LGMdouble r_h = sqrt((PI_VALUE*ts.tsa.R*ts.tsa.R - A_s)/PI_VALUE);
 	SetValue(ts, Rh, r_h);
 */

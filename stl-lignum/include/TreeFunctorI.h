@@ -344,7 +344,7 @@ namespace Lignum{
 					 TreeCompartment<TS,BUD>* tc)const
     {
       if(TS* ts = dynamic_cast<TS*>(tc)){
-	if(GetValue(*ts,Wf) > R_EPSILON) {
+	if(GetValue(*ts,LGAWf) > R_EPSILON) {
 	  Point base = GetPoint(*tc);
 	  Point top = base + GetValue(*ts, L)*(Point)GetDirection(*ts);
     
@@ -474,8 +474,8 @@ namespace Lignum{
 	if (_age > stru.age)
 	  stru.age = _age;
       
-	stru.sum_Wf += GetValue(*ts, Wf);
-	if(GetValue(*ts, Wf) > R_EPSILON) {
+	stru.sum_Wf += GetValue(*ts, LGAWf);
+	if(GetValue(*ts, LGAWf) > R_EPSILON) {
 	  stru.num_s_fol++;
 	  stru.sum_Qabs += GetValue(*ts, Qabs);
 	  stru.sum_Qin += GetValue(*ts, Qin);
@@ -484,7 +484,7 @@ namespace Lignum{
 	LGMdouble rho_ = GetValue(tt, rho);
 
 	if(_age == 0) {
-	  stru.sum_Wf_new += GetValue(*ts, Wf);
+	  stru.sum_Wf_new += GetValue(*ts, LGAWf);
 	  stru.sum_wood_in_newparts += rho_*l_*2.0*PI_VALUE*r_*r_;
 	  stru.sum_wood_new += rho_*l_*2.0*PI_VALUE*r_*r_;
 	}
@@ -575,7 +575,7 @@ namespace Lignum{
     {
       if(TS *segment = dynamic_cast<TS *>(tc))
 	{
-	  sum += GetValue(*segment, Wf);
+	  sum += GetValue(*segment, LGAWf);
 	}
       return sum;
     }
@@ -607,7 +607,7 @@ namespace Lignum{
     {
       //Collect foliage
       if (TS* ts = dynamic_cast<TS*>(tc)){
-	foliage = foliage + GetValue(*ts,Wf);
+	foliage = foliage + GetValue(*ts,LGAWf);
       }
       //If received no foliage  axis can be deleted.
       else if (Axis<TS,BUD>* axis =  dynamic_cast<Axis<TS,BUD>*>(tc)){
@@ -690,17 +690,17 @@ namespace Lignum{
 	    {
 	      stru.sum_Qabs += GetValue(*cfts, Qabs);
 	      stru.sum_Qin  += GetValue(*cfts, Qin);
-	      stru.sum_Wf += GetValue(*cfts, Wf);
-	      stru.sum_needle_area += 28 * GetValue(*cfts, Wf);
-	      stru.sum_QinNA += GetValue(*cfts, Qin) * 28 * GetValue(*cfts, Wf);
-	      stru.sum_QabsNA += GetValue(*cfts, Qabs) * 28 * GetValue(*cfts, Wf);
+	      stru.sum_Wf += GetValue(*cfts, LGAWf);
+	      stru.sum_needle_area += 28 * GetValue(*cfts, LGAWf);
+	      stru.sum_QinNA += GetValue(*cfts, Qin) * 28 * GetValue(*cfts, LGAWf);
+	      stru.sum_QabsNA += GetValue(*cfts, Qabs) * 28 * GetValue(*cfts, LGAWf);
 	    }
 
 	  if(HwTreeSegment<TS,BUD>* hwts = dynamic_cast<HwTreeSegment<TS,BUD>*>(ts))
 	    {
 	      stru.sum_Qabs += GetValue(*hwts, Qabs);
 	      stru.sum_Qin  += GetValue(*hwts, Qin);
-	      stru.sum_Wf += GetValue(*hwts, Wf);
+	      stru.sum_Wf += GetValue(*hwts, LGAWf);
 	    }
 	  */
 
@@ -747,7 +747,7 @@ namespace Lignum{
 	       *Choose either or.
 	      if(CfTreeSegment<TS,BUD>* cfts = dynamic_cast<CfTreeSegment<TS,BUD>*>(ts))
 		{
-		  LGMdouble wf = GetValue(*cfts, Wf);
+		  LGMdouble wf = GetValue(*cfts, LGAWf);
 		  if (wf > 0.0)
 		    {
 		      ofstream file("debugsegments.txt", ios::app);
@@ -756,10 +756,10 @@ namespace Lignum{
 		      LGMdouble qinnn = GetValue(*cfts, Qin); 				
 		      stru.sum_Qabs += GetValue(*cfts, Qabs);
 		      stru.sum_Qin  += GetValue(*cfts, Qin);
-		      stru.sum_Wf += GetValue(*cfts, Wf);
-		      stru.sum_needle_area += 28 * GetValue(*cfts, Wf);
-		      stru.sum_QinNA += GetValue(*cfts, Qin) * 28 * GetValue(*cfts, Wf);
-		      stru.sum_QabsNA += GetValue(*cfts, Qabs) * 28 * GetValue(*cfts, Wf);
+		      stru.sum_Wf += GetValue(*cfts, LGAWf);
+		      stru.sum_needle_area += 28 * GetValue(*cfts, LGAWf);
+		      stru.sum_QinNA += GetValue(*cfts, Qin) * 28 * GetValue(*cfts, LGAWf);
+		      stru.sum_QabsNA += GetValue(*cfts, Qabs) * 28 * GetValue(*cfts, LGAWf);
 		      file << GetValue(*cfts, Qin) << " : " << GetValue(*cfts, Qabs) << " : ";
 		      file << 28 * GetValue(*cfts, Wf) << ":" << GetPoint(*ts);
 		      file.close();
@@ -771,7 +771,7 @@ namespace Lignum{
 		{
 		  stru.sum_Qabs += GetValue(*hwts, Qabs);
 		  stru.sum_Qin  += GetValue(*hwts, Qin);
-		  stru.sum_Wf += GetValue(*hwts, Wf);
+		  stru.sum_Wf += GetValue(*hwts, LGAWf);
 		}
 	      */
 	      // if main axis

@@ -165,13 +165,13 @@ LGMdouble GetValue(Axis<TS,BUD>& ax, LGMAD name)
     }
     return len;
   }
-  else if (name == Wf) {
+  else if (name == LGAWf) {
     std::list<TreeCompartment<TS, BUD>*>& ls = ax.tc_ls;
     typename std::list<TreeCompartment<TS, BUD>*>::iterator I = ls.begin();
     LGMdouble w_f = 0.0;
     while(I != ls.end()) {
       if (TS* ts = dynamic_cast<TS*>(*I))
-	w_f += GetValue(*ts, Wf);
+	w_f += GetValue(*ts, LGAWf);
       I++;
     }
     return w_f;
@@ -217,7 +217,7 @@ LGMdouble GetBranchFoliage(Axis<TS,BUD>& ax) {
   typename std::list<TreeCompartment<TS, BUD>*>::iterator I = ls.begin();
   while(I != ls.end()) {
     if (TS* ts = dynamic_cast<TS*>(*I)) {
-      w_fol += GetValue(*ts, Wf);
+      w_fol += GetValue(*ts, LGAWf);
     }
 
 

@@ -107,11 +107,11 @@ namespace Lignum{
 
       LGMdouble value = 0.0;
 
-      if (name == Wf){
+      if (name == LGAWf){
 	std::list<BroadLeaf<S>*>& leaf_list = GetLeafList(const_cast<HwTreeSegment<TS,BUD,S>&>(ts));
 	typename std::list<BroadLeaf<S>*>::iterator I;
 	for(I = leaf_list.begin(); I != leaf_list.end(); I++)
-	  value += GetValue(**I, Wf);
+	  value += GetValue(**I, LGAWf);
 	return value;
       }
       else if (name == P){

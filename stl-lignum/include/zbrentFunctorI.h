@@ -45,7 +45,7 @@ LGMdouble& AdjustDiameterCfGrowth<TS,BUD>::operator()(LGMdouble& As, TreeCompart
 				LGMdouble dAs = GetValue(tree, ss) * PI_VALUE * (pow(GetValue(*cfsegment, R), 2) - pow(r_h, 2));
 			
 				//From equation 14 in Ann Bot 1996
-				LGMdouble Asr = ( 1.0 - GetValue(tree, xi)) * GetValue(*cfsegment, Wf) / (2.0 * GetValue(tree, af) * GetValue(tree, lr)); 
+				LGMdouble Asr = ( 1.0 - GetValue(tree, xi)) * GetValue(*cfsegment, LGAWf) / (2.0 * GetValue(tree, af) * GetValue(tree, lr)); 
 
 				double t = (Asu + PI_VALUE * pow(r_h, 2.0) + dAs + Asr);
 				double t2 = sqrt(t / PI_VALUE);
@@ -244,7 +244,7 @@ TreeCompartment<TS,BUD>* adjustSegmentSizeLambda<TS,BUD>::operator()
 				
 			SetValue(*cfts, L, length);
 			SetValue(*cfts, R, radius);
-			SetValue(*cfts, Wf, foliage_mass);	
+			SetValue(*cfts, LGAWf, foliage_mass);	
 			SetValue(*cfts, Rf, R_f);
 
 			#ifdef _MSC_VER
@@ -283,7 +283,7 @@ LGMdouble&  CollectDWAfterGrowth<TS,BUD>::operator()(LGMdouble& WSum, TreeCompar
 			
 			if(GetValue(*cfts, LGAage) < R_EPSILON)
 			{
-				WSum += GetValue(*cfts,Wf) + (GetValue(tt, rho) * PI_VALUE * pow(GetValue(*cfts, R),2))*GetValue(*cfts, L); //GetSapwoodArea(*cfts) + GetValue(*cfts,LGAWh);
+				WSum += GetValue(*cfts,LGAWf) + (GetValue(tt, rho) * PI_VALUE * pow(GetValue(*cfts, R),2))*GetValue(*cfts, L); //GetSapwoodArea(*cfts) + GetValue(*cfts,LGAWh);
 			}
 			else
 			{
@@ -304,7 +304,7 @@ LGMdouble&  CollectDWAfterGrowth<TS,BUD>::operator()(LGMdouble& WSum, TreeCompar
 			
 			if(GetValue(*hwts, LGAage) < R_EPSILON)
 			{
-				WSum += GetValue(*hwts,Wf) + (GetValue(tt, rho) * PI_VALUE * pow(GetValue(*hwts, R),2))*GetValue(*hwts, L); //GetSapwoodArea(*hwts) + GetValue(*hwts,LGAWh);
+				WSum += GetValue(*hwts,LGAWf) + (GetValue(tt, rho) * PI_VALUE * pow(GetValue(*hwts, R),2))*GetValue(*hwts, L); //GetSapwoodArea(*hwts) + GetValue(*hwts,LGAWh);
 			}
 			else
 			{

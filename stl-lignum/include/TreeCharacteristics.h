@@ -135,7 +135,7 @@ namespace Lignum{
 	}
 	else{
 	  //in side branches, collect foliage
-	  dcl.AddBranchWf(GetValue(*ts,Wf)); 
+	  dcl.AddBranchWf(GetValue(*ts,LGAWf)); 
 	}
       }
       return dcl;
@@ -373,7 +373,7 @@ namespace Lignum{
 	}
 	//in side branches, collect foliage
 	else{
-	  data.addWf(GetValue(*ts,Wf));
+	  data.addWf(GetValue(*ts,LGAWf));
 	}
       }  
       return data;

@@ -45,7 +45,7 @@ namespace Lignum {
     {
       if (CfTreeSegment<TS,BUD>* cfts = dynamic_cast<CfTreeSegment<TS,BUD>*>(tc))
 	{
-	  LGMdouble fmass = GetValue(*cfts, Wf);
+	  LGMdouble fmass = GetValue(*cfts, LGAWf);
 	  //Reset values here
 	  SetValue(*cfts, Qabs, 0.0);
 	  SetValue(*cfts, Qin, 0.0);
