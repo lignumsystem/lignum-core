@@ -5,12 +5,23 @@
 
 using namespace std;
 
-enum TPD {af,ar,lr,mf,mr,ms,na,nl,pr,q,sr,ss,rho,xi};
-enum TAD {area,fin,fout,H,Hm,ip,lb,L,M,omega,P,Pr,Qin,Qabs,R,Rf,Rn,Wf,Wm,Ws};  // Wm lisätty..Wr pois
-enum TAI {age};
-enum TTD {lambda, g, eta, Er, k, rhow};
-enum TAS {state};     // Tree Attribute STATUS
+//Broad Leaf Attributes
+enum BLA {Larea,dof,lw,sf,tauL,LP,LM,LQabs,LQin,LWf}; 
 
+// Tree Attribute Double, Wm lisätty..Wr pois
+enum TAD {area,fin,fout,H,Hm,ip,lb,L,M,omega,P,Pr,Qin,Qabs,R,Rf,Rn,Wf,Wm,Ws};  
+
+//TreeAttribute Integer
+enum TAI {age};
+
+//Tree Attribute STATUS
+enum TAS {state};
+
+//Tree Parameter Double
+enum TPD {af,ar,lr,mf,mr,ms,na,nl,pr,q,sr,ss,rho,xi}; 
+
+//Tree Transit Variable Double
+enum TTD {lambda, g, eta, Er, k, rhow}; 
 
 class cmpstr{
 public:
