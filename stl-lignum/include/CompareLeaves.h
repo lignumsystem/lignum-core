@@ -101,17 +101,51 @@ namespace Lignum{
   template<class SHAPE>
   void HwTreeSegmentLeafIntersect<SHAPE>::operator()(BroadLeaf<SHAPE>* l)
   {
-    cout << "IN HwTreeSegmentLeafIntersect" << endl;
+
+    cout << endl<<endl;
+
+    cout << "FROM leaf C: "
+	 <<GetShape(const_cast<BroadLeaf<SHAPE>&>(leaf)).getCenterPoint()
+	 <<flush;
+           
+
     vector<double> v(3);
     for (int i = 0; i < f.numberOfRegions();i++){
       f.diffuseRegionRadiationSum(i,v); //direction of the light beam
       Point p1 = GetCenterPoint(leaf);  //center point of the leaf
-      Point p2 = p1 + 1.0*(Point)PositionVector(v[0],v[1],v[2]); //second point on the light beam
-      if (GetShape(*l).intersectEllipse(p1,p2)){//now check if the light beam hits the leaf 'l'.
-	cout << "HIT" << endl;
+
+      //      cout<<"p1   ="<<p1<<endl;
+
+
+                     //second parameter - the light beam
+      PositionVector p2(PositionVector(v[0],v[1],v[2])); 
+
+      //      cout<<"p2   ="<<p2<<endl;
+
+      //      PositionVector p1p2=p1-p2;
+    
+      //      cout <<"p1p2 ="<<p1p2<<endl;
+
+      //      cout << "     semimajoraxis "<<GetShape(*l).getSemimajorAxisPoint()<<endl;
+      //      cout << "     semiminoraxis "<<GetShape(*l).getSemiminorAxisPoint()<<endl;
+
+      //now check if the light beam hits the leaf 'l'.
+      if (GetShape(*l).intersectShape(p1,p2))
+      {                
+	cout << " HIT: " << endl;
+	cout << " D: " << PositionVector(v[0],v[1],v[2]) << endl;
+	cout << " C: " << GetShape(*l).getCenterPoint()<< flush;
+	cout << " N: " << GetShape(*l).getNormal()<<endl;
+	cout << " a and b: " << GetShape(*l).getSemimajorAxis() << " " 
+	     << GetShape(*l).getSemiminorAxis() << endl;
       }
       else{
-	cout << "NOT HIT" << endl;
+	cout << " NOT HIT: " << endl;
+	cout << " D: " << PositionVector(v[0],v[1],v[2]) << endl;
+	cout << " C: " << GetShape(*l).getCenterPoint()<< flush;
+	cout << " N: " << GetShape(*l).getNormal()<<endl;
+	cout << " a and b: " << GetShape(*l).getSemimajorAxis() << " " 
+	     << GetShape(*l).getSemiminorAxis() << endl;
       }
       //I suggest common interface to all shapes: Triangle, Ellipse and Polygon.
       //I  propose   method  'intersectShape(const  Point&   p,  const
