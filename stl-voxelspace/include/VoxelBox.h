@@ -53,6 +53,8 @@ namespace Lignum {
     LGMdouble getStarSum()const{ return starSum; }
     LGMdouble getStar()const{ return star; }
     LGMdouble getNeedleMass()const{return needleMass;}
+    LGMdouble getNeedleArea()const{return needleArea;}
+    LGMdouble getLeafMass()const{return leafMass;}
     LGMdouble getLeafArea()const{return leafArea;}
     LGMdouble getFoliageMass()const{return needleMass + leafMass;}
 
