@@ -14,7 +14,7 @@
   
 namespace Lignum {
 
-  class VoxelBox;
+
 
   struct VoxelMovement
   {
