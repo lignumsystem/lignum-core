@@ -97,11 +97,11 @@ tree compartments in LIGNUM.
 The structural development of the tree described in L does not require
 the regeneration of a LIGNUM representation of trees (deleting the old
 tree and  creating a new  one) after each derivation.   The algorithms
-assumes that an L system indeed generates alternating sequence of tree
-segments, branching points and terminating buds, and the terminal buds
-only generate  new structural units.   The algorithm fails if  this is
-not the case.  Thus after each  derivation it is possible to match the
-existing  string  and LIGNUM  representation  and  to  insert the  new
+assumes that an  L system indeed generates an  alternating sequence of
+tree segments, branching points and terminating buds, and the terminal
+buds only generate new structural  units.  The algorithm fails if this
+is not the  case.  Thus after each derivation it  is possible to match
+the existing  string and LIGNUM  representation and to insert  the new
 structural units in  the axis lists before the  terminating buds whose
 positions and orientations will be updated.
 
@@ -140,7 +140,7 @@ to  the  variables of  the  corresponding  bud  in LIGNUM  in  Section
 \subsection{Two-way communication in the Scots pine simulation}
 
 Although  in  our  Scots pine  example  it  is  $L$ in  $B(A,L)$  that
-initially determine the length of a segment, the metabolical processes
+initially determine  the length of a segment,  the metabolic processes
 eventually resolve the amount of growth.
   
 We interfaced the L language program of Appendix \ref{sec:L1} with the
@@ -149,7 +149,7 @@ Scots pine model \citep{perttunen:96, perttunen:98}.  The calculations
 in  LIGNUM include  the pairwise  comparison of  segments in  order to
 compute  the  interception  of   solar  radiation  and  the  iterative
 allocation of  net photosynthates  to growth after  respiration costs:
-\begin{equation} P - M = iW_n + iW_o + iWr \end{equation}
+\begin{equation} P - M = iW_n + iW_o + iW_r \end{equation}
 
 where  $P$   and  $M$  are  the  photosynthetic   production  and  the
 respiration of a  tree, $iW_n$ the growth of  new segments, $iW_o$ the

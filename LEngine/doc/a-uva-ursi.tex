@@ -31,16 +31,18 @@ intensive  lateral branching  due to  favorable light  conditions.  An
 outline  of the  L  system  is given  in  Appendix \ref{sec:L2}.   For
 details see \citet{salemaa:02}.
 
-The  collision detection  algorithm  of LIGNUM  simply examines  given
+The collision  detection algorithm of  LIGNUM simply examines  a given
 opening angle symmetrical  to both sides of the  growth direction of a
 bud and  checks whether it is free  of other shoots and  buds within a
-given distance.  More precisely, define $\vec {P_1}$ as the position of
-the bud and $\vec D$ as  its growth direction.  Define $\vec {P_2}$ as
-the position of the potential  obstacle. Then $\vec {P_3} = \vec {P_2}
+given distance.   More precisely, define $\vec {P_1}$  as the position
+of the bud and $\vec D$  as its growth direction.  Define $\vec {P_2}$
+as the  position of  the potential obstacle.  Then $\vec {P_3}  = \vec
+{P_2}
 - \vec {P_1}$  is the direction from  the bud to  the obstacle.  Given
 the opening angle $\alpha$ and  the distance $l$, the obstacle hinders
-the growth of the bud  if $\cos(\alpha/2) = \frac{{\vec D} \cdot {\vec
-{P_3}}} {|\vec D||\vec {P_3}|}$ and $|\vec {P_3}| < l$.
+the growth  of the  bud if $\cos(\alpha/2)  \leq \frac{{\vec  D} \cdot
+{\vec {P_3}}}  {|\vec D||\vec {P_3}|}$  (as the cosine  increases when
+the angle decreases) and $|\vec {P_3}| < l$.
 
 Investigation of whether a bud collides with another plant compartment
 is implemented as a pairwise comparison of structural units in LIGNUM,
