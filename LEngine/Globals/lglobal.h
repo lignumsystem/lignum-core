@@ -35,7 +35,5 @@ enum mReservedModuleValues
 #define StartBranchIdent "SB"
 #define EndBranchIdent "EB"
 
-#else
-  #error File already included
 #endif
 
