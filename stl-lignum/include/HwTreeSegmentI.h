@@ -23,8 +23,8 @@ void InitializeForRadiation(HwTreeSegment<TS,BUD>& ts)
   SetValue(ts, Qin, 0.0);
   SetValue(ts, Qabs, 0.0);
   list<BroadLeaf*>& ll = GetLeafList(const_cast<HwTreeSegment<TS,BUD>&>(ts));
-  for(list<BroadLeaf*>::iterator i = ll.begin(),
-	i != ll.end(), i++) {
+  for(list<BroadLeaf*>::iterator i = ll.begin();
+	i != ll.end(); i++) {
     SetValue(*i, Qabs, 0.0);
     SetValue(*i, Qin, 0.0);
     SetRadiationVector(*i, one);

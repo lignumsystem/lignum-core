@@ -21,8 +21,9 @@ Tree<TS,BUD>::Tree(const Point<METER>& p, const PositionVector& d)
 template <class TS,class BUD>
 void Tree<TS,BUD>::UpdateWaterFlow(LGMdouble time_step, const ConnectionMatrix<TS,BUD> &cm)
 {
+  int i = 0;
   // This counts the flow in for every segment
-  for (int i=0; i<cm.getSize(); i++){
+  for (i=0; i<cm.getSize(); i++){
     TreeSegment<TS,BUD> *out;
     if(cm.getTreeSegment(i) != NULL)  
       out = cm.getTreeSegment(i);

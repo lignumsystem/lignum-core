@@ -5,11 +5,12 @@
 #include <algorithm>
 #include <numeric>
 #include <Point.h>
+#include <PositionVector.h>
 #include <LGMdecl.h>
 
 
 namespace Lignum{
-
+using namespace Lignum;
 using namespace cxxadt;
 
 template <class TS,class BUD=DefaultBud<TS> >

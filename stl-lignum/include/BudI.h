@@ -34,14 +34,14 @@ template <class TS,class BUD>
 Bud<TS,BUD>& Bud<TS,BUD>::createBud()const
 {
   Bud<TS,BUD>* bud = new Bud<TS,BUD>();
-  return (Bud&) *bud;
+  return (Bud<TS,BUD>&) *bud;
 }
 
 template <class TS,class BUD>
 BranchingPoint<TS,BUD>& Bud<TS,BUD>::createBranchingPoint()const
 {
-  BranchingPoint<TS,BUD>* bp = new BranchingPoint();
-  return (BranchingPoint&) *bp;
+  BranchingPoint<TS,BUD>* bp = new BranchingPoint<TS,BUD>();
+  return (BranchingPoint<TS,BUD>&) *bp;
 }
 
 template <class TS,class BUD>   

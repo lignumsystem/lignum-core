@@ -2,6 +2,7 @@
 #define BUD_H
 
 #include <Point.h>
+#include <PositionVector.h>
 #include <LGMdecl.h>
 
 namespace Lignum{

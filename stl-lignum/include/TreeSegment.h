@@ -4,6 +4,7 @@
 #include <list>
 #include <mathsym.h>
 #include <Point.h>
+#include <PositionVector.h>
 #include <LGMdecl.h>
 
 

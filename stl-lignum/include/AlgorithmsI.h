@@ -286,7 +286,7 @@ void PropagateUp(Tree<TS,BUD>& tree, T& init, const BinOp& op1)
 template <class TS,class BUD, class T, class BinOp1, class BinOp2>
 void PropagateUp(Tree<TS,BUD>& tree, T& init, const BinOp1& op1,  const BinOp2& op2)
 {
-  PropagateUpOp3<TS,BUD,T,BinOp> op3(op1,op2);
+  PropagateUpOp3<TS,BUD,T,BinOp1,BinOp2> op3(op1,op2);
   Axis<TS,BUD>& axis = GetAxis(tree);
   op2(init,&axis);
 }
