@@ -24,7 +24,7 @@ SUPPRESS = #-w 1155 -w 1183
 CCCFLAGS = -c  #-prelink -ptused   -ptv  #  -fullwarn 
 
 
-INCLUDE = -I. -I../stl-lignum/include -I../c++adt/include \
+INCLUDE = -I. -I../stl-lignum/include -I../c++adt/include -I../stl-voxelspace \
           -I../Firmament/include -I/usr/freeware/include \
           -I/usr/X11R6/include -I/sw/include -I../stl-voxelspace/include -I../ScotsPine/include
 
