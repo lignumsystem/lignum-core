@@ -52,11 +52,12 @@ namespace Lignum{
   //If you add a new symbol be sure to document it carefully.
 
   enum LGMAD {LGAA,LGAAf,LGAAh, LGAAhair,LGAAs,LGAAs0,LGAage,LGAcollision,
-              LGADbase,LGADbh,LGAdof, LGAdR, LGAH,LGAHf,LGAHTop,LGAip,
+              LGADbase, LGADbaseHw, LGADbh,LGADbhHw,LGAdof, LGAdR,
+	      LGAH,LGAHf,LGAHTop,LGAip,
               LGAL,LGAM, LGAMaxD,LGAomega,LGAP,LGAQabs,LGAQin,LGAR,LGARf,
               LGARh, LGARhair,LGARTop,LGASa,LGAsf,LGAstatus, LGAstate,LGAtauL, 
               LGAtype,LGAV,LGAVh,LGAVhair,LGAvi,LGAVs,LGAWf, LGAWs, 
-              LGAWh,LGAWhair};
+              LGAWh,  LGAWhair};
 
   //  0 LGAA      Segment base area based on R 
   //  1 LGAAf     Area of foliage
@@ -68,46 +69,48 @@ namespace Lignum{
   //  7 LGAcollision A bud can examine its growth sector if it collides 
   //               with an obstacle
   //  8 LGADbase  Diameter at base (tree)
-  //  9 LGADbh    Diameter at breast height (tree)
-  //  10 LGAdof    Degree of filling of leaf
-  //  11 LGAdR     Change in radius (=difference of two growth rings)
-  //  12 LGAH      Height of tree, also the Z coordinate at the segment base 
-  //  13 LGAHf     Height (thickness) of cylindrical layer of foliage 
+  //  9 LGADbaseHw  Diameter of heart wood at base (tree)
+  //  10 LGADbh    Diameter at breast height (tree)
+  //  11 LGADbhHw    Diameter of heart wood at breast height (tree)
+  //  12 LGAdof    Degree of filling of leaf
+  //  13 LGAdR     Change in radius (=difference of two growth rings)
+  //  14 LGAH      Height of tree, also the Z coordinate at the segment base 
+  //  15 LGAHf     Height (thickness) of cylindrical layer of foliage 
   //            in a segment, e.g. Hf = Lneedle*sin(needle_angle) 
-  //  14 LGAHTop   Max height from ground of the tree, segment, etc.
-  //  15 LGAip     Degree of interaction
-  //  16 LGAL      Length of segment
-  //  17 LGAM      Rate of respiration (= amount of r. during the time step)
-  //  18 LGAMaxD   Maximum diameter of the segments 
+  //  16 LGAHTop   Max height from ground of the tree, segment, etc.
+  //  17 LGAip     Degree of interaction
+  //  18 LGAL      Length of segment
+  //  19 LGAM      Rate of respiration (= amount of r. during the time step)
+  //  20 LGAMaxD   Maximum diameter of the segments 
   //            forking off and the segment above a 
   //            branching point. Needed to calculate LGAvi 
-  //  19 LGAomega  Gravelius order
-  //  20 LGAP      Photosynthetic rate (= amount of p. during time step)
-  //  21 LGAQabs    Incoming radiant flux
-  //  22 LGAQin   Amount of absorbed radiation
-  //  23 LGAR      Radius of segment (wood)
-  //  24 LGARf     Radius of segment cylinder including also foliage (conifers)
-  //  25 LGARh     Radius of heartwood
-  //  26 LGARhair  Radius including root hair 
-  //  27 LGARTop   Radius of segment at upper end
-  //  28 LGASa     Surface area of the segment cylinder: 2*PI*R*L
-  //  29 LGAsf     Specific leaf area (=leaf area/ leaf weight)
-  //  30 LGAstatus General counter to control e.g. bud burst.  
-  //  31 LGAstate  Bud state can be dead, alive, dormant etc., see LGMUnits.h
-  //  32 LGPtauL   Transmission coefficient of leaf (in direction of
+  //  21 LGAomega  Gravelius order
+  //  22 LGAP      Photosynthetic rate (= amount of p. during time step)
+  //  23 LGAQabs    Incoming radiant flux
+  //  24 LGAQin   Amount of absorbed radiation
+  //  25 LGAR      Radius of segment (wood)
+  //  26 LGARf     Radius of segment cylinder including also foliage (conifers)
+  //  27 LGARh     Radius of heartwood
+  //  28 LGARhair  Radius including root hair 
+  //  29 LGARTop   Radius of segment at upper end
+  //  30 LGASa     Surface area of the segment cylinder: 2*PI*R*L
+  //  31 LGAsf     Specific leaf area (=leaf area/ leaf weight)
+  //  32 LGAstatus General counter to control e.g. bud burst.  
+  //  33 LGAstate  Bud state can be dead, alive, dormant etc., see LGMUnits.h
+  //  34 LGPtauL   Transmission coefficient of leaf (in direction of
   //               the ray of light) 
-  //  33 LGAtype   General type specifier, e.g. Bud:dominant, apical,
+  //  35 LGAtype   General type specifier, e.g. Bud:dominant, apical,
   //               lateral etc. The numerical values and their symbols of
   //               different types given in LGMUnits.h
-  //  34 LGAV      Segment volume based on R and L
-  //  35 LGAVh     Heartwood volume
-  //  36 LGAVhair  Root hair volume
-  //  37 LGAvi     Vigour index
-  //  38 LGAVs     Sapwood volume
-  //  39 LGAWf     Foliage mass (kg C)
-  //  40 LGAWs     Mass of sapwood (kg C)
-  //  41 LGAWh     Mass of heartwood (kg C)
-  //  42 LGAWhair  Mass of root hair (kg C)
+  //  36 LGAV      Segment volume based on R and L
+  //  37 LGAVh     Heartwood volume
+  //  38 LGAVhair  Root hair volume
+  //  39 LGAvi     Vigour index
+  //  40 LGAVs     Sapwood volume
+  //  41 LGAWf     Foliage mass (kg C)
+  //  42 LGAWs     Mass of sapwood (kg C)
+  //  43 LGAWh     Mass of heartwood (kg C)
+  //  44 LGAWhair  Mass of root hair (kg C)
 
 
 
