@@ -752,7 +752,24 @@ namespace Lignum {
 
   }	
 
+  void VoxelSpace::writeVoxBoxesToFile(const string& filename, int z)
+  {
+    ofstream file(filename.c_str());
+    file << "Vokselien koko " << Xbox << " " << Ybox << " " << Zbox << endl;
 
+    for(int i1=0; i1<Xn; i1++)
+      for(int i2=0; i2<Yn; i2++)
+	for(int i3=0; i3<Zn; i3++)
+	  {
+	    if (i3 <= z){
+	      file << "[" << i1 << "," << i2 << "," << i3 << "]   ";
+	      file << voxboxes[i1][i2][i3] << endl;
+	    }
+	  }
+    file.close();
+    
+  }	
+  
   void VoxelSpace::writeVoxBoxesToFile2(ofstream &file)
   {
     file << "Index "; 
