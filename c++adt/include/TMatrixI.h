@@ -197,16 +197,16 @@ std::vector<T> operator * (const std::vector<T>& v1, const TMatrix<T>& m1)
   vector<T> v_tmp(m1.cols());
   T entry = T();
 
-  if (v1.size() != m1.rows()){
+  if (static_cast<int>(v1.size()) != (m1.rows())){
     cerr << "Error: vector*matrix" << endl;
     cerr << "v1.size() != m1.rows()" << endl;
     cerr << "Aborting ...." << endl;
     exit(-1);
   }
 
-  for (int i = 0; i < v_tmp.size(); i++){
+  for (int i = 0; i < static_cast<int>(v_tmp.size()); i++){
     entry = T();
-    for (int k = 0; k < v1.size(); k++){
+    for (int k = 0; k < static_cast<int>(v1.size()); k++){
       entry += v1[k]*m1[k][i];
     }
     v_tmp[i] = entry;

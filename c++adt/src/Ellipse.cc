@@ -142,7 +142,7 @@ vector<Point>& Ellipse::getVertexVector(vector<Point>& points)const
    points.push_back(getSemiminorAxisPoint());
    Point x,p;
 
-   for(int i=0; i< points.size(); i++){
+   for(int i=0; i< static_cast<int>(points.size()); i++){
     p=(Point)points[i];
     x.setX(p.getX() *scalcoef  + adbasex);
     x.setY(p.getY() *scalcoef  + adbasey);

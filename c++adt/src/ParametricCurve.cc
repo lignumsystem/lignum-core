@@ -24,7 +24,7 @@ ParametricCurve::ParametricCurve(const vector<double>& v1)
 }
 
 ParametricCurve::ParametricCurve(const ParametricCurve& pc)
-  :v(pc.v),file(pc.file),num_of_elements(pc.num_of_elements)
+  :file(pc.file),v(pc.v),num_of_elements(pc.num_of_elements)
 {
 }
 

@@ -109,7 +109,7 @@ vector<double> operator * (const HRVector& v1,const TMatrix<double>& m1)
   double entry;
   int i,j;
 
-  if (m1.rows() != v1.size()){
+  if (m1.rows() != static_cast<int>(v1.size())){
     cout << "HRVector multiplication with TMatrix<double>: error in matrix dimension\n";
     cout << "aborting\n";
     exit(-1);

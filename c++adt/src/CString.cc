@@ -36,7 +36,7 @@ CString CString::subStr(unsigned int start_pos, unsigned int end_pos)const
   int i = start_pos, j= 0;
   char *string_tmp = new char[end_pos - start_pos + 2];
 
-  for (i = start_pos, j = 0; i <= end_pos; i++, j++){
+  for (i = static_cast<int>(start_pos), j = 0; i <= static_cast<int>(end_pos); i++, j++){
     string_tmp[j] = string[i];
   }
   string_tmp[j] = '\000';
