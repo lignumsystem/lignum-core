@@ -9,5 +9,4 @@ in this directory. To create latex document type
     latex lignum
 
 Repeat the commands until no warnings about undefined references occure.
-See manuals for xdvi and dvips to view and generating PostScript file
-respectively.
+See manuals for xdvi to view files produced by latex and  dvips to generate and print PostScript files.
