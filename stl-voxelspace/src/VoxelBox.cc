@@ -232,8 +232,8 @@ ostream& operator << (ostream& os, VoxelBox &b)
   //os << "Qabs(Intercepted ratiation)" <<  "    Qin " << "     star " << "   needleArea " << "     leafArea " << endl;
 	
   os << "Qabs: " <<  b.Q_abs << " Q_in: " << b.Q_in 
-     << "star: " << b.star << " needleArea: " << b.needleArea 
-     << "leafArea: " << b.leafArea << " : ";
+     << " star: " << b.star << " needleArea: " << b.needleArea 
+     << " leafArea: " << b.leafArea << " : ";
 	
 	return os;
 }
