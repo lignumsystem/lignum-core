@@ -18,12 +18,9 @@ public:
   METER L;                //Length of the tree segment
   KGC M;                  //Respiration of the tree segment during the time step
   LGMdouble omega;               //Gravelius order
-  KGC P;                  //Photosythesis of the tree segment during the time step
   PA Pr;                  //Pressure
   LGMdouble fin;                 //Amount of water coming in
   LGMdouble fout;                //Amount of water going out
-  MJ Qin;                 //Incoming radiation
-  MJ Qabs;                //Absorbed radiation
   METER R;                //Radius including bark
   METER Rtop;             //Radius at top
   METER Rh;               //Heartwood radius
@@ -53,7 +50,7 @@ public:
   virtual ~TreeSegment();
   LGMdouble GetTranspiration(LGMdouble time);
   TreeSegmentAttributes& getTsa(){return tsa;}
-  void photosynthesis();
+  //  void photosynthesis();
 private:
   TreeSegmentAttributes tsa;
 };
@@ -62,7 +59,6 @@ private:
 }//close namespace Lignum
 
 #include <TreeSegmentI.h>
-#include <TreeSegmentMetabolismI.h>
 
 #endif
 

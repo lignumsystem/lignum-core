@@ -98,12 +98,6 @@ sky::Firmament& GetFirmament(Tree<TS,BUD>& tree)
   return tree.f;
 }
 
-template <class TS,class BUD>
-void SetFirmament(Tree<TS,BUD>& tree, sky::Firmament& firm )
-{
-  return tree.f;
-}
-
 
 //The initialization of the tree.
 //Install parameters and functions.

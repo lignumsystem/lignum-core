@@ -9,7 +9,8 @@ SRC = ../Axis/AxisFriend.cc  \
       ../TreeSegment/TreeSegment.cc \
       ../TreeCompartment/TreeCompartmentFriend.cc\
       ../Tree/TreeFriend.cc \
-      ../Tree/Tree.cc 
+      ../Tree/Tree.cc \
+      ../TreeSegment/CfTreeSegment.cc
   
 OBJ = ../Axis/AxisFriend.o \
       ../BetulaWithFlow/BetulaWithFlow.o \
@@ -22,14 +23,15 @@ OBJ = ../Axis/AxisFriend.o \
       ../TreeSegment/TreeSegment.o \
       ../TreeCompartment/TreeCompartmentFriend.o \
       ../Tree/TreeFriend.o \
-      ../Tree/Tree.o 
+      ../Tree/Tree.o \
+      ../TreeSegment/CfTreeSegment.o
 
 INCLUDE = -I../include  -I../../c++adt/include -I../../Firmament/include
 STL = -I/usr/include/CC
 CCC = CC -64
 ETAGS = etags -d -T -C -o
 
-OPTIMIZE = -O
+OPTIMIZE = -g
 CCCFLAGS =   -c   
 
 .SUFFIXES: .o .cc
@@ -63,7 +65,7 @@ etags:
 	$(ETAGS)   TAGSFILE ../src/*.cc ../include/*.h
 depend:
 	makedepend $(INCLUDE) $(STL) $(SRC)
-# DO NOT DELETE THIS LINE -- make depend depends on it.
+# DO NOT DELETE
 
 ../Axis/AxisFriend.o: ../include/Axis.h /usr/include/CC/list
 ../Axis/AxisFriend.o: /usr/include/CC/stl_algobase.h
@@ -77,12 +79,15 @@ depend:
 ../Axis/AxisFriend.o: /usr/include/CC/stl_iterator_base.h
 ../Axis/AxisFriend.o: /usr/include/CC/stl_iterator.h
 ../Axis/AxisFriend.o: /usr/include/CC/stl_alloc.h /usr/include/stdio.h
-../Axis/AxisFriend.o: /usr/include/assert.h /usr/include/CC/stl_construct.h
+../Axis/AxisFriend.o: /usr/include/assert.h /usr/include/CC/stl_threads.h
+../Axis/AxisFriend.o: /usr/include/mutex.h /usr/include/time.h
+../Axis/AxisFriend.o: /usr/include/CC/stl_construct.h
 ../Axis/AxisFriend.o: /usr/include/CC/stl_uninitialized.h
 ../Axis/AxisFriend.o: /usr/include/CC/stl_list.h ../../c++adt/include/Point.h
-../Axis/AxisFriend.o: /usr/include/math.h ../../c++adt/include/PointI.h
+../Axis/AxisFriend.o: /usr/include/math.h ../../c++adt/include/mathsym.h
+../Axis/AxisFriend.o: ../../c++adt/include/PointI.h
 ../Axis/AxisFriend.o: ../../c++adt/include/PositionVector.h
-../Axis/AxisFriend.o: ../../c++adt/include/mathsym.h /usr/include/CC/vector
+../Axis/AxisFriend.o: /usr/include/CC/vector
 ../Axis/AxisFriend.o: /usr/include/CC/stl_range_errors.h
 ../Axis/AxisFriend.o: /usr/include/CC/stl_vector.h
 ../Axis/AxisFriend.o: /usr/include/CC/stl_bvector.h
@@ -128,15 +133,26 @@ depend:
 ../BetulaWithFlow/BetulaWithFlow.o: /usr/include/CC/stl_alloc.h
 ../BetulaWithFlow/BetulaWithFlow.o: /usr/include/stdio.h
 ../BetulaWithFlow/BetulaWithFlow.o: /usr/include/assert.h
+../BetulaWithFlow/BetulaWithFlow.o: /usr/include/CC/stl_threads.h
+../BetulaWithFlow/BetulaWithFlow.o: /usr/include/mutex.h /usr/include/time.h
 ../BetulaWithFlow/BetulaWithFlow.o: /usr/include/CC/stl_list.h
 ../BetulaWithFlow/BetulaWithFlow.o: /usr/include/CC/stream.h
 ../BetulaWithFlow/BetulaWithFlow.o: /usr/include/CC/iomanip.h
 ../BetulaWithFlow/BetulaWithFlow.o: /usr/include/CC/generic.h
 ../BetulaWithFlow/BetulaWithFlow.o: /usr/include/CC/stdiostream.h
 ../BetulaWithFlow/BetulaWithFlow.o: /usr/include/CC/fstream.h
-../BetulaWithFlow/BetulaWithFlow.o: ../../c++adt/include/CString.h
+../BetulaWithFlow/BetulaWithFlow.o: /usr/include/CC/string
+../BetulaWithFlow/BetulaWithFlow.o: /usr/include/CC/stl_string_fwd.h
 ../BetulaWithFlow/BetulaWithFlow.o: /usr/include/ctype.h
 ../BetulaWithFlow/BetulaWithFlow.o: /usr/include/locale_attr.h
+../BetulaWithFlow/BetulaWithFlow.o: /usr/include/CC/functional
+../BetulaWithFlow/BetulaWithFlow.o: /usr/include/CC/stdexcept
+../BetulaWithFlow/BetulaWithFlow.o: /usr/include/CC/stl_exception.h
+../BetulaWithFlow/BetulaWithFlow.o: /usr/include/CC/memory
+../BetulaWithFlow/BetulaWithFlow.o: /usr/include/CC/stl_raw_storage_iter.h
+../BetulaWithFlow/BetulaWithFlow.o: /usr/include/CC/char_traits.h
+../BetulaWithFlow/BetulaWithFlow.o: /usr/include/wchar.h
+../BetulaWithFlow/BetulaWithFlow.o: /usr/include/CC/stl_hash_fun.h
 ../BetulaWithFlow/BetulaWithFlow.o: ../../c++adt/include/ParametricCurve.h
 ../BetulaWithFlow/BetulaWithFlow.o: /usr/include/CC/vector
 ../BetulaWithFlow/BetulaWithFlow.o: /usr/include/CC/stl_range_errors.h
@@ -145,14 +161,13 @@ depend:
 ../BetulaWithFlow/BetulaWithFlow.o: /usr/include/float.h
 ../BetulaWithFlow/BetulaWithFlow.o: ../../c++adt/include/Point.h
 ../BetulaWithFlow/BetulaWithFlow.o: /usr/include/math.h
+../BetulaWithFlow/BetulaWithFlow.o: ../../c++adt/include/mathsym.h
 ../BetulaWithFlow/BetulaWithFlow.o: ../../c++adt/include/PointI.h
 ../BetulaWithFlow/BetulaWithFlow.o: ../../c++adt/include/PositionVector.h
-../BetulaWithFlow/BetulaWithFlow.o: ../../c++adt/include/mathsym.h
 ../BetulaWithFlow/BetulaWithFlow.o: ../../c++adt/include/RMatrix.h
 ../BetulaWithFlow/BetulaWithFlow.o: ../../c++adt/include/TMatrix.h
 ../BetulaWithFlow/BetulaWithFlow.o: ../../c++adt/include/TMatrixI.h
 ../BetulaWithFlow/BetulaWithFlow.o: ../include/Algorithms.h
-../BetulaWithFlow/BetulaWithFlow.o: /usr/include/CC/functional
 ../BetulaWithFlow/BetulaWithFlow.o: ../include/LGMdecl.h
 ../BetulaWithFlow/BetulaWithFlow.o: ../include/LGMSymbols.h
 ../BetulaWithFlow/BetulaWithFlow.o: /usr/include/CC/map
@@ -178,13 +193,19 @@ depend:
 ../BetulaWithFlow/BetulaWithFlow.o: ../include/BranchingPointI.h
 ../BetulaWithFlow/BetulaWithFlow.o: ../include/TreeSegment.h
 ../BetulaWithFlow/BetulaWithFlow.o: ../include/TreeSegmentI.h
-../BetulaWithFlow/BetulaWithFlow.o: ../include/TreeSegmentMetabolismI.h
 ../BetulaWithFlow/BetulaWithFlow.o: ../include/HwTreeSegment.h
 ../BetulaWithFlow/BetulaWithFlow.o: ../include/BroadLeaf.h
 ../BetulaWithFlow/BetulaWithFlow.o: ../../c++adt/include/Ellipsis.h
 ../BetulaWithFlow/BetulaWithFlow.o: ../../Firmament/include/Firmament.h
+../BetulaWithFlow/BetulaWithFlow.o: /usr/include/CC/vector.h
+../BetulaWithFlow/BetulaWithFlow.o: /usr/include/CC/algobase.h
+../BetulaWithFlow/BetulaWithFlow.o: /usr/include/CC/pair.h
+../BetulaWithFlow/BetulaWithFlow.o: /usr/include/CC/iterator.h
+../BetulaWithFlow/BetulaWithFlow.o: /usr/include/CC/function.h
+../BetulaWithFlow/BetulaWithFlow.o: /usr/include/CC/alloc.h
 ../BetulaWithFlow/BetulaWithFlow.o: ../include/HwTreeSegmentI.h
 ../BetulaWithFlow/BetulaWithFlow.o: ../include/CfTreeSegment.h
+../BetulaWithFlow/BetulaWithFlow.o: ../include/CfTreeSegmentI.h
 ../BetulaWithFlow/BetulaWithFlow.o: ../include/Axis.h ../include/AxisI.h
 ../BetulaWithFlow/BetulaWithFlow.o: ../../c++adt/include/ConnectionMatrix.h
 ../BetulaWithFlow/BetulaWithFlow.o: ../../c++adt/include/ConnectionMatrixI.h
@@ -212,6 +233,9 @@ depend:
 ../BranchingPoint/BranchingPointFriend.o: /usr/include/CC/stl_alloc.h
 ../BranchingPoint/BranchingPointFriend.o: /usr/include/stdio.h
 ../BranchingPoint/BranchingPointFriend.o: /usr/include/assert.h
+../BranchingPoint/BranchingPointFriend.o: /usr/include/CC/stl_threads.h
+../BranchingPoint/BranchingPointFriend.o: /usr/include/mutex.h
+../BranchingPoint/BranchingPointFriend.o: /usr/include/time.h
 ../BranchingPoint/BranchingPointFriend.o: /usr/include/CC/stl_construct.h
 ../BranchingPoint/BranchingPointFriend.o: /usr/include/CC/stl_uninitialized.h
 ../BranchingPoint/BranchingPointFriend.o: /usr/include/CC/stl_list.h
@@ -224,9 +248,9 @@ depend:
 ../BranchingPoint/BranchingPointFriend.o: /usr/include/CC/stl_numeric.h
 ../BranchingPoint/BranchingPointFriend.o: ../../c++adt/include/Point.h
 ../BranchingPoint/BranchingPointFriend.o: /usr/include/math.h
+../BranchingPoint/BranchingPointFriend.o: ../../c++adt/include/mathsym.h
 ../BranchingPoint/BranchingPointFriend.o: ../../c++adt/include/PointI.h
 ../BranchingPoint/BranchingPointFriend.o: ../../c++adt/include/PositionVector.h
-../BranchingPoint/BranchingPointFriend.o: ../../c++adt/include/mathsym.h
 ../BranchingPoint/BranchingPointFriend.o: /usr/include/CC/vector
 ../BranchingPoint/BranchingPointFriend.o: /usr/include/CC/stl_range_errors.h
 ../BranchingPoint/BranchingPointFriend.o: /usr/include/CC/stl_vector.h
@@ -249,12 +273,11 @@ depend:
 ../BranchingPoint/BranchingPointFriend.o: ../include/BranchingPointI.h
 ../Bud/BudFriend.o: ../include/Bud.h ../../c++adt/include/Point.h
 ../Bud/BudFriend.o: /usr/include/math.h /usr/include/sgidefs.h
-../Bud/BudFriend.o: /usr/include/standards.h /usr/include/CC/iostream.h
-../Bud/BudFriend.o: /usr/include/memory.h /usr/include/stddef.h
-../Bud/BudFriend.o: ../../c++adt/include/PointI.h
+../Bud/BudFriend.o: /usr/include/standards.h ../../c++adt/include/mathsym.h
+../Bud/BudFriend.o: /usr/include/CC/iostream.h /usr/include/memory.h
+../Bud/BudFriend.o: /usr/include/stddef.h ../../c++adt/include/PointI.h
 ../Bud/BudFriend.o: ../../c++adt/include/PositionVector.h
-../Bud/BudFriend.o: ../../c++adt/include/mathsym.h /usr/include/CC/vector
-../Bud/BudFriend.o: /usr/include/CC/stl_range_errors.h
+../Bud/BudFriend.o: /usr/include/CC/vector /usr/include/CC/stl_range_errors.h
 ../Bud/BudFriend.o: /usr/include/CC/stl_config.h
 ../Bud/BudFriend.o: /usr/include/CC/stl_algobase.h
 ../Bud/BudFriend.o: /usr/include/CC/stl_relops.h /usr/include/CC/stl_pair.h
@@ -263,7 +286,9 @@ depend:
 ../Bud/BudFriend.o: /usr/include/CC/new.h /usr/include/CC/stl_iterator_base.h
 ../Bud/BudFriend.o: /usr/include/CC/stl_iterator.h
 ../Bud/BudFriend.o: /usr/include/CC/stl_alloc.h /usr/include/stdio.h
-../Bud/BudFriend.o: /usr/include/assert.h /usr/include/CC/stl_construct.h
+../Bud/BudFriend.o: /usr/include/assert.h /usr/include/CC/stl_threads.h
+../Bud/BudFriend.o: /usr/include/mutex.h /usr/include/time.h
+../Bud/BudFriend.o: /usr/include/CC/stl_construct.h
 ../Bud/BudFriend.o: /usr/include/CC/stl_uninitialized.h
 ../Bud/BudFriend.o: /usr/include/CC/stl_vector.h
 ../Bud/BudFriend.o: /usr/include/CC/stl_bvector.h
@@ -278,11 +303,10 @@ depend:
 ../Bud/BudFriend.o: ../include/LGMUnits.h ../include/BudI.h
 ../Bud/Bud.o: ../include/Bud.h ../../c++adt/include/Point.h
 ../Bud/Bud.o: /usr/include/math.h /usr/include/sgidefs.h
-../Bud/Bud.o: /usr/include/standards.h /usr/include/CC/iostream.h
-../Bud/Bud.o: /usr/include/memory.h /usr/include/stddef.h
-../Bud/Bud.o: ../../c++adt/include/PointI.h
-../Bud/Bud.o: ../../c++adt/include/PositionVector.h
-../Bud/Bud.o: ../../c++adt/include/mathsym.h /usr/include/CC/vector
+../Bud/Bud.o: /usr/include/standards.h ../../c++adt/include/mathsym.h
+../Bud/Bud.o: /usr/include/CC/iostream.h /usr/include/memory.h
+../Bud/Bud.o: /usr/include/stddef.h ../../c++adt/include/PointI.h
+../Bud/Bud.o: ../../c++adt/include/PositionVector.h /usr/include/CC/vector
 ../Bud/Bud.o: /usr/include/CC/stl_range_errors.h /usr/include/CC/stl_config.h
 ../Bud/Bud.o: /usr/include/CC/stl_algobase.h /usr/include/CC/stl_relops.h
 ../Bud/Bud.o: /usr/include/CC/stl_pair.h /usr/include/CC/type_traits.h
@@ -291,7 +315,8 @@ depend:
 ../Bud/Bud.o: /usr/include/CC/stl_iterator_base.h
 ../Bud/Bud.o: /usr/include/CC/stl_iterator.h /usr/include/CC/stl_alloc.h
 ../Bud/Bud.o: /usr/include/stdio.h /usr/include/assert.h
-../Bud/Bud.o: /usr/include/CC/stl_construct.h
+../Bud/Bud.o: /usr/include/CC/stl_threads.h /usr/include/mutex.h
+../Bud/Bud.o: /usr/include/time.h /usr/include/CC/stl_construct.h
 ../Bud/Bud.o: /usr/include/CC/stl_uninitialized.h
 ../Bud/Bud.o: /usr/include/CC/stl_vector.h /usr/include/CC/stl_bvector.h
 ../Bud/Bud.o: ../../c++adt/include/RMatrix.h ../../c++adt/include/TMatrix.h
@@ -317,23 +342,49 @@ depend:
 ../TreeMetaFileParser/TreeMetaFileParser.o: /usr/include/CC/iostream.h
 ../TreeMetaFileParser/TreeMetaFileParser.o: /usr/include/memory.h
 ../TreeMetaFileParser/TreeMetaFileParser.o: /usr/include/stddef.h
-../TreeMetaFileParser/TreeMetaFileParser.o: ../../c++adt/include/CString.h
-../TreeMetaFileParser/TreeMetaFileParser.o: /usr/include/string.h
+../TreeMetaFileParser/TreeMetaFileParser.o: /usr/include/CC/string
+../TreeMetaFileParser/TreeMetaFileParser.o: /usr/include/CC/stl_config.h
+../TreeMetaFileParser/TreeMetaFileParser.o: /usr/include/CC/stl_string_fwd.h
+../TreeMetaFileParser/TreeMetaFileParser.o: /usr/include/CC/stl_alloc.h
 ../TreeMetaFileParser/TreeMetaFileParser.o: /usr/include/stdio.h
+../TreeMetaFileParser/TreeMetaFileParser.o: /usr/include/string.h
+../TreeMetaFileParser/TreeMetaFileParser.o: /usr/include/assert.h
+../TreeMetaFileParser/TreeMetaFileParser.o: /usr/include/CC/stl_threads.h
+../TreeMetaFileParser/TreeMetaFileParser.o: /usr/include/mutex.h
+../TreeMetaFileParser/TreeMetaFileParser.o: /usr/include/time.h
 ../TreeMetaFileParser/TreeMetaFileParser.o: /usr/include/ctype.h
 ../TreeMetaFileParser/TreeMetaFileParser.o: /usr/include/locale_attr.h
-../TreeMetaFileParser/TreeMetaFileParser.o: /usr/include/CC/stream.h
-../TreeMetaFileParser/TreeMetaFileParser.o: /usr/include/CC/iomanip.h
-../TreeMetaFileParser/TreeMetaFileParser.o: /usr/include/CC/generic.h
-../TreeMetaFileParser/TreeMetaFileParser.o: /usr/include/CC/stdiostream.h
+../TreeMetaFileParser/TreeMetaFileParser.o: /usr/include/CC/functional
+../TreeMetaFileParser/TreeMetaFileParser.o: /usr/include/CC/stl_function.h
+../TreeMetaFileParser/TreeMetaFileParser.o: /usr/include/CC/stdexcept
+../TreeMetaFileParser/TreeMetaFileParser.o: /usr/include/CC/stl_exception.h
+../TreeMetaFileParser/TreeMetaFileParser.o: /usr/include/CC/stl_iterator_base.h
+../TreeMetaFileParser/TreeMetaFileParser.o: /usr/include/CC/memory
+../TreeMetaFileParser/TreeMetaFileParser.o: /usr/include/CC/stl_algobase.h
+../TreeMetaFileParser/TreeMetaFileParser.o: /usr/include/CC/stl_relops.h
+../TreeMetaFileParser/TreeMetaFileParser.o: /usr/include/CC/stl_pair.h
+../TreeMetaFileParser/TreeMetaFileParser.o: /usr/include/CC/type_traits.h
+../TreeMetaFileParser/TreeMetaFileParser.o: /usr/include/limits.h
+../TreeMetaFileParser/TreeMetaFileParser.o: /usr/include/CC/new.h
+../TreeMetaFileParser/TreeMetaFileParser.o: /usr/include/CC/stl_iterator.h
+../TreeMetaFileParser/TreeMetaFileParser.o: /usr/include/CC/stl_construct.h
+../TreeMetaFileParser/TreeMetaFileParser.o: /usr/include/CC/stl_tempbuf.h
+../TreeMetaFileParser/TreeMetaFileParser.o: /usr/include/CC/stl_uninitialized.h
+../TreeMetaFileParser/TreeMetaFileParser.o: /usr/include/CC/stl_raw_storage_iter.h
+../TreeMetaFileParser/TreeMetaFileParser.o: /usr/include/CC/algorithm
+../TreeMetaFileParser/TreeMetaFileParser.o: /usr/include/CC/stl_algo.h
+../TreeMetaFileParser/TreeMetaFileParser.o: /usr/include/CC/stl_heap.h
+../TreeMetaFileParser/TreeMetaFileParser.o: /usr/include/CC/char_traits.h
+../TreeMetaFileParser/TreeMetaFileParser.o: /usr/include/wchar.h
+../TreeMetaFileParser/TreeMetaFileParser.o: /usr/include/CC/stl_hash_fun.h
 ../TreeSegment/BroadLeaf.o: ../include/BroadLeaf.h
 ../TreeSegment/BroadLeaf.o: ../../c++adt/include/Point.h /usr/include/math.h
 ../TreeSegment/BroadLeaf.o: /usr/include/sgidefs.h /usr/include/standards.h
+../TreeSegment/BroadLeaf.o: ../../c++adt/include/mathsym.h
 ../TreeSegment/BroadLeaf.o: /usr/include/CC/iostream.h /usr/include/memory.h
 ../TreeSegment/BroadLeaf.o: /usr/include/stddef.h
 ../TreeSegment/BroadLeaf.o: ../../c++adt/include/PointI.h
 ../TreeSegment/BroadLeaf.o: ../../c++adt/include/PositionVector.h
-../TreeSegment/BroadLeaf.o: ../../c++adt/include/mathsym.h
 ../TreeSegment/BroadLeaf.o: /usr/include/CC/vector
 ../TreeSegment/BroadLeaf.o: /usr/include/CC/stl_range_errors.h
 ../TreeSegment/BroadLeaf.o: /usr/include/CC/stl_config.h
@@ -347,6 +398,8 @@ depend:
 ../TreeSegment/BroadLeaf.o: /usr/include/CC/stl_iterator.h
 ../TreeSegment/BroadLeaf.o: /usr/include/CC/stl_alloc.h /usr/include/stdio.h
 ../TreeSegment/BroadLeaf.o: /usr/include/assert.h
+../TreeSegment/BroadLeaf.o: /usr/include/CC/stl_threads.h
+../TreeSegment/BroadLeaf.o: /usr/include/mutex.h /usr/include/time.h
 ../TreeSegment/BroadLeaf.o: /usr/include/CC/stl_construct.h
 ../TreeSegment/BroadLeaf.o: /usr/include/CC/stl_uninitialized.h
 ../TreeSegment/BroadLeaf.o: /usr/include/CC/stl_vector.h
@@ -387,6 +440,8 @@ depend:
 ../TreeSegment/TreeSegmentFriend.o: /usr/include/CC/stl_alloc.h
 ../TreeSegment/TreeSegmentFriend.o: /usr/include/stdio.h
 ../TreeSegment/TreeSegmentFriend.o: /usr/include/assert.h
+../TreeSegment/TreeSegmentFriend.o: /usr/include/CC/stl_threads.h
+../TreeSegment/TreeSegmentFriend.o: /usr/include/mutex.h /usr/include/time.h
 ../TreeSegment/TreeSegmentFriend.o: /usr/include/CC/stl_construct.h
 ../TreeSegment/TreeSegmentFriend.o: /usr/include/CC/stl_uninitialized.h
 ../TreeSegment/TreeSegmentFriend.o: /usr/include/CC/stl_list.h
@@ -416,7 +471,6 @@ depend:
 ../TreeSegment/TreeSegmentFriend.o: /usr/include/CC/stl_multimap.h
 ../TreeSegment/TreeSegmentFriend.o: ../include/LGMUnits.h
 ../TreeSegment/TreeSegmentFriend.o: ../include/TreeSegmentI.h
-../TreeSegment/TreeSegmentFriend.o: ../include/TreeSegmentMetabolismI.h
 ../TreeSegment/TreeSegment.o: ../include/TreeSegment.h /usr/include/CC/list
 ../TreeSegment/TreeSegment.o: /usr/include/CC/stl_algobase.h
 ../TreeSegment/TreeSegment.o: /usr/include/CC/stl_config.h
@@ -433,6 +487,8 @@ depend:
 ../TreeSegment/TreeSegment.o: /usr/include/CC/stl_iterator.h
 ../TreeSegment/TreeSegment.o: /usr/include/CC/stl_alloc.h
 ../TreeSegment/TreeSegment.o: /usr/include/stdio.h /usr/include/assert.h
+../TreeSegment/TreeSegment.o: /usr/include/CC/stl_threads.h
+../TreeSegment/TreeSegment.o: /usr/include/mutex.h /usr/include/time.h
 ../TreeSegment/TreeSegment.o: /usr/include/CC/stl_construct.h
 ../TreeSegment/TreeSegment.o: /usr/include/CC/stl_uninitialized.h
 ../TreeSegment/TreeSegment.o: /usr/include/CC/stl_list.h
@@ -459,18 +515,17 @@ depend:
 ../TreeSegment/TreeSegment.o: /usr/include/CC/stl_map.h
 ../TreeSegment/TreeSegment.o: /usr/include/CC/stl_multimap.h
 ../TreeSegment/TreeSegment.o: ../include/LGMUnits.h ../include/TreeSegmentI.h
-../TreeSegment/TreeSegment.o: ../include/TreeSegmentMetabolismI.h
 ../TreeCompartment/TreeCompartmentFriend.o: ../include/TreeCompartment.h
 ../TreeCompartment/TreeCompartmentFriend.o: ../../c++adt/include/Point.h
 ../TreeCompartment/TreeCompartmentFriend.o: /usr/include/math.h
 ../TreeCompartment/TreeCompartmentFriend.o: /usr/include/sgidefs.h
 ../TreeCompartment/TreeCompartmentFriend.o: /usr/include/standards.h
+../TreeCompartment/TreeCompartmentFriend.o: ../../c++adt/include/mathsym.h
 ../TreeCompartment/TreeCompartmentFriend.o: /usr/include/CC/iostream.h
 ../TreeCompartment/TreeCompartmentFriend.o: /usr/include/memory.h
 ../TreeCompartment/TreeCompartmentFriend.o: /usr/include/stddef.h
 ../TreeCompartment/TreeCompartmentFriend.o: ../../c++adt/include/PointI.h
 ../TreeCompartment/TreeCompartmentFriend.o: ../../c++adt/include/PositionVector.h
-../TreeCompartment/TreeCompartmentFriend.o: ../../c++adt/include/mathsym.h
 ../TreeCompartment/TreeCompartmentFriend.o: /usr/include/CC/vector
 ../TreeCompartment/TreeCompartmentFriend.o: /usr/include/CC/stl_range_errors.h
 ../TreeCompartment/TreeCompartmentFriend.o: /usr/include/CC/stl_config.h
@@ -487,6 +542,9 @@ depend:
 ../TreeCompartment/TreeCompartmentFriend.o: /usr/include/CC/stl_alloc.h
 ../TreeCompartment/TreeCompartmentFriend.o: /usr/include/stdio.h
 ../TreeCompartment/TreeCompartmentFriend.o: /usr/include/assert.h
+../TreeCompartment/TreeCompartmentFriend.o: /usr/include/CC/stl_threads.h
+../TreeCompartment/TreeCompartmentFriend.o: /usr/include/mutex.h
+../TreeCompartment/TreeCompartmentFriend.o: /usr/include/time.h
 ../TreeCompartment/TreeCompartmentFriend.o: /usr/include/CC/stl_construct.h
 ../TreeCompartment/TreeCompartmentFriend.o: /usr/include/CC/stl_uninitialized.h
 ../TreeCompartment/TreeCompartmentFriend.o: /usr/include/CC/stl_vector.h
@@ -526,27 +584,33 @@ depend:
 ../Tree/TreeFriend.o: /usr/include/CC/numeric /usr/include/CC/stl_function.h
 ../Tree/TreeFriend.o: /usr/include/CC/stl_numeric.h /usr/include/CC/list
 ../Tree/TreeFriend.o: /usr/include/CC/stl_alloc.h /usr/include/stdio.h
-../Tree/TreeFriend.o: /usr/include/assert.h /usr/include/CC/stl_list.h
-../Tree/TreeFriend.o: /usr/include/CC/stream.h /usr/include/CC/iomanip.h
-../Tree/TreeFriend.o: /usr/include/CC/generic.h /usr/include/CC/stdiostream.h
-../Tree/TreeFriend.o: /usr/include/CC/fstream.h
-../Tree/TreeFriend.o: ../../c++adt/include/CString.h /usr/include/ctype.h
-../Tree/TreeFriend.o: /usr/include/locale_attr.h
+../Tree/TreeFriend.o: /usr/include/assert.h /usr/include/CC/stl_threads.h
+../Tree/TreeFriend.o: /usr/include/mutex.h /usr/include/time.h
+../Tree/TreeFriend.o: /usr/include/CC/stl_list.h /usr/include/CC/stream.h
+../Tree/TreeFriend.o: /usr/include/CC/iomanip.h /usr/include/CC/generic.h
+../Tree/TreeFriend.o: /usr/include/CC/stdiostream.h /usr/include/CC/fstream.h
+../Tree/TreeFriend.o: /usr/include/CC/string /usr/include/CC/stl_string_fwd.h
+../Tree/TreeFriend.o: /usr/include/ctype.h /usr/include/locale_attr.h
+../Tree/TreeFriend.o: /usr/include/CC/functional /usr/include/CC/stdexcept
+../Tree/TreeFriend.o: /usr/include/CC/stl_exception.h /usr/include/CC/memory
+../Tree/TreeFriend.o: /usr/include/CC/stl_raw_storage_iter.h
+../Tree/TreeFriend.o: /usr/include/CC/char_traits.h /usr/include/wchar.h
+../Tree/TreeFriend.o: /usr/include/CC/stl_hash_fun.h
 ../Tree/TreeFriend.o: ../../c++adt/include/ParametricCurve.h
 ../Tree/TreeFriend.o: /usr/include/CC/vector
 ../Tree/TreeFriend.o: /usr/include/CC/stl_range_errors.h
 ../Tree/TreeFriend.o: /usr/include/CC/stl_vector.h
 ../Tree/TreeFriend.o: /usr/include/CC/stl_bvector.h /usr/include/float.h
 ../Tree/TreeFriend.o: ../../c++adt/include/Point.h /usr/include/math.h
+../Tree/TreeFriend.o: ../../c++adt/include/mathsym.h
 ../Tree/TreeFriend.o: ../../c++adt/include/PointI.h
 ../Tree/TreeFriend.o: ../../c++adt/include/PositionVector.h
-../Tree/TreeFriend.o: ../../c++adt/include/mathsym.h
 ../Tree/TreeFriend.o: ../../c++adt/include/RMatrix.h
 ../Tree/TreeFriend.o: ../../c++adt/include/TMatrix.h
 ../Tree/TreeFriend.o: ../../c++adt/include/TMatrixI.h ../include/Algorithms.h
-../Tree/TreeFriend.o: /usr/include/CC/functional ../include/LGMdecl.h
-../Tree/TreeFriend.o: ../include/LGMSymbols.h /usr/include/CC/map
-../Tree/TreeFriend.o: /usr/include/CC/stl_tree.h /usr/include/CC/stl_map.h
+../Tree/TreeFriend.o: ../include/LGMdecl.h ../include/LGMSymbols.h
+../Tree/TreeFriend.o: /usr/include/CC/map /usr/include/CC/stl_tree.h
+../Tree/TreeFriend.o: /usr/include/CC/stl_map.h
 ../Tree/TreeFriend.o: /usr/include/CC/stl_multimap.h ../include/LGMUnits.h
 ../Tree/TreeFriend.o: ../include/AlgorithmsI.h ../include/TreeFunctor.h
 ../Tree/TreeFriend.o: ../include/TreeCompartment.h
@@ -561,13 +625,15 @@ depend:
 ../Tree/TreeFriend.o: ../include/Bud.h ../include/BudI.h
 ../Tree/TreeFriend.o: ../include/DefaultBud.h ../include/BranchingPoint.h
 ../Tree/TreeFriend.o: ../include/BranchingPointI.h ../include/TreeSegment.h
-../Tree/TreeFriend.o: ../include/TreeSegmentI.h
-../Tree/TreeFriend.o: ../include/TreeSegmentMetabolismI.h
-../Tree/TreeFriend.o: ../include/HwTreeSegment.h ../include/BroadLeaf.h
-../Tree/TreeFriend.o: ../../c++adt/include/Ellipsis.h
+../Tree/TreeFriend.o: ../include/TreeSegmentI.h ../include/HwTreeSegment.h
+../Tree/TreeFriend.o: ../include/BroadLeaf.h ../../c++adt/include/Ellipsis.h
 ../Tree/TreeFriend.o: ../../Firmament/include/Firmament.h
+../Tree/TreeFriend.o: /usr/include/CC/vector.h /usr/include/CC/algobase.h
+../Tree/TreeFriend.o: /usr/include/CC/pair.h /usr/include/CC/iterator.h
+../Tree/TreeFriend.o: /usr/include/CC/function.h /usr/include/CC/alloc.h
 ../Tree/TreeFriend.o: ../include/HwTreeSegmentI.h ../include/CfTreeSegment.h
-../Tree/TreeFriend.o: ../include/Axis.h ../include/AxisI.h
+../Tree/TreeFriend.o: ../include/CfTreeSegmentI.h ../include/Axis.h
+../Tree/TreeFriend.o: ../include/AxisI.h
 ../Tree/TreeFriend.o: ../../c++adt/include/ConnectionMatrix.h
 ../Tree/TreeFriend.o: ../../c++adt/include/ConnectionMatrixI.h
 ../Tree/TreeFriend.o: ../include/TreeI.h ../include/TreeMetabolismI.h
@@ -588,40 +654,95 @@ depend:
 ../Tree/Tree.o: /usr/include/CC/stl_function.h /usr/include/CC/stl_numeric.h
 ../Tree/Tree.o: /usr/include/CC/list /usr/include/CC/stl_alloc.h
 ../Tree/Tree.o: /usr/include/stdio.h /usr/include/assert.h
-../Tree/Tree.o: /usr/include/CC/stl_list.h /usr/include/CC/stream.h
-../Tree/Tree.o: /usr/include/CC/iomanip.h /usr/include/CC/generic.h
-../Tree/Tree.o: /usr/include/CC/stdiostream.h /usr/include/CC/fstream.h
-../Tree/Tree.o: ../../c++adt/include/CString.h /usr/include/ctype.h
-../Tree/Tree.o: /usr/include/locale_attr.h
+../Tree/Tree.o: /usr/include/CC/stl_threads.h /usr/include/mutex.h
+../Tree/Tree.o: /usr/include/time.h /usr/include/CC/stl_list.h
+../Tree/Tree.o: /usr/include/CC/stream.h /usr/include/CC/iomanip.h
+../Tree/Tree.o: /usr/include/CC/generic.h /usr/include/CC/stdiostream.h
+../Tree/Tree.o: /usr/include/CC/fstream.h /usr/include/CC/string
+../Tree/Tree.o: /usr/include/CC/stl_string_fwd.h /usr/include/ctype.h
+../Tree/Tree.o: /usr/include/locale_attr.h /usr/include/CC/functional
+../Tree/Tree.o: /usr/include/CC/stdexcept /usr/include/CC/stl_exception.h
+../Tree/Tree.o: /usr/include/CC/memory /usr/include/CC/stl_raw_storage_iter.h
+../Tree/Tree.o: /usr/include/CC/char_traits.h /usr/include/wchar.h
+../Tree/Tree.o: /usr/include/CC/stl_hash_fun.h
 ../Tree/Tree.o: ../../c++adt/include/ParametricCurve.h /usr/include/CC/vector
 ../Tree/Tree.o: /usr/include/CC/stl_range_errors.h
 ../Tree/Tree.o: /usr/include/CC/stl_vector.h /usr/include/CC/stl_bvector.h
 ../Tree/Tree.o: /usr/include/float.h ../../c++adt/include/Point.h
-../Tree/Tree.o: /usr/include/math.h ../../c++adt/include/PointI.h
+../Tree/Tree.o: /usr/include/math.h ../../c++adt/include/mathsym.h
+../Tree/Tree.o: ../../c++adt/include/PointI.h
 ../Tree/Tree.o: ../../c++adt/include/PositionVector.h
-../Tree/Tree.o: ../../c++adt/include/mathsym.h ../../c++adt/include/RMatrix.h
-../Tree/Tree.o: ../../c++adt/include/TMatrix.h
+../Tree/Tree.o: ../../c++adt/include/RMatrix.h ../../c++adt/include/TMatrix.h
 ../Tree/Tree.o: ../../c++adt/include/TMatrixI.h ../include/Algorithms.h
-../Tree/Tree.o: /usr/include/CC/functional ../include/LGMdecl.h
-../Tree/Tree.o: ../include/LGMSymbols.h /usr/include/CC/map
-../Tree/Tree.o: /usr/include/CC/stl_tree.h /usr/include/CC/stl_map.h
-../Tree/Tree.o: /usr/include/CC/stl_multimap.h ../include/LGMUnits.h
-../Tree/Tree.o: ../include/AlgorithmsI.h ../include/TreeFunctor.h
-../Tree/Tree.o: ../include/TreeCompartment.h ../include/TreeCompartmentI.h
-../Tree/Tree.o: ../include/TreeFunctorI.h ../include/TreeMetaFileParser.h
-../Tree/Tree.o: ../../c++adt/include/Table.h ../../c++adt/include/DList.h
+../Tree/Tree.o: ../include/LGMdecl.h ../include/LGMSymbols.h
+../Tree/Tree.o: /usr/include/CC/map /usr/include/CC/stl_tree.h
+../Tree/Tree.o: /usr/include/CC/stl_map.h /usr/include/CC/stl_multimap.h
+../Tree/Tree.o: ../include/LGMUnits.h ../include/AlgorithmsI.h
+../Tree/Tree.o: ../include/TreeFunctor.h ../include/TreeCompartment.h
+../Tree/Tree.o: ../include/TreeCompartmentI.h ../include/TreeFunctorI.h
+../Tree/Tree.o: ../include/TreeMetaFileParser.h ../../c++adt/include/Table.h
+../Tree/Tree.o: ../../c++adt/include/DList.h
 ../Tree/Tree.o: ../../c++adt/include/DListElement.h
 ../Tree/Tree.o: ../../c++adt/include/boolean.h ../../c++adt/include/TableI.h
 ../Tree/Tree.o: ../../c++adt/include/Lex.h ../include/RootSystem.h
 ../Tree/Tree.o: ../include/Bud.h ../include/BudI.h ../include/DefaultBud.h
 ../Tree/Tree.o: ../include/BranchingPoint.h ../include/BranchingPointI.h
 ../Tree/Tree.o: ../include/TreeSegment.h ../include/TreeSegmentI.h
-../Tree/Tree.o: ../include/TreeSegmentMetabolismI.h
 ../Tree/Tree.o: ../include/HwTreeSegment.h ../include/BroadLeaf.h
 ../Tree/Tree.o: ../../c++adt/include/Ellipsis.h
-../Tree/Tree.o: ../../Firmament/include/Firmament.h
-../Tree/Tree.o: ../include/HwTreeSegmentI.h ../include/CfTreeSegment.h
+../Tree/Tree.o: ../../Firmament/include/Firmament.h /usr/include/CC/vector.h
+../Tree/Tree.o: /usr/include/CC/algobase.h /usr/include/CC/pair.h
+../Tree/Tree.o: /usr/include/CC/iterator.h /usr/include/CC/function.h
+../Tree/Tree.o: /usr/include/CC/alloc.h ../include/HwTreeSegmentI.h
+../Tree/Tree.o: ../include/CfTreeSegment.h ../include/CfTreeSegmentI.h
 ../Tree/Tree.o: ../include/Axis.h ../include/AxisI.h
 ../Tree/Tree.o: ../../c++adt/include/ConnectionMatrix.h
 ../Tree/Tree.o: ../../c++adt/include/ConnectionMatrixI.h ../include/TreeI.h
 ../Tree/Tree.o: ../include/TreeMetabolismI.h
+../TreeSegment/CfTreeSegment.o: ../include/CfTreeSegment.h
+../TreeSegment/CfTreeSegment.o: /usr/include/CC/list
+../TreeSegment/CfTreeSegment.o: /usr/include/CC/stl_algobase.h
+../TreeSegment/CfTreeSegment.o: /usr/include/CC/stl_config.h
+../TreeSegment/CfTreeSegment.o: /usr/include/standards.h
+../TreeSegment/CfTreeSegment.o: /usr/include/CC/stl_relops.h
+../TreeSegment/CfTreeSegment.o: /usr/include/CC/stl_pair.h
+../TreeSegment/CfTreeSegment.o: /usr/include/CC/type_traits.h
+../TreeSegment/CfTreeSegment.o: /usr/include/string.h /usr/include/limits.h
+../TreeSegment/CfTreeSegment.o: /usr/include/sgidefs.h /usr/include/stdlib.h
+../TreeSegment/CfTreeSegment.o: /usr/include/stddef.h /usr/include/CC/new.h
+../TreeSegment/CfTreeSegment.o: /usr/include/CC/iostream.h
+../TreeSegment/CfTreeSegment.o: /usr/include/memory.h
+../TreeSegment/CfTreeSegment.o: /usr/include/CC/stl_iterator_base.h
+../TreeSegment/CfTreeSegment.o: /usr/include/CC/stl_iterator.h
+../TreeSegment/CfTreeSegment.o: /usr/include/CC/stl_alloc.h
+../TreeSegment/CfTreeSegment.o: /usr/include/stdio.h /usr/include/assert.h
+../TreeSegment/CfTreeSegment.o: /usr/include/CC/stl_threads.h
+../TreeSegment/CfTreeSegment.o: /usr/include/mutex.h /usr/include/time.h
+../TreeSegment/CfTreeSegment.o: /usr/include/CC/stl_construct.h
+../TreeSegment/CfTreeSegment.o: /usr/include/CC/stl_uninitialized.h
+../TreeSegment/CfTreeSegment.o: /usr/include/CC/stl_list.h
+../TreeSegment/CfTreeSegment.o: ../../c++adt/include/mathsym.h
+../TreeSegment/CfTreeSegment.o: ../../c++adt/include/Point.h
+../TreeSegment/CfTreeSegment.o: /usr/include/math.h
+../TreeSegment/CfTreeSegment.o: ../../c++adt/include/PointI.h
+../TreeSegment/CfTreeSegment.o: ../../c++adt/include/PositionVector.h
+../TreeSegment/CfTreeSegment.o: /usr/include/CC/vector
+../TreeSegment/CfTreeSegment.o: /usr/include/CC/stl_range_errors.h
+../TreeSegment/CfTreeSegment.o: /usr/include/CC/stl_vector.h
+../TreeSegment/CfTreeSegment.o: /usr/include/CC/stl_bvector.h
+../TreeSegment/CfTreeSegment.o: ../../c++adt/include/RMatrix.h
+../TreeSegment/CfTreeSegment.o: ../../c++adt/include/TMatrix.h
+../TreeSegment/CfTreeSegment.o: /usr/include/CC/stream.h
+../TreeSegment/CfTreeSegment.o: /usr/include/CC/iomanip.h
+../TreeSegment/CfTreeSegment.o: /usr/include/CC/generic.h
+../TreeSegment/CfTreeSegment.o: /usr/include/CC/stdiostream.h
+../TreeSegment/CfTreeSegment.o: /usr/include/CC/fstream.h
+../TreeSegment/CfTreeSegment.o: ../../c++adt/include/TMatrixI.h
+../TreeSegment/CfTreeSegment.o: ../include/LGMdecl.h ../include/LGMSymbols.h
+../TreeSegment/CfTreeSegment.o: /usr/include/CC/map
+../TreeSegment/CfTreeSegment.o: /usr/include/CC/stl_tree.h
+../TreeSegment/CfTreeSegment.o: /usr/include/CC/stl_function.h
+../TreeSegment/CfTreeSegment.o: /usr/include/CC/stl_map.h
+../TreeSegment/CfTreeSegment.o: /usr/include/CC/stl_multimap.h
+../TreeSegment/CfTreeSegment.o: ../include/LGMUnits.h
+../TreeSegment/CfTreeSegment.o: ../include/CfTreeSegmentI.h

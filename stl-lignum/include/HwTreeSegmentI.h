@@ -20,8 +20,6 @@ void InitializeForRadiation(HwTreeSegment<TS,BUD>& ts)
   Firmament& f = GetFirmament(tt);
   int nr =  f.numberOfRegions();
   vector<LGMdouble> one(nr, 1.0);
-  SetValue(ts, Qin, 0.0);
-  SetValue(ts, Qabs, 0.0);
   list<BroadLeaf*>& ll = GetLeafList(const_cast<HwTreeSegment<TS,BUD>&>(ts));
   for(list<BroadLeaf*>::iterator i = ll.begin();
 	i != ll.end(); i++) {
@@ -97,15 +95,34 @@ LGMdouble GetValue(const HwTreeSegment<TS,BUD>& ts, const LGMAD name)
     
     return value;
   }
+  elseif (name == P) {
+    list<BroadLeaf*>& leaf_list = GetLeafList(const_cast<HwTreeSegment<TS,BUD>&>(ts));
+    list<BroadLeaf*>::iterator I;
+    for(I = leaf_list.begin(); I != leaf_list.end(); I++)
+      value += GetValue(**I, P);
+    
+    return value;
+  }
+  elseif (name == Qin) {
+    list<BroadLeaf*>& leaf_list = GetLeafList(const_cast<HwTreeSegment<TS,BUD>&>(ts));
+    list<BroadLeaf*>::iterator I;
+    for(I = leaf_list.begin(); I != leaf_list.end(); I++)
+      value += GetValue(**I, Qin);
+    
+    return value;
+  }
+  elseif (name == Qabs) {
+    list<BroadLeaf*>& leaf_list = GetLeafList(const_cast<HwTreeSegment<TS,BUD>&>(ts));
+    list<BroadLeaf*>::iterator I;
+    for(I = leaf_list.begin(); I != leaf_list.end(); I++)
+      value += GetValue(**I, Qabs);
+    
+    return value;
+  }
   else
     return GetValue(dynamic_cast<const TreeSegment<TS,BUD>&>(ts), name);
 
 }
-
-
-
-
-
 
 
 #endif

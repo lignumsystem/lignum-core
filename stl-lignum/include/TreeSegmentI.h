@@ -115,15 +115,6 @@ LGMdouble GetValue(const TreeSegment<TS,BUD>& ts, const LGMAD name)
   else if (name == omega)
     return ts.tsa.omega;
 
-  else if (name == P)
-    return ts.tsa.P;
-
-  else if (name == Qin)
-    return ts.tsa.Qin;
-
-  else if (name == Qabs)
-    return ts.tsa.Qabs;
-
   else if (name == R)
     return ts.tsa.R;
 
@@ -176,17 +167,8 @@ LGMdouble SetValue(TreeSegment<TS,BUD>& ts, const LGMAD name, const LGMdouble va
   else if (name == omega)
     ts.tsa.omega = value;
 
-  else if (name == P)
-    ts.tsa.P = value;
-
   else if (name == Pr)
     ts.tsa.Pr = value;
-
-  else if (name == Qabs)
-    ts.tsa.Qabs = value;
-  
-  else if (name == Qin)
-    ts.tsa.Qin = value;
 
   else if (name == R)
     ts.tsa.R = value;
