@@ -3,6 +3,7 @@
 
 
 #include <vector>
+#include <utility>
 #include <Lignum.h>
 #include <TMatrix3D.h>
 #include <VoxelBox.h>
@@ -44,11 +45,13 @@ namespace Lignum {
       LGMdouble getQabs();
       LGMdouble getQin();
 
+      pair<double,double> getMinMaxNeedleMass();
 
       VoxelBox& getVoxelBox(Point p);
       LGMdouble calculateLight();
 
-      std::vector<VoxelMovement>& getRoute(std::vector<VoxelMovement> &vec, int startx, int starty, int startz, PositionVector dir);
+      vector<VoxelMovement>& getRoute(vector<VoxelMovement> &vec, int startx, 
+				      int starty, int startz, PositionVector dir);
 
       void fillVoxelBoxes(LGMdouble inivalue);
       void fillVoxelBoxes(LGMdouble inivalue, int beginZ, int endZ);
@@ -69,7 +72,9 @@ namespace Lignum {
 	
       BoundingBox& searchDimensions(BoundingBox &bbox, bool boolDimensionsWithNumBoxes);
 
-      void searchDimensions(bool boolDimensionsWithNumBoxes=true) { searchDimensions(bbox, boolDimensionsWithNumBoxes); };
+      void searchDimensions(bool boolDimensionsWithNumBoxes=true){ 
+	searchDimensions(bbox, boolDimensionsWithNumBoxes); 
+      }
       
       void updateStar();
       void resetQinQabs();
