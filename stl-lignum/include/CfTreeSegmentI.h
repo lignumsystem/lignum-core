@@ -52,6 +52,9 @@ LGMdouble GetValue(const CfTreeSegment<TS,BUD>& ts, const LGMAD name)
   else if (name == Af)
     return ts.cftsa.sf * ts.cftsa.Wf;
 
+  else if (name == sf)
+    return ts.cftsa.sf;
+
   else
     return GetValue(dynamic_cast<const TreeSegment<TS,BUD>&>(ts), name);
 }
