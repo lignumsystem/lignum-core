@@ -307,7 +307,10 @@ vector<LGMdouble>& ShadingEffectOfCfTreeSegment<TS,BUD>::
       //the radiation from the sector i and direction of sector i
       firmament.diffuseRegionRadiationSum(i,radiation_direction);
 
-      result = cylinderBeamShading(GetPoint(*shaded_s),
+      Point r_0 =  GetPoint(*shaded_s)+0.5*GetValue(*shaded_s,L)*
+	(Point)GetDirection(*shaded_s);        //Midpoint of shaded seg
+
+      result = cylinderBeamShading(r_0,
 			 radiation_direction,
 			 GetPoint(*ts),
 			 GetDirection(*ts),
