@@ -277,6 +277,12 @@ Axis<TS,BUD>& GetAxis(Tree<TS,BUD>& t)
   return t.axis;
 }
 
+template <class TS,class BUD>
+RootAxis<Tree<TS,BUD> >& GetRootAxis(Tree<TS,BUD>& t)
+{
+  return t.root_axis;
+}
+
 //Return a tree function as a ParametricCurve
 template<class TS, class BUD>
 const ParametricCurve& GetFunction(const Tree<TS,BUD>& tree, LGMF name)

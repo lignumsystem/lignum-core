@@ -131,7 +131,8 @@ namespace Lignum{
       template <class TS1,class BUD1>
       friend Axis<TS1,BUD1>& GetAxis(Tree<TS1,BUD1>& t);
 
-      RootAxis<Tree<TS,BUD> >& GetRootAxis(Tree<TS,BUD>& t){return t.root_axis}
+      template <class TS1,class BUD1>
+      friend RootAxis<Tree<TS1,BUD1> >& GetRootAxis(Tree<TS1,BUD1>& t);
 
       template <class TS1,class BUD1>
       friend LGMdouble GetValue(const Tree<TS1,BUD1>& tree, const LGMTAD name);
