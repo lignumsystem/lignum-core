@@ -83,8 +83,8 @@ namespace Lignum{
   //            branching point. Needed to calculate LGAvi 
   //  19 LGAomega  Gravelius order
   //  20 LGAP      Photosynthetic rate (= amount of p. during time step)
-  //  21 LGAQin    Incoming radiant flux
-  //  22 LGAQabs   Amount of absorbed radiation
+  //  21 LGAQabs    Incoming radiant flux
+  //  22 LGAQin   Amount of absorbed radiation
   //  23 LGAR      Radius of segment (wood)
   //  24 LGARf     Radius of segment cylinder including also foliage (conifers)
   //  25 LGARh     Radius of heartwood
