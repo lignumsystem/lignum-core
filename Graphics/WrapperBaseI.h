@@ -16,7 +16,24 @@ void CfWrapper<TS,BUD>::VisualizeStem(int &active_texture)
 template <class TS, class BUD>
 void CfWrapper<TS,BUD>::VisualizeFoliage(int &active_texture)
 {
-	
+    glEnable(GL_BLEND);
+    glEnable(GL_TEXTURE_2D);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glBindTexture(GL_TEXTURE_2D, intFoliageTexture );
+    glDisable(GL_LIGHTING);
+    
+    glPushMatrix();
+    glEnable(GL_CULL_FACE);
+    DrawNeedlesFunctor<TS, BUD> func;
+    glCullFace(GL_FRONT);
+    ForEach(tree, func);    
+  
+    glCullFace(GL_BACK);     	 
+    ForEach(tree, func);
+    glDisable(GL_CULL_FACE);
+    glPopMatrix();
+    glDisable(GL_BLEND);
+    	
 }
 
 template <class TS, class BUD>
@@ -91,9 +108,8 @@ void HwWrapper<TS,BUD>::MakeWireModelLists()
     {
       glDeleteLists(intDisplaylistStem,1);
     }
+  
   glGenTextures(1, (GLuint*)&intDisplaylistStem);
-
-//  cout << "making a wiremodel to a HwTree ********** **********" << endl;
   glPushMatrix();
   glNewList(intDisplaylistStem, GL_COMPILE);
   VisualizeWireModel();
@@ -101,7 +117,6 @@ void HwWrapper<TS,BUD>::MakeWireModelLists()
   glPopMatrix();
 
 
-  //  cout << "dp-number  " <<  intDisplaylistStem << endl;
 }
 
 
@@ -115,7 +130,6 @@ void CfWrapper<TS,BUD>::MakeWireModelLists()
     }
     glGenTextures(1, (GLuint*)&intDisplaylistStem);
     
-//  cout << "making a wiremodel to a HwTree ********** **********" << endl;
     glPushMatrix();
     glNewList(intDisplaylistStem, GL_COMPILE);
     VisualizeWireModel();
@@ -128,20 +142,20 @@ void CfWrapper<TS,BUD>::MakeWireModelLists()
 template <class TS, class BUD>
 void CfWrapper<TS,BUD>::VisualizeTree()
 {
-  cout << "Visualize cf-tree" << endl;
-	
+    glBindTexture(GL_TEXTURE_2D,  intStemTexture);
+    DrawStemFunctor<TS,BUD> stemfunctor;
+    stemfunctor.min_rad = -99;
+    stemfunctor.max_rad = 999;
+    ForEach(tree, stemfunctor);   
 }
 
 template <class TS, class BUD>
 void HwWrapper<TS,BUD>::VisualizeTree()
 {
-
-
   DrawStemFunctor<TS,BUD> stemfunctor;
   stemfunctor.min_rad = -99;
   stemfunctor.max_rad = 999;
   ForEach(tree, stemfunctor);
-  
 }
 
 
@@ -173,8 +187,6 @@ void HwWrapper<TS,BUD>::MakeDisplayLists()
   VisualizeFoliage(num);
   glEndList();
   glPopMatrix();
-
- 
 }
 
 template <class TS, class BUD>
@@ -193,7 +205,13 @@ void CfWrapper<TS,BUD>::MakeDisplayLists()
     glEndList();
     glPopMatrix();
 
-
+    intDisplaylistFoliage = glGenLists(1);
+    glPushMatrix();
+    glNewList(intDisplaylistFoliage, GL_COMPILE);
+    int num = -1.0;
+    VisualizeFoliage(num);
+    glEndList();
+    glPopMatrix();
 }
 
 
@@ -214,10 +232,19 @@ void CfWrapper<TS,BUD>::DrawTree()
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);  
     
     //stem_texture.
+    glBindTexture(GL_TEXTURE_2D,  intStemTexture);
+    glDisable(GL_BLEND);
+    glDisable(GL_LIGHTING);
     glCallList(intDisplaylistStem);
+    
+    
+    // Lehdet
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexEnvf(GL_TEXTURE_2D, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
     glCallList(intDisplaylistFoliage);
-    //cout << " drawing cftree. List number  " << intDisplaylistStem  << endl;
-
+    
 }
 
 template <class TS, class BUD>

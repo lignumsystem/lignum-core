@@ -35,7 +35,7 @@ class CfWrapper: public WrapperBase
 {
 public:
   
-  CfWrapper(const Tree<TS,BUD>& t):WrapperBase(),tree(t){}
+  CfWrapper(Tree<TS,BUD>& t):WrapperBase(),tree(t){}
 
   void MakeDisplayLists();
   void MakeWireModelLists();

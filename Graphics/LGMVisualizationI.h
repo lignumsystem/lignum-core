@@ -46,8 +46,17 @@ namespace Lignum{
 
 {	
 	CfWrapper<TS,BUD> *wb = new CfWrapper<TS,BUD>(t);
-
+	
+	// Neulasten tekstuuri
 	wb->intFoliageTexture = GetTgaTexNumber(folTex);
+	cout << " lehden TEXTURE numero "<<  wb->intFoliageTexture << endl;
+	//Rungon tekstuuri
+	CTexture stem_texture;
+	stem_texture.Load(stemTex.c_str(), 512, 512);
+	stem_texture.use();
+	wb->intStemTexture = stem_texture.texturenum;
+	cout << " rungon TEXTURE numero "<<   wb->intStemTexture << endl;
+ 
 	trees.push_back(wb);
 }
 
