@@ -33,7 +33,7 @@ namespace Lignum{
 
       //name of the parameter
       Token name = lex.getToken();
-      while (name.getType() != ENDFILE){
+      while (name.getType() != VC_ENDFILE){
 	//value of the parameter (as string)
 	Token value = lex.getToken();
 	LGMdouble p = static_cast<LGMdouble>(atof(value.getValue().c_str()));
