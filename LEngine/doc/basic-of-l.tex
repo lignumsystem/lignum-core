@@ -4,28 +4,20 @@ Mathematically L-systems  are parallel rewriting  systems operating on
 strings of symbols. An L-system  is defined by an alphabet of symbols,
 a  set of  rewriting rules  called productions  and an  initial string
 called axiom. In a production  written as $a \rightarrow S$ the symbol
-$a$  is   called  predecessor  and  the  string   $S$  successor.   In
-context-free  L-systems  predecessor's   context  does  not  influence
-production  application.  In  context-sensitive  L-systems written  as
-$S_l < a  > S_r \rightarrow S$, the symbol $a$  can produce string $S$
-if and  only if  $a$ is  preceded by string  $S_l$ (left  context) and
-followed  by string  $S_r$ (right  context).  For  example  define the
-alphabet of three  symbols $O$, $X$ and $S$ and  set of following nine
-rules:
-\begin{equation}\label{eq:ca110}
-\begin{array}{lll}
-1:O < O > O \rightarrow O & 2:O < O > X \rightarrow X &
-3:O < X > O \rightarrow X \\ 
-4:O < X > X \rightarrow X & 5:X < O > O \rightarrow O&
-6:X < O > X \rightarrow X \\
-7:X < X > O \rightarrow X & 8:X < X > X \rightarrow O & 
-9:S > O \rightarrow SO
-\end{array}
+$a$ is called  predecessor and the string $S$  successor.  For example
+define  the  alphabet of  two  symbols  $A$ and  $B$  the  set of  the
+following two rules:
+\begin{equation}\label{eq:AB}
+1: A \rightarrow B \qquad 2: B \rightarrow AB 
 \end{equation}
-enlisting the $2^3$  possible ways of $O$ and $X$  to interact and the
-ninth rule expanding the string.  Starting from the axiom $SOOOXO$ the
-first four  strings produced by the L-system  are $SOOOXO$, $SOOOXXO$,
-\linebreak $SOOOXXXO$ and $SOOOXXOXO$.
+Starting from  the axiom  $A$ the first  five strings produced  by the
+L-system are $A$, $B$, $AB$ and $BAB$ and $ABBAB$.
+
+In context-free L-systems  (as Eq.  \ref{eq:AB}) predecessor's context
+does  not  influence  production  application.   In  context-sensitive
+L-systems written as $S_l < a > S_r \rightarrow S$, the symbol $a$ can
+produce string  $S$ if  and only  if $a$ is  preceded by  string $S_l$
+(left context) and followed by string $S_r$ (right context).
 
 In plant modeling  context the symbols of the  alphabet in an L-system
 represent the units (internodes, leaves, flowers etc.)  of the growing
