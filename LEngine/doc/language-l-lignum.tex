@@ -1,87 +1,84 @@
-\section{Introduction to language L}
+\section{Introduction to the L language}
 
-The key concept in the  L-system formalism is the rewriting of modules
-or symbols  \citep{pp:89}.  The  language L follows  the same  idea. A
+The key concept in the L  system formalism is the rewriting of modules
+or symbols  \citep{pp:89}.  The  L language follows  the same  idea. A
 module in  L has a name  and can take  any number of arguments  of any
 type   in   C++   programming   language   \citep{stroustrup:97}.    A
-syntactically correct rule consists of a predecessor possibly with its
-context ending  with colon and a production  defining successor string
-embraced  within curly  braces.  For  example the  second rule  in Eq.
-\ref{eq:AB} is written in L as:
-\begin{equation}\label{eq:r3}
- B(): \{\mathrm{produce}\ A()B();\}
-\end{equation}
+syntactically correct  rule consists  of a predecessor,  possibly with
+its  context ending with  colon, and  a production  defining successor
+string embraced within  curly braces.  For example the  second rule in
+Eq.   \ref{eq:AB} is  written in  L  as: \begin{equation}\label{eq:r3}
+B(): \{\mathrm{produce}\ A()B();\} \end{equation}
 
 For branching structures of plants L predefines two modules $SB()$ and
-$EB()$ denoting begin and end  of branch respectively.  To control the
-movements of the turtle (the  geometry engine) let us first define its
-orientation  in space by  three unit  vectors $\vec  H$, $\vec  L$ and
-$\vec  U$ denoting  turtle's heading,  direction  to the  left and  up
-perpendicular to each other such that $\vec U = \vec H \times \vec L$.
-Then define module $F(s)$ to move the turtle forward along its heading
-step of length $s$  and three modules $Turn(\alpha)$, $Pitch(\alpha)$,
-$Roll(\alpha)$ to  rotate orientation of  the turtle around  $\vec U$,
-$\vec  L$  and $\vec  H$  by  $\alpha$.   One special  module  $Start$
-corresponds to the axiom.
+$EB()$ denoting  the beginning and  end of a branch  respectively.  To
+control the movements of the turtle (the geometry engine) let us first
+define its orientation in space  by three unit vectors $\vec H$, $\vec
+L$ and $\vec  U$ denoting the turtle's heading,  direction to the left
+and up at right angles to each other such that $\vec U = \vec H \times
+\vec L$.  Then  define module $F(s)$ so as to  move the turtle forward
+along   its  heading   step   of  length   $s$,   and  three   modules
+$Turn(\alpha)$,   $Pitch(\alpha)$,   $Roll(\alpha)$   to  rotate   the
+orientation of  the turtle around $\vec  U$, $\vec L$ and  $\vec H$ by
+$\alpha$.  A special module, $Start$, corresponds to the axiom.
 
 
-\section{Integrating the language L and LIGNUM}\label{sec:pine}
+\section{Integrating the L language and LIGNUM}\label{sec:pine}
 
 To model tree structures with L as in LIGNUM let the module $F$ denote
-tree segment and designate module  $B$ for bud.  Given the modules for
-turtle  graphics  and  branching  we  can now  describe  topology  and
+a tree segment and designate module  $B$ for a bud.  Given the modules
+for turtle graphics and branching we can now describe the topology and
 geometry of  the tree structures  of LIGNUM (Eq.   \ref{eq:tree}) with
-rules of  the language  L (Eq.  \ref{eq:r3}).   To accommodate  L with
-LIGNUM we need first to construct an algorithm that translates strings
-of L to structural units of LIGNUM (Section \ref{sec:LToLignum}).  Second,
-as  metabolism implemented  in  LIGNUM will  act  on structural  units
-(segments  and  buds  most  notably)  and produces  changes  in  their
+rules of  the L  language (Eq.  \ref{eq:r3}).   To accommodate  L with
+LIGNUM we first need to construct an algorithm that translates strings
+of L  into structural  units of LIGNUM  (Section \ref{sec:LToLignum}).
+Second, as the metabolism implemented in LIGNUM will act on structural
+units (segments  and buds most  notably) and produce changes  in their
 physiological states,  in their dimensions  and in their  positions in
 space  accordingly, this  information  must be  transferred to  turtle
-symbols  and module  $B$  as  it is  necessary  in rewriting  (Section
+symbols  and module  $B$ as  this is  necessary in  rewriting (Section
 \ref{sec:LignumToL}).
 
-We present  an algorithm  that translates strings  of L  to structural
-units  of LIGNUM  with  the aid  an  example on  Scots  pine. We  have
-programmed in  language L the architectural development  of Scots pine
-as it  is approximately in LIGNUM  simulations of \citet{perttunen:96,
-  perttunen:98}; the L program  is shown in Appendix \ref{sec:L1}.  In
-the program  the module $B(A,L)$  represents a bud. In  each iteration
-the apical  bud ($A =  1$) moves forward  of length $L$ and  forks off
-four new side  branches.  The branches ($A > 1$)  are similar but only
-two more side branches are created.  Branching stops after third order
-($A > 3$).   When the development starts from  main axis consisting of
-one segment, branching point and  bud, the string after two iterations
-is
+We present an  algorithm that translates strings of  L into structural
+units of LIGNUM  with the aid of an example with  Scots pine.  We have
+programmed  in  L  the  architectural  development of  Scots  pine  in
+approximately  the same  way as  it is  in the  LIGNUM  simulations of
+\citet{perttunen:96, perttunen:98}; the L program is shown in Appendix
+\ref{sec:L1}.  In the program the module $B(A,L)$ represents a bud. In
+each iteration  the apical bud ($A  = 1$) moves forward  by the length
+$L$ and forks off four new  side branches.  The branches ($A > 1$) are
+similar, but only two more side branches are created.  Branching stops
+after the third order ($A > 3$).  When the development starts from the
+main  axis consisting  of one  segment, branching  point and  bud, the
+string after two iterations is
 
 \begin{equation}\label{eq:pine2}
 F\;[] F [F[B][B]B]\:[F[B][B]B]\:[F[B][B]B]\:[F[B][B]B]\; F \;[B][B][B][B]\; B
 \end{equation}
-
-where symbol [ denotes $SB()$ and ] denotes $EB()$, modules for turtle
-rotations are not shown, and the  arguments of the modules $B$ and $F$
-are dropped.
+where symbol  [ denotes $SB()$ and  ] denotes $EB()$,  the modules for
+turtle rotations are  not shown, and the arguments  of the modules $B$
+and $F$ are dropped.
 
 \subsection{From L to LIGNUM}\label{sec:LToLignum}
 
 We can now  outline a straightforward algorithm to  convert the string
 of symbols in L to structural units in LIGNUM using Eq. \ref{eq:pine2}
-as a particular example.  The  algorithm is based on first recognizing
+as a  specific example.  The  algorithm is based on  first recognizing
 the main axis  of the tree, then finding the  other axes (branches and
 sub-brances), and finally grouping them together as branching points.
 
-First, the symbol $F(s)$ in Eq.  \ref{eq:pine2} is interpreted as tree
-segment  of length  $s$.  The  symbol  $B$ corresponds  to bud.   Each
-consecutive  set of $n$  branches between  two $F$  symbols will  be a
+First, the  symbol $F(s)$ in  Eq.  \ref{eq:pine2} is interpreted  as a
+tree  segment of length  $s$.  The  symbol $B$  corresponds to  a bud.
+Each consecutive set of $n$ branches between two $F$ symbols will be a
 branching  point with  $n$ axes.   The string  in  Eq.  \ref{eq:pine2}
-becomes  first the  main  axis with  three  segments, three  branching
+first  becomes the  main  axis with  three  segments, three  branching
 points and the terminating bud:
 
 \begin{equation}
 [TS, BP, TS, BP, TS, BP, B]
 \end{equation}
 
-The  two  last branching  points  contain  four  axes each,  the  first
+The  last two  branching  points  contain four  axes  each, the  first
 branching point being empty:
 
 \begin{equation}
@@ -93,65 +90,66 @@ Finally, recursively constructing the axes we get:
 [TS, [] TS,[TS,[[B],[B]],B],\ldots, [TS,[[B],[B]],B]], TS, [[B],[B],[B],[B]], B]
 \end{equation}
 
-Current  status of  the turtle  that  is updated  according to  turtle
+The current status  of the turtle that is  updated according to turtle
 commands in  the string  defines the position  and orientation  of the
 tree compartments in LIGNUM.
 
 The structural development of the tree described in L does not require
-the regeneration  of LIGNUM representation of trees  (deleting the old
+the regeneration of a LIGNUM representation of trees (deleting the old
 tree and  creating a new  one) after each derivation.   The algorithms
-assumes that an L-system indeed generates alternating sequence of tree
-segments, branching points and  terminating buds and the terminal buds
+assumes that an L system indeed generates alternating sequence of tree
+segments, branching points and terminating buds, and the terminal buds
 only generate  new structural units.   The algorithm fails if  this is
 not the case.  Thus after each  derivation it is possible to match the
-existing  string   and  LIGNUM  representation  and   insert  the  new
+existing  string  and LIGNUM  representation  and  to  insert the  new
 structural units in  the axis lists before the  terminating buds whose
 positions and orientations will be updated.
 
 
 \subsection{From LIGNUM to L}\label{sec:LignumToL}
 
-Because architectural  development of a tree is  defined with L-string
-we can assume LIGNUM does not have to change the topology of the tree.
-Consequently the conversion from LIGNUM tree to L-string is trivial.
+Because the architectural  development of a tree is  defined with an L
+string we  can assume LIGNUM does  not have to change  the topology of
+the tree.  Consequently the conversion from LIGNUM tree to L string is
+trivial.
   
-But  as the  physiological activities  in  LIGNUM \citep{perttunen:96}
-will change the dimensions and  statuses of tree segments and buds, it
-is necessary  that information can  be transferred from LIGNUM  to the
-interpretation   of  the   L program.    That  is,   results  of   the
-physiological processes in LIGNUM must be able to change the parameter
-values of  the modules  $F$ and $B$  in L string  enabling interaction
-between the architectural part and the physiological part.
+However,    as     the    physiological    activities     in    LIGNUM
+\citep{perttunen:96} will  change the  dimensions and statuses  of the
+tree  segments  and buds,  it  is necessary  to  be  able to  transfer
+information from LIGNUM to the  interpretation of the L program.  That
+is, the results of the  physiological processes in LIGNUM must be able
+to change  the parameter values  of the modules  $F$ and $B$ in  the L
+string thus  enabling interaction  between the architectural  part and
+the physiological part.
 
 Since the parameter $s$ in  the module $F(s)$ is always interpreted as
-the length the turtle moves forward and its meaning is the length of a
-segment in  LIGNUM the conversion algorithm can  implicitly update the
-value of $s$ using the length of the corresponding tree segment.
+the length the turtle moves forward,  and its meaning is the length of
+a segment  in LIGNUM, the  conversion algorithm can  implicitly update
+the value of $s$ using the length of the corresponding tree segment.
 
-But the parameters for module $B$ are model specific.  Thus explicitly
-given  the (C++)  type of  the parameters  for the  module  $B$, their
-assignment statements and their  variable names (meaning) in LIGNUM to
-the  conversion algorithm  updates the  module $B$'s  parameter values
-using corresponding  variable values  from the associated  bud passing
-the results  of computations in  LIGNUM to L-system.   (Similarly, the
-values of  parameters of  module $B$ can  be assigned to  variables of
-corresponding bud in LIGNUM in Section \ref{sec:LToLignum}).
+However,  the parameters  for  module $B$  are  model specific.   Thus
+explicitly  given the  (C++) type  of the  parameters for  module $B$,
+their  assignment statements  and  their variable  names (meaning)  in
+LIGNUM, the  conversion algorithm  updates parameter values  of module
+$B$ using corresponding variable values from the associated bud.  This
+way the results of computations in  LIGNUM are passed to the L system.
+(Similarly, the values of the parameters of module $B$ can be assigned
+to  the  variables of  the  corresponding  bud  in LIGNUM  in  Section
+\ref{sec:LToLignum}).
 
-\subsection{Two-way communication in Scots pine simulation}
+\subsection{Two-way communication in the Scots pine simulation}
 
-In  our  Scots  pine example  although  it  is  $L$ in  $B(A,L)$  that
-initially determine the length  of a segment the metabolical processes
+Although  in  our  Scots pine  example  it  is  $L$ in  $B(A,L)$  that
+initially determine the length of a segment, the metabolical processes
 eventually resolve the amount of growth.
   
-We  interfaced the L  language program  of Appendix  \ref{sec:L1} with
-functional part of LIGNUM that incorporates our previous work on Scots
-pine  model \citep{perttunen:96,  perttunen:98}.  The  calculations in
-LIGNUM  include the  pairwise comparison  of segments  to  compute the
-interception of  solar radiation and  the iterative allocation  of net
-photosynthates to growth after respiration costs: 
-\begin{equation} 
-P - M  = iW_n  +  iW_o +  iWr 
-\end{equation}  
+We interfaced the L language program of Appendix \ref{sec:L1} with the
+functional part of  LIGNUM that incorporates our previous  work on the
+Scots pine model \citep{perttunen:96, perttunen:98}.  The calculations
+in  LIGNUM include  the pairwise  comparison of  segments in  order to
+compute  the  interception  of   solar  radiation  and  the  iterative
+allocation of  net photosynthates  to growth after  respiration costs:
+\begin{equation} P - M = iW_n + iW_o + iWr \end{equation}
 
 where  $P$   and  $M$  are  the  photosynthetic   production  and  the
 respiration of a  tree, $iW_n$ the growth of  new segments, $iW_o$ the
@@ -159,11 +157,11 @@ secondary      growth     and      $iW_r$     the      root     growth
 \citep[c.f.][]{perttunen:96,perttunen:01}.
 
 The simulations  show that the  interaction of the L  language program
-and  the  functioning  part  of  LIGNUM affects  the  outcome  of  the
-simulation markedly  (Figure \ref{fig:pine}).  Also the effect  of two
-extreme   cases   of  foliage   mortality   show  that   physiological
-characteristics have a great effect  on the architecture of the trees.
-The simulation  shows much shorter and  slimmer stem due  to less need
-for  diameter  growth  for  the  pine with  short  living  foliage  in
-comparison to pine with long living foliage.
+and the functioning part of LIGNUM markedly affects the outcome of the
+simulation (Figure  \ref{fig:pine}).  Also  the effect of  two extreme
+cases  of foliage  mortality show  that  physiological characteristics
+have a great effect on  the architecture of the trees.  The simulation
+gives a  much shorter  and slimmer  stem due to  the smaller  need for
+diameter growth for a pine  with short-living foliage in comparison to
+a pine with long-living foliage.
 

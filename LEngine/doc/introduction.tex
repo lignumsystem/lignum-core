@@ -1,87 +1,86 @@
-\section{Introduction}
-An increasing number of models  (see e.g. Annals of Forest Science vol
-57 no.  5/6) try to determine  dynamics and growth  of woody perennial
-plants by assessing physiological processes in their three dimensional
-arborescent  form.    Physiological  processes  involve   for  example
-photosynthesis of  the foliage, respiration, flow  of water, nutrients
-or hormones and allocation  of nutritive substances.  The structure of
-the tree and  its changes in time is described  for example with state
-variables representing different  aggregated tree compartments or with
-detailed modelling  components faithful to  botanical or morphological
-units of  plants. Such  models have been  called functional-structural
-(FSTM).
+\section{Introduction} An increasing number of models (see e.g. Annals
+of Forest  Science vol  57 no.   5/6) try to  depict the  dynamics and
+growth  of  woody  perennial  plants by  assessing  the  physiological
+processes in their  three dimensional arborescent form.  Physiological
+processes  involve,  for   example,  photosynthesis  of  the  foliage,
+respiration, flow  of water, nutrients or hormones  and the allocation
+of nutrients.  The structure of the tree and its changes over time are
+described  for  example with  state  variables representing  different
+aggregated  tree compartments  or with  detailed  modelling components
+faithful  to the  botanical or  morphological units  of  plants.  Such
+models have been called functional-structural tree models (FSTM).
 
-\citet{kurth:94b} has classified tree and forest models  on the basis
-whether the emphasis is on the structural traits or the functioning of
-trees.   Accordingly, there are  principally two  ways to  construct a
-FSTM.   One can  start from  an architectural  model \citep{jaeger:92,
-kurth:94} adding  functional, that  is, physiological detail  into it.
-The second  approach is  to begin with  a process  based physiological
-model \citep{makela:86, landsberg:86,  sievanen:93} and extend it with
-structural details.
+\citet{kurth:94b} has  classified tree and forest models  on the basis
+of  whether  the  emphasis is  on  the  structural  traits or  on  the
+functioning of trees.  Accordingly,  there are principally two ways to
+construct  a  FSTM.   One   can  start  from  an  architectural  model
+\citep{jaeger:92,  kurth:94} and  add functional,  i.e., physiological
+detail to  it.  The second approach  is to begin with  a process-based
+physiological  model \citep{makela:86, landsberg:86,  sievanen:93} and
+extend it with structural details.
 
-Linking these  two kinds of  models together rises the  question about
-the suitable way of  expressing them. Physiological models usually are
-realized  with  the  aid   of  differential  or  difference  equations
+Linking these  two kinds of  model together raises the  question about
+the  most suitable way  of expressing  them. Physiological  models are
+usually realized with the  aid of differential or difference equations
 \citep{landsberg:86}  whereas architectural  models  apply Lindenmayer
 systems  \citep{kurth:99,pp:90}  or  other  formalisms. Would  a  FSTM
-combine those means or rely on either of them?
+combine those means in fact or rely on either of them?
 
-The model LIGNUM  approaches FSTM from the physiological  side; it is a
-single  tree  model  \citep{perttunen:96}  faithful  to  process-based
+The LIGNUM model approaches FSTM  from the physiological side; it is a
+single tree model  \citep{perttunen:96} with fidelity to process-based
 modelling  \citep[see  e.g.][]{nikinmaa:92, sievanen:93,  makela:97-1}
-but  instead  of  aggregated  tree  parts  it  has  three  dimensional
+but,  instead of  aggregated tree  parts, it  has  a three-dimensional
 description of the  above ground part of the  tree.  LIGNUM includes a
 detailed    model    of    self-shading    within   a    tree    crown
-\citep{perttunen:96, perttunen:01} from which the radiation regime for
-photosynthesis in different parts of the tree can be computed.  If the
-photosynthates produced exceed respiration costs the net production is
-allocated to the growth of new  parts. LIGNUM has been applied to both
-coniferous   \citep{perttunen:96,lo:99}   and   broad   leaved   trees
-\citep{perttunen:01}. The main focus in LIGNUM has been on the
-functional par of the model; less emphasis has been paid to structural
-development,  and the  model does  not  include any  formal method  to
-define the architectural development of the tree structure.
+\citep{perttunen:96,  perttunen:01}, from  which the  radiation regime
+for photosynthesis in different parts of the tree can be computed.  If
+the photosynthates produced exceed  the respiration costs then the net
+production is allocated  to the growth of new  parts.  LIGNUM has been
+applied to both coniferous \citep{perttunen:96,lo:99} and broad-leaved
+trees \citep{perttunen:01}.  The main focus  in LIGNUM has been on the
+functional  part of  the  model and  less  emphasis has  been paid  to
+structural development.  The model  does not include any formal method
+to define the architectural development of the tree structure.
 
-Since the pioneering work  by \citet{honda:71} there exist methods for
-treating   plant  architecture   in  models   in  an   efficient  way.
-Lindenmayer-systems or L-systems for  short \citep{pp:89} are the most
-widely  used  method  to   treat  plant  architecture  although  other
-formalisms   also  exist \citep[e.g.][]{dereffye:97,   godin:99}.
-L-systems   were  invented   in   by  Aristid   \citet{lindenmayer:68,
-  lindenmayer:71} and were initially meant to describe the development
-of  multicellular organisms.  L-systems  are string  rewriting systems
-and their research  is concerned with the question  what phenomena can
-be   described  with   formal  languages.    The  theory,   tools  and
-applications using  L-systems framework for modeling  plants and their
-environment have been  developed by Prusinkiewicz \citep{pp:89,pp:92},
-Kurth  \citep{kurth:94} and other  scientists.  The  ubiquitous theory
-and the progress in L-systems  in modelling plants and trees until the
-end   of  '90's   is  well   documented  in   \citet{pp:90,pp:99}  and
-\citet{kurth:99}.
+Since  the pioneering  work  by \citet{honda:71}  methods have  become
+available for  treating plant architecture  in models in  an efficient
+way.  Lindenmayer  systems, or L systems for  short \citep{pp:89}, are
+the most widely used method to treat plant architecture although other
+formalisms    also   exist    \citep[e.g.][]{dereffye:97,   godin:99}.
+L-systems    were   invented    by    Aristid   \citet{lindenmayer:68,
+lindenmayer:71} and  were initially meant to  describe the development
+of  multicellular organisms.  L  systems are  string-rewriting systems
+and research on  these systems is concerned with  the question of what
+phenomena can  be described with formal languages.   The theory, tools
+and applications that utilize a L system framework for modeling plants
+and   their   environment  have   been   developed  by   Prusinkiewicz
+\citep{pp:89,pp:92}, Kurth \citep{kurth:94} and other scientists.  The
+ubiquitous  theory and  the progress  made in  L systems  in modelling
+plants and trees  up until the end of the '90's  is well documented in
+\citet{pp:90,pp:99} and \citet{kurth:99}.
 
-We describe in the following  how the model LIGNUM has been interfaced
-with   L-systems   for   specifying   formally  and   rigorously   the
-architectural   development  of  trees   and  thereby   improving  the
-applicability and  ease of using this  FSTM.  The goal  is achieved by
-using the language L that  is an extension of L-systems \citep{pp:99a}.
-Based on the definition of  L, R.  Karwowski has created the original
-parser of L and  has implemented the language L+C \citep{karwowski:02}
-including  further  improvements  not   present  in  L,  most  notably
-productions with multiple successors and the concept of new context
-\citep{karwowski:03} to allow fast linear time information transfer in
-the simulated plant.
+We describe in the following  how the LIGNUM model has been interfaced
+with   L  systems   for   specifying  formally   and  rigorously   the
+architectural   development   of    trees,   thereby   improving   the
+applicability and ease  of use of this FSTM.  The  goal is achieved by
+using   the  L   language,  which   is  an   extension   of  L-systems
+\citep{pp:99a}.  Based  on the definition of L,  R.  Karwowski created
+the  original  parser  of  L  and has  implemented  the  L+C  langiage
+\citep{karwowski:02}. He also include further improvements not present
+in  L,  most notably  productions  with  multiple  successors and  the
+concept of new context  \citep{karwowski:03} to allow fast linear time
+information transfer in the simulated plant.
 
-We first  present the use of L  in LIGNUM based on  the similarity how
-LIGNUM and bracketed L-systems represent branching structures of trees
+We first present the use of L in LIGNUM based on the similarity of how
+LIGNUM and bracketed L systems represent branching structures of trees
 \citep{perttunen:96, perttunen:01}.  Second, we implement an algorithm
-that  translates  the bracketed  string  of  symbols  in L  to  LIGNUM
-representation of  trees (Section \ref{sec:pine}).   Third, we provide
-communication  mechanism  between  the  L-string and  LIGNUM  (Section
-\ref{sec:LToLignum}) and give two  sample applications, Scots pine and
-bearberry.   We present simple  language construct  that allows  us to
-model   group  of  plants   each  with   its  own   L-system  (Section
-\ref{sec:namespace}).   Finally,  we  discuss  our  approach  for  its
-consequences to the future development of LIGNUM in modeling trees and
-forest stands.
+that translates  the bracketed  string of symbols  in L to  the LIGNUM
+representation of trees (Section \ref{sec:pine}).  Third, we provide a
+communication  mechanism  between the  L  string  and LIGNUM  (Section
+\ref{sec:LToLignum}), and give two example applications, one for Scots
+pine and  the other for  bearberry (\textit{Arctostaphylos uva-ursi}).
+We present a  simple language construct that allows  us to model group
+of plants  each with its  own L system  (Section \ref{sec:namespace}).
+Finally, we  discuss the consequences  of our approach for  the future
+development of LIGNUM in modeling trees and forest stands.
 

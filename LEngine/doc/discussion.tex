@@ -1,104 +1,105 @@
 \section{Discussion}
 
-This study presents a formal way to model architectural development of
-trees   using    L-systems   through    the   language   L    in   the
-functional-structural tree  model LIGNUM  that is implemented  using a
-general  purpose programming language.   Essentially the  use of  L is
-based on  the similarity how bracketed L-systems  and LIGNUM represent
-the  branching  structure   of  trees.   Similar  conversions  between
-modeling  frameworks  and tools  have  been  reported  for example  by
-\citet{ferraro:02}   and   \citet{dzierzon:03}.    In   fact   already
-\citet{kurth:em94}  has  reported   convergence  between  tree  models
-produced by AMAP and the  same models expressed in L-systems.  Also, a
-large body  of mathematical forms  known as fractals  describing plant
-structures have been described with L-systems \citep{kurth:99}.
+This  study   presents  a  formal  way  to   model  the  architectural
+development of  trees using  L systems through  the language L  in the
+functional-structural  tree model LIGNUM  implemented using  a general
+purpose programming  language.  Essentially the  use of L is  based on
+the similarity  of how  bracketed L systems  and LIGNUM  represent the
+branching  structure of trees.   Similar conversions  between modeling
+frameworks   and   tools  have   been   reported,   for  example,   by
+\citet{ferraro:02}   and   \citet{dzierzon:03}.    In  fact,   already
+\citet{kurth:em94} reported  convergence between tree  models produced
+by AMAP  and the same  models expressed in  L systems.  Also,  a large
+body of  mathematical forms  known as fractals,  used to  depict plant
+structures, have been described with L systems \citep{kurth:99}.
 
-The  L-systems provide  good  scientific abstraction  needed in  plant
-modeling \citep[c.f.][]{regev:02}.  An  L-system captures the relevant
-properties of  the phenomena in  its set of symbols  highlighting only
-essential characteristics  of the model.  It  is computable supporting
-qualitative and quantitative reasoning of the model properties.  It is
-extensible, new  symbols can capture additional features  of the model
-if required  and it is  understandable, the formal notation  allows to
-share  and  compare scientific  knowledge.   For  example  part of  an
-L-system  model in  itself  can appear  in  a publication  as a  model
-description  unlike   models  implemented  with   general  programming
-languages.
+The L systems  provide the sort of good  scientific abstraction needed
+in plant modeling \citep[c.f.][]{regev:02}.   An L system captures the
+relevant  properties   of  the  phenomena   in  its  set   of  symbols
+highlighting only  the essential characteristics of the  model.  It is
+computable to  support qualitative  and quantitative reasoning  of the
+model  properties.    It  is  extensible,  new   symbols  can  capture
+additional features of the model if required and it is understandable,
+the formal  notation allows the  sharing and comparison  of scientific
+knowledge.   For example,  part of  an  L-system model  in itself  can
+appear  in  a  publication  as  a  model  description,  unlike  models
+implemented with general programming languages.
 
-The  theoretical  advancements later  implemented  in  tools based  on
-L-system formalism  has been motivated  by the curiosity to  find out
-what  phenomena  in  plant  modeling  can be  formally  described  and
+The theoretical advancements that have snice been implemented in tools
+based on L-system formalism have  been motivated by the desire to find
+out what  phenomena in  plant modeling can  be formally  described and
 simulated.   The range  of circumstances  where L-system  formalism is
 applicable  is quite  extensive  \citep{pp:99}.  \citet{kurth:99}  has
-demonstrated it by realizing  a number of published architectural tree
-models  including  LIGNUM Scots  pine  \citep{perttunen:96} using  the
-L-system based tool GROGRA  \citep{kurth:94}. The simulation of plant
+demonstrated  this by  realizing a  number of  published architectural
+tree models including LIGNUM Scots pine \citep{perttunen:96} using the
+L-system based  tool GROGRA \citep{kurth:94}. The  simulation of plant
 communities has been  reported by \citet{deussen:98}, \citet{kurth:99}
-and with multiset  L-systems developed by \citet{lane:02}.  Inevitably
-one has to ask why not reimplement LIGNUM and make L-systems the basis
+and with multiset L  systems developed by \citet{lane:02}.  Inevitably
+one has to ask why not reimplement LIGNUM and make L systems the basis
 of its future development?
 
-Plants are not closed systems  but interaction with environment has an
-important function in their  development.  Modelling of such phenomena
-include for example computation of light regime in plant community and
-competition  for  growth  space   (cf.   example  on  bearberry,  Sec.
-\ref{sec:bearberry}).   To model  such phenomena,  \citet{mech:97} and
-\citet{mech:96}  have extended  L-system formalism  with communication
-symbols  that can  pass parameter  values between  the plant  model in
-L-system  and  a  separate   program  (in  general  purpose  language)
-simulating  for example relevant  characteristics of  its environment.
-\citet{kurth:94}  has implemented  a  set of  predefined functions  to
-return  environmental  information,  to  the L-system  in  the  GROGRA
-program.   Once  implemented  these  separate programs  or  predefined
-functions are  easily used  and reused. 
+Plants are  not closed systems but interaction  with their environment
+plays an  important function in their development.   Modelling of such
+phenomena  include, for example,  computation of  the light  regime in
+plant communities  and competition for growing space  (cf.  example on
+bearberry,  Sec.   \ref{sec:bearberry}).   To  model  such  phenomena,
+\citet{mech:97} and  \citet{mech:96} have extended  L-system formalism
+with communication symbols that  can pass parameter values between the
+plant model in the L system and a separate program (in general purpose
+language) simulating, for example, the relevant characteristics of its
+environment.   \citet{kurth:94} has  implemented a  set  of predefined
+functions to return  environmental information to the L  system in the
+GROGRA  program.    Once  implemented,  these   separate  programs  or
+predefined functions are easily used and reused.
 
 The functionalities  enhancing L-system languages make  it possible to
 realize  parts of  the simulations  using general  purpose programming
 languages (e.g.  unit to unit interactions) that would be difficult to
 implement  with the  parallel rewriting  semantics.  The  design  of L
-allows embedding of C++  making such constructs unnecessary.  But note
-that the  time spent in these  environmental models is  the time spent
-outside the  L-system formalism with some  general purpose programming
-language.  Hence complicated architectural tree and plant models, such
-as FSTM's, implemented using L-systems inevitably employ both L-system
-and general  purpose language parts.  LIGNUM combined  with language L
-contains  also those  parts,  although in  different proportions  than
-models  realized with  L-system  tools.  It  seems  therefore that  an
-optimal way to  implement complicated plant and tree  models is to mix
-L-systems and general purpose programming languages.
+allows embedding of C++, thus making such constructs unnecessary.  But
+note that  the time  spent in these  environmental models is  the time
+spent  outside  the  L-system  formalism  with  some  general  purpose
+programming language.  Hence, complicated architectural tree and plant
+models, such as FSTM's,  implemented using L systems inevitably employ
+both an L system and  general purpose language parts.  LIGNUM combined
+with e  L language  also contains those  parts, although  in different
+proportions  than  models realized  with  L-system  tools.  It  seems,
+therefore, that an optimal way to implement complicated plant and tree
+models is to mix L systems and general purpose programming languages.
  
 A  further challenge  to  tree  and plant  modelling  is to  implement
 source-sink  relationships  in architectural  tree  and plant  models.
-Local production  and consumption of  resources, that are  affected by
-environment and status of  particular structural units are controlling
-growth of the three  dimensional structure. Source sink phenomena have
+Local production  and consumption of resources, which  are affected by
+the environment and status of particular structural units, control the
+growth of the three-dimensional structure.  Source sink phenomena have
 been   modelled    by   considering   unit    to   unit   interactions
 \citep{balandier:00}, accumulating information along the pathways from
 root  tip   to  shoot  tip  \citep{dereffye:97}   or  solving  partial
 differential  equations  \citep{deleuze:97,  palovaara:03}.   How  the
-intensive  calculations  required  by  sink-source approach  are  best
-implemented in the three dimensional plant structure still is unknown.
-A  hybrid  approach  utilizing  both  L-systems  and  general  purpose
+intensive calculations  required by the sink-source  approach are best
+implemented in the three-dimensional plant structure is still unknown.
+A  hybrid  approach  utilizing  both  L systems  and  general  purpose
 languages  or other  means (e.g.   solvers of  differential equations)
-lends itself as one alternative.
+offers one alternative.
 
-Definitely, it  would be  an interesting exercise  in itself  to study
-carefully the  convergence between LIGNUM and  L-systems and practical
-issues involved by fully implementing the model in some L-system tool,
-say  L+C  \citep{karwowski:02}.   Some  modeling  efforts,  especially
-phenomena envolving single or directly connected plant parts only, are
-easily  expressed  with  rewriting.   But  others  inevitably  require
-modeling  and implementation  outside the  rewriting  formalism simply
-because  it is not  meaningful to  do so  (e.g.  computation  of light
-regime) or theoretical advancements  may be required in L-systems like
-solving for transport of resources within the plant.
+It  would definitely  be an  interesting exercise  in itself  to study
+carefully  the  convergence  between  LIGNUM  and L  systems  and  the
+practical  issues involved  by fully  implementing the  model  in some
+L-system tool,  say L+C \citep{karwowski:02}.   Some modeling efforts,
+especially  phenomena  involving single  or  directly connected  plant
+parts only,  are easily expressed  by rewriting.  But  other phenomena
+inevitably require  modeling and implementation  outside the rewriting
+formalism  simply  because  it  is  not  meaningful  to  do  so  (e.g.
+computation of  the light regime)  or theoretical advancements  may be
+required in  L systems, e.g.   solving for the transport  of resources
+within the plant.
 
 \section{Acknowledgments}
 
 We thank  Radek Karwowski and Przemyslaw  Prusinkiewicz and gratefully
 acknowledge   their   contribution  to   this   work.   The   original
 specification  of   L,  now  named  L+C,  was   jointly  developed  by
-\citet{pp:99a}  and  based  on  this  work Radek  Karwowski  wrote  the
+\citet{pp:99a}  and, based  on this  work, Radek  Karwowski  wrote the
 original parser of L and  has further implemented the L+C language. JP
 was supported by research grant No. 72569 from the Academy of Finland.
  

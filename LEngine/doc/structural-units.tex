@@ -1,13 +1,12 @@
-\section{Structural units of LIGNUM}
-LIGNUM is intended as a generic modelling tool for both coniferous and
-hardwood trees.  Different tree  species can be simulated by assessing
-descriptions of  metabolism, structural dynamics of  birth, growth and
-senescence,  and by  implementing  branching rules  for distinct  tree
-architectures  \citep{perttunen:96,  perttunen:01}.   Here we  present
-shortly the main model features to understand how LIGNUM is adapted to
-use L-systems.
+\section{Structural units  of LIGNUM} LIGNUM is intended  as a generic
+modelling tool for both  coniferous and broad-leaved trees.  Different
+tree species  can be simulated  by implementing models  of metabolism,
+structural dynamics of birth,  growth and senescence, and by realizing
+branching rules  for distinct tree  architectures \citep{perttunen:96,
+perttunen:01}.  Here we briefly present the main features of the model
+in order to understand how LIGNUM is adapted to use L systems.
 
-LIGNUM represents the three-dimensional  above ground part of the tree
+LIGNUM represents  the three-dimensional aboveground part  of the tree
 with  four  structural  units  called  tree  segment  (TS),  bud  (B),
 branching point  (BP) and  axis (A).   A branching point  is a  set of
 axes. An  axis is  a sequence of  tree segments, branching  points and
@@ -15,24 +14,24 @@ terminating bud.   This captures the  recursive structure of  the tree
 crown.
 
 The most  important functioning unit is the  cylindrical tree segment,
-section of woody material  between two branching points.  For conifers
-needles are  at the moment modeled  as a cylindrical  layer of foliage
-surrounding a  tree segment (Fig.  \ref{fig:model}  left).  Leaves are
-attached to recently formed  tree segments and are modelled explicitly
-using   simple   geometric   form   like   ellipse   as   leaf   shape
-(Fig. \ref{fig:model}, middle).
+i.e. the section of woody  material between two branching points.  For
+conifers the needles  are currently modeled as a  cylindrical layer of
+foliage  surrounding  a  tree  segment (Fig.   \ref{fig:model}  left).
+Leaves are attached to recently  formed tree segments and are modelled
+explicitly using a simple geometric  form such as ellipse to represent
+the leaf shape (Fig. \ref{fig:model}, middle).
 
-An axis  is implemented as a  list. For example  adopting the notation
+An axis is  implemented as a list. For  example, adopting the notation
 from our previous work \citep{perttunen:96} the main axis of the model
-tree for  coniferous species  in Figure \ref{fig:model}  consisting of
-three tree  segments, three branching  points and the  terminating bud
-writes:
+tree for a coniferous species in Figure \ref{fig:model}, consisting of
+three tree  segments, three branching points and  the terminating bud,
+is:
 
 \begin{equation}
 [TS_0,BP_1,TS_2,BP_3,TS_4,BP_5,B_6]
 \end{equation}
 
-A branching  point is implemented as  list of axes. In  the example of
+A branching point is implemented as  a list of axes. In the example in
 Figure   \ref{fig:model}  the  branching   points  contain   two  axes
 (i.e. branches) each. Thus the main axis can be written:
 
@@ -41,14 +40,14 @@ Figure   \ref{fig:model}  the  branching   points  contain   two  axes
 \end{equation}
 
 The branches of the example  tree in Figure \ref{fig:model} consist of
-tree  segment, branching  point and  bud. When  these are  inserted in
-Eq. \ref{eq:mainax},  the structure  of  the whole  model  tree can  be
+a tree segment, branching point  and bud. When these are inserted into
+Eq.  \ref{eq:mainax}, the  structure of  the whole  model tree  can be
 expressed as (omitting the position numbering):
 
 \begin{equation}\label{eq:tree}
 [TS,[[TS,[],B],[TS,[],B]],TS,[[TS,[],B],[TS,[],B]],TS,[[B],[B]],B]
 \end{equation}
 
-The empty lists  ([]) for branching points denote  no axes forking off
-maintaining the structural integrity of the model.
+The empty lists ([]) for  branching points denote no forking off axes,
+thus maintaining the structural integrity of the model.
 

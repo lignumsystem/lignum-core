@@ -1,10 +1,10 @@
 \section{L-system mimicking pine growth}\label{sec:L1}
-The L-system  mimicking pine  growth starts with  one segment  and one
-bud.   Main axis, ($A  = 1$),  creates one  segment and  four branches
+The L system  mimicking pine  growth starts with  one segment  and one
+bud.  The main axis, ($A  = 1$),  creates one  segment and  four branches
 forking off.  From then on side  branches ($A > 1$) create one segment
 and  two additional  branches.  Ramification  stops after  third order
 branches. Bending  of the branches  is modeled by pitching  the second
-order branches ($A = 2$) down in the module Bend.
+order branches ($A = 2$) down in the $Bend$ module.
 
 %\begin{figure}[p]
 %% \begin{picture}(1,1)
@@ -21,7 +21,6 @@ module Turn(double);
 module Bend(double);
 
 Start:{produce F(0.30)SB()EB()B(1,1.0);}
-
 B(A,l):
 {
    if (A==1)
@@ -41,7 +40,6 @@ B(A,l):
   else
   produce F(l) SB() EB() B(A,l);
 }
-
 Bend(s):
 {
    produce Pitch(bend);
