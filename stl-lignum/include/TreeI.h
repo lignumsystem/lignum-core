@@ -101,7 +101,7 @@ LGMdouble GetValue(const Tree<TS,BUD>& tree, const LGMPD name)
   if (name == LGPaf)
     return tree.tp.af;
 
-  else if (name == ar)
+  else if (name == LGPar)
      return tree.tp.ar;
 
   else if (name == lr)
@@ -173,7 +173,7 @@ LGMdouble SetValue(Tree<TS,BUD>& tree, const LGMPD name, const LGMdouble value)
   if (name == LGPaf)
     tree.tp.af = value;
 
-  else if (name == ar)
+  else if (name == LGPar)
     tree.tp.ar = value;
 
   else if (name == lr)
