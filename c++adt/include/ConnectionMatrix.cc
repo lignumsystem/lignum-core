@@ -1,13 +1,13 @@
 #include <ConnectionMatrix.h>
 
-template <class TS>
-ConnectionMatrix<TS>::ConnectionMatrix(Axis<TS>& axis)
+template <class TS,class BUD>
+ConnectionMatrix<TS,BUD>::ConnectionMatrix(Axis<TS,BUD>& axis)
 {
   size = CountTreeSegments(axis);
   
-  pointer = new TreeSegment<TS>**[size];
+  pointer = new TreeSegment<TS,BUD>**[size];
   for (int i=0; i<size; i++)
-    pointer[i] = new TreeSegment<TS>*[size];
+    pointer[i] = new TreeSegment<TS,BUD>*[size];
 
   for (int x=0; x<size; x++)
     for (int y=0; y<size; y++)
@@ -17,24 +17,24 @@ ConnectionMatrix<TS>::ConnectionMatrix(Axis<TS>& axis)
 }
 
 
-template <class TS>
-int ConnectionMatrix<TS>::CountTreeSegments(Axis<TS> &ax) const
+template <class TS,class BUD>
+int ConnectionMatrix<TS,BUD>::CountTreeSegments(Axis<TS,BUD> &ax) const
 {
   int count = 0; 
-  list<TreeCompartment<TS>*>& ls = GetTreeCompartmentList(ax);
-  list<TreeCompartment<TS>*>::iterator I = ls.begin();
+  list<TreeCompartment<TS,BUD>*>& ls = GetTreeCompartmentList(ax);
+  list<TreeCompartment<TS,BUD>*>::iterator I = ls.begin();
   
   while(I != ls.end())
     {
-      if (TreeSegment<TS>* myts = dynamic_cast<TreeSegment<TS>*>(*I))
+      if (TreeSegment<TS,BUD>* myts = dynamic_cast<TreeSegment<TS,BUD>*>(*I))
 	{
 	  count++;
 	}
-      if (BranchingPoint<TS>* mybp = dynamic_cast<BranchingPoint<TS>*>(*I)){	 
-	list<Axis<TS>*>& axis_ls = GetAxisList(*mybp);  	  
-	list<Axis<TS>*>::iterator I = axis_ls.begin();
+      if (BranchingPoint<TS,BUD>* mybp = dynamic_cast<BranchingPoint<TS,BUD>*>(*I)){	 
+	list<Axis<TS,BUD>*>& axis_ls = GetAxisList(*mybp);  	  
+	list<Axis<TS,BUD>*>::iterator I = axis_ls.begin();
 	while(I != axis_ls.end()){
-	  Axis<TS> *axis = *I;
+	  Axis<TS,BUD> *axis = *I;
 	  count = count + CountTreeSegments(*axis);
 	  I++;	    
 	}
@@ -48,29 +48,29 @@ int ConnectionMatrix<TS>::CountTreeSegments(Axis<TS> &ax) const
 //This method goes throw the given axis, and adds TreeSegments connected each other
 //to the connection matrix. The first found TreeSegment is connected to the 
 //TreeSegment given as parameter.   
-template <class TS>
-void ConnectionMatrix<TS>::TraverseAxis(Axis<TS>& ax, TreeSegment<TS> *ts)
+template <class TS,class BUD>
+void ConnectionMatrix<TS,BUD>::TraverseAxis(Axis<TS,BUD>& ax, TreeSegment<TS,BUD> *ts)
 {
-  TreeSegment<TS> *lastSegment = ts;
-  list<TreeCompartment<TS>*>& ls = GetTreeCompartmentList(ax);
-  list<TreeCompartment<TS>*>::iterator I = ls.begin();
+  TreeSegment<TS,BUD> *lastSegment = ts;
+  list<TreeCompartment<TS,BUD>*>& ls = GetTreeCompartmentList(ax);
+  list<TreeCompartment<TS,BUD>*>::iterator I = ls.begin();
   
   while(I != ls.end()){      
-    if (TreeSegment<TS>* myts = dynamic_cast<TreeSegment<TS>*>(*I)){
+    if (TreeSegment<TS,BUD>* myts = dynamic_cast<TreeSegment<TS,BUD>*>(*I)){
       addConnection(lastSegment, myts);
       lastSegment = myts;
     }      
-      if (BranchingPoint<TS>* mybp = dynamic_cast<BranchingPoint<TS>*>(*I)){
-	list<Axis<TS>*>& axis_ls = GetAxisList(*mybp);  	  
-	list<Axis<TS>*>::iterator I = axis_ls.begin();
+      if (BranchingPoint<TS,BUD>* mybp = dynamic_cast<BranchingPoint<TS,BUD>*>(*I)){
+	list<Axis<TS,BUD>*>& axis_ls = GetAxisList(*mybp);  	  
+	list<Axis<TS,BUD>*>::iterator I = axis_ls.begin();
 	while(I != axis_ls.end()){
-	  Axis<TS> *axis = *I;
+	  Axis<TS,BUD> *axis = *I;
 	  if (lastSegment)
 	    TraverseAxis(*axis, lastSegment);
 	  I++;	    
 	}
       }
-      if (Bud<TS>* mybud = dynamic_cast<Bud<TS>*>(*I))
+      if (Bud<TS,BUD>* mybud = dynamic_cast<Bud<TS,BUD>*>(*I))
 	{	 
 	}
       I++;
@@ -78,8 +78,8 @@ void ConnectionMatrix<TS>::TraverseAxis(Axis<TS>& ax, TreeSegment<TS> *ts)
 }
 
 
-template <class TS>
-void ConnectionMatrix<TS>::addConnection(TreeSegment<TS> *source, TreeSegment<TS> *target)
+template <class TS,class BUD>
+void ConnectionMatrix<TS,BUD>::addConnection(TreeSegment<TS,BUD> *source, TreeSegment<TS,BUD> *target)
 {  
   if (source == NULL || target == NULL)
     return;
@@ -117,16 +117,16 @@ void ConnectionMatrix<TS>::addConnection(TreeSegment<TS> *source, TreeSegment<TS
   pointer[i][a] = target;
 } 
 
-template<class TS>
-TreeSegment<TS>* ConnectionMatrix<TS>::getTreeSegment(int x,int y)const
+template<class TS,class BUD>
+TreeSegment<TS,BUD>* ConnectionMatrix<TS,BUD>::getTreeSegment(int x,int y)const
 {
   return pointer[x][y];
 }
 
 
 // This method prints the information of the matrix
-template<class TS>
-void  ConnectionMatrix<TS>::print()const
+template<class TS,class BUD>
+void  ConnectionMatrix<TS,BUD>::print()const
 {
   cout << "ConnectionMatrix:"<< endl;
   float ms = 0;
