@@ -1,0 +1,5 @@
+#Keep this file in sync with 
+#"mask.txt" (number of inclinations)!!
+19    #incl
+11    #azim
+1450  #Radiation MJ

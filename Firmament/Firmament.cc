@@ -1,5 +1,4 @@
 #include <Firmament.h>
-//#include <mathsym.h>
 
 namespace sky{
 
@@ -26,6 +25,9 @@ namespace sky{
 
 
 Firmament::Firmament(int no_incl, int no_azim)
+  :sunPosition(3),inclinations(no_incl),azimDivisions(no_incl),
+  inclinationIndex(no_incl*no_azim),azimuthIndex(no_incl*no_azim),
+  dir_x(no_incl*no_azim),dir_y(no_incl*no_azim),dir_z(no_incl*no_azim)
 {
   num_of_incl = no_incl;
   num_of_azim =  no_azim;
@@ -139,9 +141,8 @@ Firmament::Firmament(int no_incl, int no_azim)
 	diffuseRadBall += diffuseRad[i][j];
       }
 
-    diffuseRadZenith *= diffuseRadPlane / rsum;
+    diffuseRadZenith  *= diffuseRadPlane / rsum;
     diffuseRadBall += diffuseRadZenith;
-
     //store here the inclination and azimuth indexes as a function of
     //number of the sector
 
@@ -174,6 +175,154 @@ Firmament::Firmament(int no_incl, int no_azim)
     delete[] area;
 }
 
+//The same as above, but parameterize "diffusRadPlane"
+void Firmament::resize(int no_incl, int no_azim, double diffuse_rad_plane)
+{
+  num_of_incl = no_incl;
+  num_of_azim =  no_azim;
+  if(num_of_incl < 1) num_of_incl = 1;
+  if(num_of_azim < 2) num_of_azim = 2;
+  numOfSectors =  num_of_incl *  num_of_azim + 1;
+
+  //The radiation components are set as follows:
+  //diffuseRadPlane = 1200 MJ(PAR)/m2,   equal to radition sum (direct+diffuse) during
+  //growing period in Finland according to Stenberg 1996
+  //directRadPlane = 0
+
+  diffuseRadPlane = diffuse_rad_plane;
+  directRadPlane = 0.0;
+  diffuseRadBall = 0.0;
+  sunPosition.resize(3);
+  sunPosition[0] =  sunPosition[1] =  sunPosition[2] = 0.0;
+  
+                  
+  //Construct the division of the sky (see Firmament.h)
+
+  //The zenith segment of the sphere is as large (= 2*PI/numOfSectors)
+  //as the other sectors; its width (angle)
+  thetZ = acos( 1.0 - 1.0 / (double)numOfSectors );
+
+  deltaIncl = (PI_VALUE / 2.0 - thetZ)/ (double) num_of_incl;
+  halfDeltaIncl = deltaIncl / 2.0;
+
+  //Set the right dimensions for vectors storing midpoints of inclination zones
+  //and number of azimuth divisions in each inclination zone
+  inclinations.resize(num_of_incl);
+  azimDivisions.resize(num_of_incl);
+
+  int i, im;
+
+  for(i = 0; i < num_of_incl; i++)
+    inclinations[i] = (double)i * deltaIncl + halfDeltaIncl;
+
+  //Set up vector for storing areas of sectors in inclination zones
+  //for getting equal area sectors 
+  double *area, maxA;
+  area = new double[num_of_incl];
+
+  areasByInclination.resize(num_of_incl);
+
+  //Allocate sectors to zones trying to end up with as constant sector
+  //area (=solid angle) as possible
+  //Start off with two sectors in each zone
+
+  for(i = 0; i < num_of_incl; i++) {
+    azimDivisions[i] = 2;
+    area[i] = sin(inclinations[i]+halfDeltaIncl) - sin(inclinations[i]-halfDeltaIncl);
+    area[i] *= 2.0 * PI_VALUE / (double)azimDivisions[i];
+  }
+
+  int j;
+  i = numOfSectors - 2 * num_of_incl - 1;
+  while(i > 0) {
+    maxA = 0.0;
+    for(j = 0; j < num_of_incl; j++)
+      if(area[j] > maxA) {
+	maxA = area[j];
+	im = j;
+      }
+    area[im] *= (double)azimDivisions[im] / (double)(azimDivisions[im] + 1);
+    areasByInclination[im] = area[im];
+    azimDivisions[im] += 1;
+    i--;
+  }
+
+    //Evaluate the maximum number of sectors in the inclination zones and
+    //adjust dimensions of matrices holding azimuths and (diffuse) radiant intensity
+    //of sectors accordingly
+  im = 0;
+    for(i = 0; i < num_of_incl; i++)
+      if(im < azimDivisions[i]) im = azimDivisions[i];
+
+    zoneAzims.resize(num_of_incl, im);
+    diffuseRad.resize(num_of_incl, im);
+
+    //Update azimuths and radiant intensity of sectors
+    for(i = 0; i < num_of_incl; i++)
+      for(j = 0; j < azimDivisions[i]; j++) {
+	zoneAzims[i][j] = ((double)j + 0.5) * 2.0 * PI_VALUE/(double)azimDivisions[i];
+	diffuseRad[i][j] = diffuseRadPlane * 
+	                   (6.0 * (1.0 + 2.0*sin(inclinations[i]))/7.0) *
+			  (sin(inclinations[i]+halfDeltaIncl)-
+			 sin(inclinations[i]-halfDeltaIncl))/(double)azimDivisions[i];
+      }
+
+    //Diffuse radiation from zenith sector
+    diffuseRadZenith = diffuseRadPlane *(6.0 * (1.0 + 2.0)/7.0) *
+			  (1 - cos(thetZ));
+    // Note: thetZ is the radial _width_ of the zenith segment
+    
+    //Discretation of the sky may cause that the radiation sum of the sectors
+    //is not 100% same as given by the theory. It is corrected here.
+    //Update also ball sensor reading
+    double rsum = 0.0;
+    for(i = 0; i < num_of_incl; i++)
+      for(j = 0; j < azimDivisions[i]; j++) 
+	rsum += sin( inclinations[i] ) * diffuseRad[i][j];
+
+    rsum += diffuseRadZenith;
+
+    
+    diffuseRadBall = 0.0;
+    for(i = 0; i < num_of_incl; i++)
+      for(j = 0; j < azimDivisions[i]; j++) {
+	diffuseRad[i][j] *= diffuseRadPlane / rsum;
+	diffuseRadBall += diffuseRad[i][j];
+      }
+
+    diffuseRadZenith  *= diffuseRadPlane / rsum;
+    diffuseRadBall += diffuseRadZenith;
+    //store here the inclination and azimuth indexes as a function of
+    //number of the sector
+
+    inclinationIndex.resize(numOfSectors);
+    azimuthIndex.resize(numOfSectors);
+    int nSector = 0;
+    for(i = 0; i < num_of_incl; i++)
+      for(j = 0; j < azimDivisions[i]; j++) {
+	inclinationIndex[nSector] = i;
+	azimuthIndex[nSector] = j;
+	nSector++;
+      }
+
+    //store the components of direction vectors of sectors (midpoint)
+    dir_x.resize(numOfSectors);
+    dir_y.resize(numOfSectors);
+    dir_z.resize(numOfSectors);
+    int nIncl, nAzim;
+    nSector = 0;
+    for(i = 0; i < num_of_incl; i++)
+      for(j = 0; j < azimDivisions[i]; j++) {
+	nIncl  = inclinationIndex[nSector];
+	nAzim = azimuthIndex[nSector];
+	dir_z[nSector] = sin(inclinations[nIncl]);
+	dir_x[nSector] = cos(inclinations[nIncl]) * cos(zoneAzims[nIncl][nAzim]);
+	dir_y[nSector] = cos(inclinations[nIncl]) * sin(zoneAzims[nIncl][nAzim]);
+	nSector++;
+      }
+
+    delete[] area;
+}
 
 //Input: vector 'direction' (length of 1) pointing to a point in the upper hemisphere.
 //	 x-axis is pointing to south, y-axis to east and z -axis to zenith
@@ -367,12 +516,9 @@ MJ Firmament::diffuseForestRegionRadiationSum(int n, float z, float x, float la,
   float Qunshaded = diffuseRegionRadiationSum(n, direction);
 
   // Inclination angle of the direction (from horizon),
-  float tan_alpha; 
-  float length_of_direction = pow((pow(direction[0],2)+pow(direction[1],2)),0.5);
-  if(length_of_direction > 1.0e-10) 
-    tan_alpha = direction[2] / length_of_direction;
-  else
-    tan_alpha = 1.0e10; 
+  // length of direction = 1, hence z coordinate = tan(alpha)
+
+  float tan_alpha = (float) direction[2]; 
 
   // Area (m2) occupied by one tree = 10000/dens => radius of the opening that is
   // occupied by one tree
@@ -537,64 +683,15 @@ double Firmament::getAzimuth(int n)
   int nAzim = azimuthIndex[n];
 
   return zoneAzims[nIncl][nAzim];
-}
+}  
 
-
-void Firmament::setDiffuseToUniform() {
-  //Sets the brightness distribution of the diffuse sky radiation to uniform
-  //It means that brightness is independent on inclination (and azimuth).
-  // It means radiation from a sector = (area of sector/mean sector area) * constant
-  // where constant is determined radiation to plane remains the same as before.
-  // Reading of ball sensor becomes
-  // (2/1.714) * (the previous value)
-  // no INPUT, no OUTPUT
-
-  double mult = diffuseRadBall / (double)numOfSectors;
-  double av_area = (2.0 * PI_VALUE) /  (double)numOfSectors;
-
-  int inc, az,i;
-  for(i = 0; i < numOfSectors - 1; i++) {     //zenith = numOfSectors - 1
-    inc = inclinationIndex[i];
-    az = azimuthIndex[i];
-    diffuseRad[inc][az] = mult * (areasByInclination[inc] / av_area);
-    //the last factor corrects for different area of sectors
-  }
-
-  diffuseRadZenith = mult;
-
-  //Now is true thar diffuseRadBall is as before.
-  //However, diffuseRadPlane is not as before, must be => correct it
-  double check_sum = 0.0;
-  for(i = 0; i < numOfSectors - 1; i++) {     //zenith = numOfSectors - 1
-    inc = inclinationIndex[i];
-    az = azimuthIndex[i];
-    check_sum +=diffuseRad[inc][az] * sin(inclinations[inc]);
-  }
-  check_sum += diffuseRadZenith;
-  double correction = diffuseRadPlane / check_sum;
-
-  for(i = 0; i < numOfSectors - 1; i++) {
-    inc = inclinationIndex[i];
-    az = azimuthIndex[i];
-    diffuseRad[inc][az] *= correction;
-  }
-  diffuseRadZenith *= correction;
-
-  diffuseRadBall = 0.0;
-  for(i = 0; i < numOfSectors - 1; i++) {
-    inc = inclinationIndex[i];
-    az = azimuthIndex[i];
-    diffuseRadBall += diffuseRad[inc][az];
-  }
-  diffuseRadBall += diffuseRadZenith;
-
-}
 }//closing namespace sky
-
 
 #ifdef  FIRMAMENT
 #define LINE_LENGTH 255
+
 using namespace sky;
+
 int  main(int argc, char* argv[])
 {
   double alphaA, betaA, alphaB, betaB;
@@ -607,6 +704,9 @@ int  main(int argc, char* argv[])
   char buffer[LINE_LENGTH], c;
 
   Firmament firmament(9, 24);
+
+  Firmament f2(9, 24);
+  f2.resize(10,11,1300);
 
   ifstream file("shatest.run");
   if(!file)       {
@@ -732,36 +832,18 @@ int  main(int argc, char* argv[])
   for(i = 0; i < firmament.getNoOfInclinations() - 1; i++)
     cout << " " << i << "  " << firmament.getSectorArea(i) << endl;
 
-  cout << endl << "diffuse to Uniform" << endl;
-  firmament.setDiffuseToUniform();
 
-  sum = firmament.diffusePlaneSensor();
-  cout << "plane: " << sum << endl;
-
-  sum = firmament.diffuseBallSensor();
-  cout << "ball: " << sum << endl;
-
-  cout << endl << " Radiation sector by sector\n" <<
-    " no.    incl    azim    radiation\n";
-
-  for (i=0; i < firmament.numberOfRegions(); i++)
-    cout << i << " " << firmament.getInclination(i) <<
-      " " << firmament.getAzimuth(i) << " " <<
-      firmament.diffuseRegionRadiationSum(i, a) << "\n";
-
-  cout << endl << "planeradiation from sectors: ";
-  double pr = 0.0;
-  for (i=0; i < firmament.numberOfRegions(); i++)
-    pr += firmament.diffuseRegionRadiationSum(i, a) * 
-      sin(firmament.getInclination(i));
-  cout << pr << endl;
-
-
+  cout << "f2 After resize" << endl;
+  for (i=0; i < f2.numberOfRegions(); i++)
+    cout << i << " " << f2.getInclination(i) <<
+      " " << f2.getAzimuth(i) << " " <<
+      f2.diffuseRegionRadiationSum(i, a) << endl;
   return 0;
 }
 
 
 #endif
+
 
 
 
