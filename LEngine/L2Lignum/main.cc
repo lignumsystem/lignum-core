@@ -14,6 +14,7 @@
 #include <L2Lignum.h>
 #include <MyTreeSegment.h>
 #include <MyBud.h>
+#include <OpenGLUnix.h>
 
 using namespace std;
 
@@ -42,9 +43,82 @@ bool Considered(ModuleIdType);
 
 char outputpth[PATH_MAX+1];
 
+template <class TS, class BUD>
+void SaveTree(Axis<TS,BUD> &ax, char* file_name, char* treetype)
+{
+  ofstream file(file_name);
+  file << treetype << endl;
+  SaveAxis(ax, file);
+  file.close();
+}
+
+template <class TS, class BUD >
+void SaveAxis(Axis<TS,BUD> &ax, ofstream& file)
+{
+   bool min_save = false;
+
+   std::list<TreeCompartment<TS, BUD>*>& ls = GetTreeCompartmentList(ax);
+   std::list<TreeCompartment<TS, BUD>*>::iterator I = ls.begin();
+
+   if (!min_save)
+     file << "AXIS"<< endl;
+
+   while(I != ls.end())
+     {
+       TreeSegment<TS, BUD>* myts = dynamic_cast<TreeSegment<TS, BUD>*>(*I);
+       
+       if (TreeSegment<TS, BUD>* myts = dynamic_cast<TreeSegment<TS,BUD>*>(*I))
+	 {
+	   if (TreeSegment<TS, BUD> *ts = dynamic_cast<TreeSegment<TS,BUD>*>(*I))
+	     {
+	       if (!min_save)
+		 file << "TS"<< " ";
+	       file << *ts;    //* otettu en
+	     }
+	 }
+       
+       if (BranchingPoint<TS, BUD>* mybp = dynamic_cast<BranchingPoint<TS,
+	   BUD>*>(*I))
+	 {
+	   std::list<Axis<TS, BUD>*>& axis_ls = GetAxisList(*mybp);
+	   std::list<Axis<TS, BUD>*>::iterator II = axis_ls.begin();
+	   
+	   BranchingPoint<TS, BUD>* bp = dynamic_cast<BranchingPoint<TS,
+	     BUD>*>(*I);
+	   if (!min_save)
+	     {
+	       file << "BP"<< " ";
+	       file << *bp << endl;
+	     }
+	   while(II != axis_ls.end())
+	     {
+	       Axis<TS,BUD> *axis = *II;
+	       SaveAxis(*axis, file);
+	       II++;
+	     }
+	   if (!min_save)
+	     file << "BP_END"<< endl;
+	 }
+
+       if (Bud<TS, BUD>* mybud = dynamic_cast<Bud<TS, BUD>*>(*I))
+	 {
+	   Bud<TS, BUD>* bud = dynamic_cast<Bud<TS, BUD>*>(*I);
+	   if(!min_save)
+	     {
+	       file << "BUD"<< " ";
+	       file << *bud << endl;
+	     }
+	 }
+       I++;
+     }
+   if (!min_save)
+     
+     file << "AXIS_END"<< endl;
+}
+
 int main(int argc, char** argv)
 {
-  ios::sync_with_stdio();
+  //ios::sync_with_stdio();
 
   if (2==argc)
     strcpy(outputpth, argv[1]);
@@ -57,12 +131,12 @@ int main(int argc, char** argv)
   sleep(1);
 
   {
-    cout << "Axiom:\n";
+    //cout << "Axiom:\n";
     LstringIterator iterator(mainstring);
-    iterator.Dump();
-    cout << "\n\n";
-    PrintLString(mainstring);
-    cout << "\n\n";
+    //iterator.Dump();
+    //cout << "\n\n";
+    //PrintLString(mainstring);
+    //cout << "\n\n";
   }
 
   for (int i=0; i<DerivationLength(); i++)
@@ -80,20 +154,23 @@ int main(int argc, char** argv)
   End();
   
   {
-    cout << "Final string:\n";
+    //cout << "Final string:\n";
     //LstringIterator iterator(mainstring);
     //iterator.Dump();
-    PrintLString(mainstring);
-    cout << "\n\n";
+    //PrintLString(mainstring);
+    //cout << "\n\n";
   }
 
   Tree<MyCfTreeSegment,MyBud> tree(Point(0,0,0),
-			     PositionVector(0,0,1.0));
+				    PositionVector(0,0,1.0));
   L2Lignum(tree,mainstring);
-  DisplayStructureData id;
-  PropagateUp(tree,id,DisplayStructureFunctor<MyCfTreeSegment,MyBud>());
-  cout << endl;
-  DisplayStructure(tree);
+  //DisplayStructureData id;
+  //PropagateUp(tree,id,DisplayStructureFunctor<MyCfTreeSegment,MyBud>());
+  //cout << endl;
+  //DisplayStructure(tree);
+  SaveTree(GetAxis(tree),"Pinus.txt","Pinus");
+  Visualize(tree);
+
 //    {
 //      //Draw(100);
 //    }
