@@ -30,7 +30,7 @@
 ^references Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi eero.nikinmaa@helsinki.fi 
 ^lignum-presentations Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi eero.nikinmaa@helsinki.fi
 ^stl-gliricidia Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi mhlehton@cc.hut.fi
-
+^BetulaTortuosa Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi mhlehton@cc.hut.fi
 
 
 
