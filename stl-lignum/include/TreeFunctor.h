@@ -44,8 +44,7 @@ namespace Lignum{
    template <class TS,class BUD>
      class CountTreeSegments {
      public:
-     int& CountTreeSegments<TS,BUD>::
-       operator()(int& n,TreeCompartment<TS,BUD>* tc)const
+     int& operator()(int& n,TreeCompartment<TS,BUD>* tc)const
        {
 	 if (TS* myts = dynamic_cast<TS*>(tc))
 	   n+=1;
