@@ -1,4 +1,16 @@
-#include <Lsystem.h>
+//Defines ran3 etc
+#include <mathsym.h>
+using namespace cxxadt;
+
+//Defines headers necessary for lsystem
+#include <lengine.h>
+
+//Start the namespace (compiles to "namespace Pine{")
+//The matching "close" statement closes the namespace 
+open Pine;
+
+//Defines the lsystem rewriting process. 
+#include <lsystem.h>
 
 const double L1 = 1.0;
 const double L2 = 0.6;
@@ -63,10 +75,18 @@ Turn(a):
   produce Turn(a*bend);
 }
 
-
+//This interpretation  is a ToDo for me.
+//Now you must define at least one dummy interpretation.
+//I must study how to alter the l2c to avoid  interpretation. 
+//Interpretation separates model/symbols from 
+//their (graphics) interpretation but for us LIGNUM is visualized by 
+//Mika.  
 interpretation:
 
 F(s) :
 {
   ;
 }
+
+//Closes the namespace (compiles simply to '}')
+close Pine;

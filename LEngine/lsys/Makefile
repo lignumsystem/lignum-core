@@ -5,16 +5,17 @@ AR = $(CCC) -ar
 ARFLAGS= -o
 ARFILE=liblsys.a
 
-LSYSFILES= lsys.L
+LSYSFILES= bearberry.L pine9bp.L 
 SRC=${LSYSFILES:.L=.cpp}
 OBJ=${SRC:.cpp=.o}
 
 AR =  $(CCC) -ar  
 ARFLAGS = -o 
 
-INCLUDE= -I../Globals -I/usr/include -I../../c++adt/include -I../../stl-lignum/include
+INCLUDE= -I../include -I/usr/include -I../../c++adt/include \
+         -I../../stl-lignum/include
 
-.SUFFIXES: .cpp .L
+.SUFFIXES: .L .cpp
 
 sinclude Makedepend
 
@@ -23,12 +24,12 @@ $(ARFILE): $(SRC) $(OBJ)
 .L.cpp:
 	../L2C/l2c  $< $@
 	$(CCC) $(OPTIMIZE) $(CCCFLAGS) $(INCLUDE)  $@
+	rm -f *.c
 .cpp.o:
 	$(CCC) $(CCCFLAGS) $(OPTIMIZE) $(INCLUDE)  $<
 l2c:
 	(cd ../L2C; make "CCC=$(CCC)" "CCCFLAGS=$(CCCFLAGS)" \
          "OPTIMIZE=$(OPTIMIZE)" "AR=ar" "ARFLAGS=rv" $@)
-
 clean:
 	rm -rf $(OBJ) $(SRC)  ii_files
 distclean: clean

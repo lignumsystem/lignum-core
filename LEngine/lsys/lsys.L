@@ -1,6 +1,8 @@
-#include <Lsystem.h>
+
 #include <mathsym.h>
 using namespace cxxadt;
+#include <system-headers.h>
+#include <lsystem.h>
 
 
 const int D    = 1.0; //dominant    apical
@@ -23,7 +25,7 @@ module F(double);
 module B(double,double,double); //type, status and collision
 module Turn(double);
 
-derivation length: 5;
+derivation length: 12;
 int seed = 0;
 
 Start:
@@ -184,6 +186,7 @@ F(s) :
 {
   ;
 }
+
 
 
 

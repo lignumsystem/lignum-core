@@ -1,6 +1,16 @@
-#include <Lsystem.h>
+//Defines ran3 etc.
 #include <mathsym.h>
 using namespace cxxadt;
+
+//Defines headers necessary for lsystem.h
+#include <lengine.h>
+
+//Start the namespace Bearberry
+//Matching "close" closes it
+open Bearberry;
+
+//Defines lsystem rewriting process 
+#include <lsystem.h>
 
 
 const int D    = 1.0; //dominant    apical
@@ -20,7 +30,7 @@ const double CU = -5.0*2.0*PI_VALUE/360.0;
 const double CT = 0.5*2.0*PI_VALUE/360.0;
 
 module F(double);
-module B(double,double,double); //type, status and collision
+module B(double,double,double); //Bud type, status and collision
 module Turn(double);
 
 derivation length: 10;
@@ -176,17 +186,21 @@ B(type,status,coll):
   }
 }
 
-
-
+//This interpretation  is a ToDo for me.
+//Now you must define at least one dummy interpretation.
+//I must study how to alter the l2c to avoid  interpretation. 
+//Interpretation separates model/symbols from 
+//their (graphics) interpretation but for us LIGNUM is visualized by 
+//Mika.  
 interpretation:
 
-F(s) :
+F(s):
 {
   ;
 }
 
-
-
+//Closes the namespace (compiles simply to '}')
+close Bearberry;
 
 
 
