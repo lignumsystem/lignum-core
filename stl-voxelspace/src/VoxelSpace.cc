@@ -314,6 +314,9 @@ namespace Lignum {
   {
     //ofstream file("calculateVoxelSpace.txt");
     cout << "Caculate Light Begin: " << endl;
+    //If I forget to reset something else, please add!!
+    resetQinQabs();
+    updateStar();
     for(int i1=0; i1<Xn; i1++)
       for(int i2=0; i2<Yn; i2++)
 	for(int i3=0; i3<Zn; i3++)
@@ -470,6 +473,16 @@ namespace Lignum {
 	  }
 
   }
+
+  void VoxelSpace::resetQinQabs()
+  {
+    for(int i1=0; i1<Xn; i1++)
+      for(int i2=0; i2<Yn; i2++)
+	for(int i3=0; i3<Zn; i3++)
+	  {
+	    voxboxes[i1][i2][i3].resetQinQabs(); 
+	  }
+  } 
   
   //
   //	This function dumps every tree included in the VoxelSpace to
