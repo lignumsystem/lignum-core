@@ -15,64 +15,44 @@ namespace Lignum{
 template <class TS,class BUD> class CfTreeSegment;
 
 template <class TS,class BUD>
-ostream &operator << (ostream& os, TreeSegment<TS,BUD>& ts)
+ofstream &operator << (ofstream& os, TreeSegment<TS,BUD>& ts)
 {	
-  //BetulaTortuosa is still haunting here 
-  class BetulaTortuosa;
-  class TreeSegment<BetulaTortuosa>;
-  //Please orginize headers or rewrite "<<" operator
-  //to remove this declation; 
-  class BroadLeaf;
+  PositionVector pv = GetDirection(ts); 
+  Point p = GetPoint(ts);
 
-  os << "DIRECTION " << GetDirection(ts);  
-  os << "  POSITION " << GetPoint(ts) << "  RADIUS " << GetValue(ts,R) << " " 
-     << "  LENGTH " << GetValue(ts,L) << "  AGE " << GetValue(ts,age);
+  os << "DIRECTION " << pv.getX() << " " << pv.getY() << " " << pv.getZ()
+     << "  POSITION " << p.getX() << " " << p.getY() << " " << p.getZ() 
+     << "  RADIUS " << GetValue(ts,R) << " " 
+     << "  LENGTH " << GetValue(ts,L) << "  AGE " << GetValue(ts,age) << flush;
   
-  if (CfTreeSegment<TS,BUD>& cfts = dynamic_cast<CfTreeSegment<TS,BUD>&>(ts))
-    {
-      os << " WF " << GetValue(cfts, Wf) << " RF " << GetValue(cfts, Rf) 
-	 << " RH " << GetValue(cfts, Rh) << " QABS " << GetValue(cfts, Qabs);
-	
-      int size = ts.tsa.annual_rings.size();
-      for (int i=0; i< size; i++)
-	{
-	  os << " AR " << ts.tsa.annual_rings[i];
-	}
-    }
-  
-  if (TreeSegment<BetulaTortuosa>& betula = dynamic_cast<TreeSegment<BetulaTortuosa> &>(ts)) 
-    {
-      BetulaTortuosa& s = dynamic_cast<BetulaTortuosa&>(ts);
-      std::list<BroadLeaf*> leaves = GetLeafList(s);
-      if (leaves.empty())
-	{
-	  //os << "Ei lehtiä!" << endl;
-	}
-      else
-	{
-	  Firmament& firmament = GetFirmament(GetTree(s));
-	  
-	  double ball = firmament.diffuseBallSensor();
-	  double plane = firmament.diffusePlaneSensor();
-	  double kin, kaps;
-	  double ala; 
-	  
-	  for (std::list<BroadLeaf*>::iterator Il = leaves.begin(); Il != leaves.end(); Il++) 
-	    {
-	      kin = GetValue(**Il, Qin);
-	      kaps = GetValue(**Il, Qabs);
-	      ala = (GetEllipsis(**Il).getArea())*GetValue(**Il, dof);
-	      os << " Qin:  " << kin/ball ; //<< endl; //"  Qabs:  " << endl; //kaps/ala/plane << endl;
-	      num_of_leaves++;
-	    }
-	}
-    }
   os << " END" << endl;
   
   return os;
 }
 
+template <class TS,class BUD>
+ofstream &operator << (ofstream& os, Bud<TS,BUD>& bud)
+{	
+  PositionVector pv = GetDirection(bud); 
+  Point p = GetPoint(bud);
+  os << "DIRECTION " << pv.getX() << " " << pv.getY() << " " << pv.getZ() 
+     << "  POSITION " << p.getX() << " " << p.getY() << " " << p.getZ()   << flush;
+  
+  os << " END" << endl;
+  
+  return os;
+}
 
+template <class TS,class BUD>
+ofstream &operator << (ofstream& os, BranchingPoint<TS,BUD>& bp)
+{	
+  PositionVector pv = GetDirection(bp); 
+  Point p = GetPoint(bp);
+  os << "DIRECTION " << pv.getX() << " " << pv.getY() << " " << pv.getZ() 
+     << "  POSITION " << p.getX() << " " << p.getY() << " " << p.getZ()   << " END" << endl;
+  
+  return os;
+}
 
 // Reading a tree segment from a file is implemented in LignumWBDocI.h: LoadTreeSegment
 template <class TS,class BUD>
