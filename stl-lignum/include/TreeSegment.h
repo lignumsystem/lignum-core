@@ -111,6 +111,7 @@ public:
   void SetAnnualGrowth(LGMdouble growth);
   METER AdjustAnnualGrowth(LGMdouble new_growth);
   int id;
+  Point voxel_id;
   //  void photosynthesis();  OBS! TreeSegment does not have photosynthesis,
   //it is either CfTreeSegment or HwTreeSegment which handle it in their own ways	
 private:

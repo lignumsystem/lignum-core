@@ -51,7 +51,7 @@ public:
 
 //Collect dry weights of new parts & the increments below induced by them
 template <class TS,class BUD>
-class CollectHwDWAfterGrowth {
+class CollectDWAfterGrowth {
 public:
   LGMdouble& operator()(LGMdouble& WSum, TreeCompartment<TS,BUD>* tc)const;
   CollectHwDWAfterGrowth() { lambda_zero = false; }

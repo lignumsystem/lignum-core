@@ -12,7 +12,7 @@ ALGOBJ  = algorithms.o
 BLSRC  = broadleaf.cc
 BLOBJ  = broadleaf.o
  
-CCC = CC  -LANG:std
+CCC = CC  -64 -LANG:std
 
 #OPTIMIZE = -Ofast=ip28 -IPA
 OPTIMIZE   = -g 
@@ -90,209 +90,201 @@ depend:
 
 # DO NOT DELETE
 
-
-algorithms..o: ../c++adt/include/boolean.h
-algorithms..o: ../c++adt/include/ConnectionMatrix.h
-algorithms..o: ../c++adt/include/ConnectionMatrixI.h
-algorithms..o: ../c++adt/include/DListElement.h ../c++adt/include/DList.h
-algorithms..o: ../c++adt/include/Ellipsis.h ../c++adt/include/Lex.h
-algorithms..o: ../c++adt/include/mathsym.h ../c++adt/include/ParametricCurve.h
-algorithms..o: ../c++adt/include/Point.h ../c++adt/include/PointI.h
-algorithms..o: ../c++adt/include/PositionVector.h ../c++adt/include/RMatrix.h
-algorithms..o: ../c++adt/include/Rotation.h ../c++adt/include/Table.h
-algorithms..o: ../c++adt/include/TableI.h ../c++adt/include/TMatrix.h
-algorithms..o: ../c++adt/include/TMatrixI.h ../Firmament/include/Firmament.h
-algorithms..o: ../Firmament/include/FirmamentWithMask.h include/Algorithms.h
-algorithms..o: include/AlgorithmsI.h include/Axis.h include/AxisI.h
-algorithms..o: include/BranchingPoint.h include/BranchingPointI.h
-algorithms..o: include/BroadLeaf.h include/Bud.h include/BudI.h
-algorithms..o: include/CfTreeSegment.h include/CfTreeSegmentI.h
-algorithms..o: include/CfTreeSegmentMetabolismI.h include/DefaultBud.h
-algorithms..o: include/HwTreeSegment.h include/HwTreeSegmentI.h
-algorithms..o: include/HwTreeSegmentMetabolismI.h include/LGMdecl.h
-algorithms..o: include/LGMSymbols.h include/LGMUnits.h include/MyBud.h
-algorithms..o: include/MyTreeSegment.h include/RootSystem.h include/Shading.h
-algorithms..o: include/ShadingI.h include/TreeCompartment.h
-algorithms..o: include/TreeCompartmentI.h include/TreeFunctor.h
-algorithms..o: include/TreeFunctorI.h include/Tree.h include/TreeI.h
-algorithms..o: include/TreeMetabolism.h include/TreeMetabolismI.h
-algorithms..o: include/TreeMetaFileParser.h include/TreeRadiation.h
-algorithms..o: include/TreeRadiationI.h include/TreeSegment.h
-algorithms..o: include/TreeSegmentI.h /usr/include/alloca.h
-algorithms..o: /usr/include/assert.h /usr/include/bits/huge_val.h
-algorithms..o: /usr/include/bits/local_lim.h /usr/include/bits/mathcalls.h
-algorithms..o: /usr/include/bits/mathdef.h /usr/include/bits/nan.h
-algorithms..o: /usr/include/bits/posix1_lim.h /usr/include/bits/pthreadtypes.h
-algorithms..o: /usr/include/bits/sched.h /usr/include/bits/sigset.h
-algorithms..o: /usr/include/bits/types.h /usr/include/bits/waitstatus.h
-algorithms..o: /usr/include/bits/xopen_lim.h /usr/include/ctype.h
-algorithms..o: /usr/include/endian.h /usr/include/features.h
-algorithms..o: /usr/include/g++-3/algorithm /usr/include/g++-3/cassert
-algorithms..o: /usr/include/g++-3/cctype /usr/include/g++-3/cstddef
-algorithms..o: /usr/include/g++-3/fstream /usr/include/g++-3/fstream.h
-algorithms..o: /usr/include/g++-3/functional /usr/include/g++-3/iostream
-algorithms..o: /usr/include/g++-3/iostream.h /usr/include/g++-3/iterator
-algorithms..o: /usr/include/g++-3/list /usr/include/g++-3/map
-algorithms..o: /usr/include/g++-3/numeric /usr/include/g++-3/std/bastring.cc
-algorithms..o: /usr/include/g++-3/std/bastring.h
-algorithms..o: /usr/include/g++-3/std/straits.h
-algorithms..o: /usr/include/g++-3/stl_algobase.h /usr/include/g++-3/stl_algo.h
-algorithms..o: /usr/include/g++-3/stl_alloc.h /usr/include/g++-3/stl_bvector.h
-algorithms..o: /usr/include/g++-3/stl_construct.h
-algorithms..o: /usr/include/g++-3/stl_function.h /usr/include/g++-3/stl_heap.h
-algorithms..o: /usr/include/g++-3/stl_iterator.h /usr/include/g++-3/stl_list.h
-algorithms..o: /usr/include/g++-3/stl_map.h /usr/include/g++-3/stl_multimap.h
-algorithms..o: /usr/include/g++-3/stl_numeric.h /usr/include/g++-3/stl_pair.h
-algorithms..o: /usr/include/g++-3/stl_relops.h
-algorithms..o: /usr/include/g++-3/stl_tempbuf.h /usr/include/g++-3/stl_tree.h
-algorithms..o: /usr/include/g++-3/stl_uninitialized.h
-algorithms..o: /usr/include/g++-3/stl_vector.h /usr/include/g++-3/streambuf.h
-algorithms..o: /usr/include/g++-3/string /usr/include/g++-3/type_traits.h
-algorithms..o: /usr/include/g++-3/vector /usr/include/_G_config.h
-algorithms..o: /usr/include/gconv.h /usr/include/libio.h /usr/include/limits.h
-algorithms..o: /usr/include/math.h /usr/include/stdio.h /usr/include/stdlib.h
-algorithms..o: /usr/include/string.h /usr/include/sys/select.h
-algorithms..o: /usr/include/sys/types.h /usr/include/time.h
-algorithms..o: /usr/include/wchar.h /usr/include/xlocale.h
-algorithms..o: /usr/lib/gcc-lib/i386-redhat-linux/2.96/include/exception
-algorithms..o: /usr/lib/gcc-lib/i386-redhat-linux/2.96/include/float.h
-algorithms..o: /usr/lib/gcc-lib/i386-redhat-linux/2.96/include/limits.h
-algorithms..o: /usr/lib/gcc-lib/i386-redhat-linux/2.96/include/new
-algorithms..o: /usr/lib/gcc-lib/i386-redhat-linux/2.96/include/new.h
-algorithms..o: /usr/lib/gcc-lib/i386-redhat-linux/2.96/include/stdarg.h
-algorithms..o: /usr/lib/gcc-lib/i386-redhat-linux/2.96/include/stddef.h
-algorithms..o: /usr/lib/gcc-lib/i386-redhat-linux/2.96/include/syslimits.h
-broadleaf..o: ../c++adt/include/boolean.h ../c++adt/include/ConnectionMatrix.h
-broadleaf..o: ../c++adt/include/ConnectionMatrixI.h
-broadleaf..o: ../c++adt/include/DListElement.h ../c++adt/include/DList.h
-broadleaf..o: ../c++adt/include/Ellipsis.h ../c++adt/include/Lex.h
-broadleaf..o: ../c++adt/include/mathsym.h ../c++adt/include/ParametricCurve.h
-broadleaf..o: ../c++adt/include/Point.h ../c++adt/include/PointI.h
-broadleaf..o: ../c++adt/include/PositionVector.h ../c++adt/include/RMatrix.h
-broadleaf..o: ../c++adt/include/Rotation.h ../c++adt/include/Table.h
-broadleaf..o: ../c++adt/include/TableI.h ../c++adt/include/TMatrix.h
-broadleaf..o: ../c++adt/include/TMatrixI.h ../Firmament/include/Firmament.h
-broadleaf..o: ../Firmament/include/FirmamentWithMask.h include/Algorithms.h
-broadleaf..o: include/AlgorithmsI.h include/Axis.h include/AxisI.h
-broadleaf..o: include/BranchingPoint.h include/BranchingPointI.h
-broadleaf..o: include/BroadLeaf.h include/Bud.h include/BudI.h
-broadleaf..o: include/CfTreeSegment.h include/CfTreeSegmentI.h
-broadleaf..o: include/CfTreeSegmentMetabolismI.h include/DefaultBud.h
-broadleaf..o: include/HwTreeSegment.h include/HwTreeSegmentI.h
-broadleaf..o: include/HwTreeSegmentMetabolismI.h include/LGMdecl.h
-broadleaf..o: include/LGMSymbols.h include/LGMUnits.h include/MyBud.h
-broadleaf..o: include/MyTreeSegment.h include/RootSystem.h
-broadleaf..o: include/TreeCompartment.h include/TreeCompartmentI.h
-broadleaf..o: include/TreeFunctor.h include/TreeFunctorI.h include/Tree.h
-broadleaf..o: include/TreeI.h include/TreeMetabolism.h
-broadleaf..o: include/TreeMetabolismI.h include/TreeMetaFileParser.h
-broadleaf..o: include/TreeRadiation.h include/TreeRadiationI.h
-broadleaf..o: include/TreeSegment.h include/TreeSegmentI.h
-broadleaf..o: /usr/include/alloca.h /usr/include/assert.h
-broadleaf..o: /usr/include/bits/huge_val.h /usr/include/bits/local_lim.h
-broadleaf..o: /usr/include/bits/mathcalls.h /usr/include/bits/mathdef.h
-broadleaf..o: /usr/include/bits/nan.h /usr/include/bits/posix1_lim.h
-broadleaf..o: /usr/include/bits/pthreadtypes.h /usr/include/bits/sched.h
-broadleaf..o: /usr/include/bits/sigset.h /usr/include/bits/types.h
-broadleaf..o: /usr/include/bits/waitstatus.h /usr/include/bits/xopen_lim.h
-broadleaf..o: /usr/include/ctype.h /usr/include/endian.h
-broadleaf..o: /usr/include/features.h /usr/include/g++-3/algorithm
-broadleaf..o: /usr/include/g++-3/cassert /usr/include/g++-3/cctype
-broadleaf..o: /usr/include/g++-3/cstddef /usr/include/g++-3/fstream
-broadleaf..o: /usr/include/g++-3/fstream.h /usr/include/g++-3/functional
-broadleaf..o: /usr/include/g++-3/iostream.h /usr/include/g++-3/iterator
-broadleaf..o: /usr/include/g++-3/list /usr/include/g++-3/map
-broadleaf..o: /usr/include/g++-3/numeric /usr/include/g++-3/std/bastring.cc
-broadleaf..o: /usr/include/g++-3/std/bastring.h
-broadleaf..o: /usr/include/g++-3/std/straits.h
-broadleaf..o: /usr/include/g++-3/stl_algobase.h /usr/include/g++-3/stl_algo.h
-broadleaf..o: /usr/include/g++-3/stl_alloc.h /usr/include/g++-3/stl_bvector.h
-broadleaf..o: /usr/include/g++-3/stl_construct.h
-broadleaf..o: /usr/include/g++-3/stl_function.h /usr/include/g++-3/stl_heap.h
-broadleaf..o: /usr/include/g++-3/stl_iterator.h /usr/include/g++-3/stl_list.h
-broadleaf..o: /usr/include/g++-3/stl_map.h /usr/include/g++-3/stl_multimap.h
-broadleaf..o: /usr/include/g++-3/stl_numeric.h /usr/include/g++-3/stl_pair.h
-broadleaf..o: /usr/include/g++-3/stl_relops.h /usr/include/g++-3/stl_tempbuf.h
-broadleaf..o: /usr/include/g++-3/stl_tree.h
-broadleaf..o: /usr/include/g++-3/stl_uninitialized.h
-broadleaf..o: /usr/include/g++-3/stl_vector.h /usr/include/g++-3/streambuf.h
-broadleaf..o: /usr/include/g++-3/string /usr/include/g++-3/type_traits.h
-broadleaf..o: /usr/include/g++-3/vector /usr/include/_G_config.h
-broadleaf..o: /usr/include/gconv.h /usr/include/libio.h /usr/include/limits.h
-broadleaf..o: /usr/include/math.h /usr/include/stdio.h /usr/include/stdlib.h
-broadleaf..o: /usr/include/string.h /usr/include/sys/select.h
-broadleaf..o: /usr/include/sys/types.h /usr/include/time.h
-broadleaf..o: /usr/include/wchar.h /usr/include/xlocale.h
-broadleaf..o: /usr/lib/gcc-lib/i386-redhat-linux/2.96/include/exception
-broadleaf..o: /usr/lib/gcc-lib/i386-redhat-linux/2.96/include/float.h
-broadleaf..o: /usr/lib/gcc-lib/i386-redhat-linux/2.96/include/limits.h
-broadleaf..o: /usr/lib/gcc-lib/i386-redhat-linux/2.96/include/new
-broadleaf..o: /usr/lib/gcc-lib/i386-redhat-linux/2.96/include/new.h
-broadleaf..o: /usr/lib/gcc-lib/i386-redhat-linux/2.96/include/stdarg.h
-broadleaf..o: /usr/lib/gcc-lib/i386-redhat-linux/2.96/include/stddef.h
-broadleaf..o: /usr/lib/gcc-lib/i386-redhat-linux/2.96/include/syslimits.h
-main..o: ../c++adt/include/boolean.h ../c++adt/include/ConnectionMatrix.h
-main..o: ../c++adt/include/ConnectionMatrixI.h
-main..o: ../c++adt/include/DListElement.h ../c++adt/include/DList.h
-main..o: ../c++adt/include/Ellipsis.h ../c++adt/include/Lex.h
-main..o: ../c++adt/include/mathsym.h ../c++adt/include/ParametricCurve.h
-main..o: ../c++adt/include/Point.h ../c++adt/include/PointI.h
-main..o: ../c++adt/include/PositionVector.h ../c++adt/include/RMatrix.h
-main..o: ../c++adt/include/Rotation.h ../c++adt/include/Table.h
-main..o: ../c++adt/include/TableI.h ../c++adt/include/TMatrix.h
-main..o: ../c++adt/include/TMatrixI.h ../Firmament/include/Firmament.h
-main..o: ../Firmament/include/FirmamentWithMask.h include/Algorithms.h
-main..o: include/AlgorithmsI.h include/Axis.h include/AxisI.h
-main..o: include/BranchingPoint.h include/BranchingPointI.h
-main..o: include/BroadLeaf.h include/Bud.h include/BudI.h
-main..o: include/CfTreeSegment.h include/CfTreeSegmentI.h
-main..o: include/CfTreeSegmentMetabolismI.h include/DefaultBud.h
-main..o: include/HwTreeSegment.h include/HwTreeSegmentI.h
-main..o: include/HwTreeSegmentMetabolismI.h include/LGMdecl.h
-main..o: include/LGMSymbols.h include/LGMUnits.h include/MyBud.h
-main..o: include/MyTreeSegment.h include/RootSystem.h
-main..o: include/TreeCompartment.h include/TreeCompartmentI.h
-main..o: include/TreeFunctor.h include/TreeFunctorI.h include/Tree.h
-main..o: include/TreeI.h include/TreeMetabolism.h include/TreeMetabolismI.h
-main..o: include/TreeMetaFileParser.h include/TreeRadiation.h
-main..o: include/TreeRadiationI.h include/TreeSegment.h include/TreeSegmentI.h
-main..o: /usr/include/alloca.h /usr/include/assert.h
-main..o: /usr/include/bits/huge_val.h /usr/include/bits/local_lim.h
-main..o: /usr/include/bits/mathcalls.h /usr/include/bits/mathdef.h
-main..o: /usr/include/bits/nan.h /usr/include/bits/posix1_lim.h
-main..o: /usr/include/bits/pthreadtypes.h /usr/include/bits/sched.h
-main..o: /usr/include/bits/sigset.h /usr/include/bits/types.h
-main..o: /usr/include/bits/waitstatus.h /usr/include/bits/xopen_lim.h
-main..o: /usr/include/ctype.h /usr/include/endian.h /usr/include/features.h
-main..o: /usr/include/g++-3/algorithm /usr/include/g++-3/cassert
-main..o: /usr/include/g++-3/cctype /usr/include/g++-3/cstddef
-main..o: /usr/include/g++-3/fstream /usr/include/g++-3/fstream.h
-main..o: /usr/include/g++-3/functional /usr/include/g++-3/iostream.h
-main..o: /usr/include/g++-3/iterator /usr/include/g++-3/list
-main..o: /usr/include/g++-3/map /usr/include/g++-3/numeric
-main..o: /usr/include/g++-3/std/bastring.cc /usr/include/g++-3/std/bastring.h
-main..o: /usr/include/g++-3/std/straits.h /usr/include/g++-3/stl_algobase.h
-main..o: /usr/include/g++-3/stl_algo.h /usr/include/g++-3/stl_alloc.h
-main..o: /usr/include/g++-3/stl_bvector.h /usr/include/g++-3/stl_construct.h
-main..o: /usr/include/g++-3/stl_function.h /usr/include/g++-3/stl_heap.h
-main..o: /usr/include/g++-3/stl_iterator.h /usr/include/g++-3/stl_list.h
-main..o: /usr/include/g++-3/stl_map.h /usr/include/g++-3/stl_multimap.h
-main..o: /usr/include/g++-3/stl_numeric.h /usr/include/g++-3/stl_pair.h
-main..o: /usr/include/g++-3/stl_relops.h /usr/include/g++-3/stl_tempbuf.h
-main..o: /usr/include/g++-3/stl_tree.h /usr/include/g++-3/stl_uninitialized.h
-main..o: /usr/include/g++-3/stl_vector.h /usr/include/g++-3/streambuf.h
-main..o: /usr/include/g++-3/string /usr/include/g++-3/type_traits.h
-main..o: /usr/include/g++-3/vector /usr/include/_G_config.h
-main..o: /usr/include/gconv.h /usr/include/libio.h /usr/include/limits.h
-main..o: /usr/include/math.h /usr/include/stdio.h /usr/include/stdlib.h
-main..o: /usr/include/string.h /usr/include/sys/select.h
-main..o: /usr/include/sys/types.h /usr/include/time.h /usr/include/wchar.h
-main..o: /usr/include/xlocale.h
-main..o: /usr/lib/gcc-lib/i386-redhat-linux/2.96/include/exception
-main..o: /usr/lib/gcc-lib/i386-redhat-linux/2.96/include/float.h
-main..o: /usr/lib/gcc-lib/i386-redhat-linux/2.96/include/limits.h
-main..o: /usr/lib/gcc-lib/i386-redhat-linux/2.96/include/new
-main..o: /usr/lib/gcc-lib/i386-redhat-linux/2.96/include/new.h
-main..o: /usr/lib/gcc-lib/i386-redhat-linux/2.96/include/stdarg.h
-main..o: /usr/lib/gcc-lib/i386-redhat-linux/2.96/include/stddef.h
-main..o: /usr/lib/gcc-lib/i386-redhat-linux/2.96/include/syslimits.h
+main.o: /usr/include/stdlib.h /usr/include/standards.h /usr/include/sgidefs.h
+main.o: /usr/include/CC/iostream.h /usr/include/memory.h
+main.o: /usr/include/stddef.h /usr/include/CC/list
+main.o: /usr/include/CC/stl_algobase.h /usr/include/CC/stl_config.h
+main.o: /usr/include/CC/stl_relops.h /usr/include/CC/stl_pair.h
+main.o: /usr/include/CC/type_traits.h /usr/include/string.h
+main.o: /usr/include/limits.h /usr/include/CC/new.h
+main.o: /usr/include/CC/stl_iterator_base.h /usr/include/CC/stl_iterator.h
+main.o: /usr/include/CC/stl_alloc.h /usr/include/stdio.h
+main.o: /usr/include/assert.h /usr/include/CC/stl_threads.h
+main.o: /usr/include/mutex.h /usr/include/time.h
+main.o: /usr/include/CC/stl_construct.h /usr/include/CC/stl_uninitialized.h
+main.o: /usr/include/CC/stl_list.h /usr/include/CC/algorithm
+main.o: /usr/include/CC/stl_tempbuf.h /usr/include/CC/stl_algo.h
+main.o: /usr/include/CC/stl_heap.h /usr/include/CC/string
+main.o: /usr/include/CC/stl_string_fwd.h /usr/include/ctype.h
+main.o: /usr/include/locale_attr.h /usr/include/CC/functional
+main.o: /usr/include/CC/stl_function.h /usr/include/CC/stdexcept
+main.o: /usr/include/CC/stl_exception.h /usr/include/CC/memory
+main.o: /usr/include/CC/stl_raw_storage_iter.h /usr/include/CC/char_traits.h
+main.o: /usr/include/wchar.h /usr/include/CC/stl_hash_fun.h include/Tree.h
+main.o: /usr/include/CC/numeric /usr/include/CC/stl_numeric.h
+main.o: /usr/include/CC/iostream /usr/include/CC/iosfwd
+main.o: /usr/include/CC/istream /usr/include/CC/ostream /usr/include/CC/ios
+main.o: /usr/include/CC/utility /usr/include/CC/stl_locale.h
+main.o: /usr/include/CC/typeinfo /usr/include/CC/exception
+main.o: /usr/include/CC/stl_ctype.h /usr/include/CC/c_locale.h
+main.o: /usr/include/CC/streambuf /usr/include/CC/stl_stdio_file.h
+main.o: /usr/include/CC/stl_numeric_facets.h /usr/include/CC/limits
+main.o: /usr/include/float.h ../c++adt/include/ParametricCurve.h
+main.o: /usr/include/CC/vector /usr/include/CC/stl_range_errors.h
+main.o: /usr/include/CC/stl_vector.h /usr/include/CC/stl_bvector.h
+main.o: /usr/include/CC/fstream /usr/include/CC/stl_codecvt.h
+main.o: ../c++adt/include/Point.h /usr/include/math.h
+main.o: ../c++adt/include/PositionVector.h ../c++adt/include/mathsym.h
+main.o: ../c++adt/include/RMatrix.h ../c++adt/include/Rotation.h
+main.o: ../c++adt/include/TMatrix.h ../c++adt/include/TMatrixI.h
+main.o: ../c++adt/include/PointI.h include/LGMdecl.h include/LGMSymbols.h
+main.o: /usr/include/CC/map /usr/include/CC/stl_tree.h
+main.o: /usr/include/CC/stl_map.h /usr/include/CC/stl_multimap.h
+main.o: include/LGMUnits.h include/Algorithms.h include/AlgorithmsI.h
+main.o: include/TreeFunctor.h include/TreeCompartment.h
+main.o: include/TreeCompartmentI.h include/TreeFunctorI.h
+main.o: include/TreeMetaFileParser.h ../c++adt/include/Table.h
+main.o: ../c++adt/include/DList.h ../c++adt/include/DListElement.h
+main.o: ../c++adt/include/boolean.h ../c++adt/include/TableI.h
+main.o: ../c++adt/include/Lex.h include/RootSystem.h include/Bud.h
+main.o: include/BudI.h include/DefaultBud.h include/BranchingPoint.h
+main.o: include/BranchingPointI.h include/TreeSegment.h
+main.o: include/TreeSegmentWithFlow.h include/TreeSegmentI.h
+main.o: include/HwTreeSegment.h include/BroadLeaf.h
+main.o: ../c++adt/include/Ellipsis.h include/HwTreeSegmentI.h
+main.o: include/HwTreeSegmentMetabolismI.h include/CfTreeSegment.h
+main.o: include/CfTreeFunctor.h include/CfTreeFunctorI.h
+main.o: include/CfTreeSegmentI.h include/CfTreeSegmentMetabolismI.h
+main.o: include/Axis.h include/AxisI.h ../c++adt/include/ConnectionMatrix.h
+main.o: ../c++adt/include/ConnectionMatrixI.h
+main.o: ../Firmament/include/FirmamentWithMask.h
+main.o: ../Firmament/include/Firmament.h include/TreeRadiation.h
+main.o: include/TreeBookkeeping.h include/TreeBookkeepingI.h include/TreeI.h
+main.o: include/TreeMetabolismI.h include/TreeMetabolism.h
+main.o: include/TreeRadiationI.h include/MyTreeSegment.h include/MyBud.h
+algorithms.o: include/Lignum.h include/Tree.h /usr/include/CC/algorithm
+algorithms.o: /usr/include/CC/stl_algobase.h /usr/include/CC/stl_config.h
+algorithms.o: /usr/include/standards.h /usr/include/CC/stl_relops.h
+algorithms.o: /usr/include/CC/stl_pair.h /usr/include/CC/type_traits.h
+algorithms.o: /usr/include/string.h /usr/include/limits.h
+algorithms.o: /usr/include/sgidefs.h /usr/include/stdlib.h
+algorithms.o: /usr/include/stddef.h /usr/include/CC/new.h
+algorithms.o: /usr/include/CC/iostream.h /usr/include/memory.h
+algorithms.o: /usr/include/CC/stl_iterator_base.h
+algorithms.o: /usr/include/CC/stl_iterator.h /usr/include/CC/stl_construct.h
+algorithms.o: /usr/include/CC/stl_uninitialized.h
+algorithms.o: /usr/include/CC/stl_tempbuf.h /usr/include/CC/stl_algo.h
+algorithms.o: /usr/include/CC/stl_heap.h /usr/include/CC/numeric
+algorithms.o: /usr/include/CC/stl_function.h /usr/include/CC/stl_numeric.h
+algorithms.o: /usr/include/CC/list /usr/include/CC/stl_alloc.h
+algorithms.o: /usr/include/stdio.h /usr/include/assert.h
+algorithms.o: /usr/include/CC/stl_threads.h /usr/include/mutex.h
+algorithms.o: /usr/include/time.h /usr/include/CC/stl_list.h
+algorithms.o: /usr/include/CC/iostream /usr/include/CC/iosfwd
+algorithms.o: /usr/include/wchar.h /usr/include/locale_attr.h
+algorithms.o: /usr/include/ctype.h /usr/include/CC/istream
+algorithms.o: /usr/include/CC/ostream /usr/include/CC/ios
+algorithms.o: /usr/include/CC/stl_string_fwd.h
+algorithms.o: /usr/include/CC/stl_exception.h /usr/include/CC/utility
+algorithms.o: /usr/include/CC/stl_locale.h /usr/include/CC/typeinfo
+algorithms.o: /usr/include/CC/exception /usr/include/CC/string
+algorithms.o: /usr/include/CC/functional /usr/include/CC/stdexcept
+algorithms.o: /usr/include/CC/memory /usr/include/CC/stl_raw_storage_iter.h
+algorithms.o: /usr/include/CC/char_traits.h /usr/include/CC/stl_hash_fun.h
+algorithms.o: /usr/include/CC/stl_ctype.h /usr/include/CC/c_locale.h
+algorithms.o: /usr/include/CC/streambuf /usr/include/CC/stl_stdio_file.h
+algorithms.o: /usr/include/CC/stl_numeric_facets.h /usr/include/CC/limits
+algorithms.o: /usr/include/float.h ../c++adt/include/ParametricCurve.h
+algorithms.o: /usr/include/CC/vector /usr/include/CC/stl_range_errors.h
+algorithms.o: /usr/include/CC/stl_vector.h /usr/include/CC/stl_bvector.h
+algorithms.o: /usr/include/CC/fstream /usr/include/CC/stl_codecvt.h
+algorithms.o: ../c++adt/include/Point.h /usr/include/math.h
+algorithms.o: ../c++adt/include/PositionVector.h ../c++adt/include/mathsym.h
+algorithms.o: ../c++adt/include/RMatrix.h ../c++adt/include/Rotation.h
+algorithms.o: ../c++adt/include/TMatrix.h ../c++adt/include/TMatrixI.h
+algorithms.o: ../c++adt/include/PointI.h include/LGMdecl.h
+algorithms.o: include/LGMSymbols.h /usr/include/CC/map
+algorithms.o: /usr/include/CC/stl_tree.h /usr/include/CC/stl_map.h
+algorithms.o: /usr/include/CC/stl_multimap.h include/LGMUnits.h
+algorithms.o: include/Algorithms.h include/AlgorithmsI.h
+algorithms.o: include/TreeFunctor.h include/TreeCompartment.h
+algorithms.o: include/TreeCompartmentI.h include/TreeFunctorI.h
+algorithms.o: include/TreeMetaFileParser.h ../c++adt/include/Table.h
+algorithms.o: ../c++adt/include/DList.h ../c++adt/include/DListElement.h
+algorithms.o: ../c++adt/include/boolean.h ../c++adt/include/TableI.h
+algorithms.o: ../c++adt/include/Lex.h include/RootSystem.h include/Bud.h
+algorithms.o: include/BudI.h include/DefaultBud.h include/BranchingPoint.h
+algorithms.o: include/BranchingPointI.h include/TreeSegment.h
+algorithms.o: include/TreeSegmentWithFlow.h include/TreeSegmentI.h
+algorithms.o: include/HwTreeSegment.h include/BroadLeaf.h
+algorithms.o: ../c++adt/include/Ellipsis.h include/HwTreeSegmentI.h
+algorithms.o: include/HwTreeSegmentMetabolismI.h include/CfTreeSegment.h
+algorithms.o: include/CfTreeFunctor.h include/CfTreeFunctorI.h
+algorithms.o: include/CfTreeSegmentI.h include/CfTreeSegmentMetabolismI.h
+algorithms.o: include/Axis.h include/AxisI.h
+algorithms.o: ../c++adt/include/ConnectionMatrix.h
+algorithms.o: ../c++adt/include/ConnectionMatrixI.h
+algorithms.o: ../Firmament/include/FirmamentWithMask.h
+algorithms.o: ../Firmament/include/Firmament.h include/TreeRadiation.h
+algorithms.o: include/TreeBookkeeping.h include/TreeBookkeepingI.h
+algorithms.o: include/TreeI.h include/TreeMetabolismI.h
+algorithms.o: include/TreeMetabolism.h include/TreeRadiationI.h
+algorithms.o: include/MyTreeSegment.h include/MyBud.h include/Shading.h
+algorithms.o: include/ShadingI.h
+broadleaf.o: /usr/include/stdlib.h /usr/include/standards.h
+broadleaf.o: /usr/include/sgidefs.h /usr/include/CC/iostream.h
+broadleaf.o: /usr/include/memory.h /usr/include/stddef.h /usr/include/CC/list
+broadleaf.o: /usr/include/CC/stl_algobase.h /usr/include/CC/stl_config.h
+broadleaf.o: /usr/include/CC/stl_relops.h /usr/include/CC/stl_pair.h
+broadleaf.o: /usr/include/CC/type_traits.h /usr/include/string.h
+broadleaf.o: /usr/include/limits.h /usr/include/CC/new.h
+broadleaf.o: /usr/include/CC/stl_iterator_base.h
+broadleaf.o: /usr/include/CC/stl_iterator.h /usr/include/CC/stl_alloc.h
+broadleaf.o: /usr/include/stdio.h /usr/include/assert.h
+broadleaf.o: /usr/include/CC/stl_threads.h /usr/include/mutex.h
+broadleaf.o: /usr/include/time.h /usr/include/CC/stl_construct.h
+broadleaf.o: /usr/include/CC/stl_uninitialized.h /usr/include/CC/stl_list.h
+broadleaf.o: /usr/include/CC/algorithm /usr/include/CC/stl_tempbuf.h
+broadleaf.o: /usr/include/CC/stl_algo.h /usr/include/CC/stl_heap.h
+broadleaf.o: /usr/include/CC/string /usr/include/CC/stl_string_fwd.h
+broadleaf.o: /usr/include/ctype.h /usr/include/locale_attr.h
+broadleaf.o: /usr/include/CC/functional /usr/include/CC/stl_function.h
+broadleaf.o: /usr/include/CC/stdexcept /usr/include/CC/stl_exception.h
+broadleaf.o: /usr/include/CC/memory /usr/include/CC/stl_raw_storage_iter.h
+broadleaf.o: /usr/include/CC/char_traits.h /usr/include/wchar.h
+broadleaf.o: /usr/include/CC/stl_hash_fun.h include/Tree.h
+broadleaf.o: /usr/include/CC/numeric /usr/include/CC/stl_numeric.h
+broadleaf.o: /usr/include/CC/iostream /usr/include/CC/iosfwd
+broadleaf.o: /usr/include/CC/istream /usr/include/CC/ostream
+broadleaf.o: /usr/include/CC/ios /usr/include/CC/utility
+broadleaf.o: /usr/include/CC/stl_locale.h /usr/include/CC/typeinfo
+broadleaf.o: /usr/include/CC/exception /usr/include/CC/stl_ctype.h
+broadleaf.o: /usr/include/CC/c_locale.h /usr/include/CC/streambuf
+broadleaf.o: /usr/include/CC/stl_stdio_file.h
+broadleaf.o: /usr/include/CC/stl_numeric_facets.h /usr/include/CC/limits
+broadleaf.o: /usr/include/float.h ../c++adt/include/ParametricCurve.h
+broadleaf.o: /usr/include/CC/vector /usr/include/CC/stl_range_errors.h
+broadleaf.o: /usr/include/CC/stl_vector.h /usr/include/CC/stl_bvector.h
+broadleaf.o: /usr/include/CC/fstream /usr/include/CC/stl_codecvt.h
+broadleaf.o: ../c++adt/include/Point.h /usr/include/math.h
+broadleaf.o: ../c++adt/include/PositionVector.h ../c++adt/include/mathsym.h
+broadleaf.o: ../c++adt/include/RMatrix.h ../c++adt/include/Rotation.h
+broadleaf.o: ../c++adt/include/TMatrix.h ../c++adt/include/TMatrixI.h
+broadleaf.o: ../c++adt/include/PointI.h include/LGMdecl.h
+broadleaf.o: include/LGMSymbols.h /usr/include/CC/map
+broadleaf.o: /usr/include/CC/stl_tree.h /usr/include/CC/stl_map.h
+broadleaf.o: /usr/include/CC/stl_multimap.h include/LGMUnits.h
+broadleaf.o: include/Algorithms.h include/AlgorithmsI.h include/TreeFunctor.h
+broadleaf.o: include/TreeCompartment.h include/TreeCompartmentI.h
+broadleaf.o: include/TreeFunctorI.h include/TreeMetaFileParser.h
+broadleaf.o: ../c++adt/include/Table.h ../c++adt/include/DList.h
+broadleaf.o: ../c++adt/include/DListElement.h ../c++adt/include/boolean.h
+broadleaf.o: ../c++adt/include/TableI.h ../c++adt/include/Lex.h
+broadleaf.o: include/RootSystem.h include/Bud.h include/BudI.h
+broadleaf.o: include/DefaultBud.h include/BranchingPoint.h
+broadleaf.o: include/BranchingPointI.h include/TreeSegment.h
+broadleaf.o: include/TreeSegmentWithFlow.h include/TreeSegmentI.h
+broadleaf.o: include/HwTreeSegment.h include/BroadLeaf.h
+broadleaf.o: ../c++adt/include/Ellipsis.h include/HwTreeSegmentI.h
+broadleaf.o: include/HwTreeSegmentMetabolismI.h include/CfTreeSegment.h
+broadleaf.o: include/CfTreeFunctor.h include/CfTreeFunctorI.h
+broadleaf.o: include/CfTreeSegmentI.h include/CfTreeSegmentMetabolismI.h
+broadleaf.o: include/Axis.h include/AxisI.h
+broadleaf.o: ../c++adt/include/ConnectionMatrix.h
+broadleaf.o: ../c++adt/include/ConnectionMatrixI.h
+broadleaf.o: ../Firmament/include/FirmamentWithMask.h
+broadleaf.o: ../Firmament/include/Firmament.h include/TreeRadiation.h
+broadleaf.o: include/TreeBookkeeping.h include/TreeBookkeepingI.h
+broadleaf.o: include/TreeI.h include/TreeMetabolismI.h
+broadleaf.o: include/TreeMetabolism.h include/TreeRadiationI.h
+broadleaf.o: include/MyTreeSegment.h include/MyBud.h

@@ -7,8 +7,6 @@
 #include <fstream>
 
 
-//The value of wsum when lambda = 0
-extern LGMdouble wSum_Lambda0;
 
 
 extern ParametricCurve nol_fun;
@@ -32,14 +30,8 @@ LGMdouble BracketFunction(LGMdouble& a, LGMdouble& b,
   // deltaiW
   LGMdouble deltaiW = GetValue(tree, P) - GetValue(tree, M);  
 
-  debug_file << "photosynteesi: " << GetValue(tree, P) << endl;
-  debug_file << "Hengitys     : " << GetValue(tree, M) << endl;
-  debug_file << "photosynteesi-hengitys: " << deltaiW << endl;	
-  debug_file << "Kasvuun kuluva energia kun(lambda==0) " << wSum_Lambda0 << endl;
 
-
-
-  fa = deltaiW - wSum_Lambda0;
+  fa = deltaiW;
 
 
   LGMdouble AsIni = 0.0;
@@ -56,9 +48,7 @@ LGMdouble BracketFunction(LGMdouble& a, LGMdouble& b,
   
   fb = deltaiW - WSum - (sum_nfol * a_r);
   
-  debug_file << "fa " << fa << "   fb " << fb << '\n';	
-  debug_file << "iteroidaan..." << '\n';
-
+  
   while ((fb) > 0.0)
   {
     a = b;
@@ -77,17 +67,15 @@ LGMdouble BracketFunction(LGMdouble& a, LGMdouble& b,
 	identity = 0.0;
     WSum = Accumulate(tree,  identity, collectDW);
 
-	debug_file << "lambda " << b << "   rel_lambda " << b/a << "   Wsum " << WSum << '\n';
+
 	
 	sum_nfol = 0;
 	sum_nfol = Accumulate(tree,  sum_nfol, collectNFM);
     fb = deltaiW - WSum - (sum_nfol * a_r);
 
-	debug_file << "fa " << fa << "   fb " << fb << '\n';
   }
 
-  debug_file << "Nolla-arvo löytyy väliltä [" << a << "," << b << "]" << '\n'; 
-
+  
   return fb;
 }
 
@@ -114,15 +102,9 @@ LGMdouble HwBracketFunction(LGMdouble& a, LGMdouble& b,
   
 
   LGMdouble deltaiW = GetValue(tree, P) - GetValue(tree, M);  
-  fa = deltaiW - wSum_Lambda0;
+  fa = deltaiW; 
   
-  debug_file << "photosynteesi: " << GetValue(tree, P) << endl;
-  debug_file << "Hengitys     : " << GetValue(tree, M) << endl;
-  debug_file << "photosynteesi-hengitys: " << GetValue(tree, P)-GetValue(tree, M) << endl;	
-
-  debug_file << endl << endl << "uusi kasvu  deltaiW(0)="<< deltaiW << '\n';
-  debug_file << "P=" << GetValue(tree, P) << '\n';
-  debug_file << "M=" << GetValue(tree, M) << '\n';
+  
 
   AsIni = 0.0;
   AsIni = AccumulateDown(tree, AsIni, diamGrowth);
@@ -137,37 +119,32 @@ LGMdouble HwBracketFunction(LGMdouble& a, LGMdouble& b,
   
   fb = deltaiW - WSum - sum_nfol;
   
-  debug_file << "fa " << fa << "   fb " << fb << '\n';	
-  debug_file << "haetaaan väliä  iteroidaan..." << '\n';
-
+  
   while ((fb) > 0.0)
   {
     a = b;
     fa = fb;
     b = b * 1.30 + 0.1;
-	assert(b/a > 0);
+    assert(b/a > 0);
 	
     SetValue(tree, lambda, b);
-	AdjustNewLambda(tree);
+    AdjustNewLambda(tree);
  
 
     AsIni = 0.0;
     AccumulateDown(tree, AsIni, diamGrowth);
     
-	identity = 0.0;
+    identity = 0.0;
     WSum = Accumulate(tree,  identity, collectDW);
 
-	sum_nfol = 0;
-	sum_nfol = Accumulate(tree,  sum_nfol, collectNFM);
+    sum_nfol = 0;
+    sum_nfol = Accumulate(tree,  sum_nfol, collectNFM);
     fb = deltaiW - WSum - (sum_nfol * a_r);
 
-	debug_file << "lambda " << b << "   Wsum " << WSum << '\n';
-	debug_file << "fa " << fa << "   fb " << fb << '\n';
+
   }
 
-
-  debug_file << "Nolla-arvo löytyy väliltä [" << a << "," << b << "]" << '\n'; 
-  return fb;
+ return fb;
 }
 
 
@@ -196,8 +173,6 @@ LGMdouble HwZbrent(LGMdouble x1,LGMdouble x2,LGMdouble fa, LGMdouble fb, LGMdoub
   
   LGMdouble last_lambda = GetValue(tree,lambda);
 
-  if (last_lambda == 0)
-			debug_file << "kohta1: last lambda == 0 !!!!!!!!!!!!!!!!!!!!!!!!!!!!" << endl;
 
   
 
@@ -242,7 +217,6 @@ LGMdouble HwZbrent(LGMdouble x1,LGMdouble x2,LGMdouble fa, LGMdouble fb, LGMdoub
 			SetValue(tree,lambda, b);
 			AdjustNewLambda(tree);
 
-			debug_file << " Lopullinen lambda=" << b << '\n';
 			return GetValue(tree,lambda);
 		}
 
@@ -345,9 +319,7 @@ LGMdouble Zbrent(LGMdouble x1,LGMdouble x2,LGMdouble fa, LGMdouble fb, LGMdouble
   
   LGMdouble last_lambda = GetValue(tree,lambda);
 
-  if (last_lambda == 0)
-			debug_file << "kohta1: last lambda == 0 !!!!!!!!!!!!!!!!!!!!!!!!!!!!" << endl;
-
+  
   adjustSizeL.rel_lambda = 1;
 
   LGMdouble b = x2; // GetValue(tree,lambda);
@@ -394,14 +366,10 @@ LGMdouble Zbrent(LGMdouble x1,LGMdouble x2,LGMdouble fa, LGMdouble fb, LGMdouble
 		{
 			SetValue(tree,lambda, b);
 
-			if (b==0)
-				debug_file << "kohta2: b == 0 !!!!!!!!!!!!!!!!!!!!!!!!!!!!" << endl;
-
-		//	debug_file << "rel_lambda " << (GetValue(tree,lambda) / last_lambda) << '\n';
+		
 			adjustSizeL.rel_lambda = GetValue(tree,lambda) / last_lambda; 
 			ForEach(tree, adjustSizeL);
 
-			debug_file << " Lopullinen lambda=" << b << '\n';
 			return GetValue(tree,lambda);
 		}
 
@@ -456,11 +424,9 @@ LGMdouble Zbrent(LGMdouble x1,LGMdouble x2,LGMdouble fa, LGMdouble fb, LGMdouble
 		LGMdouble odd = GetValue(tree,lambda) / last_lambda;
 		adjustSizeL.rel_lambda =  odd;
 
-	//	debug_file << "rel_lambda " << odd << '\n';
-
+	
 		last_lambda = GetValue(tree,lambda);
-		if (last_lambda == 0)
-			debug_file << " last lambda == 0 !!!!!!!!!!!!!!!!!!!!!!!!!!!!" << endl;
+	
 
 
 		ForEach(tree, adjustSizeL);
@@ -503,11 +469,7 @@ bool AdjustIncrementZbrent(Tree<TS,BUD>& tree)
 		return false;
   }
 
-  if (debug_file.is_open() == false)
-	debug_file.open("debug.txt");
-
-  debug_file << "\n\n\n\nUusi kasvatus......" << endl;
-
+ 
   LGMdouble a=0,b=0,fa=0,fb=0;
   
   BracketFunction(a,b,fa,fb,tree);
@@ -516,7 +478,6 @@ bool AdjustIncrementZbrent(Tree<TS,BUD>& tree)
   Zbrent(a,b,fa,fb, zBe, tree );
 
 
-  //debug_file.close();
   return true;
 }
 
@@ -540,11 +501,6 @@ bool AdjustIncrementHwZbrent(Tree<TS,BUD>& tree)
 		return false;
   }
 
-  if (debug_file.is_open() == false)
-	debug_file.open("debug.txt");
-
-  debug_file << "\n\n\n\nUusi kasvatus......" << endl;
-
   LGMdouble a=0,b=0,fa=0,fb=0;
   
   HwBracketFunction(a,b,fa,fb,tree);
@@ -553,7 +509,6 @@ bool AdjustIncrementHwZbrent(Tree<TS,BUD>& tree)
   HwZbrent(a,b,fa,fb, zBe, tree );
 
 
-  //debug_file.close();
   return true;
 }
 

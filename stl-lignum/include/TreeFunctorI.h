@@ -262,6 +262,85 @@ CheckCoordinates<TS,BUD>::operator ()(Point& id,
   return tc;
 }
 
+
+
+
+template <class TS, class BUD>
+Point GetBoundingBox(Tree<TS,BUD> &tree, Point &p)
+{
+        return GetBoundingBox(GetAxis(tree), p);
+}
+
+
+
+
+template <class TS, class BUD>
+Point GetBoundingBox(Axis<TS,BUD> &ax, Point &p)
+{
+  std::list<TreeCompartment<TS, BUD>*>& ls = GetTreeCompartmentList(ax);
+  std::list<TreeCompartment<TS, BUD>*>::iterator I = ls.begin();
+
+        
+        
+  while(I != ls.end())
+    {                   
+      TreeSegment<TS, BUD>* myts = dynamic_cast<TreeSegment<TS, BUD>*>(*I);   
+      
+      if (TreeSegment<TS, BUD>* myts = dynamic_cast<TreeSegment<TS, BUD>*>(*I))
+	{  
+	  Point pp = GetPoint(*myts);     
+	  PositionVector dir = GetDirection(*myts);
+	  LGMdouble l = GetValue(*myts, L);
+			
+	  pp = pp + Point(dir.getX()*l, dir.getY()*l, dir.getZ()*l);
+	  
+	  double x = pp.getX();
+	  double y = pp.getY();
+	  double z = pp.getZ();
+	  
+	  x = sqrt(x*x);
+	  y = sqrt(y*y);
+	  z = sqrt(z*z);
+	  
+	  if (x > p.getX())
+	    p += Point(x - p.getX(),0,0);
+	  
+	  if (y > p.getY())
+	    p += Point(0, y - p.getY(), 0);
+	  
+	  if (z > p.getZ())
+	    p += Point(0, 0, z - p.getZ());
+                } 
+      
+      if (BranchingPoint<TS, BUD>* mybp = dynamic_cast<BranchingPoint<TS, BUD>*>(*I))
+	{ 
+	  std::list<Axis<TS, BUD>*>& axis_ls = GetAxisList(*mybp);          
+	  std::list<Axis<TS, BUD>*>::iterator II = axis_ls.begin();
+	  
+	  
+	  while(II != axis_ls.end())
+	    {
+	      Axis<TS,BUD> *axis = *II;       
+	      p = GetBoundingBox(*axis, p);                     
+	      II++;   
+	    }
+	  
+	}
+      I++;
+    }
+  return p;
+}
+
+
+
+
+
+
+
+
+
+
+
 }//closing namespace Lignum
 
 #endif

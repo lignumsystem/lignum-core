@@ -17,8 +17,10 @@ class WrapGrowth {
 public:
   WrapGrowth(); //No functions from file
   WrapGrowth(std::string sbud, std::string sdoi); //buf function and
+  WrapGrowth(ParametricCurve sbud, ParametricCurve sdoi);
+  
+  
   //degree of interaction functions from files
-  //bool
   bool operator() (Tree<TS, BUD>& tree);
  private:
   F growth_functor;
@@ -82,6 +84,18 @@ public:
 };
 
 
+//This functor GrowthOfHwTree evaluates growth of tree consisting of
+//HwTreeSegments
+template <class TS, class BUD>
+class GrowthOfWhiteBirch
+{
+public:
+	bool operator()(Tree<TS,BUD>& tree);
+	GrowthOfWhiteBirch() {};
+	
+
+};
+
 
 
 
@@ -134,8 +148,21 @@ public:
 };
 
 
+
+
 template <class TS,class BUD>
-class AddNewHwSegments
+class AddWhiteBirchSegments
+{ 
+public:
+	MotherInfo& operator()(MotherInfo& mi, TreeCompartment<TS,BUD>* tc)const;
+
+};
+
+
+
+
+template <class TS,class BUD>
+class AddSugarMapleSegments
 { 
 public:
 	MotherInfo& operator()(MotherInfo& mi, TreeCompartment<TS,BUD>* tc)const;

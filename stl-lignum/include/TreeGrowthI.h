@@ -6,11 +6,8 @@
 #include "zbrentFunctor.h"
 
 extern float minLimitForSecBud[];
+extern ParametricCurve nol_fun;
 
-
-ParametricCurve nol_fun;
-
-extern LGMdouble wSum_Lambda0;
 
 
 template <class TS, class BUD, class F>
@@ -25,28 +22,14 @@ bool Growth(Tree<TS,BUD>& tree, F& f)
 
 	if(!(P_avail > 0.0))
 	{
-		return false;
+	  #ifdef _MSC_VER
+	  MessageBox(NULL, "  photosynthesis =< respiration " , NULL, NULL);
+	  #else
+	  cerr << "  photosynthesis =< respiration " << endl;
+	  #endif
+	  return false;
 	}
 	
-	/*
-
-	
-	// Asetetaan uusi annual_ring
-	LGMdouble AsIni = 0.0;
-	SetNewRing<TS,BUD> NewRing;
-	AccumulateDown(tree, AsIni, NewRing);
-
-	// Lasketaan arvo uudelle sateelle. Uusia oksia ei viela lisatty
-	AsIni = 0.0;
-	AdjustDiameterGrowth<TS,BUD> adDiamGrowth; 
-	AsIni = AccumulateDown(tree, AsIni, adDiamGrowth);
-  
-	//Lasketaan kasvuenergia kun lambda = 0
-	LGMdouble identity = 0.0;
-	CollectDWAfterGrowth<TS,BUD> collectDW;
-	wSum_Lambda0 = Accumulate(tree,  identity, collectDW);
-
-  */
 	
 	f(tree);
 	return true;
@@ -65,6 +48,14 @@ WrapGrowth<F,TS,BUD>::WrapGrowth(std::string sbud, std::string sdoi):bud_fun(sbu
     growth_functor.setDoi_fun(doi_fun);
 }
 
+template<class F, class TS, class BUD>
+WrapGrowth<F,TS,BUD>::WrapGrowth(ParametricCurve sbud, ParametricCurve sdoi)
+{
+    bud_fun = sbud;
+	doi_fun = sdoi;
+	growth_functor.setBud_fun(bud_fun);
+    growth_functor.setDoi_fun(doi_fun);
+}
 
 
 template<class F, class TS, class BUD>
@@ -108,11 +99,12 @@ bool GrowthOfPineTree<TS,BUD>::operator()(Tree<TS,BUD>& tree)
 	AdjustDiameterCfGrowth<TS,BUD> adDiamGrowth; 
 	AsIni = AccumulateDown(tree, AsIni, adDiamGrowth);
   
-	//Lasketaan kasvuenergia kun lambda = 0
-	LGMdouble identity = 0.0;
-	CollectDWAfterGrowth<TS,BUD> collectDW;
-	wSum_Lambda0 = Accumulate(tree,  identity, collectDW);
 
+	//Lasketaan kasvuenergia kun lambda = 0
+	//LGMdouble identity = 0.0;
+	//CollectDWAfterGrowth<TS,BUD> collectDW;
+	//wSum_Lambda0 = Accumulate(tree,  identity, collectDW);
+	
 
 	Axis<TS,BUD>& main_stem = GetAxis(tree);
 
@@ -126,7 +118,7 @@ bool GrowthOfPineTree<TS,BUD>::operator()(Tree<TS,BUD>& tree)
 
 
 
-//This functor GrowthOfPineTree evaluates growth of tree consisting of
+//This functor GrowthOfHwTree evaluates growth of tree consisting of
 //CfTreeSegments
 template <class TS, class BUD>
 bool GrowthOfHwTree<TS,BUD>::operator()(Tree<TS,BUD>& tree)
@@ -142,14 +134,56 @@ bool GrowthOfHwTree<TS,BUD>::operator()(Tree<TS,BUD>& tree)
 	AsIni = AccumulateDown(tree, AsIni, adDiamGrowth);
   
 	//Lasketaan kasvuenergia kun lambda = 0
-	LGMdouble identity = 0.0;
-	CollectHwDWAfterGrowth<TS,BUD> collectDW;
-	wSum_Lambda0 = Accumulate(tree,  identity, collectDW);
+	//LGMdouble identity = 0.0;
+	//CollectDWAfterGrowth<TS,BUD> collectDW;
+	//wSum_Lambda0 = Accumulate(tree,  identity, collectDW);
 
 	
 	Axis<TS,BUD>& main_stem = GetAxis(tree);
+	Firmament& f = GetFirmament(tree);
+	LGMdouble B = f.diffuseBallSensor();
 
-	nol_fun = bud_fun;
+	MotherInfo init;
+	init.vi = 1.0;
+	init.Qin = 0.0;
+	init.B = B;
+
+	AddSugarMapleSegments<TS,BUD> functor;
+	functor.bud_fun = bud_fun;
+	PropagateUp(tree, init, functor);
+
+	return true;
+}
+
+
+//This functor GrowthOfPineTree evaluates growth of tree consisting of
+//CfTreeSegments
+template <class TS, class BUD>
+bool GrowthOfWhiteBirch<TS,BUD>::operator()(Tree<TS,BUD>& tree)
+{
+
+	//Asetetaan uusi annual_ring
+	LGMdouble AsIni = 0.0;
+	SetNewRing<TS,BUD> NewRing;
+	AccumulateDown(tree, AsIni, NewRing);
+
+	//Lasketaan arvo uudelle sateelle. Uusia oksia ei viela lisatty
+	AsIni = 0.0;
+	AdjustDiameterHwGrowth<TS,BUD> adDiamGrowth; 	
+	AsIni = AccumulateDown(tree, AsIni, adDiamGrowth);
+
+	//Lasketaan kasvuenergia kun lambda = 0
+	//LGMdouble identity = 0.0;
+	//CollectDWAfterGrowth<TS,BUD> collectDW;
+	//wSum_Lambda0 = Accumulate(tree,  identity, collectDW);
+
+
+	LGMdouble photo = GetValue(tree, P);
+	LGMdouble respi = GetValue(tree, M);
+	LGMdouble P_avail = photo - respi;
+
+		
+	Axis<TS,BUD>& main_stem = GetAxis(tree);
 
     
 	Firmament& f = GetFirmament(tree);
@@ -160,9 +194,10 @@ bool GrowthOfHwTree<TS,BUD>::operator()(Tree<TS,BUD>& tree)
 	init.Qin = 0.0;
 	init.B = B;
 
-	AddNewHwSegments<TS,BUD> functor;
-	functor.bud_fun = bud_fun;
+	AddWhiteBirchSegments<TS,BUD> functor;
 	PropagateUp(tree, init, functor);
+
+
 
 	return true;
 }
@@ -206,8 +241,9 @@ void StructuralPineGrowth(Axis<TS,BUD> &ax, const ParametricCurve& bud_fun, Tree
 
 		LGMdouble lda = GetValue(tree, lambda);
 
-		assert(lda>0);
-
+       #ifdef _MSC_VER
+		ASSERT(lda>0);
+       #endif
 		Firmament& f = GetFirmament(tree);
 		LGMdouble B = f.diffuseBallSensor();
 		LGMdouble I = 0.0;
@@ -241,6 +277,12 @@ void StructuralPineGrowth(Axis<TS,BUD> &ax, const ParametricCurve& bud_fun, Tree
 			LGMdouble radius = length / l_r;		  //radius
 			LGMdouble foliage_mass =  a_f * 2 * PI_VALUE * radius * length;
 			LGMdouble R_h = sqrt(x_i) * radius;
+			
+			#ifdef _MSC_VER
+			ASSERT(R_h >= 0);
+			ASSERT(R_h <= radius);
+			#endif
+
 			LGMdouble R_f = radius + GetValue(tree, nl) * sin(GetValue(tree, na));
 
 			TS* ts = new TS(point, posvec, 0, length, radius, 0, &tree);
@@ -251,9 +293,12 @@ void StructuralPineGrowth(Axis<TS,BUD> &ax, const ParametricCurve& bud_fun, Tree
 			SetValue(*ts, Rf, R_f);
 			SetValue(*ts, Rh, R_h);
 			
+#ifdef _MSC_VER
+			ASSERT(GetSapwoodArea(*ts) >= 0);
+#endif
 			InsertTreeCompartmentSecondLast(ax, ts);
 			
-			Point p = point + posvec;
+			Point p = point + (Point)posvec;
 			bp = new BranchingPoint<TS,BUD>(p, posvec, &tree);	
 			
 			PositionVector buddir[10];
@@ -429,7 +474,7 @@ Axis<TS,BUD>& RemoveNewComparments(Axis<TS,BUD> &axis)
 
 
 template <class TS,class BUD>
-MotherInfo& AddNewHwSegments<TS,BUD>::operator()(MotherInfo& mi, TreeCompartment<TS,BUD>* tc)const
+MotherInfo& AddSugarMapleSegments<TS,BUD>::operator()(MotherInfo& mi, TreeCompartment<TS,BUD>* tc)const
 {
   LGMdouble motherQin = mi.Qin;
   LGMdouble vigour = mi.vi;
@@ -478,7 +523,7 @@ MotherInfo& AddNewHwSegments<TS,BUD>::operator()(MotherInfo& mi, TreeCompartment
 	
 		LGMdouble i_p = I / B;
 		
-		assert(i_p>0);
+		ASSERT(i_p>0);
 
 		LGMdouble omeg = GetValue(*bud, omega);
 
@@ -493,13 +538,58 @@ MotherInfo& AddNewHwSegments<TS,BUD>::operator()(MotherInfo& mi, TreeCompartment
 		LGMdouble a_f = GetValue(tree, af);
 		LGMdouble x_i = GetValue(tree, xi);
 
-		LGMdouble Irel_b = motherQin / mi.B;
-		LGMdouble length = lda * vigour * Irel_b* 0.8; //f_w * f_l;		  //length
-		bud->move(posvec, length);
-
-		int number_of_segments = bud_fun(length)/2;
-		length = length / number_of_segments;
+		//LGMdouble Irel_b = motherQin / mi.B;
 		
+		//  Uusi pituus
+		ParametricCurve apidom = tree.tf.ip;
+		ParametricCurve vigfun = tree.tf.vi;
+		ParametricCurve lenfun = tree.tf.al;
+
+		LGMdouble Irel_b = motherQin / mi.B / 100000;
+		LGMdouble abidom_ = GetValue(*bud, api);
+
+		
+		LGMdouble length = lda * abidom_ * vigfun(vigour) * Irel_b; 
+		length = lenfun(length);
+
+		
+		if (length == 0)
+		{
+			mi.Qin = motherQin;
+			mi.vi = vigour;
+			return mi;
+		}
+		/// Loppu
+
+		//vanha :LGMdouble length = lda * vigour * Irel_b* 0.8; //f_w * f_l;		  //length
+		bud->move(posvec, length);
+		int number_of_segments = tree.tf.nb(length);
+		length = length / number_of_segments;
+
+
+		//Segmenttien pituuksien laskeminen
+		LGMdouble random_effect = GetValue(tree, rld);
+		vector<LGMdouble> odds;
+		for(int i=0; i<number_of_segments; i++)
+			odds.push_back(1.0);
+		if (random_effect<100 && random_effect>0.1)
+		{
+			for (int i=0; i<number_of_segments; i++)
+			{
+				int tmp = random_effect*2+1;
+				LGMdouble random_value = rand()%tmp; // 0-random_effect
+				random_value = random_value / 100.0;// 0.01 - 0.4
+				odds[i] = (1.0 - random_effect/100.0) + random_value;
+			}
+
+			LGMdouble sum = 0.0;
+			for (i=0; i<number_of_segments; i++)
+				sum = sum + odds[i];
+			sum = sum / number_of_segments;
+			for (i=0; i<number_of_segments; i++)
+				odds[i] = odds[i] / sum;
+		}
+	
 		PositionVector direction = GetDirection(*bud);
 		PositionVector up(0,0,1);
 		PositionVector v1 = Cross(up, direction);
@@ -516,7 +606,7 @@ MotherInfo& AddNewHwSegments<TS,BUD>::operator()(MotherInfo& mi, TreeCompartment
 	{
 		v2.rotate(Point(0,0,0), direction, 2*PI_VALUE*(rand()%360)/360);
 	}
-	
+	int tot_segments = number_of_segments; 
 
 	while(number_of_segments > 0)
 	{
@@ -532,30 +622,31 @@ MotherInfo& AddNewHwSegments<TS,BUD>::operator()(MotherInfo& mi, TreeCompartment
 		PositionVector pet_e1(end_point+Point(0, 0.1, 0.05));
 		PositionVector pet_e2(end_point+Point(0, -0.1, 0.05));
 
-		LGMdouble L_factor = 1.0;
-		
-		if (number_of_segments == 1)
-			L_factor = 0.33;
-		
-		//a = 0.067
+		LGMdouble ellipsis_a = sqrt(GetValue(tree, al) / (1.1*PI_VALUE));  ///**************'  
+		LGMdouble ellipsis_b = ellipsis_a / 1.1;		
+		PositionVector normal(rand()%100, rand()%100, 200);
+		normal.normalize();
+
 		BroadLeaf *leaf1 = new BroadLeaf(sf_p, v, dof_p, number_of_regions, Petiole((Point)pet_s,(Point)pet_e1), 
-										up, Ellipsis(L_factor*0.1,L_factor*0.1));
+											normal, Ellipsis(ellipsis_a, ellipsis_b));
 		BroadLeaf *leaf2 = new BroadLeaf(sf_p, v, dof_p, number_of_regions, Petiole((Point)pet_s,(Point)pet_e2), 
-										up, Ellipsis(L_factor*0.1,L_factor*0.1));
+											normal, Ellipsis(ellipsis_a, ellipsis_b));
 		SetValue(*leaf1, sf, 28);
 		SetValue(*leaf2, sf, 28);	
 	
 
 		LGMdouble A_f = GetValue(*leaf1, A) + GetValue(*leaf2, A);
-		LGMdouble SLA_c = 30;
-		LGMdouble Y_c = 123.8;
+		LGMdouble SLA_c = GetValue(tree, sla);
+		LGMdouble Y_c = GetValue(tree, yc);
 		LGMdouble A_sf = A_f / (SLA_c*Y_c);
 		LGMdouble x_i = GetValue(tree, xi);
 		LGMdouble tot_A = A_sf / (1-x_i);
 		 
 		LGMdouble rad = sqrt(tot_A / PI_VALUE);
+		LGMdouble segment_length = length * odds[number_of_segments-1];
 
-		TS* ts = new TS(point, posvec, 0, length, rad, 0, &tree);
+
+		TS* ts = new TS(point, posvec, 0, segment_length, rad, 0, &tree);
 
 		SetValue(*ts, omega, 1);
 		SetValue(*ts, age, 0);
@@ -563,7 +654,7 @@ MotherInfo& AddNewHwSegments<TS,BUD>::operator()(MotherInfo& mi, TreeCompartment
 		InsertLeaf(*ts, leaf2);
 		InsertTreeCompartmentSecondLast(*axis, ts);	
 
-		Point p = point + (Point)(posvec * length);
+		Point p = point + posvec * segment_length;
 
 		bp = new BranchingPoint<TS,BUD>(p, posvec, &tree);
 		SetValue(*bp, age, 0);
@@ -579,8 +670,12 @@ MotherInfo& AddNewHwSegments<TS,BUD>::operator()(MotherInfo& mi, TreeCompartment
 		SetValue(*new_bud1, age, 0);
 		SetValue(*new_bud2, age, 0);
 		
+		LGMdouble rel_place = ((double)(1+tot_segments - number_of_segments))/tot_segments;
+		LGMdouble ad = apidom(rel_place);
+		SetValue(*new_bud1, api, ad);
+		SetValue(*new_bud2, api, ad);
 		
-		if (number_of_segments < 2 || rand()%3 == 0)
+		if (number_of_segments < 6) // || rand()%3 == 0)
 		{
 			SetValue(*new_bud1, state, ALIVE);
 		//	SetValue(*new_bud2, state, ALIVE);
@@ -592,15 +687,13 @@ MotherInfo& AddNewHwSegments<TS,BUD>::operator()(MotherInfo& mi, TreeCompartment
 		//	SetValue(*new_bud2, state, DORMANT);
 		}
 
-		if (number_of_segments < 2 || rand()%3 == 0)
+		if (number_of_segments < 6) // || rand()%3 == 0)
 		{
 		
 			SetValue(*new_bud2, state, ALIVE);
 		}
-		else
-		
-		{
-		
+		else	
+		{	
 			SetValue(*new_bud2, state, DORMANT);
 		}
 
@@ -615,7 +708,7 @@ MotherInfo& AddNewHwSegments<TS,BUD>::operator()(MotherInfo& mi, TreeCompartment
 
 
 		point = GetEndPoint(*ts);
-		v2.rotate(Point(0,0,0), direction, PI_VALUE/2);
+		//v2.rotate(Point(0,0,0), direction, PI_VALUE/2);
 
 		number_of_segments--;
 	}
@@ -624,6 +717,292 @@ MotherInfo& AddNewHwSegments<TS,BUD>::operator()(MotherInfo& mi, TreeCompartment
   mi.vi = vigour;
   return mi;
 }
+
+
+
+
+
+
+
+
+
+//The functor adds new segments to a whitebirch
+template <class TS,class BUD>
+MotherInfo& AddWhiteBirchSegments<TS,BUD>::operator()(MotherInfo& mi, TreeCompartment<TS,BUD>* tc)const
+{
+  LGMdouble motherQin = mi.Qin;
+  LGMdouble vigour = mi.vi;
+
+  Axis<TS,BUD>* axis = NULL;
+  LGMdouble q_in = 0.0;
+  
+  if (axis = dynamic_cast<Axis<TS,BUD>*>(tc))
+  {
+		if (GetValue(*axis, age) == 0)
+			return mi;  //mother_in
+	  
+		q_in = GetSumValue(*axis, Qin, 1);
+
+		if (q_in == 0)
+			q_in = motherQin;
+		else 
+			motherQin = q_in;
+		Bud<TS,BUD>* bud = dynamic_cast<Bud<TS,BUD> *>(GetTerminatingBud(*axis));
+
+		
+		if (GetValue(*bud, state) != ALIVE || GetValue(*bud, age) == 0)
+		{
+			mi.Qin = motherQin;
+			mi.vi = vigour;
+			return mi;
+		}
+		
+		BranchingPoint<TS,BUD>* bp;
+	
+
+		//the number of new buds
+		int number_of_new_buds = 0;
+	
+		number_of_new_buds = 3; //(int)bud_fun(tswf); 
+		Point point = GetPoint(*bud);
+		PositionVector posvec = GetDirection(*bud);
+
+		Tree<TS,BUD> &tree = GetTree(*bud);
+		LGMdouble lda = GetValue(tree, lambda);
+
+		//ASSERT(lda>0);
+
+		Firmament& f = GetFirmament(tree);
+		LGMdouble B = f.diffuseBallSensor();
+		LGMdouble I = q_in;
+	
+		LGMdouble i_p = I / B;
+		
+		ASSERT(i_p>0);
+
+		LGMdouble omeg = GetValue(*bud, omega);
+
+		LGMdouble q = 0.1;
+		LGMdouble f_l = 1.1* i_p - 0.1;
+		LGMdouble f_w = 1 - (omeg-1) * q;
+
+		if (f_w < 0)
+			f_w = 0.0;
+
+		LGMdouble l_r = GetValue(tree, lr);
+		LGMdouble a_f = GetValue(tree, af);
+		LGMdouble x_i = GetValue(tree, xi);
+
+		ParametricCurve apidom = tree.tf.ip;
+		ParametricCurve vigfun = tree.tf.vi;
+		ParametricCurve lenfun = tree.tf.al;
+
+		LGMdouble Irel_b = motherQin / mi.B / 100000;
+		LGMdouble abidom_ = GetValue(*bud, api);
+		LGMdouble vigour_value = vigfun(vigour);
+
+		
+		LGMdouble length = lda * abidom_ * vigour_value * Irel_b; 
+		
+		length = lenfun(length);
+
+	
+		
+		if (length == 0)
+		{
+			mi.Qin = motherQin;
+			mi.vi = vigour;
+			SetValue(*bud, state, DORMANT);
+			return mi;
+		}
+
+
+		bud->move(posvec, length);
+		LGMdouble total_length = length;
+		int number_of_segments = tree.tf.nb(length) * tree.tf.LightOnNumBuds(Irel_b) * tree.tf.VigourOnNumBuds(vigour);
+		if (number_of_segments == 0)
+		{
+			mi.Qin = motherQin;
+			mi.vi = vigour;
+			SetValue(*bud, state, DORMANT);
+			return mi;
+		}
+		
+		length = length / number_of_segments;
+		
+		//Segmenttien pituuksien laskeminen
+		LGMdouble random_effect = GetValue(tree, rld);
+		vector<LGMdouble> odds;
+		for(int i=0; i<number_of_segments; i++)
+			odds.push_back(1.0);
+		if (random_effect<100 && random_effect>0.1)
+		{
+			
+			for (int i=0; i<number_of_segments; i++)
+			{
+				int tmp = random_effect*2+1;
+				LGMdouble random_value = rand()%tmp; // 0-random_effect
+				random_value = random_value / 100.0;// 0.01 - 0.4
+				odds[i] = (1.0 - random_effect/100.0) + random_value;
+			}
+
+			LGMdouble sum = 0.0;
+			for (i=0; i<number_of_segments; i++)
+				sum = sum + odds[i];
+			sum = sum / number_of_segments;
+			for (i=0; i<number_of_segments; i++)
+				odds[i] = odds[i] / sum;
+		}
+		
+		// circular angle antaa kulman, joka eroittaa vierekkaiset lehdet
+		LGMdouble circular_angle = GetValue(tree, ca);	
+
+		// rand_effect antaa prosenttiosuuden satunnaisuudelle joka vaikuttaa circular_angleen
+		LGMdouble rand_effect = GetValue(tree, rca);
+
+		PositionVector direction = GetDirection(*bud);
+		PositionVector up(0,0,1);
+		PositionVector v1 = Cross(up, direction);
+		if (direction.getZ() == 1)
+		{
+			v1 = PositionVector(1,0,0);
+		}
+		v1.normalize();
+		direction.normalize();
+		PositionVector newBudDirection = v1 + direction;
+		newBudDirection.normalize();
+
+		if (direction.getZ() == 1)
+		{
+			newBudDirection.rotate(Point(0,0,0), direction, 2*PI_VALUE*(rand()%360)/360);
+		}
+		
+
+		int tot_segments = number_of_segments; 
+
+		LGMdouble total_leaf_area = 0.0;
+		vector<TS *> segments;
+		while(number_of_segments > 0)
+		{
+			
+			LGMdouble rotate_angle = circular_angle;
+
+			// Calculating the random effect
+			if (rand_effect>0 && rand_effect<100)
+			{
+				LGMdouble ss = 100 - rand_effect;
+				LGMdouble t = rand()%((int)rand_effect*20);
+				t = t / 10;
+				ss = ss + t;
+				ss = ss / 100;
+				rotate_angle = rotate_angle * ss;
+			}
+
+			// rotating the next bud
+			newBudDirection.rotate(Point(0,0,0), direction, rotate_angle);
+
+			
+			LGMdouble dof_p = GetValue(tree, dofp);
+			LGMdouble sf_p = GetValue(tree, sla);  //specific leaf area
+			LGMdouble v = GetValue(tree, tauL);
+
+			Firmament& f = GetFirmament(tree);
+			int number_of_regions = f.numberOfRegions();
+			Point end_point = point + Point(0,0, length);
+			PositionVector pet_start(end_point);
+			PositionVector pet_end(end_point+(Point)(newBudDirection*0.002));
+		
+
+			LGMdouble ellipsis_a;
+			LGMdouble ellipsis_b;
+
+			ellipsis_a = sqrt(GetValue(tree, al) / (1.1*PI_VALUE));  ///**************'  
+			ellipsis_b = ellipsis_a / 1.1;
+			
+			PositionVector normal(rand()%100, rand()%100, 200);
+			normal.normalize();
+
+			BroadLeaf *leaf1 = new BroadLeaf(sf_p, v, dof_p, number_of_regions, Petiole((Point)pet_start,(Point)pet_end), 
+											normal, Ellipsis(ellipsis_a, ellipsis_b));
+		
+			SetValue(*leaf1, sf, 28); // GetValue(tree, sf));  ///**** onko sama.. sf ja SLA??
+			total_leaf_area += GetValue(*leaf1, A);
+			
+			LGMdouble radius = 1.0;
+			LGMdouble segment_length = length * odds[number_of_segments-1];
+			TS* ts = new TS(point, posvec, 0, segment_length, radius, 0, &tree);
+			segments.push_back(ts);
+
+			SetValue(*ts, omega, 1);
+			SetValue(*ts, age, 0);
+		
+			InsertLeaf(*ts, leaf1);
+			InsertTreeCompartmentSecondLast(*axis, ts);	
+
+			Point p = point + posvec * segment_length;
+
+			bp = new BranchingPoint<TS,BUD>(p, posvec, &tree);
+			SetValue(*bp, age, 0);
+
+			Axis<TS,BUD> *new_axis = new Axis<TS,BUD>();
+
+				
+			Bud<TS,BUD> *new_bud = new Bud<TS,BUD>(GetPoint(*bp), newBudDirection, GetValue(*bud, omega)+1, &tree);
+			
+			SetValue(*new_bud, age, 0);
+
+			LGMdouble rel_place = ((double)(1+tot_segments- number_of_segments))/tot_segments;
+			LGMdouble ad = apidom(rel_place);
+			SetValue(*new_bud, api, ad);
+			
+			///********* kaikki budit nyt elaviksi
+			if (true)
+			{
+				SetValue(*new_bud, state, ALIVE);
+			}
+			else
+			{
+				SetValue(*new_bud, state, DORMANT);
+			}
+
+			InsertTreeCompartment(*new_axis, new_bud);		
+			InsertAxis(*bp, new_axis);			
+			InsertTreeCompartmentSecondLast(*axis, bp);
+			point = GetEndPoint(*ts);
+			number_of_segments--;
+		}
+
+		LGMdouble A_f = total_leaf_area;
+		LGMdouble SLA_c = GetValue(tree, sla);
+		LGMdouble Y_c = GetValue(tree, yc);
+		LGMdouble A_sf = A_f / (SLA_c*Y_c);
+		x_i = GetValue(tree, xi);
+		LGMdouble tot_A = A_sf / (1-x_i);	
+		LGMdouble radius = sqrt(tot_A / PI_VALUE);   //*** miten lasketaan rad
+		
+		LGMdouble R_h = sqrt(x_i) * radius;
+		
+		#ifdef _MSC_VER
+		ASSERT(R_h >= 0);
+		#endif
+		for(i=0; i<segments.size(); i++)
+		{
+			SetValue(*segments[i], R, radius);
+			SetValue(*segments[i], Rh, R_h);
+		}
+	  }
+
+
+
+
+	  mi.Qin = motherQin;
+	  mi.vi = vigour;
+	  return mi;
+}
+
+
+
+
 
 
 template <class TS, class BUD>

@@ -84,6 +84,17 @@ public:
   double epsilon;
 
 };
+
+
+template <class TS, class BUD>
+Point GetBoundingBox(Tree<TS,BUD> &tree, Point &p);
+
+
+template <class TS, class BUD>
+Point GetBoundingBox(Axis<TS,BUD> &ax, Point &p);
+
+
+
 }//closing namespace Lignum
 #include <TreeFunctorI.h>
 

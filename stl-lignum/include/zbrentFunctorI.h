@@ -1,4 +1,3 @@
-
 #ifndef ZBRENTFUNCTORI_H
 #define ZBRENTFUNCTORI_H
 
@@ -6,10 +5,9 @@
 #include <fstream>
 #include <mathsym.h>
 
-extern ofstream debug_file;
 
 
-extern double diam_hana;  //!!!!!!!!!!!!!!!!
+double diam_hana = 1.0;  //!!!!!!!!!!!!!!!!
 
 
 namespace Lignum{
@@ -167,7 +165,7 @@ TreeCompartment<TS,BUD>* adjustSegmentSizeLambda<TS,BUD>::operator()
 			{
 				
 				lam = 0.01;
-				debug_file << "lambda arvo == 0 !!!!!!!!!!!!!!!!!" << endl;
+			
 			}
 
 			
@@ -235,7 +233,7 @@ LGMdouble&  CollectCfDWAfterGrowth<TS,BUD>::operator()(LGMdouble& WSum, TreeComp
 
 
 template <class TS, class BUD>
-LGMdouble&  CollectHwDWAfterGrowth<TS,BUD>::operator()(LGMdouble& WSum, TreeCompartment<TS,BUD>* tc)const
+LGMdouble&  CollectDWAfterGrowth<TS,BUD>::operator()(LGMdouble& WSum, TreeCompartment<TS,BUD>* tc)const
 {
 	if (TreeSegment<TS,BUD>* tts = dynamic_cast<TreeSegment<TS,BUD>*>(tc))
 	{
