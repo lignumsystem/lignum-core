@@ -27,6 +27,6 @@ void AdjustNewLambda(Tree<TS,BUD> &tree);
 template <class TS,class BUD>
 bool AdjustIncrementHwZbrent(Tree<TS,BUD>& tree);
 
-#include "ZbrentI.h"
+#include "ZBrentI.h"
 
 #endif

@@ -10,7 +10,8 @@ namespace Lignum{
 
 class TreeSegmentWithFlowAttributes{
 public:
-	TreeSegmentWithFlowAttributes() { Pr = 1.0;Wm = 0;fin = 0;fout = 0; };
+  TreeSegmentWithFlowAttributes()
+    :Pr(1.0),Wm(0.0),fin(0.0),fout(0.0) {}
   PA Pr;                  //Pressure
   LGMdouble fin;          //Amount of water coming in
   LGMdouble fout;         //Amount of water going out
@@ -22,20 +23,21 @@ public:
 template <class TS,class BUD=DefaultBud<TS> > 
 class TreeSegmentWithFlow
 {
-	friend LGMdouble GetValue(const TreeSegmentWithFlow<TS,BUD>& tc, const LGMFLOW name);
-
-    friend LGMdouble SetValue(TreeSegmentWithFlow<TS,BUD>& tc, const LGMFLOW name,
-				const LGMdouble value);
-	private:
-		LGMdouble wm;
-		TreeSegmentWithFlowAttributes tswf;
-
-	public:
-		TreeSegmentWithFlow();
+  template <class TS1, class BUD1>
+  friend LGMdouble GetValue(const TreeSegmentWithFlow<TS1,BUD1>& tc, const LGMFLOW name);
+  template <class TS1, class BUD1>
+  friend LGMdouble SetValue(TreeSegmentWithFlow<TS1,BUD1>& tc, const LGMFLOW name,
+			    const LGMdouble value);
+  private:
+  LGMdouble wm;
+  TreeSegmentWithFlowAttributes tswf;
+  
+  public:
+  TreeSegmentWithFlow();
 };
 
 template <class TS,class BUD>
-TreeSegmentWithFlow<TS,BUD>::TreeSegmentWithFlow<TS,BUD>()
+TreeSegmentWithFlow<TS,BUD>::TreeSegmentWithFlow()
 {
 	wm = 0;
 }

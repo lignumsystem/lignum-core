@@ -10,196 +10,49 @@
 
 
 namespace Lignum{
-
-
+  //Please orginize headers or rewrite "<<" operator
+  //to remove this declation; 
+template <class TS,class BUD> class CfTreeSegment;
 
 template <class TS,class BUD>
-ostream &operator << (ostream& os, TreeSegment<TS,BUD>& ts)
+ofstream &operator << (ofstream& os, TreeSegment<TS,BUD>& ts)
 {	
-	os << "DIRECTION " << GetDirection(ts);  
-	os << "  POSITION " << GetPoint(ts) << "  RADIUS " << GetValue(ts,R) << " " << "  LENGTH " << GetValue(ts,L) << "  AGE " << GetValue(ts,age);
+  PositionVector pv = GetDirection(ts); 
+  Point p = GetPoint(ts);
 
-	if (CfTreeSegment<TS,BUD>* cfts = dynamic_cast<CfTreeSegment<TS,BUD>*>(&ts))
-	{
-		os << " WF " << GetValue(*cfts, Wf) << " RF " << GetValue(*cfts, Rf) << " RH " << GetValue(*cfts, Rh) << " QABS " << GetValue(*cfts, Qabs) << " QIN " << GetValue(*cfts, Qin); // << " Voxel (x,y,z) (" << ts.voxel_id.getX() <<","<< ts.voxel_id.getY() <<","<< ts.voxel_id.getZ()<< ")";
-	
-		int size = ts.tsa.annual_rings.size();
-		for (int i=0; i< size; i++)
-		{
-			 os << " AR " << ts.tsa.annual_rings[i];
-		}
-	}
-
-	if (HwTreeSegment<TS,BUD>* hwts = dynamic_cast<HwTreeSegment<TS,BUD>*>(&ts))
-	{
-		os << " WF " << GetValue(*hwts, Wf) << " RF " << GetValue(*hwts, Rf) << " RH " << GetValue(*hwts, Rh) << " QABS " << GetValue(*hwts, Qabs);
-	
-		int size = ts.tsa.annual_rings.size();
-		for (int i=0; i< size; i++)
-		{
-			 os << " AR " << ts.tsa.annual_rings[i];
-		}
-	}
-
-	if (TreeSegment<BetulaTortuosa>* betula = dynamic_cast<TreeSegment<BetulaTortuosa> *>(&ts)) 
-	{
-		BetulaTortuosa *s = dynamic_cast<BetulaTortuosa*>(&ts);
-		std::list<BroadLeaf<Ellipsis> *> leaves = GetLeafList(*s);
-		if (leaves.empty())
-		{
-			//os << "Ei lehtiä!" << endl;
-		}
-		else
-		{
-			Firmament& firmament = GetFirmament(GetTree(*s));
-
-			double ball = firmament.diffuseBallSensor();
-			double plane = firmament.diffusePlaneSensor();
-			double kin, kaps;
-			double ala; 
-
-			for (std::list<BroadLeaf<Ellipsis>*>::iterator Il = leaves.begin(); Il != leaves.end(); Il++) 
-			{
-				kin = GetValue(**Il, Qin);
-				kaps = GetValue(**Il, Qabs);
-				Ellipsis &e = (Ellipsis)GetShape(**Il); 
-				ala = (e.getArea())*GetValue(**Il, dof);
-				os << " Qin:  " << kin/ball ; //<< endl; //"  Qabs:  " << endl; //kaps/ala/plane << endl;
-				num_of_leaves++;
-			}
-		}
-	}
-	os << " END" << endl;
-	/*
-	if (TreeSegment<BetulaTortuosa>* betula = dynamic_cast<TreeSegment<BetulaTortuosa> *>(&ts)) 
-	{
-		 BetulaTortuosa *s = dynamic_cast<BetulaTortuosa*>(&ts);
-		 char *data = const_cast<char *>(s->data_info1.c_str());
-		 char *ldata = const_cast<char *>(s->leave_info.c_str());
-	 
-		if (s->data_info1.length() < 3)
-		{
-			 data = const_cast<char *>(s->data_info2.c_str());
-			 os << " LV " <<  data << " "<< ldata << " num of leaves:" << GetValue(*s, Nleaves) << "  ";
-		}
-		else os << " " <<  data << " "<< ldata << " num of leaves:" << GetValue(*s , Nleaves) << "  ";	
-
-		Firmament& firmament = GetFirmament(GetTree(*s));
+  os << "DIRECTION " << pv.getX() << " " << pv.getY() << " " << pv.getZ()
+     << "  POSITION " << p.getX() << " " << p.getY() << " " << p.getZ() 
+     << "  RADIUS " << GetValue(ts,R) << " " 
+     << "  LENGTH " << GetValue(ts,L) << "  AGE " << GetValue(ts,age) << flush;
   
-		std::list<BroadLeaf*> leaves = GetLeafList(*s);
-		if (leaves.empty())
-		{
-			os << "No leaves!" << endl;
-		}
-		else
-		{
-			double ball = firmament.diffuseBallSensor();
-			double plane = firmament.diffusePlaneSensor();
-			double kin, kaps;
-			double ala; 
-
-			for (std::list<BroadLeaf*>::iterator Il = leaves.begin(); Il != leaves.end(); Il++) 
-			{
-				kin = GetValue(**Il, Qin);
-				kaps = GetValue(**Il, Qabs);
-				ala	= (GetEllipsis(**Il).getArea())*GetValue(**Il, dof);
-				os << "QIN:" << kin/ball << endl; //"  Qabs:  " << endl; //kaps/ala/plane << endl;
-				num_of_leaves++;
-			}
-		}
-	}
-		os << endl;
+  os << " END" << endl;
   
-
-	if (clean_save)
-   if (TreeSegment<BetulaTortuosa>* betula = dynamic_cast<TreeSegment<BetulaTortuosa> *>(&ts)) 
-   {
-	 BetulaTortuosa *s = dynamic_cast<BetulaTortuosa*>(&ts);
-	 char *data = const_cast<char *>(s->data_info1.c_str());
-	 char *ldata = const_cast<char *>(s->leave_info.c_str());
-	 		
-	 Firmament& firmament = GetFirmament(GetTree(*s));
-  
-	 std::list<BroadLeaf*> leaves = GetLeafList(*s);
-	 if (leaves.empty())
-		return os;
-	
-	 if (s->data_info1.length() < 3)
-	 {
-		 data = const_cast<char *>(s->data_info2.c_str());
-		 os << data << " "<<" Lehtia:" << GetValue(*s, Nleaves) << "  ";
-	 }
-	 else 
-		 os << " " <<  data << " "<< ldata << " Lehtia:" << GetValue(*s , Nleaves) << "  ";
-
-	 double ball = firmament.diffuseBallSensor();
-	 double plane = firmament.diffusePlaneSensor();
-	 double kin, kaps;
-	 double ala; 
-
-	 for (std::list<BroadLeaf*>::iterator Il = leaves.begin(); Il != leaves.end(); Il++) 
-	 {
-		kin = GetValue(**Il, Qin);
-		kaps = GetValue(**Il, Qabs);
-		ala = (GetEllipsis(**Il).getArea())*GetValue(**Il, dof);
-		os << "Qin:" << kin/ball << "   ";
-		num_of_leaves++;
-	 }
-	 os <<  endl;
-	 return os;
-  }
-
-	
-  os << ts.direction << " " << ts.point << " " << GetValue(ts,R) << " " << GetValue(ts,L);
-  if (TreeSegment<ScotsPineVisual,ScotsBud>* scots = dynamic_cast<TreeSegment<ScotsPineVisual,ScotsBud> *>(&ts)) 
-  {
-	 ScotsPineVisual *s = dynamic_cast<ScotsPineVisual*>(&ts);
-	 os << " " << s->foliage_mass; 
-  }
-
-  if (TreeSegment<BetulaTortuosa>* betula = dynamic_cast<TreeSegment<BetulaTortuosa> *>(&ts)) 
-  {
-	 BetulaTortuosa *s = dynamic_cast<BetulaTortuosa*>(&ts);
-	 char *data = const_cast<char *>(s->data_info1.c_str());
-	 char *ldata = const_cast<char *>(s->leave_info.c_str());
-	 
-	 if (s->data_info1.length() < 3)
-	 {
-		 data = const_cast<char *>(s->data_info2.c_str());
-		 os << " LV " <<  data << " "<< ldata << " Lehtia:" << GetValue(*s, Nleaves) << "  ";
-	 }
-	 else os << " " <<  data << " "<< ldata << " Lehtia:" << GetValue(*s , Nleaves) << "  ";	
-
-	Firmament& firmament = GetFirmament(GetTree(*s));
-  
-	std::list<BroadLeaf*> leaves = GetLeafList(*s);
-	if (leaves.empty())
-	{
-		os << "Ei lehtiä!" << endl;
-	}
-	else
-	{
-		double ball = firmament.diffuseBallSensor();
-		double plane = firmament.diffusePlaneSensor();
-		double kin, kaps;
-		double ala; 
-
-		for (std::list<BroadLeaf*>::iterator Il = leaves.begin(); Il != leaves.end(); Il++) 
-		{
-			kin = GetValue(**Il, Qin);
-			kaps = GetValue(**Il, Qabs);
-			ala = (GetEllipsis(**Il).getArea())*GetValue(**Il, dof);
-			os << "Qin:  " << kin/ball << endl; //"  Qabs:  " << endl; //kaps/ala/plane << endl;
-			num_of_leaves++;
-		}
-	}
-  }
-
-  */
   return os;
 }
 
+template <class TS,class BUD>
+ofstream &operator << (ofstream& os, Bud<TS,BUD>& bud)
+{	
+  PositionVector pv = GetDirection(bud); 
+  Point p = GetPoint(bud);
+  os << "DIRECTION " << pv.getX() << " " << pv.getY() << " " << pv.getZ() 
+     << "  POSITION " << p.getX() << " " << p.getY() << " " << p.getZ()   << flush;
+  
+  os << " END" << endl;
+  
+  return os;
+}
 
+template <class TS,class BUD>
+ofstream &operator << (ofstream& os, BranchingPoint<TS,BUD>& bp)
+{	
+  PositionVector pv = GetDirection(bp); 
+  Point p = GetPoint(bp);
+  os << "DIRECTION " << pv.getX() << " " << pv.getY() << " " << pv.getZ() 
+     << "  POSITION " << p.getX() << " " << p.getY() << " " << p.getZ()   << " END" << endl;
+  
+  return os;
+}
 
 // Reading a tree segment from a file is implemented in LignumWBDocI.h: LoadTreeSegment
 template <class TS,class BUD>
@@ -219,27 +72,16 @@ TreeSegment<TS,BUD>::TreeSegment()
 
 
 template <class TS,class BUD>
-TreeSegment<TS,BUD>::~TreeSegment()
-{
-}
-
-
-template <class TS,class BUD>
 TreeSegment<TS,BUD>::TreeSegment(const Point& p, const PositionVector& d, const LGMdouble go,
-			     const METER l, const METER r, const METER rn, Tree<TS,BUD>* t)
+			     const METER l, const METER r, const METER rh, Tree<TS,BUD>* t)
   :TreeCompartment<TS,BUD>(p,d,t)
 {	
   SetValue(*this,omega,go);
   SetValue(*this,L,l);
   SetValue(*this,R,r);
-  SetValue(*this,Rh,rn);
+  SetValue(*this,Rh,rh);
   SetValue(*this,RTop,r);
   
-  if (l<0.0)
-	  SetValue(*this,L,0);
-//	  MessageBox(NULL, "l < 0", NULL, NULL);
-	
-
   //the first annual ring
   tsa.annual_rings.push_back(r);
 
@@ -248,31 +90,10 @@ TreeSegment<TS,BUD>::TreeSegment(const Point& p, const PositionVector& d, const 
   //needle angle (na)
   //Rf = hf + tsa.R, where hf is height of the foliage (hf = nl * sin(na))
    
-  LGMdouble needle_length = GetValue(*t,nl);
-  LGMdouble needle_angle = GetValue(*t,na);
-
-  /*
-  SetValue(*this,Rf,needle_length * sin(needle_angle)+ 
-		      GetValue(*this,R));
-
-
-  //compute the initial mass of the foliage
-  //1. compute the surface area (sa) of the cylinder representing foliage
-  LGMdouble sa =  2.0 * PI_VALUE * GetValue(*this,Rf) * GetValue(*this,L);
-  //2. the mass of the foliage (Wf = sa * af) 
-  LGMdouble wf =  sa * GetValue(*t,af);
-  SetValue(*this,Wf,sa*wf);
-*/
-
-
   //compute the sapwood mass
   
-  LGMdouble mass = GetSapwoodMass(*this);
-  SetValue(*this,Ws,mass); 
+  SetValue(*this,Ws,GetSapwoodMass(*this)); 
 
-  //compute the initial pressure in the TreeSegment    
-  SetValue(*this, Wm, 0.5 * 1000 * l * r * r * PI_VALUE);
-  SetValue(*this, Pr, -GetValue(*this, Hm) * 9.81 * 1000);   
 }
 
 
@@ -290,10 +111,10 @@ LGMdouble TreeSegment<TS,BUD>::GetTranspiration(LGMdouble time)
 template <class TS,class BUD>
 void TreeSegment<TS,BUD>::SetYearCircles()
 {
-  int age = this->age;
-  float r = this->tsa.R;
-  float delta_r = r / (age);
-  for (int i=0; i<age-1; i++)
+  int ts_age = GetValue(*this,age);
+  float r = GetValue(*this,R);
+  float delta_r = r / (ts_age);
+  for (int i=0; i<ts_age-1; i++)
   {
     r = r - delta_r;
 	//tsa.annual_rings.push_back(r);
@@ -395,26 +216,11 @@ template <class TS,class BUD>
 KGC GetSapwoodMass(const TreeSegment<TS,BUD>& ts)
 {
   //volume up to R
-
-
-
   LGMdouble V1 = (PI_VALUE * pow((double)ts.tsa.R,2.0)) * ts.tsa.L;
   //heartwood volume
   LGMdouble V2 = (PI_VALUE * pow((double)ts.tsa.Rh,2.0)) * ts.tsa.L;
   //sapwood volume
-  
-  if (V1 < 0)
-	  V1 = 0;
-  
-  if (V2 < 0)
-	  V2 = 0;
-  
   LGMdouble V3 = V1 - V2;
-
-
-  #ifdef _MSC_VER
-  ASSERT(V3 >= 0);
-  #endif
 
   //mass is density * volume
   return GetValue(*(ts.tree),rho) * V3;
@@ -422,21 +228,22 @@ KGC GetSapwoodMass(const TreeSegment<TS,BUD>& ts)
 
 
 template <class TS,class BUD>
-METER GetSapwoodArea(const TreeSegment<TS,BUD>& ts)
+M2 GetSapwoodArea(const TreeSegment<TS,BUD>& ts)
 {
-  //volume up to R
-  LGMdouble A1 = (PI_VALUE * pow((double)ts.tsa.R,2.0));
-  //heartwood volume
-  LGMdouble A2 = (PI_VALUE * pow((double)ts.tsa.Rh,2.0));
-  //sapwood volume
+  //area up to R, wood radius up to foliage
+  LGMdouble A1 = PI_VALUE*pow(GetValue(ts,R),2.0);
+  //heartwood area
+  LGMdouble A2 = PI_VALUE*pow(GetValue(ts,Rh),2.0);
+  //sapwood area
   LGMdouble A3 = A1 - A2;
 
-  
-  #ifdef _MSC_VER
-  ASSERT(A3 >= 0);
-  #endif
-
   return A3;
+}
+
+template <class TS,class BUD>
+M2 GetHeartwoodArea(const TreeSegment<TS,BUD>& ts)
+{
+  return PI_VALUE*pow(GetValue(ts,Rh),2.0);
 }
 
 template <class TS,class BUD>
@@ -452,6 +259,12 @@ METER GetInitialSapwoodArea(const TreeSegment<TS,BUD>& ts)
 }
 
 template <class TS,class BUD>
+void AddNewRadiusToAnnualRings(TreeSegment<TS,BUD>& ts, LGMdouble radius)
+{
+  ts.tsa.annual_rings.push_back(radius);
+}
+
+template <class TS,class BUD>
 METER GetLastAnnualIncrement(const TreeSegment<TS,BUD>& ts)
 {
 	std::vector<METER> rings = GetAnnualRings(ts);
@@ -464,31 +277,28 @@ METER GetLastAnnualIncrement(const TreeSegment<TS,BUD>& ts)
 	if (s==1)
 		ret = rings[s-1];
 
-	if (ret < 0)
-		MessageBox(NULL, "annualgrowth < 0", NULL, NULL);
+	
 	return ret;
 }
 
 template <class TS,class BUD>
 LGMdouble GetValue(const TreeSegment<TS,BUD>& ts, const LGMAD name)
 {
-  //  LGMdouble unknown_value = 0.0;
   if (name == A)
     return PI_VALUE*pow(GetValue(ts,R), 2.0);
 
   if (name == age)
-    return ts.age; 
+    return ts.tc_age; 
 
   else if (name == H)
     return ts.point.getZ();
 
   else if (name == Hm)
-		return ts.point.getZ() + ts.direction.getVector()[2] * GetValue(ts,L);
+    return ts.point.getZ() + ts.direction.getVector()[2] * GetValue(ts,L);
 
   else if (name == L)
     return ts.tsa.L;
 
-  
   else if (name == M)
     return ts.tsa.M;
 
@@ -497,9 +307,6 @@ LGMdouble GetValue(const TreeSegment<TS,BUD>& ts, const LGMAD name)
 
   else if (name == R)
     return ts.tsa.R;
-
- //else if (name == Rf)
-  //return ts.tsa.Rf;
 
   else if (name == Rh)
     return ts.tsa.Rh;
@@ -510,17 +317,14 @@ LGMdouble GetValue(const TreeSegment<TS,BUD>& ts, const LGMAD name)
   else if(name == vi)
 	  return ts.tsa.vigour;
 
-  else if (name == Ws) // Sapwood mass
-    return GetSapwoodMass(ts); //ts.tsa.Ws;
+  else if (name == Ws)
+    return ts.tsa.Ws;
 
   else if (name == Wh)
     return ts.tsa.Wh;
 
   else
     return GetValue(dynamic_cast<const TreeCompartment<TS,BUD>&>(ts), name);
-    //    cout << "Unknown attribute returning" << unknown_value << endl;
-
-  //  return unknown_value;
 }
 
 
@@ -530,23 +334,23 @@ LGMdouble SetValue(TreeSegment<TS,BUD>& ts, const LGMAD name, const LGMdouble va
   LGMdouble old_value = 0.0; //GetValue(ts,name);
   
   if (name == age)
-    ts.age = value;
+    ts.tc_age = value;
 
-  if (name == L)
+  else if (name == L)
   {
-		if (value == 0)
-			ts.tsa.L = 0.01;
-		else ts.tsa.L = value;
+    if (value == 0)
+      ts.tsa.L = 0.01;
+    else ts.tsa.L = value;
   }
   
   else if (name == dR)
   {
-	  	int size = ts.tsa.annual_rings.size();
-		if (size>1)
-		{
-			LGMdouble rad = ts.tsa.annual_rings[size-2];
-			ts.tsa.annual_rings[size-1] = value+rad;
-		}
+    int size = ts.tsa.annual_rings.size();
+    if (size>1)
+      {
+	LGMdouble rad = ts.tsa.annual_rings[size-2];
+	ts.tsa.annual_rings[size-1] = value+rad;
+      }
   }
  
   else if (name == M)
@@ -558,15 +362,8 @@ LGMdouble SetValue(TreeSegment<TS,BUD>& ts, const LGMAD name, const LGMdouble va
   else if (name == R)
 	 ts.tsa.R = value;
   
- // else if (name == Rf)
-   // ts.tsa.Rf = value;
-
   else if (name == Rh)
-  {
-	  if (value > 0.79)
-		ts.tsa.Rh = value;	  
     ts.tsa.Rh = value;
-  }
 
   else if (name == RTop)
     ts.tsa.Rtop = value;
