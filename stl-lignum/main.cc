@@ -2,6 +2,11 @@
 #include <iostream.h>
 #include <list>
 #include <MyTreeSegment.h>
+#include <TreeFunctor.h>
+#include <algorithm>
+#include <list>
+
+using namespace std;
 
 CString ParseCommandLine(int argc, char *argv[],const CString& flag)
 {
@@ -38,6 +43,32 @@ int main(int argc, char *argv[])
   clarg = ParseCommandLine(argc,argv,"-file");
   if (clarg != empty)
     InitializeTree(tree,clarg);
+  Axis<MyTreeSegment>& axis = GetAxis(tree);
+  TreeSegment<MyTreeSegment> *ts = 
+    new TreeSegment<MyTreeSegment>(Point<METER>(0,0,0),PositionVector(0,0,1.0),
+				   0,1,0.5,0.2,&tree);
+  BranchingPoint<MyTreeSegment> *bp = 
+    new BranchingPoint<MyTreeSegment>(Point<METER>(0,0,0),PositionVector(0,0,1.0),&tree);
+  Bud<MyTreeSegment> *bud = new  Bud<MyTreeSegment>(Point<METER>(0,0,0),
+						    PositionVector(0,0,1.0),
+						    0,
+						    &tree);
+  InsertTerminatingBud(*bp,new Bud<MyTreeSegment>(Point<METER>(0,0,0),
+						  PositionVector(0,0,1.0),
+						  0,
+						  &tree));
+  InsertTerminatingBud(*bp,new Bud<MyTreeSegment>(Point<METER>(0,0,0),
+						  PositionVector(0,0,1.0),
+						  0,
+						  &tree));
+		       
+  InsertTreeCompartment(axis,ts);
+  InsertTreeCompartment(axis,bp);
+  InsertTreeCompartment(axis,bud);
+
+  axis = GetAxis(tree);
+  list<TreeCompartment<MyTreeSegment>*>& ls = GetTreeCompartmentList(axis);
+  for_each(ls.begin(),ls.end(),DisplayType<MyTreeSegment>());
 }
 
 

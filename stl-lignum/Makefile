@@ -36,7 +36,7 @@ $(LIB2):
 	(cd lib; make "CCC=$(CCC)" "CCCFLAGS=$(CCCFLAGS)" "OPTIMIZE=$(OPTIMIZE)" $@)
 
 .cc.o: 
-	$(CCC) -ptused $(OPTIMIZE) $(SUPPRESS) $(CCCFLAGS) $(INCLUDE) $(STL) $(OPTIMIZE) $< -o $@
+	$(CCC) $(OPTIMIZE) $(SUPPRESS) $(CCCFLAGS) $(INCLUDE) $(STL) $(OPTIMIZE) $< -o $@
 clean:
 	(cd ../c++adt/lib; make clean)
 	(cd lib; make clean)
