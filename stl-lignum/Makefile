@@ -3,7 +3,7 @@
 #To compile with g++ on SGI or on  Linux type
 #    make gnu  
 #or  (using copy paste)
-#    make "CCC=g++" "CCCFLAGS=-c" "OPTIMIZE=-O" "AR=ar"  "ARFLAGS=rv" algorithms 
+#    make "CCC=g++" "CCCFLAGS=-c" "OPTIMIZE=-O" "AR=ar"  "ARFLAGS=rvs" algorithms 
 
 
 ALGSRC = algorithms.cc 
@@ -42,9 +42,9 @@ PROGFILES = program-files.html
 algorithms: $(ALGOBJ) $(LIB1) $(LIB3)  $(LIB2) 
 	$(CCC)  -o $@ $(INCLUDE) $(OPTIMIZE) $(ALGOBJ) $(LIBFLAGS) $(LIBS)
 gnu:
-	make "CCC=g++" "CCCFLAGS=-c" "OPTIMIZE=-g" "AR=ar" "ARFLAGS=rv" algorithms
+	make "CCC=g++" "CCCFLAGS=-c" "OPTIMIZE=-g" "AR=ar" "ARFLAGS=rvs" algorithms
 lignux: 
-	make "CCC=g++" "CCCFLAGS=-c" "OPTIMIZE=-g" "AR=ar" "ARFLAGS=rv" algorithms
+	make "CCC=g++" "CCCFLAGS=-c" "OPTIMIZE=-g" "AR=ar" "ARFLAGS=rvs" algorithms
 
 lignum: $(OBJ) $(LIB1)  $(LIB2) $(LIB3)
 	$(CCC)  -o $@ $(INCLUDE) $(OBJ) $(LIBFLAGS) $(LIBS) 
