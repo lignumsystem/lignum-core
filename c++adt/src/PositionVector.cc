@@ -96,10 +96,11 @@ PositionVector ScalMult(const PositionVector& pv, double a)
 PositionVector& PositionVector::normalize()
 {
   double l = length();
-  
-  v[0] = v[0] / l;
-  v[1] = v[1] / l;
-  v[2] = v[2] / l ;
+  if(l > R_EPSILON) {   //do not normalize zero vector
+    v[0] = v[0] / l;
+    v[1] = v[1] / l;
+    v[2] = v[2] / l;
+  }
 
   return *this;
 }
