@@ -375,55 +375,76 @@ FindBoundingBox<TS,BUD>::operator ()(BoundingBox& b_box,
 
 
 
-
-
-
-
-
-
-
-
-
-
 template <class TS,class BUD>
-InfoStruct& TreeInfo<TS,BUD>::operator()(InfoStruct& stru, TreeCompartment<TS,BUD>* tc)const
-{
-	if (TS* ts = dynamic_cast<TS *>(tc))
+TreeDataStruct& TreeData<TS,BUD>::operator()
+     (TreeDataStruct& stru, TreeCompartment<TS,BUD>* tc)const {
+
+  if (TS* ts = dynamic_cast<TS *>(tc))
+    {
+      Tree<TS,BUD>& tt = GetTree(*tc);
+
+
+      stru.num_segments++;
+      LGMdouble r_ = GetValue(*ts, R);
+      LGMdouble l_ = GetValue(*ts, L);
+      LGMdouble rh_ = GetValue(*ts, Rh);
+
+
+      Point ep = GetEndPoint(*ts);
+      if (stru.height < ep.getZ())
+	stru.height = ep.getZ();
+      
+      if (GetPoint(*ts).getZ() == 0)
 	{
-		stru.num_segments++;
-		Point ep = GetEndPoint(*ts);
-		if (stru.height < ep.getZ())
-			stru.height = ep.getZ();
+	  stru.bottom_rad = r_;
+	}
+      
+      int _age = (int)GetValue(*ts, age);
+      if (_age > stru.age)
+	stru.age = _age;
+      
+      stru.sum_Qabs += GetValue(*ts, Qabs);
+      stru.sum_Qin += GetValue(*ts, Qin);
 
-		if (GetPoint(*ts).getZ() == 0)
-		{
-			stru.bottom_rad = GetValue(*ts, R);
-		}
+      stru.sum_Wf += GetValue(*ts, Wf);
 
-		int _age = GetValue(*ts, age);
-		if (_age > stru.age)
-		  stru.age = _age;
-		
-		
-		
-		stru.sum_Qabs += GetValue(*cfts, Qabs);
-	
+      LGMdouble rho_ = GetValue(tt, rho);
 
-		// if main axis
-		if (ep.getX() == 0 && ep.getY() == 0)
-		{
-		  stru.taper_rad.push_back(GetValue(*ts, R));
-		  stru.taper_hei.push_back(ep.getZ());
-		}
+      if(_age == 0) {
+	stru.sum_Wf_new += GetValue(*ts, Wf);
+	stru.sum_wood_in_newparts += rho_*L*2.0*PI_VALUE*r_*r_;
+	stru.sum_wood_new += rho_*L*2.0*PI_VALUE*r_*r_;
+      }
 
+      stru.sum_Wsw += rho_*L*2.0*PI_VALUE*(r_*r_-rh_*rh_);
+      stru.sum_Whw += rho_*L*2.0*PI_VALUE*rh_*rh_;
 
+      stru.sum_wood_new += rho_*L*2.0*PI_VALUE*
+	(r_*r_ - pow(r_-GetLastAnnualIncrement(*ts),2.0));
+      
+
+      // if main axis
+      if (ep.getX() == 0 && ep.getY() == 0)
+	{
+
+  	  stru.taper_rad.push_back(GetValue(*ts, R)); 
+  	  stru.taper_hei.push_back(ep.getZ());
+	  stru.taper_radh.push_back(GetValue(*ts, Rh));
+
+	  stru.sum_Ws += rho_*L*2.0*PI_VALUE*r_*r_;
 
 	}
-	else if (Bud<TS,BUD>* bud = dynamic_cast<Bud<TS,BUD>*>(tc))
-	  {
-	    stru.num_buds++;
-	  }
-	return stru;
+      else
+	stru.sum_Wb += rho_*L*2.0*PI_VALUE*r_*r_;
+	
+		
+    }
+  else if (Bud<TS,BUD>* bud = dynamic_cast<Bud<TS,BUD>*>(tc))
+    {
+      stru.num_buds++;
+    }
+ 
+  return stru;
 }
 
 
@@ -444,3 +465,5 @@ template <class TS, class BUD>
 }//closing namespace Lignum
 
 #endif
+
+

@@ -8,21 +8,80 @@
 
 namespace Lignum{
 
-class InfoStruct
-{
-public:
-//      inline InfoStruct& operator += (const InfoStruct& st1);
+  //TreeData is used to collect (Accumulate) data on a tree.
+  //it uses TreeDataStruct
 
-        int age;
-        LGMdouble sum_Wf;
-        LGMdouble sum_Qabs;
-        int num_buds;
-        int num_segments;
-        LGMdouble height;
-        LGMdouble bottom_rad;
-        std::vector<LGMdouble> taper_rad;
-        std::vector<LGMdouble> taper_hei;
+class TreeDataStruct {
+public:
+  TreeDataStruct() {
+    age = 0;
+    sum_Wf = 0.0;
+    sum_Wf_new = 0.0;
+    sum_wood_in_newparts = 0.0;
+    sum_wood_new = 0.0;
+    sum_Ws = 0.0;
+    sum_Wb = 0.0;
+    sum_Wsw = 0.0;
+    sum_Whw = 0.0;
+    sum_Qabs = 0.0;
+    sum_Qin = 0.0;
+    num_buds = 0;
+    num_segments = 0;
+    height = 0.0;
+    bottom_rad = 0.0;
+  }
+
+  TreeDataStruct& operator += (const TreeDataStruct& s) {
+    if(this->age < s.age)
+      this->age = s.age;
+    this->sum_Wf += s.sum_Wf;
+    this->sum_Wf_new += s.sum_Wf_new;
+    this->sum_wood_in_newparts += s.sum_wood_in_newparts;
+    this->sum_wood_new += s.sum_wood_new;
+    this->sum_Ws += s.sum_Ws;
+    this->sum_Wb += s.sum_Wb;
+    this->sum_Wsw += s.sum_Wsw;
+    this->sum_Whw += s.sum_Whw;
+    this->sum_Qabs += s.sum_Qabs;
+    this->sum_Qin += s.sum_Qin;
+    this->num_buds += s.num_buds;
+    this->num_segments += s.num_segments;
+    if(this->height < s.height)
+      this->height =  s.height;
+    if(this->bottom_rad < s.bottom_rad)
+      this->bottom_rad = s.bottom_rad;
+  }
+
+
+  int age;
+  LGMdouble sum_Wf;          //All foliage
+  LGMdouble sum_Wf_new;      //Foliage in segments (int)age == 0
+  LGMdouble sum_wood_in_newparts; //Wood in segments (int)age == 0
+  LGMdouble sum_wood_new;    //sum_wood_in_newparts+last ring
+  LGMdouble sum_Ws;          // Stemwood
+  LGMdouble sum_Wb;          // Branchwood
+  LGMdouble sum_Wsw;         // Sapwood (in all segments)
+  LGMdouble sum_Whw;         // Heartwood (in all segments)
+  LGMdouble sum_Qabs;         // Absorbed radiation
+  LGMdouble sum_Qin;         // Incoming radiation
+  int num_buds;
+  int num_segments;
+  LGMdouble height;
+  LGMdouble bottom_rad;
+  std::vector<LGMdouble> taper_rad;
+  std::vector<LGMdouble> taper_hei;
+  std::vector<LGMdouble> taper_radh;
 };
+
+
+template <class TS,class BUD>
+class TreeData
+{ 
+public:
+  TreeDataStruct& operator()(TreeDataStruct& stru,
+			     TreeCompartment<TS,BUD>* tc)const;
+};
+
 
 //A functor to print out the datatype
 //of a tree compartment
@@ -51,8 +110,7 @@ public:
 };
 
 
-template <class TS,class BUD=DefaultBud<TS> >
-class CountCompartments{
+template <class TS,class BUD=DefaultBud<TS> >class CountCompartments{
 public:
   int& operator ()(int& id,TreeCompartment<TS,BUD>* ts)const;
 };
@@ -161,13 +219,6 @@ public:
         LGMdouble& operator()(LGMdouble &sum, TreeCompartment<TS,BUD>* tc)const;
 };
 
-
-template <class TS,class BUD>
-class TreeInfo
-{ 
-public:
-        InfoStruct& operator()(InfoStruct &stru, TreeCompartment<TS,BUD>* tc)const;
-};
 
 
 //This functor is used (ForEach) to move a tree (=all its
