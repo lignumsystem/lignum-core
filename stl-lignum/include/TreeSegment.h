@@ -32,7 +32,7 @@ public:
   METER Rtop;             //Radius at top
   METER Rh;               //Heartwood radius
   KGC Ws;                 //Sapwood mass of the tree segment
-  KGC Wh;                 //Dry-weight (kg C) of heartwood
+  KGC Wh;                 //Heartwood mass of the segment
   vector<METER> annual_rings; //Annual rings of the tree segment
   LGMdouble vigour;			//Vigour index
 };

@@ -318,12 +318,24 @@ LGMdouble GetValue(const TreeSegment<TS,BUD>& ts, const LGMAD name)
   else if(name == vi)
 	  return ts.tsa.vigour;
 
-  else if (name == Ws)
-    return ts.tsa.Ws;
-
-  else if (name == Wh)
-    return ts.tsa.Wh;
-
+  //Personally  I prefer minimum  set of  variables or  attributes and
+  //compute others  like Ws  or Wh (we  have to do  these computations
+  //anyway). These 3 lines should not be a computational cost.
+  else if (name == Ws){
+     //volume up to R
+    LGMdouble v1 = PI_VALUE*pow(GetValue(ts,R),2.0) * GetValue(ts,L);
+    //heartwood volume
+    LGMdouble v2 = PI_VALUE*pow(GetValue(ts,Rh),2.0) * GetValue(ts,L);
+    //sapwood volume
+    LGMdouble v3 = v1 - v2;   
+    //mass is density * volume
+    return GetValue(GetTree(ts),rho) * v3;
+  }
+  //Perhaps we need own 'rho' for Wh?
+  else if (name == Wh){
+    LGMdouble v1 = PI_VALUE*pow(GetValue(ts,Rh),2.0) * GetValue(ts,L);
+    return GetValue(GetTree(ts),rho) * v1;
+  }
   else
     return GetValue(dynamic_cast<const TreeCompartment<TS,BUD>&>(ts), name);
 }
