@@ -14,18 +14,18 @@ class AdaptableTCFunction
 };
 
 template <class TS,class BUD, class T, class BinOp>
-class AccumulateOp2{
+class AccumulateTreeCompartments{
  public:
-  AccumulateOp2(const BinOp op1);
+  AccumulateTreeCompartments(const BinOp op1);
   T& operator()(T& id,TreeCompartment<TS,BUD>* tc)const;
  private:
   BinOp op1;
 };
 
 template <class TS,class BUD, class T, class BinOp>
-class ReverseAccumulateOp2{
+class AccumulateDownTreeCompartments{
  public:
-  ReverseAccumulateOp2(const BinOp op, const T& id);
+  AccumulateDownTreeCompartments(const BinOp op, const T& id);
   T& operator()(T& id,TreeCompartment<TS,BUD>* tc)const;
  private:
   BinOp op1;
@@ -33,9 +33,9 @@ class ReverseAccumulateOp2{
 };
 
 template <class TS,class BUD, class T, class BinOp1, class BinOp2>
-class ReverseAccumulateOp3{
+class AccumulateDownTreeCompartments2{
  public:
-  ReverseAccumulateOp3(const BinOp1 op1, const BinOp2 op2, const T& id);
+  AccumulateDownTreeCompartments2(const BinOp1 op1, const BinOp2 op2, const T& id);
   T& operator()(T& id,TreeCompartment<TS,BUD>* tc)const;
  private:
   BinOp1 op1;
@@ -44,18 +44,18 @@ class ReverseAccumulateOp3{
 };
 
 template <class TS,class BUD, class T, class BinOp>
-class PropagateUpOp2{
+class PropagateUpTreeCompartments{
  public:
-  PropagateUpOp2(const BinOp op);
+  PropagateUpTreeCompartments(const BinOp op);
   TreeCompartment<TS,BUD>* operator()(T& id,TreeCompartment<TS,BUD>* tc)const;
  private:
   BinOp op1;
 };
 
 template <class TS,class BUD, class T, class BinOp1,class BinOp2>
-class PropagateUpOp3{
+class PropagateUpTreeCompartments2{
  public:
-  PropagateUpOp3(const BinOp1 op1, const BinOp2 op2);
+  PropagateUpTreeCompartments2(const BinOp1 op1, const BinOp2 op2);
   TreeCompartment<TS,BUD>* operator()(T& id,TreeCompartment<TS,BUD>* tc)const;
  private:
   BinOp1 op1;
@@ -64,9 +64,9 @@ class PropagateUpOp3{
 
 
 template <class TS,class BUD, class Function>
-class ForEachOp2:public AdaptableTCFunction<TS,BUD>{
+class ForAllTreeCompartments{
  public:
-  ForEachOp2(const  Function op1);
+  ForAllTreeCompartments(const  Function op1);
   TreeCompartment<TS,BUD>* operator () (TreeCompartment<TS,BUD>* tc)const;
  private:
   Function f;
