@@ -88,13 +88,12 @@ html:
 	enscript -E --color -Whtml --toc -p$(PROGFILES) ./include/*.h ./*/*.cc
 
 clean:
-	rm -rf $(OBJ) $(ALGOBJ) $(BLOBJ) core lignum algorithms broadleaf ii_files
-	rm -rf ./*/ii_files
+	rm -rf $(OBJ) $(ALGOBJ) $(BLOBJ) core  ii_files
 distclean: clean
-	rm -f $(LIB4)
+	rm -f $(LIB4) algorithms Makedepend
 	(cd ../stl-lignum; make distclean)
 depend:
-	(cd ../stl-lignum; make depend)
+	(cd ../stl-lignum; make  "CCC=$(CCC)" depend)
 	$(CCC) -M $(INCLUDE) $(SRC) $(ALGSRC) > Makedepend
 
 #Do not delete this line -- make depend adds dependencies at the end of it

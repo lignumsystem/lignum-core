@@ -47,7 +47,7 @@ sky-dump: sky-dump.o libsky.a libc++adt.a
 clean:
 	rm -rf $(OBJ) sky sky-dump sky-dump.o core sky ii_files
 distclean: clean
-	rm -f $(ARFILE)
+	rm -f $(ARFILE) Makedepend
 	(cd ../c++adt; make distclean)
 depend:
 	$(CCC) -M  $(INCLUDE) $(SRC) > Makedepend

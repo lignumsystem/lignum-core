@@ -39,10 +39,10 @@ touch:
 html:
 	enscript -E --color -Whtml --toc -p$(PROGFILES) include/*.h $(SRC)
 clean:
-	rm -rf $(OBJ) hrmatrix ../src/ii_files core
+	rm -rf $(OBJ) hrmatrix ../src/ii_files ../include/ii_files ii_files core
 
 distclean: clean
-	rm -rf ../src/ii_files ../include/ii_files ii_files $(ARFILE)
+	rm -rf  $(ARFILE) Makedepend
 
 etags:
 	$(ETAGS)   TAGSFILE ../src/*.cc ../include/*.h

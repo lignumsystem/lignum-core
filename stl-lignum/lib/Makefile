@@ -28,10 +28,8 @@ CCCFLAGS =   -c
 
 .SUFFIXES: .o .cc
 
-ARCOMMAND=$(CCC) -ar
-ARCOMMANDFLAGS= -o
-AR = $(ARCOMMAND)
-ARFLAGS = $(ARCOMMANDFLAGS)
+AR=$(CCC) -ar
+ARFLAGS= -o
 ARFILE = libLGM.a
 
 sinclude Makedepend
@@ -40,17 +38,16 @@ $(ARFILE): $(OBJ)
 	$(AR) $(ARFLAGS) $(ARFILE) $(OBJ)
 
 .cc.o: 
-	$(CCC)  $(OPTIMIZE) $(CCCFLAGS) $(INCLUDE) $(STL) $<  -o $@  
+	$(CCC)  $(OPTIMIZE) $(CCCFLAGS) $(INCLUDE) $<  -o $@  
 
 touch:
 	touch $(SRC)
 
 clean:
-	rm -rf $(OBJ) core 
+	rm -rf $(OBJ) core ../*/ii_files
 
 distclean: clean
-	rm -rf $(OBJ) core $(ARFILE)
-	rm -rf ../*/ii_files
+	rm -rf  $(ARFILE) Makedepend
 etags:
 	$(ETAGS)   TAGSFILE ../src/*.cc ../include/*.h
 
