@@ -83,6 +83,13 @@ Point<T> operator * (const T scalar, const Point<T>& point)
   return p;
 }
 
+//friend operator to multiply a point with scalar
+template <class T>
+Point<T> operator * (const Point<T>& p, const T s)
+{
+  return s * p;
+}
+
 //friend operator to calculate distance between two points
 template <class T>
 T operator || (const Point<T>& point1, const Point<T>& point2)
@@ -96,7 +103,7 @@ T operator || (const Point<T>& point1, const Point<T>& point2)
 }
 
 template <class T>
-ostream& operator << (ostream& os, const Point<T>&point)
+ostream& operator << (ostream& os, const Point<T>& point)
 {
   os << "x: " << point.x <<" y: " << point.y 
      << " z: " << point.z << '\n' << flush;
@@ -198,17 +205,23 @@ int main()
   cout << "p7  : " << p7 ;
   cout << "p13 : " << p13;
 
-  cout << "Points p14 and p15 should be equal (true) " << endl;
+  cout << "Points p14 and p15 should be equal (true == 1) " << endl;
   if (p14 == p15)
     cout << true << endl;
   else
     cout << false << endl;
 
-  cout << "Points p1 and p3 should not be equal (false) " << endl;
+  cout << "Points p1 and p3 should not be equal (false == 0) " << endl;
   if (p1 == p3)
     cout << true << endl;
   else
     cout << false << endl;
+
+  Point<> p16(2,2,2);
+  cout << "Multiplying p16(2,2,2) with 3 (i.e., 3*p16)" << endl; 
+  cout << "3*p16: " << 3 * p16 << endl;
+  cout << "Multiplying 3 with p16(2,2,2) (i.e., p16*3)" << endl;
+  cout << "p16*3: " << p16 * 3 << endl;
 
 }
 

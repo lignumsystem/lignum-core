@@ -17,6 +17,7 @@ class Point{
 friend Point<T> operator + (const Point<T> &point1, const Point<T> &point2);
 friend Point<T> operator - (const Point<T> &point1, const Point<T> &point2);
 friend Point<T> operator * (const T scalar, const Point<T> &point);
+friend Point<T> operator * (const Point<T>& p, const T scalar);
 friend T operator || (const Point<T> &point1, const Point<T> &point2);
 friend ostream& operator << (ostream& os, const Point<T>& point);
 friend bool operator == (const Point<T> &point1, const Point<T> &point2);
