@@ -122,7 +122,7 @@ class Tree: public TreeCompartment<TS,BUD>{
   friend string GetTreeInitializationFile(Tree<TS1,BUD1>& tree);
 
   template <class TS1,class BUD1>
-  friend sky::Firmament& GetFirmament(Tree<TS1,BUD1>& tree);
+  friend Firmament& GetFirmament(Tree<TS1,BUD1>& tree);
 
   template <class TS1, class BUD1, class F>
   friend void EvaluateRadiationForTree(Tree<TS1,BUD1>& tree, const F& f);
@@ -141,8 +141,7 @@ private:
   TreeParameters tp;
   TreeTransitVariables ttp;
   TreeInitializationFiles tif;
-  sky::Firmament f;
-
+  Firmament f;
   Axis<TS,BUD> axis;
   RootSystem rs;
 };

@@ -1,7 +1,6 @@
 #ifndef TREEBOOKKEEPING_I_H
 #define TREEBOOKKEEPING_I_H
 #include <typeinfo>
-
 // Contains functions for evaluating quantities at the level
 // of the tree.
 // At the moment, photosynthesis realized

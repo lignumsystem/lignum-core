@@ -13,7 +13,7 @@ namespace Lignum{
 template <class TS,class BUD=DefaultBud<TS> >
 class DisplayType{
 public:
-  void operator ()(TreeCompartment<TS,BUD>* ts);
+  TreeCompartment<TS,BUD>*  operator ()(TreeCompartment<TS,BUD>* ts)const;
 };
 
 template <class TS,class BUD=DefaultBud<TS> >

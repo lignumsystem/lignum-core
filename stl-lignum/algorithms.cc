@@ -40,10 +40,11 @@ int main(int argc, char *argv[])
 				      PositionVector(0,0,1.0));
  string clarg,empty;
 
-  clarg = ParseCommandLine(argc,argv,"-file");
-  if (clarg != empty)
-    InitializeTree(hw_tree,clarg);
+ clarg = ParseCommandLine(argc,argv,"-file");
+ if (clarg != empty)
+   InitializeTree(hw_tree,clarg);
 
+  //GetFirmament(hw_tree);
   
   //Example 1.
   //create a tree with a structure [TS,[[B],[B]],B]
@@ -84,7 +85,11 @@ int main(int argc, char *argv[])
 
   //traverse the tree and print out  the datatypes of tree compartments
   //using the ForEach algorithm
+
+  cout << "Testing ForEach algorithm with DisplayType" << endl;
+  ForEach(hw_tree,DisplayType<MyHwTreeSegment,MyBud>());
   cout << endl;
+
   cout << "Example 1: Tree<MyHwTreeSegment,MyBud> with TreeSegment<MyHwTreeSegment,MyBud>" << endl;
   cout << "Testing ForEach algorithm with DisplayType2" << endl;
   

@@ -6,18 +6,14 @@ namespace Lignum{
 //Use built-in operator dynamic_cast
 //to resolve the data_type of a tree compartment
 template <class TS,class BUD>
-void DisplayType<TS,BUD>::operator ()(TreeCompartment<TS,BUD>*tc)
+TreeCompartment<TS,BUD>*  DisplayType<TS,BUD>::operator ()(TreeCompartment<TS,BUD>*tc)const
 {
   if (Axis<TS,BUD>* myaxis =  dynamic_cast<Axis<TS,BUD>*>(tc)){
     cout << "Hello, I'm Axis" << endl;
-    list<TreeCompartment<TS,BUD>*>& tc_ls = GetTreeCompartmentList(*myaxis);
-    for_each(tc_ls.begin(),tc_ls.end(),DisplayType<TS,BUD>());
   }
 
   else if (BranchingPoint<TS,BUD>* mybp = dynamic_cast<BranchingPoint<TS,BUD>*>(tc)){
     cout << "Hello, I'm BranchingPoint" << endl;
-    list<Axis<TS,BUD>*>& axis_ls = GetAxisList(*mybp);
-    for_each(axis_ls.begin(),axis_ls.end(),DisplayType<TS,BUD>());
   }
 
   else if (TreeSegment<TS,BUD>* myts = dynamic_cast<TreeSegment<TS,BUD>*>(tc))
@@ -28,6 +24,8 @@ void DisplayType<TS,BUD>::operator ()(TreeCompartment<TS,BUD>*tc)
 
   else
     cout << "Who am I???" << endl;
+
+  return tc;
 }
 
 template <class TS,class BUD>

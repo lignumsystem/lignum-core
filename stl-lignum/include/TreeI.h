@@ -291,7 +291,7 @@ string GetTreeInitializationFile(Tree<TS,BUD>& tree) {
 
 
 template <class TS,class BUD>
-sky::Firmament& GetFirmament(const Tree<TS,BUD>& tree) {
+Firmament& GetFirmament(Tree<TS,BUD>& tree) {
   return tree.f;
 }
 

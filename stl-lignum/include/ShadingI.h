@@ -52,8 +52,7 @@ void EvaluateRadiationForHwTreeSegment<TS,BUD>::operator()
   if (leaves.empty()) return;
 
   Tree<TS,BUD>& tt = GetTree(*ts);
-  //  Firmament& firmament = GetFirmament(tt);
-  Firmament firmament;
+  Firmament& firmament = GetFirmament(tt);
   int number_of_sectors = firmament.numberOfRegions();
   double tmp_adotb = 0, a_dot_b = 0.0;
   double help;
@@ -124,9 +123,7 @@ vector<LGMdouble>& ShadingEffectOfLeaf<TS,BUD>::operator()(vector<LGMdouble>& v,
       return v;
 
     Tree<TS,BUD>& tt = dynamic_cast<Tree<TS,BUD> &>(GetTree(*ts));
-    //    Firmament& firmament = GetFirmament(tt);
-  Firmament firmament;
-
+    Firmament& firmament = GetFirmament(tt);
     Point mp;
     int i = 0, number_of_sectors = 0, result = 0;
     LGMdouble Vp = 0.0;
@@ -198,8 +195,7 @@ void EvaluateRadiationForCfTreeSegment<TS,BUD>::operator()
     }
 
   Tree<TS,BUD>& tt = GetTree(*ts);
-  //  Firmament& firmament = GetFirmament(tt);
-  Firmament firmament;
+  Firmament& firmament = GetFirmament(tt);
   int number_of_sectors = firmament.numberOfRegions();
   double a_dot_b = 0.0;
   vector<double> radiation_direction(3);
@@ -293,8 +289,9 @@ vector<LGMdouble>& ShadingEffectOfCfTreeSegment<TS,BUD>::
     vector<double> radiation_direction(3);
 
     Tree<TS,BUD>& tt = dynamic_cast<Tree<TS,BUD> &>(GetTree(*ts));
-    sky::Firmament& firmament = GetFirmament(tt);
-
+    
+    Firmament& firmament = GetFirmament(tt);
+    
     number_of_sectors = firmament.numberOfRegions();
 
     LGMdouble fol_dens = GetValue(*ts,Wf)/
