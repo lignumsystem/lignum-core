@@ -601,9 +601,9 @@ MJ Firmament::diffuseForestRegionRadiationSum(int n, float z, float x, float la,
 
   if(first_time) {
     first_time = false;
-    ifstream densfun("density.fun");
+    ifstream densfun("fdensity.fun");
     if(densfun) {
-      fdens.install("density.fun");
+      fdens.install("fdensity.fun");
     }
   }
   double dens = fdens(tree_age);
