@@ -1,5 +1,5 @@
 #include <ConnectionMatrix.h>
-
+namespace Lignum{
 template <class TS,class BUD>
 ConnectionMatrix<TS,BUD>::ConnectionMatrix(Axis<TS,BUD>& axis)
 {
@@ -227,7 +227,7 @@ void  ConnectionMatrix<TS,BUD>::print()const
   cout << endl << endl;
 }
 
-
+}
 
 
 

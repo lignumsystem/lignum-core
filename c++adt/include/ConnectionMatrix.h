@@ -3,6 +3,8 @@
 
 #include <vector>
 
+namespace Lignum{
+
 template <class TS,class BUD>
 class ConnectionMatrix{
 public:
@@ -23,4 +25,6 @@ private:
   void TraverseAxis(Axis<TS,BUD> &ax, TreeSegment<TS,BUD> *ts);
   void addConnection(TreeSegment<TS,BUD> *ts1, TreeSegment<TS,BUD> *ts2);
 };
+
+}//close namespace Lignum
 #endif
