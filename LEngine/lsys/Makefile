@@ -7,11 +7,14 @@ CPPSRC=
 OBJECTS=${CPPSRC:.cpp=.o}
 
 include Make.$(OS)
+CCC = CC
+ARCOMMAND =  $(CCC) -ar  
+ARCOMMANDFLAGS = -o 
 
 INCDIRS= -I../Globals -I/usr/include -I../../c++adt/include -I../../stl-lignum/include
 
 $(TARGET): $(LSYSSRC) lsys.o
-	$(AR) $(AROPT) $(TARGET) $(OBJECTS) lsys.o
+	$(ARCOMMAND) $(ARCOMMANDFLAGS) $(TARGET) $(OBJECTS) lsys.o
 
 $(LSYSSRC): $(LSYSL)
 	../L2C/IRIX64.out/l2c  $(LSYSL)  $(LSYSSRC)
