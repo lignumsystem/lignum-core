@@ -36,6 +36,19 @@ using namespace sky;
 
 namespace Lignum{
 
+struct SmallCube
+  {
+    int x,y,z;
+    float dist;
+    float areaden;
+
+    float x_coord;
+    float y_coord;
+    float z_coord;
+
+    bool ready;
+  };
+
 class TreeParameters{
 public:
   TreeParameters();
@@ -143,6 +156,9 @@ class Tree: public TreeCompartment<TS,BUD>{
 public:
   Tree();
   Tree(const Point& p, const PositionVector& d);
+  Tree(const Point& p, const PositionVector& d, 
+       LGMdouble len, LGMdouble rad, int num_buds);
+
   void photosynthesis();
   void respiration();
 private:

@@ -20,6 +20,80 @@ Tree<TS,BUD>::Tree(const Point& p, const PositionVector& d)
 }
 
 
+//Construct a tree at a certain position to a certain direction
+//with one terminating bud in the main axis
+template <class TS,class BUD>
+Tree<TS,BUD>::Tree(const Point& p, const PositionVector& d, LGMdouble len, LGMdouble rad, int num_buds)
+  :TreeCompartment<TS,BUD>(p,d,this),axis(p,d,this),f(5,5)
+{
+  //force the instantiation of BranchingPoint
+  BranchingPoint<TS,BUD>(p,d,this);
+  
+  TreeSegment<TS,BUD> *ts = new TreeSegment(p, rad,d, 0,len, 
+					    1, 0, *this);
+
+  SetValue(*ts, omega, 1);
+  SetValue(*ts, age, 0);
+
+  if(TS* tts = dynamic_cast<TS *>(ts))
+    {
+      SetValue(*tts, Wf, 0.03);
+    }
+  SetValue(*ts, Rf, rad + 0.02);
+
+  LGMdouble x_i = GetValue(*scotspine, xi);
+  LGMdouble rad = GetValue(*ts, R);
+  
+  //Sapwood area corresponds to foliage mass
+  LGMdouble A_s = (1.0 - GetValue(*scotspine, xi)) * 
+    GetValue(*ts, Wf)/(2.0*GetValue(*scotspine, af)*
+		       GetValue(*scotspine, lr));
+  
+  if (A_s > PI_VALUE*rad*rad)
+    SetValue(*ts, Rh, 0);
+  
+  
+  LGMdouble r_h = sqrt((PI_VALUE*rad*rad - A_s)/PI_VALUE);
+  SetValue(*ts, Rh, r_h);
+  
+  Point end_point = p + Point(0,0,len);
+  BranchingPoint<TS,BUD> *bp = 
+    new BranchingPoint<TS,BUD>(end_point,
+			       PositionVector(0,0,1), 
+			       *this);
+  
+  Bud<TS,BUD> *bud1 = new Bud<TS,BUD>(end_point, d, 1, *this);
+  SetValue(*bud1, age, 1);
+  SetValue(*bud1, state, ALIVE);
+
+  Axis<TS,BUD> &axis = GetAxis(*this);
+  InsertTreeCompartment(axis, ts);      
+  InsertTreeCompartment(axis, bp);
+  InsertTreeCompartment(axis , bud1);
+  
+  Axis<TS,BUD> *new_axes[20];
+  int index = 0;
+  
+  PositionVector v2(0, sqrt(2)/2.0, sqrt(2)/2.0);
+  LGMdouble delta_angle = 2 * PI_VALUE / num_buds;              
+  while(num_buds > 0)
+    {
+      new_axes[index] = new Axis<ScotsPineVisual, ScotsBud>();
+      
+      v2.rotate(Point(0,0,0), PositionVector(0,0,1), delta_angle);
+      Bud<TS,BUD> *new_bud = 
+	new Bud<TS,BUD>(GetPoint(*bud1), v2, 2, *this);
+      SetValue(*new_bud,age, 1);
+      SetValue(*new_bud,state, ALIVE);
+      
+      InsertTreeCompartment(*new_axes[index], new_bud);
+      index++;
+      num_buds--;
+    }
+}
+
+
+
 //Get a parameter value 
 template <class TS,class BUD>
 LGMdouble GetValue(const Tree<TS,BUD>& tree, const LGMPD name)
