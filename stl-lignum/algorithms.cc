@@ -216,7 +216,23 @@ int main(int argc, char *argv[])
   DisplayStructureData id;
   PropagateUp(cf_tree,id,DisplayStructureFunctor<MyCfTreeSegment,MyBud>());
   cout << endl;
+
+  //Phtosynthesis
+  cf_tree.photosynthesis();
+  cf_tree.sumPhotosynthesis();
+  cout << endl << "Photosynthesis (should be = 0): " << GetValue(cf_tree, P) << endl;
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -90,8 +90,8 @@ main.o: /usr/include/locale_attr.h ../c++adt/include/ParametricCurve.h
 main.o: /usr/include/CC/vector /usr/include/CC/stl_range_errors.h
 main.o: /usr/include/CC/stl_vector.h /usr/include/CC/stl_bvector.h
 main.o: /usr/include/float.h ../c++adt/include/Point.h /usr/include/math.h
-main.o: ../c++adt/include/PointI.h ../c++adt/include/PositionVector.h
-main.o: ../c++adt/include/mathsym.h ../c++adt/include/RMatrix.h
+main.o: ../c++adt/include/mathsym.h ../c++adt/include/PointI.h
+main.o: ../c++adt/include/PositionVector.h ../c++adt/include/RMatrix.h
 main.o: ../c++adt/include/TMatrix.h ../c++adt/include/TMatrixI.h
 main.o: include/Algorithms.h /usr/include/CC/functional include/LGMdecl.h
 main.o: include/LGMSymbols.h /usr/include/CC/map /usr/include/CC/stl_tree.h
@@ -134,8 +134,8 @@ algorithms.o: ../c++adt/include/ParametricCurve.h /usr/include/CC/vector
 algorithms.o: /usr/include/CC/stl_range_errors.h /usr/include/CC/stl_vector.h
 algorithms.o: /usr/include/CC/stl_bvector.h /usr/include/float.h
 algorithms.o: ../c++adt/include/Point.h /usr/include/math.h
-algorithms.o: ../c++adt/include/PointI.h ../c++adt/include/PositionVector.h
-algorithms.o: ../c++adt/include/mathsym.h ../c++adt/include/RMatrix.h
+algorithms.o: ../c++adt/include/mathsym.h ../c++adt/include/PointI.h
+algorithms.o: ../c++adt/include/PositionVector.h ../c++adt/include/RMatrix.h
 algorithms.o: ../c++adt/include/TMatrix.h ../c++adt/include/TMatrixI.h
 algorithms.o: include/Algorithms.h /usr/include/CC/functional
 algorithms.o: include/LGMdecl.h include/LGMSymbols.h /usr/include/CC/map
@@ -180,8 +180,8 @@ broadleaf.o: ../c++adt/include/ParametricCurve.h /usr/include/CC/vector
 broadleaf.o: /usr/include/CC/stl_range_errors.h /usr/include/CC/stl_vector.h
 broadleaf.o: /usr/include/CC/stl_bvector.h /usr/include/float.h
 broadleaf.o: ../c++adt/include/Point.h /usr/include/math.h
-broadleaf.o: ../c++adt/include/PointI.h ../c++adt/include/PositionVector.h
-broadleaf.o: ../c++adt/include/mathsym.h ../c++adt/include/RMatrix.h
+broadleaf.o: ../c++adt/include/mathsym.h ../c++adt/include/PointI.h
+broadleaf.o: ../c++adt/include/PositionVector.h ../c++adt/include/RMatrix.h
 broadleaf.o: ../c++adt/include/TMatrix.h ../c++adt/include/TMatrixI.h
 broadleaf.o: include/Algorithms.h /usr/include/CC/functional
 broadleaf.o: include/LGMdecl.h include/LGMSymbols.h /usr/include/CC/map

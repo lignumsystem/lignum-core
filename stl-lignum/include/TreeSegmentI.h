@@ -217,6 +217,12 @@ LGMdouble SetValue(TreeSegment<TS,BUD>& ts, const LGMAD name, const LGMdouble va
 }
 
 
+
+
+
 }//close namespace Lignum
 
 #endif
+
+
+

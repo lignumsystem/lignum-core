@@ -48,7 +48,7 @@ public:
   virtual ~TreeSegment();
   LGMdouble GetTranspiration(LGMdouble time);
   TreeSegmentAttributes& getTsa(){return tsa;}
-
+  void photosynthesis();
 private:
   TreeSegmentAttributes tsa;
 };
@@ -57,6 +57,7 @@ private:
 }//close namespace Lignum
 
 #include <TreeSegmentI.h>
+#include <TreeSegmentMetabolismI.h>
 
 #endif
 

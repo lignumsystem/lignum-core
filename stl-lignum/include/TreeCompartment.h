@@ -18,6 +18,7 @@ namespace Lignum{
       TreeCompartment();
       TreeCompartment(const Point<METER>& p, const PositionVector& d, Tree<TS,BUD>* t);
       virtual ~TreeCompartment();
+      virtual void photosynthesis() { /* Default: do nothing */ }
     protected:
       Point<METER> point;
       PositionVector direction;

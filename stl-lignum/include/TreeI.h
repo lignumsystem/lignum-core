@@ -13,7 +13,7 @@ Tree<TS,BUD>::Tree()
 //with one terminating bud in the main axis
 template <class TS,class BUD>
 Tree<TS,BUD>::Tree(const Point<METER>& p, const PositionVector& d)
-  :TreeCompartment<TS,BUD>(p,d,this),axis(p,d,this)
+  :TreeCompartment<TS,BUD>(p,d,this),axis(p,d,this),f(5,5)
 {
 }
 
@@ -97,6 +97,11 @@ sky::Firmament& GetFirmament(Tree<TS,BUD>& tree)
   return tree.f;
 }
 
+template <class TS,class BUD>
+void SetFirmament(Tree<TS,BUD>& tree, sky::Firmament& firm )
+{
+  return tree.f;
+}
 
 
 //The initialization of the tree.

@@ -88,11 +88,9 @@ public:
   CString treeFile;
 };
 
-
 template <class TS,class BUD = DefaultBud<TS> >
 class Tree: public Lignum::TreeCompartment<TS,BUD>{
   friend Axis<TS,BUD>& GetAxis(Tree<TS,BUD>& t);
-  friend LGMdouble GetProduction(const Tree<TS,BUD>& t);
   friend void InitializeTree(Tree<TS,BUD>& tree, const CString& meta_file);
   friend LGMdouble GetValue(const Tree<TS,BUD>& tree, const LGMAD name);
   friend LGMdouble SetValue(Tree<TS,BUD>& tree, const LGMAD name, const LGMdouble value);
@@ -106,6 +104,8 @@ public:
   Tree();
   Tree(const Point<METER>& p, const PositionVector& d);
   void UpdateWaterFlow(LGMdouble time, const ConnectionMatrix<TS,BUD> &cm);
+  void photosynthesis();
+  void sumPhotosynthesis();
 
 private:
   LGMdouble CountFlow(TreeSegment<TS,BUD> &in, TreeSegment<TS,BUD> &out);
@@ -120,9 +120,25 @@ private:
   RootSystem rs;
 };
 
+template<class TS, class BUD=DefaultBud<TS> > 
+  class TreePhotosynthesis:  public AdaptableTCFunction<TS,BUD>{
+  public:
+    TreeCompartment<TS,BUD>* operator() (TreeCompartment<TS,BUD>* tc)const;
+  };
+
+template <class TS,class BUD=DefaultBud<TS> >
+  class SumTreePhotosynthesis {
+  public:
+    LGMdouble& operator() (LGMdouble& cumPh, TreeCompartment<TS,BUD>* tc)const;
+
+  };
+
+
+
 }//closing namespace Lignum
 
 #include <TreeI.h>
+#include <TreeMetabolismI.h>
 
 
 #endif
