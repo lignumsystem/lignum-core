@@ -42,7 +42,7 @@ tree itself, an aggregate of all its tree compartments.
 \includegraphics[width=0.8\textwidth,height=0.5\textwidth]{lignum3d.eps}
 \caption{\label{fig:struct} A model tree presented in \lignum\
 (left). Cf. young Scots pine produced by \lignum\ (right). A = Axis, 
-TS = Tree segment, BP = Branching Point, B =Bud.}
+TS = Tree segment, BP = Branching Point, B = Bud.}
 \end{center}
 \end{figure}
 
@@ -64,8 +64,8 @@ approach.  Clearly a more detailed description for the leaf is needed.
 \begin{figure}[h]
 \begin{center}
 \includegraphics[width=0.8\textwidth,height=0.5\textwidth]{lignum-segment.eps}
-\caption{\label{fig:segment} Tree segment for a coniferous tree (left).
-Tree segment for a deciduous tree (right). H = heartwood, S =
+\caption{\label{fig:segment} Tree segment for a coniferous tree (left) and
+for a deciduous tree (right). H = heartwood, S =
 sapwood, B = bark, LB = lateral bud, F = Foliage, P = petiole, N = leaf normal.}
 \end{center}
 
@@ -142,13 +142,14 @@ tree compartments  one    could start  to  implement  different   tree
 species. This is in fact how the first  tree species, Scots pine, Jack
 pine and  sugar maple were implemented.  However,  one of the problems
 with the software  used to simulate these  tree species is that it has
-proven to  be  difficult  to   modify  and maintain.   
+proven to  be  inconvinient to   modify  and maintain.   
 
-Typically when creating  and validating tree  models with \lignum\ one
-needs to   experiment with parameter  values,  different light models,
-metabolic processes etc. The reason why it  has been time consuming to
-adapt the program  for  different tree   species is  that  the classes
-defined (Tree, Axis etc.)  are still concret data types.
+Typically when creating and validating tree models with \lignum\ one
+needs to experiment with different parameter values, light models,
+metabolic processes etc.  The reason why the program implementing
+\lignum\ has been troublesome to adapt for different tree species is
+that the classes defined (Tree, Axis etc.)  are still concret data
+types.
 
 To  improve  the  flexibility  of   the software  one   more level  of
 abstraction  is  needed.   Instead of  concrete    datatypes the  tree
@@ -176,6 +177,15 @@ simply:
 \tt Tree<PinusSylvestrisTreeSegment> pinus;\rm
 \end{center}
 
+If  also the structure and  functioning of the  bud  need changes when
+modeling  for  example  the Scots pine  a   subclass of   Bud  , e.g.,
+PinusSylvestrisBud, is required.  After that a new model for the Scots
+pine can be brought into being:
+
+\begin{center}
+\tt Tree<PinusSylvestrisTreeSegment,PinusSylvestrisBud> pinus;\rm
+\end{center}
+
 Similarly when modeling a birch the  first thing to do  is to create a
 subclass    of  deciduous    tree  segment    (HwTreeSegment,   Figure
 \ref{fig:omt}) say,  BetulaPubescensTreeSegment.      After   the
@@ -187,14 +197,7 @@ can be set up:
 \end{center}
 
 
-If  also the structure and  functioning of the  bud  need changes when
-modeling  for  example  the Scots pine  a   subclass of   Bud  , e.g.,
-PinusSylvestrisBud, is required.  After that a new model for the Scots
-pine can be brought into being:
 
-\begin{center}
-\tt Tree<PinusSylvestrisTreeSegment,PinusSylvestrisBud> pinus;\rm
-\end{center}
 
 Once more one could argue  that also axes  and branching points should
 be abstracted too.  But  so far there  has not been  a need  to assign
@@ -232,28 +235,29 @@ tree  compartments are photosynthesis, respiration,  flow of water and
 nutrients,  length growth, diameter growth  and  the mortality of tree
 compartments.
 
-As   the  metabolic  processes   are   assigned   to   individual tree
-compartments  generic algorithms are  needed to traverse  the tree and
-apply these processes   to each  compartment.   So far   all metabolic
-processes can  be  applied with  one  of  the following   four generic
-algorithms   or   as     their   combination:   ForEach,   Accumulate,
-AccumulateDown  and PropagateUp.   As the  name   suggests ForEach and
-Accumulate work   as  their counter  parts   in  STL.   AccumulateDown
-traverses  the tree from the  tip of the branches to   the base of the
+As   the  metabolic   processes  are   assigned  to   individual  tree
+compartments generic  algorithms are needed  to traverse the  tree and
+apply  these processes  to  each compartment.   So  far all  metabolic
+processes can  be implemented with  one of the following  four generic
+algorithms   or    as   their   combination:    ForEach,   Accumulate,
+AccumulateDown  and PropagateUp.   As  the name  suggests ForEach  and
+Accumulate  work  as  their  counter  parts  in  STL.   AccumulateDown
+traverses the  tree from the  tip of the  branches to the base  of the
 tree. PropagetUp does the inverse. It traverses the tree from the base
 to the tip of the branches.
 
 Finally not all  computations are well suited or  even possible within
 the structural description of a  tree provided by \lignum. For example
 assume  that  the model  for  photosynthesis  is  based on  amount  of
-photosynthetically  active radiation  (PAR).  Many  algorithms  can be
-developed   to  compute   the  PAR   but  in   \lignum\   the  current
-implementation   is  based   on  the   pairwise  comparison   of  tree
-segments.  The complexity  of the  current algorithm  is  $O(n^2)$.  A
-better way could be to first create a (linear) algorithm using, e.g.,
-Accumulate that collects  the tree segments to a  new data structure.
-Then with the help of some heuristics a better than $O(n^2)$ algorithm
-for the computation of PAR might be found.
+photosynthetically active  radiation (PAR) available  for foliage.  In
+\lignum\ one  implementation to compute  PAR is based on  the pairwise
+comparison of  tree segments  to calculate first  how they  shade each
+other and then based on that the PAR can be solved.  The complexity of
+such algorithm is  $O(n^2)$.  A better way could be  to first create a
+(linear)  algorithm using,  e.g.,  Accumulate that  collects the  tree
+segments to  a new data structure.   After that with the  help of some
+heuristics  a   better  than  $O(n^2)$   algorithm  avoiding  pairwise
+comparison of tree segments for the computation of PAR might be found.
 
 Another example is the modeling  work already being done.  The flow of
 water can be modeled using  so called connection matrix describing how
