@@ -11,6 +11,40 @@ using namespace cxxadt;
 
 namespace Lignum{
 
+  class TcData{
+    friend LGMdouble GetValue(const TcData& data, LGMAD name);
+    friend LGMdouble SetValue(TcData& data, LGMAD name, LGMdouble value);
+  public:
+    TcData():Asu(0.0){}
+    virtual ~TcData(){} //makes dynamc cast possible
+    TcData& operator = (const TcData&  tcd){
+      Asu = tcd.Asu; return *this;
+    }
+    TcData& operator += (const TcData& tcd){
+      Asu += tcd.Asu; return *this;
+    }
+  private:
+    LGMdouble Asu; //Sapwood requirement above
+  };
+
+inline LGMdouble GetValue(const TcData& data, LGMAD name)
+{
+  if (name == As)
+    return data.Asu;
+  else{
+    cout << "TcData GetValue unknown name: " << name << endl;
+    return  data.Asu;
+  }
+}
+
+
+inline LGMdouble SetValue(TcData& data, LGMAD name, LGMdouble value)
+{
+  LGMdouble old_value = GetValue(data,name);
+  data.Asu = value;
+  return old_value;
+}
+
   template <class TS,class BUD=DefaultBud<TS> > 
     class TreeCompartment
     {
@@ -52,7 +86,9 @@ namespace Lignum{
       TreeCompartment(const Point& p, const PositionVector& d, Tree<TS,BUD>* t);
       virtual ~TreeCompartment();
       virtual void photosynthesis() { /* Default: do nothing */ }
-      virtual void respiration() {  }
+      virtual void respiration() {}
+      virtual void aging(){}
+      virtual TcData& diameterGrowth(TcData& data){return data;}
       protected:
       Point point;
       PositionVector direction;
