@@ -11,21 +11,8 @@ namespace Lignum{
   template <class TREE>
     int Initialize3DForest(Forest &f);
 
-  /*
-  struct SmallCube
-  {
-    int x,y,z;
-    float dist;
-    float areaden;
-
-    float x_coord;
-    float y_coord;
-    float z_coord;
-
-    bool ready;
-  };
-  */
-
+  
+  
   template <class TS,class BUD>
     int VisualizeLGMTreesWithVoxelSpace(vector<Tree<TS,BUD> *> trees, 
 					vector<SmallCube> cubes);

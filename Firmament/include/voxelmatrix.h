@@ -5,7 +5,7 @@
 #include <Voxel.h>
 
 //#include "OpenGL.h"
-#include <Tree.h>
+#include <Lignum.h>
 #include <fstream>
 #include <vector>
 #include <ScotsPineVisual.h>
@@ -16,17 +16,6 @@
 using namespace std;
 
 using namespace Lignum;
-
-
-struct SmallCube
-{
-	int x,y,z;
-	float dist;
-	float areaden;
-	bool ready;
-};
-
-
 
 
 extern float cam_x;  //camera position
