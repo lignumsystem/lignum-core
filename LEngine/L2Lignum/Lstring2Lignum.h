@@ -18,6 +18,7 @@ template <class TS, class BUD>
 int Lstring2Lignum(list<Axis<TS,BUD>*>& ls, typename list<Axis<TS,BUD>*>::iterator current, 
 		   Tree<TS,BUD>& tree, LstringIterator& ltr, stack<Turtle>& turtle_stack)
 {
+
   //Lstring must not end in a branching point 
   if (ltr.AtEnd()){
     cerr<< "BP Error end of string" << endl;
@@ -54,6 +55,7 @@ int Lstring2Lignum(list<Axis<TS,BUD>*>& ls, typename list<Axis<TS,BUD>*>::iterat
       current++;
     }
     else{
+      cout << "Hello BP, what's up in SB" << endl;
       //If control reaches here we are seriously wrong,
       //there can only be axes in an axis list
     }
@@ -100,6 +102,33 @@ int Lstring2Lignum(list<TreeCompartment<TS,BUD>*>& ls,
   //and let the branching point scan the string forward
   if (strcmp(name,"EB") == 0){
     return 2;
+  }
+  //Axis sees "SB" --> Branching point begins
+  else if (strcmp(name,"SB") == 0){
+    //If the current tree compartment is a branching point
+    //no new structure, proceed into the branching point
+    //Don't go forward in LString, let the ltr iterator see "SB" again
+    if (BranchingPoint<TS,BUD>* bp = dynamic_cast<BranchingPoint<TS,BUD>*> (*current)){
+      list<Axis<TS,BUD>*>& al= GetAxisList(*bp);
+      //Proceed into the branching point
+      //Note we DO NOT return here but will construct the branching point
+      Lstring2Lignum(al,al.begin(),tree,ltr,turtle_stack);
+      current++;//I'm not sure about this 
+    }
+    //Current tree compartment is bud but the symbol is "SB" --> new branching point
+    else if (Bud<TS,BUD>* bud = dynamic_cast<Bud<TS,BUD>*> (*current)){
+      BranchingPoint<TS,BUD>* bp = new BranchingPoint<TS,BUD>(GetPoint(turtle_stack.top()),
+							      GetHeading(turtle_stack.top()),
+							      &tree);
+      ls.insert(current,bp);
+      list<Axis<TS,BUD>*>& al= GetAxisList(*bp);
+      //Proceed into the branching point
+      //Note we DO NOT return here but will deal with the brannching point
+      Lstring2Lignum(al,al.begin(),tree,ltr,turtle_stack);
+    }
+    else{
+      cout << "Hello A, what's up in BP" << endl;
+    }
   } 
   //The symbol F means a tree segment
   else if (strcmp(name,"F") == 0){
@@ -108,10 +137,22 @@ int Lstring2Lignum(list<TreeCompartment<TS,BUD>*>& ls,
     caller_data.Reset();
     caller_data.Strct.AddModuleAddr(ltr.Ptr());
     memcpy(&arg1,caller_data.Strct.pArg(0),sizeof(double));
+    //If the list is empty, we may have had in the previous step a symbol that
+    //was ignored, but has now created segments and  buds. See for example 
+    //symbodial.l. We give a chance and create a bud now, return  to this
+    //algorithm and try again create the segment.  
+    if (ls.empty()){
+      BUD* bud = new BUD(GetPoint(turtle_stack.top()),
+			 GetHeading(turtle_stack.top()),
+			 0.0,&tree);
+      ls.insert(ls.begin(),bud);
+      //Initialize current!!
+      current = ls.begin();
+      //Do not update Lstring iterator 
+    }
     //If the current tree compartment is a tree segment,
     //no new structure but update turtle and iterators
-    if (TreeSegment<TS,BUD>* ts = dynamic_cast<TreeSegment<TS,BUD>*> (*current)){
-      //Update turtle 
+    else if (TreeSegment<TS,BUD>* ts = dynamic_cast<TreeSegment<TS,BUD>*> (*current)){
       turtle_stack.top().forward(arg1);
       //Update iterators 
       ltr++;
@@ -132,33 +173,36 @@ int Lstring2Lignum(list<TreeCompartment<TS,BUD>*>& ls,
       ltr++;
     }
     else{
-      cout << "Hello, what's up" << endl;
+      cout << "The L file does not generate Lignum " << endl;
       //If control comes here it is an error
     }
   }
-  //Axis sees "SB" --> Branching point begins
-  else if (strcmp(name,"SB") == 0){
-    //If the current tree compartment is a branching point
-    //no new structure, proceed into the branching point
-    //Don't go forward in LString, let the ltr iterator see "SB" again
-    if (BranchingPoint<TS,BUD>* bp = dynamic_cast<BranchingPoint<TS,BUD>*> (*current)){
-      list<Axis<TS,BUD>*>& al= GetAxisList(*bp);
-      //Proceed into the branching point
-      //Note we DO NOT return here but will deal with the brannching point
-      Lstring2Lignum(al,al.begin(),tree,ltr,turtle_stack);
+  //The symbol B means bud
+  else if (strcmp(name,"B") == 0){
+    //if the axis is empty --> new bud 
+    if (ls.empty()){
+      //The gravelius order is a problem
+      //Possible solutions are:
+      //1. The second argument of "B" will be reserved for gravelius order
+      //2. Carry and update the gravelius order as part of this algorithm
+      //3. Make a functor and update the tree with ForEach (probably the easieast)
+      BUD* bud = new BUD(GetPoint(turtle_stack.top()),
+			 GetHeading(turtle_stack.top()),
+			 0.0,&tree);
+      ls.insert(ls.begin(),bud);
+      current = ls.begin();
+      ltr++;
     }
-    //Current tree compartment is bud but the symbol is "SB" --> new branching point
+    //If the current tree compartment is also bud
+    //move the Lstring iterator forward
     else if (Bud<TS,BUD>* bud = dynamic_cast<Bud<TS,BUD>*> (*current)){
-      BranchingPoint<TS,BUD>* bp = new BranchingPoint<TS,BUD>(GetPoint(turtle_stack.top()),
-							      GetHeading(turtle_stack.top()),
-							      &tree);
-      ls.insert(current,bp);
-      list<Axis<TS,BUD>*>& al= GetAxisList(*bp);
-      //Proceed into the branching point
-      //Note we DO NOT return here but will deal with the brannching point
-      Lstring2Lignum(al,al.begin(),tree,ltr,turtle_stack);
+      //Update heading and position
+      SetPoint(*bud,GetPoint(turtle_stack.top()));
+      SetDirection(*bud,GetHeading(turtle_stack.top()));
+      ltr++;
     }
     else{
+      cout << "Hello, what's up with BUD" << endl;
       //If control reaches here it is an error
     }
   }
@@ -190,30 +234,6 @@ int Lstring2Lignum(list<TreeCompartment<TS,BUD>*>& ls,
     turtle_stack.top().roll(arg1);
     ltr++;
   }
-  //The symbol B means bud
-  else if (strcmp(name,"B") == 0){
-    //if the axis is empty --> new bud 
-    if (ls.empty()){
-      //The gravelius order is a problem
-      //Possible solutions are:
-      //1. The second argument of "B" will be reserved for gravelius order
-      //2. Carry and update the gravelius order as part of this algorithm
-      //3. Make a functor and update the tree with ForEach (probably the easieast)
-      BUD* bud = new BUD(GetPoint(turtle_stack.top()),
-			 GetHeading(turtle_stack.top()),
-			 0.0,&tree);
-      ls.insert(current,bud);
-      ltr++;
-    }
-    //If the current tree compartment is also bud
-    //move the Lstring iterator forward
-    else if (BUD* bud = dynamic_cast<BUD*> (*current)){
-      ltr++;
-    }
-    else{
-      //If control reaches here it is an error
-    }
-  }
   //Ignore  other symbols, go forward in the string
   else{
     ltr++;
@@ -234,15 +254,7 @@ int Lstring2Lignum(Tree<TS,BUD>& t, const Lstring& s)
   Axis<TS,BUD>& axis = GetAxis(t);
   turtle_stack.push(turtle);
   list<TreeCompartment<TS,BUD>*>& ls = GetTreeCompartmentList(axis);
- 
-  //If the axiom contains symbols not generating
-  //Lignum segments, axes, branching points or buds
-  //the tree compartment list is empty.
-  //Add one bud so that we can get started 
-  if (ls.empty()){
-    BUD* bud = new BUD(Point(0,0,0),PositionVector(0,0,1),0.0,&t);
-    ls.insert(ls.begin(),bud);
-  }
+
   return Lstring2Lignum(ls,ls.begin(),t,ltr,turtle_stack);
 }
 
