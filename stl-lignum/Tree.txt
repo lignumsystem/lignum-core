@@ -17,3 +17,4 @@ rho     400.0       #Density of wood in tree segment
 pr      0.0010      #Proportion of bound solar radiation that is
                     #used in photosynthesis
 xi      0.60        #Fraction of heartwood in tree segments
+zbrentEpsilon    0.001    #Accuracy for finding root of P-M-dW(lambda)

@@ -49,6 +49,7 @@ public:
   LGMdouble ss;            //Senescence rate of sapwood
   LGMdouble rho;           //Density of wood
   LGMdouble xi;            //Fraction of heartwood in new tree segments
+  LGMdouble zbrentEpsilon; //Accuracy for finding root of P-M-dW(lambda)
 };
 
 class TreeAttributes{

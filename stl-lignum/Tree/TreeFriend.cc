@@ -23,6 +23,7 @@ MapTPD::MapTPD()
   tpd["ss"] = ss;
   tpd["rho"] = rho;
   tpd["xi"] = xi;
+  tpd["zbrentEpsilon"] = zbrentEpsilon;
 }
 
 }//closing namespace Lignum
