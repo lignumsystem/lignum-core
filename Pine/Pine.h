@@ -202,10 +202,12 @@ public:
 	 //branching         effect        double         Lvi        =
 	 //1.0-(GetValue(*ts,omega)-1.0)*GetValue(GetTree(*ts),q);
 	 //Vigour index
-	 double Lvi = GetValue(*ts,LGAvi);
+	 double vi = GetValue(*ts,LGAvi);
 	 //In Tree Physiology for side branches fp is for example as follows:
 	 //fp = (1-a)f(vi) = (1-0.2)(0.15+0.85vi) = 0.8(0.15+0.85vi)
-	 Lvi = apical*(0.05+0.95*Lvi);
+	 const ParametricCurve& fvi = GetFunction(GetTree(*ts),LGMVI);
+	 //Lvi = apical*(0.05+0.95*Lvi);
+	 double Lvi = apical*fvi(vi);
 	 //experimental   forest   grown  double   Lq   =  pow(1.0   -
 	 //GetValue(GetTree(*ts),q),GetValue(*ts,omega)-1);    relative
 	 //light, if TreeQinMax  is ball sensor reading, it  is as for
@@ -238,7 +240,7 @@ public:
 	 list<TreeCompartment<TS,BUD>*> & ls = GetTreeCompartmentList(*axis);
 	 //new brancing [TS,BP,B]
 	 if (ls.size() == 3)
-	   apical = 0.85;
+	   apical = GetValue(GetTree(*axis),LGPapical);
 	 //old branch
 	 else
 	   apical = 1.0;
