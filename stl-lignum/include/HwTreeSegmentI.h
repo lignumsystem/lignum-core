@@ -23,7 +23,7 @@ namespace Lignum{
       PositionVector up(0,0,1);
       Ellipsis shape(0.10,0.10); //initial shape of a leaf
       Uniform u; //uniform random number [0,1]
-      double seed = 3267;
+      int seed = 3267;
       for (int i = 0; i < pd.size(); i++){
 	PositionVector pdir = pd[i];
 	//Leaves are  created at the end  of the segment  where the buds
