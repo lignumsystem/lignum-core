@@ -22,13 +22,15 @@ TreeMetaFileParser::TreeMetaFileParser(const string& file)
   file_tables[FUNCTION].insert("LGMFM","");
   //3.Degree of Interaction (relative shadiness)
   file_tables[FUNCTION].insert("LGMIP","");
-  //4.The effect of light to number of the buds. 
+  //4.Number of leaves as a function sgment length
+  file_tables[FUNCTION].insert("LGMNLEAVES","");
+  //5.The effect of light to number of the buds. 
   file_tables[FUNCTION].insert("LGMLONB","");
-  //5.Number of New Buds
+  //6.Number of New Buds
   file_tables[FUNCTION].insert("LGMNB","");
-  //6.Function of vigour index
+  //7.Function of vigour index
   file_tables[FUNCTION].insert("LGMVI","");
-  //7.The effect of vigour index to the number of the buds. 
+  //8.The effect of vigour index to the number of the buds. 
   file_tables[FUNCTION].insert("LGMVIONB","");
 
 

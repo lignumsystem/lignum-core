@@ -99,10 +99,10 @@ namespace Lignum{
 	tree.tf.ip.install(file);
       }
       //4.
-      file = tmfp.getFunctionFile("LGMNLEAF");
+      file = tmfp.getFunctionFile("LGMNLEAVES");
       if (file != ""){
 	if (verbose){
-	  cout << "Reading LGMNLEAF from: " << file << endl;
+	  cout << "Reading LGMNLEAVES from: " << file << endl;
 	}
 	tree.tf.nleaves.install(file);
       }
