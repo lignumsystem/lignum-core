@@ -60,16 +60,16 @@ architectures some useful common macros are predefined.
 \item OPTIMIZE: Flags to optimize the object code. The default value
 is -g.
 \end{enumerate}
-For example to maximize the performance for 64 bit code for IP28 target platform type:
+For example to maximize the performance for 64 bit code for IP28
+target platform using inter procedural analysis with default settings type:
 \begin{tabbing}
 Tabbing\= Tabbing\=\kill 
-\>\>prompt\% make ``OPTIMIZE=-Ofast=ip28''
+\>\>prompt\% make ``OPTIMIZE=-Ofast=ip28 -IPA''
 \end{tabbing}
 
 In general  the the  appropriate selection for  a SGI platform  can be
-determined by running  ``hinv -c processor". 
-
-
+determined by running  ``hinv -c processor". To study inter procedural
+analysis see manual page for ipa.
 
 
 \section{Running LIGNUM}
