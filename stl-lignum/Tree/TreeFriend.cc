@@ -9,6 +9,7 @@ namespace Lignum{
     lgmpd["LGPaleafmax"] = LGPaleafmax;
     lgmpd["LGPar"] = LGPar;
     lgmpd["LGPdof"] = LGPdof;
+    lgmpd["LGPLmin"] = LGPLmin;
     lgmpd["LGPlr"] = LGPlr;
     lgmpd["LGPmf"] = LGPmf;
     lgmpd["LGPmr"] = LGPmr;

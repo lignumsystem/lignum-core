@@ -53,6 +53,7 @@ namespace Lignum{
     LGMdouble dof;           //Degree  of   filling  (proportion  leaf
 			     //surface  fills  of  geometric  shape  -
 			     //e.g. ellipsis - of the leaf).
+    LGMdouble Lmin;          //Minimun length of segment allowed (m)
     LGMdouble lr;            //L/R for a new tree segment, R=lr*L
     LGMdouble mf;            //Maintenance respiration rate of foliage
     LGMdouble mr;            //Maintenance respiration rate of roots

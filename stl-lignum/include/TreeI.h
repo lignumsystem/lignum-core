@@ -113,6 +113,9 @@ LGMdouble GetValue(const Tree<TS,BUD>& tree, const LGMPD name)
   else if (name == LGPdof)
      return tree.tp.dof;
 
+  else if (name == LGPLmin)
+     return tree.tp.Lmin;
+
   else if (name == LGPlr)
     return tree.tp.lr;		 
   
@@ -195,6 +198,9 @@ LGMdouble SetValue(Tree<TS,BUD>& tree, const LGMPD name, const LGMdouble value)
 
   else if (name == LGPdof)
     tree.tp.dof = value;
+
+  else if (name == LGPLmin)
+    tree.tp.Lmin = value;
 
   else if (name == LGPlr)
     tree.tp.lr = value;
