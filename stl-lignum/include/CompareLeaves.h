@@ -65,14 +65,6 @@ namespace Lignum{
     Firmament& f;
   };
 
-  //Sum of Qabs in leaves 
-  template<class SH>
-  class SumLeafQabs{
-  public:
-    LGMdouble operator()(LGMdouble qabs,BroadLeaf<SH>* l){
-      return qabs + GetValue(*l,LGAQabs);
-    }
-  };
 
   //Implementation of function operators of the functors follows
 
@@ -86,9 +78,6 @@ namespace Lignum{
       //Compute Qabs for each leaf in this segment
       list<BroadLeaf<SH>*>& ls = GetLeafList(*ts);
       for_each(ls.begin(),ls.end(),LeafComputeQabs<TS,BUD,SH>(GetTree(*ts)));
-      //Collect and assign the sum of Qabs's to the segment
-      LGMdouble qabs = accumulate(ls.begin(),ls.end(),0.0,SumLeafQabs<SH>());
-      SetValue(*ts,LGAQabs,qabs);
     }
     return tc;
   }
@@ -104,12 +93,14 @@ namespace Lignum{
     //We need to go through the sky, take the radiant intensities,
     //compute the actual Qin and then Qabs
     Firmament& f = GetFirmament(tree);
+    vector<LGMdouble>& vrad = const_cast<vector<LGMdouble>&>
+      (GetRadiationVector(*leaf));
+    LGMdouble QinSum = 0.0;
     for (int i = 0; i < f.numberOfRegions();i++){
       //'v' direction of the light beam
       //'Io' radiant intensity from the sector 'i'
       vector<double> v(3); 
       MJ Io = f.diffuseRegionRadiationSum(i,v);
-      vector<LGMdouble>& vrad = const_cast<vector<LGMdouble>&>(GetRadiationVector(*leaf));
       //Qin
       vrad[i] = vrad[i]*Io;
       //Leaf normal
@@ -119,9 +110,14 @@ namespace Lignum{
       //The lengths of the vectors n1 and d1 are 1.
       //fabs: take the accute angle.
       LGMdouble alpha = acos(fabs(Dot(n1,d1)));
+      QinSum += vrad[i];
       //Qabs
       vrad[i] = vrad[i]*cos(alpha)*GetValue(*leaf,LGAA);
     }
+    //Store values of Qin and Qabs of the leaf
+    LGMdouble QabsSum = accumulate(vrad.begin(),vrad.end(),0.0);
+    SetValue(*leaf, LGAQin, QinSum);
+    SetValue(*leaf, LGAQabs, QabsSum);
   }
   
   //Called by LeafComputeQin. In each HwTreeSegment compare the leaf 
