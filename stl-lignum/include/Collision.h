@@ -35,9 +35,19 @@ namespace Lignum {
 
 template <class TS, class BUD>
 class EvaluateCollisionForAllBuds{
-public:
+ public:
+  EvaluateCollisionForAllBuds(LGMdouble angle = PI_VALUE/2.0,
+			      LGMdouble distance = 1.0 /* meters */) {
+    c_angle = angle;
+    c_distance = distance;
+  }
+    
   void operator()(TreeCompartment<TS,BUD>* ts)const;
+ private:
+  LGMdouble c_angle;
+  LGMdouble c_distance;
 };
+
 
 //This functor EvaluateCollisionForThisBud<TS,BUD> evaluates if other
 //Buds or Treesegments are in front of this bud (as explained above).
@@ -45,10 +55,19 @@ public:
 template <class TS,class BUD>
 class EvaluateCollisionForThisBud{
 public:
+  EvaluateCollisionForThisBud(LGMdouble angle = PI_VALUE/2.0,
+			      LGMdouble distance = 1.0 /* meters */) {
+    c_angle = angle;
+    c_cos = cos(angle/2.0); //Note calculations made with half of cone angle
+    c_distance = distance;
+  }
+
   int& operator()(int& collision, TreeCompartment<TS,BUD>* tc)const;
 
   Point point;
   PositionVector direction;
+  LGMdouble c_angle, c_cos;
+  LGMdouble c_distance;
 };
 
 

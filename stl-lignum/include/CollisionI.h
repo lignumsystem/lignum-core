@@ -14,7 +14,7 @@ void EvaluateCollisionForAllBuds<TS,BUD>::operator()
 
   if(Bud<TS,BUD>* its_me = dynamic_cast<Bud<TS,BUD>*>(tc)) {
     
-    EvaluateCollisionForThisBud<TS, BUD> col_eval;
+    EvaluateCollisionForThisBud<TS, BUD> col_eval(c_angle, c_distance);
 
     col_eval.point = GetPoint(*tc);
     col_eval.direction = GetDirection(*tc);
@@ -59,8 +59,8 @@ int& EvaluateCollisionForThisBud<TS,BUD>::
 
     LGMdouble dotp = Dot(direction, diff);
 
-    if(COS_ANGLE > dotp / len) {
-      if(len < C_DISTANCE) {
+    if(c_cos > dotp / len) {
+      if(len < c_distance) {
 	coll = 1;
       }
     }

@@ -260,6 +260,9 @@ int main(int argc, char *argv[])
    //Collision
 
    ForEach(cf_tree, EvaluateCollisionForAllBuds<MyCfTreeSegment,MyBud>());
+
+   ForEach(hw_tree, EvaluateCollisionForAllBuds<MyHwTreeSegment,MyBud>
+	   (PI_VALUE, 0.1));
 }
 
 
