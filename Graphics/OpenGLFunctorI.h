@@ -199,7 +199,7 @@ TreeCompartment<TS,BUD>* DrawLignumLeavesFunctor<TS,BUD,S>::operator()(TreeCompa
 	      
 	  Petiole pet = GetPetiole(**I);
 	      
-	  S& shape = GetShape(**I);
+	  const S& shape = GetShape(**I);
 	  vector<Point> points;
 	  shape.getVertexVector(points);
 	      
