@@ -12,7 +12,7 @@ namespace Lignum{
 // Tree Attribute Double, Wm lisätty
 // Wr           dry weight of the roots
 enum LGMAD {A,age,dof, dR, H,Hm,ip,lb,LM,LP,LWf,L,lw,M, omega,P,
-            Qin,Qabs,R,Rf,Rh,RTop,sf,sw,tauL,vi,Wf,Ws,Wh,Wr};  
+            Qin,Qabs,R,Rf,Rh,RTop,sf,LGMstatus,sw,tauL,LGMtype,vi,Wf,Ws,Wh,Wr};  
 
 //  A       0   Area (of what?)
 //  age     1   age of object

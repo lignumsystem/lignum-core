@@ -53,6 +53,12 @@ LGMdouble GetValue(const Bud<TS,BUD>& bud, const LGMAD name)
   else if (name == ip)
     return bud.ba.ip;
 
+  else if (name == LGMstatus)
+    return bud.ba.status ;
+  
+  else if (name == LGMtype)
+    return bud.ba.type;
+
   else{
     return GetValue(dynamic_cast<const TreeCompartment<TS,BUD>&>(bud), name);
 
@@ -74,6 +80,12 @@ LGMdouble SetValue(Bud<TS,BUD>& bud, const LGMAD name, const LGMdouble value)
 
   else if (name == ip)
     bud.ba.ip = value;
+  
+  else if (name == LGMstatus)
+    bud.ba.status = value;
+
+  else if (name == LGMtype)
+    bud.ba.type = value;
 
   else{
     //    cout << "Unknown attribute: " << name << endl;

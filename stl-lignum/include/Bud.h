@@ -15,7 +15,9 @@ public:
   BudAttributes();
   LGMdouble ip;             //Photosynthetic light ratio (shadiness)
   LGMdouble omega;          //Gravelius order
-  STATUS state;      //LIVE, DEAD or DORMANT
+  LGMdouble type;           //dominant, apical, lateral etc.
+  LGMdouble status;         //counter from N to 0;
+  STATUS state;             //LIVE, DEAD or DORMANT
 };
 
 
