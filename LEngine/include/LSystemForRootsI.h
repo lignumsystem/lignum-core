@@ -116,7 +116,7 @@ template <class TS, class BUD, class T, class F>
     //udate iterators
     else if (RootSegment<Tree<TS,BUD> >* rs = dynamic_cast<RootSegment<Tree<TS,BUD> >*> (*current)){
       //Get the argument of "F" to update the argument
-      LGMdouble arg1 = GetValue(*rs,L);
+      LGMdouble arg1 = GetValue(*rs,LGAL);
       caller_data.Reset();
       caller_data.Strct.AddModuleAddr(ltr.Ptr());
       //Update the length of turtle forward command to the length of the segment
@@ -397,7 +397,7 @@ template <class TS, class BUD, class T, class F>
       SetDirection(*rs,GetHeading(turtle_stack.top()));
       //Should we update the length may be a matter of discussion
       //But when the turtle is 'in charge' we should (c.f symbodial growth)
-      SetValue(*rs,L,arg1);
+      SetValue(*rs,LGAL,arg1);
       //Move the turtle
       turtle_stack.top().forward(arg1);
       //Update iterators
