@@ -3,7 +3,7 @@
 #include <string.h>
 #include <limits.h>
 #include <stdlib.h>
-#include <unistd.h>
+#include <stdarg.h>
 
 #include <lglobal.h>
 #include <lsysintrfc.h>
