@@ -263,7 +263,7 @@ namespace Lignum{
 	//the VI.
 	double vi_value = vi_data(2.0*GetValue(*ts,R));
 	//Update VI
-	SetValue(*ts,vi,vi_value);
+	SetValue(*ts,LGAvi,vi_value);
 	//This will be the new segment below VI
 	vi_data.viSegmentBelow(vi_value);
 	}
@@ -271,7 +271,7 @@ namespace Lignum{
 	  //Newly  created segment  will get  its vigour  from segment
 	  //below (length and diameter will be adjusted accordingly,
 	  //say Lsegment = lambda*vi*Qin/Qmax)
-	  SetValue(*ts,vi,vi_data.viSegmentBelow());
+	  SetValue(*ts,LGAvi,vi_data.viSegmentBelow());
 	}
       }
       //We are done

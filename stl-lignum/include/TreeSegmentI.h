@@ -311,7 +311,7 @@ LGMdouble GetValue(const TreeSegment<TS,BUD>& ts, const LGMAD name)
   else if (name == RTop)
     return ts.tsa.Rtop;
   
-  else if(name == vi)
+  else if(name == LGAvi)
 	  return ts.tsa.vigour;
 
   //Personally  I prefer minimum  set of  variables or  attributes and
@@ -373,7 +373,7 @@ LGMdouble SetValue(TreeSegment<TS,BUD>& ts, const LGMAD name, const LGMdouble va
   else if (name == RTop)
     ts.tsa.Rtop = value;
 
-  else if(name == vi)
+  else if(name == LGAvi)
 	ts.tsa.vigour = value;
 
   else if (name == LGAWs)

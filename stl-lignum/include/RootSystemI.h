@@ -35,13 +35,13 @@ namespace Lignum{
       return GetValue(rs,LGAA)*GetValue(rs,LGAL);
     case Vh:               //Heartwood volume
       return GetValue(rs,LGAAh)*GetValue(rs,LGAL);
-    case Vs:               //Sapwood volume
+    case LGAVs:               //Sapwood volume
       return GetValue(rs,V) - GetValue(rs,Vh);
     case Vhair:            //Root hair volume
       return GetValue(rs,LGAAhair)*GetValue(rs,LGAL) - GetValue(rs,V);
       //Compound attributes, weights
     case LGAWs:               //sapwood weight
-      return GetValue(GetTree(rs),rho_root)*GetValue(rs,Vs);
+      return GetValue(GetTree(rs),rho_root)*GetValue(rs,LGAVs);
     case LGAWhair:            //root hair weight
       return GetValue(GetTree(rs),rho_hair)*GetValue(rs,Vhair);
     default:

@@ -48,7 +48,7 @@ public:
   HwTreeSegment(const Point& p,const PositionVector& pv,
 		const LGMdouble go, const METER l, const METER r,
 		const METER rn,Tree<TS,BUD>* tree)
-  :TreeSegment<TS,BUD>(p,pv,go,l,r,rn,tree){ SetValue(*this, vi, 1.0); }
+  :TreeSegment<TS,BUD>(p,pv,go,l,r,rn,tree){ SetValue(*this, LGAvi, 1.0); }
   void photosynthesis();
   void respiration();
   virtual void addLeaf(BroadLeaf<SHAPE>* l);

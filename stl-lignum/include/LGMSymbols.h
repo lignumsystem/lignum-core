@@ -16,7 +16,8 @@ namespace Lignum{
   enum LGMAD {LGAA,LGAAf,LGAAh, LGAAhair,LGAAs,LGAAs0,LGAage,api, LGAcollision,
               LGADbase,LGADbh,LGAdof, dR, LGAH,LGAHf,Hm,LGAip,
               lb,LM,LP,LWf,LGAL,lw,M, MaxD,omega,P,
-	      Qin,Qabs,R,Rf,Rh,Rhair,RTop,Sa,LGMstatus,sw,tauL,LGMtype,V,Vh,Vhair,Vs,vi,
+	      Qin,Qabs,R,Rf,Rh,Rhair,RTop,Sa,LGMstatus,sw,tauL,LGMtype,V,Vh,
+	      Vhair,LGAvi,LGAVs,
               LGAWf, LGAWr, LGAWs, LGAWh, LGAWhair};
 
   //  LGAA      Segment area based on R (see GetValue)
@@ -55,11 +56,11 @@ namespace Lignum{
   //  Sa     Surface area of the segment cylinder: 2*PI*R*L 
   //  sw     ????
   //  tauL   transmission coefficient of leaf (in direction of the ray of light)
-  //  vi     vigour index
   //  V      Segment volume based on R
   //  Vh     Heartwood volume
   //  Vhair  Root hair volume
-  //  Vs     Sapwood volume
+  //  vi     vigour index
+  //  LGAVs     Sapwood volume
   //  LGAWf     foliage mass (kg C)
   //  LGAWr     root mass (kg C)
   //  LGAWs     mass of sapwood (kg C)
