@@ -3,13 +3,16 @@
 #include <list>
 #include <Tree.h>
 
+
 #include <BroadLeaf.h>
+#
 
 namespace Lignum{
 
-template <class TS,class BUD=DefaultBud<TS> >
+template <class TS, class BUD=DefaultBud<TS> >
 class HwTreeSegment:public TreeSegment<TS,BUD>{
   friend list<BroadLeaf*>& GetLeafList(HwTreeSegment<TS,BUD>& ts);
+  friend void InsertLeaf(HwTreeSegment<TS,BUD>& ts, BroadLeaf* l);
 public:
   HwTreeSegment(const cxxadt::Point<METER>& p,const PositionVector& pv,
 		const LGMdouble go,const Lignum::METER l, const Lignum::METER r,
@@ -19,6 +22,10 @@ private:
   list<BroadLeaf*> leaf_ls;
 };
 
+#include <HwTreeSegmentI.h>
+
 } //close namespace Lignum
+
+
 
 #endif
