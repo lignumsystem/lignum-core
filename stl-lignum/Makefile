@@ -16,30 +16,32 @@ SUPPRESS = #-w 1155 -w 1183
 
 CCCFLAGS = -c -ptv -prelink #-fullwarn 
 
-INCLUDE = -Iinclude -I../c++adt/include 
+INCLUDE = -Iinclude -I../c++adt/include -I../Firmament/include
 
 STL     = -I/usr/include/CC
 
-LIBFLAGS = -L../c++adt/lib -Llib
+LIBFLAGS = -L../c++adt/lib -Llib -L../Firmament/lib
 
 LIB1   = libc++adt.a
 LIB2   = libLGM.a
+LIB3   = libsky.a
 
 LIBADT = -lc++adt
 LIBLGM = -lLGM
+LIBSKY = -lsky
 LIBMATH  = -lm 
 
-LIBS     = $(LIBLGM) $(LIBADT) $(LIBMATH)
+LIBS     = $(LIBLGM) $(LIBSKY) $(LIBADT) $(LIBMATH)
 
 
 .SUFFIXES: .o .cc
 
-lignum: $(OBJ) $(LIB1)  $(LIB2)  
+lignum: $(OBJ) $(LIB1)  $(LIB2) $(LIB3)
 	$(CCC)  -o $@ $(INCLUDE) $(OBJ) $(LIBFLAGS) $(LIBS) 
-algorithms: $(ALGOBJ) $(LIB1)  $(LIB2)
+algorithms: $(ALGOBJ) $(LIB1)  $(LIB2) $(LIB3)
 	$(CCC) -ptv  -o $@ $(INCLUDE) $(OPTIMIZE) $(ALGOBJ) $(LIBFLAGS) $(LIBS)
 
-broadleaf: $(BLOBJ) $(LIB1)  $(LIB2)
+broadleaf: $(BLOBJ) $(LIB1)  $(LIB2) $(LIB3)
 	$(CCC) -ptv  -o $@ $(INCLUDE) $(OPTIMIZE) $(BLOBJ) $(LIBFLAGS) $(LIBS)	
 $(LIB1):
 	(cd ../c++adt/lib; make "CCC=$(CCC)" "CCCFLAGS=$(CCCFLAGS)" "OPTIMIZE=$(OPTIMIZE)" $@)
@@ -47,6 +49,9 @@ $(LIB1):
 $(LIB2):
 	(cd lib; make "CCC=$(CCC)" "CCCFLAGS=$(CCCFLAGS)" "OPTIMIZE=$(OPTIMIZE)" $@)
 
+$(LIB3):
+	(cd ../Firmament; make "CCC=$(CCC)" "CCCFLAGS=$(CCCFLAGS)" \
+         "OPTIMIZE=$(OPTIMIZE)" $@)
 .cc.o: 
 	$(CCC) $(OPTIMIZE) $(SUPPRESS) $(CCCFLAGS) $(INCLUDE)  $< -o $@
 
@@ -56,6 +61,7 @@ clean:
 	rm -rf ./*/ii_files
 distclean:
 	(cd ../c++adt/lib; make distclean)
+	(cd ../Firmament; make distclean)
 	(cd lib; make distclean)
 	rm -rf $(OBJ) $(ALGOBJ) $(BLOBJ) core lignum algorithms broadleaf ii_files 
 depend: 
@@ -101,7 +107,8 @@ main.o: include/DefaultBud.h include/BranchingPoint.h
 main.o: include/BranchingPointI.h include/TreeSegment.h
 main.o: include/TreeSegmentI.h include/HwTreeSegment.h include/BroadLeaf.h
 main.o: ../c++adt/include/Ellipsis.h include/CfTreeSegment.h include/Axis.h
-main.o: include/AxisI.h ../c++adt/include/ConnectionMatrix.h include/TreeI.h
+main.o: include/AxisI.h ../c++adt/include/ConnectionMatrix.h
+main.o: ../Firmament/include/Firmament.h include/TreeI.h
 main.o: include/MyTreeSegment.h include/MyBud.h
 algorithms.o: /usr/include/stdlib.h /usr/include/standards.h
 algorithms.o: /usr/include/sgidefs.h /usr/include/CC/iostream.h
@@ -146,7 +153,8 @@ algorithms.o: include/BranchingPointI.h include/TreeSegment.h
 algorithms.o: include/TreeSegmentI.h include/HwTreeSegment.h
 algorithms.o: include/BroadLeaf.h ../c++adt/include/Ellipsis.h
 algorithms.o: include/CfTreeSegment.h include/Axis.h include/AxisI.h
-algorithms.o: ../c++adt/include/ConnectionMatrix.h include/TreeI.h
+algorithms.o: ../c++adt/include/ConnectionMatrix.h
+algorithms.o: ../Firmament/include/Firmament.h include/TreeI.h
 algorithms.o: include/MyTreeSegment.h include/MyBud.h
 broadleaf.o: /usr/include/stdlib.h /usr/include/standards.h
 broadleaf.o: /usr/include/sgidefs.h /usr/include/CC/iostream.h
@@ -191,5 +199,6 @@ broadleaf.o: include/BranchingPointI.h include/TreeSegment.h
 broadleaf.o: include/TreeSegmentI.h include/HwTreeSegment.h
 broadleaf.o: include/BroadLeaf.h ../c++adt/include/Ellipsis.h
 broadleaf.o: include/CfTreeSegment.h include/Axis.h include/AxisI.h
-broadleaf.o: ../c++adt/include/ConnectionMatrix.h include/TreeI.h
+broadleaf.o: ../c++adt/include/ConnectionMatrix.h
+broadleaf.o: ../Firmament/include/Firmament.h include/TreeI.h
 broadleaf.o: include/MyTreeSegment.h include/MyBud.h
