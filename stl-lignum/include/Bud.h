@@ -1,8 +1,8 @@
 #ifndef BUD_H
 #define BUD_H
 
-template <class TS> class DefaultBud;
-#include <TreeSegment.h>
+#include <TreeCompartment.h>
+
 
 class BudAttributes{
 public:

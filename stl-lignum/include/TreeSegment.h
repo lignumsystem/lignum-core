@@ -4,10 +4,6 @@
 #include <list>
 #include <Point.h>
 #include <TreeCompartment.h>
-#include <DefaultBud.h>
-
-template <class TS, class BUD>
-extern TP GetParameterValue(const Tree<TS,BUD>& tree, const TPD name);
 
 class TreeSegmentAttributes{
 public:

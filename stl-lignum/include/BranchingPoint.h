@@ -6,8 +6,6 @@
 #include <numeric>
 #include <TreeFunctor.h>
 #include <TreeCompartment.h>
-#include <Axis.h>
-#include <DefaultBud.h>
 
 template <class TS,class BUD=DefaultBud<TS> >
 class BranchingPoint: public TreeCompartment<TS,BUD>{

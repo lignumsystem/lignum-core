@@ -1,4 +1,3 @@
-
 #ifndef TREE_H
 #define TREE_H
 
@@ -7,6 +6,7 @@
 #include <iostream.h>
 #include <CString.h>
 #include <ParametricCurve.h>
+
 #include <TreeMetaFileParser.h>
 #include <RootSystem.h>
 #include <Bud.h>
@@ -15,9 +15,6 @@
 #include <TreeSegment.h>
 #include <Axis.h>
 #include <ConnectionMatrix.h>
-
-template <class TS,class BUD>
-TP GetProduction(const Tree<TS,BUD>& t);
 
 
 class TreeParameters{
@@ -88,12 +85,10 @@ public:
   void UpdateWaterFlow(TP time, const ConnectionMatrix<TS,BUD> &cm);
 private:
   TP CountFlow(TreeSegment<TS,BUD> &in, TreeSegment<TS,BUD> &out);
-
   TreeAttributes ta;
   TreeFunctions tf;
   TreeParameters tp;
   TreeTransitVariables ttp;
- 
   Axis<TS,BUD> axis;
   RootSystem rs;
 };

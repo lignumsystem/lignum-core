@@ -2,12 +2,11 @@
 #define TREECOMPARTMENT_H
 
 #include <stream.h>
-#include <LGMdecl.h>
-#include <LGMUnits.h>
+
 #include <Point.h>
 #include <PositionVector.h>
-
-template <class TS> class DefaultBud;
+#include <LGMdecl.h>
+#include <DefaultBud.h>
 
 template <class TS,class BUD=DefaultBud<TS> > 
 class TreeCompartment{

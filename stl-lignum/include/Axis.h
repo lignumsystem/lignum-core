@@ -8,8 +8,6 @@
 #include <PositionVector.h>
 #include <TreeFunctor.h>
 #include <TreeCompartment.h>
-#include <Bud.h>
-#include <DefaultBud.h>
 
 template <class TS,class BUD = DefaultBud<TS> >
 class Axis: public TreeCompartment<TS,BUD>{
