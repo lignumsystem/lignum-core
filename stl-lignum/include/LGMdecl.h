@@ -32,6 +32,7 @@ namespace Lignum{
 #define LGMassert(expr) ASSERT(expr)
 #else
   //Standard C-library assert
+#include <assert.h>
 #define LGMassert(expr) assert(expr)
 #endif
 
