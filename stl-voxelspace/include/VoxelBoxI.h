@@ -11,7 +11,7 @@ namespace Lignum {
   template <class TS,class BUD>
     void dumpSegment(VoxelBox &b, const CfTreeSegment<TS,BUD>& ts, int num_parts)
     {	
-      LGMdouble r_f = GetValue(ts, Rf);
+      LGMdouble r_f = GetValue(ts, LGARf);
       LGMdouble lenght = GetValue(ts, LGAL) / num_parts;
       LGMdouble S_f = GetValue(GetTree(ts), sf);
       LGMdouble fmass = GetValue(ts, LGAWf) / num_parts;
@@ -23,7 +23,7 @@ namespace Lignum {
       b.addNeedleArea(farea);
       b.addNeedleMass(fmass);
 
-      LGMdouble needle_rad = GetValue(ts, Rf);
+      LGMdouble needle_rad = GetValue(ts, LGARf);
 	
      
       //Tarkistettu että for-looppi ajetaan tasan 8 kertaa (mika).
@@ -40,7 +40,7 @@ namespace Lignum {
    template <class TS,class BUD, class S>
     void dumpSegment(VoxelBox &b, HwTreeSegment<TS, BUD, S> &ts, int num_parts)
     {	
-      LGMdouble r_f = GetValue(ts, Rf);
+      LGMdouble r_f = GetValue(ts, LGARf);
       LGMdouble lenghth = GetValue(ts, LGAL) / num_parts;
       LGMdouble S_f = GetValue(GetTree(ts), sf);
       LGMdouble fmass = GetValue(ts, LGAWf) / num_parts;
@@ -53,7 +53,7 @@ namespace Lignum {
       b.addNeedleMass(fmass);
 
       // LGMdouble needle_rad = GetValue(ts, Rf); //get Rf= 0 for HwTree?
-     LGMdouble needle_rad = GetValue(ts, R);
+     LGMdouble needle_rad = GetValue(ts, LGAR);
      //  cout<<S_f<<" "<<fmass<<" "<<needle_rad<<" Radius "<<lenghth<<"test>>>>>>>>>>>>>>>>>>"<<endl;
       //Tarkistettu että for-looppi ajetaan tasan 8 kertaa (mika).
       for (double phi=0; phi<PI_VALUE/2.0; phi+=PI_VALUE/16)
