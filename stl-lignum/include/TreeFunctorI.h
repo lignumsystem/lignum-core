@@ -194,6 +194,8 @@ DisplayStructureFunctor<TS,BUD>:: operator ()(DisplayStructureData& id,
     id.number_of_compartments = ls.size();
     id.first_segment = true;
     cout <<  "[" << flush;
+    if (ls.empty())
+      cout <<  "]" << flush;
   }
 
   else if (BranchingPoint<TS,BUD>* bp = dynamic_cast<BranchingPoint<TS,BUD>*>(tc)){
