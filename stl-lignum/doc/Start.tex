@@ -31,11 +31,18 @@ compartments.  The two basic units  are tree segment (TS) and bud (B).
 They are called  basic units because they are  not aggregates of other
 units.   Axis (A)  models  one single  branch  in a  tree.   It is  an
 aggregate or more precisely a  sequence of tree segments and branching
-points (BP)  ending with  a terminating bud.   Each tree  segment only
-must   be   followed   by   exactly  one   branching   point   (Figure
-\ref{fig:struct}).  Branching point is  an aggregate of axes capturing
-the branching  structure of a tree.   The fifth unit  is naturally the
-tree itself, an aggregate of all its tree compartments.
+points (BP)  ending with a terminating  bud (Figure \ref{fig:struct}).
+The fifth unit  is naturally the tree itself, an  aggregate of all its
+tree compartments.  This has  caused some confusion  so let us  make a
+exact unambiguous definition of the model structure in \lignum.
+
+\begin{definition}[\lignum]
+Model  tree \lignum\ consists  of one  axis.  An  axis is  a (possibly
+empty)  sequence  of  tree  segments  and  branching  points  and  one
+terminating bud.  Each  tree segment only must be  followed by exactly
+one branching point.   Branching point is a set  of axes capturing the
+branching structure of the model tree.
+\end{definition} 
 
 \begin{figure}[h]
 \begin{center}
