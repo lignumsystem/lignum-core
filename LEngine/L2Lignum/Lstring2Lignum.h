@@ -157,7 +157,7 @@ int Lstring2Lignum(list<TreeCompartment<TS,BUD>*>& ls,
     if (ls.empty()){
       BUD* bud = new BUD(GetPoint(turtle_stack.top()),
 			 GetHeading(turtle_stack.top()),
-			 0.0,&tree);
+			 turtle_stack.size(),&tree);
       ls.insert(ls.begin(),bud);
       //Initialize current!!
       current = ls.begin();
