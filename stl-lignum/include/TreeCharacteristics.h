@@ -46,9 +46,10 @@ namespace Lignum{
   template <class TS, class BUD>
   class DiameterBreastHeight{
   public:
-    DiameterBreastHeight(double d = 0.0):d13(d){}
+    DiameterBreastHeight(double d = 0.0):d13(d),dhw13(d){}
     double dbh(){return d13;}
-    void operator()(TreeCompartment<TS,BUD>* tc)
+    double dbhhw(){return dhw13;}
+    void operator()(TreeCompartment<TS,BUD>* tc)const
     {
       if (TS* ts = dynamic_cast<TS*>(tc)){
 	//segment above 1.3 meters. It is assumed the list is
@@ -56,11 +57,13 @@ namespace Lignum{
 	if (GetPoint(*ts).getZ() >= 1.3){
 	  //override previous value
 	  d13 = 2.0*GetValue(*ts,LGAR);
+	  dhw13 = 2.0*GetValue(*ts,LGARh);
 	}
       }
     }
   private:
     double& d13; //diameter at 1.3 m
+    double& dhw13; //Heart wood diameter at 1.3 m
   };
 
 
