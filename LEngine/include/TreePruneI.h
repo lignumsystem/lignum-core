@@ -24,26 +24,25 @@ int LSystem<TS,BUD,T,F>::prune(list<Axis<TS,BUD>*>& ls,
       //Proceed to the axis
       list<TreeCompartment<TS,BUD>*>& tc_ls = GetTreeCompartmentList(*axis);
       //Do the pruning in the L-string  if the list is empty
-      if (tc_ls.empty()){
+      if (tc_ls.empty() && (ltr.GetModuleId() != EB_id)){
 	//The end branch is here or will be here
 	const char* start = ltr.Ptr();
 	//To find the end of branch
 	LstringIterator eb(ltr);
 	//The string is not pruned 
-	if (strcmp(eb.GetCurrentModuleName(),"EB") != 0){
-	  //The L-string is like: SB F ... EB SB ... EB F ... B, and we are
-	  //at the first F.
-	  eb.FindEOB();
-	  //Now we are at the first EB 
-	  int eb_position = eb.CurrentPosition();
-	  int last_byte = eb.GetEndPosition();
-	  //The distance from the first EB the last B (end of string)
-	  int size_to_move = last_byte - eb_position;
-	  //now move the tail of  the L-string, the string looks like:
-	  //SB EB SB ... EB F ... B
-	  ltr.prune(eb_position,size_to_move);
-	}
-	//The string is like: SB EB SB ... EB F ... B, so the branch is already pruned
+	//The L-string is like: SB F ... EB SB ... EB F ... B, and we are
+	//at the first F.
+	eb.FindEOB();
+	//Now we are at the first EB 
+	int eb_position = eb.CurrentPosition();
+	int last_byte = eb.GetEndPosition();
+	//The distance from the first EB the last B (end of string)
+	int size_to_move = last_byte - eb_position;
+	//now move the tail of  the L-string, the string looks like:
+	//SB EB SB ... EB F ... B
+	ltr.prune(eb_position,size_to_move);
+	//The string is like:  SB EB SB ... EB F ...  B, so the branch
+	//is (already) pruned.
       }
       //Return to the algorithm 
       prune(tc_ls,tc_ls.begin(),ltr,vav);
@@ -169,23 +168,6 @@ int LSystem<TS,BUD,T,F>::prune(list<TreeCompartment<TS,BUD>*>& ls,
       cerr << "Axis error 7 L file does not generate Lignum structure" << endl;
       //If control reaches here it is an error
     }
-  }
-  //Take care of three turtle commands
-  //Turn
-  else if (strcmp(name,"Turn") == 0){
-    ltr++;
-  }
-  //Pitch
-  else if (strcmp(name,"Pitch") == 0){
-    ltr++;
-  }
-  //Roll
-  else if (strcmp(name,"Roll") == 0){
-    ltr++;
-  }
-  //Hroll
-  else if (strcmp(name,"Roll") == 0){
-    ltr++;
   }
   //Ignore  other symbols, go forward in the string
   else{
