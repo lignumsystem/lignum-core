@@ -38,6 +38,10 @@ namespace cxxadt{
                                   //the ellipse area calculation
     double getArea()const{return semimajoraxis*semiminoraxis*PI_VALUE;}; 
 
+
+                                 //getting the ellipse points 
+    vector<Point>&  getVertexVector(vector<Point>& points)const;
+
                                    //it defines a new ellipse from
                                    // the old one
                                    //using the scaling method with the 
