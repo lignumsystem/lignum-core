@@ -88,41 +88,45 @@ fashion described  by differential equations. But there  is still much
 discreteness that remains.
 
 An  important   class  of  chemical   reactions  can  be   modeled  as
-reaction-diffusion equations. Suppose a  sequence of tree segments and
+reaction-transport equations. Suppose a  sequence of tree segments and
 two  nutrients $A$  and $B$  present  in the  segments denoting  their
-concentrations with $a$  and $b$.  Assume that the  amount of nutrient
-$A$ depends  on the quantities of  $A$ and $B$ already  in the segment
-and similarly for $B$.  This is  the reaction part of the system. Then
-assume  the  two nutrients  can  dissolve  between adjacent  segments.
-Typically if in a segment the concentration of the nutrients is higher
-than  its neighbors  then the  segments' concentration  will  even out
-because of  flow of  the nutrients away  from the  peak concentration.
-This  is the  diffusion part  of the  system.  
+concentrations  with  $u_A$ and  $u_B$.   Assume  that  the amount  of
+nutrient $A$ depends  on the quantities of $A$ and  $B$ already in the
+segment  and similarly  for $B$.   This is  the reaction  part  of the
+system. Then  assume the two  nutrients can dissolve  between adjacent
+segments.   Typically  if  in  a  segment  the  concentration  of  the
+nutrients   is  higher   than   its  neighbors   then  the   segments'
+concentration will even out because of flow of the nutrients away from
+the peak  concentration.  This  is the diffusion  part of  the system.
+Finally, the nutrients are dissolved  in a transport medium like water
+or sap.  The velocity  of the  flow of the  medium itself  affects the
+concentration of  the nutrients  in a segment.  This is  the transport
+part of the system.
 
-Formally  one  typically   writes  $\frac{\partial  a}{\partial  t}  =
-R_a(a,b) + C_a\nabla^2a$ for $A$'s changes in time and $\frac{\partial
-  b}{\partial t}  = R_b(a,b) + C_b\nabla^2b$ for  $B$.  The Laplacians
-$\nabla^2 a$ and $\nabla^2 b$ \citep{thomas:92} in diffusion terms are
-the measure of  the concentrations in one location.   If the Laplacian
-is  negative there is  a flow  towards that  point and  positive value
-implies local peak concentration and flow away from that point.
-
-Thus one can imagine a continuous  flow of nutrients in every point in
+Formally  one  typically  writes  $\dot{u}_A(x,t)  =  d_Au_A''(x,t)  +
+v(t)u_A'(x,t)  + R_A(u_A,u_B)$  for $A$  and similarly  for  $B$ where
+$u_A(x,t)$ is  A's concentration,  $d_A$ is the  diffusion coefficient
+describing the flow from higher  concentration to lower, $v(t)$ is the
+velocity of  the transport medium and  $R$ is the  reaction term.  The
+exact  formulations  for   diffusion,  transport  and  reaction  terms
+naturally  depend on  the specific  model but  this reaction-transport
+equation describes a continuous flow of nutrient $A$ in every point in
 segments  in a  continuous  time expressed  with partial  differential
-equations and perhaps design L-system formalism around it but how does
-one write  rules having  no explicit time  steps?  In  general partial
-differential  equations  are considered  difficult  to  solve and  the
-knowledge of the  problem domain is used to  find efficient solutions.
-Reaction-diffusion model  in the context of  branching structures (and
-LIGNUM) is in \citet{palovaara:03}. 
+equations.
+
+In general partial differential  equations are considered difficult to
+solve  and  the  knowledge of  the  problem  domain  is used  to  find
+efficient  numerical  solutions.  A  reaction-transport  model in  the
+context of branching structures  (and thus interesting to implement in
+LIGNUM) is in \citet{palovaara:03}.
 
 It is still an open question for us what parts of the modeling efforts
-with LIGNUM will switch to  L-systems.  Some modeling efforts done can
-be  easily   expressed  with  rewriting  but   other  like  ubiquitous
-computation of light regime, creation of leaves and the positioning of
-leaf  blades etc.   inevitably  requires  at least  some  part of  the
-implementation  outside the  formalism.  In  any case  it would  be an
-interesting exercise  in itself to study carefully  the convergence of
-LIGNUM  and L-systems by  fully implementing  LIGNUM in  some L-system
-tool.
+with  LIGNUM  will  switch   to  L-systems.   Some  modeling  efforts,
+especially phenomena  {\it within} a plant, are  easily expressed with
+rewriting  but  other like  ubiquitous  computation  of light  regime,
+creation of leaves and the positioning of leaf blades etc.  inevitably
+requires  at  least some  part  of  the  modeling and  implementations
+outside  the  formalism.  In  any  case  it  would be  an  interesting
+exercise in  itself to study  carefully the convergence of  LIGNUM and
+L-systems by fully implementing LIGNUM in some L-system tool.
 
