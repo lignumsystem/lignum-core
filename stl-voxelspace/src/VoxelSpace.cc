@@ -32,8 +32,6 @@ namespace Lignum {
   }
 
 
-
-
   //
   // Constructor
   //
@@ -48,16 +46,17 @@ namespace Lignum {
   VoxelSpace::VoxelSpace(Point c1, Point c2, int xn, int yn, int zn, Firmament &f)
     :corner1(c1),corner2(c2),voxboxes(xn,yn,zn),Xn(xn),Yn(yn),Zn(zn)
   {
-
-    Xbox = 1.0;
-    Ybox = 1.0;
-    Zbox = 1.5;
-
+    Xbox = (corner2-corner1).getX()/static_cast<int>(Xn);
+    Ybox = (corner2-corner1).getY()/static_cast<int>(Yn);
+    Zbox = (corner2-corner1).getZ()/static_cast<int>(Zn);
+    
     for(int i1=0; i1<Xn; i1++)
       for(int i2=0; i2<Yn; i2++)
 	for(int i3=0; i3<Zn; i3++)
 	  {
-	    Point corner = corner1 + Point(i1*Xbox, i2*Ybox, i3*Zbox); 
+	    Point corner = corner1 +
+	      Point((LGMdouble)i1*Xbox,(LGMdouble)i2*Ybox,
+		    (LGMdouble)i3*Zbox); 
 	    voxboxes[i1][i2][i3].setVoxelSpace(this, corner); 
 	  }
     sky = &f;
@@ -79,11 +78,122 @@ namespace Lignum {
       for(int i2=0; i2<Yn; i2++)
 	for(int i3=0; i3<Zn; i3++)
 	  {
-	    Point corner = corner1 + Point(i1*Xbox, i2*Ybox, i3*Zbox); 
+	    Point corner = corner1 +
+	      Point((LGMdouble)i1*Xbox, (LGMdouble)i2*Ybox,
+		    (LGMdouble)i3*Zbox); 
 	    voxboxes[i1][i2][i3].setVoxelSpace(this, corner); 
 	  }
     sky = &f;
   }
+
+
+ //Change number (=input) of VoxelBoxes in x, y, and z-directions. The whole
+ //VoxelSpace, that is, the big box from corner1 to corner2 retains
+ //its size => size of VoxelBox changes.
+
+  void VoxelSpace::resize(int x, int y, int z) {
+    if(x < 1) x = 1;
+    if(y < 1) y = 1;
+    if(z < 1) z = 1;
+    voxboxes.resize(x, y, z);
+    Xn = x, Yn = y, Zn = z;
+
+    //Update now the size of VoxelBox
+    Xbox = (LGMdouble)Xn*Xbox / (LGMdouble)Xn;
+    Ybox = (LGMdouble)Yn*Ybox / (LGMdouble)Yn;
+    Zbox = (LGMdouble)Zn*Zbox / (LGMdouble)Zn;
+
+    //The coordinates (=lower left corners) of the VoxelBoxes have to
+    //be set and also the Voxelspace
+    for(int i1=0; i1<Xn; i1++)
+      for(int i2=0; i2<Yn; i2++)
+	for(int i3=0; i3<Zn; i3++)
+	  {
+	    Point corner = corner1 +
+	      Point((LGMdouble)i1*Xbox, (LGMdouble)i2*Ybox,
+		    (LGMdouble)i3*Zbox); 
+	    voxboxes[i1][i2][i3].setVoxelSpace(this, corner); 
+	  }
+
+  }
+
+ //Change sizes of VoxelBoxes => number of VoxelBoxes in x, y, and
+ //z-direction change, since the the big box from corner1 to corner2
+ //retains (approximately) its size (slight change due to change of
+ //voxelbox size; corner2 changes). 
+
+  void VoxelSpace::resize(LGMdouble lX, LGMdouble lY, LGMdouble lZ) {
+    if(lX < R_EPSILON) lX = 1.0;
+    if(lY < R_EPSILON) lY = 1.0;
+    if(lZ < R_EPSILON) lZ = 1.0;
+
+    Xn = static_cast<int>((LGMdouble)Xn*Xbox / lX) + 1;
+    Yn = static_cast<int>((LGMdouble)Yn*Ybox / lY) + 1;
+    Zn = static_cast<int>((LGMdouble)Zn*Zbox / lZ) + 1;
+
+    voxboxes.resize(Xn, Yn, Zn);
+
+    Xbox = lX, Ybox = lY, Zbox = lZ;
+
+    //Update also the other corner. Lover left corner1 = origo,
+    //corner2 is the opposite corner.It may have changed slightly.
+    corner2 = corner1 + Point((LGMdouble)Xn*Xbox, (LGMdouble)Yn*Ybox,
+			      (LGMdouble)Zn*Zbox);
+
+
+    //The coordinates (=lower left corners) of the VoxelBoxes have to
+    //be set and also the Voxelspace
+    for(int i1=0; i1<Xn; i1++)
+      for(int i2=0; i2<Yn; i2++)
+	for(int i3=0; i3<Zn; i3++)
+	  {
+	    Point corner = corner1 +
+	      Point((LGMdouble)i1*Xbox, (LGMdouble)i2*Ybox,
+		    (LGMdouble)i3*Zbox); 
+	    voxboxes[i1][i2][i3].setVoxelSpace(this, corner); 
+	  }
+
+  }
+
+
+ //Change sizes & numbers of VoxelBoxes => the extent of VoxelSpace
+ //changes (i.e. corner2)
+
+    void VoxelSpace::resize(LGMdouble lX, LGMdouble lY, LGMdouble lZ,
+			    int nX, int nY, int nZ )
+    {
+    if(nX < 1) nX = 1;
+    if(nY < 1) nY = 1;
+    if(nZ < 1) nZ = 1;
+    if(lX < R_EPSILON) lX = 1.0;
+    if(lY < R_EPSILON) lY = 1.0;
+    if(lZ < R_EPSILON) lZ = 1.0;
+
+    Xn = nX, Yn = nY, Zn = nZ;
+    voxboxes.resize(Xn, Yn, Zn);
+
+    Xbox = lX, Ybox = lY, Zbox = lZ;
+
+    //Update the other corner. Lover left corner1 = origo,
+    //corner2 is the opposite corner.It may have changed slightly.
+
+    corner2 = corner1 + Point((LGMdouble)Xn*Xbox, (LGMdouble)Yn*Ybox,
+			      (LGMdouble)Zn*Zbox);
+
+ 
+   //The coordinates (=lower left corners) of the VoxelBoxes have to
+    //be set and also the Voxelspace
+    for(int i1=0; i1<Xn; i1++)
+      for(int i2=0; i2<Yn; i2++)
+	for(int i3=0; i3<Zn; i3++)
+	  {
+	    Point corner = corner1 +
+	      Point((LGMdouble)i1*Xbox, (LGMdouble)i2*Ybox,
+		    (LGMdouble)i3*Zbox); 
+	    voxboxes[i1][i2][i3].setVoxelSpace(this, corner); 
+	  }
+
+    }
 
 
   // 

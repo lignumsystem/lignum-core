@@ -62,6 +62,24 @@ namespace Lignum {
 	       int xn, int yn, int zn,
 	       Firmament& f);
     void reset();
+    void resize(int nX, int nY, int nZ); //change number of VoxelBoxes
+					 //in x, y, and
+					 //z-directions. The extent
+					 //of VoxelSpace does not
+					 //change.Contents are lost.
+    void resize(LGMdouble lX, LGMdouble lY,
+		LGMdouble lZ);           //Change sizes of VoxelBoxes
+					 //in x, y, and
+					 //z-directions. The extent of
+					 //VoxelSpace does not change
+					 //(only by size of the
+					 //VoxelBox). Contents are lost.
+
+    void resize(LGMdouble lX, LGMdouble lY, LGMdouble lZ,int nX, int nY,
+		int nZ );           //Change both number and size of
+				    //VoxelBoxes. The extent of
+				    //VoxelSpace changes. Contents are
+				    //lost.
 
     int getNumberOfBoxes()const{ return Xn*Yn*Zn; }
     int getNumberOfFilledBoxes()const;
@@ -121,8 +139,6 @@ namespace Lignum {
 
     Point corner1;  //origo
     Point corner2;  //diagonallly opposite corner(??)
-	
-    LGMdouble Xspan, Yspan, Zspan;
 	
     int getXindex(LGMdouble xcoord);
     int getYindex(LGMdouble ycoord);

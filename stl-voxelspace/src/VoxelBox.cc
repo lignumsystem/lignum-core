@@ -56,7 +56,6 @@ void VoxelBox::setVoxelSpace(VoxelSpace *s, Point c)
 }
 
 
-
 //
 //	Updates  the values after  every tree  segment being  added to
 //	this VoxelBox. 
