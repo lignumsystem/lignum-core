@@ -169,7 +169,7 @@ int main(int argc, char** argv)
   //cout << endl;
   //DisplayStructure(tree);
   SaveTree(GetAxis(tree),"Pinus.txt","Pinus");
-  Visualize(tree);
+  VisualizeLGMTree(tree);
 
 //    {
 //      //Draw(100);
