@@ -61,6 +61,7 @@ public:
 	void increaseNumberOfSegments(){number_of_segments++;}
 	friend ostream &operator << (ostream& os, VoxelBox &b);
 	LGMdouble getQabs() { return Q_abs; }
+	LGMdouble getQin() { return Q_in; }
 	LGMdouble S(LGMdouble phi, LGMdouble Sf, LGMdouble Wf, LGMdouble r, LGMdouble l);
 protected:
 	LGMdouble star;
