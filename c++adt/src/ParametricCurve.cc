@@ -24,7 +24,7 @@ bool ParametricCurve::install(const string& file_name)
   return ok();
 }
 
-bool ParametricCurve::ok()
+bool ParametricCurve::ok()const
 {
   return !v.empty();
 }
@@ -56,7 +56,7 @@ ParametricCurve& ParametricCurve::read_xy_file(const char *file_name)
   return *this;
 }
 
-double ParametricCurve::eval(double x)
+double ParametricCurve::eval(double x)const
 {
   int i = 0;
 
