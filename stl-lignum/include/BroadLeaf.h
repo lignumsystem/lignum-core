@@ -62,6 +62,8 @@ public:
   BroadLeaf(LGMdouble sf,LGMdouble tauL,LGMdouble dof,int number_of_sectors,
 	    const Petiole& petiole, const PositionVector& leaf_normal,
 	    const Ellipsis& shape);
+  BroadLeaf(const Ellipsis& shape, const Petiole& petiole, 
+	    const PositionVector& leaf_normal);
   void photosynthesis(const LGMdouble& p0);
 private:
   //  void initsv(){for (int i = 0; i < bla.sv.size(); i++)bla.sv[i] = 1.0;}
