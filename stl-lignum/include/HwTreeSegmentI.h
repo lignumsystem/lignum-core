@@ -19,7 +19,7 @@ template<class TS, class BUD >
 void InitializeForRadiation(HwTreeSegment<TS,BUD>& ts)
 {
   Tree<TS,BUD>& tt = dynamic_cast<Tree<TS,BUD>&>(GetTree(*ts));
-  Firmament& f = GetFirmament(tt);
+  FirmamentWithMask& f = GetFirmament(tt);
   int nr =  f.numberOfRegions();
   vector<LGMdouble> one(nr, 1.0);
   list<BroadLeaf*>& ll = GetLeafList(const_cast<HwTreeSegment<TS,BUD>&>(ts));

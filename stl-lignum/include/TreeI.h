@@ -291,7 +291,13 @@ string GetTreeInitializationFile(Tree<TS,BUD>& tree) {
 
 
 template <class TS,class BUD>
-Firmament& GetFirmament(Tree<TS,BUD>& tree) {
+void SetFirmament(const Tree<TS,BUD>& tree, const FirmamentWithMask& frmnt)
+{
+  tree.f = frmnt;
+}
+ 
+template <class TS,class BUD>
+FirmamentWithMask& GetFirmament(Tree<TS,BUD>& tree) {
   return tree.f;
 }
 

@@ -27,7 +27,7 @@ using namespace cxxadt;
 #include <CfTreeSegment.h>
 #include <Axis.h>
 #include <ConnectionMatrix.h>
-#include <Firmament.h>
+#include <FirmamentWithMask.h>
 #include <TreeRadiation.h>
 
 using namespace sky;
@@ -120,9 +120,12 @@ class Tree: public TreeCompartment<TS,BUD>{
 
   template <class TS1,class BUD1>
   friend string GetTreeInitializationFile(Tree<TS1,BUD1>& tree);
+  
+  template <class TS1,class BUD1>
+  friend void SetFirmament(const Tree<TS1,BUD1>& tree, const FirmamentWithMask& f);
 
   template <class TS1,class BUD1>
-  friend Firmament& GetFirmament(Tree<TS1,BUD1>& tree);
+  friend FirmamentWithMask& GetFirmament(Tree<TS1,BUD1>& tree);
 
   template <class TS1, class BUD1, class F>
   friend void EvaluateRadiationForTree(Tree<TS1,BUD1>& tree, const F& f);
@@ -140,12 +143,18 @@ private:
   TreeParameters tp;
   TreeTransitVariables ttp;
   TreeInitializationFiles tif;
-  Firmament f;
+  FirmamentWithMask f;
   Axis<TS,BUD> axis;
   RootSystem rs;
 };
 
-
+template <class FRMNT, class TS, class BUD = DefaultBud<TS> > 
+class FTree: public Tree<TS,BUD>{
+public:
+  FTree(const Point& p, const PositionVector& pv):Tree<TS,BUD>(p,pv){}
+private:
+  FRMNT frmnt;
+};
 
 }//closing namespace Lignum
 

@@ -38,14 +38,19 @@ int main(int argc, char *argv[])
   //by default the tree is from namespace Lignum
   Tree<MyCfTreeSegment,MyBud> cf_tree(Point(0,0,0),
 				      PositionVector(0,0,1.0));
- string clarg,empty;
 
- clarg = ParseCommandLine(argc,argv,"-file");
- if (clarg != empty)
-   InitializeTree(hw_tree,clarg);
+  FTree<FirmamentWithMask,MyCfTreeSegment,MyBud> ftree1(Point(0,0,0),
+							PositionVector(0,0,1.0));
+  FTree<Firmament,MyCfTreeSegment,MyBud> ftree2(Point(0,0,0),
+						PositionVector(0,0,1.0));
+  string clarg,empty;
 
-  //GetFirmament(hw_tree);
-  
+  clarg = ParseCommandLine(argc,argv,"-file");
+  if (clarg != empty)
+    InitializeTree(hw_tree,clarg);
+ 
+ 
+   
   //Example 1.
   //create a tree with a structure [TS,[[B],[B]],B]
   //i.e, [TS,BP,B] which expands to [TS,[A,A],B] and to [TS,[[B],[B]],B]
