@@ -354,26 +354,43 @@ namespace Lignum{
     TreeData<TS,BUD> getTreeValues;
   
     values = Accumulate(tr, values, getTreeValues);
-  
-    cout << "P: " << GetValue(tr,TreeP) << " M: "
-	 << GetValue(tr,TreeM) << endl;
-    cout << "age: " << values.age << endl;
-    cout << "Height: " << values.height << " Height of crown base: " <<
-      values.Hc << endl;
-    cout << "Basal diameter, cm: " << 200*values.bottom_rad << endl;
-    cout << "sum_Wf: " << values.sum_Wf << endl;
-    cout << "sum_Wf_new: " << values.sum_Wf_new << endl;
+
+    //Diameter and heigth at the crown base.
+    DCLData dcl;
+    AccumulateDown(tr,dcl,AddBranchWf(),
+    		   DiameterCrownBase<TS,BUD>());
+
+    cout << endl;
+    cout << "age: " << values.age << "  growth cycles" << endl;
+    cout << "Tree height: " << values.bolLen << " m,  highest point: "
+	 << values.tHeight << " m, Height of crown base: "
+	 << values.Hc << "  m" << endl;
+    cout << "Basal diameter:  " << 200*values.bottom_rad 
+	 << "  cm, diam at CB: " << 100.0*dcl.DCrownBase()
+	 << "  cm,  Hw diam. at CB:  " << 100.0*dcl.DHWCrownBase()
+	 << "  cm" << endl;
+    cout << "sum_Wf: " << values.sum_Wf << "  kg C, Foliage area:  " 
+	 << values.sum_Af << " m2" << endl;
+    cout << "sum_Wf_new: " << values.sum_Wf_new << "  kg C" << endl;
     cout << "sum_wood_in_newparts: " << values.sum_wood_in_newparts
-	 << endl;
-    cout << "sum_wood_new: " << values.sum_wood_new << endl;
-    cout << "sum_Ws: " << values.sum_Ws << endl;
-    cout << "sum_Wb: " << values.sum_Wb << endl;
-    cout << "sum_Wsw: " << values.sum_Wsw << endl;
-    cout << "sum_Whw: " << values.sum_Whw << endl;
+	 << "  kg C" << endl;
+    cout << "sum_wood_new: " << values.sum_wood_new << "  kg C" << endl;
+    cout << "sum_Ws: " << values.sum_Ws << "  kg C" << endl;
+    cout << "sum_Wb: " << values.sum_Wb << "  kg C" << endl;
+    cout << "sum_Wsw: " << values.sum_Wsw << "  kg C" << endl;
+    cout << "sum_Whw: " << values.sum_Whw << "  kg C" << endl;
+
+    if(values.sum_Wf+values.sum_Wsw+GetValue(tr,TreeWr) > 0.0)
+      cout << "Foliage area / Biomass (m2/kg C):  " << values.sum_Af/
+	(values.sum_Wf+values.sum_Wsw+GetValue(tr,TreeWr)) << endl;
+    else
+      cout << "Foliage area / Biomass (m2/kg C):  " << 0.0 << endl;
+
+
     if(values.num_s_fol > 0) {
       cout << "Qabs: " << values.sum_Qabs <<"  mean_Qabs: " 
 	   << values.sum_Qabs/(double)values.num_s_fol << endl;
-      cout << "Qin: " << values.sum_Qin <<  "  mean_Qin: "
+      cout << "QinMax: " << values.max_Qin <<  "  mean_Qin: "
 	   << values.sum_Qin/(double)values.num_s_fol << endl;
     }
 
@@ -384,10 +401,13 @@ namespace Lignum{
   
     if(values.sum_Qin > R_EPSILON && values.sum_Wf > R_EPSILON) {
       LGMdouble Qi = GetFirmament(tr).diffuseBallSensor();
-      if(Qi > R_EPSILON)
-	cout << "Qabs/(Qin*Wf) = " << values.sum_Qabs/(Qi*values.sum_Wf)
-	     << "    (should be 2...3)" << endl;
+      if(Qi > R_EPSILON && values.sum_Af > R_EPSILON)
+	cout << "Qabs/(Qin*Foliage area) = "
+	     << values.sum_Qabs/(Qi*values.sum_Af)
+	     << "    (should be < 1?)" << endl;
     }
+    cout << "P: " << GetValue(tr,TreeP) << " kgC,  M: "
+	 << GetValue(tr,TreeM) << "  kgC" << endl;
 
     cout << "num_buds: " << values.num_buds << endl;
     cout << "num_segments: " << values.num_segments << 
@@ -436,14 +456,9 @@ namespace Lignum{
 	LGMdouble rh_ = GetValue(*ts, LGARh);
 	
 	Point ep = GetEndPoint(*ts);
-	if (stru.height < ep.getZ())
-	  stru.height = ep.getZ();
+	if (stru.tHeight < ep.getZ())
+	  stru.tHeight = ep.getZ();
 	
-	if (GetPoint(*ts).getZ() == 0)
-	  {
-	    stru.bottom_rad = r_;
-	  }
-      
 	int _age = (int)GetValue(*ts, LGAage);
 	if (_age > stru.age)
 	  stru.age = _age;
@@ -452,37 +467,30 @@ namespace Lignum{
 	if(GetValue(*ts, LGAWf) > R_EPSILON) {
 	  stru.num_s_fol++;
 	  stru.sum_Qabs += GetValue(*ts, LGAQabs);
+	  if(stru.max_Qin < GetValue(*ts, LGAQin))
+	    stru.max_Qin = GetValue(*ts, LGAQin);
 	  stru.sum_Qin += GetValue(*ts, LGAQin);
 	}
   
-	LGMdouble rho_ = GetValue(tt, LGPrhoW);
-
 	if(_age == 0) {
 	  stru.sum_Wf_new += GetValue(*ts, LGAWf);
-	  stru.sum_wood_in_newparts += rho_*l_*2.0*PI_VALUE*r_*r_;
-	  stru.sum_wood_new += rho_*l_*2.0*PI_VALUE*r_*r_;
+	  stru.sum_wood_in_newparts += GetValue(*ts,LGAWs)+GetValue(*ts,LGAWh);
+	  stru.sum_wood_new += GetValue(*ts,LGAWs)+GetValue(*ts,LGAWh);
 	}
 
-	stru.sum_Wsw += rho_*l_*2.0*PI_VALUE*(r_*r_-rh_*rh_);
-	stru.sum_Whw += rho_*l_*2.0*PI_VALUE*rh_*rh_;
+	stru.sum_Wsw += GetValue(*ts, LGAWs);
+	stru.sum_Whw += GetValue(*ts, LGAWh);
+	stru.sum_Af += GetValue(*ts, LGAAf);
 
+	LGMdouble rho_ = GetValue(tt, LGPrhoW);
 	stru.sum_wood_new += rho_*l_*2.0*PI_VALUE*
 	  (r_*r_ - pow(r_-GetLastAnnualIncrement(*ts),2.0));
-      
 
-	// if main axis
+	// if TreeSegment of main axis
 	if(GetValue(*ts, LGAomega) == 1)
-	  {
-	    stru.taper_rad.push_back(GetValue(*ts, LGAR)); 
-	    stru.taper_hei.push_back(ep.getZ());
-	    stru.taper_radhw.push_back(GetValue(*ts, LGARh));
-
-	    stru.sum_Ws += rho_*GetValue(*ts,LGAL)*2.0*PI_VALUE*r_*r_;
-
-	  }
-
+	    stru.sum_Ws += GetValue(*ts,LGAWs)+GetValue(*ts,LGAWh);
 	else
-	  stru.sum_Wb += rho_*GetValue(*ts,LGAL)*2.0*PI_VALUE*r_*r_;
+	  stru.sum_Wb += GetValue(*ts,LGAWs)+GetValue(*ts,LGAWh);
 		
       }
     else if (Bud<TS,BUD>* bud = dynamic_cast<Bud<TS,BUD>*>(tc))
@@ -492,7 +500,41 @@ namespace Lignum{
 
     else if(Axis<TS, BUD>* ax = dynamic_cast<Axis<TS,BUD>*>(tc)) {
       TreeSegment<TS,BUD>* fs = GetFirstTreeSegment(*ax);
-      if(fs != NULL)
+      if(fs != NULL) {
+	if(GetValue(*fs, LGAomega) == 1) //Main axis = stem
+	  {
+	    
+	    stru.bottom_rad = GetValue(*fs, LGAR);
+	    
+	    //Set the taper curve & bole lenght
+	    //Taper curve argument (taper_hei) along the bole!
+	    LGMdouble bl = 0.0;
+	    list<TreeCompartment<TS,BUD>*>& tc_ls =
+	      GetTreeCompartmentList(*ax);
+	    typename list<TreeCompartment<TS,BUD>*>::iterator first =
+	      tc_ls.begin();
+	    typename list<TreeCompartment<TS,BUD>*>::iterator last =
+	      tc_ls.end();
+	    while (first != last) {
+	      if(TS* se = dynamic_cast<TS*>(*first)){
+		stru.taper_rad.push_back(GetValue(*se, LGAR)); 
+		stru.taper_hei.push_back(bl);
+		stru.taper_radhw.push_back(GetValue(*se, LGARh));
+		bl += GetValue(*se, LGAL);
+	      }
+	      first++;
+	    }
+	    //Conditions at the tip of the bole
+	    TreeSegment<TS,BUD>* ls = GetLastTreeSegment(*ax);
+	    stru.taper_hei.push_back(bl);
+	    stru.taper_rad.push_back(GetValue(*ls, LGARTop));
+	    Tree<TS,BUD>& tt = GetTree(*ls);
+	    stru.taper_radhw.push_back(
+                    GetValue(tt,LGPxi)*GetValue(*ls, LGARh));
+	    stru.bolLen = bl;
+	  }
+
+
 	if(GetValue(*fs, LGAomega) == 2) {
 	  //is main branch, does it have foliage, i.e. is it living?
 	  LGMdouble fol = GetBranchFoliage(*ax);
@@ -507,7 +549,9 @@ namespace Lignum{
 	    stru.sum_br_len_d += GetValue(*ax, LGAL);
 	  }
 	}
+      }   //if(fs != NULL)
     }
+
     //calculate mean length of main branches in their whorls
     else if(BranchingPoint<TS, BUD>* bp =
 	    dynamic_cast<BranchingPoint<TS,BUD>*>(tc)) {
@@ -536,7 +580,7 @@ namespace Lignum{
 	  }
 	}
       }
-    }
+    }   //If branching point
 
     return stru;
   }
@@ -939,7 +983,7 @@ namespace Lignum{
       TreeData<TS,BUD> getTreeValues;
   
       values = Accumulate(tr, values, getTreeValues);
-  
+ 
       file << "P: " << GetValue(tr,LGAP) << " M: "
 	   << GetValue(tr,LGAM) << endl;
       file << "age: " << values.age << endl;

@@ -4,11 +4,14 @@
 #include <iostream>
 #include <fstream>
 using namespace std;
+
 #include <LGMdecl.h>
 #include <LGMSymbols.h>
 #include <TreeCompartment.h>
 #include <BroadLeaf.h>
 #include <Algorithms.h>
+#include <TreeCharacteristics.h>
+
 
 //This file declares the following functors (functions) for Tree. Help
 //functors etc. are not specified. If you add a functor-function
@@ -61,99 +64,55 @@ namespace Lignum{
   //TreeData is used to collect (Accumulate) data on a tree.
   //it uses TreeDataStruct
 
-  class TreeDataStruct {
+  class TreeDataStruct
+      {
   public:
-    TreeDataStruct() {
-      age = 0;
-      sum_Wf = 0.0;
-      sum_Wf_new = 0.0;
-      sum_wood_in_newparts = 0.0;
-      sum_wood_new = 0.0;
-      sum_Ws = 0.0;
-      sum_Wb = 0.0;
-      sum_Wsw = 0.0;
-      sum_Whw = 0.0;
-      sum_Qabs = 0.0;
-      sum_Qin = 0.0;
-      num_buds = 0;
-      num_segments = 0;
-      height = 0.0;
-      bottom_rad = 0.0;
-      Hc = R_HUGE;
-      num_s_fol = 0;
-      num_br_l = 0;
-      num_br_d = 0;
-      sum_br_len = 0.0;
-      sum_br_len_d = 0.0;
-
-      sum_br_As = 0.0;
-      sum_br_Ac = 0.0;
-
-    }
-
-    TreeDataStruct& operator += (const TreeDataStruct& s) {
-      if(this->age < s.age)
-	this->age = s.age;
-      this->sum_Wf += s.sum_Wf;
-      this->sum_Wf_new += s.sum_Wf_new;
-      this->sum_wood_in_newparts += s.sum_wood_in_newparts;
-      this->sum_wood_new += s.sum_wood_new;
-      this->sum_Ws += s.sum_Ws;
-      this->sum_Wb += s.sum_Wb;
-      this->sum_Wsw += s.sum_Wsw;
-      this->sum_Whw += s.sum_Whw;
-      this->sum_Qabs += s.sum_Qabs;
-      this->sum_Qin += s.sum_Qin;
-      this->num_buds += s.num_buds;
-      this->num_segments += s.num_segments;
-      if(this->height < s.height)
-	this->height =  s.height;
-      if(this->bottom_rad < s.bottom_rad)
-	this->bottom_rad = s.bottom_rad;
-      if(this->Hc > s.Hc)
-	this->Hc = s.Hc;
-      this->num_s_fol += s.num_s_fol;
-      this->num_br_l += s.num_br_l;
-      this->num_br_d += s.num_br_d;
-      this->sum_br_len += s.sum_br_len;
-      this->sum_br_len_d += s.sum_br_len_d;
-      return *this;
-    }
-
-
-    int age;
-    LGMdouble sum_Wf;          //All foliage
-    LGMdouble sum_Wf_new;      //Foliage in segments (int)age == 0
-    LGMdouble sum_wood_in_newparts; //Wood in segments (int)age == 0
-    LGMdouble sum_wood_new;    //sum_wood_in_newparts+last ring
-    LGMdouble sum_Ws;          // Stemwood
-    LGMdouble sum_Wb;          // Branchwood
-    LGMdouble sum_Wsw;         // Sapwood (in all segments)
-    LGMdouble sum_Whw;         // Heartwood (in all segments)
-    LGMdouble sum_Qabs;         // Absorbed radiation
-    LGMdouble sum_Qin;         // Incoming radiation
-    LGMdouble sum_br_As;
-    LGMdouble sum_br_Ac; 
-    int num_buds;
-    int num_segments;
-    LGMdouble height;
-    LGMdouble bottom_rad;
-    LGMdouble Hc;               //Height of grown base
-    int num_s_fol;              //number of segments with foliage
-    int num_br_l;               //number of branches living
-    int num_br_d;               //number of branches dead
-    LGMdouble sum_br_len;       //total length of branches, living
-    LGMdouble sum_br_len_d;     //total length of branches, dead
-    std::vector<LGMdouble> taper_rad;
-    std::vector<LGMdouble> taper_hei;
-    std::vector<LGMdouble> taper_radhw;
-    std::vector<LGMdouble> mean_brl;
-    std::vector<LGMdouble> mean_br_h;
-
-    std::vector<LGMdouble> taper_radh;
-  };
-
-
+      TreeDataStruct::TreeDataStruct():
+	age(0), sum_Wf(0.0), sum_Wf_new(0.0), sum_wood_in_newparts(0.0),
+	sum_wood_new(0.0), sum_Ws(0.0), sum_Wb(0.0), sum_Wsw(0.0),
+	sum_Whw(0.0), sum_Af(0.0), sum_Qabs(0.0), max_Qin(0.0), sum_Qin(0.0), 
+	num_buds(0), num_segments(0),tHeight(0.0), bolLen(0.0), 
+	bottom_rad(0.0),Hc(R_HUGE), num_s_fol(0),
+	num_br_l(0), num_br_d(0),
+	sum_br_len(0.0),sum_br_len_d(0.0), sum_br_As(0.0),sum_br_Ac(0.0)
+	  { }
+	
+	int age;
+	LGMdouble sum_Wf;          //All foliage
+	LGMdouble sum_Wf_new;      //Foliage in segments (int)age == 0
+	LGMdouble sum_wood_in_newparts; //Wood in segments (int)age == 0
+	LGMdouble sum_wood_new;    //sum_wood_in_newparts+last ring
+	LGMdouble sum_Ws;          // Stemwood
+	LGMdouble sum_Wb;          // Branchwood
+	LGMdouble sum_Wsw;         // Sapwood (in all segments)
+	LGMdouble sum_Whw;         // Heartwood (in all segments)
+	LGMdouble sum_Af;          // Sum leaf area
+	LGMdouble sum_Qabs;         // Absorbed radiation
+	LGMdouble max_Qin;         // Max Incoming radiation
+	LGMdouble sum_Qin;         // Incoming radiation for mean value calc.
+	LGMdouble sum_br_As;
+	LGMdouble sum_br_Ac; 
+	int num_buds;
+	int num_segments;
+	LGMdouble tHeight;         //Tree height = highest point from ground
+	LGMdouble bolLen;           //bole length = length of main axis (stem)
+	LGMdouble bottom_rad;
+	LGMdouble Hc;               //Height of grown base
+	int num_s_fol;              //number of segments with foliage
+	int num_br_l;               //number of branches living
+	int num_br_d;               //number of branches dead
+	LGMdouble sum_br_len;       //total length of branches, living
+	LGMdouble sum_br_len_d;     //total length of branches, dead
+	std::vector<LGMdouble> taper_rad;
+	std::vector<LGMdouble> taper_hei;
+	std::vector<LGMdouble> taper_radhw;
+	std::vector<LGMdouble> mean_brl;
+	std::vector<LGMdouble> mean_br_h;
+	
+	std::vector<LGMdouble> taper_radh;
+      };
+  
+  
   template <class TS,class BUD>
     class TreeData
     { 
