@@ -30,7 +30,14 @@ namespace Lignum {
     public:
       LGMdouble Xbox, Ybox, Zbox;
       VoxelSpace();
-      VoxelSpace(Point corner1, Point corner2, int xn, int yn, int zn,
+      VoxelSpace(Point corner1, Point corner2, 
+		 int xn, int yn, int zn,
+		 Firmament &f);
+      //constructor defining corner points, voxel box size,
+      //number of boxes (size of the matrix) and the sky.
+      VoxelSpace(Point corner1, Point corner2, 
+		 double xsize, double ysize, double zsize,
+		 int xn, int yn, int zn,
 		 Firmament &f);
       int GetNumBoxes() { return Xn*Yn*Zn; }
       int getNumTreeSegments();

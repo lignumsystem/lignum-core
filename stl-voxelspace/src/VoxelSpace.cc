@@ -61,7 +61,27 @@ namespace Lignum {
     sky = &f;
   }
 
-
+  //Constructor: 
+  //c1, c2: the corner points
+  //xsize, ysize, zsize: voxel box size
+  //xn, yn, zn: number of voxel boxes (size of the matrix)
+  //f: the firmament
+  VoxelSpace::VoxelSpace(Point c1, Point c2, 
+			 double xsize, double ysize, double zsize,
+			 int xn, int yn, int zn, 
+			 Firmament &f)
+    :corner1(c1),corner2(c2),Xbox(xsize),Ybox(ysize),Zbox(zsize),
+     voxboxes(xn,yn,zn),Xn(xn),Yn(yn),Zn(zn)
+  {
+    for(int i1=0; i1<Xn; i1++)
+      for(int i2=0; i2<Yn; i2++)
+	for(int i3=0; i3<Zn; i3++)
+	  {
+	    Point corner = corner1 + Point(i1*Xbox, i2*Ybox, i3*Zbox); 
+	    voxboxes[i1][i2][i3].setVoxelSpace(this, corner); 
+	  }
+    sky = &f;
+  }
 
 
   // 
@@ -665,7 +685,7 @@ namespace Lignum {
 	for(int i3=0; i3<Zn; i3++)
 	  {
 	    file << "[" << i1 << "," << i2 << "," << i3 << "]   ";
-	    file << voxboxes[i1][i2][i3];
+	    file << voxboxes[i1][i2][i3] << endl;
 
 
 	  }
