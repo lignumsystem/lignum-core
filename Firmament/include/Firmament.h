@@ -6,9 +6,9 @@
 #include <vector>
 #include <TMatrix.h>
 #include <LGMUnits.h>
-#include <Tree.h>
 
 namespace sky{
+
 using namespace cxxadt;
 
 #define NUM_OF_AZIM 24
