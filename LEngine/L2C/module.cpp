@@ -189,7 +189,8 @@ void StartProduce()
 
 void EndProduce()
 {
-	fprintf(fOut, "return;}");
+  //fprintf(fOut, "return;}");
+  fprintf(fOut, "}");
 }
 
 
