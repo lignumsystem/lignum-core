@@ -3,6 +3,9 @@
 
 
 namespace Lignum{
+  //Please orginize headers or rewrite "<<" operator
+  //to remove this declation; 
+  template <class TS,class BUD> class HwTreeSegment;
 
 template <class TS,class BUD>
 TreeSegment<TS, BUD>* GetLastTreeSegment(Axis<TS,BUD>& axis)
@@ -108,9 +111,11 @@ TreeCompartment<TS,BUD>* GetFirstTreeCompartment(Axis<TS,BUD>& axis)
 {
   return axis.tc_ls.front();
 }
+
 template <class TS,class BUD>
 LGMdouble GetSumValue(Axis<TS,BUD>& axis, LGMAD name, int Age)
 {
+
         LGMdouble sum = 0.0;
 
         std::list<TreeCompartment<TS, BUD>*>& ls = axis.tc_ls;
