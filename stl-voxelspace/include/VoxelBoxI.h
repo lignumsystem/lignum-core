@@ -49,18 +49,12 @@ namespace Lignum {
       LGMdouble farea = S_f * GetValue(ts, Wf) / num_parts;
       LGMdouble qabs = 0.0;
 
-      
-      if (farea>R_EPSILON && b.needleArea>R_EPSILON && b.star>R_EPSILON)
-	{
-	  qabs = b.Q_abs * (farea / b.needleArea);
-	  //qabs = b.interceptedRadiation * (farea / b.needleArea);
-	  //qabs = b.Q_abs * (farea/b.needleArea) * (b.star*b.needleArea) / (b.star*b.needleArea+b.k_b*b.leafArea);
-	}
-      LGMdouble lqabs = GetValue(ts, Qabs);
-      SetValue(ts, Qabs, qabs+lqabs);
+      //Qabs computetd based on Qin, mean star and foliage area.
+      qabs = b.getQin()*0.14*(GetValue(GetTree(ts), sf)*GetValue(ts, Wf));
 
-      LGMdouble lqin = GetValue(ts, Qin);
-      SetValue(ts, Qin, b.Q_in/num_parts+lqin);  
+      SetValue(ts, Qabs, GetValue(ts, Qabs)+qabs);
+
+      SetValue(ts, Qin, GetValue(ts, Qin)+b.getQin()/num_parts);  
     }
 
 
