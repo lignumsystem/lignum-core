@@ -28,7 +28,7 @@ AccumulateOp2<TS,T,BinOp>::AccumulateOp2(const BinOp& op)
 }
 
 template <class TS, class T, class BinOp>
-TreeCompartment<TS>* AccumulateOp2<TS,T,BinOp>:: operator()(T& id,TreeCompartment<TS>* tc)const
+T& AccumulateOp2<TS,T,BinOp>:: operator()(T& id,TreeCompartment<TS>* tc)const
 {
   if (TreeSegment<TS>* ts = dynamic_cast<TreeSegment<TS>*>(tc))
     op1(id,ts);
@@ -54,7 +54,7 @@ TreeCompartment<TS>* AccumulateOp2<TS,T,BinOp>:: operator()(T& id,TreeCompartmen
       (*this)(id,*first++);
   }
 
-  return tc;
+  return id;
 }
 
 template <class TS, class T, class BinOp>
@@ -148,11 +148,11 @@ void ForEach(Tree<TS>& tree, const Function& op1)
 }
 
 template <class TS, class T, class BinOp>
-void Accumulate(Tree<TS>& tree, T& id, const BinOp& op1)
+T& Accumulate(Tree<TS>& tree, T& id, const BinOp& op1)
 {
   AccumulateOp2<TS,T,BinOp> op2(op1);
   Axis<TS>& axis = GetAxis(tree);
-  op2(id,&axis);
+  return op2(id,&axis);
 }
 
 template <class TS, class T, class BinOp>
