@@ -53,3 +53,5 @@ webdocs		      			      webdocs
 WhiteBirch            			      WhiteBirch            	    
 CityTree              -s JariP                CityTree
 lignum-core           			      &c++adt &stl-lignum &Firmament
+poplar                -s Alice                poplar
+
