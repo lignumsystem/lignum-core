@@ -220,6 +220,16 @@ namespace Lignum{
   //holds the tree - or several trees.
 
   class BoundingBox { 
+    inline friend ostream& operator << (ostream& os,
+					const BoundingBox& bb) {
+      os << "BoundingBox:" << '\n' << "Min -  x: " << bb.minxyz.getX() 
+	 <<" y: " << bb.minxyz.getY()  << " z: " << bb.minxyz.getZ()
+	 << '\n' << flush;
+      os << "Max -  x: " << bb.maxxyz.getX() <<" y: " <<
+	bb.maxxyz.getY()  << " z: " << bb.maxxyz.getZ() << '\n' << flush;
+      return os;
+    }
+
   public:
     BoundingBox() { minxyz = Point(R_HUGE, R_HUGE, R_HUGE); 
     maxxyz = Point(-R_HUGE, -R_HUGE, -R_HUGE); }
@@ -247,9 +257,6 @@ namespace Lignum{
 			     TreeCompartment<TS,BUD>* tc)const;
   };
 
-
-
-  
 
 
 

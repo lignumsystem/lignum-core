@@ -6,13 +6,40 @@ namespace Lignum{
   //Use built-in operator dynamic_cast
   //to resolve the data_type of a tree compartment
   template <class TS,class BUD>
-    TreeCompartment<TS,BUD>*  DisplayType<TS,BUD>::operator ()(TreeCompartment<TS,BUD>*tc)const
+    TreeCompartment<TS,BUD>*  DisplayType<TS,BUD>::operator
+    ()(TreeCompartment<TS,BUD>*tc)const
     {
       if (Axis<TS,BUD>* myaxis =  dynamic_cast<Axis<TS,BUD>*>(tc)){
 	cout << "Hello, I'm Axis" << endl;
       }
 
-      else if (BranchingPoint<TS,BUD>* mybp = dynamic_cast<BranchingPoint<TS,BUD>*>(tc)){
+      else if (BranchingPoint<TS,BUD>* mybp =
+	       dynamic_cast<BranchingPoint<TS,BUD>*>(tc)){
+	cout << "Hello, I'm BranchingPoint" << endl;
+      }
+
+      else if (TS* myts = dynamic_cast<TS*>(tc))
+	cout << "Hello, I'm TreeSegment" << endl;
+      
+      else if (Bud<TS,BUD>* mybud =  dynamic_cast<Bud<TS,BUD>*>(tc))
+	cout << "Hello, I'm Bud" << endl;
+      
+      else
+	cout << "Who am I???" << endl;
+      
+      return tc;
+    }
+  
+  template <class TS,class BUD>
+    TreeCompartment<TS,BUD>* DisplayType2<TS,BUD>::operator()
+    (TreeCompartment<TS,BUD>* tc)const
+    {
+      if (Axis<TS,BUD>* myaxis =  dynamic_cast<Axis<TS,BUD>*>(tc)){
+	cout << "Hello, I'm Axis" << endl;
+      }
+      
+      else if (BranchingPoint<TS,BUD>* mybp =
+	       dynamic_cast<BranchingPoint<TS,BUD>*>(tc)){
 	cout << "Hello, I'm BranchingPoint" << endl;
       }
 
@@ -29,30 +56,8 @@ namespace Lignum{
     }
 
   template <class TS,class BUD>
-    TreeCompartment<TS,BUD>* DisplayType2<TS,BUD>::operator()(TreeCompartment<TS,BUD>* tc)const
-    {
-      if (Axis<TS,BUD>* myaxis =  dynamic_cast<Axis<TS,BUD>*>(tc)){
-	cout << "Hello, I'm Axis" << endl;
-      }
-
-      else if (BranchingPoint<TS,BUD>* mybp = dynamic_cast<BranchingPoint<TS,BUD>*>(tc)){
-	cout << "Hello, I'm BranchingPoint" << endl;
-      }
-
-      else if (TS* myts = dynamic_cast<TS*>(tc))
-	cout << "Hello, I'm TreeSegment" << endl;
-
-      else if (Bud<TS,BUD>* mybud =  dynamic_cast<Bud<TS,BUD>*>(tc))
-	cout << "Hello, I'm Bud" << endl;
-
-      else
-	cout << "Who am I???" << endl;
-
-      return tc;
-    }
-
-  template <class TS,class BUD>
-    int& CountTreeSegments<TS,BUD>::operator()(int& n,TreeCompartment<TS,BUD>* tc)const
+    int& CountTreeSegments<TS,BUD>::
+    operator()(int& n,TreeCompartment<TS,BUD>* tc)const
     {
       if (TS* myts = dynamic_cast<TS*>(tc))
 	n+=1;
@@ -63,13 +68,15 @@ namespace Lignum{
 
 
   template <class TS,class BUD>
-    int& CountCompartments<TS,BUD>::operator()(int& n,TreeCompartment<TS,BUD>* tc)const
+    int& CountCompartments<TS,BUD>::
+    operator()(int& n,TreeCompartment<TS,BUD>* tc)const
     {
       if (Axis<TS,BUD>* myaxis =  dynamic_cast<Axis<TS,BUD>*>(tc)){
 	cout << "Hello, I'm Axis ";
       }
 
-      else if (BranchingPoint<TS,BUD>* mybp = dynamic_cast<BranchingPoint<TS,BUD>*>(tc)){
+      else if (BranchingPoint<TS,BUD>* mybp =
+	       dynamic_cast<BranchingPoint<TS,BUD>*>(tc)){
 	cout << "Hello, I'm BranchingPoint ";
       }
 
@@ -89,14 +96,15 @@ namespace Lignum{
 
 
   template <class TS,class BUD>
-    int& CountCompartmentsReverse<TS,BUD>::operator()(int& n,
-						      TreeCompartment<TS,BUD>* tc)const
+    int& CountCompartmentsReverse<TS,BUD>::
+    operator()(int& n, TreeCompartment<TS,BUD>* tc)const
     {
       if (Axis<TS,BUD>* myaxis =  dynamic_cast<Axis<TS,BUD>*>(tc)){
 	cout << "Hello, I'm Axis ";
       }
 
-      else if (BranchingPoint<TS,BUD>* mybp = dynamic_cast<BranchingPoint<TS,BUD>*>(tc)){
+      else if (BranchingPoint<TS,BUD>* mybp =
+	       dynamic_cast<BranchingPoint<TS,BUD>*>(tc)){
 	cout << "Hello, I'm BranchingPoint ";
       }
 
@@ -123,7 +131,8 @@ namespace Lignum{
 	cout << "Hello, I'm Axis ";
       }
 
-      else if (BranchingPoint<TS,BUD>* mybp = dynamic_cast<BranchingPoint<TS,BUD>*>(tc)){
+      else if (BranchingPoint<TS,BUD>* mybp =
+	       dynamic_cast<BranchingPoint<TS,BUD>*>(tc)){
 	cout << "Hello, I'm BranchingPoint ";
       }
 
@@ -147,19 +156,23 @@ namespace Lignum{
       DisplayStructure(&GetAxis(t));
     }
 
-  template <class TS,class BUD> void DisplayStructure(TreeCompartment<TS,BUD>* tc)
+  template <class TS,class BUD> void DisplayStructure(TreeCompartment<TS,
+						      BUD>* tc)
     {
       if (Axis<TS,BUD>* myaxis =  dynamic_cast<Axis<TS,BUD>*>(tc)){
 	cout << "["; //begin of axis
-	list<TreeCompartment<TS,BUD>*>& tc_ls = GetTreeCompartmentList(*myaxis);
-	typename list<TreeCompartment<TS,BUD>*>::iterator first = tc_ls.begin();
+	list<TreeCompartment<TS,BUD>*>& tc_ls =
+	  GetTreeCompartmentList(*myaxis);
+	typename list<TreeCompartment<TS,BUD>*>::iterator first =
+	  tc_ls.begin();
 	typename list<TreeCompartment<TS,BUD>*>::iterator last = tc_ls.end();
 	while (first != last)
 	  DisplayStructure(*first++);
 	cout << "]" << flush; //end of axis
       }
 
-      else if (BranchingPoint<TS,BUD>* mybp = dynamic_cast<BranchingPoint<TS,BUD>*>(tc)){
+      else if (BranchingPoint<TS,BUD>* mybp =
+	       dynamic_cast<BranchingPoint<TS,BUD>*>(tc)){
 	cout << "{"; //begin of branching point
 	list<Axis<TS,BUD>*>& axis_ls = GetAxisList(*mybp);
 	typename list<Axis<TS,BUD>*>::iterator first = axis_ls.begin();
@@ -184,11 +197,11 @@ namespace Lignum{
     }
 
   template <class TS,class BUD> DisplayStructureData&
-    DisplayStructureFunctor<TS,BUD>:: operator ()(DisplayStructureData& id,
-						  TreeCompartment<TS,BUD>* tc)const
+    DisplayStructureFunctor<TS,BUD>:: operator
+    ()(DisplayStructureData& id, TreeCompartment<TS,BUD>* tc)const
     {
-      //collect data: number of compartments in an axis and tell the first segment it
-      //is the first segment in that axis
+      //collect data: number of compartments in an axis and tell the
+      //first segment it is the first segment in that axis
       if (Axis<TS,BUD>* axis = dynamic_cast<Axis<TS,BUD>*>(tc)){
 	list<TreeCompartment<TS,BUD>*> ls = GetTreeCompartmentList(*axis);
 	id.number_of_compartments = ls.size();
@@ -198,7 +211,8 @@ namespace Lignum{
 	  cout <<  "]" << flush;
       }
 
-      else if (BranchingPoint<TS,BUD>* bp = dynamic_cast<BranchingPoint<TS,BUD>*>(tc)){
+      else if (BranchingPoint<TS,BUD>* bp =
+	       dynamic_cast<BranchingPoint<TS,BUD>*>(tc)){
 	cout <<  "{" << flush; 
       }
 
@@ -244,7 +258,8 @@ namespace Lignum{
 	  cout << "A: p || id " << (p || id) << endl;
       }
 
-      else if (BranchingPoint<TS,BUD>* bp = dynamic_cast<BranchingPoint<TS,BUD>*>(tc)){
+      else if (BranchingPoint<TS,BUD>* bp =
+	       dynamic_cast<BranchingPoint<TS,BUD>*>(tc)){
 	if (id != p && (p || id) > epsilon)
 	  cout <<  "BP: p || id " << (p || id) << endl;
       }
@@ -345,8 +360,8 @@ namespace Lignum{
     {
       if(TS* ts = dynamic_cast<TS*>(tc)){
 	if(GetValue(*ts,LGAWf) > R_EPSILON) {
-	  Point base = GetPoint(*tc);
-	  Point top = base + GetValue(*ts, LGAL)*(Point)GetDirection(*ts);
+	  Point base = GetPoint(*ts);
+	  Point top = GetEndPoint(*ts);
     
 	  if(b_box.getMin().getX() > base.getX()) b_box.setMinX(base.getX());
 	  if(b_box.getMin().getY() > base.getY()) b_box.setMinY(base.getY());
@@ -364,7 +379,7 @@ namespace Lignum{
       }
 
       return b_box;
-   
+      
     }
 
   //PrintTreeInformation collects and prints out information about the
@@ -449,22 +464,20 @@ namespace Lignum{
   template <class TS,class BUD>
     TreeDataStruct& TreeData<TS,BUD>::operator()
     (TreeDataStruct& stru, TreeCompartment<TS,BUD>* tc)const {
-
+    
     if (TS* ts = dynamic_cast<TS *>(tc))
       {
 	Tree<TS,BUD>& tt = GetTree(*tc);
-
-
+	
 	stru.num_segments++;
 	LGMdouble r_ = GetValue(*ts, LGAR);
-	LGMdouble l_ = GetValue(*ts, L);
+	LGMdouble l_ = GetValue(*ts, LGAL);
 	LGMdouble rh_ = GetValue(*ts, LGARh);
-
-
+	
 	Point ep = GetEndPoint(*ts);
 	if (stru.height < ep.getZ())
 	  stru.height = ep.getZ();
-      
+	
 	if (GetPoint(*ts).getZ() == 0)
 	  {
 	    stru.bottom_rad = r_;
@@ -478,7 +491,7 @@ namespace Lignum{
 	if(GetValue(*ts, LGAWf) > R_EPSILON) {
 	  stru.num_s_fol++;
 	  stru.sum_Qabs += GetValue(*ts, LGAQabs);
-	  stru.sum_Qin += GetValue(*ts, Qin);
+	  stru.sum_Qin += GetValue(*ts, LGAQin);
 	}
   
 	LGMdouble rho_ = GetValue(tt, LGPrhoW);
@@ -503,12 +516,12 @@ namespace Lignum{
 	    stru.taper_hei.push_back(ep.getZ());
 	    stru.taper_radhw.push_back(GetValue(*ts, LGARh));
 
-	    stru.sum_Ws += rho_*L*2.0*PI_VALUE*r_*r_;
+	    stru.sum_Ws += rho_*GetValue(*ts,LGAL)*2.0*PI_VALUE*r_*r_;
 
 	  }
 
 	else
-	  stru.sum_Wb += rho_*L*2.0*PI_VALUE*r_*r_;
+	  stru.sum_Wb += rho_*GetValue(*ts,LGAL)*2.0*PI_VALUE*r_*r_;
 		
       }
     else if (Bud<TS,BUD>* bud = dynamic_cast<Bud<TS,BUD>*>(tc))
@@ -524,13 +537,13 @@ namespace Lignum{
 	  LGMdouble fol = GetBranchFoliage(*ax);
 	  if(fol > R_EPSILON) {
 	    stru.num_br_l++;
-	    stru.sum_br_len += GetValue(*ax, L);
+	    stru.sum_br_len += GetValue(*ax, LGAL);
 	    if(GetPoint(*fs).getZ() < stru.Hc)
 	      stru.Hc = GetPoint(*fs).getZ();
 	  }
 	  else {
 	    stru.num_br_d++;  
-	    stru.sum_br_len_d += GetValue(*ax, L);
+	    stru.sum_br_len_d += GetValue(*ax, LGAL);
 	  }
 	}
     }
@@ -543,13 +556,13 @@ namespace Lignum{
 	Axis<TS,BUD>* ax = *II;
 	TreeSegment<TS,BUD>* fs = GetFirstTreeSegment(*ax);
 	if(fs != NULL) {
-	  if(GetValue(*fs, omega) == 2) {
+	  if(GetValue(*fs, LGAomega) == 2) {
 	    int num_ax = 0;
 	    LGMdouble tot_len = 0.0;
 	  
 	    while(II != axis_ls.end()) {
 	      ax = *II;       
-	      tot_len += GetValue(*ax, L);
+	      tot_len += GetValue(*ax, LGAL);
 	      num_ax++;
 	      II++;   
 	    }
