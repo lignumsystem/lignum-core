@@ -8,14 +8,13 @@
 #include <LGMUnits.h>
 
 namespace sky{
-
+using namespace Lignum;
 using namespace cxxadt;
 
 #define NUM_OF_AZIM 24
 #define NUM_OF_INCL 9
 
 
-typedef double MJ;
 
 /*=====================================================================================*/
 //Class Firmament implements the radiation coming from the sky.
