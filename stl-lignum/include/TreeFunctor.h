@@ -53,6 +53,22 @@ public:
 
 template <class TS,class BUD> void DisplayStructure(Tree<TS,BUD>& t);
 template <class TS,class BUD> void DisplayStructure(TreeCompartment<TS,BUD>* tc);
+
+class DisplayStructureData{
+public:
+  DisplayStructureData()
+    :first_segment(true),number_of_compartments(0){}
+  bool first_segment;
+  int number_of_compartments;
+};
+    
+template <class TS,class BUD=DefaultBud<TS> >
+class DisplayStructureFunctor{
+public:
+  TreeCompartment<TS,BUD>* operator ()(DisplayStructureData& id,
+				       TreeCompartment<TS,BUD>* ts)const;
+};
+
 /*
 class CountElements{
 public:
