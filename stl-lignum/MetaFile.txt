@@ -1,0 +1,10 @@
+#File describing the location of definition files
+#for parameters and fuctions of LIGNUM
+Parameters:
+    Tree: Tree.txt 
+    Firmament: Firmament.txt
+Functions:
+    FoliageMortality:FoliageMortality.fn
+    Buds: Buds.fn
+    DoI: DoI.fn
+    

@@ -1,0 +1,191 @@
+\section{CString}
+
+The class \tt CString \rm implements a string. The most
+useful property compared to the basic built in \tt char* \rm
+data type in C/C++ is that the memory management is abstracted 
+from the user.
+
+The  operations on  the  string  class  are similar  to the operations
+provided by the standard  C-library. Not all the functions in the C-library
+are implemented, only those that are ubiquitos when using 
+strings. But the constructors  and  type cast
+operations  provide transparent interface for \tt char* \rm data
+type and consequently to the standard C-library string functions. 
+
+\subsection{The Class Declaration for CString}
+\begin{verbatim}
+class CString{
+  friend ostream& operator<<(ostream&,
+                             const CString& s1);
+  friend CString operator+(const CString& s1, 
+                           const CString& s2);
+  friend inline int operator!=(const CString& s1, 
+                               const CString& s2);
+  friend inline int operator==(const CString& s1, 
+                               const CString& s2);
+public:
+  inline CString(const char * str= "");
+  inline CString(const CString& str);
+  ~CString();
+  CString& operator=(const CString& str);
+  CString& operator+=(const CString& str);
+  int length()const {return str_length;}
+  inline CString strStr(const CString& str)const;
+  CString subStr(unsigned int start, 
+                 unsigned int end)const;
+  inline CString& toLower();
+  inline int isSpace();
+  operator const char*()const;
+  operator const char*();
+  operator char*();
+private:
+  char *string;
+  int str_length;
+};
+\end{verbatim}
+
+\subsection{Public Methods}
+
+\subsubsection{inline CString(const char* str= "");}
+Default constructor that creates a string from \tt char* \rm datatype. 
+
+\begin{description}
+ \item [Arguments] to the method.
+   \begin{description} 
+     \item [str] The C character vector. Default value is an empty string.
+   \end{description}
+ \item [Returns] Nothing.
+\end{description}
+
+\subsubsection{inline CString(const CString\& str);}
+Copy constructor.
+
+\subsubsection{\~{ }CString();}
+Destructor, releases the memory allocated.
+
+\subsubsection{CString\& operator=(const CString\& str);}
+The assignment operator.
+\begin{description}
+ \item [Returns] The modified string itself (on the left side of the 
+                  assignment).
+\end{description}
+
+\subsubsection{CString\& operator+=(const CString\& str);}
+The concatination operator. 
+\begin{description}
+ \item [Returns] The modified string itself (on the left side side of the 
+                  concatination).
+\end{description}
+
+\subsubsection{int length()const;} 
+Query the length of the string.
+\begin{description}
+ \item [Returns] The length of the string.
+\end{description}
+
+\subsubsection{inline CString strStr(const CString\& str)const}
+Check if \tt str \rm is a substring of the string method is
+applied to as defined by C-library function \tt strstr\rm. 
+ \begin{description}
+    \item [Arguments] for the method.
+      \begin{description}
+        \item [str] A string, possibly empty.
+      \end{description}
+    \item [Returns] If \tt str \rm is not a substring return empty string. 
+                    Othewise return a string that starts from the
+                    first occurence of the substring. For example, 
+                    if \tt str \rm is ``needle'' and the string the method is 
+                    applied to is ``findaneedleinatree'' then
+                    ``needleinatree'' is returned.
+ \end{description}
+
+\subsubsection{CString subStr(unsigned int start, unsigned int end)const;}
+Create a substring from the position \tt start \rm to the position 
+\tt end\rm.
+
+ \begin{description}
+    \item [Arguments] for the method.
+      \begin{description}
+        \item [start] Starting position, such that 0 $\leq$ \tt start \rm 
+                      $\leq$ length-1.
+        \item [end] End position, such that \tt start \rm  $\leq$
+                    \tt end \rm $\leq$ length-1.
+      \end{description} 
+      \item[Returns] The new substring.
+ \end{description} 
+  
+\subsubsection{inline CString\& toLower();}
+Converts characters in the string to lowercase using C-library function 
+\tt tolower\rm. 
+ \begin{description}
+    \item [Returns] The modified string in lowercase. 
+ \end{description} 
+ 
+\subsubsection{inline int isSpace();}
+Test if the string contains only whitespace
+characters using C-libary function \tt isspace\rm. 
+ \begin{description}
+    \item [Returns]  true or false in terms of C (i.e, false 
+                     is defined as 0 and true anything else).
+ \end{description}
+
+\subsubsection{type casts}
+The three type cast operations create transparent interface to the functions 
+manipulating strings in C-library.
+
+\begin{tabbing}
+Tabbing \= Tabbing \= Tabbing \= \kill
+\>\>\>\tt  operator const char*()const; \\ 
+\>\>\>\tt  operator const char*(); \\
+\>\>\>\tt  operator char*();
+\end{tabbing}
+
+ \begin{description}
+    \item [Returns] The character vector (\tt char*\rm) containing the string.
+  \end{description}
+
+\subsection{Private Data Members}
+ \begin{description}
+    \item [char *string] The character vector containing the string. 
+    \item [int str\_length] The length of the string.
+\end{description}
+
+\subsection{Operations and Functions on CString}
+
+\subsubsection{friend ostream\& operator<<(ostream\& os, 
+                                           const CString\& str);}
+Print the string to standard output (\tt cout\rm).
+ \begin{description}
+   \item [Arguments] to the operation.
+     \begin{description}
+       \item [os] The standard output stream (\tt cout \rm in a normal case).
+       \item [str] The string.
+     \end{description}
+   \item [Returns] The output stream.
+ \end{description}
+
+
+\subsubsection{friend CString operator+(const CString\& s1,\\
+                                        const CString\& s2);}
+Concatinate strings \tt s1 \rm and \tt s2\rm. Strings \tt s1 \rm and
+\tt s2 \rm are not changed. 
+ \begin{description}
+   \item [Returns] The new string.
+ \end{description}
+
+\subsubsection{friend inline int operator!=(const CString\& s1,\\
+                                            const CString\& s2);}
+Test if the two string are \it not \rm equal.
+
+\begin{description}
+   \item [Returns] true or false in terms of C (i.e., 0 is false and
+                   true is anything else).
+\end{description}
+
+\subsubsection{friend inline int operator==(const CString\& s1,\\
+                                              const CString\& s2);}
+Test if the two strings are equal. 
+\begin{description}
+   \item [Returns] true or false in terms of C (i.e., 0 is false and
+                   true is anything else).
+\end{description}

@@ -1,0 +1,88 @@
+\section{Using Lignum}
+\subsection{Command Line Arguments}
+\subsection{Visualizing Results}
+\subsubsection{The Visualization Program}
+\subsubsection{MineSet Program}
+
+\subsection{Initialization of the Tree}
+
+The parameters and functions of the tree for the simulation 
+must be given in files. The file that is given as command 
+line argument is the schema file i.e., the file that gives the 
+names of files where the parameters and functions are defined, 
+not the parameters and functions themselves. An example of the schema file
+is below:
+
+\begin{verbatim}
+#File describing the location of definition files
+#for parameters and fuctions of LIGNUM
+Parameters:
+    Tree: Tree.txt 
+    Firmament: Firmament.txt
+Functions:
+    FoliageMortality:FoliageMortality.fn
+    Buds: Buds.fn
+    DoI: DoI.fn
+\end{verbatim}
+
+The format of the schema file is simple. For the first, the \tt \# \rm
+character starts a comment that extends to the end of line.  
+
+The schema file has two main sections, one for parameters and
+the second one for functions denoted by keywords 
+\tt Parameters \rm and \tt Functions \rm followed by a colon.
+ 
+The sections for parameters and functions consists pairs
+composed by a keyword,(e.g., \tt Tree \rm and 
+\tt Foliage Mortality\rm) and a file name
+(\tt Tree.txt \rm and \tt FoliageMortality.fn \rm respectively). 
+The keyword tells the purpose of the file, so that
+during the intialization parameters and functions are
+intialized properly. The colon is used to separate the
+keyword from the file name.
+
+If necessary, the the sections for functions and parameters
+will be subdivided in the future. 
+
+An example of the parameter file for the tree is below.
+
+\begin{verbatim}
+#Parameters for tree compartments according to Annals of Botany
+#and paper accepted in Ecological Modelling 1996
+
+af      1.30        #Needle mass-tree segment area (kg/m^2)
+                    #relationship
+ar      0.50        #Foliage - root relationship 
+lambda  1.3         #Intial value for lambda
+lr      100.0       #Length - radius relationship of a 
+                    #tree segment
+mf      0.20        #Maintenance respiration rate of foliage
+mr      0.240       #Maintenance respiration rate of roots
+ms      0.0240      #Maintenance respiration rate of sapwood
+na      0.7854      #Needle angle (pi/4)
+nl      0.10        #Needle length (10 cm = 0.10 m) 
+q       0.10        #Tree segment shortening factor
+sr      0.330       #Senescence rate of roots
+ss      0.07        #Senescence rate of sapwood
+rho     400.0       #Density of wood in tree segment
+pr      0.0010      #Proportion of bound solar radiation
+                    #that is used in photosynthesis
+xi      0.60        #Fraction of heartwood in tree segments
+\end{verbatim}
+
+The file simply contains parameter value pairs. Each parameter
+name is reserverd keyword so that the program can recognize it.
+The \tt \# \rm character begins a comment extending to the end of line.
+
+The functions defining different behavior in the tree are given
+as parametric curves in ASCII files. See the class 
+\tt ParametricCurve \rm in \tt libc++adt.a \rm for details.
+
+The keywords \tt FoliageMortality\rm, \tt Buds\rm, and
+\tt DoI \rm denote functions for foliage mortality, number of new buds 
+and relative shadiness (degree of interaction) respectively. More functions
+will be implemented if necessary.
+
+Currently directory paths are not parsed so all the files,
+the schema file and the files defining the parameters and functions,
+must be in the same directory where \lignum\ is started.

@@ -1,0 +1,272 @@
+\section{Lex}
+
+The class \tt Lex \rm implements a simple tokenizer of a file input 
+stream. Each token is reperesented in class \tt Token \rm as a pair
+of the type of the token and its string value. In addition
+to numbers and identifiers, the following special characters 
+are recognised as tokens: \tt :\rm, \tt .\rm, \tt - \rm and \tt /\rm.
+
+Numbers are interpreted either as integers or if a decimal dot
+is encounterd as real numbers. The current implementation
+cannot recognize scientific exponentials etc., so valid numbers
+are, e.g., 12, -12, 12345  and 12.12345.
+
+Identifiers can contain only alphanumeric characters (as returned
+by C-library function \it isalnum\rm). Valid identifiers are, e.g.,  
+\tt foo\rm, \tt bar \rm and \tt foo1\rm.     
+
+The hash character (\tt \#\rm) is interpreted 
+as a beginning of a comment streching to the end of line 
+in the file (i.e., all characters from \tt\# \rm to 
+the end of line are ignored). This can naturally be discussed
+and might change in the future (e.g., parameterize the comment
+character(s)). The tokenizer is not a preprocessor for a file,
+but this works fine for now; creating relatively simple 
+parameter files for the tree model.
+
+\tt Lex \rm will scan an ASCII file, remove all white space and create
+a list of \tt Token\rm s from the tokens it recognises.
+One speacial token representing the end of file is inserted 
+as the last element of the token list.   
+
+\subsection{Using Lex}
+
+In \lignum\ the well defined set of parameters determine
+the functioning of the model.  The parameters
+can be given in files and the class \tt Lex \rm is used to read 
+and tokenize the contents of these files. An  example
+of the structure of such file is in Figure \ref{fig:lexfile}.
+
+\begin{figure}[h]
+\begin{center}
+\begin{picture}(180,30)
+%\graphpaper(0,0)(180,30)
+\put(10,25){\#A sample file defining 2 parameters}
+\put(10,5){
+\begin{tabular}{r r l} 
+
+P1 & 1.0 & \#First parameter \\
+P2 & 2.0 & \#Second parameter \\
+
+\end{tabular}
+}
+
+\end{picture}
+\caption{Sample Input File for Lex}\label{fig:lexfile}
+\end{center}
+\end{figure}
+
+The file in Figure \ref{fig:lexfile} begins with a comment describing
+the contents of the file followed by two parameters, their values
+and associated comments.
+ 
+Assuming the file name is \tt file.txt \rm the class \tt Lex \rm can 
+be used to read and tokenize the file
+with the following two operations.
+
+\begin{tabbing}
+Tabbing \= Tabbing \= Tabbing \= \kill
+\>\>\>\tt Lex lex; \\
+\>\>\>\tt lex.scan(``file.txt'');
+\end{tabbing}
+
+The first operation declares a lexer. After that the lexer is
+told to read the file \tt file.txt.\rm During scanning the file     
+and creating the tokens the comments are removed. By denoting a single token 
+as a pair $(v,t)$ where $v$ is the string value of token and $t$ the type,
+the lexer contains the list of following tokens after processing the file.
+\begin{center}
+\tt 
+[(``P1'',ID),(``1.0'',FLOAT),(``P2'',ID),(``2.0'',FLOAT),(``'',ENDFILE)]
+\rm
+\end{center}
+
+Now it is relatively easy to parse (interpret) the token list 
+with the lexer. For example the following algorithm can be used 
+as a framework.
+
+\begin{tabbing}
+Tabbing \= Tabbing \= Tabbing \= Tab \= \kill
+\>\>\>\tt Token token; \\
+\>\>\>\tt token = lex.getToken(); \\  
+\>\>\>\tt while (token.getType() != ENDFILE)\{\\
+\>\>\>\>\tt //Decide what to do with the token\\
+\>\>\>\>\tt lex.getToken();\\
+\>\>\>\tt \}
+\end{tabbing}
+
+The method \tt getToken() \rm returns one token at a time and
+also removes the token from the list. More complex algorithms can
+be designed by using methods that only peeks the next token
+and puts a token back into the token list.
+
+\subsection{The Class Declaration of Lex}
+\begin{verbatim}
+class Lex{
+public:
+  ~Lex();
+  Lex& scan(const char *file);
+  Token peek();
+  Token getToken();
+  Lex& putToken(const Token& token);
+protected:
+  Lex& scanId();
+  Lex& scanNum();
+  Lex& scanSpecial();
+private:
+  ifstream ifile;
+  DList token_ls;
+};
+\end{verbatim}
+
+\subsection{Public Methods}
+
+\subsubsection{\~{ }Lex()}
+
+The destructor, delete the list of tokens.
+\begin{description}
+  \item [Returns]  Nothing.
+\end{description}
+
+\subsubsection{Lex\& scan(const char *file);}
+Read the file and create the list of
+tokens. 
+\begin{description}
+  \item [Returns] The tokenizer containing now the list of tokens.
+\end{description}
+
+\subsubsection{Token peek();}
+Return the first token in the token list. The token list is not
+changed.
+\begin{description}
+  \item [Returns] The first token.
+\end{description}
+
+\subsubsection{Token getToken();}
+Like \tt peek() \rm but the token is removed from
+the token list. 
+changed.
+\begin{description}
+  \item [Returns] The first token.
+\end{description}
+
+\subsubsection{Lex\& putToken(const Token\& token);}
+Insert the token \tt token \rm as the first element in the token list. 
+\begin{description}
+  \item [Arguments] to the method
+    \begin{description}
+      \item [token] The token to be inserted.
+    \end{description}
+   \item [Returns] The tokenizer.
+\end{description}
+
+\subsection{Protected Methods}
+
+\subsubsection{Lex\& scanId();}
+Generates identifier token using C-library function \tt isalnum\rm. 
+However, the first character must be alphabetic. 
+\begin{description}
+  \item [Returns] The tokenizer.
+\end{description}
+
+\subsubsection{Lex\& scanNum();}  
+Generates token representing number (integer or real).
+\begin{description}
+  \item [Returns] The tokenizer.
+\end{description}
+
+\subsubsection{Lex\& scanSpecial();}
+Generates token for special characters.
+\begin{description}
+  \item [Returns] The tokenizer.   
+\end{description}
+
+\subsection{Private Data Memebers}
+\begin{description}
+  \item [ifstream ifile] The ASCII file stream.
+  \item [DList token\_ls] The list of tokens generated 
+   from the file stream \tt ifile\rm. The \tt DList \rm
+   is here for historical reasons and might change to the \tt list
+  \rm type provided by STL. This change will not affect the visible part
+   of the class \tt Lex \rm (i.e., the use of the class). 
+\end{description}
+
+\subsection{Token}
+A single token in \tt Lex \rm is represented as a pair of its string value and 
+token type. The possible token types are enumerated as 
+\tt TOKEN\_TYPE\rm.
+
+\subsubsection{The Class Declaration of Token}
+\begin{verbatim}
+class Token{
+public:
+  Token():value(""),type(ENDFILE){}
+  Token(const CString& token_value, TOKEN_TYPE token_type);
+  Token(const Token& token);
+  CString getValue()const{return value;}
+  TOKEN_TYPE getType()const{return type;}
+  Token& operator = (const Token& token);
+private:
+  CString value;
+  TOKEN_TYPE type;
+};
+\end{verbatim}
+
+\subsubsection{Type Definitions}
+The type of the token is represented as enumerated data type 
+\tt TOKEN\_TYPE\rm:
+
+\begin{center}
+\tt enum TOKEN\_TYPE \{COLON,DOT,FLOAT,ENDFILE,HYPHEN,ID,INT,SLASH\}; 
+\rm
+\end{center}
+
+The possible values are \tt COLON \rm for ':', \tt DOT \rm for '.', 
+\tt FLOAT \rm for real number, \tt ENDFILE \rm for the end of file, 
+\tt HYPHEN \rm for '-', \tt ID \rm for identifier, \tt INT \rm for
+integer and \tt SLASH \rm for '/'.
+
+\subsubsection{Public Methods}
+
+\subsubsection{Token();}
+The default constructor that creates a token representing the
+end of file.
+\begin{description}
+  \item [Returns] Nothing.
+\end{description}
+
+\subsubsection{Token(const CString\& value, TOKEN\_TYPE type);}
+Constructor that creates token with a known string value and token type.
+\begin{description}
+  \item [Returns] Nothing.
+\end{description}
+
+\subsubsection{Token(const Token\& token);}
+Copy constructor.
+\begin{description}
+  \item [Returns] Nothing.
+\end{description}
+
+\subsubsection{CString getValue() const;}
+Query the string value of the token.
+\begin{description}
+  \item [Returns] The string value of the token.
+\end{description}
+
+\subsubsection{TOKEN\_TYPE getType() const;}
+Query the type of the token.
+\begin{description}
+  \item [Returns] The type of the token.
+\end{description}
+
+\subsubsection{Token\& operator = (const Token\& token);}
+The assignment operator.
+\begin{description}
+  \item [Returns] The token (on the left side of the assignment).
+\end{description}
+
+\subsubsection{Private Data Memebers}
+\begin{description}
+  \item [CString value] The string value of the token.
+  \item [TOKEN\_TYPE type]  The type of the token.
+\end{description}

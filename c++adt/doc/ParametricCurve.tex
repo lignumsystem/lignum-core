@@ -1,0 +1,196 @@
+
+\section{ParametricCurve}
+
+The class \tt ParametricCurve \rm can be used to define simple
+functions.  The approximation of a function
+can be described  in an ASCII file that contains a set of $(x,y)$ pairs 
+defining the values of the function at given points. 
+There is no limit to the number of points
+that can be defined. At least two points must be defined.
+
+The $x$ values must be in ascending
+order and each $x$ value must have exactly one $y$ value. 
+Functions having steps can be defined by having two
+close enough $x$ values. The closer the two $x$ values are
+the better the step in the function is
+described.
+
+The values of the function between the defined pairs are 
+interpolated  with a straight line. Values outside the defined
+pairs are extrapolated with a straight line defined by
+first two or last two$(x,y)$ pairs  found in the file.
+
+\subsection{Using Parametric Curve}
+ 
+An example of a file and the parametric curve it defines 
+is in Figure~\ref{fig:curve}. Unfortunately the current implementation
+does not allow the user to include any comments in the file. 
+
+Assuming the name of the file is \tt curve.fn \rm the following 
+sequence of operations reads the file and evaluates the value of the
+curve at $x = 2.0$.
+\begin{tabbing}
+Tabbing \= Tabbing \= Tabbing \= Tab \= \kill
+\>\>\>\tt  ParametricCurve pc(``curve.fn''); \\
+\>\>\>\tt  if (pc.ok()) \\
+\>\>\>\>\tt pc.eval(2.0);
+\end{tabbing}
+First, the parametric curve is created and then after checking
+if the program was able to read the file the value of the curve
+is evaluated.
+
+\begin{figure}[h]
+\begin{center}
+\begin{picture}(330,250)
+%\graphpaper(0,0)(330,250)
+\put(0,0){
+  \begin{picture}(50,250)
+  \put(55,220) {File ``curve.fn''}
+
+  \put(50,160){\begin{tabular}{r r} 
+                    -7.0 & -3.0 \\ 
+                    -1.0 &  0.0 \\ 
+                     2.0 &  5.0 \\ 
+                     8.0 &  -3.0 \\
+                     10.0 &  3.0 \\
+                     13.0 &  4.0 \\
+  \end{tabular}
+  }
+  \end{picture}
+}
+
+\put(50,0){
+  \begin{picture}(100,250)
+    \put(100,220) {The Parametric Curve}
+
+    \put(60,70){\line(2,1){60}}
+    \put(120,100){\line(1,2){30}}
+    \put(150,160){\line(2,-3){60}}
+    \put(210,70){\line(1,3){20}}
+    \put(230,130){\line(3,1){30}}
+
+    \put(60,70) {\circle*{2}}
+    \put(120,100){\circle*{2}}
+    \put(150,160){\circle*{2}}
+    \put(210,70){\circle*{2}}
+    \put(230,130){\circle*{2}}
+    \put(260,140){\circle*{2}}
+
+    \put(20,100){\vector(1,0){250}}
+    \put(130,10){\vector(0,1){200}}
+
+    \put(60,60){$(-7.0,-3.0)$}
+    \put(120,90){$(-1.0,0.0)$}
+    \put(132,165){$(2.0,5.0)$}
+    \put(210,60){$(8.0,-3.0)$}
+    \put(190,135){$(10.0,3.0)$}
+    \put(245,145){$(13.0,4.0)$}
+  \end{picture}  
+}
+\end{picture}
+\caption{Defining a Parametric Curve}\label{fig:curve}
+\end{center}
+\end{figure}
+
+\subsection{The Class Declaration ParametricCurve}
+\begin{verbatim}
+class ParametricCurve{
+public:
+  ParametricCurve();
+  ParametricCurve(const vector<double>& v);
+  ParametricCurve(const CString& file_name);
+  bool install(const CString& file_name);
+  bool ok();
+  float eval(double x);
+  CString getFile();
+private:
+  ParametricCurve& read_xy_file(char *file_name);
+  CString file;
+  vector<double> v;
+  int num_of_elements;
+};
+\end{verbatim}
+
+\subsection{Public Methods}
+\subsubsection{ParametricCurve();}
+Default constructor, no parametric curve is defined.
+The curve must be defined by method \tt install()\rm.
+
+\begin{description}
+    \item [Returns] Nothing.
+\end{description} 
+
+\subsubsection{ParametricCurve(const vector<double>\& v);}  
+Create a parametric curve defined in vector \tt v\rm.
+\begin{description}
+    \item [Returns] Nothing.
+\end{description} 
+
+\subsubsection{ParametricCurve(const CString\& file\_name);}
+
+Create a parametric curve defined in file \tt file\_name\rm.
+
+\subsubsection{install(const CString\& file\_name);}
+Install a parametric cure defined in the file \tt file\_name\rm.
+    \begin{description}
+       \item [Returns] true if  the parametric curve properly defined,
+                       false if not (see method \tt ok())\rm.
+    \end{description} 
+
+
+\begin{description}
+    \item [Returns] Nothing.
+\end{description} 
+
+\subsubsection{bool ok();} 
+Checks if the parametric curve is properly defined. The curve is 
+properly defined if each $x$ value has exactly one $y$ value in the file and
+the $x$ values are in strictly ascending order.
+
+If you want to define functions that have ``steps'' (i.e, $x$ value
+has two $y$ values) you have to define two $x$ values that are 
+very close. 
+   
+    \begin{description}
+       \item [Returns] true if  the parametric curve properly defined,
+                       false if not. 
+    \end{description} 
+
+\subsubsection{float eval(double x);}
+Evalute the value of the curve at the point \tt x\rm.
+\begin{description}  
+    \item [Arguments] for the method.
+      \begin{description}
+        \item [x] The point where the value of the parametric curve 
+                  is evaluated.
+       \end{description}
+    \item [Returns] The value at the point \tt x\rm.
+\end{description} 
+
+\subsubsection{CString getFile()}
+\begin{description}
+       \item [Returns] The name of the file where the curve is defined
+    \end{description}
+
+
+\subsection{Private Methods}
+\subsubsection{ParametricCurve\& read\_xy\_file(char* file\_name);}
+Read the file and create the internal representation of the parametric curve.
+This method should be reimplemented allowing user to include
+comments in the file. (See class \tt Lex\rm).
+ \begin{description}
+    \item [Arguments] for the method.
+      \begin{description}
+        \item [file\_name] The file where the parametric curve is defined.
+       \end{description}
+    \item [Returns] The parametric curve itself.
+ \end{description} 
+
+\subsection{Private Data Members}
+\begin{description}
+ \item [CString file] The name of the file where the parametric curve
+                      is defined.
+ \item [vector<double> v] Vector containg the internal representation of the
+                          parametric curve. 
+ \item [int num\_of\_elements]  The length of the vector \tt v\rm.
+\end{description}

@@ -1,0 +1,328 @@
+\section{The Class Tree}
+
+The class \tt Tree \rm captures the structure and 
+functioning of a single tree. It also allows the user of the class
+to query the status of the tree and individual tree
+compartments (e.g., after a simulation to to collect data 
+for further analysis).
+
+The \tt Axis \rm is the list of tree compartments. 
+The adjustable parameters defining the functionig of the different  
+tree compartments are collected into  class \tt TreeParameters \rm 
+and the attributes describing the status of the whole  tree 
+during simulations are in the class \tt TreeAttributes\rm. 
+
+The third group of variables, called transit
+variables, are in the class called \tt TreeTransitVariables\rm. 
+Transit variables are ``technical''. They don't have a
+biological meaning but are needed to proceed one interval of time
+(one time step) in a simulation. A transit varible may be needed
+for example to find a root of a function.
+
+The class \tt TreeFunctions \rm collects user defined functions needed
+in modelling growth and senescence processes of the tree. Each
+function is defined as a parametric curve in an ASCII file. 
+For the details, see the class \tt ParametricCurve \rm in the library 
+\tt libc++adt.a\rm.
+
+\subsection{The Class Declaration of Tree}
+\begin{verbatim}
+class Tree: public TreeCompartment{
+friend void InitializeTree(Tree& tree, 
+                           const CString& schema_file);
+friend TP GetAttributeValue(const Tree& tree, const TAD name);
+friend YEAR GetAttributeValue(const Tree& tree, const TAI name);
+template <class T1,class T2>
+friend T2 SetAttributeValue(Tree& tree, const T1 name, 
+                            const T2 value);
+friend TP GetParameterValue(const Tree& tree, const TPD name);
+friend TP SetParameterValue(Tree& tree, const TPD  name, 
+                            const TP value);
+friend TP GetTransitVariableValue(const Tree& tree, 
+                                  const TTD name);
+friend TP SetTransitVariableValue(Tree& tree, const TTD name, 
+                                  const TP value);
+public:
+  Tree();
+  Tree(const Point<METER>& p, const PositionVector& d);
+private:
+  TreeFunctions tf;
+  TreeParameters tp;
+  TreeTransitVariables ttp;
+  Axis axis;
+  RootSystem rs;
+};
+\end{verbatim}
+
+\subsection{Functions and Operations on the Class Tree}
+
+The functions and operations on the tree are used to intiliaze 
+the tree in the beginning of a simulation, querying and setting
+values for parameters, attributes and transit variables.
+
+To query or set a value for a parameter (attribute or transit
+variable) with the functions available, the name of the parameter
+(attribute or transit variable) must be known.  To maintain the
+consistency in the program, the name given as an argument to the
+function is a symbolic constant of the same name as the parameter in
+question. 
+
+For example, the following scenario can be used to check to query if
+the parameter value for tree segment - needle area relationship (field
+\tt af \rm in the class \tt TreeParameters \rm) is correctly installed.
+
+\begin{tabbing}
+Tabbing \= Tabbing \= Tabbing \= \kill
+\>\>\> \tt Tree tree; \\
+\>\>\> \tt TP af1; \\
+\>\>\> \tt InitializeTree(tree,''SchemaFile''); \\
+\>\>\> \tt af1 = GetParameterValue(tree,af);
+\end{tabbing}
+
+The call \tt GetParameterValue(t,af) \rm returns the value of the
+parameter.  
+
+The functions are overloaded and the types parameterized
+if necessary to maintain the transparency with different datatypes.
+
+\subsubsection{friend void InitializeTree(Tree\& tree,
+               const CString\& \\ schema\_file);}
+Initialize the tree by reading parameter values and functions
+from in files found in \tt  schema\_file\rm.
+\begin{description}
+  \item[Arguments] for the function.
+    \begin{description}
+      \item[tree] The tree.
+      \item[schema\_file] The schema file naming
+           the files (and their locations) for parameters and functions
+           needed for simulation.
+    \end{description}
+ \item[Returns] Nothing.
+\end{description}
+
+\subsubsection{GetAttributeValue();}
+Overloaded function to query the value of an attribute 
+for the tree (one of the variable fields in the class 
+\tt TreeAttributes\rm).
+
+\paragraph{friend TP GetAttributeValue(const Tree\& tree,
+                                       const TAD name);}
+\begin{description}
+  \item[Arguments] for the function.
+    \begin{description}
+      \item[tree] The tree.
+      \item[name] The name of the attribute.
+        \begin{description}
+          \item[Possible values] One of \tt M, P \rm or \tt Wr\rm.
+        \end{description}
+     \end{description}
+   \item[Returns] The value of the parameter. The type is
+                  is a symbolic type definition for built 
+                  in double data type.
+\end{description}
+
+\paragraph{friend YEAR GetAttributeValue(const Tree\& tree,
+                                         const TAI name);}
+\begin{description}
+  \item[Arguments] for the function.
+    \begin{description}
+      \item[tree] The tree.
+      \item[name] The name of the attribute.
+        \begin{description}
+          \item[Possible values] \tt age\rm.
+        \end{description}
+     \end{description}
+   \item[Returns] The value of the parameter. The type is
+                  is a symbolic type definition for built 
+                  in int data type.
+\end{description}
+
+To query the age of the tree there one simply types
+\tt GetAttributeValue(t,age)\rm. The returned value is the 
+age of the tree and the type is a symbolic type definition for 
+built in int data type.
+
+\subsection{The Class Declaration of TreeAttributes}
+
+The class \tt TreeAtrtributes \rm collects attributes (state
+variables) of the tree. Eventhough the class is used as a private data
+member in the class \tt Tree \rm, access to attributes in a controlled
+manner is provided by using overloaded function \tt
+GetAttributeValue() \rm declared in the class \tt Tree\rm.
+
+\begin{verbatim}
+class TreeAttributes{
+public:
+  TreeAttributes();
+  YEAR age;              
+  METER lb;              
+  KGC P;                 
+  KGC M;                
+  KGC Wr;              
+};
+\end{verbatim}
+
+\subsection{Public Data Members of TreeAttributes}
+
+\begin{description}
+  \item [age] Age of the tree in years.
+    \begin{description}
+      \item[Unit] --.
+    \end{description}
+  \item [lb]  Longest branch as a vertical projection 
+              from the main stem.
+    \begin{description}
+      \item[Unit] $m$.
+    \end{description} 
+  \item [P]   Annual photosynthesis of the whole tree.
+    \begin{description}
+      \item[Unit] $kgC$.
+    \end{description} 
+  \item [M] Annual respiration of tree.
+    \begin{description}
+      \item[Unit] $kgC$.
+    \end{description}
+  \item [Wr]  Root mass of the tree.
+    \begin{description}
+      \item[Unit] $kgC$.
+    \end{description}
+\end{description}
+
+\subsection{The Class Declaration of TreeParameters}
+
+The class \tt TreeParameters \rm collects adjustable parameters for
+all tree compartments. It is a private members of the class \tt Tree
+\it but access to the parameters in a controlled manner is providided
+by using overloaded function \tt GetParameterValue() \rm declared in
+the class \tt Tree\rm.
+
+\begin{verbatim}
+class TreeParameters{
+public:
+  TreeParameters();
+  TP af;            
+  TP ar;            
+  TP lr;            
+  TP mf;            
+  TP mr;            
+  TP ms;            
+  TP pr;            
+  TP q;             
+  TP sr;           
+  TP ss;            
+  TP rho;          
+  TP xi;            
+
+};
+\end{verbatim}
+
+\subsection{Public Data Members for TreeParameters}
+
+\begin{description}
+  \item[af] Needle mass - tree segment area relationship.
+    \begin{description}
+       \item[Unit]  $kgm^{-2}$.
+       \item[Default value] 1.3.
+    \end{description}
+  \item[ar] Foliage - root relationship.
+    \begin{description}
+       \item[Unit] $kgkg^{-1}$. 
+       \item[Default value] 0.5.
+    \end{description}
+  \item[lr] Length -Radius ratio for a new tree segment.
+    \begin{description}
+       \item[Unit] --.
+       \item[Default value] 1.3.
+    \end{description}
+  \item[mf] Maintenance respiration rate of foliage.
+     \begin{description}
+        \item[Unit] $kgCkgC^{-1}year^{-1}$.
+        \item[Default value] 0.2.
+     \end{description} 
+  \item[mr] Maintenance respiration rate of roots.
+      \begin{description}
+         \item[Unit] $kgCkgC^{-1}year^{-1}$.
+         \item[Default value] 0.24.
+      \end{description}
+  \item[ms] Maintenance respiration rate of sapwood. 
+      \begin{description}
+        \item[Unit] $kgCkgC^{-1}year^{-1}$.
+        \item[Default value] 0.024.
+      \end{description}
+  \item[pr] Propotion of \it absorbed \rm (bound) solar radiation 
+            used in photosynthesis 
+       \begin{description}
+         \item[Unit] --.
+         \item[Default value] 0.001.
+       \end{description}
+  \item[q] Tree segment shortening factor.
+       \begin{description}
+         \item[Unit] --.
+         \item[Default value] 0.1.
+       \end{description}
+  \item[sr] Senescence rate of roots.
+       \begin{description}
+         \item[Unit] $1 \times year^{-1}$.
+         \item[Default value]  0.33.
+       \end{description}
+  \item[ss] Senescence rate of sapwood.  
+       \begin{description}
+         \item[Unit] $1 \times year^{-1}$.
+         \item[Default value] 0.07.
+       \end{description}
+  \item[rho] Density of wood. 
+       \begin{description}
+         \item[Unit] $kgm^{-3}$. 
+         \item[Default value] 400.
+       \end{description}
+  \item[xi] Fraction of heartwood in new tree segments. 
+        \begin{description}
+          \item[Unit] --.
+          \item[Default value] 0.6.
+        \end{description}
+\end{description}
+
+\subsection{The Class TreeTransitVariables}
+
+By transit variables of the tree it is variables that don't directly
+affect the behaviour and growth of the tree but are necessary to make
+computations to proceed one interval of time (one time step in
+simulation). More formally, let us denote the status of the tree at
+one moment of time $ t $ with $ x(t)$, the functions and parameters
+for external conditions (e.g., weather) etc. needed to describe the
+behaviour of the tree with $ u(t) $ and the transit variables with $
+\theta_{i} $ then we can write $ f(x(t),\theta_{1}\ldots\theta_{n},
+u(t)) \rightarrow g(x(t)) \rightarrow x(t+1) $ where $ f $ is the
+model (implemented e.g. as a computer program).
+
+The class \tt TreeTransitVariables \rm is declared as a private data
+member in the class \tt Tree \it but the controlled access is provided
+using the function \tt GetTransitVariableValue() \rm declared in the
+class \tt Tree \rm.  
+
+\subsection{The Class Declaration of TreeTransitVariables}
+\begin{verbatim}
+class TreeTransitVariables{
+public:
+  TreeTransitVariables();
+  TP lambda;        
+};
+\end{verbatim}
+
+\subsection{Public Data Members of TreeTransitVariables}
+  \begin{description}
+    \item[lambda] Variable to balance carbon balance equation.
+      \begin{description}
+        \item[Unit] --.
+        \item[Default value] 1.3.
+      \end{description}
+ \end{description}
+
+
+
+
+
+
+
+
+

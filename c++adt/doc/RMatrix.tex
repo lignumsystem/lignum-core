@@ -1,0 +1,213 @@
+\section{RMatrix}
+
+The class \tt RMatrix \rm can be used to define rotations in
+a right handed coordinate system. The rotation  matrices
+are abstracted from the user. The user defines the direction
+(axis) and the angle of the rotation (in radians) and the 
+overloaded function operator returns the corresponding 
+transition matrix. This transition matrix can then be applied 
+to a vector (\tt vector \rm type available in STL) representing a point
+in three dimensional space. See also \tt PositionVector \rm
+that implements a position vector in a three dimensional coordinate 
+system.
+
+\subsection{Rotation Matrices}\label{ssc:rm}
+
+Each of the rotations about $x$, $y$ and $z$-axes can be implemented with
+the help of corresponding $3 \times 3$ rotation matrices. 
+The rotation $R_{z}(\alpha)$ about $z$-axes by angle 
+$\alpha$ can be represented 
+by the rotation matrix:
+
+\begin{displaymath}
+R_{z}(\alpha) =
+\left[ 
+\begin{array}{ccc}
+\cos\alpha & \sin\alpha & 0 \\
+-\sin\alpha & \cos\alpha & 0 \\
+0 & 0 & 1 
+\end{array}
+\right]
+\end{displaymath}  
+ 
+The rotation $R_{x}(\alpha)$  about x-axes by angle $\alpha$ 
+can be represented by rotation matrix:
+
+\begin{displaymath}
+R_{x}(\alpha) =
+\left[ 
+\begin{array}{ccc}
+1 & 0 & 0 \\
+0 & \cos\alpha & -\sin\alpha  \\
+0 &\sin\alpha  &  \cos\alpha
+\end{array}
+\right]
+\end{displaymath}  
+
+Finally, the rotation $R_{y}(\alpha)$  about y-axes by angle $\alpha$
+can be represented by rotation matrix:
+
+\begin{displaymath}
+R_{y}(\alpha) =
+\left[ 
+\begin{array}{ccc}
+\cos\alpha & 0 & -\sin\alpha \\
+0 & 1 & 0 \\
+\sin\alpha & 0 & \cos\alpha
+\end{array}
+\right]
+\end{displaymath}  
+
+See any text book in linear algebra for further details.
+
+\subsection{Using RMatrix}
+
+The \tt RMatrix \rm abstracts the rotation matrices and their
+matrix operations from the user. To compute a rotation
+in a three dimensional space the user first specifies
+the axis the rotation will be about, in this case $x$-axis:
+
+\begin{tabbing}
+Tabbing \= Tabbing \= Tabbing \= \kill
+\>\>\> \tt RMatrix r(ROTATE\_X);
+\end{tabbing}
+
+The effect of this operation in practice is that the right rotation matrix 
+is chosen, in this case $R_{x}(\alpha)$ in section~\ref{ssc:rm}.
+To define rotation about $y$ and $z$-axis user can write 
+\tt ROTATE\_Y \rm and \tt ROTATE\_Z \rm respectively. 
+
+The next step is to define the angle of rotation and create the
+corresponding transfer matrix. In this example the angle of rotation
+is \tt pi \rm and it is assumed to be the symbolic value of $\pi$:
+
+\begin{tabbing}
+\tt
+Tabbing \= Tabbing \= Tabbing \= \kill
+\>\>\>\tt TMatrix<double> m(3,3); \\
+\>\>\>\tt  m = r(pi);
+\end{tabbing}
+
+Finally, a point (given as a vector) can be transferred 
+to a new position by a simple multiplication:
+
+\begin{tabbing}
+Tabbing \= Tabbing \= Tabbing \= \kill
+\>\>\>\tt vector<double> v(3); \\
+\>\>\>\tt v[0] = 1.0; v[1] = 2.0; v[2] = 3.0; \\
+\>\>\>\tt v = v * m;
+\end{tabbing}
+
+The vector \tt v \rm should now represent the point (?,?,?).
+
+The class \tt PositionVector \rm abstracts the \tt RMatrix \rm
+from the user. You may find it more suitable for
+your needs.
+
+\subsection{The Class Declaration of RMatrix}
+\begin{verbatim}
+class RMatrix{
+  friend RADIAN fn_1(RADIAN angle);
+  friend RADIAN fn_0(RADIAN angle);
+  friend RADIAN neg_sin(RADIAN angle);
+  friend RADIAN neg_cos(RADIAN angle);
+public:
+  RMatrix(ROTATION direction);
+  TMatrix<double> operator()(RADIAN angle)const;
+  RMatrix& changeAxis(ROTATION direction);
+  RMatrix& transpose();
+  RMatrix& inverse();
+private:
+  ROTATION r_direction;
+  RADIAN (*(fn_matrix_table[3][3*3]))(RADIAN);
+};
+\end{verbatim}
+
+\subsection{Public Methods}
+\subsubsection{RMatrix(ROTATION direction);}
+The constructor for the class. The argument specifies the axis 
+the rotation will be about.
+ \begin{description}
+    \item [Arguments] for the method.
+      \begin{description}
+        \item [direction] The axis of rotation. One of \\
+                       \tt ROTATE\_X\rm, \tt ROTATE\_Y \tt or 
+                       \tt ROTATE\_Z\rm.
+      \end{description}
+    \item [Returns] Nothing.
+ \end{description}
+\subsubsection{TMatrix<double> operator()(RADIAN angle)const;}
+The overloaded function operator implementing the rotation.
+ \begin{description}
+    \item [Arguments] for the method.
+      \begin{description}
+         \item [angle] The angle of rotation in radians.
+      \end{description}
+    \item [Returns] The transition matrix.
+ \end{description}
+\subsubsection{RMatrix\& changeAxis(ROTATION direction);}
+Changes the axis of rotation.
+
+ \begin{description}
+    \item [Arguments] for the method.
+      \begin{description}
+        \item [direction] The new axis of rotation. Possible values are
+                          one of \tt ROTATE\_X\rm, \tt ROTATE\_Y \rm
+                          or \tt ROTATE\_Z\rm. 
+      \end{description}
+     \item [Returns] The rotation matrix itself.
+  \end{description}
+\subsubsection{RMatrix\& transpose();}
+Implements the transpose of the current rotation matrix. Can be used to undo
+the immediate previous rotation (Naturally, the rotation can also be undone
+by negating the angle).
+     
+    \begin{description}
+       \item [Returns] The rotation matrix itself.
+    \end{description} 
+
+\subsubsection{RMatrix\& inverse();}
+Implements the inverse of the current rotation matrix. The inverse
+of a rotation matrix is its transpose. See any text book in linear algebra 
+for discussion about orthonormal bases.
+
+    \begin{description}
+       \item [Returns] The rotation matrix itself.
+    \end{description} 
+
+\subsection{Functions and Operations on RMatrix}
+There are four simple functions that needed to implement rotation
+matrices. \tt fn\_1 \rm returns 1.0 and \tt fn\_0 \rm returns 0.0. 
+\tt neg\_sin \rm returns $-\sin$ and \tt neg\_cos \rm returns $-\cos$. 
+These are not meant to be used directly by the user of the class 
+but are used to construct the rotation matrices 
+$R_{x}(\alpha)$, $R_{y}(\alpha)$ and $R_{z}(\alpha)$ (Section 
+\ref{ssc:rm}) in \tt fn\_matrix\_table\rm.
+ 
+\subsection{Private Data Members}
+    \begin{description}
+       \item [ROTATION r\_direction] Index to the row of \tt
+       fn\_matrix\_table\rm,  the matrix of rotation matrices 
+       thus defining the axis of current rotation. Possible
+       values are one of \tt ROTATE\_X\rm, \tt ROTATE\_Y \rm
+       or \tt ROTATE\_Z\rm. 
+    
+       \item [fn\_matrix\_table] The $3 \times 9$ matrix holding rotation 
+       matrices.  There are three rotation matrices and each matrix is
+       $3 \times 3 = 9$. The elements in the matrices are
+       functions of type double taking one argument of type
+       double (e.g., \tt double sin(double) \rm defined in the
+       C-library). 
+       So from the point of view of the C++ compiler
+       the type of \tt fn\_matrix\_table \rm is a vector
+       of functions of type double taking one argument of type
+       double. 
+
+ 
+                   
+
+
+    \end{description} 
+
+
+

@@ -1,0 +1,262 @@
+\section{TMatrix}
+
+The \tt TMatrix \rm implements an $n \times m$ matrix. Currently
+the only methods and operations implementing matrix operations 
+are assignment, indexing, negating the elements, transpose and 
+multiplications with another matrix and a vector.
+
+Another set of methods impelement memory management. These
+are constructors, destructor, assignment  and resizing the matrix.
+
+For the matrix operations (e.g., multiplication, addition)
+ the sizes of the matrices is checked
+before performing the operation. 
+If the operation cannot be performed
+error message is printed and the program exists.
+
+\subsection{The Class Declaration of TMatrix}
+\begin{verbatim}
+template <class T> class TMatrix {
+  friend TMatrix<T> operator+(const TMatrix<T>& m1,
+                              const TMatrix<T>& m2);
+  friend TMatrix<T> operator*(const TMatrix<T>& m1,
+                              const TMatrix<T>& m2);
+  friend vector<T> operator*(const vector<T>& v, 
+                             const TMatrix<T>& m);
+  friend vector<T> operator*(const TMatrix<T>& m, 
+                             const vector<T>& v);
+  friend TMatrix<T> operator*(const TMatrix<T>& m,
+                              const T scalar);
+  friend TMatrix<T> operator*(const T scalar,
+                              const TMatrix<T>& m);
+  friend ostream& operator<<(ostream& os, 
+                             const TMatrix<T>& m);
+public:
+  TMatrix();    
+  TMatrix(const int rows,const int cols);
+  TMatrix(const TMatrix<T>& m);
+  ~TMatrix();
+  TMatrix<T>& operator = (const TMatrix<T>& m);
+  T* operator[](int row)const;
+  TMatrix<T>& operator -();
+  TMatrix<T> transpose()const;
+  int rows() const;
+  int cols() const;
+  void resize( const int rows, const int cols);  
+private:
+  T* matrix_table;
+  int n_of_rows;
+  int n_of_cols;
+};
+
+\end{verbatim}
+
+\subsection{Template Parameters}
+
+\begin{description}
+  \item[T] The type of the matrix element, any of the 
+   arithmetic types in C/C++.
+\end{description}
+
+\subsection{Public Methods}
+
+\subsubsection{Matrix()}
+The default constructor creates a default matrix. You have to use 
+\tt resize() \rm method to define the size of the matrix 
+before using it. 
+\begin{description}
+  \item[Returns] Nothing.
+\end{description}
+
+\subsubsection{Matrix(const int rows,const int cols);}
+Constructor creating $n \times m$ matrix.
+\begin{description}
+  \item[Arguments] to the method.
+    \begin{description}
+      \item[rows] The number of rows in the matrix.
+      \item[cols] The number of columns in the matrix.
+    \end{description}
+\end{description}
+
+\subsubsection{Matrix(const Matrix<T>\& m);}
+The copy constructor.
+
+\begin{description}
+  \item[Returns] Nothing.
+\end{description}
+
+\subsubsection{\~{ }TMatrix()}
+Destructor releases the memory allocated for the matrix.
+
+\begin{description}
+  \item[Returns] Nothing.
+\end{description}
+
+\subsubsection{TMatrix<T>\& operator=(const TMatrix<T>\& m);}
+The assignment.
+
+\begin{description}
+  \item[Returns] The matrix itself on the left side of the assignment.
+\end{description}
+
+\subsubsection{T* operator[](int row)const;}
+
+The overloaded indexing operator returning a row in a matrix.
+Note that the row is returned as a built in C/C++ vector type.
+This operator is seldom used alone but it is usually followed
+by indexing also the vector returned returning one  element in the
+matrix. For example, \tt m[0][2] \rm gives the element in the
+first row, third column.
+
+\begin{description}
+  \item[Arguments] to the method.
+    \begin{description}
+      \item[row] The row in the matrix, such that 
+                 $0 \geq$ \tt row $\geq$ \tt rows() \rm $- 1$.
+      \end{description}
+  \item[Returns] The row in the matrix as a built in C/C++ vector type.
+                 C/C++ style of indexing is used, i.e., the first row is 0, 
+                 the second 1 etc. 
+\end{description}
+
+\subsubsection{TMatrix<T>\& operator -();}
+Negate the elements of the matrix. 
+\begin{description}
+   \item[Returns] The matrix itself with the elements negated.
+\end{description}
+
+\subsubsection{TMatrix<T> transpose()const;}
+The transpose of the matrix. The 
+
+\begin{description}
+   \item[Returns] New matrix as a transpose of the matrix
+                  the method is applied to.
+\end{description}
+
+\subsubsection{int rows()const;}
+The number of rows in the matrix.
+
+\begin{description}
+   \item[Returns] The number of rows.
+\end{description}
+
+\subsubsection{int cols()const;}
+The number of columns in the matrix.
+
+\begin{description}
+   \item[Returns] The number of columns.
+\end{description}
+
+\subsubsection{void resize(const int rows, const int cols);}
+Release the memory for the matrix and resize it.
+\begin{description}
+   \item[Arguments] for the method.
+     \begin{description}
+       \item[rows] The number of rows in the new matrix.
+       \item[cols] The number of columns in the new matrix.
+     \end{description}
+   \item[Returns] Nothing.
+\end{description}
+
+\subsection{Functions and operations on TMatrix}
+\subsubsection{friend TMatrix<T> operator+(const TMatrix<T>\& m1, \\
+                                           const TMatrix<T>\& m2);}
+Add two $n \times m$ matrices $A$ and $B$.
+\begin{description}
+  \item [Arguments] for the method.
+    \begin{description}
+      \item [m1] The  $n \times m$ matrix $A$.
+      \item [m2] The  $n \times m$ matrix $A$.
+    \end{description}
+  \item [Returns] New  $n \times m$ matrix $C$ such that $C = A + B$.
+\end{description}
+
+\subsubsection{friend TMatrix<T> operator*(const TMatrix<T>\& m1,\\
+                                            const TMatrix<T>\& m2);}
+Multiply $n \times m$ matrix $A$ with $m \times k$ matrix $B$.
+\begin{description} 
+  \item[Arguments] for the method.
+    \begin{description}
+      \item [m1] The  $n \times m$ matrix $A$.
+      \item [m2] The  $m \times k$ matrix $B$.
+    \end{description}
+   \item [Returns] New $n \times k$ matrix $C$ such that $C = A \times B$.
+\end{description}
+
+\subsubsection{friend vector<T> operator*(const vector<T>\& v,\\
+                                          const TMatrix<T>\& m);}
+Multiply a row vector $v$ of length $n$ with $n \times m$ matrix $A$.
+The \tt vector<T> \rm is a vector type in STL.
+\begin{description}
+  \item[Arguments] for the method.
+   \begin{description}
+     \item [v] The vector $v$ of length $n$.
+     \item [m] The $n \times m$ matrix $A$.
+   \end{description} 
+  \item [Returns] New vector $k$ of length $m$ such that  $k = A \times v$.
+\end{description} 
+
+
+\subsubsection{friend vector<T> operator*(const TMatrix<T>\& m,\\
+                                          const vector<T>\& v);}
+Multiple an $n \times m$ matrix $A$ with a column vector $v$ of length $m$. 
+Result is vector $k$ of size $n$. The \tt vector<T> \rm is a vector 
+type in STL.
+
+\begin{description}
+  \item[Arguments] for the method.
+   \begin{description}
+     \item [m] The $n \times m$ matrix $A$.
+     \item [v] The vector $v$ of length $n$.
+   \end{description} 
+  \item [Returns] New vector $k$ of length $n$ such that  $k = v \times A$.
+\end{description}
+
+\subsubsection{friend TMatrix<T> operator*(const TMatrix<T>\& m,\\
+    	                                   const T scalar);}
+Multiply each element in a matrix by a scalar.
+
+\begin{description}
+  \item[Arguments] for the method.
+   \begin{description}
+     \item [m] The $n \times m$ matrix.
+     \item [scalar] The scalar.
+   \end{description} 
+  \item [Returns] New matrix.
+\end{description}
+
+\subsubsection{friend TMatrix<T> operator * (const T scalar,\\
+	                                     const TMatrix<T>\& m);}
+Multiply each element in a matrix by a scalar.
+
+\begin{description}
+  \item[Arguments] for the method.
+   \begin{description}
+     \item [scalar] The scalar.
+     \item [m] The $n \times m$ matrix.
+   \end{description} 
+  \item [Returns] New matrix.
+\end{description}
+
+\subsubsection{friend ostream\& operator << (ostream\& os, \\
+                                            const TMatrix<T>\& m);}
+Print the matrix to an output stream (usually the standard output \tt cout\rm).
+
+\begin{description}
+  \item[Arguments] for the method.
+   \begin{description}
+     \item [os] The output stream (usually \tt cout\rm).
+     \item [m] The $n \times m$ matrix.
+   \end{description} 
+  \item [Returns] The output stream.
+\end{description}
+
+\subsection{The Private Data Members}
+
+\begin{description}
+  \item [T* matrix\_table] The $n \times m$ vector for the  
+                           $n \times m$ matrix.
+  \item [int n\_of\_rows] The number of rows in the matrix.
+  \item [int n\_of\_cols] The number of columns.
+\end{description}
+

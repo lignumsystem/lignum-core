@@ -1,0 +1,11 @@
+Parmeters:
+    Tree: Tree.txt
+    Stem: Stem.txt
+    BranchWhorl: BranchWhorl.txt
+    TreeSegment: TreeSegment.txt
+    Bud: Bud.txt
+Functions:
+    FoliageMortality:FoliageMortality.fn
+    Buds: Buds.fn
+    DoI: DoI.fn
+    

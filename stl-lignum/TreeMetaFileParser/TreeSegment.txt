@@ -1,0 +1,16 @@
+#Parameters for tree segment according to Annals of Botany and 
+#paper accepted in Ecological Modelling 1996
+
+af      1.3         #Needle mass - tree segment area relationship
+ar      0.5         #Foliage - root relationship 
+lr      100.0       #Length - Radius relationship of a tree segment
+mf      0.2         #Maintenance respiration rate of foliage
+mr      0.24        #Maintenance respiration rate of roots
+ms      0.024       #Maintenance respiration rate of sapwood
+q       0.1         #Tree segment shortening factor
+sr      0.33        #Senescence rate of roots
+ss      0.07        #Senescence rate of sapwood
+rho     400.0       #Density of wood in tree segment
+xi      0.6         #Fraction of heartwood in tree segments
+pr      0.001       #Proportion of bound solar radiation that is
+                    #used in photosynthesis
