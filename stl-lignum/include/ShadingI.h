@@ -141,7 +141,7 @@ vector<LGMdouble>& ShadingEffectOfLeaf<TS,BUD>::operator()(vector<LGMdouble>& v,
 
     for (Ishding = llshding.begin(); Ishding != llshding.end(); Ishding++){
       for (i = 0; i < number_of_sectors; i++){
-	//the radiation from the sector i
+	//the radiation from the sector i and direction of sector i
 	firmament.diffuseRegionRadiationSum(i,radiation_direction);
 	tmp = PositionVector(radiation_direction[0],
 			     radiation_direction[1],
@@ -304,7 +304,10 @@ vector<LGMdouble>& ShadingEffectOfCfTreeSegment<TS,BUD>::
       if (v[i] == HIT_THE_WOOD) { 
 	continue;
       }
-    result = cylinderBeamShading(GetPoint(*shaded_s),
+      //the radiation from the sector i and direction of sector i
+      firmament.diffuseRegionRadiationSum(i,radiation_direction);
+
+      result = cylinderBeamShading(GetPoint(*shaded_s),
 			 radiation_direction,
 			 GetPoint(*ts),
 			 GetDirection(*ts),
