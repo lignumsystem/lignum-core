@@ -45,7 +45,7 @@ namespace Lignum{
 	      Point position;
 	      PositionVector direction = GetDirection(*ts);
 
-	      length = GetValue(*ts, L); 
+	      length = GetValue(*ts, LGAL); 
 			
 	      radius_top = GetValue(*ts, RTop);
 	      position = GetPoint(*ts);
@@ -86,7 +86,7 @@ namespace Lignum{
 	  Point position;
 	  PositionVector direction = GetDirection(*rs);
 
-	  length = GetValue(*rs, L);
+	  length = GetValue(*rs, LGAL);
 	  position = GetPoint(*rs);
 	  
 	  direction.normalize();
@@ -246,7 +246,7 @@ TreeCompartment<TS,BUD>* DrawNeedlesFunctor<TS,BUD>::operator()(TreeCompartment<
       Point position;
       PositionVector direction = GetDirection(*cfts);
 	  
-      length = GetValue(*cfts, L); 
+      length = GetValue(*cfts, LGAL); 
       radius_top = GetValue(*cfts, RTop);
       position = GetPoint(*cfts);
 	  
