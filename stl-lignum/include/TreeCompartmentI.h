@@ -51,6 +51,7 @@ template <class TS,class BUD>
 void SetDirection(TreeCompartment<TS,BUD>& tc, const PositionVector& pv)
 {
 	tc.direction = pv;
+	tc.direction.normalize();
 }
 
 
