@@ -991,13 +991,11 @@ void CTexture::Load(char *filename, int fw, int fh)
 
   FILE *f;
 
-  data = new char[(fw*fh)*3];
-
+  data = new char[(fw*fh)*3+54];
   f = fopen(filename, "rb");
   fseek(f, 54, SEEK_SET);
   fread(data, 1, (fw*fh)*3+54, f);
   fclose(f);
-
   w = fw;
   h = fh;
   
@@ -1007,8 +1005,6 @@ void CTexture::Load(char *filename, int fw, int fh)
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexImage2D(GL_TEXTURE_2D, 0, 3, w, h, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-
-  
 }
 
 void CTexture::use()
