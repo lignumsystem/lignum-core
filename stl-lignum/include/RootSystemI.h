@@ -152,6 +152,15 @@ namespace Lignum{
     return old_value;
   }
 
+  template <class TREE>
+    list<RootCompartment<TREE>*>& GetRootCompartmentList(RootAxis<TREE>& ra){
+    return ra.rc_ls;
+  }
+  template <class TREE>
+    void InsertRootCompartment(RootAxis<TREE>& ra,
+			       const RootCompartment<TREE>* rpb){
+    ra.rc_ls.push_back(rpb);
+  }
 }//closing namespace Lignum
 
 #endif
