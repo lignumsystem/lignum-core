@@ -1,6 +1,6 @@
 #ifndef _VOXELLATTICE_H_
 #define _VOXELLATTICE_H_
- 
+ 
 #include "interlen.h"
 
 #include <math.h>
