@@ -95,7 +95,7 @@ class TreeSegment: public TreeCompartment<TS,BUD>{
 
 #endif
   template <class TS1,class BUD1>
-  Point GetEndPoint(const TreeSegment<TS1,BUD1>& ts);
+  friend Point GetEndPoint(const TreeSegment<TS1,BUD1>& ts);
 
 public:
   TreeSegment();
