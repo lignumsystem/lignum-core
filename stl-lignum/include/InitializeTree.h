@@ -2,6 +2,7 @@
 #define INITIALIZE_TREE_H
 #include <string>
 #include <map>
+#include <iostream>
 #include <stringutils.h>
 #include <LGMSymbols.h>
 #include <DefaultBud.h>

@@ -26,7 +26,7 @@ namespace Lignum{
       //1. Parse parameters for a tree
       string file = tmfp.getParameterFile("Tree");
       if (verbose){
-	cout << "Reading parameters for tree from: " << file << endl;
+	cout << "Reading parameters for tree from: " << file.c_str() << endl;
       }
       
       lex.scan(file);
@@ -38,7 +38,7 @@ namespace Lignum{
 	Token value = lex.getToken();
 	LGMdouble p = static_cast<LGMdouble>(atof(value.getValue().c_str()));
 	if (verbose){
-	  cout << "Parameter: " << name.getValue() << " = " << p << endl;
+	  cout << "Parameter: " << name.getValue().c_str() << " = " << p << endl;
 	}
 	//Check if this is known parameter
 	//First, if it is a parameter configuring tree segment
@@ -53,7 +53,7 @@ namespace Lignum{
 	//Unkonown, parameter (check MapLGMPD and MapLGMTD listings in TreeFriend.cc)
 	else{
 	  if (verbose){
-	    cerr << "Unknown parameter for tree: " << name.getValue() << endl;
+	    cerr << "Unknown parameter for tree: " << name.getValue().c_str() << endl;
 	  }
 	}
 	//next parameter
@@ -63,7 +63,7 @@ namespace Lignum{
       //2. Configure the firmament
       file = tmfp.getParameterFile("Firmament");
       if (verbose){
-	cout << "Reading Configuration for Firmament from: " << file << endl;
+	cout << "Reading Configuration for Firmament from: " << file.c_str() << endl;
       }
 
       GetFirmament(tree).configure(file);
@@ -88,42 +88,42 @@ namespace Lignum{
       file = tmfp.getFunctionFile("LGMAL");
       if (verbose){
 	cout << "Configuring functions" << endl;
-	cout << "Reading LGMAL from: " << file << endl;
+	cout << "Reading LGMAL from: " << file.c_str() << endl;
       }
       //2.
       file = tmfp.getFunctionFile("LGMFM");
       if (verbose){
-	cout << "Reading LGMFM from: " << file << endl;
+	cout << "Reading LGMFM from: " << file.c_str() << endl;
       }
       tree.tf.fm.install(file);
       //3.
       file = tmfp.getFunctionFile("LGMIP");
       if (verbose){
-	cout << "Reading LGMIP from: " << file << endl;
+	cout << "Reading LGMIP from: " << file.c_str() << endl;
       }
       tree.tf.fm.install(file);
       //4.
       file = tmfp.getFunctionFile("LGMLONB");
       if (verbose){
-	cout << "Reading LGMLONB from: " << file << endl;
+	cout << "Reading LGMLONB from: " << file.c_str() << endl;
       }
       tree.tf.fm.install(file);
       //5.
       file = tmfp.getFunctionFile("LGMNB");
       if (verbose){
-	cout << "Reading LGMNB from: " << file << endl;
+	cout << "Reading LGMNB from: " << file.c_str() << endl;
       }
       tree.tf.nb.install(file);
       //6.
       file = tmfp.getFunctionFile("LGMVI");
       if (verbose){
-	cout << "Reading LGMVI from: " << file << endl;
+	cout << "Reading LGMVI from: " << file.c_str() << endl;
       }
       tree.tf.nb.install(file);
       //7.
       file = tmfp.getFunctionFile("LGMVIONB");
       if (verbose){
-	cout << "Reading LGMVIONB from: " << file << endl;
+	cout << "Reading LGMVIONB from: " << file.c_str() << endl;
       }
       tree.tf.ip.install(file);
     }
