@@ -19,4 +19,4 @@ int voxelSizeY;
 int voxelSizeZ;
 
 
-//Voxel ***matrixxx;
+Voxel ***matrixxx;

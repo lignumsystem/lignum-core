@@ -36,7 +36,7 @@ extern int voxelSizeZ;
 
 
 
-Voxel ***matrixxx;
+extern Voxel ***matrixxx;
 
 //Functor for getting extinction coefficient
 class getExtCoeff
