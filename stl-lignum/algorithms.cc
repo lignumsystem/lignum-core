@@ -159,7 +159,7 @@ int main(int argc, char *argv[])
   MyCfTreeSegment *cf_ts = 
     new MyCfTreeSegment(Point(0,0,0),PositionVector(0,0,1.0),
 			0,1,0.5,0.2,&cf_tree);
-  SetValue(*cf_ts, Qabs, 100.0);                //this segment has absorbed radiation
+  SetValue(*cf_ts, LGAQabs, 100.0);                //this segment has absorbed radiation
   //create the branching point
   BranchingPoint<MyCfTreeSegment,MyCfBud> *cf_bp = 
     new BranchingPoint<MyCfTreeSegment,MyCfBud>(Point(0,0,0),
