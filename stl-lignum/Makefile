@@ -79,4 +79,6 @@ main.o: ../c++adt/include/Point.h /usr/include/math.h
 main.o: include/TreeCompartment.h include/LGMdecl.h include/LGMUnits.h
 main.o: ../c++adt/include/PositionVector.h ../c++adt/include/mathsym.h
 main.o: ../c++adt/include/RMatrix.h ../c++adt/include/TMatrix.h
-main.o: include/BranchingPoint.h include/Axis.h
+main.o: include/BranchingPoint.h include/Axis.h include/TreeFunctor.h
+main.o: /usr/include/CC/algorithm /usr/include/CC/stl_tempbuf.h
+main.o: /usr/include/CC/stl_algo.h /usr/include/CC/stl_heap.h
