@@ -32,6 +32,8 @@ public:
   PositionVector& rotate(ROTATION direction, RADIAN angle);
   PositionVector& rotate(const Point<double>& p0, const PositionVector& dir,
 			 RADIAN angle);
+  PositionVector& rotate(const Point<double>& begin, const Point<double>& end,
+			 RADIAN angle);
   PositionVector& operator = (const PositionVector& pv);
   PositionVector& operator += (const PositionVector& point); 
   PositionVector& operator -= (const PositionVector& point);
