@@ -1333,7 +1333,7 @@ namespace Lignum{
   template <class TS, class BUD>
     LGMdouble& TreeHeight<TS,BUD>::operator()(LGMdouble &max_height, TreeCompartment<TS,BUD>* tc)const
     {
-      if (TreeSegment<TS,BUD>* ts = dynamic_cast<TreeSegment<TS,BUD>*>(tc))
+      if (TS* ts = dynamic_cast<TS*>(tc))
 	{
 	  Point p = GetPoint(*ts);
 	  LGMdouble length = GetValue(*ts, L);
@@ -1350,7 +1350,7 @@ namespace Lignum{
   template <class TS, class BUD, class SH>
   TreeCompartment<TS,BUD>* DropAllLeaves<TS,BUD,SH>::operator ()(TreeCompartment<TS,BUD>* tc)const
 {
-  if (HwTreeSegment<TS,BUD,SH>* hwts = dynamic_cast<HwTreeSegment<TS,BUD,SH>*>(tc)){
+  if (TS* hwts = dynamic_cast<TS*>(tc)){
     list<BroadLeaf<SH>*>& ls = GetLeafList(*hwts);
     //Destroy leaves before clearing the list 
     for_each(ls.begin(),ls.end(),DestroyLeaves<SH>());
