@@ -279,6 +279,12 @@ METER GetInitialSapwoodArea(const TreeSegment<TS,BUD>& ts)
 }
 
 template <class TS,class BUD>
+void AddNewRadiusToAnnualRings(TreeSegment<TS,BUD>& ts, LGMdouble radius)
+{
+  ts.tsa.annual_rings.push_back(radius);
+}
+
+template <class TS,class BUD>
 METER GetLastAnnualIncrement(const TreeSegment<TS,BUD>& ts)
 {
 	std::vector<METER> rings = GetAnnualRings(ts);

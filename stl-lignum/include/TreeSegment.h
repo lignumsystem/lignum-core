@@ -52,8 +52,11 @@ class TreeSegment: public TreeCompartment<TS,BUD>{
   friend METER GetLastAnnualIncrement(const TreeSegment<TS,BUD>& ts);
   friend LGMdouble GetValue(const TreeSegment<TS,BUD>& ts, const LGMAD name);
   friend LGMdouble SetValue(TreeSegment<TS,BUD>& ts, const LGMAD name, const LGMdouble value);
+  friend void AddNewRadiusToAnnualRings(TreeSegment<TS,BUD>& ts, LGMdouble radius);
+
   friend ostream &operator << (ostream& os, TreeSegment<TS,BUD>& ts);
   friend istream &operator >> (istream& os, TreeSegment<TS,BUD>& ts);
+
 #else
   template <class TS1,class BUD1>
   friend std::vector<METER> GetAnnualRings(const TreeSegment<TS1,BUD1>& ts);
@@ -88,6 +91,8 @@ class TreeSegment: public TreeCompartment<TS,BUD>{
   template <class TS1,class BUD1>
   friend METER GetLastAnnualIncrement(const TreeSegment<TS1,BUD1>& ts);
   	
+  template <class TS1,class BUD1>
+  friend void AddNewRadiusToAnnualRings(TreeSegment<TS1,BUD1>& ts, LGMdouble radius);
 
 #endif
   template <class TS1,class BUD1>
