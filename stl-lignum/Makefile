@@ -3,6 +3,10 @@
 #To compile with g++ in Linux type (or copy paste)
 #    make "CCC=g++" "CCCFLAGS=-c" "OPTIMIZE=-O" "ARCOMMAND=ar"  "ARCOMMANDFLAGS=rv" algorithms 
 
+
+# testing
+
+
 MAIN = main.cc
 OBJ  = main.o
 
