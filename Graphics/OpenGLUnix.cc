@@ -16,7 +16,7 @@ using namespace Lignum;
 #include <stdio.h>
 
 //And the vendors just can't agree where the headers are...
-#if defined(__APPLE__) || defined(MACOSX)
+#if defined(__APPLE__) || defined(__MACOSX__)
 #include <OpenGL/gl.h>
 #include <OpenGL/glu.h>
 #include <GLUT/glut.h>

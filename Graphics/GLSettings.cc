@@ -4,7 +4,7 @@
 #include <GLSettings.h>
 #include <OpenGLSymbols.h>
 
-#if defined( APPLE ) || defined(MACOSX)
+#if defined(__APPLE__) || defined(__MACOSX__)
 #include <OpenGL/gl.h>
 #include <OpenGL/glu.h>
 #else
