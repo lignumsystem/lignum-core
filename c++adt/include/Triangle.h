@@ -22,9 +22,9 @@ namespace cxxadt{
       :leftcorner(t.leftcorner),rightcorner(t.rightcorner),
       apexcorner(t.apexcorner){}
     Triangle& operator=(const Triangle& t);
-    Point  getLeftCorner()  { return leftcorner;};
-    Point  getRightCorner() { return rightcorner;};
-    Point  getApexCorner()  { return apexcorner;};
+    Point  getLeftCorner() const { return leftcorner;};
+    Point  getRightCorner() const { return rightcorner;};
+    Point  getApexCorner() const { return apexcorner;};
     vector<Point>&  getVertexVector(vector<Point>& points)const;
     void   setLeftCorner(const Point& p){ leftcorner=p;};
     void   setRightCorner(const Point& p){ rightcorner=p;};
@@ -54,7 +54,7 @@ namespace cxxadt{
                                    //the light beam is the ob vector 
                                    // o - the observer position
                                    // b - the vector beam 
-    bool   intersectShape(const Point& o,const PositionVector& beam); 
+    bool   intersectShape(const Point& o,const PositionVector& beam)const; 
                                             
   private:
     Point leftcorner,rightcorner,apexcorner;//the triangle corners

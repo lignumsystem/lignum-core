@@ -23,7 +23,7 @@ namespace cxxadt{
 	    const double& semimajoraxis,  const double& semiminoraxis);
     Ellipse(const Ellipse& e);
     Ellipse& operator=(const Ellipse& e);
-    Point  getCenterPoint() const { return center;};
+    const Point&  getCenterPoint() const { return center;};
     PositionVector getNormal()const { return normal;};
     double getSemimajorAxis()const{ return semimajoraxis;};
     Point  getSemimajorAxisPoint()const;
@@ -60,7 +60,7 @@ namespace cxxadt{
                                      // o - the observer position
                                      // b - the vector beam
     bool intersectShape(const Point& o,
- 		   const PositionVector& beam);
+ 		   const PositionVector& beam)const;
     
 					   				       
     PositionVector x1u()const;      //unit vector x-axis in the ellipse plane

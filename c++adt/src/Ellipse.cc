@@ -168,7 +168,7 @@ vector<Point>& Ellipse::getVertexVector(vector<Point>& points)const
 
   
  bool Ellipse::intersectShape(const Point& O,
-			      const PositionVector& B0){
+			      const PositionVector& B0)const{
    double t;
    double cosangleBCXu,angleBCXu;
 

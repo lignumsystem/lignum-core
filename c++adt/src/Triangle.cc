@@ -243,7 +243,7 @@ double Triangle::setArea(double area, const Point& base )
  //
 
  bool Triangle::intersectShape(const Point& O,
-				  const PositionVector& B){
+				  const PositionVector& B)const{
 
    int i,j,k;
    int counter=0;
