@@ -1,4 +1,3 @@
-
 #ifndef VOXELMATRIXI_H
 #define VOXELMATRIXI_H
 
@@ -500,22 +499,17 @@ double Matrix<TS,BUD>::getLight(TreeSegment<TS,BUD> *ts)
   LGMdouble needle_rad = 0.0;
   if (CfTreeSegment<TS, BUD>* cfts = dynamic_cast<CfTreeSegment<TS, BUD>*>(ts))  	  
     {
-      cout << "TreeSegment   Position:" << GetPoint(*cfts) << "  Direction:" << GetDirection(*cfts) << endl;
-      cout << "Length " << GetValue(*cfts, L) << "  Radius:"<< GetValue(*cfts, R) << endl;
+/*       cout << "TreeSegment   Position:" << GetPoint(*cfts) << "  Direction:" << GetDirection(*cfts) << endl; */
+/*       cout << "Length " << GetValue(*cfts, L) << "  Radius:"<< GetValue(*cfts, R) << endl; */
 
-      cout << "FoliageMass:"<< GetValue(*cfts, Wf) << endl;
+/*       cout << "FoliageMass:"<< GetValue(*cfts, Wf) << endl; */
 
 
       SetValue(*cfts, Qin, q_in);
       W_f = GetValue(*cfts, Wf);
-      sf = 2.0 * PI_VALUE * GetValue(*cfts,Rf) * GetValue(*ts,L);
-      
-      LGMdouble needle_length = GetValue(GetTree(*cfts),nl);
-      LGMdouble needle_angle = GetValue(GetTree(*cfts),na);
-      SetValue(*cfts, Rf,needle_length * sin(needle_angle)+ GetValue(*ts,R));
       needle_rad = GetValue(*cfts, Rf);
   
-      sf = 28.1;
+      sf = 28.1;  //***Add sf to parameters of the tree********
       LGMdouble star = 0;
   
 	
@@ -1038,17 +1032,16 @@ void Matrix<TS,BUD>::calculateLight(Firmament *firm, int x, int y, int z)
   //
   // Calculate the diffuse radiation
   //
-  //******for (i=0;i<num_dirs;i++) 
-  i = num_dirs - 1;
+  for (i=0;i<num_dirs;i++) 
   {
           
 	  radiationsum = firm->diffuseRegionRadiationSum(i, direction);
-	  cout << "Taivaankannen suunta " << direction << endl;
+	  //	  cout << "Taivaankannen suunta " << direction << endl;
 	  total_radiation += radiationsum;
 	  newTraversePath(direction, radiationsum, *point, *startvoxel);
   }
 
-  cout << "Total radiation " << total_radiation << endl;
+  //  cout << "Total radiation " << total_radiation << endl;
 
   //
   // Calculate the direct radiation
