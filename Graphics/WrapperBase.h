@@ -56,13 +56,11 @@ public:
 
 //Shape pit‰‰ lis‰t‰ luokkaan jotta DrawOrderedLeaves ja koko luokka toimii
 
-template <class TS, class BUD>
+template <class TS, class BUD, class SHAPE>
 class HwWrapper: public WrapperBase 
 {
 public:
   HwWrapper(Tree<TS,BUD>& t):WrapperBase(),tree(t){}
-
-
   void MakeDisplayLists(bool orderfoliage);
   void MakeWireModelLists();
   void VisualizeTree();
@@ -73,7 +71,7 @@ public:
   
   virtual void hello(){cout << "HwWrapper hello" << endl;;}
  
-   void DrawOrderedLeaves(float x, float y, float z);
+  void DrawOrderedLeaves(float x, float y, float z);
   
   Tree<TS,BUD>& tree;
 };

@@ -44,8 +44,8 @@ void CfWrapper<TS,BUD>::VisualizeWireModel()
   
 }
 
-template <class TS, class BUD>
-void HwWrapper<TS,BUD>::VisualizeWireModel()
+template <class TS, class BUD, class SHAPE>
+void HwWrapper<TS,BUD,SHAPE>::VisualizeWireModel()
 {
   DrawWireModelFunctor<TS,BUD> stemfunctor;
   ForEach(tree, stemfunctor);
@@ -54,20 +54,20 @@ void HwWrapper<TS,BUD>::VisualizeWireModel()
 
 
 
-template <class TS, class BUD>
-void HwWrapper<TS,BUD>::VisualizeStem(int &active_texture)
+template <class TS, class BUD, class SHAPE>
+void HwWrapper<TS,BUD,SHAPE>::VisualizeStem(int &active_texture)
 {
 	
 }
 
-template <class TS, class BUD>
-void HwWrapper<TS,BUD>::VisualizeFoliage(int &active_texture)
+template <class TS, class BUD, class SHAPE>
+void HwWrapper<TS,BUD,SHAPE>::VisualizeFoliage(int &active_texture)
 {
     if (bmpImage)
     {
 	glBindTexture(GL_TEXTURE_2D, intFoliageTexture );
 	glPushMatrix();
-	DrawLeavesFunctor<TS, BUD> func(1, 1);
+	DrawLeavesFunctor<TS, BUD,SHAPE> func(1, 1);
 	ForEach(tree, func);    
 	glPopMatrix();
     }
@@ -81,7 +81,7 @@ void HwWrapper<TS,BUD>::VisualizeFoliage(int &active_texture)
 	
 	glPushMatrix();
 	glEnable(GL_CULL_FACE);
-	DrawLeavesFunctor<TS, BUD> func(1, 1);
+	DrawLeavesFunctor<TS, BUD,SHAPE> func(1, 1);
 	glCullFace(GL_FRONT);
 	ForEach(tree, func);    
 
@@ -94,8 +94,8 @@ void HwWrapper<TS,BUD>::VisualizeFoliage(int &active_texture)
 
 
 
-template <class TS, class BUD>
-void HwWrapper<TS,BUD>::MakeWireModelLists()
+template <class TS, class BUD,class SHAPE>
+void HwWrapper<TS,BUD,SHAPE>::MakeWireModelLists()
 {
   if (glIsList(intDisplaylistStem))
     {
@@ -142,8 +142,8 @@ void CfWrapper<TS,BUD>::VisualizeTree()
     ForEach(tree, stemfunctor);   
 }
 
-template <class TS, class BUD>
-void HwWrapper<TS,BUD>::VisualizeTree()
+template <class TS, class BUD, class SHAPE>
+void HwWrapper<TS,BUD,SHAPE>::VisualizeTree()
 {
   DrawStemFunctor<TS,BUD> stemfunctor;
   stemfunctor.min_rad = -99;
@@ -152,8 +152,8 @@ void HwWrapper<TS,BUD>::VisualizeTree()
 }
 
 
-template <class TS, class BUD>
-void HwWrapper<TS,BUD>::MakeDisplayLists(bool orderfoliage)
+template <class TS, class BUD, class SHAPE>
+void HwWrapper<TS,BUD,SHAPE>::MakeDisplayLists(bool orderfoliage)
 {
     ordfoliage =  orderfoliage;
     if (glIsList(intDisplaylistStem))
@@ -186,29 +186,22 @@ void HwWrapper<TS,BUD>::MakeDisplayLists(bool orderfoliage)
 }
 
 
-
-
-
-
-
-
-
 // Draws distance-ordered leaves one by one 
-template <class TS, class BUD>
-void HwWrapper<TS,BUD>::DrawOrderedLeaves(float x, float y, float z)
+template <class TS, class BUD, class SHAPE>
+void HwWrapper<TS,BUD,SHAPE>::DrawOrderedLeaves(float x, float y, float z)
 {
     // cout << "cam  " << " " << x << " " << y << " " << z << endl; 
     //Collect leaves from the tree
-    CollectLeaves<TS,BUD, Ellipse> collector;
-    list<BroadLeaf<Ellipse>*> leaf_list;
+    CollectLeaves<TS,BUD, SHAPE> collector;
+    list<BroadLeaf<SHAPE>*> leaf_list;
     Accumulate(tree,leaf_list,collector);
     //Leaves are in  the leaf_list, sort them
-    SortLeaves<Ellipse> sorter(Point(x,y,z));
+    SortLeaves<SHAPE> sorter(Point(x,y,z));
     leaf_list.sort(sorter);
     leaf_list.reverse();
     //Leaves are now sorted, the leaves closest
     //to the Point(x,y,z) appear first.
-    typename list<BroadLeaf<Ellipse>*>::iterator I;
+    typename list<BroadLeaf<SHAPE>*>::iterator I;
    for(I = leaf_list.begin(); I != leaf_list.end(); I++) 
    {
        
@@ -223,7 +216,7 @@ void HwWrapper<TS,BUD>::DrawOrderedLeaves(float x, float y, float z)
        glCullFace(GL_FRONT);
 
        std::vector<Point> points;
-       Ellipse e =  GetShape(**I);
+       SHAPE e =  GetShape(**I);
        // GetShape(**I)
        e.getVertexVector(points);
        
@@ -343,8 +336,8 @@ void CfWrapper<TS,BUD>::DrawTree(float x, float y, float z)
     
 }
 
-template <class TS, class BUD>
-void HwWrapper<TS,BUD>::DrawTree(float x, float y, float z)
+template <class TS, class BUD,class SHAPE>
+void HwWrapper<TS,BUD,SHAPE>::DrawTree(float x, float y, float z)
 {
   GLfloat mat_amb[] = { 0.2, 0.3, 0.4, 1.0 }; 
   GLfloat mat_dif[] = { 0.2, 0.4, 0.4, 1.0 }; 
