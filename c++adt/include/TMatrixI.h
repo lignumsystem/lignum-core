@@ -283,6 +283,43 @@ ostream& operator << (ostream& os, const vector<T>& v1)
   return os;
 }
 
+//Make diagonal matrix (1 1 1 ... 1), if # of rows != # of cols,
+//assigns 1's to max(# of rows, # of cols)
+//Other elements are set equal to (T)0
+template <class T>
+TMatrix<T>& TMatrix<T>::unitize()
+{
+  int i=0, j = 0;
+
+  for (i = 0; i < this->rows();i++){
+    for (j = 0; j < this->cols(); j++){
+      if(i == j)
+	(&this->matrix_table[i*n_of_cols])[j]  = (T)1.0;
+      else
+	(&this->matrix_table[i*n_of_cols])[j] = (T)0.0;
+    
+    }
+  }
+
+  return *this;
+}
+
+//Set all elemets equal to (T)0
+template <class T>
+TMatrix<T>& zero()
+{
+  int i=0, j = 0;
+
+  for (i = 0; i < this->rows();i++){
+    for (j = 0; j < this->cols(); j++){
+	(&this->matrix_table[i*n_of_cols])[j]  = (T)0.0;
+    }
+  }
+
+  return *this;
+}
+
+
 
 } //namespace cxxadt
 #endif //TMATRIXI_H
@@ -361,6 +398,15 @@ int main()
   cout << v2 << endl;
   v2 = m1*v2;
   cout << v2 << endl;
+
+  v2.unitize();
+  cout << " unit matrix" << endl;
+  cout << v2 << endl;
+
+  v2.zero();
+    cout << " zero matrix" << endl;
+  cout << v2 << endl;
+
  return 0;
 }
 

@@ -43,6 +43,8 @@ public:
   int rows() const {return n_of_rows;}
   int cols() const {return n_of_cols;}
   void resize( const int rows, const int cols);  //This destroys the existing contents
+  TMatrix<T>& unitize(); //makes diag(1 1 1 ... 1) matrix
+  TMatrix<T>& zero(); //makes all elements = (T)0
 private:
   T* matrix_table;
   int n_of_rows;
