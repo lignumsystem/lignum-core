@@ -19,9 +19,10 @@ OPTIMIZE = -O
 CCCFLAGS =   -c 
 
 .SUFFIXES: .o .cc
-
-AR = $(CCC) -ar  
-ARFLAGS = -o 
+ARCOMMAND = $(CCC) -ar  
+ARCOMMANDFLAGS = -o
+AR = $(ARCOMMAND)
+ARFLAGS = $(ARCOMMANDFLAGS)
 ARFILE = lib/libc++adt.a
 
 PROGFILES = program-files.html
@@ -66,15 +67,15 @@ depend:
 ./src/Ellipsis.o: include/Ellipsis.h /usr/include/math.h
 ./src/Ellipsis.o: /usr/include/sgidefs.h /usr/include/standards.h
 ./src/Ellipsis.o: include/mathsym.h
-./src/Lex.o: include/Lex.h include/DList.h include/DListElement.h
-./src/Lex.o: include/boolean.h include/CString.h /usr/include/string.h
-./src/Lex.o: /usr/include/standards.h /usr/include/stdio.h
-./src/Lex.o: /usr/include/sgidefs.h /usr/include/ctype.h
-./src/Lex.o: /usr/include/locale_attr.h /usr/include/CC/stream.h
+./src/Lex.o: include/Lex.h /usr/include/CC/fstream.h
 ./src/Lex.o: /usr/include/CC/iostream.h /usr/include/memory.h
-./src/Lex.o: /usr/include/stddef.h /usr/include/CC/iomanip.h
-./src/Lex.o: /usr/include/CC/generic.h /usr/include/CC/stdiostream.h
-./src/Lex.o: /usr/include/CC/fstream.h /usr/include/stdlib.h
+./src/Lex.o: /usr/include/stddef.h /usr/include/sgidefs.h include/DList.h
+./src/Lex.o: include/DListElement.h include/boolean.h include/CString.h
+./src/Lex.o: /usr/include/string.h /usr/include/standards.h
+./src/Lex.o: /usr/include/stdio.h /usr/include/ctype.h
+./src/Lex.o: /usr/include/locale_attr.h /usr/include/CC/stream.h
+./src/Lex.o: /usr/include/CC/iomanip.h /usr/include/CC/generic.h
+./src/Lex.o: /usr/include/CC/stdiostream.h /usr/include/stdlib.h
 ./src/ParametricCurve.o: include/ParametricCurve.h /usr/include/CC/vector
 ./src/ParametricCurve.o: /usr/include/CC/stl_range_errors.h
 ./src/ParametricCurve.o: /usr/include/CC/stl_config.h
