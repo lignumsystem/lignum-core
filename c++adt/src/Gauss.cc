@@ -59,18 +59,24 @@ int main(int argc, char* argv[])
 {
   int init = -1;
   int seed = 0;
-  int m = 0;
-  int sd  = 1;
-  int n = 1000000;
+  double m = 0.0;
+  double sd  = 1.0;
+  int n = 100000;
+  
+
+  if (argc != 6){
+    cout << "Usage: gauss init seed mean stddev sequence_length" << endl;
+    return -1;
+  }
+
+  init = atoi(argv[argc-5]);
+  seed = atoi(argv[argc-4]);
+  m =   atof(argv[argc-3]);
+  sd =  atof(argv[argc-2]);
+  n = atoi(argv[argc-1]);
   vector<double> v(n,0.0); 
   vector<double> v2(n,0.0); 
-  
-  seed = atoi(argv[1]);
-  
-  if (argc == 4){
-    m = atoi(argv[2]);
-    sd  = atoi(argv[3]);
-  }
+
   Gauss gauss(init);
 
   //generate n numbers
@@ -85,7 +91,7 @@ int main(int argc, char* argv[])
   double s2 = accumulate(v2.begin(),v2.end(),0.0)/n - mean*mean;
   cout << "Mean: " << mean << " s^2: " << s2 << endl;
 
-  //find [-1.96,1.96] and [-1,1] probabilities
+  //find [-1.96,1.96] and [-1,1] probabilities for N(0,1)
   sort(v.begin(),v.end());
   vector<double>::iterator lower = find_if(v.begin(),v.end(),
 					   bind2nd(greater<double>(),
