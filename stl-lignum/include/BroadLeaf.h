@@ -54,25 +54,25 @@ class BroadLeaf{
 			    const LGMdouble value);
 
   template <class S>
-  friend Point GetCenterPoint(const BroadLeaf<S>& bl);
+  friend const Point& GetCenterPoint(const BroadLeaf<S>& bl);
 
   template <class S>
   friend void SetCenterPoint(BroadLeaf<S>& bl, const Point& p);
 
   template <class S>
-  friend PositionVector GetLeafNormal(const BroadLeaf<S>& bl);
+  friend const PositionVector& GetLeafNormal(const BroadLeaf<S>& bl);
 
   template <class S>
-  friend PositionVector SetLeafNormal(BroadLeaf<S>& bl, 
-				      const PositionVector& n);
+  friend void SetLeafNormal(BroadLeaf<S>& bl, 
+			    const PositionVector& n);
   template <class S>
-  friend Petiole& GetPetiole(BroadLeaf<S>& bl);
+  friend const Petiole& GetPetiole(const BroadLeaf<S>& bl);
 
   template <class S>
-  friend S& GetShape(BroadLeaf<S>& bl);
+  friend const S& GetShape(const BroadLeaf<S>& bl);
 
   template <class S>
-  friend vector<double> GetRadiationVector(BroadLeaf<S>& bl);
+  friend const vector<double>& GetRadiationVector(const BroadLeaf<S>& bl);
 
   template <class S>
   friend void SetRadiationVector(BroadLeaf<S>& bl, const vector<LGMdouble>& v);
@@ -88,9 +88,10 @@ public:
 	    const SHAPE& shape);
   BroadLeaf(const SHAPE& shape, const Petiole& petiole, 
 	    const PositionVector& leaf_normal);
+  BroadLeaf(const  SHAPE& shape, const Petiole& petiole, 
+	    const PositionVector& leaf_normal, int sky_sectors);
   void photosynthesis(const LGMdouble& p0);
 private:
-  //  void initsv(){for (int i = 0; i < bla.sv.size(); i++)bla.sv[i] = 1.0;}
   BroadLeafAttributes<SHAPE> bla;
 };
 

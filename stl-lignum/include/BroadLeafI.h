@@ -19,6 +19,15 @@ BroadLeaf<SHAPE>::BroadLeaf(const SHAPE& shape, const Petiole& petiole,
 
 }
 
+ 
+template <class SHAPE>  
+BroadLeaf<SHAPE>::BroadLeaf(const SHAPE& shape, const Petiole& petiole, 
+			    const PositionVector& leaf_normal, int sky_sectors)
+  :bla(1.0,1.0,1.0,petiole,leaf_normal,shape,sky_sectors)
+{
+
+}
+
 template <class SHAPE>  
 BroadLeafAttributes<SHAPE>::BroadLeafAttributes(double sf1, double tauL1, 
 						double dof1, const Petiole& petiole1,
@@ -36,7 +45,8 @@ LGMdouble GetValue(const BroadLeaf<SHAPE>& bl, const LGMAD name)
 {
 
   if (name == LGAA)
-    return  bl.bla.degree_of_filling*bl.bla.shape.getArea(); //true area of the leaf
+    //true area of the leaf
+    return  GetValue(bl,LGAdof)*GetShape(bl).getArea(); 
 
   else if (name == LGAdof)
     return  bl.bla.degree_of_filling;
@@ -60,10 +70,12 @@ LGMdouble GetValue(const BroadLeaf<SHAPE>& bl, const LGMAD name)
     return  bl.bla.sf;
 
   else if (name == LGAWf)
-    return  bl.bla.degree_of_filling*GetValue(bl,LGAA)/bl.bla.sf;
+    //Wf = A/SLA (i.e., kgC = m2/(m2/kgC) ) 
+    return  GetValue(bl,LGAA)/GetValue(bl,LGAsf);
 
   else
-    cout << "BroadLeaf GetValue unknown attribute: " << name << " returning 0.0" << endl;
+    cout << "BroadLeaf GetValue unknown attribute: " 
+	 << name << " returning 0.0" << endl;
  
   return 0.0;
 }
@@ -74,7 +86,8 @@ LGMdouble SetValue(BroadLeaf<SHAPE>& bl, const LGMAD name, const LGMdouble value
   LGMdouble old_value= GetValue(bl,name);
 
   if (name == LGAA)
-    bl.bla.shape.setArea(value/bl.bla.degree_of_filling);  //value=true area of the leaf
+    //Given the true area of the leaf, set the shape area
+    bl.bla.shape.setArea(value/GetValue(bl,LGAdof));  
 
   else if (name == LGAdof)
     bl.bla.degree_of_filling = value;
@@ -98,47 +111,45 @@ LGMdouble SetValue(BroadLeaf<SHAPE>& bl, const LGMAD name, const LGMdouble value
     bl.bla.sf = value;
 
   else if (name == LGAWf)
-    bl.bla.shape.setArea(bl.bla.sf*value/bl.bla.degree_of_filling);
-                  //sf * Wf specifies the true area of the leaf
-
+    //Given the Wf, set the shape area using SLA: 
+    //LeafA = SLA*Wf, i.e m2 = (m2/kgC)*kgC
+    //ShapeA = LeafA/dof
+    bl.bla.shape.setArea(GetValue(bl,LGAsf)*value/GetValue(bl,LGAdof);
   else 
-    cout << "BroadLeaf SetValue uknown aattribute: " << name << "returning: "
+    cout << "BroadLeaf SetValue uknown attribute: " << name << "returning: "
 	 << old_value << endl;
  
   return old_value;
 }
 
 template <class SHAPE>  
-Point GetCenterPoint(const BroadLeaf<SHAPE>& bl)
+const Point& GetCenterPoint(const BroadLeaf<SHAPE>& bl)
 {
   return bl.bla.shape.getCenterPoint();
 }
 
 template <class SHAPE>  
-PositionVector GetLeafNormal(const BroadLeaf<SHAPE>& bl)
+const PositionVector& GetLeafNormal(const BroadLeaf<SHAPE>& bl)
 {
   return bl.bla.leaf_normal;
 }
 
 template <class SHAPE>  
-PositionVector SetLeafNormal(BroadLeaf<SHAPE>& bl, const PositionVector& n)
+void SetLeafNormal(BroadLeaf<SHAPE>& bl, const PositionVector& n)
 {
-  PositionVector vv = bl.bla.leaf_normal;
   bl.bla.leaf_normal = n;
   //normalize the normal to unit vector. 
   bl.bla.leaf_normal.normalize();
-
-  return vv;
 }
 
 template <class SHAPE>  
-Petiole& GetPetiole(BroadLeaf<SHAPE>& bl)
+const Petiole& GetPetiole(const BroadLeaf<SHAPE>& bl)
 {
   return bl.bla.petiole;
 }
 
 template <class SHAPE>  
-SHAPE& GetShape(BroadLeaf<SHAPE>& bl)
+const SHAPE& GetShape(const BroadLeaf<SHAPE>& bl)
 {
   return bl.bla.shape;
 }
@@ -157,7 +168,7 @@ void SetRadiationVector(BroadLeaf<SHAPE>& bl, const vector<LGMdouble>& v)
 }
    
 template <class SHAPE>  
-vector<double> GetRadiationVector(BroadLeaf<SHAPE>& bl)
+const vector<double>& GetRadiationVector(const BroadLeaf<SHAPE>& bl)
 {
   return bl.bla.sv;
 }
