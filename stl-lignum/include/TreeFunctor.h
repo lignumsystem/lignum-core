@@ -122,7 +122,7 @@ class BoundingBox {
 template <class TS,class BUD>
 class FindBoundingBox{
 public:
-  BoundingBox operator ()(BoundingBox& b_box,
+  BoundingBox& operator ()(BoundingBox& b_box,
 				       TreeCompartment<TS,BUD>* tc)const;
 };
 
