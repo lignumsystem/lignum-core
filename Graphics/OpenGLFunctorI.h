@@ -10,12 +10,13 @@
 namespace Lignum{
 
 
+
 template <class TS, class BUD>
 TreeCompartment<TS,BUD>* DrawBudFunctor<TS,BUD>::operator()(TreeCompartment<TS,BUD>* tc)const
 {
   if (Bud<TS,BUD>* mybud = dynamic_cast<Bud<TS, BUD>*>(tc))
     {
-      cout << "Budi!" << endl;
+      //cout << "Budi!" << endl;
       drawBud(mybud, mode);
     } 
 
@@ -30,10 +31,9 @@ TreeCompartment<TS,BUD>* DrawStemFunctor<TS,BUD>::operator()(TreeCompartment<TS,
 	if (TreeSegment<TS, BUD>* ts = dynamic_cast<TreeSegment<TS, BUD>*>(tc))
 	{  			
 		LGMdouble radius = GetValue(*ts, R);
-		
 		if (radius > min_rad && radius<=max_rad)	
 		{
-		  
+
 			float length;
 			float radius_top;
 			float rot_x;
@@ -48,17 +48,16 @@ TreeCompartment<TS,BUD>* DrawStemFunctor<TS,BUD>::operator()(TreeCompartment<TS,
 			radius_top = GetValue(*ts, RTop);
 			position = GetPoint(*ts);
 		
+			direction.normalize();
 			rot_x = -1*direction.getVector()[1];
 			rot_y =    direction.getVector()[0];
 			rot_angle = (360/(2*PI_VALUE))*acos((double)direction.getVector()[2]);
-			
 			glPushMatrix();
 			glTranslatef(position.getX(), position.getY(), position.getZ());
-			if (rot_angle > 0.01)
-				glRotatef( rot_angle, rot_x, rot_y, 0);
-			//if (top)
-			//	MakeCylinderWithTop(radius, radius_top, length, rad_limit, GetAnnualRings(*ts), GetValue( *ts,age), odd);
-			//else
+			if (rot_angle == 180.0){
+			  rot_y = 1.0;
+			}
+			glRotatef( rot_angle, rot_x, rot_y, 0);
 			float rad_limit = 0.05;
 			MakeCylinder(radius, radius, length, rad_limit); 
 			glPopMatrix();
