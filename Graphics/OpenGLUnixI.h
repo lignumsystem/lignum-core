@@ -68,6 +68,11 @@ template <class TS,class BUD>
     cout << "puu esityslistat luotu " << endl;
    
     
+    cam_z = 3;
+    cam_x = 4;
+
+    lookat_z = 5;
+
     glutMainLoop ();
 
     return 1;

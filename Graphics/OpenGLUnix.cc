@@ -45,6 +45,8 @@ using namespace Lignum;
 float TEXTURE_LIMIT_MAX = 0.20;  // The radius limit to choose the texture
 float TEXTURE_LIMIT_MIN = 0.05;        
 
+bool boolVoxelWithLines = false;
+bool boolShowVoxel = true;
 
 int hours = 6;
 double minutes = 0;
@@ -319,10 +321,12 @@ void redraw(void)
   
   setLight();
 
-  DrawVoxelCubes();
+  
   DrawTree();
   DrawBuds();
-    
+
+  if (boolShowVoxel)
+    DrawVoxelCubes();  
 
   glPopMatrix();   
   glutSwapBuffers();        // Swap buffers  
@@ -337,7 +341,10 @@ void DrawVoxelCubes()
   int num = cubes.size();
   
   if (num == 0)
-    return;
+    {
+      boolShowVoxel = false;
+      return;
+    }
 
 
   
@@ -418,7 +425,7 @@ void DrawVoxelCubes()
       glColor3f(0.2,0.2,1);
       
       //puolikas sivusta
-      float hedge = cube.edge;
+      float hedge = cube.edge * 0.5;
 
       // cout << "sivu " << hedge << endl;
 
@@ -431,32 +438,35 @@ void DrawVoxelCubes()
 
       //  cout << xx << " " << yy << " " << zz << " " << hedge << endl;
       
-      glBegin(GL_LINE_LOOP);
-      glVertex3f(xx+hedge, yy-hedge, zz+hedge);
-      glVertex3f(xx+hedge, yy+hedge, zz+hedge);
-      glVertex3f(xx+hedge, yy+hedge, zz-hedge);
-      glVertex3f(xx+hedge, yy-hedge, zz-hedge);
-      glEnd();
-      
-      glBegin(GL_LINE_LOOP);
-      glVertex3f(xx-hedge, yy-hedge, zz+hedge);
-      glVertex3f(xx-hedge, yy+hedge, zz+hedge);
-      glVertex3f(xx-hedge, yy+hedge, zz-hedge);
-      glVertex3f(xx-hedge, yy-hedge, zz-hedge);
-      glEnd();
-      
-      glBegin(GL_LINES);
-      glVertex3f(xx+hedge, yy-hedge, zz+hedge);
-      glVertex3f(xx-hedge, yy-hedge, zz+hedge);
-      glVertex3f(xx+hedge, yy+hedge, zz+hedge);
-      glVertex3f(xx-hedge, yy+hedge, zz+hedge);
-      
-      glVertex3f(xx+hedge, yy+hedge, zz-hedge);
-      glVertex3f(xx-hedge, yy+hedge, zz-hedge);
-      glVertex3f(xx+hedge, yy-hedge, zz-hedge);
-      glVertex3f(xx-hedge, yy-hedge, zz-hedge);
-      glEnd();
-      
+      if (boolVoxelWithLines)
+	{
+	  
+	  glBegin(GL_LINE_LOOP);
+	  glVertex3f(xx+hedge, yy-hedge, zz+hedge);
+	  glVertex3f(xx+hedge, yy+hedge, zz+hedge);
+	  glVertex3f(xx+hedge, yy+hedge, zz-hedge);
+	  glVertex3f(xx+hedge, yy-hedge, zz-hedge);
+	  glEnd();
+	  
+	  glBegin(GL_LINE_LOOP);
+	  glVertex3f(xx-hedge, yy-hedge, zz+hedge);
+	  glVertex3f(xx-hedge, yy+hedge, zz+hedge);
+	  glVertex3f(xx-hedge, yy+hedge, zz-hedge);
+	  glVertex3f(xx-hedge, yy-hedge, zz-hedge);
+	  glEnd();
+	  
+	  glBegin(GL_LINES);
+	  glVertex3f(xx+hedge, yy-hedge, zz+hedge);
+	  glVertex3f(xx-hedge, yy-hedge, zz+hedge);
+	  glVertex3f(xx+hedge, yy+hedge, zz+hedge);
+	  glVertex3f(xx-hedge, yy+hedge, zz+hedge);
+	  
+	  glVertex3f(xx+hedge, yy+hedge, zz-hedge);
+	  glVertex3f(xx-hedge, yy+hedge, zz-hedge);
+	  glVertex3f(xx+hedge, yy-hedge, zz-hedge);
+	  glVertex3f(xx-hedge, yy-hedge, zz-hedge);
+	  glEnd();
+	}
       
       float shadow_odd = 0.1 + cube.areaden * (0.3 * pow((2*hedge),3)); 
       
@@ -788,6 +798,18 @@ void menu(int value)
 { 
   switch(value)
     { 
+    case 1:
+      boolShowVoxel = !boolShowVoxel;
+      cout << "Voxel on/off" << endl;
+      redraw();
+      break;
+
+    case 2:
+      boolVoxelWithLines = !boolVoxelWithLines;
+      cout << "Voxel lines on/off " << endl;
+      redraw();
+      break;
+
     case 13:
       glutSetWindow(window1);
       screenShot ("shot.tga", WINDOW_SIZE_X, WINDOW_SIZE_Y);
@@ -838,6 +860,10 @@ void init_window () //int argc, char** argv)
  
   glutAddMenuEntry("Leaves on/off__________________", 14);
   glutAddMenuEntry("Textures on/off_________________", 15);
+  glutAddMenuEntry("VoxelSpace on/off_______________", 1);
+  glutAddMenuEntry("VoxelSpace with lines on/off____", 2);
+ 
+
   glutAddMenuEntry("Change background color______________", 16);
   glutAddMenuEntry("Write image", 13);
   
