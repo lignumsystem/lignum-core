@@ -1,12 +1,5 @@
 #include "stdafx.h"
-#include "OpenGL.h"
 #include <math.h>
-
-#ifdef _MSC_VER
-#include <GL/gl.h>
-#include <GL/glu.h>
-#include <GL/glut.h>
-#endif
 
 #include <VoxelBox.h>
 #include <VoxelSpace.h>
@@ -841,8 +834,10 @@ namespace Lignum {
   //	Visualizes the VoxelSpace
   //
 
-  
-  
+
+
+  //This function is moved to Graphics library 09022004 ML   
+  /*
   void VoxelSpace::draw()
   {
     //#ifdef _MSC_VER
@@ -1036,7 +1031,7 @@ namespace Lignum {
     // glEndList();
     //#endif
     }
-
+  */
 
   //Write utilities for VoxelSpace ==================================
 
@@ -1186,7 +1181,7 @@ namespace Lignum {
   }
 
 
- 
+  /*
   void VoxelSpace::draw(bool blackBG)
   {
     glEnable(GL_LIGHTING);
@@ -1319,7 +1314,7 @@ namespace Lignum {
 	  }
   }
 
-
+  */
 
 
 
