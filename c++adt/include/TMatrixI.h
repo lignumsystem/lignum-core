@@ -306,7 +306,7 @@ TMatrix<T>& TMatrix<T>::unitize()
 
 //Set all elemets equal to (T)0
 template <class T>
-TMatrix<T>& zero()
+TMatrix<T>& TMatrix<T>::zero()
 {
   int i=0, j = 0;
 
