@@ -3,6 +3,7 @@
 #include <MyTreeSegment.h>
 #include <MyBud.h>
 #include <Shading.h>
+#include <Collision.h>
 
 using namespace std;
 using namespace Lignum;
@@ -254,6 +255,11 @@ int main(int argc, char *argv[])
    hw_tree.respiration();
    cout << endl << "hw_tree Respiration (): "
 	<< GetValue(cf_tree, M) << endl;
+
+
+   //Collision
+
+   ForEach(cf_tree, EvaluateCollisionForAllBuds<MyCfTreeSegment,MyBud>());
 }
 
 
