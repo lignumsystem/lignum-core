@@ -69,8 +69,8 @@ T& AccumulateOp2<TS,BUD,T,BinOp>:: operator()(T& id,TreeCompartment<TS,BUD>* tc)
 
 //Functor for AccummulateDown
 template <class TS,class BUD, class T, class BinOp>
-ReverseAccumulateOp2<TS,BUD,T,BinOp>::ReverseAccumulateOp2(const BinOp op)
-  :op1(op)
+ReverseAccumulateOp2<TS,BUD,T,BinOp>::ReverseAccumulateOp2(const BinOp op, const T& id)
+  :op1(op),id_copy(id)
 {
 }
 
@@ -91,7 +91,7 @@ T& ReverseAccumulateOp2<TS,BUD,T,BinOp>::operator()(T& id,
     list<Axis<TS,BUD>*>::reverse_iterator last = axis_ls.rbegin();
     list<Axis<TS,BUD>*>::reverse_iterator first = axis_ls.rend();
     while (last != first){
-      T id_new = T();
+      T id_new = T(id_copy);
       (*this)(id_new,*last++);
       id += id_new;
     }
@@ -114,8 +114,9 @@ T& ReverseAccumulateOp2<TS,BUD,T,BinOp>::operator()(T& id,
 //Functor for AccumulateDown
 template <class TS,class BUD, class T, class BinOp1, class BinOp2>
 ReverseAccumulateOp3<TS,BUD,T,BinOp1,BinOp2>::ReverseAccumulateOp3(const BinOp1 usr_op1,
-								   const BinOp2 usr_op2)
-  :op1(usr_op1),op2(usr_op2)
+								   const BinOp2 usr_op2,
+								   const T& id)
+  :op1(usr_op1),op2(usr_op2),id_copy(id)
 {
 }
 
@@ -138,7 +139,7 @@ T& ReverseAccumulateOp3<TS,BUD,T,BinOp1,BinOp2>::operator()(T& id,
     list<Axis<TS,BUD>*>::reverse_iterator last = axis_ls.rbegin();
     list<Axis<TS,BUD>*>::reverse_iterator first = axis_ls.rend();
     while (last != first){
-      T id_new = T();
+      T id_new = T(id_copy);
       (*this)(id_new,*last++);
       id = op1(id,id_new); //applying user defined op1 for the identity elements
     }
@@ -264,7 +265,7 @@ T& Accumulate(Tree<TS,BUD>& tree, T& id, const BinOp op1)
 template <class TS,class BUD, class T, class BinOp>
 T& AccumulateDown(Tree<TS,BUD>& tree, T& id, const BinOp op1)
 {
-  ReverseAccumulateOp2<TS,BUD,T,BinOp> op2(op1);
+  ReverseAccumulateOp2<TS,BUD,T,BinOp> op2(op1,id);
   Axis<TS,BUD>& axis = GetAxis(tree);
   return op2(id,&axis);
 }
@@ -273,7 +274,7 @@ template <class TS,class BUD, class T, class BinOp1, class BinOp2>
 T& AccumulateDown(Tree<TS,BUD>& tree, T& id, 
 		  const BinOp1 op1, const BinOp2 op2)
 {
-  ReverseAccumulateOp3<TS,BUD,T,BinOp1,BinOp2> op3(op1,op2);
+  ReverseAccumulateOp3<TS,BUD,T,BinOp1,BinOp2> op3(op1,op2,id);
   Axis<TS,BUD>& axis = GetAxis(tree);
   return op3(id,&axis);
 }

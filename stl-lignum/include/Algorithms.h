@@ -25,20 +25,22 @@ class AccumulateOp2{
 template <class TS,class BUD, class T, class BinOp>
 class ReverseAccumulateOp2{
  public:
-  ReverseAccumulateOp2(const BinOp op);
+  ReverseAccumulateOp2(const BinOp op, const T& id);
   T& operator()(T& id,TreeCompartment<TS,BUD>* tc)const;
  private:
   BinOp op1;
+  T id_copy;
 };
 
 template <class TS,class BUD, class T, class BinOp1, class BinOp2>
 class ReverseAccumulateOp3{
  public:
-  ReverseAccumulateOp3(const BinOp1 op1, const BinOp2 op2);
+  ReverseAccumulateOp3(const BinOp1 op1, const BinOp2 op2, const T& id);
   T& operator()(T& id,TreeCompartment<TS,BUD>* tc)const;
  private:
   BinOp1 op1;
   BinOp2 op2;
+  T id_copy;
 };
 
 template <class TS,class BUD, class T, class BinOp>
