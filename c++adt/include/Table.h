@@ -2,6 +2,7 @@
 #define TABLE_H
 
 #include <DList.h>
+
 namespace cxxadt{
 
 template <class K,class D> class Table;
@@ -22,10 +23,13 @@ public:
   Table<K,D>& insert(const K& key,const D& data);
   D& lookup(const K& key);
   Table<K,D>& remove(const K& key);
-  class Lookup{};
+  class Lookup{};//for exception
 private:
   DList data_ls;
 };
 
 }//closing namespace cxxadt 
+
+#include <TableI.h>
+
 #endif
