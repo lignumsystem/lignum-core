@@ -1,14 +1,9 @@
 #include "stdafx.h"
 
-
-
 #include <VoxelBox.h>
+#include <Voxelspace.h>
 
 namespace Lignum {
-
-
-
-
 //
 //	Constructor of the class VoxelBox
 //
@@ -63,9 +58,9 @@ void VoxelBox::setVoxelSpace(VoxelSpace *s, Point c)
 //
 void VoxelBox::UpdateValues()
 {
-	assert(space->Xbox>0);
-	assert(space->Ybox>0);
-	assert(space->Zbox>0);
+	LGMassert(space->Xbox>0);
+	LGMassert(space->Ybox>0);
+	LGMassert(space->Zbox>0);
 
 	star = 0.0;
 	if (number_of_segments > 0)
