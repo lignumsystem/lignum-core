@@ -51,11 +51,8 @@ public:
   TreeCompartment<TS,BUD>* operator ()(int& id,TreeCompartment<TS,BUD>* ts)const;
 };
 
-template <class TS,class BUD=DefaultBud<TS> >
-class DisplayStructure:public AdaptableTCFunction<TS,BUD>{
-public:
-  int& operator ()(int&,TreeCompartment<TS,BUD>* ts)const;
-};
+template <class TS,class BUD> void DisplayStructure(Tree<TS,BUD>& t);
+template <class TS,class BUD> void DisplayStructure(TreeCompartment<TS,BUD>* tc);
 /*
 class CountElements{
 public:
