@@ -43,6 +43,7 @@ namespace Lignum{
 
 	//cvs update
 
+	/*
   struct SmallCube
   {
     int x,y,z;
@@ -56,7 +57,7 @@ namespace Lignum{
 
     bool ready;
   };
-
+*/
   class TreeParameters{
   public:
     TreeParameters();
@@ -80,14 +81,20 @@ namespace Lignum{
     LGMdouble zbrentEpsilon; //Accuracy    for    finding   root    of
 			     //P-M-dW(lambda), i.e. allocation.
 
-    LGMdouble SLA;	     //Spesific leaf area
-    LGMdouble dof_p;	     //degree of filling
-    LGMdouble alm;	     //Maximum size of a leaf
 
-    LGMdouble yc;	     //Foliage mass supported by 1m2 of sapwood
-    LGMdouble ca;	     //circulation angle for new buds compared to belowed ones
-    LGMdouble rca;	     //random effect of circulation angle [%] 0->
-    LGMdouble rld;	     //random effect of leaf distances in a single tree segment
+	LGMdouble SLA;			//Spesific leaf area
+	LGMdouble dof_p;		//degree of filling
+	LGMdouble alm;			//Maximum size of a leaf
+
+	LGMdouble yc;			//Foliage mass supported by 1m2 of sapwood
+	LGMdouble ca;			//circulation angle for new buds compared to belowed ones
+	LGMdouble rca;			//random effect of circulation angle [%] 0->
+	LGMdouble rld;			//random effect of leaf distances in a single tree segment
+ 
+	LGMdouble nitroLeaves;  
+	LGMdouble nitroRoots;
+	LGMdouble nitroWood;
+
   };
 
   //TreeAttributes  are  in a  (long)  vector  indexed by  enumeration
@@ -105,17 +112,21 @@ namespace Lignum{
     ParametricCurve fm;   //foliage mortality 
     ParametricCurve vi;   //vigour index function
     ParametricCurve al;   //adjusted  length. For  example  for making
-			  //branches below 0.002  to have length 0 and
-			  //branches  between   0.002  and  0.01  have
-			  //length 0.002 (short segments)...
+						  //branches below 0.002  to have length 0 and
+						  //branches  between   0.002  and  0.01  have
+						  //length 0.002 (short segments)...
     ParametricCurve LightOnNumBuds; // the  effect of light  to number
-				    // of  the buds. If  no effect the
-				    //  value  is  always  1  of  this
-				    // function
+						  // of  the buds. If  no effect the
+						  //  value  is  always  1  of  this
+						  // function
     ParametricCurve VigourOnNumBuds;// the  effect of vigour  index to
-				    // the  number of the  buds. If no
-				    // effect the value is always 1 of
-				    // this function
+						  // the  number of the  buds. If no
+						  // effect the value is always 1 of
+						  // this function
+
+	ParametricCurve nitroMaxPhotosynthesis;   
+    ParametricCurve nitroRespiration;   
+    ParametricCurve nitroRootShootRatio;   
   };
 
   class TreeTransitVariables{
@@ -141,11 +152,19 @@ namespace Lignum{
 
 
 #ifdef _MSC_VER  //cvs update
+	
+	
 #else
 	template <class TS1,class BUD1>
       friend class InitializeTree;
+
+
+
+	
 #endif // _MSC_VER
-      
+    
+	  template <class TS1,class BUD1>
+     friend LGMdouble GetValue(const Tree<TS1,BUD1>& tree, const LGMAD name);
 
       template <class TS1,class BUD1>
       friend Axis<TS1,BUD1>& GetAxis(Tree<TS1,BUD1>& t);
@@ -188,16 +207,19 @@ namespace Lignum{
       template <class TS1, class BUD1, class F>
       friend void EvaluateRadiationForTree(Tree<TS1,BUD1>& tree, const F& f);
 
-	public:
-	Tree();
-	Tree(const Point& p, const PositionVector& d);
-	Tree(const Point& p, const PositionVector& d, 
-	     LGMdouble len, LGMdouble rad, int num_buds);
+      public:
+      Tree();
+      Tree(const Point& p, const PositionVector& d);
+      Tree(const Point& p, const PositionVector& d, 
+	   LGMdouble len, LGMdouble rad, int num_buds);
 
-	void UpdateWaterFlow(LGMdouble time, const ConnectionMatrix<TS,BUD> &cm);
-	void photosynthesis();
-	void respiration();
-	TreeFunctions tf;  //cvs update
+      void UpdateWaterFlow(LGMdouble time, const ConnectionMatrix<TS,BUD> &cm);
+	  void photosynthesis();
+      void respiration();
+
+
+	  TreeFunctions tf;  //cvs update
+
 	
 	private:
 	LGMdouble CountFlow(TreeSegment<TS,BUD> &in, TreeSegment<TS,BUD> &out);
@@ -210,6 +232,8 @@ namespace Lignum{
 	Axis<TS,BUD> axis;
 	RootAxis<Tree<TS,BUD> > root_axis;
     };
+
+
 
   //Tree with Firmament (FRMNT)
   template <class FRMNT, class TS, class BUD = DefaultBud<TS> > 

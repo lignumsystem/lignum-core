@@ -4,6 +4,8 @@
 #include <mathsym.h>
 #include <time.h>
 #include <Tree.h>
+#include <Ellipse.h>
+
 using namespace Lignum;
 using namespace sky;
 
@@ -11,8 +13,8 @@ using namespace sky;
 #define NO_HIT 0
 #define HIT_THE_WOOD -1
 
-int ellipsisBeamShading(Point& p0, PositionVector& v,
-			BroadLeaf<Ellipse>& leaf);
+int EllipseBeamShading(Point& p0, PositionVector& v,
+			BroadLeaf<cxxadt::Ellipse>& leaf);
 int cylinderBeamShading(const Point& r0, const PositionVector& b, 
 			const Point& rs, const PositionVector& a,
 			double Rs, double Rw, double L, 
@@ -62,7 +64,7 @@ void EvaluateRadiationForHwTreeSegment<TS,BUD,S>::operator()
   vector<LGMdouble> init(number_of_sectors);
   typename list<BroadLeaf<S>*>::iterator Il = leaves.begin();
 
-  ShadingEffectOfLeaf<TS,BUD>  s_e(hwts, *Il);
+  ShadingEffectOfLeaf<TS,BUD,S>  s_e(hwts, *Il);
 
   //Go through of all leaves of this segment
   int i = 0;
@@ -145,7 +147,7 @@ vector<LGMdouble>& ShadingEffectOfLeaf<TS,BUD,S>::operator()(vector<LGMdouble>& 
 	tmp = PositionVector(radiation_direction[0],
 			     radiation_direction[1],
 			     radiation_direction[2]);
-	result = ellipsisBeamShading(mp, tmp, **Ishding);
+	result = EllipseBeamShading(mp, tmp, **Ishding);
 	if (result == HIT_THE_FOLIAGE){
 	  Vp = 1.0-GetValue(**Ishding,dof)+GetValue(**Ishding,dof)*
 	    GetValue(**Ishding,tauL);
