@@ -133,8 +133,8 @@ void outPut(float x, float y, char *string);
 
 
 
-Display        *dpy;
-Window          win;
+//Display        *dpy;
+//Window          win;
 
 GLboolean       MOVEMENT = true;
 GLboolean       TEXTURES_ON = false;
