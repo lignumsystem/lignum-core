@@ -564,6 +564,9 @@ namespace Lignum {
   //
   //	Visualizes the VoxelSpace
   //
+
+  
+
   void VoxelSpace::draw()
   {
     //#ifdef _MSC_VER
@@ -873,6 +876,125 @@ namespace Lignum {
 	  }
     return count;
   }
+
+
+
+void VoxelSpace::draw(bool blackBG)
+  {
+    glEnable(GL_LIGHTING);
+    int num = 0;
+    vector<VisualCube> cubes;
+    vector<VisualCube> ordered_cubes;
+
+    cout << "koko " << Xn << " " << Yn << " " << Zn << endl;
+    for(int i1=0; i1<Xn; i1++)
+      for(int i2=0; i2<Yn; i2++)
+	for(int i3=0; i3<Zn; i3++)
+	  {			
+	    if (voxboxes[i1][i2][i3].isEmpty() == false)
+	      {
+		VisualCube cube;
+		Point c1 = voxboxes[i1][i2][i3].getCornerPoint();
+
+		cube.x = c1.getX();
+		cube.y = c1.getY();
+		cube.z = c1.getZ();
+
+		cube.ready = false;
+		cube.areaden = voxboxes[i1][i2][i3].getAreaDen(); 
+
+	
+	      
+		
+		
+		float half_edgeX = Xbox/2.0;
+		float half_edgeY = Ybox/2.0;
+		float half_edgeZ = Zbox/2.0;
+		
+		
+		
+		//pikkukuution keskipiste
+		float xx = cube.x + half_edgeX;
+		float yy = cube.y + half_edgeY;
+		float zz = cube.z + half_edgeZ;
+		
+		
+		half_edgeX = half_edgeX / 10.0;
+		half_edgeY = half_edgeX;
+		half_edgeZ = half_edgeX;
+	      
+		cout << cube.areaden << endl;
+
+		GLfloat mat_amb[] = { 0.1, 1, 0.1, 1.0 }; 
+		GLfloat mat_dif[] = { 0.1, 1, 0.1, 1.0 }; 
+		
+		glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_amb); 
+		glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_dif);
+
+		
+		
+		glBegin(GL_POLYGON);
+		glNormal3f(-1.0, 0.0, 0.0);
+		glVertex3f(xx-half_edgeX, yy-half_edgeY, zz+half_edgeZ);
+		glVertex3f(xx-half_edgeX, yy+half_edgeY, zz+half_edgeZ);
+		glVertex3f(xx-half_edgeX, yy+half_edgeY, zz-half_edgeZ);
+		glVertex3f(xx-half_edgeX, yy-half_edgeY, zz-half_edgeZ);
+		glEnd();
+		
+		glBegin(GL_POLYGON);
+		glNormal3f(1.0, 0.0, 0.0);
+		glVertex3f(xx+half_edgeX, yy-half_edgeY, zz+half_edgeZ);
+		glVertex3f(xx+half_edgeX, yy-half_edgeY, zz-half_edgeZ);
+		glVertex3f(xx+half_edgeX, yy+half_edgeY, zz-half_edgeZ);
+		glVertex3f(xx+half_edgeX, yy+half_edgeY, zz+half_edgeZ);
+		glEnd();
+		
+		
+		glBegin(GL_POLYGON);
+		glNormal3f(0.0, 1.0, 0.0);
+		glVertex3f(xx-half_edgeX, yy+half_edgeY, zz-half_edgeZ);
+		glVertex3f(xx-half_edgeX, yy+half_edgeY, zz+half_edgeZ);
+		glVertex3f(xx+half_edgeX, yy+half_edgeY, zz+half_edgeZ);
+		glVertex3f(xx+half_edgeX, yy+half_edgeY, zz-half_edgeZ);
+		glEnd();
+
+		glBegin(GL_POLYGON);
+		glNormal3f(0.0, -1.0, 0.0);
+		glVertex3f(xx-half_edgeX, yy-half_edgeY, zz-half_edgeZ);
+		glVertex3f(xx+half_edgeX, yy-half_edgeY, zz-half_edgeZ);
+		glVertex3f(xx+half_edgeX, yy-half_edgeY, zz+half_edgeZ);
+		glVertex3f(xx-half_edgeX, yy-half_edgeY, zz+half_edgeZ);
+		glEnd();
+		
+		
+		glBegin(GL_POLYGON);
+		glNormal3f(0.0, 0.0, -1.0);
+		glVertex3f(xx-half_edgeX, yy-half_edgeY, zz-half_edgeZ);
+		glVertex3f(xx-half_edgeX, yy+half_edgeY, zz-half_edgeZ);
+		glVertex3f(xx+half_edgeX, yy+half_edgeY, zz-half_edgeZ);
+		glVertex3f(xx+half_edgeX, yy-half_edgeY, zz-half_edgeZ);
+		glEnd();
+		
+		glBegin(GL_POLYGON);
+		glNormal3f(0.0, 0.0, 1.0);
+		glVertex3f(xx-half_edgeX, yy-half_edgeY, zz+half_edgeZ);
+		glVertex3f(xx+half_edgeX, yy-half_edgeY, zz+half_edgeZ);
+		glVertex3f(xx+half_edgeX, yy+half_edgeY, zz+half_edgeZ);
+		glVertex3f(xx-half_edgeX, yy+half_edgeY, zz+half_edgeZ);
+		glEnd();
+	      }
+	  }
+    
+    
+  }
+
+
+
+
+
+
+
+
 
 
 }  // closing namespace Lignum

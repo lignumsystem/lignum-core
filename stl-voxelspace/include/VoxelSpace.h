@@ -80,6 +80,7 @@ namespace Lignum {
       void setLight();
 
       void draw();
+      void draw(bool blackBG);
       //Funktio palauttaa globaalissa koordinaatistossa olevan pisteen
       //VoxelSpacen koordinaatistossa
       Point getLocalPoint(Point p);
