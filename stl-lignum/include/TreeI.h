@@ -218,20 +218,35 @@ template<class TS, class BUD>
 const ParametricCurve& GetFunction(const Tree<TS,BUD>& tree, LGMF name)
 {  
 
-  if (name == FOLIAGEMORTALITY){
-    return tree.tf.fm;
+  if (name == LGMAL){
+    return tree.tf.al;
   }
-  else if (name == DEGREEOFINTERACTION){
-     return tree.tf.ip;
+
+  else if (name == LGMFM){
+     return tree.tf.fm;
   }
-  else if (name == NUMBEROFBUDS){
-    return tree.tf.nb;
+
+  else if (name == LGMIP){
+    return tree.tf.ip;
   }
+
+  else if (name == LGMLONB){
+    return tree.tf.LightOnNumBuds;
+  }
+
+  else if (name == LGMVI){
+    return tree.tf.vi;
+  }
+
+  else if (name == LGMVIONB){
+    return tree.tf.VigourOnNumBuds;
+  }
+
   else{
     cerr << "GetFunction unknown function: " << name << endl;
   }
-  //Error happened return useless local reference. 
-  return ParametricCurve();
+  //Error happened throw useless ParametricCurve. 
+  throw ParametricCurve();
 }
   
 //At the moment returns the name of the only (ASCII) file that contains

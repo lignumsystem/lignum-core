@@ -67,13 +67,12 @@ public:
 
 class TreeFunctions{
 public:
-  ParametricCurve nb;       //number of new buds
-  ParametricCurve ip;       //relative length of a new tree segment 
-  ParametricCurve fm;       //foliage mortality 
-  ParametricCurve vi;           //vigour index function
-  ParametricCurve al;           //adjusted length. For example for making branches below 0.002 to have length 0 and branches
-                                                //between 0.002 and 0.01 have length 0.002 (short segments)...
-
+  ParametricCurve nb;   //number of new buds
+  ParametricCurve ip;   //relative length of a new tree segment 
+  ParametricCurve fm;   //foliage mortality 
+  ParametricCurve vi;   //vigour index function
+  ParametricCurve al;   //adjusted length. For example for making branches below 0.002 to have length 0 and branches
+                        //between 0.002 and 0.01 have length 0.002 (short segments)...
   ParametricCurve LightOnNumBuds; // the effect of light to number of the buds. If no effect the value is always 1 of this function
   ParametricCurve VigourOnNumBuds;// the effect of vigour index to the number of the buds. If no effect the value is always 1 of this function
 };
@@ -151,6 +150,7 @@ private:
   TreeAttributes ta;
   TreeParameters tp;
   TreeTransitVariables ttp;
+  TreeFunctions tf;
   TreeInitializationFiles tif;
   FirmamentWithMask f;
   Axis<TS,BUD> axis;

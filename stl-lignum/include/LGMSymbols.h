@@ -83,7 +83,18 @@ namespace Lignum{
   enum FILE_MODE {PARAMETER,FUNCTION,GRAPHICS,INITIAL};
 
   //Functions known in a tree
-  enum LGMF {FOLIAGEMORTALITY,DEGREEOFINTERACTION,NUMBEROFBUDS};
+  enum LGMF {LGMAL,LGMFM,LGMIP,LGMLONB,LGMNB,LGMVI,LGMVIONB};
+  //LGMAL = Adjusted length For example for making branches below 0.002 
+  //        to have Length 0 and branches
+  //LGMFM = Foliage mortality 
+  //LGMIP = Relative length of a new tree segment 
+  //LGMLONB = The effect of light to number of the buds. 
+  //          If no effect the value is always 1 of this function.
+  //LGMNB    = Number of buds
+  //LGMVI    = Function of vigour index
+  //LGMVIONB = The effect of vigour index to the number of the buds. 
+  //           If no effect the value is always 1 of this function
+
   //If needed you may design verbose output for example
   //when initializing trees 
   enum LGMVERBOSE {QUIET,VERBOSE};

@@ -83,22 +83,46 @@ namespace Lignum{
 	}
       }
       //3. Parse functions for a tree
-      file = tmfp.getFunctionFile("FoliageMortality");
+      //1.
+      file = tmfp.getFunctionFile("LGMAL");
       if (verbose){
 	cout << "Configuring functions" << endl;
-	cout << "Reading Foliage Mortality  from: " << file << endl;
+	cout << "Reading LGMAL from: " << file << endl;
+      }
+      //2.
+      file = tmfp.getFunctionFile("LGMFM");
+      if (verbose){
+	cout << "Reading LGMFM from: " << file << endl;
       }
       tree.tf.fm.install(file);
-
-      file = tmfp.getFunctionFile("NumberOfBuds");
+      //3.
+      file = tmfp.getFunctionFile("LGMIP");
       if (verbose){
-	cout << "Reading Number Of Buds from: " << file << endl;
+	cout << "Reading LGMIP from: " << file << endl;
+      }
+      tree.tf.fm.install(file);
+      //4.
+      file = tmfp.getFunctionFile("LGMLONB");
+      if (verbose){
+	cout << "Reading LGMLONB from: " << file << endl;
+      }
+      tree.tf.fm.install(file);
+      //5.
+      file = tmfp.getFunctionFile("LGMNB");
+      if (verbose){
+	cout << "Reading LGMNB from: " << file << endl;
       }
       tree.tf.nb.install(file);
-
-      file = tmfp.getFunctionFile("DegreeOfInteraction");
+      //6.
+      file = tmfp.getFunctionFile("LGMVI");
       if (verbose){
-	cout << "Reading Degree Of Interaction from: " << file << endl;
+	cout << "Reading LGMVI from: " << file << endl;
+      }
+      tree.tf.nb.install(file);
+      //7.
+      file = tmfp.getFunctionFile("LGMVIONB");
+      if (verbose){
+	cout << "Reading LGMVIONB from: " << file << endl;
       }
       tree.tf.ip.install(file);
     }
