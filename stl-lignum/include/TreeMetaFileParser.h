@@ -4,6 +4,8 @@
 #include <Table.h>
 #include <Lex.h>
 
+using namespace cxxadt;
+
 class TreeMetaFileParser{
 public:
   TreeMetaFileParser(const CString& meta_file);

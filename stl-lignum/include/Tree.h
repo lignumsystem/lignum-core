@@ -12,6 +12,8 @@
 #include <Point.h>
 #include <PositionVector.h>
 
+using namespace cxxadt;
+
 #include <Algorithms.h>
 #include <TreeFunctor.h>
 #include <LGMdecl.h>

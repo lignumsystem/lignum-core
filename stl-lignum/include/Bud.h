@@ -6,6 +6,8 @@
 
 namespace Lignum{
 
+using namespace cxxadt;
+
 class BudAttributes{
 public:
   BudAttributes();

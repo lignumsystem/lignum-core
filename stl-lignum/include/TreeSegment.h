@@ -9,6 +9,8 @@
 
 namespace Lignum{
 
+using namespace cxxadt;
+
 class TreeSegmentAttributes{
 public:
   TreeSegmentAttributes();

@@ -7,6 +7,8 @@
 
 namespace Lignum{
 
+using namespace cxxadt;
+
 template <class TS,class BUD=DefaultBud<TS> > 
 class TreeCompartment{
   friend Point<METER> GetPoint(const TreeCompartment<TS,BUD>& tc);

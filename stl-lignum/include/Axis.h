@@ -5,7 +5,10 @@
 #include <Point.h>
 #include <LGMdecl.h>
 
+
 namespace Lignum{
+
+using namespace cxxadt;
 
 template <class TS,class BUD = DefaultBud<TS> >
 class Axis: public TreeCompartment<TS,BUD>{

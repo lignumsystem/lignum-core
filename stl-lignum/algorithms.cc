@@ -32,8 +32,9 @@ CString ParseCommandLine(int argc, char *argv[],const CString& flag)
 
 int main(int argc, char *argv[])
 {
+  
   //using explicitely Tree from  namespace Lignum;
-  Lignum::Tree<MyHwTreeSegment,MyBud> hw_tree(Point<METER>(0,0,0),
+  Tree<MyHwTreeSegment,MyBud> hw_tree(Point<METER>(0,0,0),
 				      PositionVector(0,0,1.0));
   //by default the tree is from namespace Lignum
   Tree<MyCfTreeSegment,MyBud> cf_tree(Point<METER>(0,0,0),

@@ -10,6 +10,8 @@
 
 namespace Lignum{
 
+using namespace cxxadt;
+
 template <class TS,class BUD=DefaultBud<TS> >
 class BranchingPoint: public TreeCompartment<TS,BUD>{
   friend void InsertTerminatingBud(BranchingPoint<TS,BUD>& bp, Bud<TS,BUD>* bud);

@@ -1,5 +1,6 @@
 #ifndef HWTREESEGMENT_HPP
 #define HWTREESEGMENT_HPP
+#include <list>
 
 #include <LGMdecl.h>
 

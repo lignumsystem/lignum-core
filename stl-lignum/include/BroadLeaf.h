@@ -9,6 +9,8 @@
 
 namespace Lignum{
 
+using namespace cxxadt;
+
 class Petiole{
   friend Point<> GetStartPoint(const Petiole& p);
   friend Point<> GetEndPoint(const Petiole& p);
