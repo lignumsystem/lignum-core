@@ -214,7 +214,8 @@ void EvaluateRadiationForCfTreeSegment<TS,BUD>::operator()
 
   //implement "Ip = Iope^(-Vp)", shading_vector[i] = radiation coming
   //from direction i after this
-  for (int i = 0; i < number_of_sectors; i++){
+  int i;
+  for (i = 0; i < number_of_sectors; i++){
     if (shading_vector[i] == HIT_THE_WOOD){
       shading_vector[i] = 0.0;
     }
