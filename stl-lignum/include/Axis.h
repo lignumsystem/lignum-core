@@ -5,7 +5,7 @@
 #include <Point.h>
 #include <PositionVector.h>
 #include <LGMdecl.h>
-//#include <TreeCompartment.h>
+#include <TreeCompartment.h>
 
 
 
@@ -64,7 +64,7 @@ public:
   Axis(const Point& p, const PositionVector& d, Tree<TS,BUD>* t);
   
 protected: 
-  std::list<TreeCompartment<TS,BUD>*> tc_ls;
+  list<TreeCompartment<TS,BUD>*> tc_ls;
 };
 
 
