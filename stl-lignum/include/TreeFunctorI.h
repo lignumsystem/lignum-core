@@ -611,8 +611,8 @@ namespace Lignum{
 
 
   template <class TS, class BUD>
-    LGMdouble& CollectFoliageMass<TS,BUD>::operator()(LGMdouble &sum, 
-						      TreeCompartment<TS,BUD>* tc)const
+    LGMdouble& CollectFoliageMass<TS,BUD>::
+    operator()(LGMdouble &sum, TreeCompartment<TS,BUD>* tc)const
     {
       if(TS *segment = dynamic_cast<TS *>(tc))
 	{
@@ -620,6 +620,29 @@ namespace Lignum{
 	}
       return sum;
     }
+
+  template <class TS, class BUD>
+    LGMdouble& CollectFoliageArea<TS,BUD>::
+    operator()(LGMdouble &sum,TreeCompartment<TS,BUD>* tc)const
+    {
+      if(TS *segment = dynamic_cast<TS *>(tc))
+	{
+	  sum += GetValue(*segment, LGAAf);
+	}
+      return sum;
+    }
+
+  template <class TS, class BUD>
+    LGMdouble& CollectQabs<TS,BUD>::
+    operator()(LGMdouble &sum,TreeCompartment<TS,BUD>* tc)const
+    {
+      if(TS *segment = dynamic_cast<TS *>(tc))
+	{
+	  sum += GetValue(*segment, LGAQabs);
+	}
+      return sum;
+    }
+
 
   /*********************************************************************
  Sample functor  to delete axes (branches)  in the tree.   Axis: If an

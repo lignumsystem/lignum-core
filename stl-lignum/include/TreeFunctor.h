@@ -274,6 +274,21 @@ namespace Lignum{
       LGMdouble& operator()(LGMdouble &sum, TreeCompartment<TS,BUD>* tc)const;
     };
 
+  template <class TS,class BUD>
+    class CollectFoliageArea
+    { 
+    public:
+      LGMdouble& operator()(LGMdouble &sum, TreeCompartment<TS,BUD>* tc)const;
+    };
+
+  //This sums up absorbed radiation for tree
+  template <class TS,class BUD>
+    class CollectQabs
+    { 
+    public:
+      LGMdouble& operator()(LGMdouble &sum, TreeCompartment<TS,BUD>* tc)const;
+    };
+
 
 
   //This functor is used (ForEach) to move a tree (=all its
