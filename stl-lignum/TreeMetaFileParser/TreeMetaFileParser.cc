@@ -85,7 +85,7 @@ TreeMetaFileParser& TreeMetaFileParser::parseFiles()
   Token token = lex.peek();
 
   //end of file, stop parsing
-  if (token.getType() == ENDFILE){
+  if (token.getType() == VC_ENDFILE){
     return *this;
   }
   //try to parse parameter files
@@ -126,7 +126,7 @@ TreeMetaFileParser& TreeMetaFileParser::parseFile()
   string file_name;
 
   //last file already parsed, end of file encountered
-  if (token.getType() == ENDFILE){
+  if (token.getType() == VC_ENDFILE){
     lex.putToken(token);
     return parseFiles(); //this will stop parsing
   }
