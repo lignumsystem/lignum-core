@@ -38,10 +38,6 @@ int main(int argc, char *argv[])
   Tree<MyCfTreeSegment,MyCfBud> cf_tree(Point(0,0,0),
 				      PositionVector(0,0,1.0));
 
-  FTree<FirmamentWithMask,MyCfTreeSegment,MyCfBud> ftree1(Point(0,0,0),
-							PositionVector(0,0,1.0));
-  FTree<Firmament,MyCfTreeSegment,MyCfBud> ftree2(Point(0,0,0),
-						PositionVector(0,0,1.0));
   string clarg,empty;
 
   clarg = ParseCommandLine(argc,argv,"-file");
@@ -230,17 +226,6 @@ if (clarg != empty)
   PropagateUp(cf_tree,id,DisplayStructureFunctor<MyCfTreeSegment,MyCfBud>());
   cout << endl;
 
-//Radiation
-  EvaluateRadiationForTree(hw_tree, WrapRadiationEvaluations<
-		    EvaluateRadiationForHwTreeSegment<MyHwTreeSegment,MyHwBud>,
-		    MyHwTreeSegment,MyHwBud>() );
-  //	    MyHwTreeSegment,MyCfBud>("Radiationextinction.txt") );
-
-  EvaluateRadiationForTree(cf_tree,WrapRadiationEvaluations<
-		    EvaluateRadiationForCfTreeSegment<MyCfTreeSegment,MyCfBud>,
-		    MyCfTreeSegment,MyCfBud>("Radiationextinction.txt") );
-
-
   //Photosynthesis
    SetValue(cf_tree, pr, 1.0);      //Set the photosynthesis parameter
    SetValue(hw_tree, pr, 1.0);
@@ -258,9 +243,7 @@ if (clarg != empty)
 	<< GetValue(cf_tree, M) << endl;
 
    //VisualizeLGMTree(cf_tree);
-   Forest f;
-   InsertCfTree(f,cf_tree);
-   VisualizeForest<Tree<MyCfTreeSegment, MyCfBud> >(f);
+
 }
 
 
