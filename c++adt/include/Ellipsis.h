@@ -19,6 +19,8 @@ public:
 private:
   double a;  //Semimajor axis
   double b;  //Semiminor axis
+  double b_div_a; //stores the shape of the ellipsis even if area = 0
+  //b_div_a should not be == 0
 };
 
 }//closing cxxadt

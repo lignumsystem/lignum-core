@@ -10,6 +10,10 @@ Ellipsis::Ellipsis(double a1, double b1)
 {
   a = a1;
   b = b1;
+  if(a1 > 0.0 && b1 > 0.0)
+    b_div_a = b1/a1;
+  else
+    b_div_a = 1.0; //prevents from being stupid in constructing
 }
 
 double Ellipsis::getFocus()const
@@ -22,11 +26,15 @@ double Ellipsis::getFocus()const
 //is preserved by assuming that a/b = a1/b1.
 double Ellipsis::setArea(double area)
 {
-  double b_old = b;
-  double a_old = a;
+//    double b_old = b;
+//    double a_old = a;
 
-  a = sqrt((a*area)/(PI_VALUE*b));
-  b = (a*b_old)/a_old;
+//    a = sqrt((a*area)/(PI_VALUE*b));
+//    b = (a*b_old)/a_old;
+
+
+  a = sqrt(area/(PI_VALUE*b_div_a));
+  b = b_div_a * a;
 
   return getArea();
 }
@@ -34,12 +42,21 @@ double Ellipsis::setArea(double area)
 double Ellipsis::setMajor(double a1)
 {
   a = a1;
+  if(a1 > 0.0 && b > 0.0)
+    b_div_a = b / a1;
+  else
+    b_div_a = 1.0;
+
   return a;
 }
 
 double Ellipsis::setMinor(double b1)
 {
   b = b1;
+  if(b1 > 0.0 && a > 0.0)
+    b_div_a = b1 / a;
+  else
+    b_div_a = 1.0;
   return b;
 }
 
@@ -48,7 +65,7 @@ double Ellipsis::setMinor(double b1)
 #ifdef ELLIPSIS
 #include <stream.h>
 #include <stdlib.h>
-
+using namespace cxxadt;
 int main()
 {
   Ellipsis e1(3.0,1.0);
@@ -117,4 +134,6 @@ int main()
 
 
 #endif
+
+
 
