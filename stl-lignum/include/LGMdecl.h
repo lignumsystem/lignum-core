@@ -17,6 +17,7 @@ namespace Lignum{
   template <class TS,class BUD> class TreeSegment;
   template <class TS,class BUD> class CfTreeSegment;
   template <class TS,class BUD, class SHAPE> class HwTreeSegment;
+  template <class SHAPE> class BroadLeaf;
   template <class TS> class DefaultBud;
 
   template <class TREE> class RootCompartment;
