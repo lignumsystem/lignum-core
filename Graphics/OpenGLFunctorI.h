@@ -270,7 +270,7 @@ TreeCompartment<TS,BUD>* DrawNeedlesFunctor<TS,BUD>::operator()(TreeCompartment<
 	  
 	  glDisable(GL_LIGHTING);
 	  draw_texfoliage_planes(length, radius, GetValue(*cfts, Wf), 
-				 GetValue(*cfts, age));
+				 GetValue(*cfts, LGAage));
 	  glEnable(GL_LIGHTING);
 	  glPopMatrix();
 	}                       
