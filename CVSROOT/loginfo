@@ -22,17 +22,17 @@
 ^watervisual Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  mhlehton@cc.hut.fi
 ^file-reader  Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  mhlehton@cc.hut.fi
 ^converter  Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  mhlehton@cc.hut.fi 
-^stl-lignum Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  mhlehton@cc.hut.fi eero.nikinmaa@helsinki.fi c1344@er.uqam.camln52@mizzou.edu  
+^stl-lignum Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  mhlehton@cc.hut.fi eero.nikinmaa@helsinki.fi c1344@er.uqam.ca mln52@mizzou.edu  
 ^c\+\+adt  Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  mhlehton@cc.hut.fi eero.nikinmaa@helsinki.fi c1344@er.uqam.ca mln52@mizzou.edu 
 ^Firmament Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  mhlehton@cc.hut.fi eero.nikinmaa@helsinki.fi c1344@er.uqam.ca mln52@mizzou.edu
 ^ScotsPine  Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  mhlehton@cc.hut.fi  
 ^ScotsPineVisual  Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  mhlehton@cc.hut.fi  
 ^references Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi eero.nikinmaa@helsinki.fi 
-^lignum-presentations Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi eero.nikinmaa@helsinki.fi
+^lignum-presentations Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi eero.nikinmaa@helsinki.fi 
 ^stl-gliricidia Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi mhlehton@cc.hut.fi mln52@mizzou.edu
 ^BetulaTortuosa Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi mhlehton@cc.hut.fi
-^LEngine Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi
-^Graphics Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi mhlehton@cc.hut.fi
+^LEngine Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi c1344@er.uqam.ca mln52@mizzou.edu
+^Graphics Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi mhlehton@cc.hut.fi  c1344@er.uqam.ca mln52@mizzou.edu
 
 
 
