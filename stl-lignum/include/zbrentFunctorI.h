@@ -45,7 +45,7 @@ LGMdouble& AdjustDiameterCfGrowth<TS,BUD>::operator()(LGMdouble& As, TreeCompart
 				LGMdouble dAs = GetValue(tree, ss) * PI_VALUE * (pow(GetValue(*cfsegment, LGAR), 2) - pow(r_h, 2));
 			
 				//From equation 14 in Ann Bot 1996
-				LGMdouble Asr = ( 1.0 - GetValue(tree, xi)) * GetValue(*cfsegment, LGAWf) / (2.0 * GetValue(tree, af) * GetValue(tree, lr)); 
+				LGMdouble Asr = ( 1.0 - GetValue(tree, LGPxi)) * GetValue(*cfsegment, LGAWf) / (2.0 * GetValue(tree, af) * GetValue(tree, lr)); 
 
 				double t = (Asu + PI_VALUE * pow(r_h, 2.0) + dAs + Asr);
 				double t2 = sqrt(t / PI_VALUE);
@@ -226,7 +226,7 @@ TreeCompartment<TS,BUD>* adjustSegmentSizeLambda<TS,BUD>::operator()
 
 			
 			LGMdouble a_f = GetValue(tree, af);
-			LGMdouble x_i = GetValue(tree, xi);
+			LGMdouble x_i = GetValue(tree, LGPxi);
 			LGMdouble length = GetValue(*cfts, L)*lam;		  //length
 			LGMdouble radius = GetValue(*cfts, LGAR)*lam;		  //radius
 

@@ -86,8 +86,8 @@ namespace Lignum{
   //Tree Parameter Double
   //Keep this list in synbc with MapLGMPD constructor in TreeFriend.cc
   enum LGMPD {af,al,ar,ca, dofp,lr,mf,mr,ms,na,nl,pr,q, rca, rld,sf, 
-              sla,sr,ss,rho,rho_root,rho_hair, LGPtauL,yc, xi,
-	      zbrentEpsilon, Ln_par, n_ang_par, fake_forest};
+              sla,sr,ss,rho,rho_root,rho_hair, LGPtauL,yc, LGPxi,
+	      LGPzbrentEpsilon, LGPLn_par, LGPn_ang_par};
 
 
  //cvs update
@@ -117,11 +117,10 @@ namespace Lignum{
   //ss = Senescence rate of sapwood
   //LGPtauL = transmission coefficient of leaf (in direction of
   //          the ray of light)
-  //xi = Fraction of heartwood in newly created tree segments
-  //zbrentEpsilon = accuracy in numerical computation in root finding (see Zbrent)
-  //Ln_par = ????????????????? 
-  //n_ang_par = ??????????????
-  //fake_forest = diffuseForestRegionRadiationSum is used (1 = yes, 0 = no)
+  //LGPxi = Fraction of heartwood in newly created tree segments
+  //LGPzbrentEpsilon = accuracy in numerical computation in root finding (see Zbrent)
+  //LGPLn_par = ????????????????? 
+  //LGPn_ang_par = ??????????????
 
   //Tree Transit Variable Double
   enum LGMTD {lambda, g, eta, Er, k, rhow}; 

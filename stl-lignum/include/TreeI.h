@@ -43,11 +43,11 @@ Tree<TS,BUD>::Tree(const Point& p, const PositionVector& d, LGMdouble len, LGMdo
     }
   SetValue(*ts, LGARf, rad + 0.02);
 
-  LGMdouble x_i = GetValue(*this, xi);
+  LGMdouble x_i = GetValue(*this, LGPxi);
   LGMdouble ts_rad = GetValue(*ts, LGAR);
   
   //Sapwood area corresponds to foliage mass
-  LGMdouble A_s = (1.0 - GetValue(*this, xi)) * 
+  LGMdouble A_s = (1.0 - GetValue(*this, LGPxi)) * 
     GetValue(*ts, LGAWf)/(2.0*GetValue(*this, af)*
 		       GetValue(*this, lr));
   
@@ -148,10 +148,10 @@ LGMdouble GetValue(const Tree<TS,BUD>& tree, const LGMPD name)
   else if ( name == rho_hair)
     return tree.tp.rho_hair;
 
-  else if (name == xi)
+  else if (name == LGPxi)
      return tree.tp.xi;
 
-  else if (name == zbrentEpsilon)
+  else if (name == LGPzbrentEpsilon)
      return tree.tp.zbrentEpsilon;
 
   else{
@@ -220,10 +220,10 @@ LGMdouble SetValue(Tree<TS,BUD>& tree, const LGMPD name, const LGMdouble value)
   else if (name == rho_hair)
     tree.tp.rho_hair = value;
 
-  else if (name == xi)
+  else if (name == LGPxi)
     tree.tp.xi = value;
 
-  else if (name == zbrentEpsilon)
+  else if (name == LGPzbrentEpsilon)
     tree.tp.zbrentEpsilon = value;
 
   else{

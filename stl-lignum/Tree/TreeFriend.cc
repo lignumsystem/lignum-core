@@ -19,10 +19,10 @@ namespace Lignum{
     lgmpd["sr"] = sr;
     lgmpd["ss"] = ss;
     lgmpd["rho"] = rho;
-    lgmpd["xi"] = xi;
-    lgmpd["zbrentEpsilon"] = zbrentEpsilon;
-    lgmpd["Ln_par"] = Ln_par;
-    lgmpd["n_ang_par"] = n_ang_par;
+    lgmpd["LGPxi"] = LGPxi;
+    lgmpd["LGPzbrentEpsilon"] = LGPzbrentEpsilon;
+    lgmpd["LGPLn_par"] = LGPLn_par;
+    lgmpd["LGPn_ang_par"] = LGPn_ang_par;
   }
 
   template <>

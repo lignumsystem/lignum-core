@@ -182,7 +182,7 @@ METER SetRadius(TreeSegment<TS,BUD>& ts)
 
 	/*
 	Tree<TS,BUD> &tree = GetTree(ts);
-	LGMdouble A_s = (1.0 - GetValue(tree, xi)) * GetValue(ts, LGAWf)/(2.0*GetValue(tree, af)*GetValue(tree, lr));
+	LGMdouble A_s = (1.0 - GetValue(tree, LGPxi)) * GetValue(ts, LGAWf)/(2.0*GetValue(tree, af)*GetValue(tree, lr));
 	LGMdouble r_h = sqrt((PI_VALUE*ts.tsa.R*ts.tsa.R - A_s)/PI_VALUE);
 	SetValue(ts, LGARh, r_h);
 */
@@ -246,7 +246,7 @@ METER GetInitialSapwoodArea(const TreeSegment<TS,BUD>& ts)
 	LGMdouble rd = rings[0];
 	LGMdouble A1 = PI_VALUE * pow( rd, 2.0);
 
-	return A1 * GetValue(tt,xi);
+	return A1 * GetValue(tt,LGPxi);
 }
 
 template <class TS,class BUD>

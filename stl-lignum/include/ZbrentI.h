@@ -503,16 +503,12 @@ bool AdjustIncrementZbrent(Tree<TS,BUD>& tree)
 		return false;
   }
 
-  if (debug_file.is_open() == false)
-	debug_file.open("debug.txt");
-
-  debug_file << "\n\n\n\nUusi kasvatus......" << endl;
-
+  
   LGMdouble a=0,b=0,fa=0,fb=0;
   
   BracketFunction(a,b,fa,fb,tree);
 
-  LGMdouble zBe = 0.001; //GetValue(tree, zbrentEpsilon);
+  LGMdouble zBe = 0.001; //GetValue(tree, LGPzbrentEpsilon);
   Zbrent(a,b,fa,fb, zBe, tree );
 
 
@@ -549,7 +545,7 @@ bool AdjustIncrementHwZbrent(Tree<TS,BUD>& tree)
   
   HwBracketFunction(a,b,fa,fb,tree);
 
-  LGMdouble zBe = 0.001; // GetValue(tree, zbrentEpsilon);
+  LGMdouble zBe = 0.001; // GetValue(tree, LGPzbrentEpsilon);
   HwZbrent(a,b,fa,fb, zBe, tree );
 
 

@@ -289,7 +289,7 @@ void StructuralPineGrowth(Axis<TS,BUD> &ax, const ParametricCurve& bud_fun, Tree
 
 			LGMdouble l_r = GetValue(tree, lr);
 			LGMdouble a_f = GetValue(tree, af);
-			LGMdouble x_i = GetValue(tree, xi);
+			LGMdouble x_i = GetValue(tree, LGPxi);
 
 			LGMdouble length = lda * f_w * f_l;		  //length
 			LGMdouble radius = length / l_r;		  //radius
@@ -557,7 +557,7 @@ MotherInfo& AddSugarMapleSegments<TS,BUD>::operator()(MotherInfo& mi, TreeCompar
 
 		LGMdouble l_r = GetValue(tree, lr);
 		LGMdouble a_f = GetValue(tree, af);
-		LGMdouble x_i = GetValue(tree, xi);
+		LGMdouble x_i = GetValue(tree, LGPxi);
 
 		//LGMdouble Irel_b = motherQin / mi.B;
 		
@@ -660,7 +660,7 @@ MotherInfo& AddSugarMapleSegments<TS,BUD>::operator()(MotherInfo& mi, TreeCompar
 		LGMdouble SLA_c = GetValue(tree, sla);
 		LGMdouble Y_c = GetValue(tree, yc);
 		LGMdouble A_sf = A_f / (SLA_c*Y_c);
-		LGMdouble x_i = GetValue(tree, xi);
+		LGMdouble x_i = GetValue(tree, LGPxi);
 		LGMdouble tot_A = A_sf / (1-x_i);
 		 
 		LGMdouble rad = sqrt(tot_A / PI_VALUE);
@@ -812,7 +812,7 @@ MotherInfo& AddWhiteBirchSegments<TS,BUD>::operator()(MotherInfo& mi, TreeCompar
 
 		LGMdouble l_r = GetValue(tree, lr);
 		LGMdouble a_f = GetValue(tree, af);
-		LGMdouble x_i = GetValue(tree, xi);
+		LGMdouble x_i = GetValue(tree, LGPxi);
 
 		ParametricCurve apidom = tree.tf.ip;
 		ParametricCurve vigfun = tree.tf.vi;
@@ -997,7 +997,7 @@ MotherInfo& AddWhiteBirchSegments<TS,BUD>::operator()(MotherInfo& mi, TreeCompar
 		LGMdouble SLA_c = GetValue(tree, sla);
 		LGMdouble Y_c = GetValue(tree, yc);
 		LGMdouble A_sf = A_f / (SLA_c*Y_c);
-		x_i = GetValue(tree, xi);
+		x_i = GetValue(tree, LGPxi);
 		LGMdouble tot_A = A_sf / (1-x_i);	
 		LGMdouble radius = sqrt(tot_A / PI_VALUE);   //*** miten lasketaan rad
 		
