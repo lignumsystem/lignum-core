@@ -1,6 +1,9 @@
 #ifndef BUDI_H
 #define BUDI_H
 
+
+namespace Lignum{
+
 //default constructor
 template <class TS,class BUD>
 Bud<TS,BUD>::Bud()
@@ -103,4 +106,12 @@ STATUS SetAttributeValue(Bud<TS,BUD>& bud, const TAS name, const STATUS value)
   return old_value;
 }
 
+}//closing namespace Lignum
+
 #endif
+
+
+
+
+
+

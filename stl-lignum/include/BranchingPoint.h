@@ -4,8 +4,11 @@
 #include <list>
 #include <algorithm>
 #include <numeric>
-#include <TreeFunctor.h>
-#include <TreeCompartment.h>
+#include <Point.h>
+#include <LGMdecl.h>
+
+
+namespace Lignum{
 
 template <class TS,class BUD=DefaultBud<TS> >
 class BranchingPoint: public TreeCompartment<TS,BUD>{
@@ -19,6 +22,8 @@ public:
 private:
   list<Axis<TS,BUD>*> axis_ls;
 };
+
+}//close namespace Lignum
 
 #include <BranchingPointI.h>
 

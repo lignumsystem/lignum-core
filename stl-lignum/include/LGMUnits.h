@@ -1,6 +1,8 @@
 #ifndef LGMUNITS_H
 #define LGMUNITS_H
 
+namespace Lignum{
+
 //Computations are in double precision, here are synonyms for
 //for the units used in lignum
 typedef double BLD;        //Braod Leaf Double precision
@@ -14,4 +16,5 @@ typedef unsigned int YEAR; //age of the tree compartments in years
 
 enum STATUS {DEAD,ALIVE,DORMANT};    //States of the bud 
 
+}//closing namespace Lignum
 #endif 

@@ -1,6 +1,8 @@
 #ifndef TREE_SEGMENTI_H
 #define TREE_SEGMENTI_H
 
+namespace Lignum{
+
 template <class TS,class BUD>
 TreeSegment<TS,BUD>::TreeSegment()
 {
@@ -226,5 +228,7 @@ YEAR SetAttributeValue(TreeSegment<TS,BUD>& ts, const TAI name, const YEAR  valu
     cerr << "TreeSegment: Unknown attribute " << name << endl;
   return old_value;
 }
+
+}//close namespace Lignum
 
 #endif

@@ -1,6 +1,8 @@
 #ifndef TREEI_H
 #define TREEI_H
 
+namespace Lignum{
+
 template <class TS,class BUD>
 Tree<TS,BUD>::Tree()
 {
@@ -87,9 +89,6 @@ TP Tree<TS,BUD>::CountFlow(TreeSegment<TS,BUD> &in, TreeSegment<TS,BUD> &out)
  
   return ttp.rhow * (ttp.k/ ttp.eta) * (ar / le) * (pr_out - pr_in - (ttp.rhow * ttp.g * he));
 }
-
-
-
 
 
 
@@ -375,7 +374,11 @@ CString GetTreeInitializationFile(Tree<TS,BUD>& tree) {
   return tree.tif.treeFile;
 }
 
-#endif
+} //close namespace Lignum
+
+#endif //TREEI_H
+
+
 
 #ifdef TREE
 #include <stdlib.h>
@@ -386,6 +389,7 @@ int main()
   cout << "OK" << endl;
   exit(0);
 }
+
 
 #endif
 

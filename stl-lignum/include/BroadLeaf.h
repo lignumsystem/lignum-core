@@ -7,6 +7,8 @@
 
 #include <LGMdecl.h>
 
+namespace Lignum{
+
 class Petiole{
   friend Point<> GetStartPoint(const Petiole& p);
   friend Point<> GetEndPoint(const Petiole& p);
@@ -57,6 +59,7 @@ private:
   BroadLeafAttributes bla;
 };
 
+}//closing namespace Lignum 
 #endif
 
 

@@ -1,7 +1,9 @@
 #ifndef CFTREESEGMENT_HPP
 #define CFTREESEGMENT_HPP
 
-#include <Tree.h>
+#include <LGMdecl.h>
+
+namespace Lignum{
 
 template <class TS,class BUD=DefaultBud<TS> >
 class CfTreeSegment:public TreeSegment<TS,BUD>{
@@ -11,4 +13,5 @@ public:
     :TreeSegment<TS,BUD>(p,pv,go,l,r,rn,tree){}
 };
 
+}//close namespace Lignum
 #endif

@@ -5,6 +5,8 @@
 
 using namespace std;
 
+namespace Lignum{
+
 //Broad Leaf Attributes
 enum BLA {Larea,dof,lw,sf,tauL,LP,LM,LQabs,LQin,LWf}; 
 
@@ -34,4 +36,5 @@ public:
   map<const char *,TPD,cmpstr> tpd;
 };
 
+}//closing namespace Lignum
 #endif

@@ -1,6 +1,8 @@
 #ifndef BRANCHING_POINTI_H
 #define BRANCHING_POINTI_H
 
+namespace Lignum{
+
 template <class TS,class BUD>
 BranchingPoint<TS,BUD>::BranchingPoint()
 {
@@ -42,7 +44,10 @@ void InsertAxis(BranchingPoint<TS,BUD>& bp, Axis<TS,BUD>* axis)
   bp.axis_ls.push_back(axis);
 }
 
+}//close namespace Lignum
 
 #endif
+
+
 
 

@@ -1,16 +1,16 @@
+#include "TreeA.h"
+
+
 #include <stdlib.h>
 #include <iostream.h>
 #include <list>
 #include <algorithm>
 #include <list>
+#include <Tree.h>
 #include <MyTreeSegment.h>
 #include <MyBud.h>
-#include <HwTreeSegment.h>
-#include <CfTreeSegment.h>
-#include <TreeFunctor.h>
-#include <Algorithms.h>
 
-using namespace std;
+using namespace Lignum;
 
 CString ParseCommandLine(int argc, char *argv[],const CString& flag)
 {
@@ -32,10 +32,18 @@ CString ParseCommandLine(int argc, char *argv[],const CString& flag)
 }
 
 
+
 int main(int argc, char *argv[])
 {
-  Tree<MyHwTreeSegment,MyBud> hw_tree(Point<METER>(0,0,0),PositionVector(0,0,1.0));
-  Tree<MyCfTreeSegment,MyBud> cf_tree(Point<METER>(0,0,0),PositionVector(0,0,1.0));
+  //using tree from namespace TreeA defined in TreeA.h;
+  TreeA::Tree t;
+  t.i = 100;
+  cout << t.i <<endl;
+  //using namespace Lignum;
+  Lignum::Tree<MyHwTreeSegment,MyBud> hw_tree(Point<METER>(0,0,0),
+				      PositionVector(0,0,1.0));
+  Tree<MyCfTreeSegment,MyBud> cf_tree(Point<METER>(0,0,0),
+				      PositionVector(0,0,1.0));
   CString clarg,empty;
 
   clarg = ParseCommandLine(argc,argv,"-file");
@@ -84,8 +92,9 @@ int main(int argc, char *argv[])
   cout << endl;
   cout << "Example 1: Tree<MyHwTreeSegment,MyBud> with TreeSegment<MyHwTreeSegment,MyBud>" << endl;
   cout << "Testing ForEach algorithm with DisplayType2" << endl;
+  
+  
   ForEach(hw_tree,DisplayType2<MyHwTreeSegment,MyBud>());
-
   cout << endl;
   int i = 0;
 
@@ -120,6 +129,8 @@ int main(int argc, char *argv[])
   cout << "Testing PropagateUp algorithm with MyExampleSignal" << endl;
   PropagateUp(hw_tree,i,MyExampleSignal<MyHwTreeSegment,MyBud>());
 
+
+  
 
   //Example 2.
   //create a tree with a structure [TS,[[B],[B]],B]
@@ -164,6 +175,7 @@ int main(int argc, char *argv[])
   cout << "Testing ForEach algorithm with DisplayType2" << endl;
   cout << "Testing ForEach algorithm with DisplayType2" << endl;
 
+  
   ForEach(cf_tree,DisplayType2<MyCfTreeSegment,MyBud>());
 
   cout << endl;
@@ -211,7 +223,10 @@ int main(int argc, char *argv[])
   DisplayStructureData id;
   PropagateUp(cf_tree,id,DisplayStructureFunctor<MyCfTreeSegment,MyBud>());
   cout << endl;
+
+
 }
+
 
 
 

@@ -3,8 +3,10 @@
 
 #include <iostream.h>
 
-#include <Tree.h>
+#include <TreeCompartment.h>
 #include <Algorithms.h>
+
+namespace Lignum{
 
 //A functor to print out the datatype
 //of a tree compartment
@@ -71,7 +73,7 @@ public:
 				       TreeCompartment<TS,BUD>* ts)const;
 };
 
-
+}//closing namespace Lignum
 #include <TreeFunctorI.h>
 
 #endif

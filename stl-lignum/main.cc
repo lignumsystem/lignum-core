@@ -3,11 +3,14 @@
 #include <list>
 #include <algorithm>
 #include <list>
-#include <MyTreeSegment.h>
-#include <TreeFunctor.h>
-#include <Algorithms.h>
 
-using namespace std;
+#include <Tree.h>
+
+#include <MyTreeSegment.h>
+#include <MyBud.h>
+
+
+using namespace Lignum;
 
 CString ParseCommandLine(int argc, char *argv[],const CString& flag)
 {

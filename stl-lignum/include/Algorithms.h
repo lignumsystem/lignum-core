@@ -2,8 +2,9 @@
 #define ALGORITHMS_H
 
 #include <functional>
-#include <Tree.h>
+#include <LGMdecl.h>
 
+namespace Lignum{
 
 template <class TS,class BUD>
 class AdaptableTCFunction
@@ -67,6 +68,7 @@ class ForEachOp2:public AdaptableTCFunction<TS,BUD>{
   Function f;
 };
 
+
 template <class TS,class BUD, class Function>
 void ForEach(Tree<TS,BUD>& tree, const Function& f);
 
@@ -84,9 +86,14 @@ void PropagateUp(Tree<TS,BUD>& tree, T& init, const BinOp& op1);
 template <class TS,class BUD, class T, class BinOp1, class BinOp2>
 void PropagateUp(Tree<TS,BUD>& tree, T& init, const BinOp1& op1, const BinOp2& op2);
 
+
+} //closing namespace Lignum
+
+ 
 //The implementations of Generic Algorithms
 #include <AlgorithmsI.h>
 
 #endif
+
 
 

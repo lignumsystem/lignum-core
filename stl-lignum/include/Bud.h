@@ -1,8 +1,10 @@
 #ifndef BUD_H
 #define BUD_H
 
-#include <TreeCompartment.h>
+#include <Point.h>
+#include <LGMdecl.h>
 
+namespace Lignum{
 
 class BudAttributes{
 public:
@@ -11,6 +13,7 @@ public:
   TP omega;          //Gravelius order
   STATUS state;      //LIVE, DEAD or DORMANT
 };
+
 
 template <class TS,class BUD=DefaultBud<TS> >
 class Bud: public TreeCompartment<TS,BUD>{
@@ -29,6 +32,8 @@ public:
 private:
   BudAttributes ba;
 };
+
+}//closing namespace Lignum
 
 #include <BudI.h>
 #endif

@@ -1,13 +1,11 @@
 #ifndef AXIS_H
 #define AXIS_H
 
-#include <algorithm>
-#include <numeric>
 #include <list>
 #include <Point.h>
-#include <PositionVector.h>
-#include <TreeFunctor.h>
-#include <TreeCompartment.h>
+#include <LGMdecl.h>
+
+namespace Lignum{
 
 template <class TS,class BUD = DefaultBud<TS> >
 class Axis: public TreeCompartment<TS,BUD>{
@@ -21,6 +19,8 @@ public:
 private:
   list<TreeCompartment<TS,BUD>*> tc_ls;
 };
+
+}//closing namespace Lignum
 
 //The implementations of methods and functions Axis
 #include <AxisI.h>

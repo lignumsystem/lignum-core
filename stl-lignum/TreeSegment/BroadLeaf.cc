@@ -1,5 +1,7 @@
 #include <BroadLeaf.h>
 
+namespace Lignum{
+
 Petiole::Petiole(const Point<>& b, const Point<>& e)
   :begin(b),end(e)
 {
@@ -148,3 +150,4 @@ Petiole& GetPetiole(BroadLeaf& bl)
   return bl.bla.petiole;
 }
 
+}//closing namespace Lignum

@@ -1,6 +1,9 @@
 #ifndef ALGORITHMSI_H
 #define ALGORITHMSI_H
 
+namespace Lignum{
+
+
 //Helper functors for generic algorithms 
 
 //Functor for ForEach
@@ -287,5 +290,7 @@ void PropagateUp(Tree<TS,BUD>& tree, T& init, const BinOp1& op1,  const BinOp2& 
   Axis<TS,BUD>& axis = GetAxis(tree);
   op2(init,&axis);
 }
+
+}//closing namespace Lignum
 
 #endif

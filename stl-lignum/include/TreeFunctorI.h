@@ -1,6 +1,8 @@
 #ifndef TREE_FUNCTORI_H
 #define TREE_FUNCTORI_H
 
+namespace Lignum{
+
 //Use built-in operator dynamic_cast
 //to resolve the data_type of a tree compartment
 template <class TS,class BUD>
@@ -234,5 +236,6 @@ DisplayStructureFunctor<TS,BUD>:: operator ()(DisplayStructureData& id,
   return tc;
 }
 
+}//closing namespace Lignum
 
 #endif

@@ -1,6 +1,9 @@
 #ifndef AXISI_H
 #define AXISI_H
 
+namespace Lignum{
+
+
 template <class TS,class BUD>
 Axis<TS,BUD>::~Axis()
 {
@@ -48,4 +51,5 @@ Bud<TS,BUD>* GetTerminatingBud(const Axis<TS,BUD>& axis)
   return (Bud<TS,BUD>*) axis.tc_ls.back();
 }
 
+}//closing namespace Lignum
 #endif

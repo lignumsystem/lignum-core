@@ -1,21 +1,34 @@
 #ifndef TREE_H
 #define TREE_H
-
+#include <algorithm>
+#include <numeric>
 #include <list>
 #include <stdlib.h>
 #include <iostream.h>
+#include <stream.h>
+
 #include <CString.h>
 #include <ParametricCurve.h>
+#include <Point.h>
+#include <PositionVector.h>
 
+#include <Algorithms.h>
+#include <TreeFunctor.h>
+#include <LGMdecl.h>
 #include <TreeMetaFileParser.h>
 #include <RootSystem.h>
 #include <Bud.h>
 #include <DefaultBud.h>
 #include <BranchingPoint.h>
 #include <TreeSegment.h>
+#include <HwTreeSegment.h>
+#include <CfTreeSegment.h>
 #include <Axis.h>
 #include <ConnectionMatrix.h>
 
+
+
+namespace Lignum{
 
 class TreeParameters{
 public:
@@ -45,6 +58,7 @@ public:
   KGC M;                 //Respiration of the tree during the time step
   KGC Wr;                //Root mass
 };
+
 
 class TreeFunctions{
 public:
@@ -102,20 +116,12 @@ private:
   RootSystem rs;
 };
 
+}//closing namespace Lignum
+
 #include <TreeI.h>
+
+
 #endif
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -1,10 +1,11 @@
 #ifndef MYTREESEGMENT_H
 #define MYTREESEGMENT_H
 
-#include <Tree.h>
 #include <HwTreeSegment.h>
 #include <CfTreeSegment.h>
 #include <MyBud.h>
+
+namespace Lignum{
 
 class MyTreeSegment:public TreeSegment<MyTreeSegment,MyBud>
 {
@@ -34,4 +35,5 @@ public:
     :CfTreeSegment<MyCfTreeSegment,MyBud>(p,d,go,l,r,rn,t){}
 };
 
+} //close namespace Lignum
 #endif

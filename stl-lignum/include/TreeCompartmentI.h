@@ -1,6 +1,8 @@
 #ifndef TREECOMPARTMENTI_H
 #define TREECOMPARTMENTI_H
 
+namespace Lignum{
+
 template <class TS,class BUD>
 TreeCompartment<TS,BUD>::TreeCompartment()
 {
@@ -24,7 +26,6 @@ TreeCompartment<TS,BUD>::~TreeCompartment()
 {
 }
 
-
 template <class TS,class BUD>
 Point<METER> GetPoint(const TreeCompartment<TS,BUD>& tc)
 {
@@ -37,4 +38,10 @@ PositionVector GetDirection(const TreeCompartment<TS,BUD>& tc)
   return  tc.direction;
 }
 
+}//closing namespace Lignum
 #endif
+
+
+
+
+

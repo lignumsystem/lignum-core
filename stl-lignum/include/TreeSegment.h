@@ -2,8 +2,12 @@
 #define TREESEGMENT_H
 
 #include <list>
+#include <mathsym.h>
 #include <Point.h>
-#include <TreeCompartment.h>
+#include <LGMdecl.h>
+
+
+namespace Lignum{
 
 class TreeSegmentAttributes{
 public:
@@ -47,6 +51,9 @@ public:
 private:
   TreeSegmentAttributes tsa;
 };
+
+
+}//close namespace Lignum
 
 #include <TreeSegmentI.h>
 

@@ -1,12 +1,11 @@
 #ifndef TREECOMPARTMENT_H
 #define TREECOMPARTMENT_H
 
-#include <stream.h>
-
 #include <Point.h>
 #include <PositionVector.h>
 #include <LGMdecl.h>
-#include <DefaultBud.h>
+
+namespace Lignum{
 
 template <class TS,class BUD=DefaultBud<TS> > 
 class TreeCompartment{
@@ -22,6 +21,8 @@ protected:
   Tree<TS,BUD>* tree;
 };
 
+
+}//closing namespace Lignum
 #include <TreeCompartmentI.h>
 
 #endif
