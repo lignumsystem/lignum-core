@@ -225,8 +225,8 @@ public:
 	 double plength = GetValue(*ts,LGAplength);
 	 //         L_new = L_new*(sqrt((30.0-plength)/30.0)); ///////////////////
 	 L_new = max(L_new,0.0);
-	 //don't allow segments shorter than 2 cm
-	 if (L_new <= 0.020)     //////////////////////////////////////
+	 //don't allow segments shorter than LGPmin
+	 if (L_new < GetValue(GetTree(*ts),LGPLmin))     //////////////////////////////////////
 	   L_new = 0.0;
 	 SetValue(*ts,LGAL,L_new);
 	 //Initial radius
@@ -495,8 +495,9 @@ class ShortenSegment{
 //a branching point 'c':s are summed and passed down to segment below.
 //If some of the buds is alive then sum of 'c':s is not 0.
 template <class TS, class BUD>
-	      LGMdouble& ShortenSegment<TS,BUD>::operator()(LGMdouble& c, TreeCompartment<TS,BUD>* tc)const
-  {
+LGMdouble& ShortenSegment<TS,BUD>::operator()(LGMdouble& c, 
+					      TreeCompartment<TS,BUD>* tc)const
+{
     if (BUD* b = dynamic_cast<BUD*>(tc)){
       if (GetValue(*b,LGAstate)==DEAD)
 	  c = 0.0;
@@ -517,6 +518,31 @@ template <class TS, class BUD>
       }
     }
     return c;
+}
+
+//Using L-systems  we 'blindly' create new  segments. After allocation
+//some of  the segments migh be 0  length. We do not  know this before
+//hand because there  is a treshold length LGPmin. This  is a clean up
+//routine to kill  buds in front of 0 length  segments to prevent them
+//grow any further.
+template <class TS, class BUD> 
+class KillBudsAfterAllocation{
+public:
+  bool& operator()(bool& kill, TreeCompartment<TS,BUD>* tc)const
+  {
+    if (TS* ts = dynamic_cast<TS*>(tc)){
+      METER l = GetValue(*ts,LGAL);
+      if (l <= R_EPSILON){
+	kill = true;
+      }
+    }
+    else if (BUD* b = dynamic_cast<BUD*>(tc)){
+      if (kill == true){
+	SetValue(*b,LGAstate,DEAD);
+      }
+    }
+    return kill;
   }
+};
 
 #endif
