@@ -91,24 +91,7 @@ also called functors.
 \end{figure}
 
 \subsection{The Class Declaration ParametricCurve}
-\begin{verbatim}
-class ParametricCurve{
-public:
-  ParametricCurve();
-  ParametricCurve(const vector<double>& v);
-  ParametricCurve(const string& file);
-  double operator()(double x)const;
-  bool install(const string& file);
-  bool ok();
-  double eval(double x)const;
-  string getFile();
-private:
-  ParametricCurve& read_xy_file(char *file);
-  string file;
-  vector<double> v;
-  int num_of_elements;
-};
-\end{verbatim}
+\verbinput{../include/ParametricCurve.h}
 
 \subsection{Public Methods}
 \subsubsection{ParametricCurve}

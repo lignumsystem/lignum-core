@@ -87,35 +87,56 @@ private:
 
 \subsection{Functions and Operations}
 \subsubsection{Dot}
-The  dot product of two vectors.
+The  dot product of two position vectors.
+\begin{description}
+  \item[Signature] friend double Dot(const PositionVector\& p1, const
+  PositionVector\& p2).
+  \item[Arguments] for the function.
+    \begin{description}
+      \item[p1, p2] The two position vectors.
+    \end{description}
+  \item[Returns] The dot product as \tt double\rm.
+\end{description}
 
 \subsubsection{Cross}
-The cross product of two vectors.
+The cross product of two position vectors.
+\begin{description}
+  \item[Signature] friend PositionVevtor(const PositionVector\& p1, const
+  PositionVector\& p2).
+  \item[Arguments] for the function.
+    \begin{description}
+      \item[p1, p2] The two position vectors.
+    \end{description}
+  \item[Returns] The resulting position vector perpendicular to p1 and
+  p2.
+\end{description}
 
 \subsection{Public Methods}
-\subsubsection{PositionVector()}
-Default constructor creating vector to the point $(0,0,1)$. 
-    \begin{description}
-       \item [Returns] Nothing.
-    \end{description} 
+\subsubsection{PositionVector}
+The overloded constructor. The first one without arguments creates a
+position vector $(0,0,1)$ pointing upwards.  
+\begin{description}
+   \item[Signature 1] PositionVector().    
+   \item[Signature 2] PositionVector(const double x, const double
+   y,const double z).
+   \item[Arguments] for the contructor.
+      \begin{description}        
+         \item[x,y,z] The $(x,y,z)$ coordinates of the position
+   vector.
+      \end{description}    
+   \item[Signature 2] PositionVector(const vector<double>\& v)
+   \item[Arguments] for the contructor.
+       \begin{description}
+         \item[v] The vector containing $(x,y,z)$ coordinates of the
+   position vector.
+         \end{description}    
+\end{description} 
 
-\subsubsection{PositionVector(const double x, const double y,\\ 
-const double z);}
-Constructor creating a position vector to the point $(x,y,z)$. 
-    \begin{description}
-       \item [Returns] Nothing.
-    \end{description} 
-
-\subsubsection{PositionVector(const vector<double>\& v);} 
-Constructor create a position vector to point $(v[0],v[1],v [2])$. 
-    \begin{description}
-       \item [Returns] Nothing.
-    \end{description} 
-
-\subsubsection{PositionVector\& rotate(ROTATION d, RADIAN a);} 
+\subsubsection{rotate} 
 Rotate the vector about the  axis specified by \tt d \rm by angle
 specified by \tt a\rm.
- \begin{description}  
+ \begin{description} 
+    \item [Signature] PositionVector\& rotate(ROTATION d, RADIAN a). 
     \item [Arguments] for the method.
       \begin{description}
         \item [d] The axis of rotation. Possible values are \\
@@ -127,61 +148,76 @@ specified by \tt a\rm.
     \item [Returns] The rotated position vector itself.
  \end{description}
 
-\subsubsection{PositionVector\& operator = (const PositionVector\& pv);}
+\subsubsection{operator=}
 The assignment operator. 
     \begin{description}
-       \item [Returns] The position vector on the left side of the assignment.
+       \item [Signature] PositionVector\& operator = (const
+    PositionVector\& pv). 
+       \item [Arguments] for the method.
+          \begin{description}
+             \item[pv] The position vector on the right side of the
+    assignment.
+           \end{description}
+       \item [Returns] The position vector itself on the left side of the assignment.
     \end{description}
 
-\subsubsection{double length()const;}
+\subsubsection{length}
  Compute the length of the position vector.
    \begin{description}
+       \item [Signature] double length()const.
        \item [Returns] The length of the vector.
    \end{description} 
 
-\subsubsection{double alpha()const;} 
+\subsubsection{alpha} 
 Compute the direction cosine $\alpha$ (Figure \ref{fig:pv}) between the position 
 vector and $x$-axis.
   \begin{description}
+       \item [Signature] double alpha()const.
        \item [Returns] The angle $alpha$  defined as $\arccos (x / l)$
                        where $l$ is the length of the vector.
    
   \end{description} 
 
-\subsubsection{double beta()const;} 
+\subsubsection{beta} 
 Compute the direction cosine $\beta$ (Figure \ref{fig:pv}) between the position 
 vector and $y$-axis.
   \begin{description}
+        \item [Signature] double beta()const.
        \item [Returns] The angle $\beta$  defined as $\arccos (y / l$)
                        where $l$ is the length of the vector. 
   \end{description} 
 
-\subsubsection{double gamma()const;}
+\subsubsection{gamma}
 Compute the direction cosine $\gamma$ (Figure \ref{fig:pv}) between the position 
 vector and $z$-axis.
   \begin{description}
+       \item [Signature] double gamma()const.
        \item [Returns] The angle $\gamma$ defined as $\arccos (z / l)$
                        where $l$ is the length of the vector.
   \end{description} 
 
  
-\subsubsection{vector<double> getVector()const;} 
-Return a copy of the internal vector containing the end points 
+\subsubsection{getVector} 
+Return a copy of the internal vector containing the end point 
 of the position vector. 
   \begin{description}
+       \item [Signature] vector<double> getVector()const.
        \item [Returns] The copy of the internal vector. 
   \end{description} 
 
 
 \subsubsection{normalize}
 Normalizes the vector. The vector can be then used as a direction
-vector, i.e., the length of the vector will be 1 (one).
+vector, i.e., the length of the vector will be 1.
+  \begin{description}
+     \item [Signature] PositionVector\& normalize().
+     \item [Returns] The position vector normalized.
+  \end{description} 
 
 \subsection{Private Data Members}
 \begin{description}
- \item [vector<double> v] The end point of the position vector.
-
- \end{description} 
+   \item [v] The end point of the position vector.
+\end{description} 
 
 
 

@@ -9,46 +9,12 @@ direction of positive $z$-axis  would advance if the positive $x$-axis
 is rotated towards positive $y$-axis.
 
 \subsection{The Class Declaration of Point}
-\begin{verbatim}
-
-class Point{
-friend Point operator+(const Point& p1, 
-                       const Point& p2);
-friend Point operator-(const Point& p1,
-                       const Point& p2);
-friend Point operator*(const double s, 
-                       const Point& p);
-friend double operator||(const Point& p1, 
-                    const Point& p2);
-friend ostream& operator<<(ostream& os, 
-                           const Point& p);
-friend inline bool operator==(const Point& p1, 
-                              const Point& p2);
-public:
-  Point(double x1 = 0.0, double y1 = 0.0, double z1 = 0.0)
-  {x = x1; y =  y1; z =  z1;}
-  inline Point(const Point& p);
-  double getX()const;
-  double getY()const;
-  double getZ()const;
-  Point& setX(const double x);
-  Point& setY(const double y);
-  Point& setZ(const double z);
-  Point& operator += (const Point& p); 
-  Point& operator -= (const Point& p);
-  Point& operator *= (const double scalar);
-private:
-  double x;
-  double y;
-  double z;
-};
-\end{verbatim}
-
+\verbinput{../include/Point.h}
 
 \subsection{Public Methods}
 
 \subsubsection{Point}
-Constructor for the class. 
+The overloaded constructor for the class. 
 \begin{description}
   \item[Signature 1] Point(double x = 0.0, double y = 0.0, double z = 0.0).
   \begin{description}

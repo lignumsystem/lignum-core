@@ -101,23 +101,7 @@ be designed by using methods that only peeks the next token
 and puts a token back into the token list.
 
 \subsection{The Class Declaration of Lex}
-\begin{verbatim}
-class Lex{
-public:
-  ~Lex();
-  Lex& scan(const char *file);
-  Token peek();
-  Token getToken();
-  Lex& putToken(const Token& token);
-protected:
-  Lex& scanId();
-  Lex& scanNum();
-  Lex& scanSpecial();
-private:
-  ifstream ifile;
-  DList token_ls;
-};
-\end{verbatim}
+\verbinput{../include/Lex.h}
 
 \subsection{Public Methods}
 
