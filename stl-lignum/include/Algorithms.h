@@ -51,7 +51,7 @@ class PropagateUpOp2{
 template <class TS,class BUD, class T, class BinOp1,class BinOp2>
 class PropagateUpOp3{
  public:
-  PropagateUpOp3(const BinOp1& op1, const class BinOp2& op2);
+  PropagateUpOp3(const BinOp1& op1, const BinOp2& op2);
   TreeCompartment<TS,BUD>* operator()(T& id,TreeCompartment<TS,BUD>* tc)const;
  private:
   BinOp1 op1;
