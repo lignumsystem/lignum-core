@@ -2,7 +2,8 @@
 #define TREEFUNCTOR_H
 
 #include <iostream>
-
+#include <fstream>
+using namespace std;
 #include <LGMdecl.h>
 #include <LGMSymbols.h>
 #include <TreeCompartment.h>
@@ -25,6 +26,7 @@
 //   CollectFoliageMass
 //   CollectFoliageArea
 //   CollectQabs
+//   GetQinMax
 //   MoveTree
 //   DeleteDeadBranches
 //   PrintTreeSegmentInformationToFile(const string& filenae)
@@ -290,6 +292,20 @@ namespace Lignum{
     };
 
 
+  //This fuctor evaluates the maximum Qin of all TreeSegments in a Tree
+
+  template <class TS, class BUD>
+    class GetQinMax{
+    public:
+    LGMdouble operator()(LGMdouble qin,TreeCompartment<TS,BUD>* tc)const{
+      if (TS* ts = dynamic_cast<TS*>(tc)){
+	LGMdouble qin_ts = GetValue(*ts,LGAQin);
+	qin = max(qin,qin_ts);
+      }
+      return qin;
+    }
+  };
+
 
   //This functor is used (ForEach) to move a tree (=all its
   //TreeCompartments) to a new location.
@@ -329,16 +345,29 @@ namespace Lignum{
   template <class TS,class BUD=DefaultBud<TS> >
     class PrintTreeSegmentInformationToFile {
       public:
-      PrintTreeSegmentInformationToFile(/*const string& filename*/)
+      PrintTreeSegmentInformationToFile(const string& filename)
       {
-	//	ofstream file(filename.c_str());
-	cout << "X:Y:Z:diX:diY:diZ:As0:As:L:M:omega:R:RTop:Rh:Ws:Wh:"
-                "Wf:W:Af:Qin:Qabs:Ring:vigour" << endl;
+/* 	file.open(filename.c_str() , ios::app); */
+	cout << "TIME: no time stamp specified" << endl;
+	cout  << "X:Y:Z:diX:diY:diZ:age:omega:R:RTop:Rh:L:Ring:Ws:Wh:"
+                "Wf:W:Af:As0:As:Qin:Qabs:P:M:vigour" << endl;
       }
+
+      PrintTreeSegmentInformationToFile(const string& filename, int&
+					timeStamp)
+      {
+/* 	file.open(filename.c_str() , ios::app); */
+	cout << "TIME: " << timeStamp << endl;
+	cout  << "X:Y:Z:diX:diY:diZ:age:omega:R:RTop:Rh:L:Ring:Ws:Wh:"
+                "Wf:W:Af:As0:As:Qin:Qabs:P:M:vigour" << endl;
+      }
+
+      //~PrintTreeSegmentInformationToFile() {file.close();}
+
       TreeCompartment<TS,BUD>* operator ()(TreeCompartment<TS,BUD>* tc)const;
 
-/*       private: */
-/*       ofstream file; */
+      private:
+      //      fstream f;
     };
 
 

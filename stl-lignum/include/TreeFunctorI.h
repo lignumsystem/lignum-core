@@ -639,36 +639,38 @@ namespace Lignum{
     PrintTreeSegmentInformationToFile<TS,BUD>::operator
     () (TreeCompartment<TS,BUD>* tc)const {
 
-      if(TS* ts = dynamic_cast<TS*>(tc)) {
-	Point r = GetPoint(*tc);
-	PositionVector di = GetDirection(*tc);
-	cout << r.getX() << ":" <<
+    if(TS* ts = dynamic_cast<TS*>(tc)) {
+      Point r = GetPoint(*tc);
+      PositionVector di = GetDirection(*tc);
+      cout << r.getX() << ":" <<
 	r.getY() << ":" <<
 	r.getZ() << ":" <<
 	di.getX() << ":" <<
 	di.getY() << ":" <<
 	di.getZ() << ":" <<
-	GetValue(*ts,LGAAs0) << ":" <<
-	GetValue(*ts,LGAAs) << ":" <<
-	GetValue(*ts,LGAL) << ":" <<
-	GetValue(*ts,LGAM) << ":" <<
+	GetValue(*ts, LGAage) << ":" <<
 	GetValue(*ts,LGAomega) << ":" <<
 	GetValue(*ts,LGAR) << ":" <<
 	GetValue(*ts,LGARTop) << ":" <<
 	GetValue(*ts,LGARh) << ":" <<
+	GetValue(*ts,LGAL) << ":" <<
+	GetLastAnnualIncrement(*ts) << ":" <<
 	GetValue(*ts,LGAWs) << ":" <<
 	GetValue(*ts,LGAWh) << ":" <<
 	GetValue(*ts,LGAWf) << ":" <<
 	GetValue(*ts,LGAWh)+GetValue(*ts,LGAWs)+GetValue(*ts,LGAWf) << ":" <<
 	GetValue(*ts,LGAAf) << ":" <<
+	GetValue(*ts,LGAAs0) << ":" <<
+	GetValue(*ts,LGAAs) << ":" <<
 	GetValue(*ts,LGAQin) << ":" <<
 	GetValue(*ts,LGAQabs) << ":" <<
-	GetLastAnnualIncrement(*ts) << ":" <<
+	GetValue(*ts,LGAP) << ":" <<
+	GetValue(*ts,LGAM) << ":" <<
 	GetValue(*ts,LGAvi)
-	<< endl;
-      }
-      return tc;
+	   << endl;
     }
+    return tc; 
+  }
 
 
 
