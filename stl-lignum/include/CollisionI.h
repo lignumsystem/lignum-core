@@ -74,7 +74,7 @@ int& EvaluateCollisionForThisBud<TS,BUD>::
 
     //If  the dotp  angle is  inside the  c_cos angle,  then  there is
     //collision
-    if(c_cos > dotp / len) {
+    if(c_cos < dotp / len) {
       //if the len is within the given distance
       if(len < c_distance) {
 	coll = 1;
