@@ -28,13 +28,13 @@ TreeSegment<TS, BUD>* GetLastTreeSegment(Axis<TS,BUD>& axis)
 template <class TS,class BUD>
 TreeSegment<TS, BUD>* GetFirstTreeSegment(Axis<TS,BUD>& axis)
 {
-        TreeSegment<TS, BUD> *ret = NULL;
+        TS *ret = NULL;
         
-        std::list<TreeCompartment<TS, BUD>*>& ls = axis.tc_ls;
-        typename std::list<TreeCompartment<TS, BUD>*>::iterator I = ls.begin();
+        list<TreeCompartment<TS, BUD>*>& ls = axis.tc_ls;
+        typename list<TreeCompartment<TS, BUD>*>::iterator I = ls.begin();
         while(I != ls.end())
         {
-                if (TreeSegment<TS, BUD>* myts = dynamic_cast<TreeSegment<TS, BUD>*>(*I))
+                if (TS* myts = dynamic_cast<TS*>(*I))
                 {
                         return myts;
                 }
