@@ -22,6 +22,8 @@ Lstring derivedstring;
 SuccessorStorage succstrg;
 FILE* fOut;
 
+void PrintLString(Lstring& s);
+
 void _Add(const void* pX, int size)
 {
   succstrg.Add(pX, size);
@@ -48,7 +50,7 @@ int main(int argc, char** argv)
 
   Start();
   mainstring.Add(succstrg);
-  Draw(0);
+  //Draw(0);
   sleep(1);
 
   {
@@ -56,12 +58,14 @@ int main(int argc, char** argv)
     LstringIterator iterator(mainstring);
     iterator.Dump();
     cout << "\n\n";
+    PrintLString(mainstring);
+    cout << "\n\n";
   }
 
   for (int i=0; i<DerivationLength(); i++)
   {
     Derive();
-    Draw(i);
+    //Draw(i);
     sleep(1);
 /*
     cout << "After " << i+1 << " step:\n";
@@ -71,20 +75,38 @@ int main(int argc, char** argv)
 */
   }
   End();
-
+  
   {
     cout << "Final string:\n";
-    LstringIterator iterator(mainstring);
-    iterator.Dump();
+    //LstringIterator iterator(mainstring);
+    //iterator.Dump();
+    PrintLString(mainstring);
     cout << "\n\n";
   }
 
   {
-    Draw(100);
+    //Draw(100);
   }
 
 }
 
+void PrintLString(Lstring& s)
+{
+  LstringIterator iterator(s);
+  CallerData caller_data;
+  float arg1;
+  while (!iterator.AtEnd()){
+    const char* name = iterator.GetCurrentModuleName();
+    fprintf(stdout,"%s ",name);
+    if (strcmp(name,"F") == 0){
+      caller_data.Reset();
+      caller_data.Strct.AddModuleAddr(iterator.Ptr());
+      memcpy(&arg1,caller_data.Strct.pArg(0),sizeof(float));
+      fprintf(stdout,"(%f)",arg1);
+    }
+    iterator++;
+  }
+}
 
 void Draw(int i)
 {
@@ -165,5 +187,3 @@ ProdCaller TryIMatch
   else
     return NULL;
 }
-
-
