@@ -13,7 +13,7 @@ Tree<TS,BUD>::Tree()
 //with one terminating bud in the main axis
 template <class TS,class BUD>
 Tree<TS,BUD>::Tree(const Point& p, const PositionVector& d)
-  :TreeCompartment<TS,BUD>(p,d,this),axis(p,d,this),f(5,5)
+  :TreeCompartment<TS,BUD>(p,d,this),f(5,5),axis(p,d,this),root_axis(p,d)
 {
   //force the instantiation of BranchingPoint
   BranchingPoint<TS,BUD>(p,d,this);
@@ -22,7 +22,7 @@ Tree<TS,BUD>::Tree(const Point& p, const PositionVector& d)
 
 template <class TS,class BUD>
 Tree<TS,BUD>::Tree(const Point& p, const PositionVector& d, LGMdouble len, LGMdouble rad, int num_buds)
-  :TreeCompartment<TS,BUD>(p,d,this),axis(p,d,this),f(5,5)
+  :TreeCompartment<TS,BUD>(p,d,this),f(5,5),axis(p,d,this),root_axis(p,d)
 {
   //force the instantiation of BranchingPoint
   BranchingPoint<TS,BUD>(p,d,this);
