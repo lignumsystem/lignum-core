@@ -3,6 +3,8 @@
 
 #include <BroadLeaf.h>
 #include <HwTreeSegment.h>
+
+
 /*********************************************************************
  *This  file implements pairwise  comparison of  leaves in  a hardwood
  *tree. Essentially the algorithms  consists of two ForEach calls. The
@@ -112,14 +114,13 @@ namespace Lignum{
     vector<double> v(3);
     for (int i = 0; i < f.numberOfRegions();i++){
       f.diffuseRegionRadiationSum(i,v); //direction of the light beam
-      Point p1 = GetCenterPoint(leaf);  //center point of the leaf
+      const Point p1 = GetCenterPoint(leaf);  //center point of the leaf
 
       //      cout<<"p1   ="<<p1<<endl;
 
 
-                     //second parameter - the light beam
-      PositionVector p2(PositionVector(v[0],v[1],v[2])); 
-
+      //second parameter - the light beam
+      const PositionVector p2(v[0],v[1],v[2]);
       //      cout<<"p2   ="<<p2<<endl;
 
       //      PositionVector p1p2=p1-p2;
@@ -136,16 +137,18 @@ namespace Lignum{
 	cout << " D: " << PositionVector(v[0],v[1],v[2]) << endl;
 	cout << " C: " << GetShape(*l).getCenterPoint()<< flush;
 	cout << " N: " << GetShape(*l).getNormal()<<endl;
-	cout << " a and b: " << GetShape(*l).getSemimajorAxis() << " " 
-	     << GetShape(*l).getSemiminorAxis() << endl;
+	cout << " L: " <<  GetShape(*l).getLeftCorner() 
+	     << " R: " <<  GetShape(*l).getRightCorner()
+	     << " A: " <<  GetShape(*l).getApexCorner() << endl;
       }
       else{
 	cout << " NOT HIT: " << endl;
 	cout << " D: " << PositionVector(v[0],v[1],v[2]) << endl;
 	cout << " C: " << GetShape(*l).getCenterPoint()<< flush;
 	cout << " N: " << GetShape(*l).getNormal()<<endl;
-	cout << " a and b: " << GetShape(*l).getSemimajorAxis() << " " 
-	     << GetShape(*l).getSemiminorAxis() << endl;
+	cout << " L: " <<  GetShape(*l).getLeftCorner() 
+	     << " R: " <<  GetShape(*l).getRightCorner()
+	     << " A: " <<  GetShape(*l).getApexCorner() << endl;
       }
       //I suggest common interface to all shapes: Triangle, Ellipse and Polygon.
       //I  propose   method  'intersectShape(const  Point&   p,  const
