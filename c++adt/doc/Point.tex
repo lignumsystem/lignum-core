@@ -10,7 +10,7 @@ south and $y$-axis points east.
 
 \subsection{The Class Declaration of Point}
 \begin{verbatim}
-template <class T>
+template <class T = double>
 class Point{
 friend Point<T> operator+(const Point<T>& p1, 
                           const Point<T>& p2);
@@ -48,7 +48,7 @@ private:
 \begin{description}
   \item[T] The type, any of the arithmetic types in C/C++.
     \begin{description}
-      \item[Default values] None.
+      \item[Default values] double.
      \end{description}
 \end{description}
 
