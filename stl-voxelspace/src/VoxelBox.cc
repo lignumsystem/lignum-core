@@ -57,6 +57,7 @@ void VoxelBox::setVoxelSpace(VoxelSpace *s, Point c)
 //	Updates  the values after  every tree  segment being  added to
 //	this VoxelBox. 
 //
+//NOTE: k_b is hard coded  to 0.5, STAR to 0.14 and val_b to 0.14!!!!!!!!
 void VoxelBox::UpdateValues()
 {
 	LGMassert(space->Xbox>0);
