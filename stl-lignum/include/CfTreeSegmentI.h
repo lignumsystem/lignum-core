@@ -16,8 +16,10 @@ CfTreeSegment<TS,BUD>::CfTreeSegment(const Point& p, const PositionVector& d,
     //2. initial mass of the foliage is then af*Sa ((kg/m2)*m2)
     LGMdouble wf =  GetValue(*t,LGPaf)*GetValue(*this,LGASa);
     SetValue(*this,LGAWf,wf);
-    //Remember original sapwood area As0
+    //Remember original sapwood area As0 and foliage mass Wf0
     SetValue(*this,LGAAs0,GetValue(*this,LGAAs));
+    SetValue(*this,LGAWf0,GetValue(*this,LGAWf));
+    
   }
 
 
@@ -58,6 +60,10 @@ LGMdouble GetValue(const CfTreeSegment<TS,BUD>& ts, const LGMAD name)
   else if (name == LGAWf)
     return ts.cftsa.Wf;
 
+  //Return initial foliage mass
+  else if (name == LGAWf0)
+    return ts.cftsa.Wf0;
+
   else
     return GetValue(dynamic_cast<const TreeSegment<TS,BUD>&>(ts), name);
 }
@@ -87,6 +93,9 @@ LGMdouble SetValue(CfTreeSegment<TS,BUD>& ts, const LGMAD name, const LGMdouble 
 
   else if (name == LGAWf)
     ts.cftsa.Wf = value;
+
+  else if (name == LGAWf0)
+    ts.cftsa.Wf0 = value;
 
   else
     old_value = SetValue(dynamic_cast<TreeSegment<TS,BUD>&>(ts), name,value);
