@@ -17,3 +17,22 @@
 #
 # For example:
 #DEFAULT		(echo ""; who am i; echo %s; date; cat) >> $CVSROOT/CVSROOT/commitlog
+^smvisual Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi eero.nikinmaa@helsinki.fi c1344@er.uqam.ca mhlehton@cc.hut.fi
+^sugar-maple Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi eero.nikinmaa@helsinki.fi c1344@er.uqam.ca mhlehton@cc.hut.fi
+^watervisual Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  mhlehton@cc.hut.fi
+^file-reader  Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  mhlehton@cc.hut.fi
+^converter  Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  mhlehton@cc.hut.fi 
+^stl-lignum Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  mhlehton@cc.hut.fi eero.nikinmaa@helsinki.fi c1344@er.uqam.ca
+^c\+\+adt  Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  mhlehton@cc.hut.fi eero.nikinmaa@helsinki.fi c1344@er.uqam.ca
+^Firmament Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  mhlehton@cc.hut.fi eero.nikinmaa@helsinki.fi c1344@er.uqam.ca
+^ScotsPine  Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  mhlehton@cc.hut.fi  
+^ScotsPineVisual  Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  mhlehton@cc.hut.fi  
+^references Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi eero.nikinmaa@helsinki.fi 
+^lignum-presentations Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi eero.nikinmaa@helsinki.fi
+
+
+
+
+
+
+
