@@ -802,10 +802,15 @@ namespace Lignum{
       }
     }
   };
+  //The axis or branch is dead if the buds are dead and there is no foliage
   template <class TS, class BUD>
     LGMdouble& DeleteDeadBranches<TS,BUD>::operator()(LGMdouble& foliage, 
 						      TreeCompartment<TS,BUD>* tc)const
     {
+      if (BUD* bud =  dynamic_cast<BUD*>(tc)){
+	if (GetValue(*bud,LGAstate) != DEAD)
+	  foliage = 100.0;
+      }
       //Collect foliage
       if (TS* ts = dynamic_cast<TS*>(tc)){
 	foliage = foliage + GetValue(*ts,LGAWf);
