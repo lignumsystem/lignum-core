@@ -9,8 +9,8 @@ namespace Lignum{
   // Tree Attribute Double, Wm lisätty
   // Wr           dry weight of the roots
   enum LGMAD {A,Ah, Ahair,As,age,LGMcollision,dof, dR, H,Hm,ip,lb,LM,LP,LWf,L,lw,M, omega,P,
-	      Qin,Qabs,R,Rf,Rh,Rhair,RTop,sf,LGMstatus,sw,tauL,LGMtype,V,Vh,Vhair,Vs,vi,Wf,Ws,Wh,
-  Af};
+	      Qin,Qabs,R,Rf,Rh,Rhair,RTop,sf,LGMstatus,sw,tauL,LGMtype,V,Vh,Vhair,Vs,vi,
+              Wf,Ws,Wh,Whair,Af};
 
   //  A       0   Segment area based on R (see GetValue)
   //  Ah          Heartwood area
@@ -43,6 +43,7 @@ namespace Lignum{
   //  Wf      24  foliage mass (kg C)
   //  Ws      25  mass of sapwood (kg C)
   //  Wh      26  mass of heartwood (kg C)
+  //  Whair       mass of root hair (kg C)
   //  Af      27  area of foliage
   //  vi          vigour index
   //  V           Segment volume based on R
