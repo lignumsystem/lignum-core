@@ -46,10 +46,7 @@ int main(int argc, char *argv[])
   FTree<Firmament,MyCfTreeSegment,MyCfBud> ftree2(Point(0,0,0),
 						  PositionVector(0,0,1.0));
 
-  Forest f;
-
-  InsertHwTree(f,hw_tree);
-  InsertHwTree(f,hw_tree);
+ 
    
   string clarg,empty;
 
@@ -291,18 +288,6 @@ int main(int argc, char *argv[])
 
    //matrix = new Matrix<MyCfTreeSegment, MyCfBud >(&cf_tree, 0,0,0,0.1);
 
-   int idf = 0;
-   cout << "Counting compartments in forest" << endl;
-   cout << "First Tree<MyCfTreeSegment,MyCfBud>" << endl;
-   Accumulate<Tree<MyCfTreeSegment,MyCfBud> >(f,idf,
-					      CountCompartments<MyCfTreeSegment,MyCfBud>());
-   cout << "Compartments: " << idf << endl;
-   cout << "Then Tree<MyHwTreeSegment,MyHwBud>" << endl;
-   Accumulate<Tree<MyHwTreeSegment,MyHwBud> >(f,idf,
-					      CountCompartments<MyHwTreeSegment,MyHwBud>());
-
-   ForEach<Tree<MyCfTreeSegment,MyCfBud> >(f,EvaluateCollisionForAllBuds<MyCfTreeSegment,MyCfBud>());
-   ForEach<Tree<MyHwTreeSegment,MyHwBud> >(f,EvaluateCollisionForAllBuds<MyHwTreeSegment,MyHwBud>());
 
    LGMdouble foliage = 0;
    cout << "Testing DeleteDeadBranches CfTree" << endl;
