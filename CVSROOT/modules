@@ -24,31 +24,31 @@
 # character to interpose another module into the current module.  This
 # can be useful for creating a module that consists of many directories
 # spread out over the entire source repository.
-abstypes	      abstypes	      
-BetulaTortuosa	      BetulaTortuosa	      
-converter	      converter	      
-c++adt		      c++adt		      
-CVSROOT		      CVSROOT		      
-file-reader	      file-reader	      
-Firmament	      Firmament	      
-gliricidia	      gliricidia	      
-glirito		      glirito		      
-Graphics	      Graphics	      
-lignum		      lignum		      
-lignum-presentations  lignum-presentations  
-LEngine		      LEngine
-MOTTI                 MOTTI		      
-opengl		      opengl		      
-references	      references	      
-smvisual	      smvisual	      
-stl-gliricidia	      stl-gliricidia	      
-stl-lignum	      stl-lignum	      
-sugar-maple	      sugar-maple	      
-ScotsPine	      ScotsPine	      
-ScotsPineVisual	      ScotsPineVisual	      
-SugarMaple	      SugarMaple	      
-voxel-lignum	      voxel-lignum	      
-watervisual	      watervisual	      
-webdocs		      webdocs		      
-WhiteBirch            WhiteBirch            
-lignum-core           &c++adt &stl-lignum &Firmament
+abstypes	                              abstypes	      		    
+BetulaTortuosa	      			      BetulaTortuosa	      	    
+converter	      			      converter	      		    
+c++adt	              -s JariP		      c++adt		      	    
+CVSROOT		      			      CVSROOT		      	    
+file-reader	      			      file-reader	      	    
+Firmament	      -s RistoS		      Firmament	      		    
+gliricidia	      -s RistoS		      gliricidia	      	    
+glirito		      			      glirito		      	    
+Graphics	      -s MikaL		      Graphics	      		    
+lignum		      			      lignum		      	    
+lignum-presentations  			      lignum-presentations  	    
+LEngine		      -s JariP		      LEngine			    
+MOTTI                 -s MikaL		      MOTTI		      	    
+opengl		      -s MikaL		      opengl		      	    
+references	      			      references	      	    
+smvisual	      			      smvisual	      		    
+stl-gliricidia	      			      stl-gliricidia	      	    
+stl-lignum	      -s JariP -s RistoS      stl-lignum	      	    
+sugar-maple	      			      sugar-maple	      	    
+ScotsPine	      			      ScotsPine	      		    
+ScotsPineVisual	      			      ScotsPineVisual	      	    
+SugarMaple	      			      SugarMaple	      	    
+voxel-lignum	      			      voxel-lignum	      	    
+watervisual	      			      watervisual	      	    
+webdocs		      			      webdocs		      	    
+WhiteBirch            			      WhiteBirch            	    
+lignum-core           			      &c++adt &stl-lignum &Firmament
