@@ -1,6 +1,6 @@
 OS=IRIX64
 TARGET=$(OS).out/liblsys.a
-
+LSYSSRC=lsys.cpp
 CPPSRC=
 
 OBJECTS=${CPPSRC:.cpp=.o}
@@ -14,13 +14,13 @@ $(TARGET): $(OBJECTS) lsys.o
 
 
 lsys.o: $(LSYSSRC) 
-	$(CCPPI) $(CPPOPT) -I/usr/include $(LSYSSRC)
+	$(CCPPI) $(CPPOPT) -I/usr/include $(INCDIRS) $(LSYSSRC)
 
 .cpp.o:
 	$(CCPP) $(CPPOPT) -I/usr/include $(INCDIRS) $<
 
-$(LSYSSRC): ../L2C/lsys.i
-	cp ../L2C/lsys.i $(LSYSSRC)
+#$(LSYSSRC): ../L2C/lsys.i
+#	cp ../L2C/lsys.i $(LSYSSRC)
 
 #$(LSYSSRC): ../L2C/lsys.ii
 #cp ../L2C/lsys.ii $(LSYSSRC)
