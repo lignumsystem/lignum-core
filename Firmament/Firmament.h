@@ -1,16 +1,21 @@
-
 #ifndef FIRMAMENT_H
 #define FIRMAMENT_H
 #include <math.h>
 #include <mathsym.h>
-#include <boolean.h>
-#include "TVector.h"
-#include "TMatrix.h"
-#include <treedefs.h>
+//#include <boolean.h>
+#include <vector>
+#include <TMatrix.h>
+#include <LGMUnits.h>
+
+using namespace cxxadt;
 
 
 #define NUM_OF_AZIM 24
 #define NUM_OF_INCL 9
+
+
+typedef double MJ;
+
 /*=====================================================================================*/
 //Class Firmament implements the radiation coming from the sky.
 //Both direct (=sun) and diffuse radiation is dealt with separately.
@@ -69,31 +74,31 @@
 3.   void setDirectRadiation(const double rad)
      Set the direct radiation (rad = radiation coming to horiz. plane)
 
-4.   void setSunPosition(const TVector<double>& v)
+4.   void setSunPosition(const vector<double>& v)
      v = direction vector
 
-5.   TVector<double>  getSunPosition()
+5.   vector<double>  getSunPosition()
      Get the direction vector
 
-6.  MJ directRadiation(TVector<double>& direction)
+6.  MJ directRadiation(vector<double>& direction)
     Get the intensity (on plane perpendicular to direction vector) and
     the direction of the sun
 
-7.  MJ diffuseRadiationSum( const TVector<double>& v)
+7.  MJ diffuseRadiationSum( const vector<double>& v)
     Get intensity of diffuse radiation (on plane perpendicular to direction vector)
     from sector input v is poining to.
 
 8.  int numberOfRegions()
     Get number of sectors.
 
-9.  MJ diffuseRegionRadiationSum(int n, TVector<double>& direction)
+9.  MJ diffuseRegionRadiationSum(int n, vector<double>& direction)
     Get intensity of diffuse radiation (on plane perpendicular to direction vector)
     from sector no n (numbering starts from horizont) and direction of the sector.
 
-10.  MJ diffuseHalfRegionRadiationSum(int n, TVector<double>& direction)
+10.  MJ diffuseHalfRegionRadiationSum(int n, vector<double>& direction)
      As 9 but the other half of the upper hemisphere gives no radiation.
 
-11.  MJ directHalfRegionRadiationSum(TVector<double>& direction)
+11.  MJ directHalfRegionRadiationSum(vector<double>& direction)
      As 10 but direct radiation
 
 12.  MJ diffusePlaneSensor(void)
@@ -104,7 +109,7 @@
 
 14.   MJ diffuseForestRegionRadiationSum(int n, float z, float x,  float la, float ke,
                                                        float H, float Hc,
-                                               TVector<double>& direction)
+                                               vector<double>& direction)
        As 9. but the point where the radiation is coming to is in a forest.
        INPUT:
           n        number of region
@@ -159,19 +164,19 @@ public:
   Firmament(int no_incl = NUM_OF_INCL/*9*/, int no_azim = NUM_OF_AZIM /*24*/);
   void setDiffuseRadiation(const double rad);
   void setDirectRadiation(const double rad) { directRadPlane = rad; }
-  void setSunPosition(const TVector<double>& v);
-  TVector<double>  getSunPosition() { return sunPosition; }
-  MJ directRadiation(TVector<double>& direction);
-  MJ diffuseRadiationSum( const TVector<double>& v);
+  void setSunPosition(const vector<double>& v);
+  vector<double>  getSunPosition() { return sunPosition; }
+  MJ directRadiation(vector<double>& direction);
+  MJ diffuseRadiationSum( const vector<double>& v);
   int numberOfRegions() { return numOfSectors; }
-  MJ diffuseRegionRadiationSum(int n, TVector<double>& direction);
-  MJ diffuseHalfRegionRadiationSum(int n, TVector<double>& direction);
-  MJ directHalfRegionRadiationSum(TVector<double>& direction);
+  MJ diffuseRegionRadiationSum(int n, vector<double>& direction);
+  MJ diffuseHalfRegionRadiationSum(int n, vector<double>& direction);
+  MJ directHalfRegionRadiationSum(vector<double>& direction);
   MJ diffusePlaneSensor(void) { return diffuseRadPlane; }
   MJ diffuseBallSensor(void) { return diffuseRadBall; }
   MJ diffuseForestRegionRadiationSum(int n, float z, float x,  float la, float ke,
                                                        float H, float Hc,
-                                               TVector<double>& direction);
+                                               vector<double>& direction);
   void outDiff() {
     cout << diffuseRad << endl;
   }
@@ -208,20 +213,20 @@ private:
   double diffuseRadScale;
   MJ directRadPlane, diffuseRadPlane, diffuseRadBall;
   MJ diffuseRadZenith;
-  TVector<double> sunPosition;
+  vector<double> sunPosition;
 
   TMatrix<double> zoneAzims;
-  TVector<double> inclinations;
-  TVector<int> azimDivisions;
+  vector<double> inclinations;
+  vector<int> azimDivisions;
   TMatrix<double> diffuseRad; //stores the radiation of sectors
-  TVector<int> inclinationIndex;   //tabulation of index of inclination in
+  vector<int> inclinationIndex;   //tabulation of index of inclination in
                                    //diffuseRad as a function of running segment no.
-  TVector<int> azimuthIndex;       //as inclinationIndex but for azimuths;
-  TVector<double> dir_x;           //x-component of vector pointing to center
+  vector<int> azimuthIndex;       //as inclinationIndex but for azimuths;
+  vector<double> dir_x;           //x-component of vector pointing to center
                                   //of ith sector (indexed by number of sector)
-  TVector<double> dir_y;          //as dir_x but for y
-  TVector<double> dir_z;          //as dir_x but for z
-  TVector<double> areasByInclination; //areas sectors in for each inclination
+  vector<double> dir_y;          //as dir_x but for y
+  vector<double> dir_z;          //as dir_x but for z
+  vector<double> areasByInclination; //areas sectors in for each inclination
   double thetZ;
   int numOfSectors;
   double deltaIncl, halfDeltaIncl;

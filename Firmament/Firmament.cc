@@ -1,6 +1,6 @@
-#include "Firmament.h"
-#include <mathsym.h>
-#include <boolean.h>
+#include <Firmament.h>
+//#include <mathsym.h>
+
 
 
 //The flux of diffuse radiation coming from the sky is accomplished
@@ -181,7 +181,7 @@ Firmament::Firmament(int no_incl, int no_azim)
 //	  returns 0.0
 
 
-MJ Firmament::diffuseRadiationSum(const TVector<double>& direction)
+MJ Firmament::diffuseRadiationSum(const vector<double>& direction)
 {
 
   double rz, rx,ry;
@@ -229,7 +229,7 @@ MJ Firmament::diffuseRadiationSum(const TVector<double>& direction)
 
 }
 
-MJ Firmament::diffuseRegionRadiationSum(int n, TVector<double>& direction)
+MJ Firmament::diffuseRegionRadiationSum(int n, vector<double>& direction)
 
 // Input: # of region
 // Return: Intensity of diffuse radiation from the region and
@@ -262,7 +262,7 @@ MJ Firmament::diffuseRegionRadiationSum(int n, TVector<double>& direction)
 }
 
 
-MJ Firmament::diffuseHalfRegionRadiationSum(int n, TVector<double>& direction)
+MJ Firmament::diffuseHalfRegionRadiationSum(int n, vector<double>& direction)
 
 // As regionRadiationSum but regions having azimuth between
 // 0 and PI radiate nothing and for these halfRegionRadiationSum = 0
@@ -306,7 +306,7 @@ MJ Firmament::diffuseHalfRegionRadiationSum(int n, TVector<double>& direction)
 
 MJ Firmament::diffuseForestRegionRadiationSum(int n, float z, float x, float la,
 					      float ke, float H, float Hc,
-					      TVector<double>& direction)
+					      vector<double>& direction)
 
    // This method calculates the radiation reaching a segment  in a
    // tree that is growing in a stand among indentical trees (dens trees/ha).
@@ -320,7 +320,7 @@ MJ Firmament::diffuseForestRegionRadiationSum(int n, float z, float x, float la,
    // travelled distance * leaf area density * extinction coefficient
    // ( extinction coefficient = 0.14 for Scots pine)
    // The radiation coming from a point in the sky (sector) is obtained from
-   // method Firmament::regionRadiationSum(int n, TVector<double>& direction).
+   // method Firmament::regionRadiationSum(int n, vector<double>& direction).
    //
    // Both height of the segment and its distance from the tree stem affect the path
    // lenght in the surrounding canopy. The path length of the beam inside the
@@ -340,11 +340,11 @@ MJ Firmament::diffuseForestRegionRadiationSum(int n, float z, float x, float la,
   // When this method is called first time it reads density (dens, trees/ha) from the
   // file density.fun. If this file does not exist default density 1 tree/ha is used.
 
-  static BOOLEAN first_time = TRUE;
+  static bool first_time = true;
   static float dens = 1.0;
 
   if(first_time) {
-    first_time = FALSE;
+    first_time = false;
     ifstream densfun("density.fun");
     if(densfun) {
       densfun >> dens;
@@ -367,7 +367,12 @@ MJ Firmament::diffuseForestRegionRadiationSum(int n, float z, float x, float la,
   // Inclination angle of the direction (from horizon),
   // length of direction = 1, hence z coordinate = tan(alpha)
 
-  float tan_alpha = (float) direction[2]; 
+  float tan_alpha; 
+  float length_of_direction = pow((pow(direction[0],2)+pow(direction[1],2)),0.5);
+  if(length_of_direction > 1.0e-10) 
+    tan_alpha = direction[2] / length_of_direction;
+  else
+    tan_alpha = 1.0e10; 
 
   // Area (m2) occupied by one tree = 10000/dens => radius of the opening that is
   // occupied by one tree
@@ -423,7 +428,7 @@ void Firmament:: setDiffuseRadiation(const double rad)
 
 }
 
-void Firmament::setSunPosition(const TVector<double>& v)
+void Firmament::setSunPosition(const vector<double>& v)
 
 // Input: Vector pointing to sun
 // Return: void
@@ -436,7 +441,7 @@ void Firmament::setSunPosition(const TVector<double>& v)
 
 }
 
-MJ Firmament::directRadiation(TVector<double>& direction)
+MJ Firmament::directRadiation(vector<double>& direction)
 
   // INPUT: NONE
   // OUTPUT: intensity of the direct (sun) radiation on the plane perpendicular
@@ -456,7 +461,7 @@ MJ Firmament::directRadiation(TVector<double>& direction)
 }
 
 
-MJ Firmament::directHalfRegionRadiationSum(TVector<double>& direction)
+MJ Firmament::directHalfRegionRadiationSum(vector<double>& direction)
 
 
   // INPUT: NONE
@@ -543,10 +548,10 @@ int  main(int argc, char* argv[])
   double alphaA, betaA, alphaB, betaB;
   double Rs=0.5, Rw = 0.1, L = 5.0;
 
-  TVector<double> a(3);
-  TVector<double> b(3);
-  TVector<double> r0(3);
-  TVector<double> rs(3);
+  vector<double> a(3);
+  vector<double> b(3);
+  vector<double> r0(3);
+  vector<double> rs(3);
   char buffer[LINE_LENGTH], c;
 
   Firmament firmament(9, 24);
