@@ -44,7 +44,9 @@ public:
 template <class TS, class BUD>
 class EvaluateRadiationForCfTreeSegment {
 public:
-  void  operator()(TreeSegment<TS,BUD>* ts)const;
+  EvaluateRadiationForCfTreeSegment(){}
+  EvaluateRadiationForCfTreeSegment(const ParametricCurve& k):K(k){}
+  TreeCompartment<TS,BUD>* operator()(TreeCompartment<TS,BUD>* tc)const;
   void setExtinction(ParametricCurve& K);
 private:
   ParametricCurve K;
