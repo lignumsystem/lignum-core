@@ -233,14 +233,43 @@ namespace Lignum {
   {
     for(int i1=0; i1<Xn; i1++)
       for(int i2=0; i2<Yn; i2++)
-	for(int i3=0; i3<Yn; i3++)
+	for(int i3=0; i3<Zn; i3++)
 	  {
 	    voxboxes[i1][i2][i3].setArea(inivalue,inivalue);
 	  }
   }
 
+  //
+  // A function used to fill all the VoxBoxes with a initial
+  // value downwards 
+  //
+  void VoxelSpace::fillVoxelBoxes(LGMdouble inivalue, int beginZ, int endZ)
+  {
+    for(int i1=0; i1<Xn; i1++)
+      for(int i2=0; i2<Yn; i2++)
+	for(int i3=0; i3<Zn; i3++)
+	  {
+	    if (i3 >= beginZ && i3 <= endZ){
+	      voxboxes[i1][i2][i3].setArea(inivalue,inivalue);
+	    }
+	    else
+	      voxboxes[i1][i2][i3].setArea(0,0);
+	  }
+  }
 
-
+  void VoxelSpace::fillVoxelBoxesWithNeedles(LGMdouble fmass, LGMdouble sf, 
+					     int beginZ, int endZ)
+  {
+    for(int i1=0; i1<Xn; i1++)
+      for(int i2=0; i2<Yn; i2++)
+	for(int i3=0; i3<Zn; i3++)
+	  {
+	    if (i3 >= beginZ && i3 <= endZ){
+	      voxboxes[i1][i2][i3].addNeedleArea(sf*fmass);
+	      voxboxes[i1][i2][i3].addNeedleMass(fmass);
+	    }
+	  }
+  }
 
   //
   // Returns the VoxelBox where the global Point p belongs
@@ -272,12 +301,11 @@ namespace Lignum {
   //
   //	The function calculates the Qin and Qabs-values to every VoxelBox.
   //
-  LGMdouble VoxelSpace::calculateLight(ostream& os)
+  LGMdouble VoxelSpace::calculateLight()
   {
     //ofstream file("calculateVoxelSpace.txt");
 
     bool first_time = true;
-    os << "Firmament " << endl;
     for(int i1=0; i1<Xn; i1++)
       for(int i2=0; i2<Yn; i2++)
 	for(int i3=0; i3<Zn; i3++)
@@ -298,10 +326,6 @@ namespace Lignum {
 		    int size = vec.size();
 
 		    sumiop += iop;
-		    if (first_time)
-		      {
-			os << "Direction "<< i+1 << ".  " << radiation_direction << ", radiation:" << iop << endl;
-		      }
 
 		    if (size>1)
 		      for (int a=1; a<size; a++)
@@ -342,16 +366,9 @@ namespace Lignum {
 		    voxboxes[i1][i2][i3].addRadiation(iop);	//säteily joka tulee..
 						
 		  }
-		if (first_time)
-		  {
-		    os << "total radiation " << sumiop << endl;
-		    first_time = false;
-		  }
-
-					
 	      }
 	  }
-			
+    
     // file.close();
     return 0;
   }
@@ -430,7 +447,17 @@ namespace Lignum {
   }
 
 
+  void VoxelSpace::updateStar()
+  {
+    for(int i1=0; i1<Xn; i1++)
+      for(int i2=0; i2<Yn; i2++)
+	for(int i3=0; i3<Zn; i3++)
+	  {
+	    voxboxes[i1][i2][i3].UpdateValues(); 
+	  }
 
+  }
+  
   //
   //	This function dumps every tree included in the VoxelSpace to
   //	VoxelBoxes.
@@ -444,7 +471,7 @@ namespace Lignum {
     size = vecScotspines.size();
     for (i = 0; i<size; i++)
       {
-	//This does not compile on Linux g++ with ScotPineVisual
+	//This does not compile on Linux g++ with ScotsPineVisual
 	//dumpCfTree(*this, *vecScotspines[i]);
       }
 
