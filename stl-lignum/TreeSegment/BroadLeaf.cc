@@ -48,6 +48,7 @@ BroadLeaf::BroadLeaf(LGMdouble sf,LGMdouble tauL,LGMdouble dof,int number_of_sec
     bla.center = GetEndPoint(petiole) + (b/ppl) * petiol_proj;
 }
 
+
 BroadLeafAttributes::BroadLeafAttributes(double sf1, double tauL1, 
 					 double dof1, const Petiole& petiole1,
 					 const PositionVector& leaf_normal1, 
@@ -148,5 +149,11 @@ Ellipsis& GetEllipsis(BroadLeaf& bl)
 {
   return bl.bla.shape;
 }
+
+void SetCenterPoint(BroadLeaf& bl, const Point<>& p)
+{
+  bl.bla.center = p;
+}
+
 
 }//closing namespace Lignum
