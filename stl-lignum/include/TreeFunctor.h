@@ -170,9 +170,51 @@ public:
 };
 
 
+//This functor is used (ForEach) to move a tree (=all its
+//TreeCompartments) to a new location.
+
+template <class TS,class BUD=DefaultBud<TS> >
+class MoveTree:  public AdaptableTCFunction<TS,BUD>{
+public:
+MoveTree(const Point& point) {move_to = point;} 
+Point& setPoint(const Point& new_point) {
+  Point tmp = move_to;
+  move_to = new_point;
+  return tmp;
+ }
+TreeCompartment<TS,BUD>* operator()(TreeCompartment<TS,BUD>* tc)const
+{
+  SetPoint(*tc, GetPoint(*tc)+move_to);
+
+  return tc;
+}
+  
+private:
+Point move_to;
+};
+
+
+
+
 
 }//closing namespace Lignum
 #include <TreeFunctorI.h>
 
 #endif
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
