@@ -42,9 +42,11 @@ T& AccumulateTreeCompartments<TS,BUD,T,BinOp>:: operator()(T& id,TreeCompartment
 {
   if (TS* ts = dynamic_cast<TS*>(tc))
     id = op1(id,ts);
-
-  else if (BUD* bud = dynamic_cast<BUD*>(tc))
-    id = op1(id,bud);
+  //Why this cannot  be 'BUD* bud = dynamic_cast<BUD*>(tc)'  for CC on
+  //SGI? For  g++ it can be.  Also, in other algorithms  the type cast
+  //can be to BUD*.
+  else if (Bud<TS,BUD>* bud = dynamic_cast<Bud<TS,BUD>*>(tc))
+    id = op1(id,tc);
 
   else if (Axis<TS,BUD>* axis = dynamic_cast<Axis<TS,BUD>*>(tc)){
     id = op1(id,axis);
