@@ -517,35 +517,81 @@ bool AdjustIncrementHwZbrent(Tree<TS,BUD>& tree)
 }
 
 
+/*  template <class TS,class BUD> */
+/*  void AdjustNewLambda(Tree<TS,BUD> &tree) */
+/*  { */
+/*  	Axis<TS,BUD> &axis = GetAxis(tree); */
+
+/*  	int i=0; */
+/*  	Accumulate(tree,i,CountTreeSegments<TS,BUD>()); */
+	
+
+
+/*  	RemoveNewComparments(axis); */
+
+
+/*  	i=0; */
+/*  	Accumulate(tree,i,CountTreeSegments<TS,BUD>()); */
+
+/*  	Firmament& f = GetFirmament(tree); */
+/*  	LGMdouble B = f.diffuseBallSensor(); */
+
+/*  	MotherInfo init; */
+/*  	init.vi = 1.0; */
+/*  	init.Qin = 0.0; */
+/*  	init.B = B; */
+		
+
+/*  	AddNewHwSegments<TS,BUD> functor; */
+/*  	functor.bud_fun = nol_fun; */
+/*  	PropagateUp(tree, init, functor); */
+	
+/*  } */
+
+
 template <class TS,class BUD>
 void AdjustNewLambda(Tree<TS,BUD> &tree)
 {
-	Axis<TS,BUD> &axis = GetAxis(tree);
-
-	int i=0;
-	Accumulate(tree,i,CountTreeSegments<TS,BUD>());
-	
-
-
-	RemoveNewComparments(axis);
+  Axis<TS,BUD> &axis = GetAxis(tree);
+  
+  int i=0;
+  Accumulate(tree,i,CountTreeSegments<TS,BUD>());
+  RemoveNewComparments(axis);
 
 
-	i=0;
-	Accumulate(tree,i,CountTreeSegments<TS,BUD>());
+  i=0;
+  Accumulate(tree,i,CountTreeSegments<TS,BUD>());
+  Firmament& f = GetFirmament(tree);
+  LGMdouble B = f.diffuseBallSensor();
 
-	Firmament& f = GetFirmament(tree);
-	LGMdouble B = f.diffuseBallSensor();
+  MotherInfo init;
+  init.vi = 1.0;
+  init.Qin = 0.0;
+  init.B = B;
+  
 
-	MotherInfo init;
-	init.vi = 1.0;
-	init.Qin = 0.0;
-	init.B = B;
+  //******** tee zbrent abstarktisti ja tämän voi sitten
+  //poistaa.. class zbrent..
+ 
+
+  /********* Kommentoitu pois jotta kaantyy
+  TS *tse = new TS(Point(0,0,0),PositionVector(0,0,1), 0, 0, 0, 0,
+		   &tree);
+  if (WhiteBirch *wb = dynamic_cast<WhiteBirch *>(tse))
+    {
+      AddWhiteBirchSegments<TS,BUD> functor;
+      PropagateUp(tree, init, functor);
 		
-
-	AddNewHwSegments<TS,BUD> functor;
-	functor.bud_fun = nol_fun;
-	PropagateUp(tree, init, functor);
-	
+    }
+  if (SugarMaple* wb = dynamic_cast<SugarMaple *>(tse))
+    {
+      AddSugarMapleSegments<TS,BUD> functor;
+      functor.bud_fun = nol_fun;
+      PropagateUp(tree, init, functor);
+		
+    }
+  delete tse;
+   */
 }
 
 

@@ -6,8 +6,11 @@
 #include "zbrentFunctor.h"
 
 extern float minLimitForSecBud[];
+
+extern ofstream file_out_pl;
 extern ParametricCurve nol_fun;
 
+//extern LGMdouble wSum_Lambda0; // = 0.0;
 
 
 template <class TS, class BUD, class F>
@@ -22,12 +25,8 @@ bool Growth(Tree<TS,BUD>& tree, F& f)
 
 	if(!(P_avail > 0.0))
 	{
-	  #ifdef _MSC_VER
-	  MessageBox(NULL, "  photosynthesis =< respiration " , NULL, NULL);
-	  #else
-	  cerr << "  photosynthesis =< respiration " << endl;
-	  #endif
-	  return false;
+	  //MessageBox(NULL, "  photosynthesis =< respiration " , NULL, NULL);
+		return false;
 	}
 	
 	
@@ -99,11 +98,6 @@ bool GrowthOfPineTree<TS,BUD>::operator()(Tree<TS,BUD>& tree)
 	AdjustDiameterCfGrowth<TS,BUD> adDiamGrowth; 
 	AsIni = AccumulateDown(tree, AsIni, adDiamGrowth);
   
-
-	//Lasketaan kasvuenergia kun lambda = 0
-	//LGMdouble identity = 0.0;
-	//CollectDWAfterGrowth<TS,BUD> collectDW;
-	//wSum_Lambda0 = Accumulate(tree,  identity, collectDW);
 	
 
 	Axis<TS,BUD>& main_stem = GetAxis(tree);
@@ -133,10 +127,6 @@ bool GrowthOfHwTree<TS,BUD>::operator()(Tree<TS,BUD>& tree)
 	AdjustDiameterHwGrowth<TS,BUD> adDiamGrowth; 
 	AsIni = AccumulateDown(tree, AsIni, adDiamGrowth);
   
-	//Lasketaan kasvuenergia kun lambda = 0
-	//LGMdouble identity = 0.0;
-	//CollectDWAfterGrowth<TS,BUD> collectDW;
-	//wSum_Lambda0 = Accumulate(tree,  identity, collectDW);
 
 	
 	Axis<TS,BUD>& main_stem = GetAxis(tree);
@@ -172,12 +162,7 @@ bool GrowthOfWhiteBirch<TS,BUD>::operator()(Tree<TS,BUD>& tree)
 	AdjustDiameterHwGrowth<TS,BUD> adDiamGrowth; 	
 	AsIni = AccumulateDown(tree, AsIni, adDiamGrowth);
 
-	//Lasketaan kasvuenergia kun lambda = 0
-	//LGMdouble identity = 0.0;
-	//CollectDWAfterGrowth<TS,BUD> collectDW;
-	//wSum_Lambda0 = Accumulate(tree,  identity, collectDW);
-
-
+	
 	LGMdouble photo = GetValue(tree, P);
 	LGMdouble respi = GetValue(tree, M);
 	LGMdouble P_avail = photo - respi;
@@ -197,8 +182,7 @@ bool GrowthOfWhiteBirch<TS,BUD>::operator()(Tree<TS,BUD>& tree)
 	AddWhiteBirchSegments<TS,BUD> functor;
 	PropagateUp(tree, init, functor);
 
-
-
+	
 	return true;
 }
 
@@ -241,9 +225,8 @@ void StructuralPineGrowth(Axis<TS,BUD> &ax, const ParametricCurve& bud_fun, Tree
 
 		LGMdouble lda = GetValue(tree, lambda);
 
-       #ifdef _MSC_VER
-		ASSERT(lda>0);
-       #endif
+		//ASSERT(lda>0);
+
 		Firmament& f = GetFirmament(tree);
 		LGMdouble B = f.diffuseBallSensor();
 		LGMdouble I = 0.0;
@@ -293,9 +276,9 @@ void StructuralPineGrowth(Axis<TS,BUD> &ax, const ParametricCurve& bud_fun, Tree
 			SetValue(*ts, Rf, R_f);
 			SetValue(*ts, Rh, R_h);
 			
-#ifdef _MSC_VER
-			ASSERT(GetSapwoodArea(*ts) >= 0);
-#endif
+
+			//ASSERT(GetSapwoodArea(*ts) >= 0);
+
 			InsertTreeCompartmentSecondLast(ax, ts);
 			
 			Point p = point + (Point)posvec;
@@ -523,7 +506,7 @@ MotherInfo& AddSugarMapleSegments<TS,BUD>::operator()(MotherInfo& mi, TreeCompar
 	
 		LGMdouble i_p = I / B;
 		
-		ASSERT(i_p>0);
+		//ASSERT(i_p>0);
 
 		LGMdouble omeg = GetValue(*bud, omega);
 
@@ -583,10 +566,10 @@ MotherInfo& AddSugarMapleSegments<TS,BUD>::operator()(MotherInfo& mi, TreeCompar
 			}
 
 			LGMdouble sum = 0.0;
-			for (i=0; i<number_of_segments; i++)
+			for (int i=0; i<number_of_segments; i++)
 				sum = sum + odds[i];
 			sum = sum / number_of_segments;
-			for (i=0; i<number_of_segments; i++)
+			for (int i=0; i<number_of_segments; i++)
 				odds[i] = odds[i] / sum;
 		}
 	
@@ -847,10 +830,10 @@ MotherInfo& AddWhiteBirchSegments<TS,BUD>::operator()(MotherInfo& mi, TreeCompar
 			}
 
 			LGMdouble sum = 0.0;
-			for (i=0; i<number_of_segments; i++)
+			for (int i=0; i<number_of_segments; i++)
 				sum = sum + odds[i];
 			sum = sum / number_of_segments;
-			for (i=0; i<number_of_segments; i++)
+			for (int i=0; i<number_of_segments; i++)
 				odds[i] = odds[i] / sum;
 		}
 		
@@ -985,7 +968,7 @@ MotherInfo& AddWhiteBirchSegments<TS,BUD>::operator()(MotherInfo& mi, TreeCompar
 		#ifdef _MSC_VER
 		ASSERT(R_h >= 0);
 		#endif
-		for(i=0; i<segments.size(); i++)
+		for(int i=0; i<segments.size(); i++)
 		{
 			SetValue(*segments[i], R, radius);
 			SetValue(*segments[i], Rh, R_h);
