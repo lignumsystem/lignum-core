@@ -564,9 +564,7 @@ namespace Lignum {
   LGMdouble VoxelSpace::calculateTurbidLight()
   {
     //ofstream file("calculateVoxelSpace.txt");
-    cout << " VoxelSpace::calculateTurbidLight Begin: " << endl;
     updateStar();
-    cout << " Star values updated " << endl;    
     for(int i1=0; i1<Xn; i1++)
       for(int i2=0; i2<Yn; i2++)
 	for(int i3=0; i3<Zn; i3++)
