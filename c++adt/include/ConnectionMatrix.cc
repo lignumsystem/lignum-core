@@ -9,9 +9,12 @@ ConnectionMatrix<TS,BUD>::ConnectionMatrix(Axis<TS,BUD>& axis)
   for (int i=0; i<size; i++)
     pointer[i] = new TreeSegment<TS,BUD>*[size];
 
+  pressure.resize(size);
   for (int x=0; x<size; x++)
-    for (int y=0; y<size; y++)
-      pointer[x][y] = NULL;
+    {      
+      for (int y=0; y<size; y++)
+	pointer[x][y] = NULL;
+    }
   TraverseAxis(axis, NULL);
   
 }
@@ -77,6 +80,44 @@ void ConnectionMatrix<TS,BUD>::TraverseAxis(Axis<TS,BUD>& ax, TreeSegment<TS,BUD
     }
 }
 
+template <class TS,class BUD>
+TP ConnectionMatrix<TS,BUD>::getDeltaPressure(TreeSegment<TS,BUD> *ts)
+{
+  int i=0;
+
+  while(pointer[i][i] != ts && i<size)
+    {
+      i++;
+    }
+  if (i == size)
+    {
+      cout << "CONNECTIONMATRIX:: segment not found" << endl;
+      return 0;
+    }
+  else
+    return pressure[i];
+}
+ 
+
+template <class TS,class BUD>
+void ConnectionMatrix<TS,BUD>::saveDeltaPressure(TreeSegment<TS,BUD> *ts, TP delta_pressure)
+{
+  int i=0;
+
+  while(pointer[i][i] != ts && i<size)
+    {
+      i++;
+    }
+  if (i == size)
+    {
+      cout << "CONNECTIONMATRIX:: segment not found" << endl;
+      return;
+    }
+  else
+    pressure[i] = delta_pressure;
+}
+
+
 
 template <class TS,class BUD>
 void ConnectionMatrix<TS,BUD>::addConnection(TreeSegment<TS,BUD> *source, TreeSegment<TS,BUD> *target)
@@ -124,6 +165,40 @@ TreeSegment<TS,BUD>* ConnectionMatrix<TS,BUD>::getTreeSegment(int x,int y)const
 }
 
 
+// This method counts and return the number of ending shoots.
+template<class TS,class BUD>
+int ConnectionMatrix<TS,BUD>::getNumberOfAxes()const
+{
+  int count = 0;
+  for(int i=0; i<size; i++)
+    {
+      bool no_connection = true;
+      for(int a=0; a<size; a++)
+	 if (pointer[i][a]!=NULL && i!=a)
+	   no_connection = false;
+      if (no_connection)
+	count++;
+    }
+  return count;
+}
+
+
+template<class TS,class BUD>
+bool ConnectionMatrix<TS,BUD>::lastTreeSegment(TreeSegment<TS,BUD> *ts)const
+{
+  for(int i=0; i<size; i++)
+    {
+      if (pointer[i][i] == ts)
+	{
+	  for(int a=0; a<size; a++)
+	    if (pointer[i][a]!=NULL  && i!=a)
+	      return false;
+	  return true;
+	}
+    }
+  return false;
+}
+
 // This method prints the information of the matrix
 template<class TS,class BUD>
 void  ConnectionMatrix<TS,BUD>::print()const
@@ -136,10 +211,10 @@ void  ConnectionMatrix<TS,BUD>::print()const
       for(int a=0; a<size; a++)
 	{
 	  if (i == a)
-	    cout << "   -   ";
+	    cout << "0";
 	  else if (pointer[i][a]==NULL)
-	    cout << "  NULL ";
-	  else cout << " conne ";
+	    cout << "-";
+	  else cout << "X";
 	}
       if (pointer[i][i] != NULL)
 	{
