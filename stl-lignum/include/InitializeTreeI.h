@@ -8,6 +8,10 @@ namespace Lignum{
     InitializeTree<TS,BUD>::InitializeTree(const string& file, const LGMVERBOSE v)
     :tmfp(file),verbose(v)
     {
+      //Parse the configuration file (meta file) for a tree/forest
+      //tmfp will contain name of the files 
+      //where the actual parameters/configuration are
+      tmfp.parse();
     }
 
   template <class TS, class BUD>
@@ -17,10 +21,7 @@ namespace Lignum{
       map<string,LGMPD,Cmpstring>::iterator itpd =  maplgmpd.begin();
       map<string,LGMTD,Cmpstring>::iterator ittd =  maplgmtd.begin();
 
-      //Parse the configuration file (meta file) for a tree/forest
-      //tmfp will contain name of the files 
-      //where the actual parameters/configuration are
-      tmfp.parse();
+      
       
       //1. Parse parameters for a tree
       string file = tmfp.getParameterFile("Tree");
