@@ -194,23 +194,30 @@ int Lignum2Lstring(list<TreeCompartment<TS,BUD>*>& ls,
  *The algorithm is essentially the same as Lstring2Lignum                      *
  *so other operations are easily added and kept in sync.                       *
  ******************************************************************************/ 
-template <class TS, class BUD, class T, class F>
+template <class TS, class BUD, class N, class F>
 int Lignum2Lstring(Tree<TS,BUD>& t, const Lstring& s,int argnum = 0,...)
 {
   va_list ap;
-  vector<T> vav;
+  vector<N> vav;
 
   LstringIterator ltr(s);
   Axis<TS,BUD>& axis = GetAxis(t);
   list<TreeCompartment<TS,BUD>*>& ls = GetTreeCompartmentList(axis);
 
+  //The C library standard requires that in call to va_arg 
+  //the second (last) type parameter must *not* be array, function, float 
+  //or integer type that changes when promoted. Unfortunately this means
+  //that  the enumeration N that will denote the set of names of 
+  //the variables of type F cannot be used. But we pass int to va_arg 
+  //and type cast the return value back to N. Some compilers accept (as SGI CC)
+  // N as such but it should be an error.
   va_start(ap,argnum);
   for (int i = 0; i < argnum; i++){
-    vav.push_back(va_arg(ap,T));
+    vav.push_back(static_cast<N>(va_arg(ap,int)));
   }
   va_end(ap);
 
-  return Lignum2Lstring<TS,BUD,T,F>(ls,ls.begin(),ltr,vav);
+  return Lignum2Lstring<TS,BUD,N,F>(ls,ls.begin(),ltr,vav);
 }
 
 
