@@ -170,6 +170,43 @@ namespace Lignum{
 		    const RootAxis<TREE>* ra){
     rpb.ra_ls.push_back(ra);
   }
+
+  //Deleting cleanly RootAxis: delete RootCompartments in the list
+  template <class TREE>
+    class DeleteRootCompartment{
+  public:
+    void operator()(RootCompartment<TREE>* rc)const
+    {
+      delete rc;
+    }
+  };
+  
+  //Deleting cleanly RootBranchingPoint: delete RootAxes in the list
+  template <class TREE>
+    class DeleteAxis{
+  public:
+    void operator()(RootAxis<TREE>* ra)const
+    {
+      delete ra;
+    }
+  };
+  
+  template <class TREE> RootAxis<TREE>::~RootAxis()
+  {
+    //Looks g++  3.1 on Mac  requires that variable/object  ('drc') is
+    //created explicitely.
+    DeleteRootCompartment<TREE> drc;
+    for_each(rc_ls.begin(),rc_ls.end(),drc);
+  }
+
+  template <class TREE> RootBranchingPoint<TREE>::~RootBranchingPoint()
+  {
+    //Looks  g++ 3.1 on  Mac requires  that variable/object  ('da') is
+    //created explicitely.
+    DeleteAxis<TREE> da;
+    for_each(ra_ls.begin(),ra_ls.end(),da);
+  }
+  
 }//closing namespace Lignum
 
 #endif
