@@ -46,7 +46,7 @@ void FirmamentWithMask::setMask(int incl_index,double percentage)
 
   diffuseRadBall = 0.0;
 
-  TVector<double> radiation_direction;
+  vector<double> radiation_direction;
   for (j = 0; j < numberOfRegions(); j++){
     diffuseRadBall += diffuseRegionRadiationSum(j,radiation_direction);
   }
