@@ -85,5 +85,3 @@ namespace cxxadt{
 }
 
 #endif
-=======
-//Polygon.h
