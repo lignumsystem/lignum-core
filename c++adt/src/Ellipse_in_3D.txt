@@ -1,0 +1,56 @@
+
+                   Ellipse in 3D
+
+An ellipse in 3d is represented by a center C, unit-length axes U and V with
+corresponding axis lengths a and b, and a plane contaning the ellipse,
+                   N*(X-C)=0 
+where N is a unit lenght normal to the plane.
+(see David Eberly, http://www.magic-software.com)
+The vectors U,V, and N form a right-handed orthonormal coordinate system.
+The ellipse is parameterized as
+
+                   X=C + a*cos(t)*U + b*sin(t)*V (1)
+for t(-[0,2pi).
+
+               Getting the ellipse points
+
+Let's N(n1,n2,n3)- the normal vector of a plane.
+
+Let's X'=(n3,0,-n1) and
+  
+                   Xu=X'/|X'|                     (2)
+Let's 
+                   Yu=Cross(N,Xu)/|Cross(N,Xu)|.  (3)
+
+Then  Xu and Yu could be considered  unit-length axes for the ellipse
+and the ellipse obeys the (1) equation.
+
+              When some point B is located inside the ellipse
+
+Consider a plane P given by the normal vector N and the center point C
+of the ellipse.
+For any point X of the plane we have equation 
+                   N*X - N*C=0                    (4)
+Consider a line L given by the point O and the direction vector V
+For any point of the line L we have equation 
+                   X=O + V*t. t(-[0,2pi)          (5)
+
+If the B(bx,by,bz) is the intersection point the L line and the P plane,
+than the B point obeys to the following two equations with two unknowens t 
+and B:
+
+                   N*B-N*C=0                      (6)
+and 
+                   B=O+V*t for some t             (7)
+Then solution is
+                   t1=-(O*N + N*C)/N*V            (8)
+and 
+                   B=O+t1*V.                      (9)
+
+If the B point is located inside the ellipse the following is true:
+
+              B = C + a*cos(t1)*Xu + b*sin(t1)*Yu (10)
+or
+                   (bx/a)^2 + (by/b)^2<=1         (11)          
+                     
+
