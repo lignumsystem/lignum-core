@@ -43,9 +43,9 @@ namespace Lignum {
 			     const PositionVector& dir){rc.d = dir;}
     friend const TREE& GetTree(const RootCompartment<TREE>& rc){return rc.t;}
   public:
+    virtual ~RootCompartment(){};
     RootCompartment(const Point& point, const PositionVector& dir, 
 		    const TREE& tree):p(point),d(dir),t(tree) {}
-    virtual ~RootCompartment(){}
   protected:
     Point p;
     PositionVector d;
@@ -60,9 +60,9 @@ namespace Lignum {
     friend void InsertRootCompartment(RootAxis<TREE1>& ra,
 				      const RootCompartment<TREE1>* rpb);
   public:
+    virtual ~RootAxis();
     RootAxis(const Point& p, const PositionVector& d, const TREE& t):
     RootCompartment<TREE>(p,d,t) {}
-    virtual ~RootAxis(){}
   private:
     list<RootCompartment<TREE>*> rc_ls;
   };
@@ -74,10 +74,10 @@ namespace Lignum {
     template <class TREE1>
     friend void InsertAxis(RootBranchingPoint<TREE1>& rbp,const RootAxis<TREE1>* ra);
   public:
+    virtual ~RootBranchingPoint();
     RootBranchingPoint(const Point& pos, const PositionVector& dir,
 		       const TREE& t):
     RootCompartment<TREE>(pos,dir,t){}
-    virtual ~RootBranchingPoint(){}
   private:
     list<RootAxis<TREE>*> ra_ls; //list of root axes
   };
@@ -117,7 +117,6 @@ namespace Lignum {
 		const TREE& t):
     RootCompartment<TREE>(pos,dir,t),rsa(Length,Radius,RTopRadius,
 					 RheartwoodRadius,RhairRadius,go){}
-    virtual ~RootSegment(){}
   private:
     RootSegmentAttributes rsa;
   };
@@ -153,7 +152,6 @@ namespace Lignum {
     RootTip(const Point& pos, const PositionVector& dir, LGMdouble go,
 	    const TREE& t):
     RootCompartment<TREE>(pos,dir,t),rta(0,0,ALIVE,go){}
-    virtual ~RootTip(){}
   private:
     RootTipAttributes rta;
   };
@@ -171,6 +169,9 @@ namespace Lignum {
   template <class TREE, class T, class BinOp>
     void PropagateUp(RootAxis<TREE>& ra, T& init, const BinOp op);
 
+  //Deleting cleanly Root Axes and RootBranchinPoints
+  template <class TREE> class DeleteRootCompartment;
+  template <class TREE> class DeleteRootAxis;
 }//close namespace Lignum
 
 
