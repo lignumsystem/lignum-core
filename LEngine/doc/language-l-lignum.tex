@@ -25,7 +25,7 @@ $\vec  L$  and $\vec  H$  by  $\alpha$.   One special  module  $Start$
 corresponds to the axiom.
 
 
-\section{Scots pine: integrating L and LIGNUM}\label{sec:pine}
+\section{Integrating the language L and LIGNUM}\label{sec:pine}
 
 To model tree structures with L as in LIGNUM let the module $F$ denote
 tree segment and designate module  $B$ for bud.  Given the modules for
@@ -148,7 +148,15 @@ functional part of LIGNUM that incorporates our previous work on Scots
 pine  model \citep{perttunen:96,  perttunen:98}.  The  calculations in
 LIGNUM  include the  pairwise comparison  of segments  to  compute the
 interception of  solar radiation and  the iterative allocation  of net
-photosynthates to growth after respiration costs.
+photosynthates to growth after respiration costs: 
+\begin{equation} 
+P - M  = iW_n  +  iW_o +  iWr 
+\end{equation}  
+
+where  $P$   and  $M$  are  the  photosynthetic   production  and  the
+respiration of a  tree, $iW_n$ the growth of  new segments, $iW_o$ the
+secondary      growth     and      $iW_r$     the      root     growth
+\citep[c.f.][]{perttunen:96,perttunen:01}.
 
 The simulations  show that the  interaction of the L  language program
 and  the  functioning  part  of  LIGNUM affects  the  outcome  of  the
