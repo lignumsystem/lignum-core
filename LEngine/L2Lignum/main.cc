@@ -24,7 +24,27 @@ namespace Pine{
 #include <LSystem.h>
 }
 
-namespace CSPlant{
+//CSPlants demonstrate the  context sensitive L-systems.  The CSplants
+//A, B, D and E produce plants A,  B, C, D and E presented in Fig 1.31
+//in  Algorithmic  Beauty  of   Plants,  page  34.   See  cs-plantA.L,
+//cs-plantB.L cs-plantC.L, cs-plantD.L, and cs-plant.L in lsys.
+namespace CSPlantA{
+#include <LSystem.h>
+}
+
+namespace CSPlantB{
+#include <LSystem.h>
+}
+
+namespace CSPlantC{
+#include <LSystem.h>
+}
+
+namespace CSPlantD{
+#include <LSystem.h>
+}
+
+namespace CSPlantE{
 #include <LSystem.h>
 }
 
@@ -41,7 +61,12 @@ int main(int argc, char** argv)
   Pine::LSystem<MyTreeSegment,MyBud> pl1;
   Pine::LSystem<MyTreeSegment,MyBud> pl2;
 
-  CSPlant::LSystem<MyTreeSegment,MyBud> csl;
+  //CSplants
+  CSPlantA::LSystem<MyTreeSegment,MyBud> csla;
+  CSPlantB::LSystem<MyTreeSegment,MyBud> cslb;
+  CSPlantC::LSystem<MyTreeSegment,MyBud> cslc;
+  CSPlantD::LSystem<MyTreeSegment,MyBud> csld;
+  CSPlantE::LSystem<MyTreeSegment,MyBud> csle;
   //Create three trees, bearberry and  two pines (well, bearberry is a
   //berry...)
   Tree<MyTreeSegment,MyBud> bearberry(Point(0,0,0),
@@ -63,8 +88,8 @@ int main(int argc, char** argv)
   //type of these attributes is LGMdouble both in LIGNUM and in symbol
   //B in bearberry.L.
   bl.lstringToLignum(bearberry,3,LGMtype,LGMstatus,LGMcollision);
-  //3. Loop derivation length of times.
-  for (int i=0; i < 9 ; i++)
+  //3. Loop derivation length of times: 
+  for (int i=0; i < bl.derivationLength() ; i++)
   {
     cout << "Step: " << i << endl;
     //4.       Detect       collision.       The      argument      in
@@ -98,7 +123,7 @@ int main(int argc, char** argv)
   pl2.lstringToLignum(pine2);
   //Naturally, one can use  other termination conditions than just the
   //derivation length.
-  for (int i=0; i < 1; i++)
+  for (int i=0; i < 6; i++)
   {
     cout << "Step: " << i << endl;
     //Update L-strings, no interchange  of information.
@@ -115,22 +140,22 @@ int main(int argc, char** argv)
   pl1.end();  
   pl2.end();
 
-  //CSPlant demonstrates context sensitive L-systems 
-  //Grammar needs to be modified for LIGNUM
-  csl.start();
-  for (int i=0; i < 0; i++){
+  //CSPlants demonstrates context sensitive L-systems Not that grammar
+  //needs  to be modified  for LIGNUM  if one  wants to  update LIGNUM
+  //structure  after each  derivation  step. Grammar  does not  create
+  //LIGNUM structure. Also note that grammars that insert new segments
+  //in the  middle of  the plant  are still a  problem in  LIGNUM, for
+  //example:  FaIFaIFaI--> FaIFaIFbiIFaI.   One must  identify somehow
+  //the segments (position?) to update.
+  csla.start();
+  csla.lstringToLignum(csplant);
+  for (int i=0; i < csla.derivationLength(); i++){
     cout <<  "Step: " << i << endl;
-    csl.derive();
+    csla.derive();
   }
-  csl.end();  
-
-  //Finally visualize the tree.
-  DisplayStructure(bearberry);
-  VisualizeLGMTree(bearberry);
-
+  csla.end(); 
+  //Update LIGNUM
+  csla.lstringToLignum(csplant);  
+  //Visualize LIGNUM
+  VisualizeLGMTree(csplant);
 }
-
-
-
-
-
