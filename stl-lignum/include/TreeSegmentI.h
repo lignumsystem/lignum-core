@@ -24,22 +24,6 @@ TreeSegment<TS,BUD>::TreeSegment(const Point& p, const PositionVector& d, const 
   //the first annual ring
   tsa.annual_rings.push_back(r);
 
-  //compute the radius to foliage limit (Rf)
-  //the given parameters are needle length (nl) and the
-  //needle angle (na)
-  //Rf = hf + tsa.R, where hf is height of the foliage (hf = nl * sin(na))
-  LGMdouble needle_length = GetValue(*t,nl);
-  LGMdouble needle_angle = GetValue(*t,na);
-  SetValue(*this,Rf,needle_length * sin(needle_angle)+ 
-		      GetValue(*this,R));
-
-  //compute the initial mass of the foliage
-  //1. compute the surface area (sa) of the cylinder representing foliage
-  LGMdouble sa =  2.0 * PI_VALUE * GetValue(*this,Rf) * GetValue(*this,L);
-  //2. the mass of the foliage (Wf = sa * af) 
-  LGMdouble wf =  sa * GetValue(*t,af);
-  SetValue(*this,Wf,sa*wf);
-
   //compute the sapwood mass
   SetValue(*this,Ws,GetSapwoodMass(*this)); 
 
@@ -118,18 +102,12 @@ LGMdouble GetValue(const TreeSegment<TS,BUD>& ts, const LGMAD name)
   else if (name == R)
     return ts.tsa.R;
 
-  else if (name == Rf)
-    return ts.tsa.Rf;
-
   else if (name == Rh)
     return ts.tsa.Rh;
 
   else if (name == Rtop)
     return ts.tsa.Rtop;
   
-  else if (name == Wf)
-    return ts.tsa.Wf;
-
   else if (name == Wm)
     return ts.tsa.Wm;
 
@@ -173,17 +151,11 @@ LGMdouble SetValue(TreeSegment<TS,BUD>& ts, const LGMAD name, const LGMdouble va
   else if (name == R)
     ts.tsa.R = value;
 
-  else if (name == Rf)
-    ts.tsa.Rf = value;
-
   else if (name == Rh)
     ts.tsa.Rh = value;
 
   else if (name == Rtop)
     ts.tsa.Rtop = value;
-
-  else if (name == Wf)
-    ts.tsa.Wf = value;
 
   else if (name == Wm)
     ts.tsa.Wm = value;

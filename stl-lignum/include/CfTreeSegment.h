@@ -19,6 +19,8 @@ public:
   LGMdouble P;            //Amount of photosynthesis (kg C) during time step
   LGMdouble Qin;          //Irradiance of incoming radiation (MJ/m2)
   LGMdouble Qabs;          //Amount of absorbed radiation (MJ) (during time step)
+  METER Rf;               //Radius to foliage limit
+  KGC Wf;                 //Foliage mass of the tree segment
 };
 
 

@@ -96,15 +96,7 @@ LGMdouble GetValue(const HwTreeSegment<TS,BUD>& ts, const LGMAD name)
 
   LGMdouble value = 0.0;
 
-  if (name == Wf) {
-    list<BroadLeaf*>& leaf_list = GetLeafList(const_cast<HwTreeSegment<TS,BUD>&>(ts));
-    list<BroadLeaf*>::iterator I;
-    for(I = leaf_list.begin(); I != leaf_list.end(); I++)
-      value += GetValue(**I, Wf);
-    
-    return value;
-  }
-  else if (name == P) {
+  if (name == P) {
     list<BroadLeaf*>& leaf_list = GetLeafList(const_cast<HwTreeSegment<TS,BUD>&>(ts));
     list<BroadLeaf*>::iterator I;
     for(I = leaf_list.begin(); I != leaf_list.end(); I++)
@@ -128,6 +120,14 @@ LGMdouble GetValue(const HwTreeSegment<TS,BUD>& ts, const LGMAD name)
     
     return value;
   }
+  else if (name == Wf) {
+    list<BroadLeaf*>& leaf_list = GetLeafList(const_cast<HwTreeSegment<TS,BUD>&>(ts));
+    list<BroadLeaf*>::iterator I;
+    for(I = leaf_list.begin(); I != leaf_list.end(); I++)
+      value += GetValue(**I, Wf);
+
+    return value;
+  }
   else
     return GetValue(dynamic_cast<const TreeSegment<TS,BUD>&>(ts), name);
 
@@ -135,4 +135,13 @@ LGMdouble GetValue(const HwTreeSegment<TS,BUD>& ts, const LGMAD name)
 
 }//closing namespace Lignum
 #endif
+
+
+
+
+
+
+
+
+
 

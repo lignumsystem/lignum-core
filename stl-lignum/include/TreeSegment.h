@@ -25,9 +25,7 @@ public:
   METER R;                //Radius including bark
   METER Rtop;             //Radius at top
   METER Rh;               //Heartwood radius
-  METER Rf;               //Radius to foliage limit
   KGC Wm;                 //Water mass of the tree segment 
-  KGC Wf;                 //Foliage mass of the tree segment
   KGC Ws;                 //Sapwood mass of the tree segment
   KGC Wh;                 //Dry-weight (kg C) of heartwood
   list<METER> annual_rings; //Annual rings of the tree segment
