@@ -785,7 +785,22 @@ namespace Lignum {
     file << endl << endl << "Sum of Qabs " << sumQabs << endl;
   }
 
+  //Write Qabs, Qin and foliage mass to a GnuPlot file
+  void  VoxelSpace::writeVoxelBoxesToGnuPlotFile(const string& filename)
+  {
+    ofstream file(filename.c_str());
 
+    for(int i1=0; i1<Xn; i1++)
+      for(int i2=0; i2<Yn; i2++)
+	for(int i3=0; i3<Zn; i3++)
+	  {
+	    file <<  i1 << " " << i2 << " " << i3 << " "
+		 << voxboxes[i1][i2][i3].getQabs() << " " 
+		 << voxboxes[i1][i2][i3].getQin() << " " 
+		 << voxboxes[i1][i2][i3].getFoliageMass() << endl;
+	  }
+    file.close();
+  }
   //Calculate some key variables of VoxelSpace contetnts and output to
   //console
 
