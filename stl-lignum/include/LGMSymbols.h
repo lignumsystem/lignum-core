@@ -59,7 +59,7 @@ namespace Lignum{
               LGARh, LGARhair,LGARTop,LGASa,LGAsf,LGAstatus, LGAstate,LGAtauL, 
               LGAtype,LGAV,LGAVh,LGAVhair,LGAvi,LGAVs,LGAWf, LGAWs, 
               LGAWh,LGAWhair, LGAT};
-  //  LGAWh,  LGAWhair};
+
 
   //  0 LGAA      Segment base area based on R 
   //  1 LGAAf     Area of foliage
@@ -99,7 +99,7 @@ namespace Lignum{
   //  31 LGAsf     Specific leaf area (=leaf area/ leaf weight)
   //  32 LGAstatus General counter to control e.g. bud burst.  
   //  33 LGAstate  Bud state can be dead, alive, dormant etc., see LGMUnits.h
-  //  34 LGPtauL   Transmission coefficient of leaf (in direction of
+  //  34 LGAtauL   Transmission coefficient of leaf (in direction of
   //               the ray of light) 
   //  35 LGAtype   General type specifier, e.g. Bud:dominant, apical,
   //               lateral etc. The numerical values and their symbols of
@@ -115,9 +115,6 @@ namespace Lignum{
   //  44 LGAWhair  Mass of root hair (kg C)
 
   // LGMAD = LIGNUM Attribute Double
-
-
-  // enum LGMFLOW { fin, fout, Pr, Wm };
 
   //LIGNUM  Parameter Double   ************************************
 
