@@ -10,6 +10,8 @@ ARFLAGS=rvs
 
 ARFILE = libvoxel.a
 
+LIBOGL =  -lglut -lGLU -lGL -lXmu -lXext -lX11
+
 .SUFFIXES: .o .cc
 
 

@@ -25,14 +25,51 @@ namespace Lignum {
 
       LGMdouble needle_rad = GetValue(ts, Rf);
 	
+     
       //Tarkistettu että for-looppi ajetaan tasan 8 kertaa (mika).
       for (double phi=0; phi<PI_VALUE/2.0; phi+=PI_VALUE/16)
 	{		
 	  b.starSum += b.S(phi, S_f, fmass, needle_rad, lenght)/8.0;
+         
 	}
-
       b.number_of_segments++;
     }
+
+
+   //dumpSegment for poplar
+   template <class TS,class BUD, class S>
+    void dumpSegment(VoxelBox &b, HwTreeSegment<TS, BUD, S> &ts, int num_parts)
+    {	
+      LGMdouble r_f = GetValue(ts, Rf);
+      LGMdouble lenghth = GetValue(ts, L) / num_parts;
+      LGMdouble S_f = GetValue(GetTree(ts), sf);
+      LGMdouble fmass = GetValue(ts, Wf) / num_parts;
+
+      if (GetValue(GetTree(ts), sf) == 0)
+	S_f = 28;
+
+      LGMdouble farea = S_f * fmass;	
+      b.addNeedleArea(farea);
+      b.addNeedleMass(fmass);
+
+      // LGMdouble needle_rad = GetValue(ts, Rf); //Rf get 0 for HwTree?
+     LGMdouble needle_rad = GetValue(ts, R);
+       cout<<S_f<<" "<<fmass<<" "<<needle_rad<<" Radius "<<lenghth<<"test>>>>>>>>>>>>>>>>>>"<<endl;
+      //Tarkistettu että for-looppi ajetaan tasan 8 kertaa (mika).
+      for (double phi=0; phi<PI_VALUE/2.0; phi+=PI_VALUE/16)
+	{		
+	  //  b.starSum += b.S(phi, S_f, fmass, needle_rad, lenght)/8.0;
+	    b.addStarSum(b.S(phi, S_f, fmass, needle_rad, lenghth)/8.0);
+	      
+       	}
+    
+      //  cout<<b.getNumSegments()<<"   numofsegment______"<<endl;
+       b.increaseNumberOfSegments();
+    }
+  
+
+
+
 
 
 
@@ -60,10 +97,6 @@ namespace Lignum {
 /* 	   <<  b.corner1.getX() << " " <<  b.corner1.getY() << " " << b.corner1.getZ()  */
 /* 	   << " Qin: " << b.getQin() << endl;  */
     }
-
-
-
-
 
 
 

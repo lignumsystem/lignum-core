@@ -52,6 +52,7 @@ namespace Lignum {
     LGMdouble getAreaDen();
     LGMdouble getQabs() { return Q_abs; }
     LGMdouble getQin() { return Q_in; }
+    LGMdouble getStarSum() { return starSum; }
     LGMdouble getStar() { return star; }
     LGMdouble getNeedleMass(){return needleMass;}
 

@@ -1,14 +1,17 @@
 #include "stdafx.h"
 #include "OpenGL.h"
+#include <math.h>
 
 #ifdef _MSC_VER
 #include <GL/gl.h>
 #include <GL/glu.h>
+#include <GL/glut.h>
 //#include <GL/glaux.h>
 #endif
 
 #include <VoxelBox.h>
 #include <VoxelSpace.h>
+#include <bernoulli.h>
 
 #include <fstream>
 
@@ -26,6 +29,7 @@ namespace Lignum {
   //
   VoxelSpace::VoxelSpace():voxboxes(10,10,10),Xn(10),Yn(10),Zn(10)
   {
+    cout<<"create voxel space!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
     sky = NULL;
   }
 
@@ -81,6 +85,7 @@ namespace Lignum {
 	    voxboxes[i1][i2][i3].setVoxelSpace(this, corner); 
 	  }
     sky = &f;
+    //  cout<<"_________voxel space created___________"<<endl;
   }
 
 
@@ -304,6 +309,83 @@ namespace Lignum {
   }
 
 
+  //
+  //	for Poplar: The function calculates the Qin and Qabs-values to every VoxelBox.
+  //
+  LGMdouble VoxelSpace::calculatePopLight()
+  {
+    //ofstream file("calculateVoxelSpace.txt");
+    cout << " VoxelSpace::calculateLight Begin for poplar: " << endl;
+    updateStar();
+    cout << " Star values updated " <<Zn<<"Xn value"<< endl;    
+
+    for(int i1=0; i1<Xn; i1++)
+      for(int i2=0; i2<Yn; i2++)
+	for(int i3=0; i3<Zn; i3++)
+	  {
+	    double sumiop = 0.0;
+	    int num_dirs = sky->numberOfRegions();
+	    //This might  make the voxel  space slow in  execution: if
+	    //there  is something  is voxboxes  the following  loop is
+	    //executed.
+	    if (voxboxes[i1][i2][i3].isEmpty() == false)
+	      {				
+		for(int i = 0; i < num_dirs; i++)
+		  {	
+		    vector<double> rad_direction(3);
+		    LGMdouble iop = sky->diffuseRegionRadiationSum(i,rad_direction);
+		    PositionVector radiation_direction(rad_direction[0], rad_direction[1], 
+						       rad_direction[2]);
+		    radiation_direction.normalize();
+		    //cout <<  iop << endl;
+		    vector<VoxelMovement> vec;		
+		    getRoute(vec, i1, i2, i3, radiation_direction);
+		    int size = vec.size();
+
+		    sumiop += iop; //WHERE IS THIS NEEDED??
+		    
+            
+		    if (size>1)
+		      {int a=1;
+		      bool flag=0;
+		      long int seed= time(0);
+                      double p, result, test;
+                        StochasticLib obj(seed);
+ 
+                      while (a<size && flag==0)
+			{
+			  VoxelMovement v1 = vec[a-1];
+			  VoxelMovement v2 = vec[a];
+					
+                          LGMdouble starsum=voxboxes[v1.x][v1.y][v1.y].getStarSum();			
+			 
+			  // a++;
+
+                          p=min(starsum, 1.0);
+			  
+                          result=obj.Bernoulli(p);
+                          cout<<result<<" ________________show result____________"<<endl; 
+  			  if (result>0.5)
+			    flag=1;
+                          else 
+                            a++;
+			}
+                     
+                      if (a==size-1)
+                      {
+                           voxboxes[i1][i2][i3].addRadiation(iop);
+                           cout<<a<<"________-the hit voxelbox:"<<size<<endl;
+		      }
+		
+		      }	
+		  }
+              }             	      
+	  }
+    
+    // file.close();
+    return 0;
+  }
+
 
 
 
@@ -393,7 +475,7 @@ namespace Lignum {
   //
   //	This function adds a ScotsPine to the VoxelSpace 
   //
-  void VoxelSpace::AddScotspine(Tree<ScotsPineVisual, ScotsBud> &tree)
+    void VoxelSpace::AddScotspine(Tree<ScotsPineVisual, ScotsBud> &tree)
   {
     vecScotspines.push_back(&tree);
   }
@@ -584,7 +666,7 @@ namespace Lignum {
   //
 
   
-
+  /*
   void VoxelSpace::draw()
   {
     //#ifdef _MSC_VER
@@ -778,7 +860,7 @@ namespace Lignum {
     // glEndList();
     //#endif
   }
-
+  */
   //Write voxel boxes  to file. If 'all' is true  write all boxes else
   //write  only boxes  with foliage.  By  default 'all'  is true  (old
   //beaviour)
@@ -896,7 +978,7 @@ namespace Lignum {
   }
 
 
-  
+  /* 
   void VoxelSpace::draw(bool blackBG)
   {
     glEnable(GL_LIGHTING);
@@ -1027,11 +1109,9 @@ namespace Lignum {
 		glEnd();
 	      }
 	  }
-    
-    
   }
 
-
+  */
 
 
 

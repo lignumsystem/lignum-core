@@ -12,10 +12,9 @@
 #include <ScotsBud.h>
 #include <ScotsPineVisual.h>
 
+//#include <poplar.h>
   
 namespace Lignum {
-
-
 
   struct VoxelMovement
   {
@@ -30,7 +29,7 @@ namespace Lignum {
     {
     public:
       LGMdouble Xbox, Ybox, Zbox;
-      VoxelSpace();
+      VoxelSpace(); //{cout<<"create a voxel space!"<<endl;}
       VoxelSpace(Point corner1, Point corner2, 
 		 int xn, int yn, int zn,
 		 Firmament& f);
@@ -49,6 +48,7 @@ namespace Lignum {
 
       VoxelBox& getVoxelBox(Point p);
       LGMdouble calculateLight();
+      LGMdouble calculatePopLight();
 
       vector<VoxelMovement>& getRoute(vector<VoxelMovement> &vec, int startx, 
 				      int starty, int startz, PositionVector dir);
@@ -59,7 +59,7 @@ namespace Lignum {
       void fillVoxelBoxesWithNeedles(LGMdouble Sf, LGMdouble Wf, LGMdouble Rf, LGMdouble L, 
 				     int beginZ, int endZ);
       
-      void AddScotspine(Tree<ScotsPineVisual, ScotsBud> &tree);
+       void AddScotspine(Tree<ScotsPineVisual, ScotsBud> &tree);
 
       template <class TS,class BUD>
 	friend void dumpCfTreeSegment(VoxelSpace &s, CfTreeSegment<TS, BUD> &ts);
@@ -69,7 +69,17 @@ namespace Lignum {
 
       template <class TS,class BUD>
 	friend void setCfTreeQabs(VoxelSpace &s, Tree<TS, BUD> &tree);
-	
+      //define for poplar
+        template <class TS,class BUD, class S>
+        friend void dumpPopTreeSegment(VoxelSpace &s, HwTreeSegment<TS,BUD, S> &ts);
+     
+      template <class TS,class BUD>
+	friend void dumpPopTree(VoxelSpace &s, Tree<TS, BUD> &ts);
+
+      template <class TS,class BUD>
+	friend void setPopTreeQabs(VoxelSpace &s, Tree<TS, BUD> &tree);
+      //define for poplar done
+
       BoundingBox& searchDimensions(BoundingBox &bbox, bool boolDimensionsWithNumBoxes);
 
       void searchDimensions(bool boolDimensionsWithNumBoxes=true){ 
@@ -143,7 +153,24 @@ namespace Lignum {
       mutable VoxelSpace *space;
     };
 
+  //for poplar
+  template <class TS,class BUD>
+    class DumpPopTreeFunctor
+    {
+    public:
+      TreeCompartment<TS,BUD>* operator ()(TreeCompartment<TS,BUD>* tc)const;
+      mutable VoxelSpace *space;
+    };
 
+
+  template <class TS,class BUD>
+    class SetQabsPopTreeFunctor
+    {
+    public:
+      TreeCompartment<TS,BUD>* operator ()(TreeCompartment<TS,BUD>* tc)const;
+      mutable VoxelSpace *space;
+    };
+  //for poplar done
 
 
 
