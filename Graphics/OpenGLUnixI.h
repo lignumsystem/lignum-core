@@ -157,6 +157,70 @@ int VisualizeLGMTree(Tree<TS,BUD> &tree)
 
 
 
+
+
+
+
+
+
+
+
+
+template <class TS,class BUD>
+int VisualizeHwTree(Tree<TS,BUD> &tree)
+{ 
+  // init_window();
+  cout << "InitDrawing******************************************************" << endl;
+  InitDrawing();
+  InitOpenGL();
+      
+  init_window();
+  //setLight();
+  
+  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+  glTexEnvf(GL_TEXTURE_2D, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+  glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
+ 
+  stemtexture.Load("koivu.bmp", 512, 512);
+
+  LoadGLTextures("lehti.tga");
+  
+
+
+  cout << "rakennetaan puu.." << endl;
+
+  MakeTreeList(tree, 0.05);
+
+  cout << "rakennetaan lehdet " << endl;
+  MakeLeaveList(tree, 6, 6);
+  
+
+  //elavat budit
+  MakeBudList(tree, true);
+  
+ //kuolleet budit
+  MakeBudList(tree, false);
+
+ 
+  glutMainLoop ();
+  cout << "Exiting ...." << endl;
+  return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
 template <class TS, class BUD>
 void drawBud(Bud<TS,BUD> *bud, DRAW_TYPE mode)
 {
