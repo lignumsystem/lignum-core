@@ -129,13 +129,10 @@ namespace Lignum{
   template<class TS,class BUD>
   class MaxSegmentDiameter{
   public:
-    double& operator()(double& d,TreeCompartment<TS,BUD>* tc)const
+    double operator()(const double& d1, const double& d2)const
     {
-      if (BranchingPoint<TS,BUD>* bp = dynamic_cast<BranchingPoint<TS,BUD>*>(tc)){
-	//Update the maximum of segment diameters 
-	SetValue(*bp,MaxD,max(GetValue(bp,MaxD),d));
-      }
-      return d;
+      //Choose the maximum of the two segment diameters 
+      return  max(d1,d2);
     }
   };
 
@@ -144,6 +141,11 @@ namespace Lignum{
   public:
     double& operator()(double& d,TreeCompartment<TS,BUD>* tc)const
     {
+      //MaxSegmentDiameter has chosen 
+      if (BranchingPoint<TS,BUD>* bp = 
+	  dynamic_cast<BranchingPoint<TS,BUD>*>(tc)){
+	SetValue(*bp,MaxD,d);
+      }
       if (TS* ts = dynamic_cast<TS*>(tc)){
 	//Get the diameter of the segment an pass it to the 
 	//branching point below
@@ -220,7 +222,7 @@ namespace Lignum{
 	SetValue(*bp,MaxD,0.0);
       }
       //compute the VI for the segment
-      else if (TS* ts = dynamic_cast<TS>(tc)){
+      else if (TS* ts = dynamic_cast<TS*>(tc)){
 	//special case (in the beginning) when there are no segment
 	//diameters in  the list: add the  segment to the  list so you
 	//compare the segment to itself at least, and get a meaningful
