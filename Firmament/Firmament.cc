@@ -139,6 +139,8 @@ Firmament::Firmament(int no_incl, int no_azim)
 	diffuseRadBall += diffuseRad[i][j];
       }
 
+    diffuseRadZenith *= diffuseRadPlane / rsum;
+    diffuseRadBall += diffuseRadZenith;
 
     //store here the inclination and azimuth indexes as a function of
     //number of the sector
