@@ -188,27 +188,27 @@ namespace Lignum{
       template <class TS1, class BUD1, class F>
       friend void EvaluateRadiationForTree(Tree<TS1,BUD1>& tree, const F& f);
 
-      public:
-      Tree();
-      Tree(const Point& p, const PositionVector& d);
-      Tree(const Point& p, const PositionVector& d, 
-	   LGMdouble len, LGMdouble rad, int num_buds);
+	public:
+	Tree();
+	Tree(const Point& p, const PositionVector& d);
+	Tree(const Point& p, const PositionVector& d, 
+	     LGMdouble len, LGMdouble rad, int num_buds);
 
-      void UpdateWaterFlow(LGMdouble time, const ConnectionMatrix<TS,BUD> &cm);
-	  void photosynthesis();
-      void respiration();
-	  TreeFunctions tf;  //cvs update
+	void UpdateWaterFlow(LGMdouble time, const ConnectionMatrix<TS,BUD> &cm);
+	void photosynthesis();
+	void respiration();
+	TreeFunctions tf;  //cvs update
 	
 	private:
-      LGMdouble CountFlow(TreeSegment<TS,BUD> &in, TreeSegment<TS,BUD> &out);
-      TreeAttributes ta;
-      TreeParameters tp;
-      TreeTransitVariables ttp;
+	LGMdouble CountFlow(TreeSegment<TS,BUD> &in, TreeSegment<TS,BUD> &out);
+	TreeAttributes ta;
+	TreeParameters tp;
+	TreeTransitVariables ttp;
       
-      TreeInitializationFiles tif;
-      FirmamentWithMask f;
-      Axis<TS,BUD> axis;
-      RootAxis<Tree<TS,BUD> > root_axis;
+	TreeInitializationFiles tif;
+	FirmamentWithMask f;
+	Axis<TS,BUD> axis;
+	RootAxis<Tree<TS,BUD> > root_axis;
     };
 
   //Tree with Firmament (FRMNT)
