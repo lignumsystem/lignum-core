@@ -12,7 +12,7 @@
 */ 
 
 
-template <class T>
+template <class T = double>
 class Point{
 friend Point<T> operator + (const Point<T> &point1, const Point<T> &point2);
 friend Point<T> operator - (const Point<T> &point1, const Point<T> &point2);
