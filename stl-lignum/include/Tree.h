@@ -27,6 +27,7 @@ using namespace cxxadt;
 #include <CfTreeSegment.h>
 #include <Axis.h>
 #include <ConnectionMatrix.h>
+#include <Firmament.h>
 
 
 
@@ -104,6 +105,7 @@ public:
   Tree();
   Tree(const Point<METER>& p, const PositionVector& d);
   void UpdateWaterFlow(LGMdouble time, const ConnectionMatrix<TS,BUD> &cm);
+  Firmament* getFirmament();
 private:
   LGMdouble CountFlow(TreeSegment<TS,BUD> &in, TreeSegment<TS,BUD> &out);
   TreeAttributes ta;
@@ -111,6 +113,7 @@ private:
   TreeParameters tp;
   TreeTransitVariables ttp;
   TreeInitializationFiles tif;
+  Firmament f;
 
   Axis<TS,BUD> axis;
   RootSystem rs;

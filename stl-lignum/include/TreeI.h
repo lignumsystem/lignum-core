@@ -90,7 +90,11 @@ LGMdouble Tree<TS,BUD>::CountFlow(TreeSegment<TS,BUD> &in, TreeSegment<TS,BUD> &
   return ttp.rhow * (ttp.k/ ttp.eta) * (ar / le) * (pr_out - pr_in - (ttp.rhow * ttp.g * he));
 }
 
-
+template <class TS,class BUD>
+Firmament* Tree<TS,BUD>::getFirmament()
+{
+  return &f;
+}
 
 
 //The initialization of the tree.
