@@ -805,7 +805,7 @@ namespace Lignum{
 	  if (HwTreeSegment<TS,BUD,SHAPE>* myts = dynamic_cast<HwTreeSegment<TS,BUD,SHAPE>*>(*I))
 	    {  
 	      {
-		list<BroadLeaf<SHAPE> *>& leaves = GetLeafList(*hwts);
+		list<BroadLeaf<SHAPE> *>& leaves = GetLeafList(*myts);
 		typename list<BroadLeaf<SHAPE> *>::iterator I = leaves.begin();
 		
 		for (I = leaves.begin(); I != leaves.end(); I++) 
@@ -826,7 +826,7 @@ namespace Lignum{
 	      while(II != axis_ls.end())
 		{
 		  Axis<TS,BUD> *axis = *II;	
-		  SaveLeafInfo(*axis, file);			 
+		  SaveLeafInfo<TS,BUD,SHAPE>(*axis, file);			 
 		  II++;	
 		}
 		
@@ -843,10 +843,19 @@ namespace Lignum{
     void SaveTree(Axis<TS,BUD> &ax, const string& file_name, 
 		  const string& treetype)
     {
-      const char *tmp = LPCTSTR(treetype);
+		/*
+#ifdef _MSC_VER
+		const CString st = treetype.c_str;
+	  const char *tmp = LPCTSTR(st);
+#else
+	  const char *tmp = LPCTSTR(treetype);
+#endif
+	 */
 
-      ofstream file(file_name);
-      file << tmp << endl;
+	 string tmp = file_name;		  
+
+	 ofstream file(tmp.c_str());
+      file << treetype << endl;
       SaveAxis(ax, file, false);
       file << "Lehtia puussa " << num_of_leaves << '\n';
       file.close();
@@ -1094,8 +1103,18 @@ namespace Lignum{
       return max_height;
     }
 
-
-
+/*
+template <class TS, class BUD>
+TreeCompartment<TS,BUD>* DropAllLeaves<TS,BUD>::operator ()(TreeCompartment<TS,BUD>* tc)const
+{
+	if (HwTreeSegment<TS,BUD>* hwts = dynamic_cast<HwTreeSegment<TS,BUD>*>(tc))
+	{
+		if (GetValue(*hwts, age) > 0.1)
+			DropLeaves(*hwts);
+	}
+	return tc;
+}
+*/
 
 }//closing namespace Lignum
 
