@@ -26,7 +26,8 @@ CCCFLAGS = -c  #-prelink -ptused   -ptv  #  -fullwarn
 
 INCLUDE = -I. -I../stl-lignum/include -I../c++adt/include -I../stl-voxelspace \
           -I../Firmament/include -I/usr/freeware/include \
-          -I/usr/X11R6/include -I/sw/include -I../stl-voxelspace/include -I../ScotsPine/include
+          -I/usr/X11R6/include -I/sw/include -I/usr/local/include \
+          -I../stl-voxelspace/include -I../ScotsPine/include
 
 #Glut library comes in 64 and 32 bit versions on SGI.  However neither CC or g++ can 
 #automatically search right library but we must explicitelly tell with LIBD where to search.
@@ -34,7 +35,7 @@ INCLUDE = -I. -I../stl-lignum/include -I../c++adt/include -I../stl-voxelspace \
 #This should work fine with Linux where 32 bit Glut library is found by g++ 
 #in the system directory. 
 LIBD = lib64
-LIBFLAGS = -L. -L../c++adt/lib -L../stl-lignum/lib -L../Firmament/lib  -L/usr/freeware/$(LIBD) 
+LIBFLAGS = -L. -L../c++adt/lib -L../stl-lignum/lib -L../Firmament/lib  -L/usr/local/lib -L/usr/freeware/$(LIBD) 
 
 
 LIB1   = libc++adt.a
