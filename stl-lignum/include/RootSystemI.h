@@ -9,7 +9,7 @@ namespace Lignum{
   {
     //Getting values, first basic simple attributes
     switch (name){
-    case L:
+    case LGAL:
       return rs.rsa.L;     //Length
     case R:
       return rs.rsa.R;     //Radius (sapwood)
@@ -32,13 +32,13 @@ namespace Lignum{
       return PI_VALUE*pow(GetValue(rs,Rhair),2.0) - GetValue(rs,LGAA);
       //Compound attributes, volumes
     case V:                //Segment volume based on A
-      return GetValue(rs,LGAA)*GetValue(rs,L);
+      return GetValue(rs,LGAA)*GetValue(rs,LGAL);
     case Vh:               //Heartwood volume
-      return GetValue(rs,LGAAh)*GetValue(rs,L);
+      return GetValue(rs,LGAAh)*GetValue(rs,LGAL);
     case Vs:               //Sapwood volume
       return GetValue(rs,V) - GetValue(rs,Vh);
     case Vhair:            //Root hair volume
-      return GetValue(rs,LGAAhair)*GetValue(rs,L) - GetValue(rs,V);
+      return GetValue(rs,LGAAhair)*GetValue(rs,LGAL) - GetValue(rs,V);
       //Compound attributes, weights
     case LGAWs:               //sapwood weight
       return GetValue(GetTree(rs),rho_root)*GetValue(rs,Vs);
@@ -57,7 +57,7 @@ namespace Lignum{
     LGMdouble old_value = GetValue(rs,name);
     
     switch (name){
-    case L:
+    case LGAL:
       rs.rsa.L = value;
       break;
     case R:
@@ -85,7 +85,7 @@ namespace Lignum{
    template <class TR>
    Point GetEndPoint(RootSegment<TR>& rs)
    {
-      return GetPoint(rs)+GetValue(rs,L)*(Point)GetDirection(rs);
+      return GetPoint(rs)+GetValue(rs,LGAL)*(Point)GetDirection(rs);
    }
 
   //GetValue and SetValue  for RootTip. Attributes  status and  state feel

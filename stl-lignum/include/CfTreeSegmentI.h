@@ -9,8 +9,8 @@ CfTreeSegment<TS,BUD>::CfTreeSegment(const Point& p, const PositionVector& d,
 				     const METER rh, Tree<TS,BUD>* t)
   :TreeSegment<TS,BUD>(p,d,go,l,r,rh,t)
   {
-    SetValue(*this,Hf,GetValue(*t,nl)*sin(GetValue(*t,na)));
-    SetValue(*this,Rf,GetValue(*this,R)+GetValue(*this,Hf));
+    SetValue(*this,LGAHf,GetValue(*t,nl)*sin(GetValue(*t,na)));
+    SetValue(*this,Rf,GetValue(*this,R)+GetValue(*this,LGAHf));
     //compute the initial mass of the foliage
     //1. compute the surface area (Sa) of the segment cylinder
     //2. initial mass of the foliage is then af*Sa ((kg/m2)*m2)
@@ -34,7 +34,7 @@ LGMdouble GetValue(const CfTreeSegment<TS,BUD>& ts, const LGMAD name)
   else if (name == LGAAs0)
     return ts.cftsa.As0;
 
-  else if (name == Hf)
+  else if (name == LGAHf)
     return ts.cftsa.Hf;
 
   else if (name == P)
@@ -49,11 +49,11 @@ LGMdouble GetValue(const CfTreeSegment<TS,BUD>& ts, const LGMAD name)
   else if (name == Rf)
     //Who remebers to update radius to foliage limit after diameter growth
     //Return segment cylinder radius + foliage height.
-    return GetValue(ts,R) + GetValue(ts,Hf);
+    return GetValue(ts,R) + GetValue(ts,LGAHf);
 
   else if (name == Sa)
     //Wrap out the segment cylinder
-    return 2.0*PI_VALUE*GetValue(ts,R)*GetValue(ts,L);
+    return 2.0*PI_VALUE*GetValue(ts,R)*GetValue(ts,LGAL);
 
   //Return simply foliage mass
   else if (name == LGAWf)
@@ -71,7 +71,7 @@ LGMdouble SetValue(CfTreeSegment<TS,BUD>& ts, const LGMAD name, const LGMdouble 
   if (name == LGAAs0)
     ts.cftsa.As0 = value;
 
-  else if (name == Hf)
+  else if (name == LGAHf)
     ts.cftsa.Hf = value;
   
   else if (name == P)

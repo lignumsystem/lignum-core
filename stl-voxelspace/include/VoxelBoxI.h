@@ -12,7 +12,7 @@ namespace Lignum {
     void dumpSegment(VoxelBox &b, const CfTreeSegment<TS,BUD>& ts, int num_parts)
     {	
       LGMdouble r_f = GetValue(ts, Rf);
-      LGMdouble lenght = GetValue(ts, L) / num_parts;
+      LGMdouble lenght = GetValue(ts, LGAL) / num_parts;
       LGMdouble S_f = GetValue(GetTree(ts), sf);
       LGMdouble fmass = GetValue(ts, LGAWf) / num_parts;
 
@@ -41,7 +41,7 @@ namespace Lignum {
     void dumpSegment(VoxelBox &b, HwTreeSegment<TS, BUD, S> &ts, int num_parts)
     {	
       LGMdouble r_f = GetValue(ts, Rf);
-      LGMdouble lenghth = GetValue(ts, L) / num_parts;
+      LGMdouble lenghth = GetValue(ts, LGAL) / num_parts;
       LGMdouble S_f = GetValue(GetTree(ts), sf);
       LGMdouble fmass = GetValue(ts, LGAWf) / num_parts;
 

@@ -14,12 +14,12 @@ namespace Lignum{
 
   // Wr           dry weight of the roots
   enum LGMAD {LGAA,LGAAf,LGAAh, LGAAhair,LGAAs,LGAAs0,LGAage,api, LGAcollision,
-              LGADbase,LGADbh,LGAdof, dR, H,Hf,Hm,ip,
-              lb,LM,LP,LWf,L,lw,M, MaxD,omega,P,
+              LGADbase,LGADbh,LGAdof, dR, LGAH,LGAHf,Hm,LGAip,
+              lb,LM,LP,LWf,LGAL,lw,M, MaxD,omega,P,
 	      Qin,Qabs,R,Rf,Rh,Rhair,RTop,Sa,LGMstatus,sw,tauL,LGMtype,V,Vh,Vhair,Vs,vi,
               LGAWf, LGAWr, LGAWs, LGAWh, LGAWhair};
 
-  //  LGAA   Segment area based on R (see GetValue)
+  //  LGAA      Segment area based on R (see GetValue)
   //  LGAAf     area of foliage
   //  LGAAh     Heartwood area
   //  LGAAhair  Root hair area
@@ -31,15 +31,15 @@ namespace Lignum{
   //  LGADbase  diameter at base
   //  LGADbh    diameter at breast height
   //  LGAdof    degree of filling?
-  //  H      height of tree
-  //  Hf     height (thickness) of cylindrical layer of foliage in a segment 
+  //  LGAH      height of tree, also the Z coordinate at the segment end point 
+  //  LGAHf     height (thickness) of cylindrical layer of foliage in a segment 
   //  Hm     ???
-  //  ip     degree of interction
+  //  LGAip     degree of interction
   //  lb     ???
   //  LM     ???
   //  LP     ???
   //  LWf    ???
-  //  L      length of segment
+  //  LGAL      length of segment
   //  lw     ???
   //  M      rate of respiration (= amount of r. during the time step)
   //  MaxD   maximum diameter of the segments forking off and the segment above a branching point 

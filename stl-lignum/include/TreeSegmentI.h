@@ -23,7 +23,7 @@ ofstream &operator << (ofstream& os, TreeSegment<TS,BUD>& ts)
   os << "DIRECTION " << pv.getX() << " " << pv.getY() << " " << pv.getZ()
      << "  POSITION " << p.getX() << " " << p.getY() << " " << p.getZ() 
      << "  RADIUS " << GetValue(ts,R) << " " 
-     << "  LENGTH " << GetValue(ts,L) << "  AGE " << GetValue(ts,LGAage) << flush;
+     << "  LENGTH " << GetValue(ts,LGAL) << "  AGE " << GetValue(ts,LGAage) << flush;
   
   os << " END" << endl;
   
@@ -78,7 +78,7 @@ TreeSegment<TS,BUD>::TreeSegment(const Point& p, const PositionVector& d, const 
   :TreeCompartment<TS,BUD>(p,d,t)
 {	
   SetValue(*this,omega,go);
-  SetValue(*this,L,l);
+  SetValue(*this,LGAL,l);
   SetValue(*this,R,r);
   SetValue(*this,Rh,rh);
   SetValue(*this,RTop,r);
@@ -124,7 +124,7 @@ std::vector<METER> GetAnnualRings(const TreeSegment<TS,BUD>& ts)
 template <class TS,class BUD>
 Point GetEndPoint(const TreeSegment<TS,BUD>& ts)
 {
-  return GetPoint(ts)+GetValue(ts,L)*(Point)GetDirection(ts);
+  return GetPoint(ts)+GetValue(ts,LGAL)*(Point)GetDirection(ts);
 }
 
 
@@ -287,13 +287,13 @@ LGMdouble GetValue(const TreeSegment<TS,BUD>& ts, const LGMAD name)
   if (name == LGAage)
     return ts.tc_age; 
 
-  else if (name == H)
+  else if (name == LGAH)
     return ts.point.getZ();
 
   else if (name == Hm)
-    return ts.point.getZ() + ts.direction.getVector()[2] * GetValue(ts,L);
+    return ts.point.getZ() + ts.direction.getVector()[2] * GetValue(ts,LGAL);
 
-  else if (name == L)
+  else if (name == LGAL)
     return ts.tsa.L;
 
   else if (name == M)
@@ -319,9 +319,9 @@ LGMdouble GetValue(const TreeSegment<TS,BUD>& ts, const LGMAD name)
   //anyway). These 3 lines should not be a computational cost.
   else if (name == LGAWs){
      //volume up to R
-    LGMdouble v1 = PI_VALUE*pow(GetValue(ts,R),2.0) * GetValue(ts,L);
+    LGMdouble v1 = PI_VALUE*pow(GetValue(ts,R),2.0) * GetValue(ts,LGAL);
     //heartwood volume
-    LGMdouble v2 = PI_VALUE*pow(GetValue(ts,Rh),2.0) * GetValue(ts,L);
+    LGMdouble v2 = PI_VALUE*pow(GetValue(ts,Rh),2.0) * GetValue(ts,LGAL);
     //sapwood volume
     LGMdouble v3 = v1 - v2;   
     //mass is density * volume
@@ -329,7 +329,7 @@ LGMdouble GetValue(const TreeSegment<TS,BUD>& ts, const LGMAD name)
   }
   //Perhaps we need own 'rho' for Wh?
   else if (name == LGAWh){
-    LGMdouble v1 = PI_VALUE*pow(GetValue(ts,Rh),2.0) * GetValue(ts,L);
+    LGMdouble v1 = PI_VALUE*pow(GetValue(ts,Rh),2.0) * GetValue(ts,LGAL);
     return GetValue(GetTree(ts),rho) * v1;
   }
   else
@@ -345,7 +345,7 @@ LGMdouble SetValue(TreeSegment<TS,BUD>& ts, const LGMAD name, const LGMdouble va
   if (name == LGAage)
     ts.tc_age = value;
 
-  else if (name == L)
+  else if (name == LGAL)
     ts.tsa.L = value; //segment can be 0
   
   else if (name == dR)

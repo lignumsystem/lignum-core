@@ -219,7 +219,7 @@ TreeCompartment<TS,BUD>* EvaluateRadiationForCfTreeSegment<TS,BUD>::operator() (
     //much segment absorbs from incoming radation.
     LGMdouble Lk, inclination, Rfk, Ack, extinction, sfk, Ask, Wfk;
     Lk = Rfk = Ack =  extinction = sfk = Ask = Wfk = 0.0;
-    Lk = GetValue(*ts, L);   //length is > 0.0, otherwise we would not bee here
+    Lk = GetValue(*ts, LGAL);   //length is > 0.0, otherwise we would not bee here
     Rfk = GetValue(*ts, Rf);  //Radius to foliage limit 
     Wfk = GetValue(*ts, LGAWf); //Foliage mass
     sfk  = GetValue(tt, sf); //Foliage m2/kg from tree
@@ -284,7 +284,7 @@ TreeCompartment<TS,BUD>* ShadingEffectOfCfTreeSegment<TS,BUD>::operator()(TreeCo
     //implement it as GetValue?
     LGMdouble fol_dens = GetValue(*ts,LGAWf)/
       (PI_VALUE*(pow(GetValue(*ts,Rf),2.0)-pow(GetValue(*ts,R),2.0))
-       *GetValue(*ts,L));
+       *GetValue(*ts,LGAL));
 
     for (i = 0; i < number_of_sectors; i++) {
       //If the sector is blocked by another shoot
@@ -295,7 +295,7 @@ TreeCompartment<TS,BUD>* ShadingEffectOfCfTreeSegment<TS,BUD>::operator()(TreeCo
       //The radiation and its direction of sector i. We need the direction
       firmament.diffuseRegionRadiationSum(i,radiation_direction);
 
-      Point r_0 =  GetPoint(*shaded_s)+0.5*GetValue(*shaded_s,L)*
+      Point r_0 =  GetPoint(*shaded_s)+0.5*GetValue(*shaded_s,LGAL)*
 	(Point)GetDirection(*shaded_s);        //Midpoint of shaded seg
 
       result = cylinderBeamShading(r_0,
@@ -304,7 +304,7 @@ TreeCompartment<TS,BUD>* ShadingEffectOfCfTreeSegment<TS,BUD>::operator()(TreeCo
 				   GetDirection(*ts),
 				   GetValue(*ts, Rf),
 				   GetValue(*ts, R),
-				   GetValue(*ts, L),
+				   GetValue(*ts, LGAL),
 				   distance);
 
 

@@ -346,7 +346,7 @@ namespace Lignum{
       if(TS* ts = dynamic_cast<TS*>(tc)){
 	if(GetValue(*ts,LGAWf) > R_EPSILON) {
 	  Point base = GetPoint(*tc);
-	  Point top = base + GetValue(*ts, L)*(Point)GetDirection(*ts);
+	  Point top = base + GetValue(*ts, LGAL)*(Point)GetDirection(*ts);
     
 	  if(b_box.getMin().getX() > base.getX()) b_box.setMinX(base.getX());
 	  if(b_box.getMin().getY() > base.getY()) b_box.setMinY(base.getY());

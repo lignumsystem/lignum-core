@@ -53,7 +53,7 @@ namespace Lignum {
 	    {
 	      Point p = GetPoint(*cfts);
 	      PositionVector pv = GetDirection(*cfts);
-	      LGMdouble length = GetValue(*cfts, L);
+	      LGMdouble length = GetValue(*cfts, LGAL);
 	      int num_parts = 1;
 
 	      for (float i=0; i<num_parts; i++)
@@ -92,7 +92,7 @@ namespace Lignum {
    {
       Point p = GetPoint(ts);
       PositionVector pv = GetDirection(ts);
-      LGMdouble length = GetValue(ts, L);
+      LGMdouble length = GetValue(ts, LGAL);
       int num_parts = 1;
 
       for (float i=0; i<num_parts; i++)
@@ -108,7 +108,7 @@ namespace Lignum {
     {
       Point p = GetPoint(ts);
       PositionVector pv = GetDirection(ts);
-      LGMdouble length = GetValue(ts, L);
+      LGMdouble length = GetValue(ts, LGAL);
       int num_parts = 1;
 
       for (float i=0; i<num_parts; i++)

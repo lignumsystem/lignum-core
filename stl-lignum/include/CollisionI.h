@@ -26,7 +26,7 @@ void EvaluateCollisionForAllBuds<TS,BUD>::operator()
     int collision = Accumulate(tt, initial, col_eval);
 
     if(collision>=1) {
-      SetValue(*its_me,LGMcollision,1.0);
+      SetValue(*its_me,LGAcollision,1.0);
 
     }
   }

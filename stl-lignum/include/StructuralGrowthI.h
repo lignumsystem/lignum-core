@@ -41,7 +41,7 @@ TreeCompartment<TS,BUD>*  BranchBending<TS,BUD>::operator()
 			SetDirection(*ts, direction);
 		}
 
-		LGMdouble length = GetValue(*ts,L);
+		LGMdouble length = GetValue(*ts,LGAL);
 		position = point + (Point)(length * direction);
 		return tc;
 	}
@@ -71,7 +71,7 @@ TreeCompartment<TS,BUD>*  AdjustStructureAfterZbrent<TS,BUD>::operator()(Structu
 		{ // new segment, must adjust subsequent elements	
 			Point base = GetPoint(*ts);
 			PositionVector dir = GetDirection(*ts);
-			LGMdouble length = GetValue(*ts,L);
+			LGMdouble length = GetValue(*ts,LGAL);
 			Point end = base + (Point)(length * dir);
 			
 			SetValue(*ts, RTop, GetValue(*ts, R));
@@ -98,7 +98,7 @@ TreeCompartment<TS,BUD>*  AdjustStructureAfterZbrent<TS,BUD>::operator()(Structu
 
 			Point base = GetPoint(*ts);
 			PositionVector dir = GetDirection(*ts);
-			LGMdouble length = GetValue(*ts,L);
+			LGMdouble length = GetValue(*ts,LGAL);
 			Point end = base + (Point)(length * dir);
 			sa.location = end;
 		}
