@@ -1122,9 +1122,11 @@ void Matrix<TS,BUD>::addValues(Point voxel, double length, TreeSegment<TS,BUD> *
   
 
   LGMdouble r_f = 0.0;
+  LGMdouble w_f = 0.0;
   if(CfTreeSegment<TS,BUD>* cfts = dynamic_cast<CfTreeSegment<TS,BUD>*>(ts))  //****** ei k‰‰nny unixissa
 	{
 		r_f = GetValue(*cfts, Rf);
+		w_f = GetValue(*cfts, Wf);
 	}
 
   matrix[x][y][z].setMeanLength(matrix[x][y][z].getMeanLength()*matrix[x][y][z].getSumLength());
@@ -1134,7 +1136,7 @@ void Matrix<TS,BUD>::addValues(Point voxel, double length, TreeSegment<TS,BUD> *
   matrix[x][y][z].addSumLength(length);
   matrix[x][y][z].addSumWoodRadius(length * GetValue(*ts, R));
   matrix[x][y][z].addSumTotalRadius(length * r_f); 
-  matrix[x][y][z].addFoliageMass(length / GetValue(*ts, L) * GetValue(*ts, Wf));
+  matrix[x][y][z].addFoliageMass(length / GetValue(*ts, L) * w_f);
   LGMdouble le = GetValue(*ts, L);
  
   LGMdouble foliage_area = GetValue(*ts, L) * r_f * 2 * PI_VALUE;
