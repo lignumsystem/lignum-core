@@ -79,6 +79,8 @@ T& ReverseAccumulateOp2<TS,BUD,T,BinOp>::operator()(T& id,
   else if (Bud<TS,BUD>* bud = dynamic_cast<Bud<TS,BUD>*>(tc))
     id = op1(id,bud);
 
+  //traverse the axes with "fresh" id elements  
+  //"adding and assigning" before applying op1 to the branch whorl
   else if (BranchingPoint<TS,BUD>* bp = dynamic_cast<BranchingPoint<TS,BUD>*>(tc)){
     list<Axis<TS,BUD>*>& axis_ls = GetAxisList(*bp);
     list<Axis<TS,BUD>*>::reverse_iterator last = axis_ls.rbegin();
@@ -91,6 +93,7 @@ T& ReverseAccumulateOp2<TS,BUD,T,BinOp>::operator()(T& id,
     id = op1(id,tc);
   }
 
+  //traverse the axis before applying op1 to the axis
   else if (Axis<TS,BUD>* axis = dynamic_cast<Axis<TS,BUD>*>(tc)){
     list<TreeCompartment<TS,BUD>*>& tc_ls = GetTreeCompartmentList(*axis);
     list<TreeCompartment<TS,BUD>*>::reverse_iterator last = tc_ls.rbegin();
@@ -132,7 +135,7 @@ T& ReverseAccumulateOp3<TS,BUD,T,BinOp1,BinOp2>::operator()(T& id,
     while (last != first){
       T id_new = T();
       (*this)(id_new,*last++);
-      id = op1(id,id_new); //applying op1 for the identity elements
+      id = op1(id,id_new); //applying user defined op1 for the identity elements
     }
     id = op2(id,tc); //now calling user defined operator op2
   }
@@ -168,6 +171,7 @@ PropagateUpOp2<TS,BUD,T,BinOp>::operator()(T& id,
   else if (Bud<TS,BUD>* bud = dynamic_cast<Bud<TS,BUD>*>(tc))
     op1(id,bud);
 
+  //when propagating up apply op1 before continuing along the axis.
   else if (Axis<TS,BUD>* axis = dynamic_cast<Axis<TS,BUD>*>(tc)){
     op1(id,axis);
     list<TreeCompartment<TS,BUD>*>& tc_ls = GetTreeCompartmentList(*axis);
@@ -176,7 +180,7 @@ PropagateUpOp2<TS,BUD,T,BinOp>::operator()(T& id,
     while (first != last)
       (*this)(id,*first++);
   }
-
+  //when propagating up apply op1 before continuing to the axes.
   else if (BranchingPoint<TS,BUD>* bp = dynamic_cast<BranchingPoint<TS,BUD>*>(tc)){
     op1(id,bp);
     list<Axis<TS,BUD>*>& axis_ls = GetAxisList(*bp);
