@@ -5,12 +5,9 @@
 using namespace Lignum;
 
 #include <list>
-//#include <MyTreeSegment.h>
 #include <algorithm>
-//#include <MyBud.h>
 
 #include <math.h>
-//#include <unistd.h>
 
 #include <iostream>
 #include <string>
@@ -38,9 +35,6 @@ using namespace Lignum;
 #include <tga.h>
 #include <VoxelSpace.h>
 
-//#include <dpylc.h>
-//#include <CTexture.h>
-//#include <textures.h>
 
 #define LEAVE_VERT 33
 #define LEAVE_SIZE 500
@@ -86,12 +80,7 @@ void WaterFlow(LGMdouble time_step, ConnectionMatrix<TS, BUD> *cm);
 */
 extern CTexture text;
 
-/*
-extern Tree<Lignum::BetulaWithFlow,DefaultBud<Lignum::BetulaWithFlow> > digi_tree;
-extern ConnectionMatrix<Lignum::BetulaWithFlow, DefaultBud<Lignum::BetulaWithFlow> > *cm;
-extern TreeSegment<Lignum::BetulaWithFlow, DefaultBud<Lignum::BetulaWithFlow> > *current;
-extern GUS<Lignum::BetulaWithFlow, DefaultBud<Lignum::BetulaWithFlow> > gus;
-*/
+
 
 
 void DrawVoxelCubes();
