@@ -23,7 +23,7 @@ namespace sky{
     t = lex.getToken();
     int azim = atoi(t.getValue().c_str());
     t = lex.getToken();
-    int drp = atof(t.getValue().c_str());
+    double drp = atof(t.getValue().c_str());
     //size and radiation intensity
     resize(incl,azim,drp);
     //optional mask
