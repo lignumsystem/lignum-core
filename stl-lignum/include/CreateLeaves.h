@@ -36,6 +36,7 @@ namespace Lignum{
     {
       if (BUD* b = dynamic_cast<BUD*>(tc)){
 	if (GetValue(*b,LGAstatus) == 1){
+	  //Leaf to be created
 	  pdv.push_back(GetDirection(*b));
 	  //Leaf created, set status to 0 	
 	  SetValue(*b,LGAstatus,0);
@@ -67,7 +68,8 @@ namespace Lignum{
 	  leaf_normal.rotate(origo,plane,ran);
 	  E shape((PositionVector)GetEndPoint(petiole),
 		  leaf_normal,a,b); //initial shape of a leaf is Ellips
-	  BroadLeaf<E>* leaf = new BroadLeaf<E>(shape,petiole,leaf_normal);
+	  BroadLeaf<E>* leaf = new BroadLeaf<E>(shape,petiole,leaf_normal,
+						GetFirmament(GetTree(*tc)).numberOfRegions());
 	  //Set parameters for radiation calculation.
 	  SetValue(*leaf,LGAdof,GetValue(GetTree(*tc),LGPdof));
 	  SetValue(*leaf,LGAtauL,GetValue(GetTree(*tc),LGPtauL));
