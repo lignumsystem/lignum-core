@@ -56,9 +56,9 @@ namespace Lignum{
               LGADbase, LGADbaseHw, LGADbh,LGADbhHw,LGAdof, LGAdR,
 	      LGAH,LGAHf,LGAHTop,LGAip,
               LGAL,LGAM, LGAMaxD,LGAomega,LGAP,LGAQabs,LGAQin,LGAR,LGARf,
-              LGARh, LGARhair,LGARTop,LGASa,LGAsf,LGAstatus, LGAstate,LGAtauL, 
-              LGAtype,LGAV,LGAVh,LGAVhair,LGAvi,LGAVs,LGAWf, LGAWs, 
-              LGAWh,LGAWhair, LGAT};
+              LGARh, LGARhair,LGARTop,LGASa,LGAsf,LGAstarm,LGAstatus, 
+              LGAstate,LGAtauL, LGAtype,LGAV,LGAVh,LGAVhair,LGAvi,LGAVs,
+              LGAWf, LGAWs, LGAWh,LGAWhair, LGAT};
 
 
   //  0 LGAA      Segment base area based on R 
@@ -97,22 +97,23 @@ namespace Lignum{
   //  29 LGARTop   Radius of segment at upper end
   //  30 LGASa     Surface area of the segment cylinder: 2*PI*R*L
   //  31 LGAsf     Specific leaf area (=leaf area/ leaf weight)
-  //  32 LGAstatus General counter to control e.g. bud burst.  
-  //  33 LGAstate  Bud state can be dead, alive, dormant etc., see LGMUnits.h
-  //  34 LGAtauL   Transmission coefficient of leaf (in direction of
+  //  32 LGAstarm  Star mean for a confiferous segment
+  //  33 LGAstatus General counter to control e.g. bud burst.  
+  //  34 LGAstate  Bud state can be dead, alive, dormant etc., see LGMUnits.h
+  //  35 LGAtauL   Transmission coefficient of leaf (in direction of
   //               the ray of light) 
-  //  35 LGAtype   General type specifier, e.g. Bud:dominant, apical,
+  //  36 LGAtype   General type specifier, e.g. Bud:dominant, apical,
   //               lateral etc. The numerical values and their symbols of
   //               different types given in LGMUnits.h
-  //  36 LGAV      Segment volume based on R and L
-  //  37 LGAVh     Heartwood volume
-  //  38 LGAVhair  Root hair volume
-  //  39 LGAvi     Vigour index
-  //  40 LGAVs     Sapwood volume
-  //  41 LGAWf     Foliage mass (kg C)
-  //  42 LGAWs     Mass of sapwood (kg C)
-  //  43 LGAWh     Mass of heartwood (kg C)
-  //  44 LGAWhair  Mass of root hair (kg C)
+  //  37 LGAV      Segment volume based on R and L
+  //  38 LGAVh     Heartwood volume
+  //  39 LGAVhair  Root hair volume
+  //  40 LGAvi     Vigour index
+  //  41 LGAVs     Sapwood volume
+  //  42 LGAWf     Foliage mass (kg C)
+  //  43 LGAWs     Mass of sapwood (kg C)
+  //  44 LGAWh     Mass of heartwood (kg C)
+  //  45 LGAWhair  Mass of root hair (kg C)
 
   // LGMAD = LIGNUM Attribute Double
 
