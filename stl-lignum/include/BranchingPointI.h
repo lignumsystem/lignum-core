@@ -56,7 +56,7 @@ BranchingPoint<TS,BUD>::~BranchingPoint()
 template <class TS,class BUD>
 double GetValue(BranchingPoint<TS,BUD>& bp, LGMAD name)
 {
-  if (name == MaxD){
+  if (name == LGAMaxD){
     return bp.maxd;
   }
   else{
@@ -69,7 +69,7 @@ template <class TS,class BUD>
 double SetValue(BranchingPoint<TS,BUD>& bp, LGMAD name, LGMdouble value)
 {
   LGMdouble old_value = GetValue(bp,name);
-  if (name == MaxD){    
+  if (name == LGAMaxD){    
     bp.maxd = value;
   }
   return old_value;

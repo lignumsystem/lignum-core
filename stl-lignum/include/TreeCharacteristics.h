@@ -162,7 +162,7 @@ namespace Lignum{
       //MaxSegmentDiameter has chosen 
       if (BranchingPoint<TS,BUD>* bp = 
 	  dynamic_cast<BranchingPoint<TS,BUD>*>(tc)){
-	SetValue(*bp,MaxD,d);
+	SetValue(*bp,LGAMaxD,d);
       }
       if (TS* ts = dynamic_cast<TS*>(tc)){
 	//Get the diameter of the segment an pass it to the 
@@ -243,9 +243,9 @@ namespace Lignum{
 	vi_data.reset();
 	//The maximum of segment diameters of segments forking 
 	//off from this branching point and the segment above
-	vi_data.addSegmentDiameter(GetValue(*bp,MaxD));
+	vi_data.addSegmentDiameter(GetValue(*bp,LGAMaxD));
 	//Reset the MaxD!!
-	SetValue(*bp,MaxD,0.0);
+	SetValue(*bp,LGAMaxD,0.0);
       }
       //compute the VI for the segment
       else if (TS* ts = dynamic_cast<TS*>(tc)){
