@@ -7,9 +7,9 @@ ParametricCurve::ParametricCurve()
 {
 }
 
-ParametricCurve::ParametricCurve(const CString& file_name)
+ParametricCurve::ParametricCurve(const string& file_name)
 {
-  read_xy_file((const char *)file_name);
+  read_xy_file(file_name.c_str());
 }
 
 ParametricCurve::ParametricCurve(const vector<double>& v1)
@@ -18,9 +18,9 @@ ParametricCurve::ParametricCurve(const vector<double>& v1)
   num_of_elements = v1.size();
 }
 
-bool ParametricCurve::install(const CString& file_name)
+bool ParametricCurve::install(const string& file_name)
 {
-  read_xy_file((const char *)file_name);
+  read_xy_file(file_name.c_str());
   return ok();
 }
 
@@ -40,7 +40,7 @@ ParametricCurve& ParametricCurve::read_xy_file(const char *file_name)
     return *this;
   }
   
-  file = CString(file);
+  file = string(file);
 
   in_file.setf(ios::fixed,ios::floatfield);
 
@@ -81,7 +81,7 @@ double ParametricCurve::eval(double x)
 int main(int argc, char *argv[])
 {
   cout << argv[1] << endl;
-  ParametricCurve p1(CString(argv[1]));
+  ParametricCurve p1(string(argv[1]));
   
   cout << "Plotting out some function values\n";
 

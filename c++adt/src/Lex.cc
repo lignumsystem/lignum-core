@@ -4,7 +4,7 @@
 
 namespace cxxadt{
 
-Token::Token(const CString& token_value, TOKEN_TYPE token_type)
+Token::Token(const string& token_value, TOKEN_TYPE token_type)
   :value(token_value),type(token_type)
 {
 }
@@ -85,7 +85,7 @@ Lex& Lex::scanId()
 
   buffer[i] = (char)NULL;
 
-  token = new Token(CString(buffer),(TOKEN_TYPE)ID);
+  token = new Token(string(buffer),(TOKEN_TYPE)ID);
 
   token_ls.insertRight(token);
 
@@ -116,7 +116,7 @@ Lex& Lex::scanNum()
   else
     token_type = (TOKEN_TYPE) FLOAT;
 
-  token = new Token(CString(buffer),token_type);
+  token = new Token(string(buffer),token_type);
 
   token_ls.insertRight(token);
 
@@ -136,16 +136,16 @@ Lex& Lex::scanSpecial()
   
   switch (c){
   case ':':
-    token = new Token(CString(buffer),(TOKEN_TYPE)COLON);
+    token = new Token(string(buffer),(TOKEN_TYPE)COLON);
     break;
   case '.':
-    token = new Token(CString(buffer),(TOKEN_TYPE)DOT);
+    token = new Token(string(buffer),(TOKEN_TYPE)DOT);
     break;
   case '-':
-    token = new Token(CString(buffer),(TOKEN_TYPE)HYPHEN);
+    token = new Token(string(buffer),(TOKEN_TYPE)HYPHEN);
     break;
   case '/':
-    token = new Token(CString(buffer),(TOKEN_TYPE)SLASH);
+    token = new Token(string(buffer),(TOKEN_TYPE)SLASH);
     break;
   default:
     cerr << "Unknown token: " << c << endl;

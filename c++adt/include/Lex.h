@@ -2,23 +2,23 @@
 #define LEX_H
 #include <fstream.h>
 #include <DList.h>
-#include <CString.h>
+#include <string>
 
 namespace cxxadt{
-
+using namespace std;
 #define MAXSTRING 255
 enum TOKEN_TYPE {COLON,DOT,FLOAT,ENDFILE,HYPHEN,ID,INT,SLASH};
 
 class Token{
 public:
   Token():value(""),type(ENDFILE){}
-  Token(const CString& token_value, TOKEN_TYPE token_type);
+  Token(const string& token_value, TOKEN_TYPE token_type);
   Token(const Token& token);
-  CString getValue()const{return value;}
+  string getValue()const{return value;}
   TOKEN_TYPE getType()const{return type;}
   Token& operator = (const Token& token);
 private:
-  CString value;
+  string value;
   TOKEN_TYPE type;
 };
 
@@ -26,6 +26,7 @@ private:
 class Lex{
 public:
   ~Lex();
+  inline Lex& scan(const string& f);
   Lex& scan(const char *file);
   Token peek();
   Token getToken();
@@ -39,6 +40,12 @@ private:
   DList token_ls;
 };
 
+inline Lex& Lex::scan(const string& f)
+{
+  scan(f.c_str());
+  return *this;
+}
+			 
 }//close namespace cxxadt
 
 #endif
