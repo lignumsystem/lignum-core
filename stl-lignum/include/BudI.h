@@ -59,21 +59,7 @@ TP GetAttributeValue(const Bud<TS,BUD>& bud, const TAD name)
 }
 
 template<class TS, class BUD>
-STATUS GetAttributeValue(const Bud<TS,BUD>& bud, const TAS name)
-{
-  if (name == state)
-    return bud.ba.state;
-
-  else{
-    cout << "Unknown attribute: " << name << endl;
-    cout << "Returning 0.0" << endl;
-  }
-
-  return DEAD;
-}
-
-template<class TS, class BUD>
-TP SetAttributeValue(const Bud<TS,BUD>& bud, const TAD name, const TP value)
+TP SetAttributeValue(Bud<TS,BUD>& bud, const TAD name, const TP value)
 {
 
   TP old_value = GetAttributeValue(bud,name);
@@ -90,6 +76,20 @@ TP SetAttributeValue(const Bud<TS,BUD>& bud, const TAD name, const TP value)
   }
 
   return old_value;
+}
+
+template<class TS, class BUD>
+STATUS GetAttributeValue(const Bud<TS,BUD>& bud, const TAS name)
+{
+  if (name == state)
+    return bud.ba.state;
+
+  else{
+    cout << "Unknown attribute: " << name << endl;
+    cout << "Returning 0.0" << endl;
+  }
+
+  return DEAD;
 }
 
 template <class TS,class BUD>    
