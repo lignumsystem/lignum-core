@@ -1,60 +1,38 @@
-PRJDIR=..
-OS=IRIX64
+#To compile "l2c" on SGI type 
+#    make l2c
+#To compile with g++ on SGI or on  Linux type
+#    make gnu  
+#or  (using copy paste)
+#    make "CCC=g++" "CCCFLAGS=-c" "OPTIMIZE=-g"  l2c
 
-TARGET=$(OS).out/l2c
+SRC=main.cpp module.cpp production.cpp l2c_tab.cpp lex_l.cpp 
+OBJ=${SRC:.cpp=.o}
 
-OBJECTS=\
-main.o\
-module.o\
-production.o\
-lex_l.o\
-l2c_tab.o
+OPTIMIZE = -g
+SUPPRESS =  
 
-LSYSFILE = match-test.l
-LSYSFILE_II=lsys.ii
+CCC = CC -64 -LANG:std
+CCCFLAGS = -c   
 
-include Make.$(OS)
-LCPP = match-test.l
-MATCHOBJECTS=matching.o match.o \
-	     ../Generate/lsysintrfc.o\
-             ../Generate/lstring.o \
-             ../Generate/lstriter.o \
-             ../Generate/succstor.o \
-             module.o production.o \
-             lsys.o \
-             lex_l.o l2c_tab.o
-
-INCDIRS=\
-$(PLATINC)\
--I$(PRJDIR)/Common\
--I../Globals -I../Generate \
--I../lsys
-
-LIBS=\
-$(PLATLIBS)
-
-
-LINKDIRS=\
-$(PLATLINKDIRS)
-
-CPPFILES=\
-${OBJECTS:.o=.cpp}
+INCLUDE = -I. -I../Common -I../Globals -I../Generate 
 
 FLEX=flex
-
 FLEXOPT=-Pl
 
 BISON=bison
-
 BISONOPT=-d --debug -p l
 
-$(TARGET): l2c_tab.cpp lex_l.cpp $(OBJECTS)  
-	$(LINK) $(LINKFLAGS) $(OBJECTS) $(LINKDIRS) $(LIBS) -o $(TARGET)
+.SUFFIXES:.cpp
 
-match: depend $(MATCHOBJECTS) 
-	$(LINK) $(LINKFLAGS) $(MATCHOBJECTS) $(LINKDIRS) $(LIBS) -o  $@
-.cpp.o:
-	$(CCPP) -c $(CCPPOPT) $(DEFINES) $(PLAT_DEFINES) $(INCDIRS) -o $@ $<
+sinclude Makedepend
+
+l2c: l2c_tab.cpp lex_l.cpp $(OBJ)  
+	$(CCC)  $(OBJ) -o $@
+
+gnu:
+	make "CCC=g++" "CCCFLAGS=-c" "OPTIMIZE=-g"  l2c
+lignux: 
+	make "CCC=g++" "CCCFLAGS=-c" "OPTIMIZE=-g"  l2c
 
 l2c_tab.cpp l2c_tab.h: l2c.y
 	$(BISON) $(BISONOPT) l2c.y
@@ -65,35 +43,14 @@ lex_l.cpp: l2c.l
 	$(FLEX) $(FLEXOPT) l2c.l
 	mv lex.l.c lex_l.cpp
 
-lsys.o: $(LCPP)
-	cp $(LCPP) test.cpp
-	CC -E -I../Globals -I../Generate test.cpp > test.i
-	$(OS).out/l2c test.i lsys.i
-	CC -c lsys.i 
-
-build:
-	make clean
-	make depend $(TARGET)
+.cpp.o:
+	$(CCC) -c  $(OPTIMIZE) $(SUPPRESS) $(CCCFLAGS) $(INCLUDE)  -o $@ $<
 
 clean:
-	-rm -f $(TARGET) $(OBJECTS)  $(MATCHOBJECTS) match \
-        l2c_tab.cpp l2c_tab.h lex_l.cpp dependencies core
-	touch dependencies
+	rm -rf  $(OBJ) l2c_tab.cpp l2c_tab.h lex_l.cpp core ii_files
+distclean:clean
+	rm -f l2c Makedepend
 
 depend: l2c_tab.cpp lex_l.cpp 
-	$(DEPEND) $(DEFINES) $(PLAT_DEFINES) $(INCDIRS) $(CPPFILES) > dependencies
-
-test:
-	make
-	$(TARGET) test.l 
-
-testd:
-	make
-	$(TARGET) test.l 1
-
-inst:
-	make
-	cp $(TARGET) $(HOME)/bin.$(OS)
-
-include dependencies
+	$(CCC) -M  $(INCLUDE) $(SRC) > Makedepend
 
