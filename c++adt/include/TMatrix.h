@@ -7,8 +7,7 @@ namespace cxxadt{
 
 using namespace std;
 
-#ifdef __SUNPRO_CC
-template <class T> class TMatrix<T>;
+template <class T> class TMatrix;
 
 template <class T>
 TMatrix<T> operator + (const TMatrix<T>& m1,const TMatrix<T>& m2);
@@ -20,16 +19,16 @@ template <class T>
 TMatrix<T> operator * (const T scalar,const TMatrix<T>& m1);
 template <class T>
 ostream& operator << (ostream& os, const TMatrix<T>& v1);
-#endif
+
 
 template <class T> class TMatrix {
-  friend TMatrix<T> operator + (const TMatrix<T>& m1,const TMatrix<T>& m2);
-  friend TMatrix<T> operator * (const TMatrix<T>& m1,const TMatrix<T>& m2);
-  friend vector<T> operator * (const vector<T>& v1, const TMatrix<T>& m1);
-  friend vector<T> operator * (const TMatrix<T>& m1, const vector<T>& v1);
-  friend TMatrix<T> operator * (const TMatrix<T>& m1,const T scalar);
-  friend TMatrix<T> operator * (const T scalar,const TMatrix<T>& m1);
-  friend ostream& operator << (ostream& os, const TMatrix<T>& v1);
+  friend TMatrix<T> operator + <T>(const TMatrix<T>& m1,const TMatrix<T>& m2);
+  friend TMatrix<T> operator * <T>(const TMatrix<T>& m1,const TMatrix<T>& m2);
+  friend vector<T> operator * <T>(const vector<T>& v1, const TMatrix<T>& m1);
+  friend vector<T> operator * <T>(const TMatrix<T>& m1, const vector<T>& v1);
+  friend TMatrix<T> operator * <T>(const TMatrix<T>& m1,const T scalar);
+  friend TMatrix<T> operator * <T>(const T scalar,const TMatrix<T>& m1);
+  friend ostream& operator << <T>(ostream& os, const TMatrix<T>& v1);
 public:
   TMatrix();    
   TMatrix(const int rows,const int cols);
