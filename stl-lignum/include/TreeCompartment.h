@@ -86,11 +86,13 @@ inline LGMdouble SetValue(TcData& data, LGMAD name, LGMdouble value)
       TreeCompartment(const Point& p, const PositionVector& d, Tree<TS,BUD>* t);
       virtual ~TreeCompartment();
       virtual void photosynthesis() { /* Default: do nothing */ }
+
   
       virtual void respiration() {}
       virtual void aging(){}
       virtual TcData& diameterGrowth(TcData& data){return data;}
       protected:
+
 
 
       Point point;

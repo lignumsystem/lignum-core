@@ -279,7 +279,7 @@ void StructuralPineGrowth(Axis<TS,BUD> &ax, const ParametricCurve& bud_fun, Tree
 
 			LGMdouble f_l = doi_fun(ip); 
 				//**f_l = 1.1* i_p - 0.1;
-			LGMdouble f_w = 1 - (omeg-1) * _q;
+			LGMdouble f_w = 1 - (omeg-1) * _q;		//***Sven   korvaa lyhenemistekijällä
 
 			if (f_w < 0)
 				f_w = 0.0;
@@ -344,7 +344,7 @@ void StructuralPineGrowth(Axis<TS,BUD> &ax, const ParametricCurve& bud_fun, Tree
 		
 
 			bud->move(posvec, length);		
-			while(number_of_new_buds > 1)
+			while(number_of_new_buds > 1)		//***Sven	budien suunta
 			{
 				new_axes[index] = new Axis<TS,BUD>();
 

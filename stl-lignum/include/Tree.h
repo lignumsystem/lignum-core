@@ -90,10 +90,12 @@ namespace Lignum{
 	LGMdouble ca;			//circulation angle for new buds compared to belowed ones
 	LGMdouble rca;			//random effect of circulation angle [%] 0->
 	LGMdouble rld;			//random effect of leaf distances in a single tree segment
+
  
 	LGMdouble nitroLeaves;  
 	LGMdouble nitroRoots;
 	LGMdouble nitroWood;
+
 
   };
 
@@ -216,8 +218,12 @@ namespace Lignum{
       void UpdateWaterFlow(LGMdouble time, const ConnectionMatrix<TS,BUD> &cm);
 	  void photosynthesis();
       void respiration();
+<<<<<<< Tree.h
+
+=======
 
 
+>>>>>>> 1.66
 	  TreeFunctions tf;  //cvs update
 
 	

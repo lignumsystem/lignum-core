@@ -13,9 +13,10 @@ template <class TS,class BUD>
 void Tree<TS,BUD>::photosynthesis()
 {
 
-  //Have TreeCompartments to do photosynthesis
-  ForEach(*this, TreePhotosynthesis<TS,BUD>());
-	
+	//Have TreeCompartments to do photosynthesis
+	ForEach(*this, TreePhotosynthesis<TS,BUD>());
+ 
+
 
   //... and then SUM photosynthetic rates of all segments and update trees P
 
@@ -46,11 +47,12 @@ void Tree<TS,BUD>::respiration()
 	sumM = Accumulate(*this, initM, SumTreeRespiration<TS,BUD>());
 
 
+	LGMdouble nit = GetValue(*this, nitroLeaves);
+	sumM = sumM * tf.nitroMaxPhotosynthesis(nit);
+
 	// Root respiration
 	LGMdouble nit_roots = GetValue(*this, nitroRoots);
-  
-
-     sumM += GetValue(*this,mr)*GetValue(*this,Wr) * this->tf.nitroRespiration(nit_roots);
+    sumM += GetValue(*this,mr)*GetValue(*this,Wr) * this->tf.nitroRespiration(nit_roots);
 
   
 	SetValue(*this, M, sumM);

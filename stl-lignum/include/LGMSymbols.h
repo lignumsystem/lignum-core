@@ -73,8 +73,10 @@ namespace Lignum{
   // zbrentEpsilon       Accuracy in solving the root of P - M -dW(lambda)
   //Keep this list in synbc with MapLGMPD constructor in TreeFriend.cc
 
+
   enum LGMPD {af,al,ar,ca, dofp,lr,mf,mr,ms,na,nl,pr,q, rca, rld,sf, sla,sr,ss,rho,rho_root,rho_hair, yc, xi,
 	      zbrentEpsilon, Ln_par, n_ang_par, fake_forest, nitroRoots, nitroWood, nitroLeaves};
+
 
  //cvs update
   // al					Maximun size of a leaf

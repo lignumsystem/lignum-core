@@ -30,7 +30,7 @@ TreeCompartment<TS,BUD>*  BranchBending<TS,BUD>::operator()
 
 			//toinen kohtisuora
 			PositionVector pv = Cross(direction, up);
-			direction.rotate(Point(0,0,0), pv, -angleRad);
+			direction.rotate(Point(0,0,0), pv, -angleRad);	//Sven	minimikulma 60  getZ()<0.3
 			direction.normalize();
 
 			if (direction.getZ() < 0)

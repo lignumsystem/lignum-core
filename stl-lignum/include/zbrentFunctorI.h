@@ -199,7 +199,7 @@ TreeCompartment<TS, BUD>* DiameterGrowthBookkeep<TS,BUD>::operator() (TreeCompar
 
 
 
-
+//*****Sven	talleta uuteen segmenttiin arvot a ja b
 // This functor sets the dimensions of the new segments (age = 0) as a function
 // of lambda (radius = lambda). It sets also the other necessary variables, leaf
 // size, masses etc)
