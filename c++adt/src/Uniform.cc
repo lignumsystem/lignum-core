@@ -53,26 +53,36 @@ double Uniform::uran( int* idum)
 
 #ifdef UNIFORM
 #include <iostream>
+#include <vector>
+#include <numeric>
 using namespace cxxadt;
 using namespace std;
 int main(int argc, char* argv[])
 {
   Uniform u;
 
-  if (argc != 3){
-    cout << "Usage:   uniform init seed"  << endl;
+  if (argc != 4){
+    cout << "Usage: uniform init seed sequence_length"  << endl;
     return -1;
   }
+
   //initializing with different 'initialize', negative though,  will  
   //produce different sequences.  The 'seed' in u(seed) is optional.
-  int initialize = atoi(argv[argc-2]);
-  int seed = atoi(argv[argc-1]);
+  int initialize = atoi(argv[argc-3]);
+  int seed = atoi(argv[argc-2]);
+  int n = atoi(argv[argc-1]);
+
+  vector<double> v(n);
 
   u.init(initialize);
-  for (int i = 0; i < 1000; i++){
-    cout << u(seed) << endl;
+
+  for (int i = 0; i < n; i++){
+    v[i] = u(seed);
+    cout << v[i] << endl;
   }
-  cout << seed << endl;
+
+  cout << "Mean: " << accumulate(v.begin(),v.end(),0.0)/n << endl;
+
   return 0;
 }
 
