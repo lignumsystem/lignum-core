@@ -258,7 +258,10 @@ LGMdouble GetValue(const TreeSegment<TS,BUD>& ts, const LGMAD name)
 
   else if (name == LGAAs)
     return GetValue(ts,LGAA) - GetValue(ts,LGAAh);
-    
+
+  else if (name == LGAAs0)
+    return ts.tsa.As0;
+
   if (name == LGAage)
     return ts.tc_age; 
 
@@ -316,9 +319,12 @@ template <class TS,class BUD>
 LGMdouble SetValue(TreeSegment<TS,BUD>& ts, const LGMAD name, const LGMdouble value)
 {
   LGMdouble old_value = GetValue(ts,name);
-  
+
   if (name == LGAage)
     ts.tc_age = value;
+
+  else if(name == LGAAs0)
+    ts.tsa.As0 = value;
 
   else if (name == LGAL)
     ts.tsa.L = value; //segment can be 0

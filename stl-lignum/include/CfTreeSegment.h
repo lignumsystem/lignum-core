@@ -16,8 +16,7 @@ namespace Lignum{
   class CfTreeSegmentAttributes{
   public:
     CfTreeSegmentAttributes():
-      As0(0.0),Hf(0.0),P(0.0),Qin(0.0),Qabs(0.0),Rf(0.0),Wf(0.0){}
-    KGC As0;        //Orginal area of foliage
+      Hf(0.0),P(0.0),Qin(0.0),Qabs(0.0),Rf(0.0),Wf(0.0){}
     METER Hf;       //Foliage height
     LGMdouble P;    //Amount of photosynthesis (kg C) during time step
     LGMdouble Qin;  //Irradiance of incoming radiation (MJ/m2)

@@ -29,9 +29,6 @@ LGMdouble GetValue(const CfTreeSegment<TS,BUD>& ts, const LGMAD name)
     //see also parameter af
     return GetValue(GetTree(ts),LGPsf)*GetValue(ts,LGAWf);
   }
-  else if (name == LGAAs0)
-    return ts.cftsa.As0;
-
   else if (name == LGAHf)
     return ts.cftsa.Hf;
 
@@ -67,10 +64,7 @@ template <class TS,class BUD>
 LGMdouble SetValue(CfTreeSegment<TS,BUD>& ts, const LGMAD name, const LGMdouble value)
 {
   LGMdouble old_value = GetValue(ts,name);
-  if (name == LGAAs0)
-    ts.cftsa.As0 = value;
-
-  else if (name == LGAHf)
+  if (name == LGAHf)
     ts.cftsa.Hf = value;
   
   else if (name == LGAP)

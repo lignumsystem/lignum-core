@@ -22,6 +22,7 @@ namespace Lignum{
 class TreeSegmentAttributes{
 public:
   TreeSegmentAttributes();
+  KGC As0;                //Original sapwood area
   METER L;                //Length of the tree segment
   KGC M;                  //Respiration of the tree segment during the time step
   LGMdouble omega;        //Gravelius order
