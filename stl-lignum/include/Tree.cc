@@ -55,7 +55,7 @@ void Tree<TS,BUD>::UpdateWaterFlow(TP time_step, const ConnectionMatrix<TS,BUD> 
   }
 
   TreeSegment<TS,BUD> *in = cm.getTreeSegment(0);
-  SetTSAttributeValue(*in, fin, 3* 0.12e-9);
+  SetTSAttributeValue(*in, fin, cm.getSize() * 0.12e-9);
   
   // This counts the flow out for every segment
   for (i=0; i<cm.getSize(); i++){

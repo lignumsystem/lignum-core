@@ -42,14 +42,23 @@ int main(int argc, char *argv[])
   //i.e, [TS,BP,B] which expands to [TS,[A,A],B] and to [TS,[[B],[B]],B]
   //A= Axis, BP = BranchingPoint, TS = TreeSegment and B = Bud 
   Axis<MyTreeSegment>& axis = GetAxis(tree);
-  // Axis<MyTreeSegment>* axis2 = new Axis<MyTreeSegment>();
-  //Axis<MyTreeSegment>* axis3 = new Axis<MyTreeSegment>();
+  Axis<MyTreeSegment>* axis2 = new Axis<MyTreeSegment>();
+  Axis<MyTreeSegment>* axis3 = new Axis<MyTreeSegment>();
 
+  char t;
+  cout << "[b] for Big tree" << endl;
+  cout << "[x] for special waterfill" << endl;
+  cin >> t;
 
  //create the first tree segment
   TreeSegment<MyTreeSegment> *ts = 
     new TreeSegment<MyTreeSegment>(Point<METER>(0,0,0),PositionVector(0,0,1.0),
 				   0, 0.3, 0.3, 0.2,&tree);
+
+  if (t == 'x')
+    {
+      SetTSAttributeValue(*ts, Wm, GetTSAttributeValue(*ts, Wm)*0.5);
+    }
   //create the branching point
   BranchingPoint<MyTreeSegment> *bp = 
     new BranchingPoint<MyTreeSegment>(Point<METER>(0,0,0),
@@ -68,12 +77,17 @@ int main(int argc, char *argv[])
   InsertTerminatingBud(*bp,new Bud<MyTreeSegment>(Point<METER>(0,0,0),
 						  PositionVector(0,0,1.0),
 						  0,
+
 						  &tree));
   InsertTreeCompartment(axis,ts);
   InsertTreeCompartment(axis,bp);
   TreeSegment<MyTreeSegment> *ts2 = 
     new TreeSegment<MyTreeSegment>(Point<METER>(0,0,0.3),PositionVector(0,0,1.0),
 				   0, 0.3, 0.3, 0.2,&tree);
+  if (t == 'x')
+    {
+      SetTSAttributeValue(*ts2, Wm, GetTSAttributeValue(*ts2, Wm)*1.5);
+    }
   InsertTreeCompartment(axis,ts2);
 
   ts2 = new TreeSegment<MyTreeSegment>(Point<METER>(0,0,0.6),PositionVector(0,0,1.0),
@@ -84,7 +98,7 @@ int main(int argc, char *argv[])
   InsertTreeCompartment(axis,bud);
 
   
-  /*
+  
 
   ts = 
     new TreeSegment<MyTreeSegment>(Point<METER>(0,0,0.2),PositionVector(0,0,1.0),
@@ -105,13 +119,19 @@ int main(int argc, char *argv[])
   
   InsertTreeCompartment(*axis3, ts);
 
-  InsertAxis( *bp, axis2);
-  InsertAxis( *bp, axis3);
-  */
+
   
-  // ts =   new TreeSegment<MyTreeSegment>(Point<METER>(0,0,0.4),PositionVector(0,0,1.0),
-  //					0, 0.4, 0.3, 0.2, &tree);
-  //InsertTreeCompartment(*axis3, ts);
+ 
+  if (t == 'b')
+    {
+      InsertAxis( *bp, axis2);
+      InsertAxis( *bp, axis3);
+    }
+  
+  ts =   new TreeSegment<MyTreeSegment>(Point<METER>(0,0,0.4),
+					PositionVector(0,0,1.0),
+					0, 0.4, 0.3, 0.2, &tree);
+  InsertTreeCompartment(*axis3, ts);
   
   int count1 = 0; 
   int count2 = 0;
@@ -132,7 +152,7 @@ int main(int argc, char *argv[])
 	  count1 = count2;
 	}
      
-      for (int i=0; i<200; i++)     
+      for (int i=0; i<150; i++)     
 	tree.UpdateWaterFlow(.25, *cm);
       cm->print();
       cout << endl << endl << endl;
