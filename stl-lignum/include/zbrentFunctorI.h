@@ -204,36 +204,42 @@ TreeCompartment<TS,BUD>* adjustSegmentSizeLambda<TS,BUD>::operator()
 template <class TS, class BUD>
 LGMdouble&  CollectCfDWAfterGrowth<TS,BUD>::operator()(LGMdouble& WSum, TreeCompartment<TS,BUD>* tc)const
 {
+  
 	if (TreeSegment<TS,BUD>* tts = dynamic_cast<TreeSegment<TS,BUD>*>(tc))
 	{
-		if (CfTreeSegment<TS,BUD>* cfts = dynamic_cast<CfTreeSegment<TS,BUD>*>(tts))
+	  
+	  if (CfTreeSegment<TS,BUD>* cfts = dynamic_cast<CfTreeSegment<TS,BUD>*>(tc))
 		{
-			Tree<TS,BUD>& tt = dynamic_cast<Tree<TS,BUD>&>(GetTree(*cfts));
+		  
+		  Tree<TS,BUD>& tt = dynamic_cast<Tree<TS,BUD>&>(GetTree(*cfts));
 			
 			if(GetValue(*cfts, age) < R_EPSILON)
 			{
-				WSum += GetValue(*cfts,Wf) + (GetValue(tt, rho) * PI_VALUE * pow(GetValue(*cfts, R),2))*GetValue(*cfts, L); //GetSapwoodArea(*cfts) + GetValue(*cfts,Wh);
+				WSum += GetValue(*cfts,Wf) + (GetValue(tt, rho) * PI_VALUE * 
+							      pow(GetValue(*cfts, R),2))*GetValue(*cfts, L); 
+				//GetSapwoodArea(*cfts) + GetValue(*cfts,Wh);
 			}
 			else
 			{
 				LGMdouble old_rad = GetValue(*cfts,R);
 				LGMdouble new_rad = GetLastAnnualIncrement(*cfts) + old_rad; 
 
-				
-	
-                LGMdouble w_rho = GetValue(tt,rho);
+				LGMdouble w_rho = GetValue(tt,rho);
 				WSum += w_rho * (pow(new_rad,2) - pow(old_rad,2)) * PI_VALUE * GetValue(*cfts, L);
 			
 			}
+		  
 		}
+	
 		
 	} 
+  
   return WSum;
 }
 
 
 template <class TS, class BUD>
-LGMdouble&  CollectDWAfterGrowth<TS,BUD>::operator()(LGMdouble& WSum, TreeCompartment<TS,BUD>* tc)const
+LGMdouble&  CollectHwDWAfterGrowth<TS,BUD>::operator()(LGMdouble& WSum, TreeCompartment<TS,BUD>* tc)const
 {
 	if (TreeSegment<TS,BUD>* tts = dynamic_cast<TreeSegment<TS,BUD>*>(tc))
 	{
@@ -253,7 +259,7 @@ LGMdouble&  CollectDWAfterGrowth<TS,BUD>::operator()(LGMdouble& WSum, TreeCompar
 
 				
 	
-                LGMdouble w_rho = GetValue(tt,rho);
+				LGMdouble w_rho = GetValue(tt,rho);
 				WSum += w_rho * (pow(new_rad,2) - pow(old_rad,2)) * PI_VALUE * GetValue(*hwts, L);
 			}
 		}

@@ -20,6 +20,8 @@ template <class TS,class BUD>
 LGMdouble BracketFunction(LGMdouble& a, LGMdouble& b,
 				  LGMdouble& fa, LGMdouble& fb, Tree<TS,BUD>& tree)
 {
+
+  
   adjustSegmentSizeLambda<TS,BUD> adjustSizeL;
   LGMdouble a_r = GetValue(tree, ar);
 
@@ -32,16 +34,18 @@ LGMdouble BracketFunction(LGMdouble& a, LGMdouble& b,
 
 
   fa = deltaiW;
-
+  
 
   LGMdouble AsIni = 0.0;
   AdjustDiameterCfGrowth<TS,BUD> diamGrowth; 
   AsIni = AccumulateDown(tree, AsIni, diamGrowth);
+
   
   LGMdouble identity = 0.0;
-  CollectDWAfterGrowth<TS,BUD> collectDW;
+  CollectCfDWAfterGrowth<TS,BUD> collectDW;
   LGMdouble  WSum = Accumulate(tree,  identity, collectDW);
-
+  
+  
   LGMdouble sum_nfol = 0.0f;
   CollectNewCfFoliageMass<TS,BUD> collectNFM;
   sum_nfol = Accumulate(tree,  sum_nfol, collectNFM);
@@ -456,7 +460,7 @@ LGMdouble Zbrent(LGMdouble x1,LGMdouble x2,LGMdouble fa, LGMdouble fb, LGMdouble
 template <class TS,class BUD>
 bool AdjustIncrementZbrent(Tree<TS,BUD>& tree)
 {
- 
+  
   //Check first if production - consumption is enough to maintain the
   //the tree. That is, if deltaW(lambda=0) < P - M
   //The case deltaW(0) > P - M arises in the cases 1) P - M < 0
@@ -469,14 +473,14 @@ bool AdjustIncrementZbrent(Tree<TS,BUD>& tree)
 		return false;
   }
 
- 
+  
   LGMdouble a=0,b=0,fa=0,fb=0;
   
   BracketFunction(a,b,fa,fb,tree);
-
+  /*
   LGMdouble zBe = 0.001; //GetValue(tree, zbrentEpsilon);
   Zbrent(a,b,fa,fb, zBe, tree );
-
+  */
 
   return true;
 }
