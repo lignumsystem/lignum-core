@@ -17,6 +17,7 @@ namespace Lignum{
   const LGMdouble DEAD = 0.0;
   const LGMdouble ALIVE = 1.0;
   const LGMdouble DORMANT = 2.0;
-
+  //Bud to produce a cone or reproductive organ 
+  const LGMdouble FLOWER = 3.0;
 }//closing namespace Lignum
 #endif 
