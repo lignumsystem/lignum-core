@@ -25,7 +25,8 @@ CCCFLAGS = -c  #-prelink -ptused   -ptv  #  -fullwarn
 
 
 INCLUDE = -I. -I../stl-lignum/include -I../c++adt/include \
-          -I../Firmament/include -I/usr/freeware/include
+          -I../Firmament/include -I/usr/freeware/include \
+          -I/usr/X11R6/include -I/sw/include
 
 #Glut library comes in 64 and 32 bit versions on SGI.  However neither CC or g++ can 
 #automatically search right library but we must explicitelly tell with LIBD where to search.
@@ -62,10 +63,10 @@ algorithms: $(ALGOBJ) $(LIB4) $(LIB1) $(LIB3)  $(LIB2)
 
 gnu:
 	make "CCC=g++" "CCCFLAGS=-c" "OPTIMIZE=-g" "LIBD=lib32" \
-             "AR=ar"  "ARFLAGS=rv" algorithms
+             "AR=ar"  "ARFLAGS=rvs" algorithms
 lignux: 
 	make "CCC=g++" "CCCFLAGS=-c" "OPTIMIZE=-g" "LIBD=lib32" \
-             "AR=ar"  "ARFLAGS=rv" algorithms
+             "AR=ar"  "ARFLAGS=rvs" algorithms
 
 $(LIB1):
 	(cd ../c++adt; make "CCC=$(CCC)" "CCCFLAGS=$(CCCFLAGS)" "OPTIMIZE=$(OPTIMIZE)" \
