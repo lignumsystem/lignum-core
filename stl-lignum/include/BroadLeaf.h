@@ -81,7 +81,7 @@ class BroadLeaf{
   friend void TranslateLeaf(BroadLeaf<S>& bl, const PositionVector& t);
 
   template <class S>
-  friend void SetLeafPosition(BroadLeaf& bl, const Point& p);
+  friend void SetLeafPosition(BroadLeaf<S>& bl, const Point& p);
 public:
   BroadLeaf(LGMdouble sf,LGMdouble tauL,LGMdouble dof,int number_of_sectors,
 	    const Petiole& petiole, const PositionVector& leaf_normal,
