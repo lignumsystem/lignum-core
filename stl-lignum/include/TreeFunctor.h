@@ -95,6 +95,38 @@ Point GetBoundingBox(Axis<TS,BUD> &ax, Point &p);
 
 
 
+//This class holds the values of the coordinates that define box that
+//holds the tree - or several trees.
+
+class BoundingBox { 
+ public:
+  BoundingBox() { minxyz = Point(R_HUGE, R_HUGE, R_HUGE); 
+  maxxyz = Point(-R_HUGE, -R_HUGE, -R_HUGE); }
+  Point getMin() { return minxyz; }
+  Point getMax() { return maxxyz; }
+  void setMinX(const LGMdouble x) { minxyz.setX(x); }
+  void setMinY(const LGMdouble y) { minxyz.setY(y); }
+  void setMinZ(const LGMdouble z) { minxyz.setZ(z); }
+  void setMaxX(const LGMdouble x) { maxxyz.setX(x); }
+  void setMaxY(const LGMdouble y) { maxxyz.setY(y); }
+  void setMaxZ(const LGMdouble z) { maxxyz.setZ(z); }
+ private:
+  Point minxyz;
+  Point maxxyz;
+};
+
+
+//This functor runs (Accumulate) through tree and finds the bounding
+//box for it
+
+template <class TS,class BUD>
+class FindBoundingBox{
+public:
+  BoundingBox operator ()(BoundingBox& b_box,
+				       TreeCompartment<TS,BUD>* tc)const;
+};
+
+
 }//closing namespace Lignum
 #include <TreeFunctorI.h>
 
