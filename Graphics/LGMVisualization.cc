@@ -60,7 +60,7 @@ namespace Lignum
 
  void LGMVisualization::ResetCameraPosition(float height)
  { 
-     settings.cam_x = -height*6;
+     settings.cam_x = -height*4;
      settings.cam_y = 0;
      settings.cam_z = height/2;   
  }
@@ -153,24 +153,13 @@ namespace Lignum
     hy = sin(settings.x_move*0.1*2*PI_VALUE/360) * 8;
     hz = hz + settings.z_move * 0.01;
 
-    //hx = 0;
-    //hy = 0;
-    //hz = 0.6;
-
-    cout << "camera position      " << settings.cam_x << " " <<  settings.cam_y << " "<< settings.cam_z << endl;
-    cout << "camera is pointed to " << hx << " " << hy << " " << hz-settings.cam_z << endl;
-
+    
     settings.cam_x = settings.cam_x + (settings.cam_x - hx) * 0.001 * settings.y_move; 
     settings.cam_y = settings.cam_y + (settings.cam_y - hy) * 0.001 * settings.y_move; 
     //settings.cam_z = 1;
 
-   cout << "camera position      " << settings.cam_x << " " <<  settings.cam_y << " "<< settings.cam_z << endl;
-   cout << "camera is pointed to " << hx << " " << hy << " " << hz-settings.cam_z << endl<< endl;
-
-    //  cout << "cam coords " << settings.cam_x << "   " << settings.cam_y << "   " << settings.cam_z <<endl; 
-
-    // cout << "hx,hy,hz " << hx << " " << hy << " " << hz << endl;
-
+   
+  
     gluLookAt(settings.cam_x, settings.cam_y, settings.cam_z,// settings.camera x,y,z  
 	      hx, hy, hz-settings.cam_z, // look at x,y,z    
 	      0.0, 0.0, 1.0);	// which way up    
