@@ -3,10 +3,10 @@
 #define RMATRIX_H
 #include <math.h>
 #include <mathsym.h>
+#include <Rotation.h>
 #include <TMatrix.h>
 
 namespace cxxadt{
-
 /*===================================================================
 **RMatrix ("Rotation Matrix") is a matrix to apply
 **table of functions to given angle. The result is a FMatrix
@@ -18,17 +18,14 @@ namespace cxxadt{
 **base to another so the inverse ("undoing" the previous rotation)
 **is the transpose of the matrix
 */
-enum _rotation_direction {ROTATE_X,ROTATE_Y,ROTATE_Z};
-
-typedef enum _rotation_direction ROTATION;
 
 #define RMATRIX_SIZE 3
 
 class RMatrix{
-  friend RADIAN fn_1(RADIAN angle){return 1.0;}
-  friend RADIAN fn_0(RADIAN angle){return 0.0;}
-  friend RADIAN neg_sin(RADIAN angle){return (RADIAN) -sin(angle);}
-  friend RADIAN neg_cos(RADIAN angle){return (RADIAN) -cos(angle);}
+  friend RADIAN fn_1(RADIAN angle);
+  friend RADIAN fn_0(RADIAN angle);
+  friend RADIAN neg_sin(RADIAN angle);
+  friend RADIAN neg_cos(RADIAN angle);
 public:
   RMatrix(ROTATION direction);
   TMatrix<double> operator()(RADIAN angle)const;
