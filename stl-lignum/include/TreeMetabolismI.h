@@ -8,7 +8,7 @@
 
 namespace Lignum{
   
-//PHOTOSYBTHESIS
+//PHOTOSYNTHESIS
 template <class TS,class BUD>
 void Tree<TS,BUD>::photosynthesis()
 {
@@ -21,7 +21,6 @@ void Tree<TS,BUD>::photosynthesis()
   LGMdouble initPh = 0.0;
   LGMdouble sumPh;
   sumPh = Accumulate(*this, initPh, SumTreePhotosynthesis<TS,BUD>());
-  
   SetValue(*this, TreeP, sumPh);
 }
 
@@ -41,7 +40,6 @@ void Tree<TS,BUD>::respiration()
   
   // Root respiration
   sumM += GetValue(*this,LGPmr)*GetValue(*this,TreeWr);
-
   SetValue(*this, TreeM, sumM);
 }
 
