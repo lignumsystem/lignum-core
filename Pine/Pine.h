@@ -34,17 +34,35 @@ class PineSegment: public CfTreeSegment<PineSegment,PineBud>{
     }    
 };
 
-enum PBNAME {PBDATA};
+//PineBudData  is  intented  to  be  the data  structure  that  passes
+//information  between LIGNUM  model and  L-system. A  simpler example
+//than  in  SugarMaple. Currently  PineBudData  has 'state',  'foliage
+//mass' (of  the mother segment) and  the direction of  the bud (looks
+//like we need the orientation of the bud in world coordinates, at the
+//very least it will make  life easier).  See PineBud for SetValue and
+//GetValue methods (used by the L-system implementation).
+enum PBNAME {PBDATA};//The name of the data structure
 class PineBudData{
+  //GetDirection is not necessary but makes life easier
   friend PositionVector GetDirection(const PineBudData& data){
     return PositionVector(data.x,data.y,data.z);
   }
 public:
+  //A  couple of  constructors to  initialize members.  Recommended in
+  //general (read: required!!).
   PineBudData():state(ALIVE),fm(0.0){}
   PineBudData(double s, double fol):state(s),fm(fol){}
-  double state; //ALIVE,DEAD
+  double state; //ALIVE,DEAD, FLOWER, etc
   double fm;//foliage mass (of the mother segment)
-  //direction PositionVector(x,y,z)
+  //Direction    PositionVector(x,y,z).     Note    you   can't    use
+  //PositionVector  here, because  internally it  has  implemented the
+  //(x,y,z)  as  an   stl-vector.   During  passing  the  information,
+  //L-system uses the  sizeof(PineBudData) built-in function to access
+  //this structure  in the  string. And the  sizeof(vector<double>) is
+  //something else  than the sizeof  three floating point  numbers. In
+  //general, to be on the safe side, do not use references or pointers
+  //or  structures within  structures  to pass  the information,  just
+  //fundamental c/c++ types corresponding to basic storage units.
   double x;
   double y;
   double z;
@@ -55,6 +73,8 @@ class PineBud: public Bud<PineSegment,PineBud>{
     PineBudData old_data = GetValue(b,name); 
     SetValue(b,LGAstate,data.state);
     b.fm_mother_segment = data.fm;
+    //Do not update  the direction, it would override  the work of the
+    //turtle
     return old_data;
   }
   friend PineBudData GetValue(const PineBud& b,PBNAME name){
