@@ -10,20 +10,28 @@
 
 
 namespace Lignum{
-
-
+  //Please orginize headers or rewrite "<<" operator
+  //to remove this declation; 
+template <class TS,class BUD> class CfTreeSegment;
 
 template <class TS,class BUD>
 ostream &operator << (ostream& os, TreeSegment<TS,BUD>& ts)
 {	
+  //BetulaTortuosa is still haunting here 
+  class BetulaTortuosa;
+  class TreeSegment<BetulaTortuosa>;
+  //Please orginize headers or rewrite "<<" operator
+  //to remove this declation; 
+  class BroadLeaf;
+
   os << "DIRECTION " << GetDirection(ts);  
   os << "  POSITION " << GetPoint(ts) << "  RADIUS " << GetValue(ts,R) << " " 
      << "  LENGTH " << GetValue(ts,L) << "  AGE " << GetValue(ts,age);
-
-  if (CfTreeSegment<TS,BUD>* cfts = dynamic_cast<CfTreeSegment<TS,BUD>*>(&ts))
+  
+  if (CfTreeSegment<TS,BUD>& cfts = dynamic_cast<CfTreeSegment<TS,BUD>&>(ts))
     {
-      os << " WF " << GetValue(*cfts, Wf) << " RF " << GetValue(*cfts, Rf) 
-	 << " RH " << GetValue(*cfts, Rh) << " QABS " << GetValue(*cfts, Qabs);
+      os << " WF " << GetValue(cfts, Wf) << " RF " << GetValue(cfts, Rf) 
+	 << " RH " << GetValue(cfts, Rh) << " QABS " << GetValue(cfts, Qabs);
 	
       int size = ts.tsa.annual_rings.size();
       for (int i=0; i< size; i++)
@@ -32,17 +40,17 @@ ostream &operator << (ostream& os, TreeSegment<TS,BUD>& ts)
 	}
     }
   
-  if (TreeSegment<BetulaTortuosa>* betula = dynamic_cast<TreeSegment<BetulaTortuosa> *>(&ts)) 
+  if (TreeSegment<BetulaTortuosa>& betula = dynamic_cast<TreeSegment<BetulaTortuosa> &>(ts)) 
     {
-      BetulaTortuosa *s = dynamic_cast<BetulaTortuosa*>(&ts);
-      std::list<BroadLeaf*> leaves = GetLeafList(*s);
+      BetulaTortuosa& s = dynamic_cast<BetulaTortuosa&>(ts);
+      std::list<BroadLeaf*> leaves = GetLeafList(s);
       if (leaves.empty())
 	{
 	  //os << "Ei lehtiä!" << endl;
 	}
       else
 	{
-	  Firmament& firmament = GetFirmament(GetTree(*s));
+	  Firmament& firmament = GetFirmament(GetTree(s));
 	  
 	  double ball = firmament.diffuseBallSensor();
 	  double plane = firmament.diffusePlaneSensor();
