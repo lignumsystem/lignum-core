@@ -51,10 +51,10 @@ Tree<TS,BUD>::Tree(const Point& p, const PositionVector& d, LGMdouble len, LGMdo
     {
       SetValue(*tts, LGAWf, 0.03);
     }
-  SetValue(*ts, Rf, rad + 0.02);
+  SetValue(*ts, LGARf, rad + 0.02);
 
   LGMdouble x_i = GetValue(*this, xi);
-  LGMdouble ts_rad = GetValue(*ts, R);
+  LGMdouble ts_rad = GetValue(*ts, LGAR);
   
   //Sapwood area corresponds to foliage mass
   LGMdouble A_s = (1.0 - GetValue(*this, xi)) * 
@@ -62,11 +62,11 @@ Tree<TS,BUD>::Tree(const Point& p, const PositionVector& d, LGMdouble len, LGMdo
 		       GetValue(*this, lr));
   
   if (A_s > PI_VALUE*ts_rad*ts_rad)
-    SetValue(*ts, Rh, 0);
+    SetValue(*ts, LGARh, 0);
   
   
   LGMdouble r_h = sqrt((PI_VALUE*ts_rad*ts_rad - A_s)/PI_VALUE);
-  SetValue(*ts, Rh, r_h);
+  SetValue(*ts, LGARh, r_h);
   
   Point end_point = p + Point(0,0,len);
   BranchingPoint<TS,BUD> *bp = 
@@ -402,7 +402,7 @@ LGMdouble GetValue(const Tree<TS,BUD>& tree, const LGMAD name)
     list<TreeCompartment<TS,BUD>*>& ls = GetTreeCompartmentList(axis);
     if (ls.size()> 1){
       TS* ts= dynamic_cast<TS*>(*(ls.begin()));
-      return 2.0*GetValue(*ts,R);
+      return 2.0*GetValue(*ts,LGAR);
     }
     else
       return 0.0;

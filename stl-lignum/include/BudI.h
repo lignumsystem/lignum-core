@@ -64,7 +64,7 @@ LGMdouble GetValue(const Bud<TS,BUD>& bud, const LGMAD name)
   else if (name == LGAip)
     return bud.ba.ip;
 
-  else if (name == LGMstatus)
+  else if (name == LGAstatus)
     return bud.ba.status ;
   
   else if (name == LGAtype)
@@ -90,7 +90,7 @@ LGMdouble SetValue(Bud<TS,BUD>& bud, const LGMAD name, const LGMdouble value)
   else if (name == LGAip)
     bud.ba.ip = value;
   
-  else if (name == LGMstatus)
+  else if (name == LGAstatus)
     bud.ba.status = value;
 
   else if (name == LGAtype)

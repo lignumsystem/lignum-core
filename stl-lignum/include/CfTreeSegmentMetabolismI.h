@@ -38,7 +38,7 @@ void CfTreeSegment<TS,BUD>::aging()
   LGMdouble dAs = GetValue(GetTree(*this),ss) * GetValue(*this,LGAAs);
   LGMdouble Ah_new =  dAs + GetValue(*this, LGAAh);
   LGMdouble Rh_new = sqrt(Ah_new/PI_VALUE);
-  SetValue(*this,Rh,Rh_new);
+  SetValue(*this,LGARh,Rh_new);
 
   //Foliage senescence
   const ParametricCurve& fm = GetFunction(GetTree(*this),LGMFM);
@@ -62,9 +62,9 @@ TcData& CfTreeSegment<TS,BUD>::diameterGrowth(TcData& data)
     //possible new radius
     LGMdouble Rnew = sqrt((Asu + Ahown + Asr)/PI_VALUE);
     //compare Rnew to R, choose max
-    Rnew = max(Rnew, GetValue(*this,R));
+    Rnew = max(Rnew, GetValue(*this,LGAR));
     //New wood radius
-    SetValue(*this,R,Rnew);
+    SetValue(*this,LGAR,Rnew);
   }
   //Pass down sapwood area requirement
   SetValue(data,LGAAs,GetValue(*this,LGAAs)); 

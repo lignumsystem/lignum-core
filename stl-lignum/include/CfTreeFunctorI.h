@@ -43,7 +43,7 @@ LGMdouble SetVigours(Axis<TS,BUD>& axis, LGMdouble vig_val, LGMdouble max_area)
 	{
 	  if (calculate_new_value)
 	    {
-	      LGMdouble rad = GetValue(*hwts, R);
+	      LGMdouble rad = GetValue(*hwts, LGAR);
 	      LGMdouble area = pow(rad, 2) * PI_VALUE;
 	      
 	      assert(area/max_area <= 1);
@@ -55,7 +55,7 @@ LGMdouble SetVigours(Axis<TS,BUD>& axis, LGMdouble vig_val, LGMdouble max_area)
 	  if (lastbp)
 	    {
 	      LGMdouble max_rad = GetMaxRadius(*lastbp);
-	      LGMdouble rad = GetValue(*hwts, R);
+	      LGMdouble rad = GetValue(*hwts, LGAR);
 	      LGMdouble marea = pow(max_rad, 2) * PI_VALUE;
 	      LGMdouble area = pow(rad, 2) * PI_VALUE;
 	      

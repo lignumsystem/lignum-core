@@ -87,8 +87,8 @@ LGMdouble GetMaxRadius(BranchingPoint<TS,BUD>& bp)
     {
       TreeSegment<TS,BUD> *ts = GetFirstTreeSegment(**first++);
       if (ts){
-	if (GetValue(*ts, R) > max_rad)
-	  max_rad = GetValue(*ts, R);
+	if (GetValue(*ts, LGAR) > max_rad)
+	  max_rad = GetValue(*ts, LGAR);
       }
     }
   return max_rad;

@@ -11,11 +11,11 @@ namespace Lignum{
     switch (name){
     case LGAL:
       return rs.rsa.L;     //Length
-    case R:
+    case LGAR:
       return rs.rsa.R;     //Radius (sapwood)
     case LGARTop:
       return rs.rsa.RTop;  //Radius at top (sapwood)
-    case Rh:
+    case LGARh:
       return rs.rsa.Rh;    //Radius heartwood
     case LGARhair:
       return rs.rsa.Rhair; //Radius root hair
@@ -23,9 +23,9 @@ namespace Lignum{
       return rs.rsa.omega;
       //Compound attributes, areas
     case LGAA:                //Segment area based on R
-      return PI_VALUE*pow(GetValue(rs,R),2.0);
+      return PI_VALUE*pow(GetValue(rs,LGAR),2.0);
     case LGAAh:               //Heartwood area
-      return PI_VALUE*pow(GetValue(rs,Rh),2.0);
+      return PI_VALUE*pow(GetValue(rs,LGARh),2.0);
     case LGAAs:               //Sapwood Area
       return GetValue(rs,LGAA) - GetValue(rs,LGAAh);
     case LGAAhair:            //Root hair area
@@ -60,13 +60,13 @@ namespace Lignum{
     case LGAL:
       rs.rsa.L = value;
       break;
-    case R:
+    case LGAR:
       rs.rsa.R = value;
       break;
     case LGARTop:
       rs.rsa.RTop = value;
       break;
-    case Rh:
+    case LGARh:
       rs.rsa.Rh = value;
       break;
     case LGARhair:
@@ -97,7 +97,7 @@ namespace Lignum{
     switch (name){
     case LGAcollision:
        return rt.rta.collision;
-    case LGMstatus:
+    case LGAstatus:
        return rt.rta.status;
     case LGAomega:
        return rt.rta.omega;
@@ -115,7 +115,7 @@ namespace Lignum{
     case LGAcollision:
       rt.rta.collision = value;
       break;
-    case LGMstatus:
+    case LGAstatus:
       rt.rta.status = value;
       break;
     case LGAomega:

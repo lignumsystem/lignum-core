@@ -456,9 +456,9 @@ namespace Lignum{
 
 
 	stru.num_segments++;
-	LGMdouble r_ = GetValue(*ts, R);
+	LGMdouble r_ = GetValue(*ts, LGAR);
 	LGMdouble l_ = GetValue(*ts, L);
-	LGMdouble rh_ = GetValue(*ts, Rh);
+	LGMdouble rh_ = GetValue(*ts, LGARh);
 
 
 	Point ep = GetEndPoint(*ts);
@@ -499,9 +499,9 @@ namespace Lignum{
 	// if main axis
 	if(GetValue(*ts, LGAomega) == 1)
 	  {
-	    stru.taper_rad.push_back(GetValue(*ts, R)); 
+	    stru.taper_rad.push_back(GetValue(*ts, LGAR)); 
 	    stru.taper_hei.push_back(ep.getZ());
-	    stru.taper_radhw.push_back(GetValue(*ts, Rh));
+	    stru.taper_radhw.push_back(GetValue(*ts, LGARh));
 
 	    stru.sum_Ws += rho_*L*2.0*PI_VALUE*r_*r_;
 
@@ -677,7 +677,7 @@ namespace Lignum{
 
 	  if (GetPoint(*ts).getZ() == 0)
 	    {
-	      stru.bottom_rad = GetValue(*ts, R);
+	      stru.bottom_rad = GetValue(*ts, LGAR);
 	    }
 
 	  int _age = GetValue(*ts, LGAage);
@@ -707,7 +707,7 @@ namespace Lignum{
 	  // if main axis
 	  if (ep.getX() == 0 && ep.getY() == 0)
 	    {
-	      stru.taper_rad.push_back(GetValue(*ts, R));
+	      stru.taper_rad.push_back(GetValue(*ts, LGAR));
 	      stru.taper_hei.push_back(ep.getZ());
 	    }
 
@@ -737,7 +737,7 @@ namespace Lignum{
 
 	      if (GetPoint(*ts).getZ() == 0)
 		{
-		  stru.bottom_rad = GetValue(*ts, R);
+		  stru.bottom_rad = GetValue(*ts, LGAR);
 		}
 
 	      int _age = GetValue(*ts, LGAage);
@@ -777,7 +777,7 @@ namespace Lignum{
 	      // if main axis
 	      if (ep.getX() == 0 && ep.getY() == 0)
 		{
-		  stru.taper_rad.push_back(GetValue(*ts, R));
+		  stru.taper_rad.push_back(GetValue(*ts, LGAR));
 		  stru.taper_hei.push_back(ep.getZ());
 		}
 	    }

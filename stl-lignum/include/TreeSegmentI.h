@@ -22,7 +22,7 @@ ofstream &operator << (ofstream& os, TreeSegment<TS,BUD>& ts)
 
   os << "DIRECTION " << pv.getX() << " " << pv.getY() << " " << pv.getZ()
      << "  POSITION " << p.getX() << " " << p.getY() << " " << p.getZ() 
-     << "  RADIUS " << GetValue(ts,R) << " " 
+     << "  RADIUS " << GetValue(ts,LGAR) << " " 
      << "  LENGTH " << GetValue(ts,LGAL) << "  AGE " << GetValue(ts,LGAage) << flush;
   
   os << " END" << endl;
@@ -79,8 +79,8 @@ TreeSegment<TS,BUD>::TreeSegment(const Point& p, const PositionVector& d, const 
 {	
   SetValue(*this,LGAomega,go);
   SetValue(*this,LGAL,l);
-  SetValue(*this,R,r);
-  SetValue(*this,Rh,rh);
+  SetValue(*this,LGAR,r);
+  SetValue(*this,LGARh,rh);
   SetValue(*this,LGARTop,r);
   
   //the first annual ring
@@ -103,7 +103,7 @@ template <class TS,class BUD>
 void TreeSegment<TS,BUD>::SetYearCircles()
 {
   int ts_age = GetValue(*this,LGAage);
-  float r = GetValue(*this,R);
+  float r = GetValue(*this,LGAR);
   float delta_r = r / (ts_age);
   for (int i=0; i<ts_age-1; i++)
   {
@@ -184,7 +184,7 @@ METER SetRadius(TreeSegment<TS,BUD>& ts)
 	Tree<TS,BUD> &tree = GetTree(ts);
 	LGMdouble A_s = (1.0 - GetValue(tree, xi)) * GetValue(ts, LGAWf)/(2.0*GetValue(tree, af)*GetValue(tree, lr));
 	LGMdouble r_h = sqrt((PI_VALUE*ts.tsa.R*ts.tsa.R - A_s)/PI_VALUE);
-	SetValue(ts, Rh, r_h);
+	SetValue(ts, LGARh, r_h);
 */
 	return ts.tsa.R;
 }
@@ -222,9 +222,9 @@ template <class TS,class BUD>
 M2 GetSapwoodArea(const TreeSegment<TS,BUD>& ts)
 {
   //area up to R, wood radius up to foliage
-  LGMdouble A1 = PI_VALUE*pow(GetValue(ts,R),2.0);
+  LGMdouble A1 = PI_VALUE*pow(GetValue(ts,LGAR),2.0);
   //heartwood area
-  LGMdouble A2 = PI_VALUE*pow(GetValue(ts,Rh),2.0);
+  LGMdouble A2 = PI_VALUE*pow(GetValue(ts,LGARh),2.0);
   //sapwood area
   LGMdouble A3 = A1 - A2;
 
@@ -234,7 +234,7 @@ M2 GetSapwoodArea(const TreeSegment<TS,BUD>& ts)
 template <class TS,class BUD>
 M2 GetHeartwoodArea(const TreeSegment<TS,BUD>& ts)
 {
-  return PI_VALUE*pow(GetValue(ts,Rh),2.0);
+  return PI_VALUE*pow(GetValue(ts,LGARh),2.0);
 }
 
 template <class TS,class BUD>
@@ -276,10 +276,10 @@ template <class TS,class BUD>
 LGMdouble GetValue(const TreeSegment<TS,BUD>& ts, const LGMAD name)
 {
   if (name == LGAA)
-    return PI_VALUE*pow(GetValue(ts,R), 2.0);
+    return PI_VALUE*pow(GetValue(ts,LGAR), 2.0);
   
   else if (name == LGAAh)
-    return PI_VALUE*pow(GetValue(ts,Rh), 2.0);
+    return PI_VALUE*pow(GetValue(ts,LGARh), 2.0);
 
   else if (name == LGAAs)
     return GetValue(ts,LGAA) - GetValue(ts,LGAAh);
@@ -302,10 +302,10 @@ LGMdouble GetValue(const TreeSegment<TS,BUD>& ts, const LGMAD name)
   else if (name == LGAomega)
     return ts.tsa.omega;
 
-  else if (name == R)
+  else if (name == LGAR)
     return ts.tsa.R;
 
-  else if (name == Rh)
+  else if (name == LGARh)
     return ts.tsa.Rh;
 
   else if (name == LGARTop)
@@ -319,9 +319,9 @@ LGMdouble GetValue(const TreeSegment<TS,BUD>& ts, const LGMAD name)
   //anyway). These 3 lines should not be a computational cost.
   else if (name == LGAWs){
      //volume up to R
-    LGMdouble v1 = PI_VALUE*pow(GetValue(ts,R),2.0) * GetValue(ts,LGAL);
+    LGMdouble v1 = PI_VALUE*pow(GetValue(ts,LGAR),2.0) * GetValue(ts,LGAL);
     //heartwood volume
-    LGMdouble v2 = PI_VALUE*pow(GetValue(ts,Rh),2.0) * GetValue(ts,LGAL);
+    LGMdouble v2 = PI_VALUE*pow(GetValue(ts,LGARh),2.0) * GetValue(ts,LGAL);
     //sapwood volume
     LGMdouble v3 = v1 - v2;   
     //mass is density * volume
@@ -329,7 +329,7 @@ LGMdouble GetValue(const TreeSegment<TS,BUD>& ts, const LGMAD name)
   }
   //Perhaps we need own 'rho' for Wh?
   else if (name == LGAWh){
-    LGMdouble v1 = PI_VALUE*pow(GetValue(ts,Rh),2.0) * GetValue(ts,LGAL);
+    LGMdouble v1 = PI_VALUE*pow(GetValue(ts,LGARh),2.0) * GetValue(ts,LGAL);
     return GetValue(GetTree(ts),rho) * v1;
   }
   else
@@ -364,10 +364,10 @@ LGMdouble SetValue(TreeSegment<TS,BUD>& ts, const LGMAD name, const LGMdouble va
   else if (name == LGAomega)
     ts.tsa.omega = value;
 
-  else if (name == R)
+  else if (name == LGAR)
 	 ts.tsa.R = value;
   
-  else if (name == Rh)
+  else if (name == LGARh)
     ts.tsa.Rh = value;
 
   else if (name == LGARTop)

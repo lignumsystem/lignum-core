@@ -60,8 +60,8 @@ METER& SampleDiameterGrowth<TS,BUD>::operator()(METER& r,TreeCompartment<TS,BUD>
 {
   TreeSegment<TS,BUD>* myts = NULL;
   if (myts = dynamic_cast<TreeSegment<TS,BUD>*>(tc)){
-    SetValue(*myts,R,GetValue(*myts,R)+r*0.10);
-    r = GetValue(*myts,R);
+    SetValue(*myts,LGAR,GetValue(*myts,LGAR)+r*0.10);
+    r = GetValue(*myts,LGAR);
   }
   return r;
 }

@@ -308,8 +308,8 @@ void StructuralPineGrowth(Axis<TS,BUD> &ax, const ParametricCurve& bud_fun, Tree
 			SetValue(*ts, LGAomega, 1);
 			SetValue(*ts, LGAage, 0);
 			SetValue(*ts, LGAWf, foliage_mass);	
-			SetValue(*ts, Rf, R_f);
-			SetValue(*ts, Rh, R_h);
+			SetValue(*ts, LGARf, R_f);
+			SetValue(*ts, LGARh, R_h);
 			
 
 			ASSERT(GetSapwoodArea(*ts) >= 0);
@@ -1009,7 +1009,7 @@ MotherInfo& AddWhiteBirchSegments<TS,BUD>::operator()(MotherInfo& mi, TreeCompar
 		for(i=0; i<segments.size(); i++)
 		{
 			SetValue(*segments[i], R, radius);
-			SetValue(*segments[i], Rh, R_h);
+			SetValue(*segments[i], LGARh, R_h);
 		}
 	  }
 

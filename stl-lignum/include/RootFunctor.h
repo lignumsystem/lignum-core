@@ -98,7 +98,7 @@ namespace Lignum{
     LGMdouble operator()(LGMdouble& s,RootCompartment<TREE>* rc)const{
       if (RootTip<TREE>* rt = dynamic_cast<RootTip<TREE>*> (rc)){
 	cout << "I am RootTip got status: " << s << endl;
-	SetValue(*rt,LGMstatus,s);
+	SetValue(*rt,LGAstatus,s);
       }
       else if (RootBranchingPoint<TREE>* rpb = 
 	       dynamic_cast<RootBranchingPoint<TREE>*> (rc)){
@@ -115,7 +115,7 @@ namespace Lignum{
     LGMdouble operator()(LGMdouble s,RootCompartment<TREE>* rc)const{
       if (RootTip<TREE>* rt = dynamic_cast<RootTip<TREE>*> (rc)){
 	cout << "I am RootTip got status: " << s << endl;
-	SetValue(*rt,LGMstatus,s);
+	SetValue(*rt,LGAstatus,s);
       }
       else if (RootBranchingPoint<TREE>* rpb = 
 	       dynamic_cast<RootBranchingPoint<TREE>*> (rc)){

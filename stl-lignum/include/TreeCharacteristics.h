@@ -55,7 +55,7 @@ namespace Lignum{
 	//traversed in reverse oder: for_each(ls.rbegin(),ls.rend(),dbh)
 	if (GetPoint(*ts).getZ() >= 1.3){
 	  //override previous value
-	  d13 = 2.0*GetValue(*ts,R);
+	  d13 = 2.0*GetValue(*ts,LGAR);
 	}
       }
     }
@@ -124,7 +124,7 @@ namespace Lignum{
 	  //if branches in the immediate branching point above have foliage
 	  if (dcl.BranchWf() > 0.0){
 	    //set the segment diameter to the diameter crown base
-	    dcl.DCrownBase(2.0*GetValue(*ts,R));
+	    dcl.DCrownBase(2.0*GetValue(*ts,LGAR));
 	    //set the segment height to the crown base
 	    dcl.HCrownBase(GetPoint(*ts).getZ());
 	    //reset  foliage  so  if  the branches  in  the  immediate
@@ -167,7 +167,7 @@ namespace Lignum{
       if (TS* ts = dynamic_cast<TS*>(tc)){
 	//Get the diameter of the segment an pass it to the 
 	//branching point below
-	d = 2.0*GetValue(*ts,R);
+	d = 2.0*GetValue(*ts,LGAR);
       }
       return d;
     }
@@ -257,11 +257,11 @@ namespace Lignum{
 	//segment itself is needed.  If  the diameter is twice it does
 	//not  matter  (more troublesome  to  explicitely program  the
 	//special case in the beginning)
-	vi_data.addSegmentDiameter(2.0*GetValue(*ts,R));
+	vi_data.addSegmentDiameter(2.0*GetValue(*ts,LGAR));
 	//ViData has the max diameter of the segments we need to compare with
 	//to  compute the  VI (see  TreePhysiologyVigourIndex). Compute
 	//the VI.
-	double vi_value = vi_data(2.0*GetValue(*ts,R));
+	double vi_value = vi_data(2.0*GetValue(*ts,LGAR));
 	//Update VI
 	SetValue(*ts,LGAvi,vi_value);
 	//This will be the new segment below VI

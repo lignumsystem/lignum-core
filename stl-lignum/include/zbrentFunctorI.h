@@ -41,8 +41,8 @@ LGMdouble& AdjustDiameterCfGrowth<TS,BUD>::operator()(LGMdouble& As, TreeCompart
 
 			
 				LGMdouble Asu = As; //Sapwood area ylhaalta
-				LGMdouble r_h = GetValue(*cfsegment, Rh);  // heartwood radius
-				LGMdouble dAs = GetValue(tree, ss) * PI_VALUE * (pow(GetValue(*cfsegment, R), 2) - pow(r_h, 2));
+				LGMdouble r_h = GetValue(*cfsegment, LGARh);  // heartwood radius
+				LGMdouble dAs = GetValue(tree, ss) * PI_VALUE * (pow(GetValue(*cfsegment, LGAR), 2) - pow(r_h, 2));
 			
 				//From equation 14 in Ann Bot 1996
 				LGMdouble Asr = ( 1.0 - GetValue(tree, xi)) * GetValue(*cfsegment, LGAWf) / (2.0 * GetValue(tree, af) * GetValue(tree, lr)); 
@@ -50,20 +50,20 @@ LGMdouble& AdjustDiameterCfGrowth<TS,BUD>::operator()(LGMdouble& As, TreeCompart
 				double t = (Asu + PI_VALUE * pow(r_h, 2.0) + dAs + Asr);
 				double t2 = sqrt(t / PI_VALUE);
 				LGMdouble Rnew = sqrt( ( Asu + PI_VALUE * pow(r_h, 2.0) + dAs + Asr) / PI_VALUE);
-				LGMdouble Rold = GetValue(*cfsegment, R);
+				LGMdouble Rold = GetValue(*cfsegment, LGAR);
 
 				
-				if (Rnew < GetValue(*cfsegment, R))
-					Rnew = GetValue(*cfsegment, R);
+				if (Rnew < GetValue(*cfsegment, LGAR))
+					Rnew = GetValue(*cfsegment, LGAR);
 
 
-				LGMdouble growth = Rnew - GetValue(*cfsegment, R);
+				LGMdouble growth = Rnew - GetValue(*cfsegment, LGAR);
 				if (growth < 0)
 					growth = 0.0;
 				cfsegment->AdjustAnnualGrowth(growth); 
 			
-				r_h = sqrt(pow(GetValue(*cfsegment,Rh), 2) + (dAs / PI_VALUE));
-				SetValue(*cfsegment, Rh, r_h);
+				r_h = sqrt(pow(GetValue(*cfsegment,LGARh), 2) + (dAs / PI_VALUE));
+				SetValue(*cfsegment, LGARh, r_h);
 
 				#ifdef _MSC_VER
 				ASSERT(Rnew >= r_h);
@@ -109,7 +109,7 @@ LGMdouble& AdjustDiameterHwGrowth<TS,BUD>::operator()(LGMdouble& As, TreeCompart
 
 			
 				LGMdouble Asu = As; //Sapwood area ylhaalta
-				LGMdouble r_h = GetValue(*hwsegment, Rh);  // heartwood radius
+				LGMdouble r_h = GetValue(*hwsegment, LGARh);  // heartwood radius
 				LGMdouble dAs = GetValue(tree, ss) * GetSapwoodArea(*hwsegment);
 			
 				if (file_out_pl.is_open())
@@ -121,7 +121,7 @@ LGMdouble& AdjustDiameterHwGrowth<TS,BUD>::operator()(LGMdouble& As, TreeCompart
 				}
 
 
-				LGMdouble Rold = GetValue(*hwsegment, R);
+				LGMdouble Rold = GetValue(*hwsegment, LGAR);
 				
 				//Application of the Functional-Structural... equation 20.
 				LGMdouble A_ts = max(Asu + dAs + PI_VALUE * pow(r_h, 2.0), PI_VALUE * pow(Rold, 2.0)); 
@@ -129,14 +129,14 @@ LGMdouble& AdjustDiameterHwGrowth<TS,BUD>::operator()(LGMdouble& As, TreeCompart
 				LGMdouble Rnew = sqrt(A_ts / PI_VALUE);
 				
 
-				if (Rnew < GetValue(*hwsegment, R))
-					Rnew = GetValue(*hwsegment, R);
+				if (Rnew < GetValue(*hwsegment, LGAR))
+					Rnew = GetValue(*hwsegment, LGAR);
 
 
 				
 				
 
-				LGMdouble growth = Rnew - GetValue(*hwsegment, R);
+				LGMdouble growth = Rnew - GetValue(*hwsegment, LGAR);
 				
 			
 
@@ -228,9 +228,9 @@ TreeCompartment<TS,BUD>* adjustSegmentSizeLambda<TS,BUD>::operator()
 			LGMdouble a_f = GetValue(tree, af);
 			LGMdouble x_i = GetValue(tree, xi);
 			LGMdouble length = GetValue(*cfts, L)*lam;		  //length
-			LGMdouble radius = GetValue(*cfts, R)*lam;		  //radius
+			LGMdouble radius = GetValue(*cfts, LGAR)*lam;		  //radius
 
-			//LGMdouble R_h = GetValue(*cfts,Rh) * lam;
+			//LGMdouble R_h = GetValue(*cfts,LGARh) * lam;
 			
 			LGMdouble R_h = sqrt(x_i) * radius;
 			
@@ -245,7 +245,7 @@ TreeCompartment<TS,BUD>* adjustSegmentSizeLambda<TS,BUD>::operator()
 			SetValue(*cfts, L, length);
 			SetValue(*cfts, R, radius);
 			SetValue(*cfts, LGAWf, foliage_mass);	
-			SetValue(*cfts, Rf, R_f);
+			SetValue(*cfts, LGARf, R_f);
 
 			#ifdef _MSC_VER
 			
@@ -253,7 +253,7 @@ TreeCompartment<TS,BUD>* adjustSegmentSizeLambda<TS,BUD>::operator()
 			ASSERT(radius >= R_h);
 			
 			#endif
-			SetValue(*cfts, Rh, R_h);
+			SetValue(*cfts, LGARh, R_h);
 
 		}  // CfTreeSegment
 		else if (HwTreeSegment<TS,BUD>* hwts = dynamic_cast<HwTreeSegment<TS,BUD>*>(tts))
@@ -283,11 +283,11 @@ LGMdouble&  CollectDWAfterGrowth<TS,BUD>::operator()(LGMdouble& WSum, TreeCompar
 			
 			if(GetValue(*cfts, LGAage) < R_EPSILON)
 			{
-				WSum += GetValue(*cfts,LGAWf) + (GetValue(tt, rho) * PI_VALUE * pow(GetValue(*cfts, R),2))*GetValue(*cfts, L); //GetSapwoodArea(*cfts) + GetValue(*cfts,LGAWh);
+				WSum += GetValue(*cfts,LGAWf) + (GetValue(tt, rho) * PI_VALUE * pow(GetValue(*cfts, LGAR),2))*GetValue(*cfts, L); //GetSapwoodArea(*cfts) + GetValue(*cfts,LGAWh);
 			}
 			else
 			{
-				LGMdouble old_rad = GetValue(*cfts,R);
+				LGMdouble old_rad = GetValue(*cfts,LGAR);
 				LGMdouble new_rad = GetLastAnnualIncrement(*cfts) + old_rad; 
 
 				if (new_rad < old_rad)
@@ -304,11 +304,11 @@ LGMdouble&  CollectDWAfterGrowth<TS,BUD>::operator()(LGMdouble& WSum, TreeCompar
 			
 			if(GetValue(*hwts, LGAage) < R_EPSILON)
 			{
-				WSum += GetValue(*hwts,LGAWf) + (GetValue(tt, rho) * PI_VALUE * pow(GetValue(*hwts, R),2))*GetValue(*hwts, L); //GetSapwoodArea(*hwts) + GetValue(*hwts,LGAWh);
+				WSum += GetValue(*hwts,LGAWf) + (GetValue(tt, rho) * PI_VALUE * pow(GetValue(*hwts, LGAR),2))*GetValue(*hwts, L); //GetSapwoodArea(*hwts) + GetValue(*hwts,LGAWh);
 			}
 			else
 			{
-				LGMdouble old_rad = GetValue(*hwts,R);
+				LGMdouble old_rad = GetValue(*hwts,LGAR);
 				LGMdouble new_rad = GetLastAnnualIncrement(*hwts) + old_rad; 
 
 				if (new_rad < old_rad)

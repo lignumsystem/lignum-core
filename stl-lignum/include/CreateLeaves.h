@@ -34,10 +34,10 @@ namespace Lignum{
 							       TreeCompartment<TS,BUD>* tc)const
     {
       if (BUD* b = dynamic_cast<BUD*>(tc)){
-	if (GetValue(*b,LGMstatus) == 1){
+	if (GetValue(*b,LGAstatus) == 1){
 	  pdv.push_back(GetDirection(*b));
 	  //Leaf created, set status to 0 	
-	  SetValue(*b,LGMstatus,0);
+	  SetValue(*b,LGAstatus,0);
 	}
       }
       if (TS* ts = dynamic_cast<TS*>(tc)){
@@ -98,10 +98,10 @@ namespace Lignum{
 					       TreeCompartment<TS,BUD>* tc)const
     {
       if (BUD* b = dynamic_cast<BUD*>(tc)){
-	if (GetValue(*b,LGMstatus) == 1){
+	if (GetValue(*b,LGAstatus) == 1){
 	  pdv.push_back(GetDirection(*b));
 	  //Leaf created, set status to 0 	
-	  SetValue(*b,LGMstatus,0);
+	  SetValue(*b,LGAstatus,0);
 	}
       }
       if (TS* ts = dynamic_cast<TS*>(tc)){

@@ -220,7 +220,7 @@ TreeCompartment<TS,BUD>* EvaluateRadiationForCfTreeSegment<TS,BUD>::operator() (
     LGMdouble Lk, inclination, Rfk, Ack, extinction, sfk, Ask, Wfk;
     Lk = Rfk = Ack =  extinction = sfk = Ask = Wfk = 0.0;
     Lk = GetValue(*ts, LGAL);   //length is > 0.0, otherwise we would not bee here
-    Rfk = GetValue(*ts, Rf);  //Radius to foliage limit 
+    Rfk = GetValue(*ts, LGARf);  //Radius to foliage limit 
     Wfk = GetValue(*ts, LGAWf); //Foliage mass
     sfk  = GetValue(tt, sf); //Foliage m2/kg from tree
 
@@ -283,7 +283,7 @@ TreeCompartment<TS,BUD>* ShadingEffectOfCfTreeSegment<TS,BUD>::operator()(TreeCo
     //Foliage density: Mass divided by  volume. Perhaps a good idea to
     //implement it as GetValue?
     LGMdouble fol_dens = GetValue(*ts,LGAWf)/
-      (PI_VALUE*(pow(GetValue(*ts,Rf),2.0)-pow(GetValue(*ts,R),2.0))
+      (PI_VALUE*(pow(GetValue(*ts,LGARf),2.0)-pow(GetValue(*ts,LGAR),2.0))
        *GetValue(*ts,LGAL));
 
     for (i = 0; i < number_of_sectors; i++) {
@@ -302,8 +302,8 @@ TreeCompartment<TS,BUD>* ShadingEffectOfCfTreeSegment<TS,BUD>::operator()(TreeCo
 				   radiation_direction,
 				   GetPoint(*ts),
 				   GetDirection(*ts),
-				   GetValue(*ts, Rf),
-				   GetValue(*ts, R),
+				   GetValue(*ts, LGARf),
+				   GetValue(*ts, LGAR),
 				   GetValue(*ts, LGAL),
 				   distance);
 

@@ -15,56 +15,60 @@ namespace Lignum{
   // Wr           dry weight of the roots
   enum LGMAD {LGAA,LGAAf,LGAAh, LGAAhair,LGAAs,LGAAs0,LGAage,LGAcollision,
               LGADbase,LGADbh,LGAdof, LGAdR, LGAH,LGAHf,LGAHTop,LGAip,
-              LGAL,LGAM, LGAMaxD,LGAomega,LGAP,
-	      LGAQabs,LGAQin,R,Rf,Rh, LGARhair,LGARTop,LGASa,LGMstatus, LGAtauL, LGAtype,LGAV,LGAVh,
-	      LGAVhair,LGAvi,LGAVs,LGAWf, LGAWr, LGAWs, LGAWh, LGAWhair};
+              LGAL,LGAM, LGAMaxD,LGAomega,LGAP,LGAQabs,LGAQin,LGAR,LGARf,
+              LGARh, LGARhair,LGARTop,LGASa,LGAstatus, LGAtauL, LGAtype,
+              LGAV,LGAVh,LGAVhair,LGAvi,LGAVs,LGAWf, LGAWr, LGAWs, LGAWh, 
+              LGAWhair};
 
-  //  LGAA      Segment area based on R (see GetValue)
-  //  LGAAf     area of foliage
+  //  LGAA      Segment base area based on R (see GetValue)
+  //  LGAAf     Area of foliage
   //  LGAAh     Heartwood area
   //  LGAAhair  Root hair area
   //  LGAAs     Sapwood area
   //  LGAAs0    Original sapwood area
-  //  LGAage    age of object
-  //  LGAcollision a bud can examine its growth sector if it collides with an obstacle
-  //  LGADbase  diameter at base
-  //  LGADbh    diameter at breast height
-  //  LGAdof    degree of filling
+  //  LGAage    Age of an object
+  //  LGAcollision A bud can examine its growth sector if it collides 
+  //               with an obstacle
+  //  LGADbase  Diameter at base (tree)
+  //  LGADbh    Diameter at breast height (tree)
+  //  LGAdof    Degree of filling of leaf
   //  LGAdR     Change in radius (=difference of two growth rings)
-  //  LGAH      height of tree, also the Z coordinate at the segment end point 
-  //  LGAHf     height (thickness) of cylindrical layer of foliage in a segment 
+  //  LGAH      Height of tree, also the Z coordinate at the segment base 
+  //  LGAHf     Height (thickness) of cylindrical layer of foliage 
+  //            in a segment, e.g. Hf = Lneedle*sin(needle_angle) 
   //  LGAHTop   Max height from ground of the tree, segment, etc.
-  //  LGAip     degree of interction
-  //  LGAL      length of segment
-  //  LGAM      rate of respiration (= amount of r. during the time step)
-  //  LGAMaxD   maximum diameter of the segments 
+  //  LGAip     Degree of interction
+  //  LGAL      Length of segment
+  //  LGAM      Rate of respiration (= amount of r. during the time step)
+  //  LGAMaxD   Maximum diameter of the segments 
   //            forking off and the segment above a 
-  //            branching point. needed to calculate LGAvi 
+  //            branching point. Needed to calculate LGAvi 
   //  LGAomega  Gravelius order
   //  LGAP      Photosynthetic rate (= amount of p. during time step)
-  //  LGAQin    incoming radiant flux
-  //  LGAQabs   amount of absorbed radiation
-  //  R      radius of segment (wood)
-  //  Rf     radius of segment cylinder that contains also foliage (conifers)
-  //  Rh     radius of heartwood
+  //  LGAQin    Incoming radiant flux
+  //  LGAQabs   Amount of absorbed radiation
+  //  LGAR      Radius of segment (wood)
+  //  LGARf     Radius of segment cylinder including also foliage (conifers)
+  //  LGARh     Radius of heartwood
   //  LGARhair  Radius including root hair 
-  //  LGARTop   radius of segment at upper end
-  //  LGASa     Surface area of the segment cylinder: 2*PI*R*L 
-  //LGPtauL = transmission coefficient of leaf (in direction of
-  //          the ray of light) 
- //  LGAtype General type specifier, e.g. Bud:dominant, apical,
-  //          lateral etc. The numerical values and their symbols of
-  //          different types given in LGMUnits.h
-  //  LGAV      Segment volume based on R
+  //  LGARTop   Radius of segment at upper end
+  //  LGASa     Surface area of the segment cylinder: 2*PI*R*L
+  //  LGAstatus General counter to control e.g. bud burst.  
+  //  LGPtauL = Transmission coefficient of leaf (in direction of
+  //            the ray of light) 
+  //  LGAtype   General type specifier, e.g. Bud:dominant, apical,
+  //            lateral etc. The numerical values and their symbols of
+  //            different types given in LGMUnits.h
+  //  LGAV      Segment volume based on R and L
   //  LGAVh     Heartwood volume
   //  LGAVhair  Root hair volume
-  //  LGAvi     vigour index
+  //  LGAvi     Vigour index
   //  LGAVs     Sapwood volume
-  //  LGAWf     foliage mass (kg C)
-  //  LGAWr     root mass (kg C)
-  //  LGAWs     mass of sapwood (kg C)
-  //  LGAWh     mass of heartwood (kg C)
-  //  LGAWhair  mass of root hair (kg C)
+  //  LGAWf     Foliage mass (kg C)
+  //  LGAWr     Root mass (kg C)
+  //  LGAWs     Mass of sapwood (kg C)
+  //  LGAWh     Mass of heartwood (kg C)
+  //  LGAWhair  Mass of root hair (kg C)
 
 
   enum LGMFLOW { fin, fout, Pr, Wm };

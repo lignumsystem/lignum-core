@@ -74,7 +74,7 @@ TreeCompartment<TS,BUD>*  AdjustStructureAfterZbrent<TS,BUD>::operator()(Structu
 			LGMdouble length = GetValue(*ts,LGAL);
 			Point end = base + (Point)(length * dir);
 			
-			SetValue(*ts, LGARTop, GetValue(*ts, R));
+			SetValue(*ts, LGARTop, GetValue(*ts, LGAR));
 			SetLastRing(*ts);
 			sa.changed = true;
 			sa.location = end;
@@ -84,17 +84,17 @@ TreeCompartment<TS,BUD>*  AdjustStructureAfterZbrent<TS,BUD>::operator()(Structu
 	
 			SetRadius(*ts);
 
-			LGMdouble radius = GetValue(*ts, R);
+			LGMdouble radius = GetValue(*ts, LGAR);
 			Tree<TS,BUD> &tree = GetTree(*ts);
 
 			LGMdouble dAs = GetValue(tree, ss) * GetSapwoodArea(*ts);		
-			LGMdouble r_h = sqrt(pow(GetValue(*ts, Rh), 2) + (dAs / PI_VALUE));
+			LGMdouble r_h = sqrt(pow(GetValue(*ts, LGARh), 2) + (dAs / PI_VALUE));
 
 			#ifdef _MSC_VER
 			ASSERT(r_h >= 0);
 			#endif
 
-			SetValue(*ts, Rh, r_h);
+			SetValue(*ts, LGARh, r_h);
 
 			Point base = GetPoint(*ts);
 			PositionVector dir = GetDirection(*ts);
