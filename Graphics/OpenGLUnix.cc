@@ -219,7 +219,7 @@ void makeBGR (unsigned char *p, int size)
 // Writes a buffer to a .tga file, buffer should be RGB
 void writeTGA (char *name, unsigned char *buff, int w, int h)
 {
-  unsigned char *header = "\x00\x00\x02\x00\x00\x00\x00\x00\x00\x00\x00\x00";
+  const char *header = "\x00\x00\x02\x00\x00\x00\x00\x00\x00\x00\x00\x00";
   unsigned char info[6];
   FILE *s;
   
@@ -647,7 +647,7 @@ void init_window () //int argc, char** argv)
 
   glutInitWindowPosition (400, 20);          // Window size and place
   glutInitWindowSize(WINDOW_SIZE_X, WINDOW_SIZE_Y);    
-  window1 = glutCreateWindow (0); //argv[0]);                 // Open a window    
+  window1 = glutCreateWindow ("Window"); //argv[0]);                 // Open a window    
   glutReshapeFunc(new_window_size);          // Call this function if the size is changed  
   glutKeyboardFunc(keypress);                // Call this funktion when a key is pressed 
   glutMouseFunc (mouse_button);                      // Mouse events
