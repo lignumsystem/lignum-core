@@ -31,7 +31,7 @@
 //CrownLimitData  will contain  a  list of  foliage  masses and  their
 //heights in  the crown.   Retrieve the list  for printing  by calling
 //const list<pair<double,double> >&  p = cld.WfHList().  pair.first is
-//the foliage mass and pair.second its height.
+//the height and pair.second its foliage mass.
 
 
 #include <cmath>
@@ -327,9 +327,9 @@ namespace Lignum{
       return *this;
     }
     double Wf()const{return wf_bp;}
-    CrownLimitData& addWfH(const pair<double,double>& wf_h)
+    CrownLimitData& addWfH(const pair<double,double>& hwf)
     {
-      wf_h_bp_ls.push_front(wf_h);
+      wf_h_bp_ls.push_front(hwf);
       return *this;
     }
     const list<pair<double,double> >& WfHList()const{return wf_h_bp_ls;}
@@ -366,7 +366,7 @@ namespace Lignum{
 	  //foliage collected from the branches forking off 
 	  //from  the branching point  above, and  the height  of that
 	  //branching point (is the end point of this segment)
-	  data.addWfH(pair<double,double>(wf,z));
+	  data.addWfH(pair<double,double>(z,wf));
 	  //Clear foliage, so it does not add up to foliage to be collected from
 	  //the branches below
 	  data.Wf(0.0);
