@@ -1,13 +1,13 @@
 #To compile "algorithms" on SGI type 
 #    make algorithms
-#To compile with g++ in Linux type (or copy paste)
-#    make "CCC=g++" "CCCFLAGS=-c" "OPTIMIZE=-O" "ARCOMMAND=ar"  "ARCOMMANDFLAGS=rv" algorithms 
+#To compile with g++ on SGI or on  Linux type 
+#    make gnu 
 
 SRC=OpenGL.cc  OpenGLUnix.cc OpenGLfunctions.cc  OpenGLinterface.cc texture.cc 
-OBJ=OpenGL.o  OpenGLUnix.o OpenGLfunctions.o  OpenGLinterface.o texture.o 
+OBJ=${SRC:.cc=.o}
 
 ALGSRC = algorithms.cc 
-ALGOBJ  = algorithms.o 
+ALGOBJ  = ${ALGSRC:.cc=.o} 
 
  
 CCC = CC -64 -LANG:std
@@ -15,21 +15,25 @@ CCC = CC -64 -LANG:std
 #OPTIMIZE = -Ofast=ip28 -IPA
 OPTIMIZE   = -g 
 
-ARCOMMAND =  $(CCC) -ar  
-ARCOMMANDFLAGS = -o 
-AR = $(ARCOMMAND)
+AR =  $(CCC) -ar  
+ARFLAGS = -o 
 
 SUPPRESS = #-w 1155 -w 1183
 
 CCCFLAGS = -c  #-prelink -ptused   -ptv  #  -fullwarn 
 
-INCLUDE = -I. -I../stl-lignum/include -I../c++adt/include -I../Firmament/include \
-          -I/usr/freeware/include
 
-STL     = -I/usr/include/CC
+INCLUDE = -I. -I../stl-lignum/include -I../c++adt/include \
+          -I../Firmament/include -I/usr/freeware/include
 
-LIBFLAGS = -L. -L../c++adt/lib -L../stl-lignum/lib -L../Firmament/lib \
-           -L/usr/freeware/lib64 -L/usr/freeware/lib32
+#Glut library comes in 64 and 32 bit versions on SGI.  However neither CC or g++ can 
+#automatically search right library but we must explicitelly tell with LIBD where to search.
+#On SGI default compilation with CC is 64 bit and with g++ 32 bit.
+#This should work fine with Linux where 32 bit Glut library is found by g++ 
+#in the system directory. 
+LIBD = lib64
+LIBFLAGS = -L. -L../c++adt/lib -L../stl-lignum/lib -L../Firmament/lib  -L/usr/freeware/$(LIBD) 
+
 
 LIB1   = libc++adt.a
 LIB2   = libLGM.a
@@ -50,47 +54,48 @@ LIBS     =  $(LIBVISUAL) $(LIBLGM) $(LIBSKY) $(LIBADT) $(LIBOGL) $(LIBMATH)
 PROGFILES = program-files.html
 .SUFFIXES: .o .cc
 
+sinclude Makedepend
+
 algorithms: $(ALGOBJ) $(LIB4) $(LIB1) $(LIB3)  $(LIB2) 
-	$(CCC)  -o $@ $(INCLUDE) $(OPTIMIZE) $(ALGOBJ) $(LIBFLAGS) $(LIBS)
+	$(CCC)  -o $@ $(INCLUDE) $(OPTIMIZE) $(ALGOBJ) $(LIBFLAGS) $(LIBS) 
 
+gnu:
+	make "CCC=g++" "CCCFLAGS=-c" "OPTIMIZE=-g" "LIBD=lib32" \
+             "AR=ar"  "ARFLAGS=rv" algorithms
 lignux: 
-	make "CCC=g++" "CCCFLAGS=-c" "OPTIMIZE=-O" "ARCOMMAND=ar"  "ARCOMMANDFLAGS=rv" algorithms
-
+	make "CCC=g++" "CCCFLAGS=-c" "OPTIMIZE=-g" "LIBD=lib32" \
+             "AR=ar"  "ARFLAGS=rv" algorithms
 
 $(LIB1):
-	(cd ../c++adt/lib; make "CCC=$(CCC)" "CCCFLAGS=$(CCCFLAGS)" \
-         "OPTIMIZE=$(OPTIMIZE)" "AR=$(ARCOMMAND)"  "ARFLAGS = $(ARCOMMANDFLAGS)" $@)
+	(cd ../c++adt; make "CCC=$(CCC)" "CCCFLAGS=$(CCCFLAGS)" "OPTIMIZE=$(OPTIMIZE)" \
+         "AR=$(AR)"  "ARFLAGS = $(ARFLAGS)" $@)
 
 $(LIB2):
-	(cd ../stl-lignum/lib; make "CCC=$(CCC)" "CCCFLAGS=$(CCCFLAGS)" "OPTIMIZE=$(OPTIMIZE)" "AR=$(ARCOMMAND)" \
-         "ARFLAGS = $(ARCOMMANDFLAGS)" $@)
+	(cd ../stl-lignum; make "CCC=$(CCC)" "CCCFLAGS=$(CCCFLAGS)" "OPTIMIZE=$(OPTIMIZE)" \
+         "AR=$(AR)" "ARFLAGS = $(ARFLAGS)" $@)
 
 $(LIB3):
-	(cd ../Firmament; make "CCC=$(CCC)" "CCCFLAGS=$(CCCFLAGS)" \
-         "OPTIMIZE=$(OPTIMIZE)"  "AR=$(ARCOMMAND)"  "ARFLAGS = $(ARCOMMANDFLAGS)" $@)
+	(cd ../Firmament; make "CCC=$(CCC)" "CCCFLAGS=$(CCCFLAGS)" "OPTIMIZE=$(OPTIMIZE)" \
+          "AR=$(AR)"  "ARFLAGS = $(ARFLAGS)" $@)
 
 $(LIB4):$(OBJ)
-	$(AR) $(ARCOMMANDFLAGS) $(LIB4) $(OBJ)
+	$(AR) $(ARFLAGS) $(LIB4) $(OBJ)
 
 .cc.o: 
 	$(CCC) $(OPTIMIZE) $(SUPPRESS) $(CCCFLAGS) $(INCLUDE)  $< -o $@
 
 html:
 	enscript -E --color -Whtml --toc -p$(PROGFILES) ./include/*.h ./*/*.cc
-changelog:
-	rm -rf ChangeLog
-	rcs2log . > ChangeLog
+
 clean:
 	rm -rf $(OBJ) $(ALGOBJ) $(BLOBJ) core lignum algorithms broadleaf ii_files
 	rm -rf ./*/ii_files
 distclean: clean
-	(cd ../c++adt/lib; make distclean)
-	(cd ../Firmament; make distclean)
+	rm -f $(LIB4)
 	(cd ../stl-lignum; make distclean)
 depend:
-	(cd ../c++adt; make depend)
-	(cd ../Firmament; make depend)
 	(cd ../stl-lignum; make depend)
-	makedepend $(INCLUDE) $(CCCINCLUDE) $(STL) $(MAIN) $(ALGSRC) $(BLSRC)  
+	$(CCC) -M $(INCLUDE) $(SRC) $(ALGSRC) > Makedepend
 
-# DO NOT DELETE
+#Do not delete this line -- make depend adds dependencies at the end of it
+#If committing Makefile to cvs please remove the dependencies first
