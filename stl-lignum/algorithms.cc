@@ -294,6 +294,9 @@ int main(int argc, char *argv[])
    cout << "Then Tree<MyHwTreeSegment,MyHwBud>" << endl;
    Accumulate<Tree<MyHwTreeSegment,MyHwBud> >(f,idf,
 					      CountCompartments<MyHwTreeSegment,MyHwBud>());
+
+   ForEach<Tree<MyCfTreeSegment,MyCfBud> >(f,EvaluateCollisionForAllBuds<MyCfTreeSegment,MyCfBud>());
+   ForEach<Tree<MyHwTreeSegment,MyHwBud> >(f,EvaluateCollisionForAllBuds<MyHwTreeSegment,MyHwBud>());
    
 }
 
