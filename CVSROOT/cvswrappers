@@ -20,3 +20,7 @@
 #  and value is a single-quote delimited value.
 #
 # For example:
+*.h -t '/usr/sbin/to_unix %s %s'
+*.c -t '/usr/sbin/to_unix %s %s'
+*.cc -t '/usr/sbin/to_unix %s %s'
+*.cpp -t '/usr/sbin/to_unix %s %s'
