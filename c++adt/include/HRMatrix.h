@@ -54,7 +54,7 @@ private:
 class HRVector:public vector<double>{
 friend vector<double> operator * (const HRVector& v,const TMatrix<double>& m);
 public:
-  HRVector(const Point<double>& pos);
+  HRVector(const Point& pos);
 };
 
 }//closing oldadt

@@ -12,7 +12,7 @@ template <class TS,class BUD=DefaultBud<TS> >
 class TreeSegmentFlow:public TreeSegment<TS,BUD>{
 public:
 
-  TreeSegmentFlow(const cxxadt::Point<METER>& p,const PositionVector& pv,
+  TreeSegmentFlow(const cxxadt::Point& p,const PositionVector& pv,
 		  const LGMdouble go,const METER l,const METER r,
 		  const METER rn,Tree<TS,BUD>* tree)
 

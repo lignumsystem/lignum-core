@@ -30,7 +30,7 @@ class CfTreeSegment:public TreeSegment<TS,BUD>{
   friend LGMdouble SetValue(CfTreeSegment<TS1,BUD1>& ts, const LGMAD name,
 			    const LGMdouble);
 public:
-  CfTreeSegment(const Point<METER>& p,const PositionVector& pv,const LGMdouble go,const METER l,
+  CfTreeSegment(const Point& p,const PositionVector& pv,const LGMdouble go,const METER l,
                 const METER r,const METER rn,Tree<TS,BUD>* tree)
     :TreeSegment<TS,BUD>(p,pv,go,l,r,rn,tree){}
     virtual void photosynthesis();

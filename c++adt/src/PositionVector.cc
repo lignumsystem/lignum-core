@@ -1,3 +1,4 @@
+#include <Point.h>
 #include <PositionVector.h>
 
 
@@ -28,7 +29,7 @@ PositionVector::PositionVector(const PositionVector& pv)
 }
 
 
-PositionVector::PositionVector(const Point<>& p)
+PositionVector::PositionVector(const Point& p)
    :v(3)
 {
   //  PositionVector(p.getX(),p.getY(),p.getZ()); //This did not work.
@@ -46,6 +47,17 @@ PositionVector& PositionVector::operator = (const PositionVector& pv)
 double PositionVector::length()const
 {
   return sqrt(pow(v[0],2.0) + pow(v[1],2.0) + pow(v[2],2.0));
+}
+
+
+PositionVector::operator Point ()
+{ 
+  return Point(v[0], v[1], v[2]); 
+}
+
+PositionVector::operator Point () const 
+{ 
+  return Point(v[0], v[1], v[2]); 
 }
 
 double PositionVector::alpha()const
@@ -77,7 +89,7 @@ PositionVector& PositionVector::rotate(ROTATION direction, RADIAN angle)
 // dir does not need to be a unit vector. It is nomalized here. If it is
 //not normalized, the distance of the rotated point (end point of vector)
 // from the axis of ration = Length_of(dir) * distance_before
-PositionVector& PositionVector::rotate(const Point<double>& p0,
+PositionVector& PositionVector::rotate(const Point& p0,
 				       const PositionVector& dir, RADIAN angle)
 {
   // TM = transformation matrix,
@@ -186,8 +198,8 @@ PositionVector& PositionVector::rotate(const Point<double>& p0,
 //second  point. (Direction: from first to second. Uses rotation
 //specified by point and direction vector
 
-PositionVector& PositionVector::rotate(const Point<double>& p1,
-				       const Point<double>& p2, RADIAN angle)
+PositionVector& PositionVector::rotate(const Point& p1,
+				       const Point& p2, RADIAN angle)
 {
   PositionVector vv = PositionVector(p2 - p1);
 
@@ -455,19 +467,19 @@ int main()
   cout << "(1,0,0) *= 10 = " << (PositionVector)(x *= 10.0) << endl;
 
   cout << "Type casting PostitionVector -> Point:" << endl;
-  Point<double> dd;
-  dd = (Point<double>)x;
+  Point dd;
+  dd = (Point)x;
   cout << dd << endl;
 
 //    cout << "Testing using the Point-argument constructor" << endl;
-//    Point<double> pp(2, 2, 2);
+//    Point pp(2, 2, 2);
 //    cout << "Point pp(2,2,2) as PositionVector: " << PositionVector(pp) << endl;
 
   
   z = PositionVector(1,0,0);
   PositionVector dir(0,1,0);
   RADIAN angle = -PI_VALUE/2.0;
-  Point<double> p0(0,0,0);
+  Point p0(0,0,0);
 
   cout << endl;
   z.rotate(p0,dir,angle);
@@ -482,17 +494,17 @@ int main()
   // the other rotation
 
   z = PositionVector(1,0,0);
-  Point<double> begin(0,0,0);
+  Point begin(0,0,0);
   angle = -PI_VALUE/2.0;
-  Point<double> end(0,5,0);
+  Point end(0,5,0);
 
   cout << endl;
   z.rotate(begin,end,angle);
   cout << z << endl;
-  end  = Point<double>(2,0,0);
+  end  = Point(2,0,0);
   z.rotate(begin,end,angle);
   cout << z << endl;
-  end = Point<double>(0,0,3);
+  end = Point(0,0,3);
   z.rotate(begin, end, angle);
   cout << z << endl;
 

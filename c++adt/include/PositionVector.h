@@ -12,6 +12,8 @@ namespace cxxadt{
 
 using namespace std;
 
+class Point;
+
 class PositionVector{
   friend double Dot(const PositionVector& pv1,const PositionVector& pv2);
   friend PositionVector Cross(const PositionVector& pv1,const PositionVector& pv2);
@@ -28,18 +30,18 @@ public:
   PositionVector(const double x, const double y, const double z);
   PositionVector(const PositionVector& pv);
   PositionVector(const vector<double>& v1):v(v1){}
-  PositionVector(const Point<>& p);
+  PositionVector(const Point& p);
   PositionVector& rotate(ROTATION direction, RADIAN angle);
-  PositionVector& rotate(const Point<double>& p0, const PositionVector& dir,
+  PositionVector& rotate(const Point& p0, const PositionVector& dir,
 			 RADIAN angle);
-  PositionVector& rotate(const Point<double>& begin, const Point<double>& end,
+  PositionVector& rotate(const Point& begin, const Point& end,
 			 RADIAN angle);
   PositionVector& operator = (const PositionVector& pv);
   PositionVector& operator += (const PositionVector& point); 
   PositionVector& operator -= (const PositionVector& point);
   PositionVector& operator *= (const double scalar);
-  operator Point<double> () { return Point<double>(v[0], v[1], v[2]); }
-  operator Point<double> () const { return Point<double>(v[0], v[1], v[2]); }
+  operator Point ();
+  operator Point () const;
   double length()const;
   double alpha()const;
   double beta()const;

@@ -94,7 +94,7 @@ HRMatrix& HRMatrix::inverse()
 **HRVector implementation
 */
 
-HRVector::HRVector(const Point<double>& pos)
+HRVector::HRVector(const Point& pos)
 :vector<double>(4,1.0)
 {
   (*this)[0] = pos.getX();

@@ -12,7 +12,7 @@ class MyBud;
 class MyTreeSegment:public TreeSegment<MyTreeSegment,MyBud>
 {
 public:
-  MyTreeSegment(const Point<METER>& p, const PositionVector& d, const LGMdouble go,
+  MyTreeSegment(const Point& p, const PositionVector& d, const LGMdouble go,
 		const METER l, const METER r, const METER rn, 
 		Tree<MyTreeSegment,MyBud>* t)
     :TreeSegment<MyTreeSegment,MyBud>(p,d,go,l,r,rn,t){}
@@ -22,7 +22,7 @@ public:
 class MyHwTreeSegment:public HwTreeSegment<MyHwTreeSegment,MyBud>
 {
 public:
-  MyHwTreeSegment(const Point<METER>& p, const PositionVector& d, const LGMdouble go,
+  MyHwTreeSegment(const Point& p, const PositionVector& d, const LGMdouble go,
 		  const METER l, const METER r, const METER rn,
 		  Tree<MyHwTreeSegment,MyBud>* t)
     :HwTreeSegment<MyHwTreeSegment,MyBud>(p,d,go,l,r,rn,t){}
@@ -31,7 +31,7 @@ public:
 class MyCfTreeSegment:public CfTreeSegment<MyCfTreeSegment,MyBud>
 {
 public:
-  MyCfTreeSegment(const cxxadt::Point<METER>& p, const PositionVector& d, const LGMdouble go,
+  MyCfTreeSegment(const cxxadt::Point& p, const PositionVector& d, const LGMdouble go,
 		  const METER l, const METER r, const METER rn,
 		  Tree<MyCfTreeSegment,MyBud>* t)
     :CfTreeSegment<MyCfTreeSegment,MyBud>(p,d,go,l,r,rn,t){}

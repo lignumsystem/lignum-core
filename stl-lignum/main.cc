@@ -34,7 +34,7 @@ string ParseCommandLine(int argc, char *argv[],const string& flag)
 
 int main(int argc, char *argv[])
 {
-  Tree<MyTreeSegment> tree(Point<METER>(0,0,0),PositionVector(0,0,1.0));
+  Tree<MyTreeSegment> tree(Point(0,0,0),PositionVector(0,0,1.0));
   string clarg,empty;
 
   clarg = ParseCommandLine(argc,argv,"-file");
@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
 
  //create the first tree segment
   TreeSegment<MyTreeSegment> *ts = 
-    new TreeSegment<MyTreeSegment>(Point<METER>(0,0,0),PositionVector(0,0,1.0),
+    new TreeSegment<MyTreeSegment>(Point(0,0,0),PositionVector(0,0,1.0),
 				   0, 0.3, 0.3, 0.2,&tree);
 
   if (t == 'x')
@@ -64,20 +64,20 @@ int main(int argc, char *argv[])
     }
   //create the branching point
   BranchingPoint<MyTreeSegment> *bp = 
-    new BranchingPoint<MyTreeSegment>(Point<METER>(0,0,0),
+    new BranchingPoint<MyTreeSegment>(Point(0,0,0),
 				      PositionVector(0,0,1.0),&tree);
   //create the terminating bud
-  Bud<MyTreeSegment> *bud = new  Bud<MyTreeSegment>(Point<METER>(0,0,0),
+  Bud<MyTreeSegment> *bud = new  Bud<MyTreeSegment>(Point(0,0,0),
 						    PositionVector(0,0,1.0),
 						    0,
 						    &tree);
   //create a branch with one bud (Axis containing one Bud) into the branching point
-  InsertTerminatingBud(*bp,new Bud<MyTreeSegment>(Point<METER>(0,0,0),
+  InsertTerminatingBud(*bp,new Bud<MyTreeSegment>(Point(0,0,0),
 						  PositionVector(0,0,1.0),
 						  0,
 						  &tree));
   //create another branch with one bud (Axis containing one Bud) into the branching point
-  InsertTerminatingBud(*bp,new Bud<MyTreeSegment>(Point<METER>(0,0,0),
+  InsertTerminatingBud(*bp,new Bud<MyTreeSegment>(Point(0,0,0),
 						  PositionVector(0,0,1.0),
 						  0,
 
@@ -85,7 +85,7 @@ int main(int argc, char *argv[])
   InsertTreeCompartment(axis,ts);
   InsertTreeCompartment(axis,bp);
   TreeSegment<MyTreeSegment> *ts2 = 
-    new TreeSegment<MyTreeSegment>(Point<METER>(0,0,0.3),PositionVector(0,0,1.0),
+    new TreeSegment<MyTreeSegment>(Point(0,0,0.3),PositionVector(0,0,1.0),
 				   0, 0.3, 0.3, 0.2,&tree);
   if (t == 'x')
     {
@@ -93,7 +93,7 @@ int main(int argc, char *argv[])
     }
   InsertTreeCompartment(axis,ts2);
 
-  ts2 = new TreeSegment<MyTreeSegment>(Point<METER>(0,0,0.6),PositionVector(0,0,1.0),
+  ts2 = new TreeSegment<MyTreeSegment>(Point(0,0,0.6),PositionVector(0,0,1.0),
 				   0, 0.3, 0.3, 0.2,&tree);
 
  
@@ -104,12 +104,12 @@ int main(int argc, char *argv[])
   
 
   ts = 
-    new TreeSegment<MyTreeSegment>(Point<METER>(0,0,0.2),PositionVector(0,0,1.0),
+    new TreeSegment<MyTreeSegment>(Point(0,0,0.2),PositionVector(0,0,1.0),
   				   0, 0.4, 0.3,0.2,&tree);
   
   InsertTreeCompartment(*axis2, ts);
   ts = 
-    new TreeSegment<MyTreeSegment>(Point<METER>(0,0,0.2),PositionVector(0,0,1.0),
+    new TreeSegment<MyTreeSegment>(Point(0,0,0.2),PositionVector(0,0,1.0),
   				   0, 0.4, 0.3,0.2,&tree);
   
   InsertTreeCompartment(*axis2, ts);
@@ -117,7 +117,7 @@ int main(int argc, char *argv[])
   
 
   ts = 
-    new TreeSegment<MyTreeSegment>(Point<METER>(0,0,0.2),PositionVector(0,0,1.0),
+    new TreeSegment<MyTreeSegment>(Point(0,0,0.2),PositionVector(0,0,1.0),
   				   0, 0.4, 0.3,0.2,&tree);
   
   InsertTreeCompartment(*axis3, ts);
@@ -131,7 +131,7 @@ int main(int argc, char *argv[])
       InsertAxis( *bp, axis3);
     }
   
-  ts =   new TreeSegment<MyTreeSegment>(Point<METER>(0,0,0.4),
+  ts =   new TreeSegment<MyTreeSegment>(Point(0,0,0.4),
 					PositionVector(0,0,1.0),
 					0, 0.4, 0.3, 0.2, &tree);
   InsertTreeCompartment(*axis3, ts);

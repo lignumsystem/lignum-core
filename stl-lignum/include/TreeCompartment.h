@@ -12,27 +12,33 @@ namespace Lignum{
   template <class TS,class BUD=DefaultBud<TS> > 
     class TreeCompartment{
       template <class TS1,class BUD1> 
-      friend Point<METER> GetPoint(const TreeCompartment<TS1,BUD1>& tc);
+      friend Point GetPoint(const TreeCompartment<TS1,BUD1>& tc);
+
       template <class TS1,class BUD1> 
       friend PositionVector GetDirection(const TreeCompartment<TS1,BUD1>& tc);
+
       template <class TS1,class BUD1> 
       friend Tree<TS1,BUD1>& GetTree(const TreeCompartment<TS1,BUD1>& tc);
+
       template <class TS1,class BUD1>
       friend LGMdouble GetValue(const TreeCompartment<TS1,BUD1>& tc, const LGMAD name);
+
       template <class TS1,class BUD1>
       friend LGMdouble SetValue(TreeCompartment<TS1,BUD1>& tc, const LGMAD name,
 				const LGMdouble value);
+
       template <class TS1,class BUD1>
       friend void SetDirection(TreeCompartment<TS1,BUD1>& tc, const PositionVector& d);
+
       template <class TS1,class BUD1>
-      friend void SetPoint(TreeCompartment<TS1,BUD1>& tc, const Point<LGMdouble>& p);
+      friend void SetPoint(TreeCompartment<TS1,BUD1>& tc, const Point& p);
     public:
       TreeCompartment();
-      TreeCompartment(const Point<METER>& p, const PositionVector& d, Tree<TS,BUD>* t);
+      TreeCompartment(const Point& p, const PositionVector& d, Tree<TS,BUD>* t);
       virtual ~TreeCompartment();
       virtual void photosynthesis() { /* Default: do nothing */ }
     protected:
-      Point<METER> point;
+      Point point;
       PositionVector direction;
       LGMdouble age;
       Tree<TS,BUD>* tree;

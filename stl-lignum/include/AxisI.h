@@ -25,8 +25,8 @@ Axis<TS,BUD>::Axis()
 //Also to access tree level parameters etc., set pointer
 //to the tree this axis is part of
 template <class TS,class BUD>
-Axis<TS,BUD>::Axis(const Point<METER>& p, const PositionVector& d, Tree<TS,BUD>* t)
-  :TreeCompartment<TS,BUD>(p,d,t),tc_ls()
+Axis<TS,BUD>::Axis(const Point& p, const PositionVector& d, Tree<TS,BUD>* t)
+  :TreeCompartment<TS,BUD>(p,d,t)
 {
 }
 

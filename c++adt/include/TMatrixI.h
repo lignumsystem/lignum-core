@@ -322,6 +322,7 @@ TMatrix<T>& zero()
 
 
 } //namespace cxxadt
+
 #endif //TMATRIXI_H
 
 #ifdef TMATRIX

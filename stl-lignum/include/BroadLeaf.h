@@ -12,16 +12,16 @@ namespace Lignum{
 using namespace cxxadt;
 
 class Petiole{
-  friend Point<> GetStartPoint(const Petiole& p);
-  friend Point<> GetEndPoint(const Petiole& p);
-  friend void SetStartPoint(Petiole& p, const Point<>& pnt);
-  friend void SetEndPoint(Petiole& p, const Point<>& pnt);
+  friend Point GetStartPoint(const Petiole& p);
+  friend Point GetEndPoint(const Petiole& p);
+  friend void SetStartPoint(Petiole& p, const Point& pnt);
+  friend void SetEndPoint(Petiole& p, const Point& pnt);
   friend PositionVector GetDirection(const Petiole& p);
 public:
-  Petiole(const Point<>& begin, const Point<>& end);
+  Petiole(const Point& begin, const Point& end);
 private:
-  Point<> begin;
-  Point<> end;
+  Point begin;
+  Point end;
 };
 
 class BroadLeafAttributes{
@@ -39,7 +39,7 @@ public:
   Petiole petiole;          //leaf is at the end of petiole in 3D space
   PositionVector leaf_normal;    //the leaf normal in 3D space
   Ellipsis shape;           //the form of the leaf is modelled as an ellipsis
-  Point<> center;             //the center point of the leaf
+  Point center;             //the center point of the leaf
 
   //vector for shading (must be synchronized with firmament)
   vector<LGMdouble>  sv; //the length of the vector == number of sectors 
@@ -48,8 +48,8 @@ public:
 class BroadLeaf{
   friend LGMdouble GetValue(const BroadLeaf& bl, const LGMAD name);
   friend LGMdouble SetValue(BroadLeaf& bl, const LGMAD name, const LGMdouble value);
-  friend Point<> GetCenterPoint(const BroadLeaf& bl);
-  friend void SetCenterPoint(BroadLeaf& bl, const Point<>& p);
+  friend Point GetCenterPoint(const BroadLeaf& bl);
+  friend void SetCenterPoint(BroadLeaf& bl, const Point& p);
   friend PositionVector GetLeafNormal(const BroadLeaf& bl);
   friend PositionVector SetLeafNormal(BroadLeaf& bl, const PositionVector& n);
   friend Petiole& GetPetiole(BroadLeaf& bl);
@@ -57,7 +57,7 @@ class BroadLeaf{
   friend vector<double> GetRadiationVector(BroadLeaf& bl);
   friend void SetRadiationVector(BroadLeaf& bl, const vector<LGMdouble>& v);
   friend void TranslateLeaf(BroadLeaf& bl, const PositionVector& t);
-  friend void SetLeafPosition(BroadLeaf& bl, const Point<>& p);
+  friend void SetLeafPosition(BroadLeaf& bl, const Point& p);
 public:
   BroadLeaf(LGMdouble sf,LGMdouble tauL,LGMdouble dof,int number_of_sectors,
 	    const Petiole& petiole, const PositionVector& leaf_normal,

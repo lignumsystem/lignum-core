@@ -4,8 +4,8 @@
 namespace cxxadt{
 
 //The assignment
-template <class T>
-Point<T>& Point<T>::operator = (const Point<T>& point)
+
+inline Point& Point::operator = (const Point& point)
 {
   x = point.x;
   y = point.y;
@@ -15,8 +15,8 @@ Point<T>& Point<T>::operator = (const Point<T>& point)
 }
 
 //Modify the Point by adding another point to it
-template <class T>
-Point<T>& Point<T>::operator += (const Point<T>& point)
+
+inline Point& Point::operator += (const Point& point)
 {
   x += point.x;
   y += point.y;
@@ -26,8 +26,8 @@ Point<T>& Point<T>::operator += (const Point<T>& point)
 }
 
 //Modify the Point by subtracting another point from it
-template <class T>
-Point<T>& Point<T>::operator -= (const Point<T>& point)
+
+inline Point& Point::operator -= (const Point& point)
 {
   x -= point.x;
   y -= point.y;
@@ -37,8 +37,8 @@ Point<T>& Point<T>::operator -= (const Point<T>& point)
 }
 
 //Modify the Point by multiplying it with a scalar constant
-template <class T>
-Point<T>& Point<T>::operator *= (const T scalar)
+
+inline Point& Point::operator *= (const double scalar)
 {
   x *= scalar;
   y *= scalar;
@@ -48,10 +48,9 @@ Point<T>& Point<T>::operator *= (const T scalar)
 }
 
 //friend operator to add two points
-template <class T>
-Point<T> operator + (const Point<T>& point1, const Point<T>& point2)
+inline Point operator + (const Point& point1, const Point& point2)
 {
-  Point<T> p;
+  Point p;
   
   p.x = point1.x + point2.x;
   p.y = point1.y + point2.y;
@@ -61,10 +60,9 @@ Point<T> operator + (const Point<T>& point1, const Point<T>& point2)
 }
 
 //friend operator to subtract two points
-template <class T>
-Point<T> operator - (const Point<T>& point1, const Point<T>& point2)
+inline Point operator - (const Point& point1, const Point& point2)
 {
-  Point<T> p;
+  Point p;
  
   p.x = point1.x - point2.x;
   p.y = point1.y - point2.y;
@@ -74,10 +72,9 @@ Point<T> operator - (const Point<T>& point1, const Point<T>& point2)
 }
 
 //friend operator to multiply a point with scalar
-template <class T>
-Point<T> operator * (const T scalar, const Point<T>& point)
+inline Point operator * (const double scalar, const Point& point)
 {
-  Point<T> p;
+  Point p;
  
   p.x = scalar * point.x;
   p.y = scalar * point.y;
@@ -87,26 +84,23 @@ Point<T> operator * (const T scalar, const Point<T>& point)
 }
 
 //friend operator to multiply a point with scalar
-template <class T>
-Point<T> operator * (const Point<T>& p, const T s)
+inline Point operator * (const Point& p, const double s)
 {
   return s * p;
 }
 
 //friend operator to calculate distance between two points
-template <class T>
-T operator || (const Point<T>& point1, const Point<T>& point2)
+inline double operator || (const Point& point1, const Point& point2)
 {
-  T x,y,z;
+  double x,y,z;
   x = point1.x - point2.x;
   y = point1.y - point2.y;
   z = point1.z - point2.z;
 
-  return (T)sqrt(pow((double)x,2.0) + pow((double)y,2.0) + pow((double)z,2.0));
+  return (double)sqrt(pow((double)x,2.0) + pow((double)y,2.0) + pow((double)z,2.0));
 }
 
-template <class T>
-ostream& operator << (ostream& os, const Point<T>& point)
+inline ostream& operator << (ostream& os, const Point& point)
 {
   os << "x: " << point.x <<" y: " << point.y 
      << " z: " << point.z << '\n' << flush;
@@ -122,21 +116,21 @@ ostream& operator << (ostream& os, const Point<T>& point)
 
 int main()
 {
-  Point<double> p1(0,0,0);
-  Point<double> p2(p1);
-  Point<double> p3(4,5,6);
-  Point<double> p4(0,0,8);
-  Point<double> p5(-3,-4,-5);
-  Point<double> p6(-8,0,0);
-  Point<double> p7; 
-  Point<double> *p8 = new Point<double>(7,8,9);
-  Point<double> p9(*p8);
-  Point<double> p10(9,8);
-  Point<double> *p11 = p8;
-  Point<double> p12(1.0,2.0,1.95);
-  Point<double> p13(p7);
-  Point<int>    p14(1,1,1);
-  Point<int>    p15(1,1,1);
+  Point p1(0,0,0);
+  Point p2(p1);
+  Point p3(4,5,6);
+  Point p4(0,0,8);
+  Point p5(-3,-4,-5);
+  Point p6(-8,0,0);
+  Point p7; 
+  Point *p8 = new Point(7,8,9);
+  Point p9(*p8);
+  Point p10(9,8);
+  Point *p11 = p8;
+  Point p12(1.0,2.0,1.95);
+  Point p13(p7);
+  Point p14(1,1,1);
+  Point p15(1,1,1);
 
   double distance;
   cout << "Testing class Point\n";
@@ -223,7 +217,7 @@ int main()
   else
     cout << false << endl;
 
-  Point<> p16(2,2,2);
+  Point p16(2,2,2);
   cout << "Multiplying p16(2,2,2) with 3 (i.e., 3*p16)" << endl; 
   cout << "3*p16: " << 3 * p16 << endl;
   cout << "Multiplying 3 with p16(2,2,2) (i.e., p16*3)" << endl;
@@ -232,6 +226,7 @@ int main()
 }
 
 #endif
+
 
 
 

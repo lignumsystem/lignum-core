@@ -17,7 +17,7 @@ class BetulaWithFlow : public HwTreeSegment<BetulaWithFlow,DefaultBud<BetulaWith
   friend LGMdouble SetValue(BetulaWithFlow& ts, const LGMBETULA name, const LGMdouble value);
 
 public:
-  BetulaWithFlow(const cxxadt::Point<METER>& p,const PositionVector& pv,
+  BetulaWithFlow(const cxxadt::Point& p,const PositionVector& pv,
 		 const LGMdouble go,const METER l, const METER r,
 		 const METER rn,
 		 Tree<BetulaWithFlow,DefaultBud<BetulaWithFlow> >* tree)

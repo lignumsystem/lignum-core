@@ -22,7 +22,7 @@ ARCOMMANDFLAGS = -o
 
 SUPPRESS = #-w 1155 -w 1183
 
-CCCFLAGS = -c -ptv -prelink #-fullwarn 
+CCCFLAGS = -c -ptv -ptused #-fullwarn 
 
 INCLUDE = -Iinclude -I../c++adt/include -I../Firmament/include
 
@@ -74,13 +74,12 @@ changelog:
 	rcs2log . > ChangeLog
 clean:
 	(cd lib; make clean)
-	rm -rf $(OBJ) $(ALGOBJ) core lignum algorithms broadleaf ii_files
+	rm -rf $(OBJ) $(ALGOBJ) $(BLOBJ) core lignum algorithms broadleaf ii_files
 	rm -rf ./*/ii_files
-distclean:
+distclean: clean
 	(cd ../c++adt/lib; make distclean)
 	(cd ../Firmament; make distclean)
 	(cd lib; make distclean)
-	rm -rf $(OBJ) $(ALGOBJ) $(BLOBJ) core lignum algorithms broadleaf ii_files 
 depend: 
 	makedepend $(INCLUDE) $(CCCINCLUDE) $(STL) $(MAIN) $(ALGSRC) $(BLSRC)  
 # DO NOT DELETE

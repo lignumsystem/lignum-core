@@ -2,27 +2,27 @@
 
 namespace Lignum{
 
-Petiole::Petiole(const Point<>& b, const Point<>& e)
+Petiole::Petiole(const Point& b, const Point& e)
   :begin(b),end(e)
 {
 }
 
-Point<> GetStartPoint(const Petiole& p)
+Point GetStartPoint(const Petiole& p)
 {
   return p.begin;
 }
 
-Point<> GetEndPoint(const Petiole& p)
+Point GetEndPoint(const Petiole& p)
 {
   return p.end;
 }
 
-void SetStartPoint(Petiole& p, const Point<>& pnt)
+void SetStartPoint(Petiole& p, const Point& pnt)
 {
   p.begin = pnt;
 }
   
-void SetEndPoint(Petiole& p, const Point<>& pnt)
+void SetEndPoint(Petiole& p, const Point& pnt)
 {
   p.end = pnt;
 }
@@ -30,7 +30,7 @@ void SetEndPoint(Petiole& p, const Point<>& pnt)
 
 PositionVector GetDirection(const Petiole& p)
 {
-  Point<> dp = p.end - p.begin;
+  Point dp = p.end - p.begin;
   PositionVector d(dp.getX(),dp.getY(),dp.getZ()); //construct the vector
   d.normalize(); //normalize it
 
@@ -43,11 +43,11 @@ BroadLeaf::BroadLeaf(LGMdouble sf,LGMdouble tauL,LGMdouble dof,int number_of_sec
 {
 
   //calculate and set the center of the leaf ellipse
-  Point<> petiol_proj;    //projection of petiole on leaf ellipse
-  Point<> petiol;         //Petiole as a vector (Point<>!)
+  Point petiol_proj;    //projection of petiole on leaf ellipse
+  Point petiol;         //Petiole as a vector (Point!)
   petiol = GetEndPoint(petiole) - GetStartPoint(petiole);
   vector<double> v = leaf_normal.getVector();
-  Point<> lnp(v[0],v[1],v[2]);
+  Point lnp(v[0],v[1],v[2]);
   petiol_proj = petiol - Dot(leaf_normal,PositionVector(petiol)) * lnp;
   double b = (double)shape.getSemiminorAxis();
   double ppl = sqrt((double)Dot(PositionVector(petiol_proj), PositionVector(petiol_proj)));
@@ -145,7 +145,7 @@ LGMdouble SetValue(BroadLeaf& bl, const LGMAD name, const LGMdouble value)
   return old_value;
 }
 
-Point<> GetCenterPoint(const BroadLeaf& bl)
+Point GetCenterPoint(const BroadLeaf& bl)
 {
   return bl.bla.center;
 }
@@ -176,7 +176,7 @@ Ellipsis& GetEllipsis(BroadLeaf& bl)
   return bl.bla.shape;
 }
 
-void SetCenterPoint(BroadLeaf& bl, const Point<>& p)
+void SetCenterPoint(BroadLeaf& bl, const Point& p)
 {
   bl.bla.center = p;
 }
@@ -197,8 +197,8 @@ vector<double> GetRadiationVector(BroadLeaf& bl)
 void TranslateLeaf(BroadLeaf& bl, const PositionVector& t)
 {
 
-  const Point<LGMdouble> t_point = (Point<LGMdouble>)t;
-  Point<LGMdouble> pnt = GetCenterPoint(bl);
+  const Point t_point = (Point)t;
+  Point pnt = GetCenterPoint(bl);
 
   SetCenterPoint(bl, pnt + t_point);
 
@@ -213,7 +213,7 @@ void TranslateLeaf(BroadLeaf& bl, const PositionVector& t)
 //Moves leaf from its current position to position where
 //the starting point of the petiole is p.
 //Orientation does not change
-void SetLeafPosition(BroadLeaf& bl, const Point<>& p)
+void SetLeafPosition(BroadLeaf& bl, const Point& p)
 {
   PositionVector transvct = PositionVector(p - GetStartPoint(bl.bla.petiole));
 

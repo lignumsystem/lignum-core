@@ -46,7 +46,7 @@ class TreeSegment: public TreeCompartment<TS,BUD>{
   friend LGMdouble SetValue(TreeSegment<TS1,BUD1>& ts, const LGMAD name, const LGMdouble value);
 public:
   TreeSegment();
-  TreeSegment(const Point<METER>& p, const PositionVector& d, const LGMdouble go,
+  TreeSegment(const Point& p, const PositionVector& d, const LGMdouble go,
 	      const METER l, const METER r, const METER rn, Tree<TS,BUD>* t);
   virtual ~TreeSegment();
   LGMdouble GetTranspiration(LGMdouble time);

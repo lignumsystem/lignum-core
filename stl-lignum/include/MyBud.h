@@ -9,7 +9,7 @@ class MyTreeSegment;
 
 class MyBud:public Bud<MyTreeSegment,MyBud>{
  public:
-  MyBud(const Point<METER>& p, const PositionVector& d, 
+  MyBud(const Point& p, const PositionVector& d, 
 	const LGMdouble omega, Tree<MyTreeSegment,MyBud>* tree)
     :Bud<MyTreeSegment,MyBud>(p,d,omega,tree){}
 };

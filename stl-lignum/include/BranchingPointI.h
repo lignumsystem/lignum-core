@@ -10,8 +10,8 @@ BranchingPoint<TS,BUD>::BranchingPoint()
 }
 
 template <class TS,class BUD>
-BranchingPoint<TS,BUD>::BranchingPoint(const Point<METER>& p, const PositionVector& d,
-				   Tree<TS,BUD>* t)
+BranchingPoint<TS,BUD>::BranchingPoint(const Point& p, const PositionVector& d,
+				       Tree<TS,BUD>* t)
   :TreeCompartment<TS,BUD>(p,d,t)
 {
 }

@@ -31,10 +31,10 @@ int main(int argc, char *argv[])
 {
   
   //using explicitely Tree from  namespace Lignum;
-  Tree<MyHwTreeSegment,MyBud> hw_tree(Point<METER>(0,0,0),
+  Tree<MyHwTreeSegment,MyBud> hw_tree(Point(0,0,0),
 				      PositionVector(0,0,1.0));
   //by default the tree is from namespace Lignum
-  Tree<MyCfTreeSegment,MyBud> cf_tree(Point<METER>(0,0,0),
+  Tree<MyCfTreeSegment,MyBud> cf_tree(Point(0,0,0),
 				      PositionVector(0,0,1.0));
  string clarg,empty;
 
@@ -52,24 +52,24 @@ int main(int argc, char *argv[])
   Axis<MyHwTreeSegment,MyBud>& axis = GetAxis(hw_tree);
   //create the first tree segment
   MyHwTreeSegment *ts = 
-    new  MyHwTreeSegment(Point<METER>(0,0,0),PositionVector(0,0,1.0),
+    new  MyHwTreeSegment(Point(0,0,0),PositionVector(0,0,1.0),
 			 0,1,0.5,0.2,&hw_tree);
   //create the branching point
   BranchingPoint<MyHwTreeSegment,MyBud> *bp = 
-    new BranchingPoint<MyHwTreeSegment,MyBud>(Point<METER>(0,0,0),
+    new BranchingPoint<MyHwTreeSegment,MyBud>(Point(0,0,0),
 				      PositionVector(0,0,1.0),&hw_tree);
   //create the terminating bud
-  Bud<MyHwTreeSegment,MyBud> *bud = new  Bud<MyHwTreeSegment,MyBud>(Point<METER>(0,0,0),
+  Bud<MyHwTreeSegment,MyBud> *bud = new  Bud<MyHwTreeSegment,MyBud>(Point(0,0,0),
 						    PositionVector(0,0,1.0),
 						    0,
 						    &hw_tree);
   //create a branch with one bud (Axis containing one Bud) into the branching point
-  InsertTerminatingBud(*bp,new Bud<MyHwTreeSegment,MyBud>(Point<METER>(0,0,0),
+  InsertTerminatingBud(*bp,new Bud<MyHwTreeSegment,MyBud>(Point(0,0,0),
 						  PositionVector(0,0,1.0),
 						  0,
 						  &hw_tree));
   //create another branch with one bud (Axis containing one Bud) into the branching point
-  InsertTerminatingBud(*bp,new Bud<MyHwTreeSegment,MyBud>(Point<METER>(0,0,0),
+  InsertTerminatingBud(*bp,new Bud<MyHwTreeSegment,MyBud>(Point(0,0,0),
 						  PositionVector(0,0,1.0),
 						  0,
 						  &hw_tree));
@@ -133,25 +133,25 @@ int main(int argc, char *argv[])
   Axis<MyCfTreeSegment,MyBud>& cf_axis = GetAxis(cf_tree);
   //create the first tree segment
   MyCfTreeSegment *cf_ts = 
-    new MyCfTreeSegment(Point<METER>(0,0,0),PositionVector(0,0,1.0),
+    new MyCfTreeSegment(Point(0,0,0),PositionVector(0,0,1.0),
 			0,1,0.5,0.2,&cf_tree);
   SetValue(*cf_ts, Qabs, 100.0);                //this segment has absorbed radiation
   //create the branching point
   BranchingPoint<MyCfTreeSegment,MyBud> *cf_bp = 
-    new BranchingPoint<MyCfTreeSegment,MyBud>(Point<METER>(0,0,0),
+    new BranchingPoint<MyCfTreeSegment,MyBud>(Point(0,0,0),
 				      PositionVector(0,0,1.0),&cf_tree);
   //create the terminating bud
-  Bud<MyCfTreeSegment,MyBud> *cf_bud = new  Bud<MyCfTreeSegment,MyBud>(Point<METER>(0,0,0),
+  Bud<MyCfTreeSegment,MyBud> *cf_bud = new  Bud<MyCfTreeSegment,MyBud>(Point(0,0,0),
 						    PositionVector(0,0,1.0),
 						    0,
 						    &cf_tree);
   //create a branch with one bud (Axis containing one Bud) into the branching point
-  InsertTerminatingBud(*cf_bp,new Bud<MyCfTreeSegment,MyBud>(Point<METER>(0,0,0),
+  InsertTerminatingBud(*cf_bp,new Bud<MyCfTreeSegment,MyBud>(Point(0,0,0),
 						  PositionVector(0,0,1.0),
 						  0,
 						  &cf_tree));
   //create another branch with one bud (Axis containing one Bud) into the branching point
-  InsertTerminatingBud(*cf_bp,new Bud<MyCfTreeSegment,MyBud>(Point<METER>(0,0,0),
+  InsertTerminatingBud(*cf_bp,new Bud<MyCfTreeSegment,MyBud>(Point(0,0,0),
 						  PositionVector(0,0,1.0),
 						  0,
 						  &cf_tree));

@@ -12,7 +12,7 @@ Tree<TS,BUD>::Tree()
 //Construct a tree at a certain position to a certain direction
 //with one terminating bud in the main axis
 template <class TS,class BUD>
-Tree<TS,BUD>::Tree(const Point<METER>& p, const PositionVector& d)
+Tree<TS,BUD>::Tree(const Point& p, const PositionVector& d)
   :TreeCompartment<TS,BUD>(p,d,this),axis(p,d,this),f(5,5)
 {
   //force the instantiation of BranchingPoint

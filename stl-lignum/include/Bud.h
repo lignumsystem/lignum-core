@@ -23,15 +23,18 @@ template <class TS,class BUD=DefaultBud<TS> >
 class Bud: public TreeCompartment<TS,BUD>{
 template <class TS1,class BUD1>
 friend LGMdouble GetValue(const Bud<TS1,BUD1>& bud, const LGMAD name);
+
 template <class TS1,class BUD1>
 friend LGMdouble SetValue(Bud<TS1,BUD1>& bud, const LGMAD name, const LGMdouble value);
+
 template <class TS1,class BUD1>
 friend STATUS GetValue(const Bud<TS1,BUD1>& bud, const LGMAS name);
+
 template <class TS1,class BUD1>
 friend STATUS SetValue(Bud<TS1,BUD1>& bud, const LGMAS name, const STATUS value);
 public:
   Bud();
-  Bud(const Point<METER>& p, const PositionVector& d, const LGMdouble omega, Tree<TS,BUD>* tree);
+  Bud(const Point& p, const PositionVector& d, const LGMdouble omega, Tree<TS,BUD>* tree);
   TS& createTreeSegment()const;
   Bud<TS,BUD>& createBud()const;
   BranchingPoint<TS,BUD>& createBranchingPoint()const;

@@ -7,7 +7,7 @@
 using namespace cxxadt;
 int main(int argc, char *argv[])
 {
-  Point<double> p1(1,2,3);
+  Point p1(1,2,3);
   HRVector v1(p1);
   HRMatrix m1(ROTATE_Z);
   vector<double> v2(4);
@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
   if (argc != 2)
     cout << "Usage: hrmatrix <angle in degrees> " <<endl;
   else{
-    cout << argv[argc-1] << endl;
+    cout << "Angle (degrees): " << argv[argc-1] << endl;
     angle = PI_VALUE*atof((const char*)argv[argc-1])/180.0;
   }
 

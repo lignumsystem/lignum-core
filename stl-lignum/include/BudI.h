@@ -16,7 +16,7 @@ Bud<TS,BUD>::Bud()
 //Also to access tree level parameters etc., define
 //the tree this bud is part of
 template <class TS,class BUD>
-Bud<TS,BUD>::Bud(const Point<METER>& p, const PositionVector& d, const LGMdouble go, 
+Bud<TS,BUD>::Bud(const Point& p, const PositionVector& d, const LGMdouble go, 
 	     Tree<TS,BUD>* t)
   :TreeCompartment<TS,BUD>(p,d,t)
 {

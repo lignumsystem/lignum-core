@@ -93,33 +93,42 @@ template <class TS,class BUD = DefaultBud<TS> >
 class Tree: public TreeCompartment<TS,BUD>{
   template <class TS1,class BUD1>
   friend Axis<TS1,BUD1>& GetAxis(Tree<TS1,BUD1>& t);
+
   template <class TS1,class BUD1>
   friend void InitializeTree(Tree<TS1,BUD1>& tree, const string& meta_file);
+
   template <class TS1,class BUD1>
   friend LGMdouble GetValue(const Tree<TS1,BUD1>& tree, const LGMAD name);
+
   template <class TS1,class BUD1>
   friend LGMdouble SetValue(Tree<TS1,BUD1>& tree, const LGMAD name, 
 			    const LGMdouble value);
+
   template <class TS1,class BUD1>
   friend LGMdouble GetValue(const Tree<TS1,BUD1>& tree, const LGMPD name);
+
   template <class TS1,class BUD1>
   friend LGMdouble SetValue(Tree<TS1,BUD1>& tree, const LGMPD  name, 
 			    const LGMdouble value);
   template <class TS1,class BUD1>
   friend LGMdouble GetValue(const Tree<TS1,BUD1>& tree, const LGMTD name);
+
   template <class TS1,class BUD1>
   friend LGMdouble SetValue(Tree<TS1,BUD1>& tree, const LGMTD name,
 			    const LGMdouble value);
+
   template <class TS1,class BUD1>
   friend string GetTreeInitializationFile(Tree<TS1,BUD1>& tree);
+
   template <class TS1,class BUD1>
   friend sky::Firmament& GetFirmament(Tree<TS1,BUD1>& tree);
+
   template <class TS1,class BUD1>
   friend LGMdouble UpdateTreePhotosynthesis(Tree<TS1,BUD1>& tree);
 
 public:
   Tree();
-  Tree(const Point<METER>& p, const PositionVector& d);
+  Tree(const Point& p, const PositionVector& d);
   void UpdateWaterFlow(LGMdouble time, const ConnectionMatrix<TS,BUD> &cm);
   void photosynthesis();
 

@@ -11,7 +11,7 @@ class GUS{
 public:
   GUS(int init = 0):flag(init){}  
   int flag;
-  Point<METER> point;
+  Point point;
   vector<TreeSegment<TS,BUD>*> v;
 };
 

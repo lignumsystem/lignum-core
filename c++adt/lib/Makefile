@@ -197,12 +197,13 @@ depend:
 ../src/HRMatrix.o: /usr/include/CC/stl_threads.h /usr/include/mutex.h
 ../src/HRMatrix.o: /usr/include/time.h /usr/include/CC/stl_vector.h
 ../src/HRMatrix.o: ../include/Rotation.h ../include/mathsym.h
-../src/HRMatrix.o: /usr/include/math.h ../include/Point.h ../include/PointI.h
+../src/HRMatrix.o: /usr/include/math.h ../include/Point.h
+../src/HRMatrix.o: ../include/PositionVector.h /usr/include/CC/vector
+../src/HRMatrix.o: /usr/include/CC/stl_bvector.h ../include/RMatrix.h
 ../src/HRMatrix.o: ../include/TMatrix.h /usr/include/CC/stream.h
 ../src/HRMatrix.o: /usr/include/CC/iomanip.h /usr/include/CC/generic.h
 ../src/HRMatrix.o: /usr/include/CC/stdiostream.h /usr/include/CC/fstream.h
-../src/HRMatrix.o: /usr/include/CC/vector /usr/include/CC/stl_bvector.h
-../src/HRMatrix.o: ../include/TMatrixI.h
+../src/HRMatrix.o: ../include/TMatrixI.h ../include/PointI.h
 ../src/hrmatrix.o: /usr/include/stdlib.h /usr/include/standards.h
 ../src/hrmatrix.o: /usr/include/sgidefs.h /usr/include/CC/iostream.h
 ../src/hrmatrix.o: /usr/include/memory.h /usr/include/stddef.h
@@ -227,9 +228,10 @@ depend:
 ../src/hrmatrix.o: /usr/include/CC/stl_threads.h /usr/include/mutex.h
 ../src/hrmatrix.o: /usr/include/time.h /usr/include/CC/stl_vector.h
 ../src/hrmatrix.o: ../include/Rotation.h ../include/mathsym.h
-../src/hrmatrix.o: /usr/include/math.h ../include/Point.h ../include/PointI.h
+../src/hrmatrix.o: /usr/include/math.h ../include/Point.h
+../src/hrmatrix.o: ../include/PositionVector.h /usr/include/CC/vector
+../src/hrmatrix.o: /usr/include/CC/stl_bvector.h ../include/RMatrix.h
 ../src/hrmatrix.o: ../include/TMatrix.h /usr/include/CC/stream.h
 ../src/hrmatrix.o: /usr/include/CC/iomanip.h /usr/include/CC/generic.h
 ../src/hrmatrix.o: /usr/include/CC/stdiostream.h /usr/include/CC/fstream.h
-../src/hrmatrix.o: /usr/include/CC/vector /usr/include/CC/stl_bvector.h
-../src/hrmatrix.o: ../include/TMatrixI.h
+../src/hrmatrix.o: ../include/TMatrixI.h ../include/PointI.h

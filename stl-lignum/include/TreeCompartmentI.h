@@ -9,7 +9,7 @@ TreeCompartment<TS,BUD>::TreeCompartment()
 }
 
 template <class TS,class BUD>
-TreeCompartment<TS,BUD>::TreeCompartment(const Point<METER>& p, const PositionVector& d, 
+TreeCompartment<TS,BUD>::TreeCompartment(const Point& p, const PositionVector& d, 
 				 Tree<TS,BUD>* t)
   :point(p),direction(d)
 {
@@ -28,7 +28,7 @@ TreeCompartment<TS,BUD>::~TreeCompartment()
 }
 
 template <class TS,class BUD>
-Point<METER> GetPoint(const TreeCompartment<TS,BUD>& tc)
+Point GetPoint(const TreeCompartment<TS,BUD>& tc)
 {
   return tc.point;
 }
@@ -52,7 +52,7 @@ void SetDirection(TreeCompartment<TS,BUD>& tc, const PositionVector& d)
 }
 
 template <class TS,class BUD>
-void SetPoint(TreeCompartment<TS,BUD>& tc, const Point<LGMdouble>& p)
+void SetPoint(TreeCompartment<TS,BUD>& tc, const Point& p)
 {
   tc.point = p;
 }
