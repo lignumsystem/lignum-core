@@ -88,7 +88,8 @@ int LSystem<TS,BUD,T,F>::lignum2Lstring(list<TreeCompartment<TS,BUD>*>& ls,
     }
     //Current tree compartment is bud but the symbol is "SB" --> new branching point
     else if (Bud<TS,BUD>* bud = dynamic_cast<Bud<TS,BUD>*> (*current)){
-      cerr << "Axis error 1 current is Bud structures should match" << endl; 
+      cerr << "Axis error 1 current is Bud  with branching order: " 
+	   << GetValue(*bud,LGAomega)  << " structures should match " << endl; 
     }
     else{
       //We don't have other choices
@@ -115,7 +116,8 @@ int LSystem<TS,BUD,T,F>::lignum2Lstring(list<TreeCompartment<TS,BUD>*>& ls,
     }
     //Current tree compartment is bud but the symbol is "F" --> new tree segment
     else if (Bud<TS,BUD>* bud = dynamic_cast<Bud<TS,BUD>*> (*current)){
-      cerr << "Axis error 4 current is Bud structures should match" << endl;
+      cerr << "Axis error 4 current is Bud with omega: " 
+	   << GetValue(*bud,LGAomega) << " structures should match" << endl;
     }
     else{
       cerr << "Axis error 5  L file does not generate Lignum " << endl;
@@ -136,7 +138,7 @@ int LSystem<TS,BUD,T,F>::lignum2Lstring(list<TreeCompartment<TS,BUD>*>& ls,
       //Check if Bud indeed has parameters (it may not!)
       if (caller_data.Strct.hasParameters() > 0){
 	const char* pArg = caller_data.Strct.pArg(0);
-	for (int i = 0; i < vav.size(); i++){
+	for (int i = 0; i < static_cast<int>(vav.size()); i++){
 	  F arg = GetValue(*bud,vav[i]);
 	  memcpy(const_cast<char*>(pArg),&arg,sizeof(F));
 	  pArg += sizeof(F);
@@ -338,7 +340,7 @@ int LSystem<TS,BUD,T,F>::lstring2Lignum(list<TreeCompartment<TS,BUD>*>& ls,
       current++;
     }
     //Current tree compartment is bud but the symbol is "SB" --> new branching point
-    else if (BUD* bud = dynamic_cast<BUD*> (*current)){
+    else if (dynamic_cast<BUD*> (*current)){
       BranchingPoint<TS,BUD>* bp = new BranchingPoint<TS,BUD>(GetPoint(turtle_stack.top()),
 							      GetHeading(turtle_stack.top()),
 							      &tree);
@@ -429,7 +431,7 @@ int LSystem<TS,BUD,T,F>::lstring2Lignum(list<TreeCompartment<TS,BUD>*>& ls,
       //Check if Bud indeed has parameters (it may not)
       if (caller_data.Strct.hasParameters() ){
 	const char* pArg = caller_data.Strct.pArg(0);
-	for (int i = 0; i < vav.size(); i++){
+	for (int i = 0; i < static_cast<int>(vav.size()); i++){
 	  F arg = GetValue(*bud,vav[i]);
 	  memcpy((char*)&arg,pArg,sizeof(F));
 	  SetValue(*bud,vav[i],arg);
@@ -451,7 +453,7 @@ int LSystem<TS,BUD,T,F>::lstring2Lignum(list<TreeCompartment<TS,BUD>*>& ls,
       //Check if the Bud indeed has parameters (it may not!)
       if (caller_data.Strct.hasParameters()){
 	const char* pArg = caller_data.Strct.pArg(0);
-	for (int i = 0; i < vav.size(); i++){
+	for (int i = 0; i < static_cast<int>(vav.size()); i++){
 	  F arg = GetValue(*bud,vav[i]);
 	  memcpy((char*)&arg,pArg,sizeof(F));
 	  SetValue(*bud,vav[i],arg);
