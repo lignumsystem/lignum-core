@@ -3,17 +3,6 @@
 
 
 namespace Lignum{
-
-  template <class TS, class BUD>
-    InitializeTree<TS,BUD>::InitializeTree(const string& file, const LGMVERBOSE v)
-    :tmfp(file),verbose(v)
-    {
-      //Parse the configuration file (meta file) for a tree/forest
-      //tmfp will contain name of the files 
-      //where the actual parameters/configuration are
-      tmfp.parse();
-    }
-
   template <class TS, class BUD>
     void  InitializeTree<TS,BUD>::initialize(Tree<TS,BUD>& tree)
     {
@@ -82,7 +71,7 @@ namespace Lignum{
       if (verbose){
 	cout << "Configuring functions" << endl;
       }
-      if (file != ""){
+      if (file != string("")){
 	if (verbose){
 	  cout << "Reading LGMAL from: " << file << endl;
 	}
@@ -90,7 +79,7 @@ namespace Lignum{
       }
       //2.
       file = tmfp.getFunctionFile("LGMFM");
-      if (file != ""){
+      if (file != string("")){
 	if (verbose){
 	  cout << "Reading LGMFM from: " << file << endl;
 	}
@@ -98,7 +87,7 @@ namespace Lignum{
       }
       //3.
       file = tmfp.getFunctionFile("LGMIP");
-      if (file != ""){
+      if (file != string("")){
 	if (verbose){
 	  cout << "Reading LGMIP from: " << file<< endl;
 	}
@@ -106,7 +95,7 @@ namespace Lignum{
       }
       //4.
       file = tmfp.getFunctionFile("LGMLONB");
-      if (file != ""){
+      if (file != string("")){
 	if (verbose){
 	  cout << "Reading LGMLONB from: " << file << endl;
 	}
@@ -114,7 +103,7 @@ namespace Lignum{
       }
       //5.
       file = tmfp.getFunctionFile("LGMNB");
-      if (file != ""){
+      if (file != string("")){
 	if (verbose){
 	  cout << "Reading LGMNB from: " << file << endl;
 	}
@@ -122,7 +111,7 @@ namespace Lignum{
       }
       //6.
       file = tmfp.getFunctionFile("LGMVI");
-      if (file != ""){
+      if (file != string("")){
 	if (verbose){
 	  cout << "Reading LGMVI from: " << file << endl;
 	}
@@ -130,7 +119,7 @@ namespace Lignum{
       }
       //7.
       file = tmfp.getFunctionFile("LGMVIONB");
-      if (file != ""){
+      if (file != string("")){
 	if (verbose){
 	  cout << "Reading LGMVIONB from: " << file << endl;
 	}
