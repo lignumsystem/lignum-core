@@ -10,7 +10,7 @@ namespace Lignum{
 template <class TS,class BUD>
 void CfTreeSegment<TS,BUD>::photosynthesis()
 {
-  Tree<TS,BUD>& t = dynamic_cast<Tree<TS,BUD>&>(GetTree(*this));
+  Tree<TS,BUD>& t = GetTree(*this);
   SetValue(*this,P, GetValue(t, pr) * GetValue(*this,Qabs));
 }
 
@@ -22,9 +22,10 @@ void CfTreeSegment<TS,BUD>::photosynthesis()
 template <class TS,class BUD>
 void CfTreeSegment<TS,BUD>::respiration()
 {
-  LGMdouble resp;
-  Tree<TS,BUD>& t = dynamic_cast<Tree<TS,BUD>&>(GetTree(*this));
-  resp = GetValue(t, mf)*GetValue(*this,Wf)+GetValue(t,ms)*GetValue(*this,Ws);
+  LGMdouble resp = 0.0;
+  Tree<TS,BUD>& t = GetTree(*this);
+  //Rtot = Rfoliage + Rsapwood
+  resp = GetValue(t, mf)*GetValue(*this,Wf) + GetValue(t,ms)*GetValue(*this,Ws);
   SetValue(*this,M, resp);
 }
 
