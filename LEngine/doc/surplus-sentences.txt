@@ -70,3 +70,40 @@ self-pruning   and   changes  in   form   as   tree  develops   called
 metamorphosis.  The  reference axis  was fully implemented  in AMAPsim
 used  to produce  realistic images  of important  trees and  plants in
 forestry and agriculture.
+
+
+The research group at the  Department of Forest Ecology, University of
+Helsinki has since early  1970's monitored and modelled functioning of
+trees  and   their  environment  \citep{hari:99}.    Analysis  of  the
+collected data originally focused on understanding metabolism of trees
+but  the  work has  extended  to  analyze  growth and  development  of
+individual trees and forest stands.
+
+The  precursory  modelling  work  in \citet{hari:82}  for  Scots  pine
+presents  the framework for  the stand  models based  on process-based
+single  tree  models  where  the  growth of  trees  is  computed  from
+photosynthesis and respiration.  The light regime in a forest stand is
+the driving  force of photosynthesis in  a tree from  which dry matter
+production, maintenance and  allocation to different tree compartments
+(foliage,  stem, branches,  root  system etc.)   represented as  state
+variables are contrived using the principle of carbon balance.
+
+The  further analysis  of this  modelling approach  has  improved tree
+models  and  lead to  deeper  understanding  the  mechanics of  carbon
+allocation,  structural  constraints controlling  tree  form and  tree
+interactions supporting the further development of stand models.
+
+To  mention  a  few,  \citet{makela:86}  describe  tree  growth  using
+photosynthetic  light   ratio  to  measure   competitive  ability  and
+differentiation of  trees. \citet{nikinmaa:92} has  optimization model
+for photosynthesis  for single tree involving  light extinction within
+canopy and construction cost  branches; stand level dynamics considers
+nutrient  flows explicitely.   \citet{sievanen:93}  studies structural
+relationships  i.e.  pipe  model  for stem,  branches  and foliage  to
+express   tree  and   stand   growth  in   terms  of   height-diameter
+relationship.  Tree and  stand model in \citet{makela:97-1} represents
+geometric dimensions of woody organs  of stem, branches and roots with
+constant   form   parameters.    \citet{makela:97-2}  integrates   two
+additional submodels  to calculate these  parameters explicitely.  The
+result is  representation of a  three dimensional structure of  a tree
+stem used in wood quality (branchiness) analysis of Scots pine.
