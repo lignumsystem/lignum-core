@@ -10,8 +10,6 @@ LSYS= bearberry.L pine9bp.L cs-plantA.L cs-plantB.L  cs-plantC.L \
 SRC=${LSYS:.L=.cpp}
 OBJ=${SRC:.cpp=.o}
 
-AR =  $(CCC) -ar  
-ARFLAGS = -o 
 
 INCLUDE= -I../include -I../../c++adt/include -I../../stl-lignum/include
 
@@ -29,7 +27,7 @@ $(ARFILE): $(SRC) $(OBJ)
 	$(CCC) $(CCCFLAGS) $(OPTIMIZE) $(INCLUDE)  $< -o $@ 
 l2c:
 	(cd ../L2C; make "CCC=$(CCC)" "CCCFLAGS=$(CCCFLAGS)" \
-         "OPTIMIZE=$(OPTIMIZE)" "AR=ar" "ARFLAGS=rv" $@)
+         "OPTIMIZE=$(OPTIMIZE)" "AR=ar" "ARFLAGS=rvs" $@)
 clean:
 	rm -rf *.o *.cpp  ii_files
 distclean: clean

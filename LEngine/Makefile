@@ -22,7 +22,7 @@ lengine:
 
 gnu:
 	make "CCC=g++" "CCCFLAGS=-c" "OPTIMIZE=-g" \
-             "AR=ar"  "ARFLAGS=rv" "LIBD=lib32"  lengine
+             "AR=ar"  "ARFLAGS=rvs" "LIBD=lib32"  lengine
 lignux: 
 	make "CCC=g++" "CCCFLAGS=-c" "OPTIMIZE=-g" \
              "AR=ar"  "ARFLAGS=rv" "LIBD=lib32" lengine

@@ -3,7 +3,7 @@
 #To compile with g++ on SGI or on Linux type 
 #    make gnu 
 #or copy paste
-#    make "CCC=g++" "CCCFLAGS=-c" "OPTIMIZE=-O" "AR=ar"  "ARDFLAGS=rv" l2lignum
+#    make "CCC=g++" "CCCFLAGS=-c" "OPTIMIZE=-O" "AR=ar"  "ARDFLAGS=rvs" l2lignum
 
 SRC= main.cc
 OBJ  = ${SRC:.cc=.o}
@@ -53,13 +53,15 @@ CCCFLAGS = -c  #-prelink -ptused   -ptv  #  -fullwarn
 
 INCLUDE = -I../../c++adt/include -I../../Firmament/include \
           -I../../stl-lignum/include -I../include \
-          -I../../Graphics -I/usr/freeware/include
+          -I../../Graphics -I/usr/freeware/include \
+          -I/usr/X11R6/include -I/sw/include
 
 STL     = -I/usr/include/CC
 
 LIBD = lib64
 LIBFLAGS = -L../../c++adt/lib -L../../stl-lignum/lib -L../../Firmament/lib \
-           -L. -L../lsys -L../../Graphics -L/usr/X11R6/lib -L/usr/freeware/$(LIBD)
+           -L. -L../lsys -L../../Graphics -L/usr/X11R6/lib -L/usr/freeware/$(LIBD) \
+           -L/sw/lib
 
 LIB1   = libc++adt.a
 LIB2   = libLGM.a
@@ -94,62 +96,62 @@ l2lignum: $(OBJ) l2c $(LIB1) $(LIB2) $(LIB3)  $(LIB4)  $(LIB5) $(LIB6)
 
 gnu:
 	make "CCC=g++" "CCCFLAGS=-c" "OPTIMIZE=-g" \
-             "AR=ar"  "ARFLAGS=rv" "LIBD=lib32"  l2lignum
+             "AR=ar"  "ARFLAGS=rvs" "LIBD=lib32"  l2lignum
 lignux: 
 	make "CCC=g++" "CCCFLAGS=-c" "OPTIMIZE=-g" \
-             "AR=ar"  "ARFLAGS=rv" "LIBD=lib32" l2lignum
+             "AR=ar"  "ARFLAGS=rvs" "LIBD=lib32" l2lignum
 
 birch:  l2c $(BIRCHOBJ) $(LIB1) $(LIB2) $(LIB3)  $(LIB4) $(LIB5) $(LIB6)   
 	$(CCC)  -o $@ $(INCLUDE) $(OPTIMIZE) $(BIRCHOBJ) $(LIBFLAGS) $(LIBS)
 
 gnubirch:
 	make "CCC=g++" "CCCFLAGS=-c" "OPTIMIZE=-g" \
-             "AR=ar"  "ARFLAGS=rv" "LIBD=lib32" "LSYS=birch.L" birch
+             "AR=ar"  "ARFLAGS=rvs" "LIBD=lib32" "LSYS=birch.L" birch
 
 pine: l2c $(PINEOBJ) $(LIB1) $(LIB2) $(LIB3)  $(LIB4) $(LIB5) $(LIB6)   
 	$(CCC)  -o $@ $(INCLUDE) $(OPTIMIZE) $(PINEOBJ) $(LIBFLAGS) $(LIBS)
 gnupine: 
 	make "CCC=g++" "CCCFLAGS=-c" "OPTIMIZE=-g" \
-             "AR=ar"  "ARFLAGS=rv" "LIBD=lib32" "LSYS=pine9bp.L" pine
+             "AR=ar"  "ARFLAGS=rvs" "LIBD=lib32" "LSYS=pine9bp.L" pine
 
 forest: l2c $(FORESTOBJ) $(LIB1) $(LIB2) $(LIB3)  $(LIB4) $(LIB5) $(LIB6)  
 	$(CCC)  -o $@ $(INCLUDE) $(OPTIMIZE) $(FORESTOBJ) $(LIBFLAGS) $(LIBS)
 
 gnuforest:
 	make "CCC=g++" "CCCFLAGS=-c" "OPTIMIZE=-g" \
-             "AR=ar"  "ARFLAGS=rv" "LIBD=lib32" "LSYS=pine9bp.L birch.L" forest
+             "AR=ar"  "ARFLAGS=rvs" "LIBD=lib32" "LSYS=pine9bp.L birch.L" forest
 
 ca110: l2c $(CA110OBJ) $(LIB1) $(LIB2) $(LIB3)  $(LIB4) $(LIB5) $(LIB6)  
 	$(CCC)  -o $@ $(INCLUDE) $(OPTIMIZE) $(CA110OBJ) $(LIBFLAGS) $(LIBS)
 
 gnuca110:
 	make "CCC=g++" "CCCFLAGS=-c" "OPTIMIZE=-g" \
-             "AR=ar"  "ARFLAGS=rv" "LIBD=lib32" "LSYS=ca110.L" ca110
+             "AR=ar"  "ARFLAGS=rvs" "LIBD=lib32" "LSYS=ca110.L" ca110
 
 ca30: l2c $(CA30OBJ) $(LIB1) $(LIB2) $(LIB3)  $(LIB4) $(LIB5) $(LIB6)  
 	$(CCC)  -o $@ $(INCLUDE) $(OPTIMIZE) $(CA30OBJ) $(LIBFLAGS) $(LIBS)
 
 gnuca30: 
 	make "CCC=g++" "CCCFLAGS=-c" "OPTIMIZE=-g" \
-              "AR=ar"  "ARFLAGS=rv" "LIBD=lib32" "LSYS=ca30.L" ca30
+              "AR=ar"  "ARFLAGS=rvs" "LIBD=lib32" "LSYS=ca30.L" ca30
 
 ca90: l2c $(CA90OBJ) $(LIB1) $(LIB2) $(LIB3)  $(LIB4) $(LIB5) $(LIB6)  
 	$(CCC)  -o $@ $(INCLUDE) $(OPTIMIZE) $(CA90OBJ) $(LIBFLAGS) $(LIBS)
 
 gnuca90:
 	make "CCC=g++" "CCCFLAGS=-c" "OPTIMIZE=-g" \
-             "AR=ar"  "ARFLAGS=rv" "LIBD=lib32" "LSYS=ca90.L" gnuca90
+             "AR=ar"  "ARFLAGS=rvs" "LIBD=lib32" "LSYS=ca90.L" gnuca90
 
 bearberry: l2c $(BEARBERRYOBJ) $(LIB1) $(LIB2) $(LIB3)  $(LIB4) $(LIB5) $(LIB6)  
 	$(CCC)  -o $@ $(INCLUDE) $(OPTIMIZE) $(BEARBERRYOBJ) $(LIBFLAGS) $(LIBS)
 
 gnubearberry:
 	make "CCC=g++" "CCCFLAGS=-c" "OPTIMIZE=-g" \
-             "AR=ar"  "ARFLAGS=rv" "LIBD=lib32" "LSYS=bearberry.L" bearberry
+             "AR=ar"  "ARFLAGS=rvs" "LIBD=lib32" "LSYS=bearberry.L" bearberry
 
 l2c:	
 	(cd ../L2C; make "CCC=$(CCC)" "CCCFLAGS=$(CCCFLAGS)" "OPTIMIZE=$(OPTIMIZE)" \
-                          "AR=ar" "ARFLAGS=rv" $@)
+                          "AR=ar" "ARFLAGS=rvs" $@)
 $(LIB1):
 	(cd ../../c++adt; make "CCC=$(CCC)" "CCCFLAGS=$(CCCFLAGS)" \
                                "OPTIMIZE=$(OPTIMIZE)" "AR=$(AR)" "ARFLAGS=$(ARFLAGS)" $@)
