@@ -120,7 +120,7 @@ namespace Lignum{
 	std::list<BroadLeaf<S>*>& leaf_list = GetLeafList(const_cast<HwTreeSegment<TS,BUD,S>&>(ts));
 	typename std::list<BroadLeaf<S>*>::iterator I;
 	for(I = leaf_list.begin(); I != leaf_list.end(); I++)
-	  value += GetValue(**I, LGAQin);
+	  if(GetValue(**I, LGAQin) > value) value = GetValue(**I, LGAQin);
 	return value;
       }
       else if (name == LGAQabs){
