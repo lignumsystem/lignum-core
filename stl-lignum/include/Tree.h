@@ -15,9 +15,7 @@ using namespace std;
 
 using namespace cxxadt;
 
-#include <VTree.h>
 #include <LGMdecl.h>
-#include <LGMSymbols.h>
 #include <Algorithms.h>
 #include <TreeFunctor.h>
 #include <TreeMetaFileParser.h>
@@ -149,7 +147,7 @@ namespace Lignum{
   };
 
   template <class TS,class BUD = DefaultBud<TS> >
-    class Tree: public TreeCompartment<TS,BUD>,public VTree{
+    class Tree: public TreeCompartment<TS,BUD>{
 
 
 #ifdef _MSC_VER  //cvs update
