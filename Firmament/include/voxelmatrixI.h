@@ -1,3 +1,4 @@
+
 #ifndef VOXELMATRIXI_H
 #define VOXELMATRIXI_H
 
@@ -37,18 +38,15 @@ Matrix<TS,BUD>::Matrix(vector<Tree<TS, BUD> *> trees, double voxeledge)
 	cout << "span " << span << endl;
 	cout << "edge " << edge << endl;
 
-	//Nyt tiedetaan todellinen pikkukuutioiden
-	//lukumaara. Lasketaan sivujen pituudet isossa kuutiossa.
+	//Nyt tiedetaan todellinen pikkukuutioiden lukumaara. Lasketaan sivujen pituudet isossa kuutiossa.
 	float dx = edge * X;
 	float dy = edge * Y;
 	float dz = edge * Z;
 
 	cout << "dx dy dz " << dx << " " << dy << " " << dz << endl;
 
-	p1 = Point(middlepoint.getX()-dx/2, middlepoint.getY()-dy/2,
-		   middlepoint.getZ()-dz/2);
-	p2 = Point(middlepoint.getX()+dx/2, middlepoint.getY()+dy/2,
-		   middlepoint.getZ()+dz/2);
+	p1 = Point(middlepoint.getX()-dx/2, middlepoint.getY()-dy/2, middlepoint.getZ()-dz/2);
+	p2 = Point(middlepoint.getX()+dx/2, middlepoint.getY()+dy/2, middlepoint.getZ()+dz/2);
 
 	cout << " alakulma " << p1 << endl;
 	cout << " ylakulma " << p2 << endl;
@@ -89,20 +87,20 @@ Matrix<TS,BUD>::Matrix(vector<Tree<TS, BUD> *> trees, double voxeledge)
 
 		if (matrix[i][j][k].getSTAR() > 0)
 		  {
-		    cout << "(" << i << "," << j << "," << k << ")   Koordinaatit: (" 
-			 << xx << "," << yy << "," << zz << ")	incoming: " 
-		       << matrix[i][j][k].getRadiationSum() << "  area density "
-			 << matrix[i][j][k].getAreaDensity()  << " Foliage mass " 
-			 << matrix[i][j][k].getFoliageMass() <<
-		      endl;
+/* 		    cout << "(" << i << "," << j << "," << k << ")   Koordinaatit: ("  */
+/* 			 << xx << "," << yy << "," << zz << ")	incoming: "  */
+/* 		       << matrix[i][j][k].getRadiationSum() << "  area density " */
+/* 			 << matrix[i][j][k].getAreaDensity()  << " Foliage mass "  */
+/* 			 << matrix[i][j][k].getFoliageMass() << */
+/* 		      endl; */
 		  }
 		
 		
 		partsumsum += matrix[i][j][k].getPartSum();
 		total_foliage += matrix[i][j][k].getFoliageMass(); 
 	      }
-	cout << "Foliage mass in voxelspace " << total_foliage << endl;
-	cout << "pulikoita yhteensa voxelspacessa " << partsumsum << endl << endl;
+/* 	cout << "Foliage mass in voxelspace " << total_foliage << endl; */
+/* 	cout << "pulikoita yhteensa voxelspacessa " << partsumsum << endl << endl; */
 }
 
 
@@ -190,6 +188,44 @@ Matrix<TS,BUD>::Matrix(Tree<TS,BUD> *tree, double x, double y, double z, double 
 
 
 
+
+template <class TS,class BUD>
+vector<SmallCube> Matrix<TS,BUD>::GetCubes()
+{
+  int num = 0;
+  vector<SmallCube> cubes;
+  vector<SmallCube> ordered_cubes;
+  for (int i=0;i<X;i++)
+    for (int j=0;j<Y;j++)
+      for (int k=0;k<Z;k++) 
+	{			
+	  if (matrix[i][j][k].getSTAR() > 0)
+	    {
+	      SmallCube cube;
+	      cube.x = i;
+	      cube.y = j;
+	      cube.z = k;
+	      cube.ready = false;
+	      cube.areaden = matrix[i][j][k].getAreaDensity(); 
+	      
+	      float xx = p1.getX() + (i+0.5)*edge;
+	      float yy = p1.getY() + (j+0.5)*edge;
+	      float zz = p1.getZ() + (k+0.5)*edge;
+	      
+	      cube.dist = pow(cam_x-xx, 2) + pow(cam_y-yy, 2) + pow(cam_z-zz, 2); 
+	      
+
+	      cube.x_coord = xx;
+	      cube.y_coord = yy;
+	      cube.z_coord = zz;
+
+	      cubes.push_back(cube);
+	      num ++;
+	    }
+	}
+  return cubes;
+
+}
 
 
 template <class TS,class BUD>
@@ -510,37 +546,27 @@ double Matrix<TS,BUD>::getLight(TreeSegment<TS,BUD> *ts)
 
       SetValue(*cfts, Qin, q_in);
       W_f = GetValue(*cfts, Wf);
-
-      //Move this to a place where the tree is initialized***************
+      sf = 2.0 * PI_VALUE * GetValue(*cfts,Rf) * GetValue(*ts,L);
+      
       LGMdouble needle_length = GetValue(GetTree(*cfts),nl);
       LGMdouble needle_angle = GetValue(GetTree(*cfts),na);
-      SetValue(*cfts, Rf, needle_length * sin(needle_angle)+ GetValue(*cfts, R));
-      //***********************
-
- 
-
+      SetValue(*cfts, Rf,needle_length * sin(needle_angle)+ GetValue(*ts,R));
       needle_rad = GetValue(*cfts, Rf);
- 
-      sf = 28.1;  //***Add sf to parameters of the tree********
-      LGMdouble star = 0;
-
-
   
-      //Do clean up work here****************************************
+      sf = 28.1;
+      LGMdouble star = 0;
+  
 	
       //ofstream file("starsum.txt"); file << "kaava : star += S(phi,
       //sa, W_f, GetValue(*ts, R), GetValue(*ts, L))/8;" << endl <<
       //endl;
-
-      LGMdouble s_c = 0.0;
       for (double phi=0;phi<PI_VALUE/2;phi+=PI_VALUE/16)
 	{  
-	  star += S(phi, sf, W_f, needle_rad, GetValue(*ts, L));
-	  s_c += 1.0;
+	  star += S(phi, sf, W_f, needle_rad, GetValue(*ts, L))/8.0;
 	  
-	  //	  cout << "star += S()/8.0" << endl;
-	  //	  cout << "eli star += S(phi, sf, W_f,needle_rad,GetValue(*ts, L))/8.0; " << endl;
-	  //	  cout << "jossa S() =S(" << phi <<","<<sf<< ","<<W_f<<","<< needle_rad<<","<<GetValue(*ts, L) <<")"<< endl;
+/* 	  cout << "star += S()/8.0" << endl; */
+/* 	  cout << "eli star += S(phi, sf, W_f, needle_rad, GetValue(*ts, L))/8.0; " << endl; */
+/* 	  cout << "jossa S() =S(" << phi <<","<<sf<< ","<<W_f<<","<< needle_rad<<","<<GetValue(*ts, L) <<")"<< endl; */
 
 
 	  //cout  << "S()="<< S(phi, sf, W_f, GetValue(*ts, R),
@@ -548,10 +574,6 @@ double Matrix<TS,BUD>::getLight(TreeSegment<TS,BUD> *ts)
 	  //sf<<" Wf="<<W_f<<" R="<<GetValue(*ts, R)<<"
 	  //L="<<GetValue(*ts, L); file << " summa=" << star << endl;
 	}
-      if(s_c > 0.0)
-	star /= s_c;
-      else
-	star = 0.0;
       LGMdouble Q_abs = q_in * star * W_f * sf;
       //file << "Q_abs = q_in * star * wf * sf: " << q_in << " * " <<
       //star << " * " << W_f << " * " << sf << " = " << Q_abs << endl;
@@ -559,11 +581,10 @@ double Matrix<TS,BUD>::getLight(TreeSegment<TS,BUD> *ts)
   
       SetValue(*cfts, Qabs, Q_abs);
 
-      //      cout << "pikku kuution indeksit (" << x << ", " << y << ", " << z << endl;
-      //      cout << "Star segmentille " << star << "  Q_abs = q_in * star * W_f * sf " <<
-      //	"s_c: " << s_c << endl;  
-      //      cout << "Qin  " << q_in << endl;
-      //      cout << "Qabs " << Q_abs << endl << endl << endl;
+/*       cout << "pikku kuution indeksit (" << x << ", " << y << ", " << z << endl; */
+/*       cout << "Star segmentille " << star << "  Q_abs = q_in * star * W_f * sf " << endl;   */
+/*       cout << "Qin  " << q_in << endl; */
+/*       cout << "Qabs " << Q_abs << endl << endl << endl; */
 
       return Q_abs;
     }
@@ -1056,15 +1077,15 @@ void Matrix<TS,BUD>::calculateLight(Firmament *firm, int x, int y, int z)
   // Calculate the diffuse radiation
   //
   for (i=0;i<num_dirs;i++) 
-  {
+    {
           
-	  radiationsum = firm->diffuseRegionRadiationSum(i, direction);
-	  //	  cout << "Taivaankannen suunta " << direction << endl;
-	  total_radiation += radiationsum;
-	  newTraversePath(direction, radiationsum, *point, *startvoxel);
-  }
+      radiationsum = firm->diffuseRegionRadiationSum(i, direction);
+/*       cout << "Taivaankannen suunta " << direction << endl; */
+      total_radiation += radiationsum;
+      newTraversePath(direction, radiationsum, *point, *startvoxel);
+    }
 
-  //  cout << "Total radiation " << total_radiation << endl;
+  cout << "Total radiation " << total_radiation << endl;
 
   //
   // Calculate the direct radiation
