@@ -6,7 +6,7 @@
 #include <Bernoulli.h>
 
 #include <fstream>
-
+#include <iomanip>
 
 extern float cam_x;  //camera position
 extern float cam_y;
@@ -423,7 +423,6 @@ namespace Lignum {
     int Yi = static_cast<int>(localP.getY()/Ybox);
     int Zi = static_cast<int>(localP.getZ()/Zbox);
 
-
     LGMassert(Xi>-1);
     LGMassert(Yi>-1);
     LGMassert(Zi>-1);
@@ -610,8 +609,7 @@ namespace Lignum {
 			LGMdouble inner_length = vec[0].l*2;
 
 			// vaimennuskerroin boksin läpi kulkiessa
-			LGMdouble ext2 = voxboxes[i1][i2][i3].
-			  extinction(inner_length);
+			LGMdouble ext2 = voxboxes[i1][i2][i3].extinction(inner_length);
 							
 			//säteilyn voimakkuus kun se tulee boksista ulos
 			LGMdouble qout = iop * ext2;
@@ -622,8 +620,7 @@ namespace Lignum {
 			// Nyt lasketaan vain keskipisteeseen, eli
 			// boksin saama säteily on se arvo joka
 			// saadaan boksin keskipisteestä.
-			LGMdouble ext = voxboxes[i1][i2][i3].
-			  extinction(inner_length/2.0);
+			LGMdouble ext = voxboxes[i1][i2][i3].extinction(inner_length/2.0);
 			iop = iop * ext;
 		      }
 
@@ -790,13 +787,26 @@ namespace Lignum {
 
     for(int i1=0; i1<Xn; i1++)
       for(int i2=0; i2<Yn; i2++)
-	for(int i3=0; i3<Zn; i3++)
-	  {
-	    file <<  i1 << " " << i2 << " " << i3 << " "
-		 << voxboxes[i1][i2][i3].getQabs() << " " 
-		 << voxboxes[i1][i2][i3].getQin() << " " 
-		 << voxboxes[i1][i2][i3].getFoliageMass() << endl;
-	  }
+	for(int i3=0; i3<Zn; i3++){
+	    if ( voxboxes[i1][i2][i3].getFoliageMass() > R_EPSILON){
+	      file << left << setfill(' ')
+		   << setw(4) << i1 << " " 
+		   << setw(4) << i2 << " " 
+		   << setw(4) << i3 << " "
+		   << setw(11) << voxboxes[i1][i2][i3].getCenterPoint().getX() << " "
+		   << setw(11) << voxboxes[i1][i2][i3].getCenterPoint().getY() << " "
+		   << setw(11) << voxboxes[i1][i2][i3].getCenterPoint().getZ() << " "
+		   << setw(11) << voxboxes[i1][i2][i3].getQabs() << " " 
+		   << setw(11) << voxboxes[i1][i2][i3].getQin() << " " 
+		   << setw(11) << voxboxes[i1][i2][i3].getNeedleMass() << " "
+		   << setw(11) << voxboxes[i1][i2][i3].getLeafMass() << " "
+		   << setw(11) << voxboxes[i1][i2][i3].getFoliageMass() << " "
+	           << setw(11) << voxboxes[i1][i2][i3].getNeedleArea() << " "
+		   << setw(11) << voxboxes[i1][i2][i3].getLeafArea() << " "
+		   << setw(11) << voxboxes[i1][i2][i3].getStar() << " "
+		   << setw(11) << voxboxes[i1][i2][i3].getStarSum() << " " << endl;
+	    }
+	}
     file.close();
   }
   //Calculate some key variables of VoxelSpace contetnts and output to
