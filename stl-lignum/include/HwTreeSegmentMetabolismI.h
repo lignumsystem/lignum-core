@@ -11,7 +11,7 @@ void HwTreeSegment<TS,BUD,S>::photosynthesis()
   Tree<TS,BUD>& tt = dynamic_cast<Tree<TS,BUD>&>(GetTree(*this));
   LGMdouble p0 = GetValue(tt, pr);
 
-  for(list<BroadLeaf<S>*>::iterator i = leaf_ls.begin();
+  for(typename list<BroadLeaf<S>*>::iterator i = leaf_ls.begin();
 	i != leaf_ls.end(); i++) {
     (*i)->photosynthesis(p0);
   }
@@ -28,7 +28,7 @@ void HwTreeSegment<TS,BUD,S>::respiration()
   LGMdouble m_hw = 0.0;
   LGMdouble mf_par = GetValue(tt, mf);
 
-  for(list<BroadLeaf<S>*>::iterator i = leaf_ls.begin();
+  for(typename list<BroadLeaf<S>*>::iterator i = leaf_ls.begin();
 	i != leaf_ls.end(); i++) {
     m_hw += mf_par * GetValue(**i,Wf);
   }

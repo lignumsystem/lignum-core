@@ -45,8 +45,8 @@ BranchingPoint<TS,BUD>::BranchingPoint(const Point& p, const PositionVector& d,
 template <class TS,class BUD>
 BranchingPoint<TS,BUD>::~BranchingPoint()
 {
-	std::list<Axis<TS,BUD>*>::iterator first = axis_ls.begin();
-	std::list<Axis<TS,BUD>*>::iterator last = axis_ls.end();
+  typename std::list<Axis<TS,BUD>*>::iterator first = axis_ls.begin();
+  typename std::list<Axis<TS,BUD>*>::iterator last = axis_ls.end();
 
   while (first != last){
     delete *first++;
@@ -57,20 +57,19 @@ BranchingPoint<TS,BUD>::~BranchingPoint()
 template <class TS,class BUD>
 LGMdouble GetMaxRadius(BranchingPoint<TS,BUD>& bp)
 {
-	std::list<Axis<TS,BUD>*>::iterator first = GetAxisList(bp).begin();
-	std::list<Axis<TS,BUD>*>::iterator last = GetAxisList(bp).end();
+  typename std::list<Axis<TS,BUD>*>::iterator first = GetAxisList(bp).begin();
+  typename std::list<Axis<TS,BUD>*>::iterator last = GetAxisList(bp).end();
 
-	LGMdouble max_rad = 0.0;
-	while (first != last)
-	{
-		TreeSegment<TS,BUD> *ts = GetFirstTreeSegment(**first++);
-		if (ts)
-		{
-			if (GetValue(*ts, R) > max_rad)
-				max_rad = GetValue(*ts, R);
-		}
-	}
-	return max_rad;
+  LGMdouble max_rad = 0.0;
+  while (first != last)
+    {
+      TreeSegment<TS,BUD> *ts = GetFirstTreeSegment(**first++);
+      if (ts){
+	if (GetValue(*ts, R) > max_rad)
+	  max_rad = GetValue(*ts, R);
+      }
+    }
+  return max_rad;
 }
 
 

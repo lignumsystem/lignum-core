@@ -69,7 +69,7 @@ namespace Lignum{
       int nr =  f.numberOfRegions();
       vector<LGMdouble> one(nr, 1.0);
       list<BroadLeaf<S>*>& ll = GetLeafList(const_cast<HwTreeSegment<TS,BUD,S>&>(ts));
-      for(list<BroadLeaf<S>*>::iterator i = ll.begin();
+      for(typename list<BroadLeaf<S>*>::iterator i = ll.begin();
 	  i != ll.end(); i++) {
 	SetValue(*i, Qabs, 0.0);
 	SetValue(*i, Qin, 0.0);
@@ -114,9 +114,9 @@ namespace Lignum{
 
       LGMdouble old_area = 0.0;
       std::list<BroadLeaf<S>*>& leaf_list = GetLeafList(ts);
-      std::list<BroadLeaf<S>*>::iterator I;
+      typename std::list<BroadLeaf<S>*>::iterator I;
       LGMdouble LA = value / (double)no_leaves;
-      for(I = leaf_list.begin(); I != leaf_list.end(); I++) {
+      for(I = leaf_list.begin(); I != leaf_list.end(); I++){
 	old_area += GetValue(**I, A);   //BroadLeaf returns true area of the leaf
 	SetValue(**I, A, LA);
       }
@@ -138,53 +138,45 @@ namespace Lignum{
 
       LGMdouble value = 0.0;
 
-      if (name == Wf) {
+      if (name == Wf){
 	std::list<BroadLeaf<S>*>& leaf_list = GetLeafList(const_cast<HwTreeSegment<TS,BUD,S>&>(ts));
-	std::list<BroadLeaf<S>*>::iterator I;
+	typename std::list<BroadLeaf<S>*>::iterator I;
 	for(I = leaf_list.begin(); I != leaf_list.end(); I++)
 	  value += GetValue(**I, Wf);
-    
 	return value;
       }
-      else if (name == P) 
-	{
-	  std::list<BroadLeaf<S>*>& leaf_list = GetLeafList(const_cast<HwTreeSegment<TS,BUD,S>&>(ts));
-	  std::list<BroadLeaf<S>*>::iterator I;
-	  for(I = leaf_list.begin(); I != leaf_list.end(); I++)
-	    value += GetValue(**I, P);
-    
-	  return value;
-	}
-      else if (name == Qin) {
+      else if (name == P){
 	std::list<BroadLeaf<S>*>& leaf_list = GetLeafList(const_cast<HwTreeSegment<TS,BUD,S>&>(ts));
-	std::list<BroadLeaf<S>*>::iterator I;
+	typename std::list<BroadLeaf<S>*>::iterator I;
+	for(I = leaf_list.begin(); I != leaf_list.end(); I++)
+	  value += GetValue(**I, P);
+	return value;
+	}
+      else if (name == Qin){
+	std::list<BroadLeaf<S>*>& leaf_list = GetLeafList(const_cast<HwTreeSegment<TS,BUD,S>&>(ts));
+	typename std::list<BroadLeaf<S>*>::iterator I;
 	for(I = leaf_list.begin(); I != leaf_list.end(); I++)
 	  value += GetValue(**I, Qin);
-    
 	return value;
       }
-      else if (name == Qabs) {
+      else if (name == Qabs){
 	std::list<BroadLeaf<S>*>& leaf_list = GetLeafList(const_cast<HwTreeSegment<TS,BUD,S>&>(ts));
-	std::list<BroadLeaf<S>*>::iterator I;
+	typename std::list<BroadLeaf<S>*>::iterator I;
 	for(I = leaf_list.begin(); I != leaf_list.end(); I++)
 	  value += GetValue(**I, Qabs);
-    
 	return value;
       }
-      else if(name == Af)
-	{
-	  LGMdouble area = 0.0;
-	  std::list<BroadLeaf<S>*>& leaf_list = GetLeafList(const_cast<HwTreeSegment<TS,BUD,S>&>(ts));
-	  std::list<BroadLeaf<S>*>::iterator I;
-	  for(I = leaf_list.begin(); I != leaf_list.end(); I++) {
+      else if(name == Af){
+	LGMdouble area = 0.0;
+	std::list<BroadLeaf<S>*>& leaf_list = GetLeafList(const_cast<HwTreeSegment<TS,BUD,S>&>(ts));
+	typename std::list<BroadLeaf<S>*>::iterator I;
+	for(I = leaf_list.begin(); I != leaf_list.end(); I++) {
 	    area += GetValue(**I, A);   //BroadLeaf returns true area of the leaf
-	  }
-
-	  return area;
 	}
+	return area;
+      }
       else
 	return GetValue(dynamic_cast<const TreeSegment<TS,BUD>&>(ts), name);
-
     }
 
 

@@ -49,8 +49,8 @@ T& AccumulateOp2<TS,BUD,T,BinOp>:: operator()(T& id,TreeCompartment<TS,BUD>* tc)
   else if (Axis<TS,BUD>* axis = dynamic_cast<Axis<TS,BUD>*>(tc)){
     id = op1(id,axis);
     list<TreeCompartment<TS,BUD>*>& tc_ls = GetTreeCompartmentList(*axis);
-    list<TreeCompartment<TS,BUD>*>::iterator first = tc_ls.begin();
-    list<TreeCompartment<TS,BUD>*>::iterator last = tc_ls.end();
+    typename list<TreeCompartment<TS,BUD>*>::iterator first = tc_ls.begin();
+    typename list<TreeCompartment<TS,BUD>*>::iterator last = tc_ls.end();
     while (first != last)
       (*this)(id,*first++);
   }
@@ -58,8 +58,8 @@ T& AccumulateOp2<TS,BUD,T,BinOp>:: operator()(T& id,TreeCompartment<TS,BUD>* tc)
   else if (BranchingPoint<TS,BUD>* bp = dynamic_cast<BranchingPoint<TS,BUD>*>(tc)){
     id = op1(id,bp);
     list<Axis<TS,BUD>*>& axis_ls = GetAxisList(*bp);
-    list<Axis<TS,BUD>*>::iterator first = axis_ls.begin();
-    list<Axis<TS,BUD>*>::iterator last = axis_ls.end();
+    typename list<Axis<TS,BUD>*>::iterator first = axis_ls.begin();
+    typename list<Axis<TS,BUD>*>::iterator last = axis_ls.end();
     while (first != last)
       (*this)(id,*first++);
   }
@@ -88,8 +88,8 @@ T& ReverseAccumulateOp2<TS,BUD,T,BinOp>::operator()(T& id,
   //"adding and assigning" before applying op1 to the branch whorl
   else if (BranchingPoint<TS,BUD>* bp = dynamic_cast<BranchingPoint<TS,BUD>*>(tc)){
     list<Axis<TS,BUD>*>& axis_ls = GetAxisList(*bp);
-    list<Axis<TS,BUD>*>::reverse_iterator last = axis_ls.rbegin();
-    list<Axis<TS,BUD>*>::reverse_iterator first = axis_ls.rend();
+    typename list<Axis<TS,BUD>*>::reverse_iterator last = axis_ls.rbegin();
+    typename list<Axis<TS,BUD>*>::reverse_iterator first = axis_ls.rend();
     while (last != first){
       T id_new = T(id_copy);
       (*this)(id_new,*last++);
@@ -101,8 +101,8 @@ T& ReverseAccumulateOp2<TS,BUD,T,BinOp>::operator()(T& id,
   //traverse the axis before applying op1 to the axis
   else if (Axis<TS,BUD>* axis = dynamic_cast<Axis<TS,BUD>*>(tc)){
     list<TreeCompartment<TS,BUD>*>& tc_ls = GetTreeCompartmentList(*axis);
-    list<TreeCompartment<TS,BUD>*>::reverse_iterator last = tc_ls.rbegin();
-    list<TreeCompartment<TS,BUD>*>::reverse_iterator first = tc_ls.rend();
+    typename list<TreeCompartment<TS,BUD>*>::reverse_iterator last = tc_ls.rbegin();
+    typename list<TreeCompartment<TS,BUD>*>::reverse_iterator first = tc_ls.rend();
     while (last != first){
       (*this)(id,*last++);
     }
@@ -136,8 +136,8 @@ T& ReverseAccumulateOp3<TS,BUD,T,BinOp1,BinOp2>::operator()(T& id,
   //branch whorl itself
   else if (BranchingPoint<TS,BUD>* bp = dynamic_cast<BranchingPoint<TS,BUD>*>(tc)){
     list<Axis<TS,BUD>*>& axis_ls = GetAxisList(*bp);
-    list<Axis<TS,BUD>*>::reverse_iterator last = axis_ls.rbegin();
-    list<Axis<TS,BUD>*>::reverse_iterator first = axis_ls.rend();
+    typename list<Axis<TS,BUD>*>::reverse_iterator last = axis_ls.rbegin();
+    typename list<Axis<TS,BUD>*>::reverse_iterator first = axis_ls.rend();
     while (last != first){
       T id_new = T(id_copy);
       (*this)(id_new,*last++);
@@ -148,8 +148,8 @@ T& ReverseAccumulateOp3<TS,BUD,T,BinOp1,BinOp2>::operator()(T& id,
 
   else if (Axis<TS,BUD>* axis = dynamic_cast<Axis<TS,BUD>*>(tc)){
     list<TreeCompartment<TS,BUD>*>& tc_ls = GetTreeCompartmentList(*axis);
-    list<TreeCompartment<TS,BUD>*>::reverse_iterator last = tc_ls.rbegin();
-    list<TreeCompartment<TS,BUD>*>::reverse_iterator first = tc_ls.rend();
+    typename list<TreeCompartment<TS,BUD>*>::reverse_iterator last = tc_ls.rbegin();
+    typename list<TreeCompartment<TS,BUD>*>::reverse_iterator first = tc_ls.rend();
     while (last != first){
       (*this)(id,*last++);
     }
@@ -181,8 +181,8 @@ PropagateUpOp2<TS,BUD,T,BinOp>::operator()(T& id,
   else if (Axis<TS,BUD>* axis = dynamic_cast<Axis<TS,BUD>*>(tc)){
     T id_new = op1(id,axis);
     list<TreeCompartment<TS,BUD>*>& tc_ls = GetTreeCompartmentList(*axis);
-    list<TreeCompartment<TS,BUD>*>::iterator first = tc_ls.begin();
-    list<TreeCompartment<TS,BUD>*>::iterator last = tc_ls.end();
+    typename list<TreeCompartment<TS,BUD>*>::iterator first = tc_ls.begin();
+    typename list<TreeCompartment<TS,BUD>*>::iterator last = tc_ls.end();
     while (first != last)
       (*this)(id_new,*first++);
   }
@@ -190,8 +190,8 @@ PropagateUpOp2<TS,BUD,T,BinOp>::operator()(T& id,
   else if (BranchingPoint<TS,BUD>* bp = dynamic_cast<BranchingPoint<TS,BUD>*>(tc)){
     T id_changed = op1(id,bp);
     list<Axis<TS,BUD>*>& axis_ls = GetAxisList(*bp);
-    list<Axis<TS,BUD>*>::iterator first = axis_ls.begin();
-    list<Axis<TS,BUD>*>::iterator last = axis_ls.end();
+    typename list<Axis<TS,BUD>*>::iterator first = axis_ls.begin();
+    typename list<Axis<TS,BUD>*>::iterator last = axis_ls.end();
     while (first != last){
       T id_new = id_changed;
       (*this)(id_new,*first++);
@@ -222,8 +222,8 @@ PropagateUpOp3<TS,BUD,T,BinOp1,BinOp2>::operator()(T& id,
   else if (Axis<TS,BUD>* axis = dynamic_cast<Axis<TS,BUD>*>(tc)){
     op2(id,axis);
     list<TreeCompartment<TS,BUD>*>& tc_ls = GetTreeCompartmentList(*axis);
-    list<TreeCompartment<TS,BUD>*>::iterator first = tc_ls.begin();
-    list<TreeCompartment<TS,BUD>*>::iterator last = tc_ls.end();
+    typename list<TreeCompartment<TS,BUD>*>::iterator first = tc_ls.begin();
+    typename list<TreeCompartment<TS,BUD>*>::iterator last = tc_ls.end();
     while (first != last)
       (*this)(id,*first++);
   }
@@ -231,8 +231,8 @@ PropagateUpOp3<TS,BUD,T,BinOp1,BinOp2>::operator()(T& id,
   else if (BranchingPoint<TS,BUD>* bp = dynamic_cast<BranchingPoint<TS,BUD>*>(tc)){
     op2(id,bp);
     list<Axis<TS,BUD>*>& axis_ls = GetAxisList(*bp);
-    list<Axis<TS,BUD>*>::iterator first = axis_ls.begin();
-    list<Axis<TS,BUD>*>::iterator last = axis_ls.end();
+    typename list<Axis<TS,BUD>*>::iterator first = axis_ls.begin();
+    typename list<Axis<TS,BUD>*>::iterator last = axis_ls.end();
     while (first != last){
       T id_new = T();
       id_new = op1(id_new,id);

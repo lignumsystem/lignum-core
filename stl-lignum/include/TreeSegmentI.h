@@ -290,7 +290,6 @@ METER GetLastAnnualIncrement(const TreeSegment<TS,BUD>& ts)
 template <class TS,class BUD>
 LGMdouble GetValue(const TreeSegment<TS,BUD>& ts, const LGMAD name)
 {
-  //  LGMdouble unknown_value = 0.0;
   if (name == A)
     return PI_VALUE*pow(GetValue(ts,R), 2.0);
 
@@ -301,12 +300,11 @@ LGMdouble GetValue(const TreeSegment<TS,BUD>& ts, const LGMAD name)
     return ts.point.getZ();
 
   else if (name == Hm)
-		return ts.point.getZ() + ts.direction.getVector()[2] * GetValue(ts,L);
+    return ts.point.getZ() + ts.direction.getVector()[2] * GetValue(ts,L);
 
   else if (name == L)
     return ts.tsa.L;
 
-  
   else if (name == M)
     return ts.tsa.M;
 
@@ -336,9 +334,6 @@ LGMdouble GetValue(const TreeSegment<TS,BUD>& ts, const LGMAD name)
 
   else
     return GetValue(dynamic_cast<const TreeCompartment<TS,BUD>&>(ts), name);
-    //    cout << "Unknown attribute returning" << unknown_value << endl;
-
-  //  return unknown_value;
 }
 
 

@@ -13,7 +13,7 @@ TreeSegment<TS, BUD>* GetLastTreeSegment(Axis<TS,BUD>& axis)
 	TreeSegment<TS, BUD> *ret = NULL;
 	
 	std::list<TreeCompartment<TS, BUD>*>& ls = axis.tc_ls;
-	std::list<TreeCompartment<TS, BUD>*>::iterator I = ls.begin();
+	typename std::list<TreeCompartment<TS, BUD>*>::iterator I = ls.begin();
 	while(I != ls.end())
 	{
 		if (TreeSegment<TS, BUD>* myts = dynamic_cast<TreeSegment<TS, BUD>*>(*I))
@@ -31,7 +31,7 @@ TreeSegment<TS, BUD>* GetFirstTreeSegment(Axis<TS,BUD>& axis)
         TreeSegment<TS, BUD> *ret = NULL;
         
         std::list<TreeCompartment<TS, BUD>*>& ls = axis.tc_ls;
-        std::list<TreeCompartment<TS, BUD>*>::iterator I = ls.begin();
+        typename std::list<TreeCompartment<TS, BUD>*>::iterator I = ls.begin();
         while(I != ls.end())
         {
                 if (TreeSegment<TS, BUD>* myts = dynamic_cast<TreeSegment<TS, BUD>*>(*I))
@@ -46,8 +46,8 @@ TreeSegment<TS, BUD>* GetFirstTreeSegment(Axis<TS,BUD>& axis)
 template <class TS,class BUD>
 Axis<TS,BUD>::~Axis()  //***
 {	
-  std::list<TreeCompartment<TS,BUD>*>::iterator first = tc_ls.begin();
-  std::list<TreeCompartment<TS,BUD>*>::iterator last = tc_ls.end();
+  typename std::list<TreeCompartment<TS,BUD>*>::iterator first = tc_ls.begin();
+  typename std::list<TreeCompartment<TS,BUD>*>::iterator last = tc_ls.end();
 
   while (first != last)
     delete *first++;
@@ -81,7 +81,7 @@ template <class TS,class BUD>
 void InsertTreeCompartmentSecondLast(Axis<TS,BUD>& axis, TreeCompartment<TS,BUD>* ts)
 {
 	std::list<TreeCompartment<TS,BUD>*>& ls = axis.tc_ls;
-	std::list<TreeCompartment<TS,BUD>*>::iterator I = ls.end(); 
+	typename std::list<TreeCompartment<TS,BUD>*>::iterator I = ls.end(); 
 	I--;
 	
 	axis.tc_ls.insert(I, ts);	
@@ -119,7 +119,7 @@ LGMdouble GetSumValue(Axis<TS,BUD>& axis, LGMAD name, int Age)
         LGMdouble sum = 0.0;
 
         std::list<TreeCompartment<TS, BUD>*>& ls = axis.tc_ls;
-        std::list<TreeCompartment<TS, BUD>*>::iterator I = ls.begin();
+        typename std::list<TreeCompartment<TS, BUD>*>::iterator I = ls.begin();
         while(I != ls.end())
         {
               
@@ -128,13 +128,6 @@ LGMdouble GetSumValue(Axis<TS,BUD>& axis, LGMAD name, int Age)
                         if (GetValue(*hwts, age) == Age || Age == -1)
                                 sum += GetValue(*hwts, name);   
                 }
-	  /*
-                else if (CfTreeSegment<TS,BUD>* cfts = dynamic_cast<CfTreeSegment<TS,BUD>*>(*I))
-                {
-                        if (GetValue(*cfts, age) == Age || Age == -1)
-                                sum += GetValue(*cfts, name);
-                }
-	  */
                 I++;
         }
         return sum;
@@ -145,7 +138,7 @@ template<class TS, class BUD>
 void Delete2ndLastTreeCompartment(Axis<TS,BUD>& axis)
 {
   std::list<TreeCompartment<TS, BUD>*>& ls = axis.tc_ls;
-  std::list<TreeCompartment<TS, BUD>*>::iterator I = ls.end();
+  typename std::list<TreeCompartment<TS, BUD>*>::iterator I = ls.end();
 
   if(axis.tc_ls.size() > 1) {
     I--;
@@ -160,10 +153,9 @@ void Delete2ndLastTreeCompartment(Axis<TS,BUD>& axis)
 template <class TS,class BUD>
 LGMdouble GetValue(Axis<TS,BUD>& ax, LGMAD name)
 {
-  //  LGMdouble unknown_value = 0.0;
   if (name == L) {
     std::list<TreeCompartment<TS, BUD>*>& ls = ax.tc_ls;
-    std::list<TreeCompartment<TS, BUD>*>::iterator I = ls.begin();
+    typename std::list<TreeCompartment<TS, BUD>*>::iterator I = ls.begin();
     LGMdouble len = 0.0;
     while(I != ls.end()) {
       if (TS* ts = dynamic_cast<TS*>(*I))
@@ -174,7 +166,7 @@ LGMdouble GetValue(Axis<TS,BUD>& ax, LGMAD name)
   }
   else if (name == Wf) {
     std::list<TreeCompartment<TS, BUD>*>& ls = ax.tc_ls;
-    std::list<TreeCompartment<TS, BUD>*>::iterator I = ls.begin();
+    typename std::list<TreeCompartment<TS, BUD>*>::iterator I = ls.begin();
     LGMdouble w_f = 0.0;
     while(I != ls.end()) {
       if (TS* ts = dynamic_cast<TS*>(*I))
@@ -196,7 +188,7 @@ LGMdouble GetBranchFoliage(Axis<TS,BUD>& ax) {
   LGMdouble w_fol = 0.0;
   
   std::list<TreeCompartment<TS, BUD>*>& ls = ax.tc_ls;
-  std::list<TreeCompartment<TS, BUD>*>::iterator I = ls.begin();
+  typename std::list<TreeCompartment<TS, BUD>*>::iterator I = ls.begin();
   while(I != ls.end()) {
     if (TS* ts = dynamic_cast<TS*>(*I)) {
       w_fol += GetValue(*ts, Wf);
@@ -205,7 +197,7 @@ LGMdouble GetBranchFoliage(Axis<TS,BUD>& ax) {
 
     if(BranchingPoint<TS, BUD>* bp = dynamic_cast<BranchingPoint<TS, BUD>*>(*I)) { 
       std::list<Axis<TS, BUD>*>& axis_ls = GetAxisList(*bp);          
-      std::list<Axis<TS, BUD>*>::iterator II = axis_ls.begin();
+      typename std::list<Axis<TS, BUD>*>::iterator II = axis_ls.begin();
 	  
       while(II != axis_ls.end()) {
 	Axis<TS,BUD> *axis = *II;       

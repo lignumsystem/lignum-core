@@ -33,7 +33,7 @@ LGMdouble SetVigours(Axis<TS,BUD>& axis, LGMdouble vig_val, LGMdouble max_area)
 
   list<TreeCompartment<TS, BUD>*>& ls =
     GetTreeCompartmentList(axis);
-  list<TreeCompartment<TS, BUD>*>::iterator I = ls.begin();
+  typename list<TreeCompartment<TS, BUD>*>::iterator I = ls.begin();
 
   
   while(I != ls.end())
@@ -63,7 +63,7 @@ LGMdouble SetVigours(Axis<TS,BUD>& axis, LGMdouble vig_val, LGMdouble max_area)
 		marea = area;
 	      
 	      list<Axis<TS, BUD>*>& axis_ls = GetAxisList(*lastbp);  	  
-	      list<Axis<TS, BUD>*>::iterator II = axis_ls.begin();
+	      typename list<Axis<TS, BUD>*>::iterator II = axis_ls.begin();
 			
 	      while(II != axis_ls.end())
 		{

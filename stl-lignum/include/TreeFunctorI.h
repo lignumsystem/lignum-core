@@ -156,8 +156,8 @@ template <class TS,class BUD> void DisplayStructure(TreeCompartment<TS,BUD>* tc)
   if (Axis<TS,BUD>* myaxis =  dynamic_cast<Axis<TS,BUD>*>(tc)){
     cout << "["; //begin of axis
     list<TreeCompartment<TS,BUD>*>& tc_ls = GetTreeCompartmentList(*myaxis);
-    list<TreeCompartment<TS,BUD>*>::iterator first = tc_ls.begin();
-    list<TreeCompartment<TS,BUD>*>::iterator last = tc_ls.end();
+    typename list<TreeCompartment<TS,BUD>*>::iterator first = tc_ls.begin();
+    typename list<TreeCompartment<TS,BUD>*>::iterator last = tc_ls.end();
     while (first != last)
       DisplayStructure(*first++);
     cout << "]" << flush; //end of axis
@@ -166,8 +166,8 @@ template <class TS,class BUD> void DisplayStructure(TreeCompartment<TS,BUD>* tc)
   else if (BranchingPoint<TS,BUD>* mybp = dynamic_cast<BranchingPoint<TS,BUD>*>(tc)){
     cout << "{"; //begin of branching point
     list<Axis<TS,BUD>*>& axis_ls = GetAxisList(*mybp);
-    list<Axis<TS,BUD>*>::iterator first = axis_ls.begin();
-    list<Axis<TS,BUD>*>::iterator last = axis_ls.end();
+    typename list<Axis<TS,BUD>*>::iterator first = axis_ls.begin();
+    typename list<Axis<TS,BUD>*>::iterator last = axis_ls.end();
     for (int i = 0; i <axis_ls.size(); i++){
       DisplayStructure(*first++);
     }
@@ -282,7 +282,7 @@ template <class TS, class BUD>
 Point GetBoundingBox(Axis<TS,BUD> &ax, Point &p)
 {
   std::list<TreeCompartment<TS, BUD>*>& ls = GetTreeCompartmentList(ax);
-  std::list<TreeCompartment<TS, BUD>*>::iterator I = ls.begin();
+  typename std::list<TreeCompartment<TS, BUD>*>::iterator I = ls.begin();
 
         
         
@@ -319,7 +319,7 @@ Point GetBoundingBox(Axis<TS,BUD> &ax, Point &p)
       if (BranchingPoint<TS, BUD>* mybp = dynamic_cast<BranchingPoint<TS, BUD>*>(*I))
 	{ 
 	  std::list<Axis<TS, BUD>*>& axis_ls = GetAxisList(*mybp);          
-	  std::list<Axis<TS, BUD>*>::iterator II = axis_ls.begin();
+	  typename std::list<Axis<TS, BUD>*>::iterator II = axis_ls.begin();
 	  
 	  
 	  while(II != axis_ls.end())
@@ -543,7 +543,7 @@ TreeDataStruct& TreeData<TS,BUD>::operator()
 	  dynamic_cast<BranchingPoint<TS,BUD>*>(tc)) {
     std::list<Axis<TS, BUD>*>& axis_ls = GetAxisList(*bp);
     if(axis_ls.size() > 0) {
-      std::list<Axis<TS, BUD>*>::iterator II = axis_ls.begin();
+      typename std::list<Axis<TS, BUD>*>::iterator II = axis_ls.begin();
       Axis<TS,BUD>* ax = *II;
       TreeSegment<TS,BUD>* fs = GetFirstTreeSegment(*ax);
       if(fs != NULL) {
