@@ -1,3 +1,4 @@
+
 #include <Shading.h>
 using namespace Lignum;
 
@@ -5,6 +6,8 @@ using namespace Lignum;
 #define NO_HIT 0
 #define HIT_THE_WOOD -1
 
+template <class SHAPE>  
+Point GetCenterPoint(const BroadLeaf<SHAPE>& bl);
 
 ///////////////////////////////////////////////////////////////
 //     Ellipsis beamshading for hardwoods
@@ -22,7 +25,7 @@ using namespace Lignum;
 //
 
 int ellipsisBeamShading(Point& p0,
-		PositionVector& v, BroadLeaf& leaf)
+			PositionVector& v, BroadLeaf<Ellipsis>& leaf)
 {
 
   Point pc =  GetCenterPoint(leaf);
@@ -31,7 +34,7 @@ int ellipsisBeamShading(Point& p0,
   //      pc + max width of the ellipsis, the beam
   //      cannot hit the ellipsis
   double a;
-  a = (double)GetEllipsis(leaf).getSemimajorAxis();
+  a = (double)GetShape(leaf).getSemimajorAxis();
   if( p0.getZ() > pc.getZ() + 2.0*a) {
    return NO_HIT;
   }
@@ -78,7 +81,7 @@ int ellipsisBeamShading(Point& p0,
   // the distance of the point along the semiminor axis (=coordinate) is obtained
   // with the aid of dot product (hit - ps) * (petiole.end - ps)
 
-  double b = (double)GetEllipsis(leaf).getSemiminorAxis();
+  double b = (double)GetShape(leaf).getSemiminorAxis();
   diff = hit - PositionVector(pc);
   Point pend = GetEndPoint(GetPetiole(leaf));
   coord_b = Dot(PositionVector(pend - pc), diff);
