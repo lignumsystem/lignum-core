@@ -59,6 +59,8 @@ void SetLight();
 
 void SetLightPosition();
 
+void DrawNeedles();
+
 
 
 template <class TS,class BUD>

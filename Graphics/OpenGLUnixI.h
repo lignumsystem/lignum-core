@@ -368,8 +368,8 @@ void drawBud(Bud<TS,BUD> *bud, DRAW_TYPE mode)
 }
 
 
- template <class TS,class BUD>
-   int VisualizeCfTree(Tree<TS,BUD> &tree)
+template <class TS,class BUD>
+int VisualizeCfTree(Tree<TS,BUD> &tree)
 { 
   // init_window();
   cout << "InitDrawing.........1.13" << endl;
@@ -392,7 +392,7 @@ void drawBud(Bud<TS,BUD> *bud, DRAW_TYPE mode)
   
 
 
-   cout << "rakennetaan puu.." << endl;
+  cout << "rakennetaan puu.." << endl;
   
   MakeTreeList(tree, 0.05);
   MakeNeedlesList(tree);
@@ -403,21 +403,6 @@ void drawBud(Bud<TS,BUD> *bud, DRAW_TYPE mode)
  //kuolleet budit
   MakeBudList(tree, false);
 
-  /*
-
-  MakeTreeList(tree, 0.05);
-
-  
-  cout << "rakennetaan lehdet " << endl;
-  MakeLeaveList<TS,BUD,S>(tree, 2, 2);
- 
-
-  //elavat budit
-  MakeBudList(tree, true);
-  
- //kuolleet budit
-  MakeBudList(tree, false);
-  */
  
   glutMainLoop ();
   cout << "Exiting ...." << endl;

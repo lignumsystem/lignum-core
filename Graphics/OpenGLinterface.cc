@@ -227,66 +227,43 @@ void DrawAllFoliage(CLignumWBDoc *doc)
 
 void DrawTree()
 {	
-
   if (glIsList(FOREST_LIST) || glIsList(CFTREES_LIST) 
       || glIsList(HWTREES_LIST))
     {
-      /*
-      GLfloat mat_amb[] = { 0.5, 0.3, 0, 1.0 }; 
-      GLfloat mat_dif[] = { 0.8, 0.4, 0, 1.0 }; 
-      
-      glMaterialfv(GL_FRONT, GL_AMBIENT, mat_amb); 
-      glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_dif);
-      
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-      */
-      
-     
-      
       
       if (several_species)
-	{
-	  glDisable(GL_LIGHTING);
-	  cout << "monta puuta" << endl;
-	  glPushMatrix();
-	  cfstemtexture.use();
-	  glCallList(CFTREES_LIST);
-	  glPopMatrix();
+		{
+			glDisable(GL_LIGHTING);
+			cout << "monta puuta" << endl;
+			glPushMatrix();
+			cfstemtexture.use();
+			glCallList(CFTREES_LIST);
+			glPopMatrix();
 	  
-	  glPushMatrix();
-	  hwstemtexture.use();
-	  glCallList(HWTREES_LIST);
-	  glPopMatrix();
-	}
-      else
-	{
-	  if (TEXTURES_ON)
-	    {
-	      stemtexture.use();
-	      glDisable(GL_LIGHTING);
-	    }
-	  else
-	    {
-	      glEnable(GL_LIGHTING);
-	    }
-	  glPushMatrix();
+			glPushMatrix();
+			hwstemtexture.use();
+			glCallList(HWTREES_LIST);
+			glPopMatrix();
+		}
+		else
+		{
+			if (TEXTURES_ON)
+			{
+				stemtexture.use();
+				glDisable(GL_LIGHTING);
+			}
+			else
+			{
+				glEnable(GL_LIGHTING);
+			}
+			glPushMatrix();
 	  
-	  if (glIsList(FOREST_LIST)==false)
-	    cout << "Virhe:metsäpuulistaa ei maaritelty " << endl;
-	 	  
-	   
-	  glCallList(FOREST_LIST);
-	  glPopMatrix();
-	}
-
-
-     
-
-
-
-
-      return;
+			if (glIsList(FOREST_LIST)==false)
+				cout << "Virhe:metsäpuulistaa ei maaritelty " << endl;
+			glCallList(FOREST_LIST);
+			glPopMatrix();
+		}
+    return;
     }
   
   
@@ -323,10 +300,7 @@ void DrawTree()
       glEnable(GL_LIGHTING);
     }
 
- 
-  //glEnable(GL_CULL_FACE);
-  //glDisable(GL_LIGHTING);
-  //glCullFace(GL_BACK);
+
   glPushMatrix();
 
   if (glIsList(TREE_BIG)==false)
@@ -350,13 +324,32 @@ void DrawTree()
  
   glEnable(GL_LIGHTING);
   glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, mat_amb2); 
-  //  glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_dif2);
   glCallList(ROOT_LIST);
   glPopMatrix();
 
- 
-  //glDisable(GL_CULL_FACE);
+  DrawNeedles(); 
 #endif
+}
+
+
+void DrawNeedles()
+{
+	 glEnable(GL_BLEND);
+     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	 glBindTexture(GL_TEXTURE_2D, texIds[0]);
+	 glDisable(GL_LIGHTING);
+
+	 glPushMatrix();
+	 glEnable(GL_CULL_FACE);
+     glCullFace(GL_FRONT);     
+	 glCallList(NEEDLES_TEX);
+ 
+	 glCullFace(GL_BACK);     	 
+	 glCallList(NEEDLES_TEX);
+     glDisable(GL_CULL_FACE);
+	 glPopMatrix();
+
+	 cout << "visualisoitiin neulaset" << endl;
 }
 
 
