@@ -1,6 +1,7 @@
 SRCDIR1 = ../src
 SRCDIR2 = ../include
-
+HEADERS = ../include/VoxelSpace.h ../include/VoxelBox.h  \
+          ../include/VoxelSpaceI.h ../include/VoxelBoxI.h
 SRC = $(SRCDIR1)/VoxelBox.cc  $(SRCDIR1)/VoxelSpace.cc  
 
 OBJ = ${SRC:.cc=.o} 
@@ -12,7 +13,7 @@ ARFILE=libvoxel.a
 
 ETAGS = etags -d -T -C -o
 
-.SUFFIXES: .o .cc
+.SUFFIXES: .o .cc 
 
 PROGFILES = program-files.html
 
@@ -21,7 +22,7 @@ sinclude Makedepend
 $(ARFILE): $(OBJ)
 	$(AR) $(ARFLAGS) $(ARFILE) $(OBJ)
 
-.cc.o: 
+.cc.o: $(HEADERS)
 	$(CCC)  $(OPTIMIZE) $(CCCFLAGS) $(INCLUDE) $<  -o $@  
 
 touch:
