@@ -57,9 +57,6 @@ protected:
 };
 
 
-
-
-
 }//close namespace Lignum
 
 #include <HwTreeSegmentI.h>

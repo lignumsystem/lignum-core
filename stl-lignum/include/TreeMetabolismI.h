@@ -23,7 +23,6 @@ void Tree<TS,BUD>::photosynthesis()
   sumPh = Accumulate(*this, initPh, SumTreePhotosynthesis<TS,BUD>());
   
   SetValue(*this, TreeP, sumPh);
-
 }
 
 
@@ -41,9 +40,9 @@ void Tree<TS,BUD>::respiration()
   sumM = Accumulate(*this, sumM, SumTreeRespiration<TS,BUD>());
   
   // Root respiration
-  sumM += GetValue(*this,LGPmr)*GetValue(*this,LGAWr);
+  sumM += GetValue(*this,LGPmr)*GetValue(*this,TreeWr);
 
-  SetValue(*this, LGAM, sumM);
+  SetValue(*this, TreeM, sumM);
 }
 
 

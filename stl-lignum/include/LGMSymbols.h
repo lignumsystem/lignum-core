@@ -55,7 +55,7 @@ namespace Lignum{
               LGADbase,LGADbh,LGAdof, LGAdR, LGAH,LGAHf,LGAHTop,LGAip,
               LGAL,LGAM, LGAMaxD,LGAomega,LGAP,LGAQabs,LGAQin,LGAR,LGARf,
               LGARh, LGARhair,LGARTop,LGASa,LGAsf,LGAstatus, LGAstate,LGAtauL, 
-              LGAtype,LGAV,LGAVh,LGAVhair,LGAvi,LGAVs,LGAWf, LGAWr, LGAWs, 
+              LGAtype,LGAV,LGAVh,LGAVhair,LGAvi,LGAVs,LGAWf, LGAWs, 
               LGAWh,LGAWhair};
 
   //  0 LGAA      Segment base area based on R 
@@ -105,10 +105,9 @@ namespace Lignum{
   //  37 LGAvi     Vigour index
   //  38 LGAVs     Sapwood volume
   //  39 LGAWf     Foliage mass (kg C)
-  //  40 LGAWr     Root mass (kg C)
-  //  41 LGAWs     Mass of sapwood (kg C)
-  //  42 LGAWh     Mass of heartwood (kg C)
-  //  43 LGAWhair  Mass of root hair (kg C)
+  //  40 LGAWs     Mass of sapwood (kg C)
+  //  41 LGAWh     Mass of heartwood (kg C)
+  //  42 LGAWhair  Mass of root hair (kg C)
 
 
 

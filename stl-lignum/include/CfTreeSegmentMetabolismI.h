@@ -24,7 +24,8 @@ void CfTreeSegment<TS,BUD>::respiration()
   LGMdouble resp = 0.0;
   Tree<TS,BUD>& t = GetTree(*this);
   //Rtot = Rfoliage + Rsapwood
-  resp = GetValue(t, LGPmf)*GetValue(*this,LGAWf) + GetValue(t,LGPms)*GetValue(*this,LGAWs);
+  resp = GetValue(t, LGPmf)*GetValue(*this,LGAWf) +
+    GetValue(t,LGPms)*GetValue(*this,LGAWs);
   SetValue(*this,LGAM, resp);
 }
 
