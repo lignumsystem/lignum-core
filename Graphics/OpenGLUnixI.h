@@ -158,7 +158,7 @@ int VisualizeLGMTree(Tree<TS,BUD> &tree)
 }
 
 
-template <class TREE>
+ template <class TREE>
    int Initialize3DForest(Forest &f)
   {
     several_species = true;
@@ -304,7 +304,7 @@ b1 = ls1.begin();
  
   stemtexture.Load("koivu.bmp", 512, 512);
 
-  HwLoadGLTextures("lehti.tga");
+  LoadGLTextures("lehti.tga");  //**** HwLoadGLTextures
   
 
 
