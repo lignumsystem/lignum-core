@@ -16,26 +16,13 @@ namespace Lignum{
 
   class AxisAttributes{
   public:
-    AxisAttributes(STATUS s):state(s){}
-    STATUS state; //LIVE or DEAD 
+    AxisAttributes(LGMdouble s):state(s){}
+    LGMdouble state; //LIVE or DEAD 
   };
 
 template <class TS,class BUD=DefaultBud<TS> >
 class Axis: public TreeCompartment<TS,BUD>{
 
-#ifdef _MSC_VER   
-  friend Bud<TS,BUD>* GetTerminatingBud(const Axis<TS,BUD>& axis);   
-  friend std::list<TreeCompartment<TS,BUD>*>& GetTreeCompartmentList(Axis<TS,BUD>& axis);
-  friend void InsertTreeCompartment(Axis<TS,BUD>& axis, TreeCompartment<TS,BUD>* ts);
-  friend void InsertTreeCompartmentSecondLast(Axis<TS,BUD>& axis, TreeCompartment<TS,BUD>* ts); 
-  friend TreeCompartment<TS,BUD>* GetFirstTreeCompartment(Axis<TS,BUD>& axis);
-  friend TreeSegment<TS, BUD>* GetFirstTreeSegment(Axis<TS,BUD>& axis);
-  friend TreeSegment<TS, BUD>* GetLastTreeSegment(Axis<TS,BUD>& axis);
-  friend LGMdouble GetSumValue(Axis<TS,BUD>& axis, LGMAD name, int Age=-1);
-  friend void Delete2ndLastTreeCompartment(Axis<TS,BUD>& axis);
-  friend LGMdouble GetValue(Axis<TS,BUD>& axis, LGMAD name);
-  friend LGMdouble GetBranchFoliage(Axis<TS,BUD>& axis); 
-#else
   template <class TS1,class BUD1>
   friend Bud<TS1,BUD1>* GetTerminatingBud(const Axis<TS1,BUD1>& axis);
   template <class TS1,class BUD1>
@@ -60,14 +47,10 @@ class Axis: public TreeCompartment<TS,BUD>{
   friend LGMdouble GetValue(Axis<TS1,BUD1>& axis, LGMAD name);
 
   template <class TS1,class BUD1>
-  friend STATUS SetValue(Axis<TS1,BUD1>& axis, LGMAS name, const STATUS value);
-  template <class TS1,class BUD1>
-  friend STATUS GetValue(Axis<TS1,BUD1>& axis, LGMAS name);
+  friend LGMdouble SetValue(Axis<TS1,BUD1>& axis, LGMAD name, const LGMdouble value);
 
   template <class TS1,class BUD1>  
   friend LGMdouble GetBranchFoliage(Axis<TS1,BUD1>& axis); 
-#endif // _MFC_VER
-
 
 public:
   virtual ~Axis();

@@ -67,6 +67,9 @@ LGMdouble GetValue(const Bud<TS,BUD>& bud, const LGMAD name)
   else if (name == LGAstatus)
     return bud.ba.status ;
   
+  else if (name == LGAstate)
+    return bud.ba.state;
+
   else if (name == LGAtype)
     return bud.ba.type;
 
@@ -93,37 +96,15 @@ LGMdouble SetValue(Bud<TS,BUD>& bud, const LGMAD name, const LGMdouble value)
   else if (name == LGAstatus)
     bud.ba.status = value;
 
+  else if (name == LGAstate)
+    bud.ba.state = value;
+
   else if (name == LGAtype)
     bud.ba.type = value;
 
   else{
     old_value = SetValue(dynamic_cast<TreeCompartment<TS,BUD>&>(bud), name,value);
   }
-
-  return old_value;
-}
-
-template<class TS, class BUD>
-STATUS GetValue(const Bud<TS,BUD>& bud, const LGMAS name)
-{
-  if (name == state)
-    return bud.ba.state;
-
-  else{
-    cout << "Unknown attribute: " << name << endl;
-    cout << "Returning 0.0" << endl;
-  }
-
-  return DEAD;
-}
-
-template <class TS,class BUD>    
-STATUS SetValue(Bud<TS,BUD>& bud, const LGMAS name, const STATUS value)
-{
-  STATUS old_value = GetValue(bud,name);
-
-  if(name == state)
-    bud.ba.state = value;
 
   return old_value;
 }

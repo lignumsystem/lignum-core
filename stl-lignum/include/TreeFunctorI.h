@@ -612,7 +612,7 @@ namespace Lignum{
       //If received no foliage  axis can be deleted.
       else if (Axis<TS,BUD>* axis =  dynamic_cast<Axis<TS,BUD>*>(tc)){
 	if (foliage < R_EPSILON){
-	  SetValue(*axis,state,DEAD);
+	  SetValue(*axis,LGAstate,DEAD);
 	}
       }
       else if (BranchingPoint<TS,BUD>* bp =  
@@ -622,7 +622,7 @@ namespace Lignum{
 	//All deleted axes are now explicitely DEAD
 	while (first != axis_ls.end()){
 	  //Find them
-	  if (GetValue(**first,state) == DEAD){
+	  if (GetValue(**first,LGAstate) == DEAD){
 	    //delete and  erase them from the list
 	    cout << "BranchingPoint erasing axis" << endl;
 	    delete *first;

@@ -16,9 +16,9 @@ namespace Lignum{
     {
       if (Bud<TS,BUD>* mybud = dynamic_cast<Bud<TS, BUD>*>(tc))
 	{
-	  if (GetValue(*mybud,state) == ALIVE && mode == buds_alive)
+	  if (GetValue(*mybud,LGAstate) == ALIVE && mode == buds_alive)
 	    drawBud(mybud, mode);
-	  if (GetValue(*mybud,state) == DEAD && mode == buds_dead)
+	  if (GetValue(*mybud,LGAstate) == DEAD && mode == buds_dead)
 	    drawBud(mybud, mode);
 	} 
 

@@ -99,6 +99,8 @@ namespace Lignum{
        return rt.rta.collision;
     case LGAstatus:
        return rt.rta.status;
+    case LGAstate:
+      return rt.rta.state;
     case LGAomega:
        return rt.rta.omega;
     default:
@@ -118,6 +120,9 @@ namespace Lignum{
     case LGAstatus:
       rt.rta.status = value;
       break;
+    case LGAstate:
+      rt.rta.state = value;
+      break;
     case LGAomega:
       rt.rta.omega = value;
       break;
@@ -128,30 +133,7 @@ namespace Lignum{
     return old_value;
   }
 
-  template <class TREE>
-  STATUS GetValue(const RootTip<TREE>& rt, LGMAS name)
-  {
-     if (name == state){
-       return rt.rta.state;
-     }
-     else{
-       cout << "RootTip GetValue unknown status: " << name << endl;
-       return rt.rta.state;
-     }
-  }
-
-  template <class TREE>
-  STATUS SetValue(RootTip<TREE>& rt, LGMAS name, STATUS value)
-  {
-    STATUS old_value = GetValue(rt,name);
-    
-    if (name == state){
-      rt.rta.state = value;
-    }
-
-    return old_value;
-  }
-
+ 
   template <class TREE>
     list<RootCompartment<TREE>*>& GetRootCompartmentList(RootAxis<TREE>& ra){
     return ra.rc_ls;

@@ -123,37 +123,32 @@ namespace Lignum {
 
   class RootTipAttributes{
   public:
-    RootTipAttributes(LGMdouble coll, LGMdouble st, STATUS s, LGMdouble go):
+    RootTipAttributes(LGMdouble coll, LGMdouble st, LGMdouble s, LGMdouble go):
     collision(coll),status(st),state(s),omega(go){}
     RootTipAttributes():collision(0),status(0),state(ALIVE),omega(0){}
   public:
     LGMdouble collision; //collision with another root compartment
     LGMdouble status;    //user defined counter
-    STATUS state;        //DEAD  or ALIVE (c.f.   Bud), note  the type
-			 //STATUS is confusing!
+    LGMdouble state;     //DEAD  or ALIVE (c.f.   Bud).
     LGMdouble omega;     //Gravelius order
   };
 
   template <class TREE>
-    class RootTip:public RootCompartment<TREE>{
+  class RootTip:public RootCompartment<TREE>{
     template <class TR>
-      friend LGMdouble GetValue(const RootTip<TR>& rt, LGMAD name);
+    friend LGMdouble GetValue(const RootTip<TR>& rt, LGMAD name);
     template <class TR>
-      friend LGMdouble SetValue(RootTip<TR>& rt, LGMAD name, LGMdouble value);
-    template <class TR>
-      friend STATUS GetValue(const RootTip<TR>& rt, LGMAS name);
-    template <class TR>
-      friend STATUS SetValue(RootTip<TR>& rt, LGMAS name, STATUS value);
+    friend LGMdouble SetValue(RootTip<TR>& rt, LGMAD name, LGMdouble value);
   public:
     RootTip(const Point& pos, const PositionVector& dir,
-	    LGMdouble coll, LGMdouble status, STATUS state, LGMdouble go,
+	    LGMdouble coll, LGMdouble status, LGMdouble state, LGMdouble go,
 	    const TREE& t):
-    RootCompartment<TREE>(pos,dir,t),rta(coll,status,state,go){}
+      RootCompartment<TREE>(pos,dir,t),rta(coll,status,state,go){}
     RootTip(const Point& pos, const PositionVector& dir, LGMdouble go,
 	    const TREE& t):
-    RootCompartment<TREE>(pos,dir,t),rta(0,0,ALIVE,go){}
+      RootCompartment<TREE>(pos,dir,t),rta(0,0,ALIVE,go){}
   private:
-    RootTipAttributes rta;
+      RootTipAttributes rta;
   };
 
   //Generic algorithms for root system (c.f. generic algorithms for Tree).

@@ -154,13 +154,16 @@ void Delete2ndLastTreeCompartment(Axis<TS,BUD>& axis)
 template <class TS,class BUD>
 LGMdouble GetValue(Axis<TS,BUD>& ax, LGMAD name)
 {
-  if (name == L) {
+  if (name == LGAstate)
+    return ax.aa.state;
+
+  else if (name == LGAL) {
     std::list<TreeCompartment<TS, BUD>*>& ls = ax.tc_ls;
     typename std::list<TreeCompartment<TS, BUD>*>::iterator I = ls.begin();
     LGMdouble len = 0.0;
     while(I != ls.end()) {
       if (TS* ts = dynamic_cast<TS*>(*I))
-	len += GetValue(*ts, L);
+	len += GetValue(*ts, LGAL);
       I++;
     }
     return len;
@@ -183,30 +186,17 @@ LGMdouble GetValue(Axis<TS,BUD>& ax, LGMAD name)
 }                                                                               
 
 template <class TS,class BUD>
-STATUS SetValue(Axis<TS,BUD>& axis, LGMAS name, const STATUS value)
+LGMdouble SetValue(Axis<TS,BUD>& axis, LGMAD name, const LGMdouble value)
 {
 
-  STATUS old_value = GetValue(axis,name);
+  LGMdouble old_value = GetValue(axis,name);
 
-  if (name == state)
+  if (name == LGAstate)
     axis.aa.state = value;
   
   return old_value;
 }
 
-template <class TS,class BUD>
-STATUS GetValue(Axis<TS,BUD>& axis, LGMAS name)
-{
-  if (name == state)
-    return axis.aa.state;
-
-  else{
-    cout << "Unknown attribute: " << name << endl;
-    cout << "Returning 0.0" << endl;
-  }
-
-  return DEAD;
-}
 
 template <class TS,class BUD>
 LGMdouble GetBranchFoliage(Axis<TS,BUD>& ax) {
