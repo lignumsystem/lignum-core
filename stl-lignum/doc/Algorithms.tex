@@ -235,12 +235,13 @@ int n = AccumulateDown(tree,i,CountCompartments<MyTreeSegment>());
 
 Assuming  that the  add and  assign operator  and the  constructor are
 defined for  the identity element\footnote{Note that  they are defined
-for  the integer  and floating  types.} one  can use  AccumulateDown as
+for the  integer and  floating types.} one  can use  AccumulateDown as
 Accumulate.   However, some  metabolic processes  are depended  on the
 information  flowing downwards  in  a tree.   These  processes can  be
 implemented only with the  AccumulateDown algorithm.  One such process
-is diameter growth.  Other examples  can be various models for hormone
-and nutrient flows downwards in a tree.
+is   diameter  growth   as   currently  realized   in  \lignum\   (see
+\cite{perttunen:aob96}).  Other  examples can  be  various models  for
+hormone and nutrient flows downwards in a tree.
 
 \section{PropagateUp}
 
