@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include <Ellipsis.h>
 #include <Shading.h>
 using namespace Lignum;
