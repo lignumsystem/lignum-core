@@ -6,6 +6,7 @@
 #include <PositionVector.h>
 #include <LGMdecl.h>
 #include <TreeCompartment.h>
+#include <TreeFunctor.h>
 
 
 

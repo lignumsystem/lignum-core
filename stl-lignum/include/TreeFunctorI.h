@@ -754,12 +754,16 @@ namespace Lignum{
     }
 
 
-  /*********************************************************************
- Sample functor  to delete axes (branches)  in the tree.   Axis: If an
- axis can  be deleted mark  it dead.  BranchingPoint: Delete  the dead
- axes and erase them from  the the list.  TreeSegment: Collect foliage
- mass, the  criteria to delete axes.  Algorithm  ensures that 'delete'
- is not applied to main axis.
+ /*********************************************************************
+ The functor to delete axes (branches)  in the tree.  Axis: If an axis
+ can be deleted  mark it dead.  BranchingPoint: Delete  the dead axes:
+ In an axis delete tree  compartments and set the tre compartment list
+ size to 0.  But do not remove  the axis itself from the list of axes.
+ We need  to keep  synchronised with L-systems.   TreeSegment: Collect
+ foliage mass,  the criteria to  delete axes.  Algorithm  ensures that
+ 'delete'  is not  applied to  main  axis. After  the destruction  the
+ deleted axes exist  in the tree structure but they  are (i.e. list of
+ tree compartments are) empty.
 
  There are a  couple of caveats in deleting  axes and branching points
  in a  tree this way.   Due to the  fact that the  main axis is  not a
@@ -775,6 +779,29 @@ namespace Lignum{
  or not; using/checking deleted pointer results unspecified behaviour.
  Sometimes I just love C++...
   *********************************************************************/ 
+  template <class TS, class BUD> 
+  class DestroyTreeCompartments{
+  public:
+    void operator()(TreeCompartment<TS,BUD>* tc)const
+    {
+      delete tc;
+    }
+  };
+
+  template <class TS, class BUD>
+  class DestroyAxes{
+  public:
+    void operator()(Axis<TS,BUD>* axis)
+    {
+      if (GetValue(*axis,LGAstate) == DEAD){
+	list<TreeCompartment<TS,BUD>*>& ls = GetTreeCompartmentList(*axis);
+	//Destroy tree compartments
+	for_each(ls.begin(),ls.end(),DestroyTreeCompartments<TS,BUD>());
+	//Set the list size to 0 but do not remove the list
+	ls.resize(0);
+      }
+    }
+  };
   template <class TS, class BUD>
     LGMdouble& DeleteDeadBranches<TS,BUD>::operator()(LGMdouble& foliage, 
 						      TreeCompartment<TS,BUD>* tc)const
@@ -783,7 +810,7 @@ namespace Lignum{
       if (TS* ts = dynamic_cast<TS*>(tc)){
 	foliage = foliage + GetValue(*ts,LGAWf);
       }
-      //If received no foliage  axis can be deleted.
+      //If axis received no foliage it can be deleted.
       else if (Axis<TS,BUD>* axis =  dynamic_cast<Axis<TS,BUD>*>(tc)){
 	if (foliage < R_EPSILON){
 	  SetValue(*axis,LGAstate,DEAD);
@@ -792,21 +819,9 @@ namespace Lignum{
       else if (BranchingPoint<TS,BUD>* bp =  
 	       dynamic_cast<BranchingPoint<TS,BUD>*>(tc)){
 	list<Axis<TS,BUD>*>& axis_ls = GetAxisList(*bp);
-	typename list<Axis<TS,BUD>*>::iterator first = axis_ls.begin();
-	//All deleted axes are now explicitely DEAD
-	while (first != axis_ls.end()){
-	  //Find them
-	  if (GetValue(**first,LGAstate) == DEAD){
-	    //delete and  erase them from the list
-	    out << "BranchingPoint erasing axis" << endl;
-	    delete *first;
-	    first = axis_ls.erase(first);
-	  }
-	  else{
-	    out << "Something behind first" << endl;
-	    first++;
-	  }
-	}
+	//Delete the tree compartments and  set the size of axis_ls to
+	//0.
+	for_each(axis_ls.begin(),axis_ls.end(),DestroyAxes<TS,BUD>());
       }
       return foliage;
     }

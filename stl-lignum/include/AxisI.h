@@ -43,15 +43,13 @@ namespace Lignum{
         }
       return ret;
     }
-  
+
   template <class TS,class BUD>
     Axis<TS,BUD>::~Axis() 
     {	
-      typename list<TreeCompartment<TS,BUD>*>::iterator first = tc_ls.begin();
       //Delete tree compartments, the list will be destroyed automatically. 
-      while (first != tc_ls.end()){
-	delete *first++;
-      }
+      //See TreeFunctorI.h for  DestroyTreeCompartments.
+      for_each(tc_ls.begin(),tc_ls.end(), DestroyTreeCompartments<TS,BUD>());
     }
   
   //default constructor
