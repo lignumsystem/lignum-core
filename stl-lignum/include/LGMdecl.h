@@ -17,6 +17,14 @@ template <class TS,class BUD> class Bud;
 template <class TS,class BUD> class TreeSegment;
 template <class TS> class DefaultBud;
 
+#ifdef _MSC_VER
+//Windows assert for GUI 
+#define LGMassert(expr) ASSERT(expr)
+#else
+//Standard C-library assert
+#define LGMassert(expr) assert(expr)
+#endif
+
 }//closing namepace Lignum
 
 #endif
