@@ -33,13 +33,11 @@ namespace Lignum {
       if (CfTreeSegment<TS,BUD>* cfts = dynamic_cast<CfTreeSegment<TS,BUD>*>(tc))
 	{
 	  LGMdouble fmass = GetValue(*cfts, Wf);
-	  
+	  //Reset values here
+	  SetValue(*cfts, Qabs, 0.0);
+	  SetValue(*cfts, Qin, 0.0);
 	  if (fmass > R_EPSILON)
 	    {
-	      SetValue(*cfts, Qabs, 0.0);
-	      SetValue(*cfts, Qin, 0.0);
-
-
 	      Point p = GetPoint(*cfts);
 	      PositionVector pv = GetDirection(*cfts);
 	      LGMdouble length = GetValue(*cfts, L);
