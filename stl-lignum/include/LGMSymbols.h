@@ -9,7 +9,7 @@ namespace Lignum{
   // Tree Attribute Double, Wm lisätty
   // Wr           dry weight of the roots
   enum LGMAD {A,age,LGMcollision,dof, dR, H,Hm,ip,lb,LM,LP,LWf,L,lw,M, omega,P,
-	      Qin,Qabs,R,Rf,Rh,RTop,sf,LGMstatus,sw,tauL,LGMtype,vi,Wf,Ws,Wh,
+	      Qin,Qabs,R,Rf,Rh,Rhair,RTop,sf,LGMstatus,sw,tauL,LGMtype,vi,Wf,Ws,Wh,
   Af};
 
   //  A       0   Area (of what?)
@@ -32,6 +32,7 @@ namespace Lignum{
   //  R       17  radius of segment
   //  Rf      18  radius of segment cylinder that contains also foliage (cofers)
   //  Rh      19  radius of heartwood
+  //  Rhair       Radius including root hair 
   //  Rtop    20  raqdiaus of segment at upper end
   //  sf      21  specifi leaf area (=leaf area/ leaf weight)
   //  sw      22  ????
