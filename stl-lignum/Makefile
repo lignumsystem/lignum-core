@@ -32,9 +32,9 @@ LIBS     = $(LIBLGM) $(LIBADT) $(LIBMATH)
 .SUFFIXES: .o .cc
 
 lignum: $(OBJ) $(LIB1)  $(LIB2)  
-	$(CCC)  -o $@ $(INLUDE) $(OBJ) $(LIBFLAGS) $(LIBS) 
+	$(CCC)  -o $@ $(INCLUDE) $(OBJ) $(LIBFLAGS) $(LIBS) 
 algorithms: $(ALGOBJ) $(LIB1)  $(LIB2)
-	$(CCC) -ptv  -o $@ $(INLUDE) $(OPTIMIZE) $(ALGOBJ) $(LIBFLAGS) $(LIBS)
+	$(CCC) -ptv  -o $@ $(INCLUDE) $(OPTIMIZE) $(ALGOBJ) $(LIBFLAGS) $(LIBS)
 
 $(LIB1):
 	(cd ../c++adt/lib; make "CCC=$(CCC)" "CCCFLAGS=$(CCCFLAGS)" "OPTIMIZE=$(OPTIMIZE)" $@)
