@@ -204,8 +204,6 @@ namespace Lignum{
       vi = pow(d / *maxj,2.0)*vi_segment_below;
     else
       vi = vi_segment_below;
-    cerr << "D: " << d << " Maxj: " << *maxj << " VIbelow: "  
-	 << vi_segment_below << " VI: " << vi << endl;
     return vi;
   }
   
