@@ -307,6 +307,9 @@ const ParametricCurve& GetFunction(const Tree<TS,BUD>& tree, LGMF name)
     return tree.tf.nb;
   }
 
+  else if (name == LGMNLEAVES)
+    return tree.tf.nleaves;
+
   else if (name == LGMLONB){
     return tree.tf.LightOnNumBuds;
   }
