@@ -3,7 +3,7 @@
 
 #include <functional>
 #include <LGMdecl.h>
-
+#include <list>
 namespace Lignum{
 
 template <class TS,class BUD>

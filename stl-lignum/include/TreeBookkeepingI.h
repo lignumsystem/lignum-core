@@ -13,7 +13,6 @@ namespace Lignum{
   public:
     LGMdouble operator () (LGMdouble& cumPh, 
 			   TreeCompartment<TS,BUD>* tc)const{
-    
       //cout << typeid(tc).name() << endl;
       //this should return the photosynthesis 
       if (TS* tsc = dynamic_cast<TS*>(tc)) {
@@ -25,7 +24,7 @@ namespace Lignum{
   };
 
   //Sum photosynthesis from all segments and update Tree's photosynthesis P
-    template <class TS,class BUD>
+  template <class TS,class BUD>
     LGMdouble UpdateTreePhotosynthesis(Tree<TS,BUD>& tree)
     {
       //LGMdouble SumTreePhotosynthesis(LGMdouble&,TreeCompartment<TS,BUD>*);
@@ -33,12 +32,9 @@ namespace Lignum{
       LGMdouble sumPh;
       sumPh = Accumulate(tree, initPh, SumTreePhotosynthesis<TS,BUD>());
       SetValue(tree, P, sumPh);
-
+      
       return sumPh;
     }
-
-
-
 } //Closing namespace Lignum
 
 #endif
