@@ -68,7 +68,6 @@ ParametricCurve& ParametricCurve::read_xy_file(const char *file_name)
   //Skip the comments. A line beginning with '#' is a comment 
   in_file >> ws;//Skip white space
   while (in_file.peek() == '#'){
-    cout << "PEEK: " << in_file.peek() << endl;    
     in_file.getline(buffer,100);
     in_file >> ws; //skip white space
   }
@@ -89,7 +88,6 @@ ParametricCurve& ParametricCurve::read_xy_file(const char *file_name)
   v.insert(v.end(),FLT_MAX);
   num_of_elements = v.size();
 
-  cout << "EVAL: " << eval(0.0) << " " <<  eval(0.5) << " " << eval(1.1) << endl;
   return *this;
 }
 
