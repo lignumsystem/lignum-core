@@ -3,13 +3,14 @@ OBJ  = main.o
 
 ALGSRC = algorithms.cc 
 ALGOBJ  = algorithms.o 
-CCC = CC -64 -g -ptv -prelink 
 
-CCC = CC -64 -ptv -prelink 
+CCC = CC -64 
+
+OPTIMIZE   = -g 
 
 SUPPRESS = #-w 1155 -w 1183
 
-CCCFLAGS = -c #-fullwarn 
+CCCFLAGS = -c -ptv -prelink #-fullwarn 
 
 INCLUDE = -Iinclude -I../c++adt/include 
 
@@ -26,14 +27,13 @@ LIBMATH  = -lm
 
 LIBS     = $(LIBLGM) $(LIBADT) $(LIBMATH)
 
-OPTIMIZE   = -g 
 
 .SUFFIXES: .o .cc
 
 lignum: $(OBJ) $(LIB1)  $(LIB2)  
 	$(CCC)  -o $@ $(INLUDE) $(OBJ) $(LIBFLAGS) $(LIBS) 
 algorithms: $(ALGOBJ) $(LIB1)  $(LIB2)
-	$(CCC)  -o $@ $(INLUDE) $(ALGOBJ) $(LIBFLAGS) $(LIBS)
+	$(CCC)  -o $@ $(INLUDE) $(OPTIMIZE) $(ALGOBJ) $(LIBFLAGS) $(LIBS)
 
 $(LIB1):
 	(cd ../c++adt/lib; make "CCC=$(CCC)" "CCCFLAGS=$(CCCFLAGS)" "OPTIMIZE=$(OPTIMIZE)" $@)
@@ -42,7 +42,7 @@ $(LIB2):
 	(cd lib; make "CCC=$(CCC)" "CCCFLAGS=$(CCCFLAGS)" "OPTIMIZE=$(OPTIMIZE)" $@)
 
 .cc.o: 
-	$(CCC) $(OPTIMIZE) $(SUPPRESS) $(CCCFLAGS) $(INCLUDE) $(STL) $(OPTIMIZE) $< -o $@
+	$(CCC) $(OPTIMIZE) $(SUPPRESS) $(CCCFLAGS) $(INCLUDE)  $< -o $@
 
 clean:
 	(cd lib; make clean)
@@ -87,10 +87,10 @@ main.o: ../c++adt/include/Point.h /usr/include/math.h
 main.o: include/TreeCompartment.h include/LGMdecl.h include/LGMUnits.h
 main.o: ../c++adt/include/PositionVector.h ../c++adt/include/mathsym.h
 main.o: ../c++adt/include/RMatrix.h ../c++adt/include/TMatrix.h
-main.o: include/BranchingPoint.h include/Axis.h
+main.o: include/DefaultBud.h include/BranchingPoint.h include/Axis.h
 main.o: ../c++adt/include/ConnectionMatrix.h include/HwTreeSegment.h
-main.o: include/CfTreeSegment.h include/TreeFunctor.h include/Algorithms.h
-main.o: /usr/include/CC/functional
+main.o: include/CfTreeSegment.h include/MyBud.h include/TreeFunctor.h
+main.o: include/Algorithms.h /usr/include/CC/functional
 algorithms.o: /usr/include/stdlib.h /usr/include/standards.h
 algorithms.o: /usr/include/sgidefs.h /usr/include/CC/iostream.h
 algorithms.o: /usr/include/memory.h /usr/include/stddef.h
@@ -123,8 +123,8 @@ algorithms.o: include/Bud.h include/TreeSegment.h ../c++adt/include/Point.h
 algorithms.o: /usr/include/math.h include/TreeCompartment.h include/LGMdecl.h
 algorithms.o: include/LGMUnits.h ../c++adt/include/PositionVector.h
 algorithms.o: ../c++adt/include/mathsym.h ../c++adt/include/RMatrix.h
-algorithms.o: ../c++adt/include/TMatrix.h include/BranchingPoint.h
-algorithms.o: include/Axis.h ../c++adt/include/ConnectionMatrix.h
-algorithms.o: include/HwTreeSegment.h include/CfTreeSegment.h
-algorithms.o: include/TreeFunctor.h include/Algorithms.h
-algorithms.o: /usr/include/CC/functional
+algorithms.o: ../c++adt/include/TMatrix.h include/DefaultBud.h
+algorithms.o: include/BranchingPoint.h include/Axis.h
+algorithms.o: ../c++adt/include/ConnectionMatrix.h include/HwTreeSegment.h
+algorithms.o: include/CfTreeSegment.h include/MyBud.h include/TreeFunctor.h
+algorithms.o: include/Algorithms.h /usr/include/CC/functional
