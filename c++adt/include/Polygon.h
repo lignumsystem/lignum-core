@@ -82,6 +82,6 @@ namespace cxxadt{
 	    return Point(center.getX()/(6.0*area),center.getY()/(6.0*area),
 			 0.0);
 	}
-}
+}//namespace
 
 #endif
