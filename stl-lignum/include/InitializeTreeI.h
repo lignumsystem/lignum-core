@@ -65,10 +65,16 @@ namespace Lignum{
 
       if (verbose){
 	cout << "Azimuths: "  << GetFirmament(tree). getNoOfAzimuths() 
-	     << " Inclinations: " << GetFirmament(tree). getNoOfInclinations() << endl;
-	cout << "Radiation (Ball sensor): " << GetFirmament(tree). diffuseBallSensor()
-	     << " Radiation (Plane sensor): " << GetFirmament(tree). diffusePlaneSensor()
+	     << " Inclinations: " 
+	     << GetFirmament(tree). getNoOfInclinations() << endl;
+	cout << "Radiation (Ball sensor): " 
+	     << GetFirmament(tree). diffuseBallSensor()
+	     << " Radiation (Plane sensor): " 
+	     << GetFirmament(tree). diffusePlaneSensor()
 	     << endl;
+	cout << "Change of radiation due this mask, Planesensor: " <<
+		 GetFirmament(tree).getPlaneChange() << "  Ballsensor:  " <<
+		 GetFirmament(tree).getBallChange() << endl;
       }
       //3. Parse functions for a tree
       //1.
