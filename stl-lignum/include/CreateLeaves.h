@@ -66,10 +66,12 @@ namespace Lignum{
 	double ran = (-90.0 +180.0*u(seed))*2.0*PI_VALUE/360.0; //(radians)
 	PositionVector leaf_normal(0,0,1);
 	leaf_normal.rotate(origo,plane,ran);
-	const PositionVector petiole_end = static_cast<const PositionVector>(GetEndPoint(petiole));
+	const PositionVector petiole_end = 
+	  static_cast<const PositionVector>(GetEndPoint(petiole));
 	E shape(petiole_end,leaf_normal,a,b); //shape of a leaf is Ellips
-	BroadLeaf<E>* leaf = new BroadLeaf<E>(shape,petiole,leaf_normal,
-					      GetFirmament(GetTree(*tc)).numberOfRegions());
+	BroadLeaf<E>* leaf = 
+	  new BroadLeaf<E>(shape,petiole,leaf_normal,
+			   GetFirmament(GetTree(*tc)).numberOfRegions());
 	//Set parameters for radiation calculation.
 	SetValue(*leaf,LGAdof,GetValue(GetTree(*tc),LGPdof));
 	SetValue(*leaf,LGAtauL,GetValue(GetTree(*tc),LGPtauL));
