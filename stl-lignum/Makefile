@@ -69,10 +69,11 @@ html:
 	enscript -E --color -Whtml --toc -p$(PROGFILES) ./include/*.h ./*/*.cc
 clean:
 	(cd lib; make clean)
-	rm -rf $(OBJ) $(ALGOBJ) $(BLOBJ) core lignum algorithms broadleaf ii_files
+	rm -rf $(OBJ) $(ALGOBJ) $(BLOBJ) core  ii_files
 	rm -rf ./*/ii_files
 distclean: clean
-	(cd ../c++adt/lib; make distclean)
+	rm -rf algorithms Makedepend
+	(cd ../c++adt; make distclean)
 	(cd ../Firmament; make distclean)
 	(cd lib; make distclean)
 depend:
