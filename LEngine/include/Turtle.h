@@ -20,6 +20,7 @@ class Turtle{
   Turtle& turn(const RADIAN a);
   Turtle& pitch(const RADIAN a);
   Turtle& roll(const RADIAN a);
+  Turtle& hroll();
   Turtle& forward(const double d);
  private:
   Turtle& normalize();

@@ -162,6 +162,10 @@ int LSystem<TS,BUD,T,F>::lignum2Lstring(list<TreeCompartment<TS,BUD>*>& ls,
   else if (strcmp(name,"Roll") == 0){
     ltr++;
   }
+  //Hroll
+  else if (strcmp(name,"Roll") == 0){
+    ltr++;
+  }
   //Ignore  other symbols, go forward in the string
   else{
     ltr++;
@@ -484,6 +488,11 @@ int LSystem<TS,BUD,T,F>::lstring2Lignum(list<TreeCompartment<TS,BUD>*>& ls,
     caller_data.Strct.AddModuleAddr(ltr.Ptr());
     memcpy(&arg1,caller_data.Strct.pArg(0),sizeof(double));
     turtle_stack.top().roll(arg1);
+    ltr++;
+  }
+  //HRoll
+  else if (strcmp(name,"HRoll") == 0){
+    turtle_stack.top().hroll();
     ltr++;
   }
   //Ignore  other symbols, go forward in the string
