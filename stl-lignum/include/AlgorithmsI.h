@@ -8,7 +8,7 @@ namespace Lignum{
 
 //Functor for ForEach
 template <class TS,class BUD,class Function>
-ForEachOp2<TS,BUD,Function>::ForEachOp2(const Function& op1)
+ForEachOp2<TS,BUD,Function>::ForEachOp2(const Function op1)
   :f(op1)
 {
 }
@@ -16,20 +16,23 @@ ForEachOp2<TS,BUD,Function>::ForEachOp2(const Function& op1)
 template <class TS,class BUD, class Function>
 TreeCompartment<TS,BUD>*  ForEachOp2<TS,BUD,Function>:: operator()(TreeCompartment<TS,BUD>* tc)const
 {
+  f(tc);
+
   if (Axis<TS,BUD>* axis = dynamic_cast<Axis<TS,BUD>*>(tc)){
     list<TreeCompartment<TS,BUD>*>& tc_ls = GetTreeCompartmentList(*axis);
-    for_each(tc_ls.begin(),tc_ls.end(),compose1(*this,f));
+    for_each(tc_ls.begin(),tc_ls.end(),*this);
   }
   else if (BranchingPoint<TS,BUD>* bp = dynamic_cast<BranchingPoint<TS,BUD>*>(tc)){
     list<Axis<TS,BUD>*>& axis_ls = GetAxisList(*bp);
-    for_each(axis_ls.begin(),axis_ls.end(),compose1(*this,f));
+    for_each(axis_ls.begin(),axis_ls.end(),*this);
   }
+
   return tc;
 }
 
 //Functor for Accumulate
 template <class TS,class BUD, class T, class BinOp>
-AccumulateOp2<TS,BUD,T,BinOp>::AccumulateOp2(const BinOp& op)
+AccumulateOp2<TS,BUD,T,BinOp>::AccumulateOp2(const BinOp op)
   :op1(op)
 {
 }
@@ -66,7 +69,7 @@ T& AccumulateOp2<TS,BUD,T,BinOp>:: operator()(T& id,TreeCompartment<TS,BUD>* tc)
 
 //Functor for AccummulateDown
 template <class TS,class BUD, class T, class BinOp>
-ReverseAccumulateOp2<TS,BUD,T,BinOp>::ReverseAccumulateOp2(const BinOp& op)
+ReverseAccumulateOp2<TS,BUD,T,BinOp>::ReverseAccumulateOp2(const BinOp op)
   :op1(op)
 {
 }
@@ -110,8 +113,8 @@ T& ReverseAccumulateOp2<TS,BUD,T,BinOp>::operator()(T& id,
 
 //Functor for AccumulateDown
 template <class TS,class BUD, class T, class BinOp1, class BinOp2>
-ReverseAccumulateOp3<TS,BUD,T,BinOp1,BinOp2>::ReverseAccumulateOp3(const BinOp1& usr_op1,
-								   const BinOp2& usr_op2)
+ReverseAccumulateOp3<TS,BUD,T,BinOp1,BinOp2>::ReverseAccumulateOp3(const BinOp1 usr_op1,
+								   const BinOp2 usr_op2)
   :op1(usr_op1),op2(usr_op2)
 {
 }
@@ -157,7 +160,7 @@ T& ReverseAccumulateOp3<TS,BUD,T,BinOp1,BinOp2>::operator()(T& id,
 
 //Functor for PropagateUp
 template <class TS,class BUD, class T, class BinOp>
-PropagateUpOp2<TS,BUD,T,BinOp>::PropagateUpOp2(const BinOp& op)
+PropagateUpOp2<TS,BUD,T,BinOp>::PropagateUpOp2(const BinOp op)
   :op1(op)
 {
 }
@@ -199,7 +202,7 @@ PropagateUpOp2<TS,BUD,T,BinOp>::operator()(T& id,
 
 //Functor for PropagateUp
 template <class TS,class BUD, class T, class BinOp1, class BinOp2>
-PropagateUpOp3<TS,BUD,T,BinOp1,BinOp2>::PropagateUpOp3(const BinOp1& usr_op1, const BinOp2& usr_op2)
+PropagateUpOp3<TS,BUD,T,BinOp1,BinOp2>::PropagateUpOp3(const BinOp1 usr_op1, const BinOp2 usr_op2)
   :op1(usr_op1),op2(usr_op2)
 {
 }
@@ -242,16 +245,16 @@ PropagateUpOp3<TS,BUD,T,BinOp1,BinOp2>::operator()(T& id,
 
 //The Generic algorithms themselves
 template <class TS,class BUD, class Function>
-void ForEach(Tree<TS,BUD>& tree, const Function& op1)
+void ForEach(Tree<TS,BUD>& tree, const Function op1)
 {
   ForEachOp2<TS,BUD,Function> op2(op1);
 
   Axis<TS,BUD>& axis = GetAxis(tree);
-  compose1(op2,op1)(&axis);
+  op2(&axis);
 }
 
 template <class TS,class BUD, class T, class BinOp>
-T& Accumulate(Tree<TS,BUD>& tree, T& id, const BinOp& op1)
+T& Accumulate(Tree<TS,BUD>& tree, T& id, const BinOp op1)
 {
   AccumulateOp2<TS,BUD,T,BinOp> op2(op1);
   Axis<TS,BUD>& axis = GetAxis(tree);
@@ -259,7 +262,7 @@ T& Accumulate(Tree<TS,BUD>& tree, T& id, const BinOp& op1)
 }
 
 template <class TS,class BUD, class T, class BinOp>
-T& AccumulateDown(Tree<TS,BUD>& tree, T& id, const BinOp& op1)
+T& AccumulateDown(Tree<TS,BUD>& tree, T& id, const BinOp op1)
 {
   ReverseAccumulateOp2<TS,BUD,T,BinOp> op2(op1);
   Axis<TS,BUD>& axis = GetAxis(tree);
@@ -268,7 +271,7 @@ T& AccumulateDown(Tree<TS,BUD>& tree, T& id, const BinOp& op1)
 
 template <class TS,class BUD, class T, class BinOp1, class BinOp2>
 T& AccumulateDown(Tree<TS,BUD>& tree, T& id, 
-		  const BinOp1& op1, const BinOp2& op2)
+		  const BinOp1 op1, const BinOp2 op2)
 {
   ReverseAccumulateOp3<TS,BUD,T,BinOp1,BinOp2> op3(op1,op2);
   Axis<TS,BUD>& axis = GetAxis(tree);
@@ -276,7 +279,7 @@ T& AccumulateDown(Tree<TS,BUD>& tree, T& id,
 }
 
 template <class TS,class BUD, class T, class BinOp>
-void PropagateUp(Tree<TS,BUD>& tree, T& init, const BinOp& op1)
+void PropagateUp(Tree<TS,BUD>& tree, T& init, const BinOp op1)
 {
   PropagateUpOp2<TS,BUD,T,BinOp> op2(op1);
   Axis<TS,BUD>& axis = GetAxis(tree);
@@ -284,7 +287,7 @@ void PropagateUp(Tree<TS,BUD>& tree, T& init, const BinOp& op1)
 }
 
 template <class TS,class BUD, class T, class BinOp1, class BinOp2>
-void PropagateUp(Tree<TS,BUD>& tree, T& init, const BinOp1& op1,  const BinOp2& op2)
+void PropagateUp(Tree<TS,BUD>& tree, T& init, const BinOp1 op1,  const BinOp2 op2)
 {
   PropagateUpOp3<TS,BUD,T,BinOp1,BinOp2> op3(op1,op2);
   Axis<TS,BUD>& axis = GetAxis(tree);

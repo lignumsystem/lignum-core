@@ -14,7 +14,7 @@ class AdaptableTCFunction
 template <class TS,class BUD, class T, class BinOp>
 class AccumulateOp2{
  public:
-  AccumulateOp2(const BinOp& op1);
+  AccumulateOp2(const BinOp op1);
   T& operator()(T& id,TreeCompartment<TS,BUD>* tc)const;
  private:
   BinOp op1;
@@ -23,7 +23,7 @@ class AccumulateOp2{
 template <class TS,class BUD, class T, class BinOp>
 class ReverseAccumulateOp2{
  public:
-  ReverseAccumulateOp2(const BinOp& op);
+  ReverseAccumulateOp2(const BinOp op);
   T& operator()(T& id,TreeCompartment<TS,BUD>* tc)const;
  private:
   BinOp op1;
@@ -32,7 +32,7 @@ class ReverseAccumulateOp2{
 template <class TS,class BUD, class T, class BinOp1, class BinOp2>
 class ReverseAccumulateOp3{
  public:
-  ReverseAccumulateOp3(const BinOp1& op1, const BinOp2& op2);
+  ReverseAccumulateOp3(const BinOp1 op1, const BinOp2 op2);
   T& operator()(T& id,TreeCompartment<TS,BUD>* tc)const;
  private:
   BinOp1 op1;
@@ -42,7 +42,7 @@ class ReverseAccumulateOp3{
 template <class TS,class BUD, class T, class BinOp>
 class PropagateUpOp2{
  public:
-  PropagateUpOp2(const BinOp& op);
+  PropagateUpOp2(const BinOp op);
   TreeCompartment<TS,BUD>* operator()(T& id,TreeCompartment<TS,BUD>* tc)const;
  private:
   BinOp op1;
@@ -51,7 +51,7 @@ class PropagateUpOp2{
 template <class TS,class BUD, class T, class BinOp1,class BinOp2>
 class PropagateUpOp3{
  public:
-  PropagateUpOp3(const BinOp1& op1, const BinOp2& op2);
+  PropagateUpOp3(const BinOp1 op1, const BinOp2 op2);
   TreeCompartment<TS,BUD>* operator()(T& id,TreeCompartment<TS,BUD>* tc)const;
  private:
   BinOp1 op1;
@@ -62,7 +62,7 @@ class PropagateUpOp3{
 template <class TS,class BUD, class Function>
 class ForEachOp2:public AdaptableTCFunction<TS,BUD>{
  public:
-  ForEachOp2(const  Function& op1);
+  ForEachOp2(const  Function op1);
   TreeCompartment<TS,BUD>* operator () (TreeCompartment<TS,BUD>* tc)const;
  private:
   Function f;
@@ -70,21 +70,21 @@ class ForEachOp2:public AdaptableTCFunction<TS,BUD>{
 
 
 template <class TS,class BUD, class Function>
-void ForEach(Tree<TS,BUD>& tree, const Function& f);
+void ForEach(Tree<TS,BUD>& tree, const Function f);
 
 template <class TS,class BUD, class T, class BinOp>
-T& Accumulate(Tree<TS,BUD>& tree, T& init, const BinOp& op);
+T& Accumulate(Tree<TS,BUD>& tree, T& init, const BinOp op);
 
 template <class TS,class BUD, class T, class BinOp>
-T& AccumulateDown(Tree<TS,BUD>& tree, T& init, const BinOp& op);
+T& AccumulateDown(Tree<TS,BUD>& tree, T& init, const BinOp op);
 
 template <class TS,class BUD, class T, class BinOp1, class BinOp2>
-T& AccumulateDown(Tree<TS,BUD>& tree, T& init, const BinOp1& op1, const BinOp2& op2);
+T& AccumulateDown(Tree<TS,BUD>& tree, T& init, const BinOp1 op1, const BinOp2 op2);
 template <class TS,class BUD, class T, class BinOp>
-void PropagateUp(Tree<TS,BUD>& tree, T& init, const BinOp& op1);
+void PropagateUp(Tree<TS,BUD>& tree, T& init, const BinOp op1);
  
 template <class TS,class BUD, class T, class BinOp1, class BinOp2>
-void PropagateUp(Tree<TS,BUD>& tree, T& init, const BinOp1& op1, const BinOp2& op2);
+void PropagateUp(Tree<TS,BUD>& tree, T& init, const BinOp1 op1, const BinOp2 op2);
 
 
 } //closing namespace Lignum
