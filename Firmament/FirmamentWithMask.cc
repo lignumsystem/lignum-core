@@ -57,7 +57,7 @@ void FirmamentWithMask::setMask(int incl_index,double percentage)
 } //closing namespace sky
 
 #ifdef FWM
-#include <iostream.h>
+#include <iostream>
 
 using namespace sky;
       

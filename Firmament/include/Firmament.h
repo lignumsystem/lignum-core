@@ -1,10 +1,11 @@
 #ifndef FIRMAMENT_H
 #define FIRMAMENT_H
 
-#include <fstream.h>
+#include <iostream>
+#include <fstream>
 #include <math.h>
 #include <mathsym.h>
-#include <vector.h>
+#include <vector>
 #include <TMatrix.h>
 #include <LGMUnits.h>
 
