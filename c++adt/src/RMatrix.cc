@@ -1,5 +1,6 @@
 #include <RMatrix.h>
 
+namespace cxxadt{
 
 //======================================================
 //RMatrix "Rotation matrix"
@@ -93,7 +94,8 @@ RMatrix& RMatrix::inverse()
 {
   return transpose();
 }
-  
+
+}//namespace cxxadt  
 
 #ifdef RMATRIX
 

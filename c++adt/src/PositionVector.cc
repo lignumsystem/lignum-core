@@ -1,5 +1,7 @@
 #include <PositionVector.h>
 
+namespace cxxadt{
+
 //default constructor
 PositionVector::PositionVector()
   :v(3)
@@ -103,6 +105,7 @@ ostream& operator << (ostream& os, const PositionVector& pv)
   return os;
 }
 
+}//closing namespace cxxadt
 #ifdef PV
 
 

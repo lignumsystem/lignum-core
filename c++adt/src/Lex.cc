@@ -2,6 +2,8 @@
 #include <fstream.h>
 #include <stdlib.h>
 
+namespace cxxadt{
+
 Token::Token(const CString& token_value, TOKEN_TYPE token_type)
   :value(token_value),type(token_type)
 {
@@ -174,6 +176,8 @@ Lex& Lex::putToken(const Token& token)
   token_ls.insertLeft(new_token);
   return *this;
 }
+
+}//closing namespace cxxadt
 
 #ifdef LEX
 

@@ -1,6 +1,7 @@
 
 #include <CString.h>
 
+namespace cxxadt{
 
 CString& CString::operator=(const CString& str)
 {
@@ -59,7 +60,7 @@ CString operator + (const CString& str1, const CString& str2)
   return str_tmp;
 }
 
-
+}//close namespace cxxadt
 
 #ifdef CSTRING
 #include <stream.h>

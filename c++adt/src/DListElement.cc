@@ -1,6 +1,8 @@
 #include <DListElement.h>
 #include <stdlib.h>
 
+namespace cxxadt{
+
 DListElement::DListElement(void *data)
 {
     data_element = data;
@@ -44,6 +46,7 @@ DListElement *DListElement::previous()
     return previousElmt;
 }
 
+} //closing namespace cxxadt
 
 
 

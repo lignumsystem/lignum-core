@@ -1,7 +1,9 @@
-
-#include <DList.h>
 #include <iostream.h>
 #include <stdlib.h>
+
+#include <DList.h>
+
+namespace cxxadt{
 
 //Create an empty list 
 DList::DList()
@@ -547,6 +549,8 @@ void* DList::booleanReverseReduce(void *(*reduce_fn)(BOOLEAN (*b_fn)(void *,void
 
   return identity;
 } 
+
+}//closing namespace cxxadt
 
 #ifdef DLIST
 #define NL '\n'

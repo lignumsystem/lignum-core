@@ -1,5 +1,8 @@
 
 #include <ParametricCurve.h>
+
+namespace cxxadt{
+
 ParametricCurve::ParametricCurve()
 {
 }
@@ -70,6 +73,8 @@ double ParametricCurve::eval(double x)
   return v[i-1] + (v[i+1] - v[i-1])*((x - v[i-2]) / (v[i] - v[i-2]));
 
 }
+
+}//closing namepsace cxxadt
   
 #ifdef PCURVE
 

@@ -1,5 +1,7 @@
 #include <Ellipsis.h>
 
+namespace cxxadt{
+
 //Construct ellipsis by giving semi major and semiminor axes
 //and the center of the ellipsis
 //All the computations will be done assuming 
@@ -40,6 +42,8 @@ double Ellipsis::setMinor(double b1)
   b = b1;
   return b;
 }
+
+}//closing namespace cxxadt
 
 #ifdef ELLIPSIS
 #include <stream.h>
@@ -110,5 +114,7 @@ int main()
   
   exit(0);
 }
+
+
 #endif
 
