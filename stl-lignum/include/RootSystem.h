@@ -18,7 +18,9 @@
 #include <LGMUnits.h>
 #include <Point.h>
 #include <PositionVector.h>
-
+#include <list>
+using namespace cxxadt;
+using namespace std;
 namespace Lignum {
 
   class RootCompartment{
@@ -70,6 +72,8 @@ namespace Lignum {
   //hair, i.e. fine roots, is  aggregated as the third third cyndrical
   //layer (c.f foliage for CfTreeSegment)
   class RootSegment:public RootCompartment{
+    friend METER GetValue(const RootSegment& rs, LGMAD name);
+    friend METER SetValue(RootSegment& rs, LGMAD name, METER value);
   public:
     RootSegment(const Point& pos, const PositionVector& dir,
 		METER Length,METER Radius,METER RTopRadius,
@@ -83,18 +87,23 @@ namespace Lignum {
   class RootTipAttributes{
   public:
     RootTipAttributes(LGMdouble coll, LGMdouble st, STATUS s):
-      collision(coll),status(st),state(s){}
-    RootTipAttributes():collision(0),status(0),state(ALIVE){}
+      collision(coll),state(st),status(s){}
+    RootTipAttributes():collision(0),state(0),status(ALIVE){}
   public:
     LGMdouble collision; //collision with another root compartment
-    LGMdouble status;    //user defined counter
-    STATUS state;        //DEAD or ALIVE (c.f. Bud) 
+    LGMdouble state;     //user defined counter
+    STATUS status;       //DEAD or ALIVE (c.f. Bud) 
   };
 
   class RootTip:public RootCompartment{
+    friend LGMdouble GetValue(const RootTip& rt, LGMAD name);
+    friend LGMdouble SetValue(RootTip& rt, LGMAD name, LGMdouble value);
+    friend STATUS GetValue(const RootTip& rt, LGMAS name);
+    friend STATUS SetValue(RootTip& rt, LGMAS name, STATUS value);
+  public:
     RootTip(const Point& pos, const PositionVector& dir,
-	    LGMdouble coll, LGMdouble status, STATUS state):
-      RootCompartment(pos,dir),rta(coll,status,state){}  
+	    LGMdouble coll, LGMdouble state, STATUS status):
+      RootCompartment(pos,dir),rta(coll,state,status){}  
     RootTip(const Point& pos, const PositionVector& dir):
       RootCompartment(pos,dir){}
   private:
