@@ -167,7 +167,7 @@ namespace Lignum{
     PrintTreeInformation2(ofstream& out):
     out(out)
       {
-     out << "age:db:d13:H:Hc:Wf:Ws:Wb:Af:LAR:QinM:Qabs:P:M"
+     out << "age db d13 H Hc Wf Ws Wb Af LAR QinM Qabs P M NoSeg NoBud"
 	<< endl;
       }
     void operator() (Tree<TS,BUD>&  tr);
