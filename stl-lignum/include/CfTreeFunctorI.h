@@ -13,8 +13,7 @@ TreeCompartment<TS,BUD>* DropAllLeaves<TS,BUD>::operator ()(TreeCompartment<TS,B
 
         if (HwTreeSegment<TS,BUD>* hwts = dynamic_cast<HwTreeSegment<TS,BUD>*>(tc))
         {
-                if (GetValue(*hwts, age) > 0)
-                        DropLeaves(*hwts);
+	  DropLeaves(*hwts);
         }
         return tc;
 }
