@@ -25,7 +25,6 @@ VoxelBox::VoxelBox()
 
 void VoxelBox::init()
 { 
-	space = NULL; 
 	needleArea = 0.0;
 	leafArea = 0.0;
 	Q_in = 0.0;
