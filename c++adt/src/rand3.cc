@@ -60,14 +60,14 @@ double ran3( int* idum)
 int main()
 {
   int seed = time(NULL);
-
+  ran3(-1);
   cout << "First sequence" << endl;
   for (int i=0; i < 100; i++){
     cout <<  seed << "  " << ran3(&seed) << endl;
   }
 
   seed = time(NULL);
-
+  ran3(-1);
   cout << "Second sequence" << endl;
   for (int j=0; j < 100; j++){
     cout <<  seed << "  " << ran3(&seed) << endl;
