@@ -12,13 +12,12 @@ void CfTreeSegment<TS,BUD>::photosynthesis()
 {
   Tree<TS,BUD>& t = GetTree(*this);
   SetValue(*this,P, GetValue(t, pr) * GetValue(*this,Qabs));
+
 }
 
 
-  //RESPIRATION rate of the segment as the function of needle mass
-  //and sapwood mass
-
-
+//RESPIRATION rate of the segment as the function of needle mass
+//and sapwood mass
 template <class TS,class BUD>
 void CfTreeSegment<TS,BUD>::respiration()
 {
