@@ -13,11 +13,11 @@ namespace cxxadt{
   //map<string,valuetype,Cmpstring> 
   class Cmpstring{
   public:
-    inline bool operator () (const string& s1,const string& s2);
+    inline bool operator () (const string& s1,const string& s2)const;
   };
 
   //if equal return true else return false
-  inline bool Cmpstring::operator () (const string& s1,const string& s2)
+  inline bool Cmpstring::operator () (const string& s1,const string& s2)const
     {
       return s1 < s2;
     }
