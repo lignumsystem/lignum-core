@@ -202,7 +202,7 @@ namespace Lignum{
 	cout <<  "{" << flush; 
       }
 
-      else if (TreeSegment<TS,BUD>* ts = dynamic_cast<TreeSegment<TS,BUD>*>(tc)){
+      else if (TS* ts = dynamic_cast<TS*>(tc)){
 	//if not the first segment, ending a branching point
 	if (!id.first_segment){
 	  cout << "}," << flush;
