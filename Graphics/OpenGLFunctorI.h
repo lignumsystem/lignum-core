@@ -147,7 +147,7 @@ namespace Lignum{
 	      typename std::list<BroadLeaf<S>*>::iterator I;
 	      for(I = leaf_list.begin(); I != leaf_list.end(); I++) 
 		{
-		  LGMdouble area = GetValue(**I, A);   //BroadLeaf returns true area of the leaf
+		  LGMdouble area = GetValue(**I, LGAA);   //BroadLeaf returns true area of the leaf
 				
 		  Petiole pet = GetPetiole(**I);
 
@@ -195,7 +195,7 @@ TreeCompartment<TS,BUD>* DrawLignumLeavesFunctor<TS,BUD,S>::operator()(TreeCompa
       typename std::list<BroadLeaf<S>*>::iterator I;
       for(I = leaf_list.begin(); I != leaf_list.end(); I++)
 	{
-	   LGMdouble area = GetValue(**I, A);   //BroadLeaf returns true area of the leaf
+	   LGMdouble area = GetValue(**I,LGAA);   //BroadLeaf returns true area of the leaf
 	      
 	  Petiole pet = GetPetiole(**I);
 	      
