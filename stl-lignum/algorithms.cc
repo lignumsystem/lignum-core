@@ -243,7 +243,7 @@ int main(int argc, char *argv[])
   PropagateUp(cf_tree,id,DisplayStructureFunctor<MyCfTreeSegment,MyCfBud>());
   cout << endl;
 
-//Radiation
+  //Radiation
   EvaluateRadiationForTree(hw_tree, WrapRadiationEvaluations<
 			   EvaluateRadiationForHwTreeSegment<MyHwTreeSegment,MyHwBud>,
 			   MyHwTreeSegment,MyHwBud>() );
@@ -282,12 +282,12 @@ int main(int argc, char *argv[])
    //Voxelspace
 
 
-   Matrix<MyCfTreeSegment, MyCfBud > *matrix;
+     //Matrix<MyCfTreeSegment, MyCfBud > *matrix;
 	
    //konstruktoriin menee mitat jotka ovat suurin x-arvo,y-arvo ja
    //z-arvo. Viimeinen on pikkuneliön sivun mitta
 
-   matrix = new Matrix<MyCfTreeSegment, MyCfBud >(&cf_tree, 0,0,0,0.1);
+   //matrix = new Matrix<MyCfTreeSegment, MyCfBud >(&cf_tree, 0,0,0,0.1);
 
    int idf = 0;
    cout << "Counting compartments in forest" << endl;
