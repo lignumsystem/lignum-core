@@ -9,7 +9,7 @@ namespace Lignum{
   // Tree Attribute Double, Wm lisätty
   // Wr           dry weight of the roots
   enum LGMAD {A,Af,Ah, Ahair,As,As0,age,api, LGMcollision,Dbase,Dbh,dof, dR, H,Hf,Hm,ip,
-              lb,LM,LP,LWf,L,lw,M, omega,P,
+              lb,LM,LP,LWf,L,lw,M, MaxD,omega,P,
 	      Qin,Qabs,R,Rf,Rh,Rhair,RTop,Sa,LGMstatus,sw,tauL,LGMtype,V,Vh,Vhair,Vs,vi,
               Wf,Wr, Ws,Wh,Whair};
 
@@ -35,6 +35,7 @@ namespace Lignum{
   //  L      length of segment
   //  lw     ???
   //  M      rate of respiration (= amount of r. during the time step)
+  //  MaxD   maximum diameter of the segments forking off and the segment above a branching point 
   //  omega  Gravelius order
   //  P      Photosynthetic rate (= amount of p. during time step)
   //  Qin    incoming radiant flux
