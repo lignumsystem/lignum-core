@@ -113,9 +113,9 @@ void InitOpenGL()
 	light.specular.value[2] = 1.0f;
 	light.specular.value[3] = 1.0f;
 
-	light.ambient.value[0] = 0.8f;
-	light.ambient.value[1] = 0.8f;
-	light.ambient.value[2] = 0.8f;
+	light.ambient.value[0] = 1.0f;
+	light.ambient.value[1] = 1.0f;
+	light.ambient.value[2] = 1.0f;
 	light.ambient.value[3] = 1.0f;
 
 	light.diffuse.value[0] = 1.0f;
@@ -301,6 +301,8 @@ void DrawTree()
   GLfloat mat_amb[] = { 0.2, 0.3, 0.4, 1.0 }; 
   GLfloat mat_dif[] = { 0.2, 0.4, 0.4, 1.0 }; 
   
+  GLfloat mat_amb2[] = { 1.0, 0.5, 0.4, 1.0 }; 
+  //  GLfloat mat_dif2[] = { 1.0, 0.7, 0.0, 0.8 };
   glMaterialfv(GL_FRONT, GL_AMBIENT, mat_amb); 
   glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_dif);
   
@@ -321,7 +323,7 @@ void DrawTree()
       glEnable(GL_LIGHTING);
     }
 
-
+ 
   //glEnable(GL_CULL_FACE);
   //glDisable(GL_LIGHTING);
   //glCullFace(GL_BACK);
@@ -345,6 +347,10 @@ void DrawTree()
   glPushMatrix();
   if (glIsList(ROOT_LIST) == false)
     cout << "Virhe2:juuria ei määritelty " << endl;
+ 
+  glEnable(GL_LIGHTING);
+  glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, mat_amb2); 
+  //  glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_dif2);
   glCallList(ROOT_LIST);
   glPopMatrix();
 
