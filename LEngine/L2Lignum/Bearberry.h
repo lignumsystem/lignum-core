@@ -98,7 +98,7 @@ template <class TS,  class BUD>
   KillBud(LGMdouble p):seed(19988763),die(p){}
   TreeCompartment<TS,BUD>* operator()(TreeCompartment<TS,BUD>* tc)const;
   private:
-  Uniform uniform;
+  mutable Uniform u;
   int seed;  //seed for 'uniform'
   LGMdouble die; //probability limit for bud to die  
 };
@@ -106,7 +106,6 @@ template <class TS,  class BUD>
 template<class TS, class BUD>
 TreeCompartment<TS,BUD>* KillBud<TS,BUD>::operator()(TreeCompartment<TS,BUD>* tc)const
     {
-      static Uniform u;
       if (BUD* b = dynamic_cast<BUD*>(tc)){
 	if (GetValue(*b,omega) == 0)
 	  return tc;
