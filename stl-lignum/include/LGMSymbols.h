@@ -17,7 +17,7 @@ enum LGMAD {A,age,dof,fin,fout,H,Hm,ip,lb,LM,LP,LWf,L,lw,M,omega,P,Pr,\
 enum LGMAS {state};
 
 //Tree Parameter Double
-enum LGMPD {af,ar,lr,mf,mr,ms,na,nl,pr,q,sr,ss,rho,xi}; 
+enum LGMPD {af,ar,lr,mf,mr,ms,na,nl,pr,q,sr,ss,rho,xi,zbrentEpsilon}; 
 
 //Tree Transit Variable Double
 enum LGMTD {lambda, g, eta, Er, k, rhow}; 
