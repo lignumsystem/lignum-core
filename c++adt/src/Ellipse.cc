@@ -8,11 +8,9 @@ namespace cxxadt{
                    const PositionVector& normal0, 
 		   const double& semimajoraxis0,  
                    const double& semiminoraxis0)
+    :center(center0),normal(normal0),semimajoraxis(semimajoraxis0),
+     semiminoraxis(semiminoraxis0)
   {
-    center=center0;
-    normal=normal0;
-    semimajoraxis=semimajoraxis0;
-    semiminoraxis=semiminoraxis0;
     /*
     cout<<"Ellips:ellipse with parameters"<<endl;
     cout<<"center="<<center<<endl;
@@ -26,6 +24,8 @@ namespace cxxadt{
                   const PositionVector& normal0, 
 		  const double& semimajoraxis0,  
                   const double& semiminoraxis0)
+    :normal(normal0),semimajoraxis(semimajoraxis0),
+     semiminoraxis(semiminoraxis0)
   {
     PositionVector x1u(normal0.getZ(),0,-normal0.getX());
     x1u=x1u.normalize();
@@ -35,24 +35,36 @@ namespace cxxadt{
  
     PositionVector petiolecenter(x1u*semimajoraxis0);
     PositionVector center0=petiole0+petiolecenter;
-    Point center=Point(center0);
+    center=Point(center0);
 
     //cout<<"in Ellips with petiole x1u="<<x1u<<endl;
 
-    normal=normal0;
-    semimajoraxis=semimajoraxis0;
-    semiminoraxis=semiminoraxis0;
-    /*
+
     cout<<"Ellipse petiole with parameters"<<endl;
     cout<<"center="<<center<<endl;
     cout<<"vector normal="<<normal<<endl;
     cout<<"semimajoraxis="<<semimajoraxis<<endl;
     cout<<"semiminoraxis="<<semiminoraxis<<endl;
-    */
+
   }
 
 
-  PositionVector Ellipse::x1u(){
+  Ellipse::Ellipse(const Ellipse& e)
+    :center(e.center),normal(e.normal),semimajoraxis(e.semimajoraxis),
+     semiminoraxis(e.semiminoraxis)
+  {
+  }
+
+  Ellipse& Ellipse::operator=(const Ellipse& e)
+  {
+    center = e.center;
+    normal = e.normal;
+    semimajoraxis = e.semimajoraxis;
+    semiminoraxis = e.semiminoraxis;
+    return *this;
+  }
+
+  PositionVector Ellipse::x1u()const{
 
     PositionVector x1(normal.getZ(),0,-normal.getX());
     x1=x1.normalize();
@@ -60,7 +72,7 @@ namespace cxxadt{
     return x1; 
   }
 
-  PositionVector Ellipse:: y1u(){
+  PositionVector Ellipse:: y1u()const{
 
     PositionVector y1(Cross(normal,x1u()));
     y1=y1.normalize();
@@ -69,14 +81,14 @@ namespace cxxadt{
   }
 
 
-  Point  Ellipse::getSemimajorAxisPoint(){
+  Point  Ellipse::getSemimajorAxisPoint()const{
 
     Point p=Point((Point)center+Point(semimajoraxis*x1u()));
     //cout<<"getSemimajorAxisPoint ="<<p<<endl;
     return p;
   }
 
-  Point  Ellipse::getSemiminorAxisPoint(){
+  Point  Ellipse::getSemiminorAxisPoint()const{
 
     Point p=Point((Point)center+Point(semiminoraxis*y1u()));
     //cout<<"getSemiminorAxisPoint ="<<p<<endl;
@@ -174,8 +186,8 @@ namespace cxxadt{
    if ( (CB.length()*x1u().length()) !=0 )
      cosangleBCXu=Dot(CB,x1u())/(CB.length()*x1u().length());
    else{
-     cout <<"1. Check positions for the OB vector "
-          << "and the ellipse plane"<<endl;
+     //cout <<"1. Check positions for the OB vector "
+     //   << "and the ellipse plane"<<endl;
       return false;
    };
  
@@ -190,8 +202,8 @@ namespace cxxadt{
    if ( (OC.length()*OX.length()) !=0 )
      cosangleCOX=Dot(OC,OX)/(OC.length()*OX.length());
    else{
-     cout<<"2. Check positions for the OB vector "
-	 <<"and the ellipse plane"<<endl;
+     //cout<<"2. Check positions for the OB vector "
+     //	 <<"and the ellipse plane"<<endl;
       return false;
    };
   
@@ -200,8 +212,8 @@ namespace cxxadt{
    if ( (OB.length()*OC.length()) !=0 )
      cosangleCOB=Dot(OB,OC)/(OB.length()*OC.length());
    else{
-     cout<<"3. Check positions for the OB vector "
-	 <<"and the ellipse plane"<<endl;
+     //cout<<"3. Check positions for the OB vector "
+     // <<"and the ellipse plane"<<endl;
       return false;
    };
   
