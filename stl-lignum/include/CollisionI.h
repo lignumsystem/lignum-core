@@ -58,12 +58,28 @@ int& EvaluateCollisionForThisBud<TS,BUD>::
       return coll;
     }
 
+    //If the bud  and the object are exactly at the  same point do not
+    //consider collision.  The buds in  the same branching  point have
+    //the same point.
+    if (p == point)
+      return coll;
+
+    
     LGMdouble dotp = Dot(direction, diff);
-    //If the dotp angle is inside the c_cos angle, then there is collision 
+
+    //If   you  are   looking  backwards   the  dot   product  becomes
+    //negative. We are not looking backwards.
+    if (dotp < 0)
+      return coll;
+
+    //If  the dotp  angle is  inside the  c_cos angle,  then  there is
+    //collision
     if(c_cos > dotp / len) {
       //if the len is within the given distance
       if(len < c_distance) {
 	coll = 1;
+	cout << "Coll" << p << " " << point << " " 
+	     << c_cos << " " << dotp/len << endl;
       }
     }
     
