@@ -56,14 +56,16 @@ public:
 	void addLeafArea(M2 larea) { leafArea += larea; }
 	void addQabs(LGMdouble val) { Q_abs += val; }
 	void addInterceptedRadiation(LGMdouble rad) { interceptedRadiation += rad; }
-
+	void addStarSum(LGMdouble star){starSum += star;}
+	void increaseNumberOfSegments(){number_of_segments++;}
 	friend ostream &operator << (ostream& os, VoxelBox &b);
 	LGMdouble getQabs() { return Q_abs; }
+	LGMdouble S(LGMdouble phi, LGMdouble Sf, LGMdouble Wf, LGMdouble r, LGMdouble l);
 protected:
 	LGMdouble star;
 	LGMdouble starSum;
 	LGMdouble SAc(LGMdouble phi, LGMdouble r, LGMdouble l);
-	LGMdouble S(LGMdouble phi, LGMdouble Sf, LGMdouble Wf, LGMdouble r, LGMdouble l);
+
 	LGMdouble K(LGMdouble phi);
 	M2 leafArea;
 	M2 needleArea;
