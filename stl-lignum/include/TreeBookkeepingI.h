@@ -9,25 +9,29 @@
 namespace Lignum{
 
   template <class TS, class BUD>
-  LGMdouble SumTreePhotosynthesis(LGMdouble& cumPh, 
-				  TreeCompartment<TS,BUD>* tc){
+  class SumTreePhotosynthesis{
+  public:
+    LGMdouble operator () (LGMdouble& cumPh, 
+			   TreeCompartment<TS,BUD>* tc)const{
     
-    //cout << typeid(tc).name() << endl;
-    //this should return the photosynthesis 
-    if (TS* tsc = dynamic_cast<TS*>(tc)) {
-      LGMdouble PP = GetValue(*tsc, P);
-      cumPh += PP;
+      //cout << typeid(tc).name() << endl;
+      //this should return the photosynthesis 
+      if (TS* tsc = dynamic_cast<TS*>(tc)) {
+	LGMdouble PP = GetValue(*tsc, P);
+	cumPh += PP;
+      }
+      return cumPh;
     }
-    return cumPh;
-  }
+  };
+
   //Sum photosynthesis from all segments and update Tree's photosynthesis P
     template <class TS,class BUD>
     LGMdouble UpdateTreePhotosynthesis(Tree<TS,BUD>& tree)
     {
-      LGMdouble SumTreePhotosynthesis(LGMdouble&,TreeCompartment<TS,BUD>*);
+      //LGMdouble SumTreePhotosynthesis(LGMdouble&,TreeCompartment<TS,BUD>*);
       LGMdouble initPh = 0.0;
       LGMdouble sumPh;
-      sumPh = Accumulate(tree, initPh, SumTreePhotosynthesis);
+      sumPh = Accumulate(tree, initPh, SumTreePhotosynthesis<TS,BUD>());
       SetValue(tree, P, sumPh);
 
       return sumPh;
@@ -38,5 +42,6 @@ namespace Lignum{
 } //Closing namespace Lignum
 
 #endif
+
 
 

@@ -36,14 +36,14 @@ public:
 
 template <class TS,class BUD=DefaultBud<TS> >
 class TreeSegment: public TreeCompartment<TS,BUD>{ 
-  //template <class TS1,class BUD1>
-  friend list<METER> GetAnnualRings(const TreeSegment<TS,BUD>& ts);
-  //template <class TS1,class BUD1>
-  friend KGC GetSapwoodMass(const TreeSegment<TS,BUD>& ts);
-  //template <class TS1,class BUD1>
-  friend LGMdouble GetValue(const TreeSegment<TS,BUD>& ts, const LGMAD name);
-  //template <class TS1,class BUD1>
-  friend LGMdouble SetValue(TreeSegment<TS,BUD>& ts, const LGMAD name, const LGMdouble value);
+  template <class TS1,class BUD1>
+  friend list<METER> GetAnnualRings(const TreeSegment<TS1,BUD1>& ts);
+  template <class TS1,class BUD1>
+  friend KGC GetSapwoodMass(const TreeSegment<TS1,BUD1>& ts);
+  template <class TS1,class BUD1>
+  friend LGMdouble GetValue(const TreeSegment<TS1,BUD1>& ts, const LGMAD name);
+  template <class TS1,class BUD1>
+  friend LGMdouble SetValue(TreeSegment<TS1,BUD1>& ts, const LGMAD name, const LGMdouble value);
 public:
   TreeSegment();
   TreeSegment(const Point& p, const PositionVector& d, const LGMdouble go,
