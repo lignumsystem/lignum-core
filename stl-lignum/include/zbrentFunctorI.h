@@ -20,20 +20,7 @@ template <class TS, class BUD>
 TreeCompartment<TS,BUD>* EvaluateDeltas<TS,BUD>::operator()
   (TreeCompartment<TS,BUD>* tc)const
 {
-  if (GCSegment* ts = dynamic_cast<GCSegment*>(tc)) 
-  {
-    SetValue(*ts, dR, 0.0);
-    SetValue(*ts, dW, 0.0);
-    if(GetValue(*ts, age) > R_EPSILON) 
-	{ 
-		//no deltas for new segments
-		Tree<TS,BUD>& tt = dynamic_cast<Tree<TS,BUD>&>(GetTree(*ts));
-		SetValue(*ts, dAs, GetValue(tt, ss)*
-			   PI_VALUE*(pow(GetValue(*ts,R),2.0)-pow(GetValue(*ts,Rh),2.0)));
-    }
-    else
-		SetValue(*ts,dAs,0.0);
-  }
+  
   return tc;
 }
 
@@ -205,16 +192,7 @@ LGMdouble& SetNewRing<TS,BUD>::operator()(LGMdouble& As, TreeCompartment<TS, BUD
 template <class TS, class BUD>
 TreeCompartment<TS, BUD>* DiameterGrowthBookkeep<TS,BUD>::operator() (TreeCompartment<TS,BUD>* tc)const
 {
-  if (GCSegment* ts = dynamic_cast<GCSegment*>(tc)) 
-  {
-    if(GetValue(*ts, age) > R_EPSILON) {
-      LGMdouble Rtmp = GetValue(*ts,R);
-      LGMdouble dRtmp = GetValue(*ts,dR);
-      GCTree& tt = dynamic_cast<GCTree&>(GetTree(*ts));
-      SetValue(*ts, dW, GetValue(*ts,L)*GetValue(tt,rho) *
-	       PI_VALUE*(pow((double)(Rtmp+dRtmp),2.0) - pow((double)Rtmp,2.0)) ); 
-    }
-  }
+  
   return tc;
 }
 
@@ -342,13 +320,7 @@ LGMdouble&  CollectDWAfterGrowth<TS,BUD>::operator()(LGMdouble& WSum, TreeCompar
 		}
 	} 
 	
-	if (GCSegment* ts = dynamic_cast<GCSegment*>(tc)) 
-	{
-		if(GetValue(*ts, age) < R_EPSILON)  //new segment, collect all
-			WSum += GetValue(*ts,Wf) + GetValue(*ts,Ws) + GetValue(*ts,Wh);
-		else
-			WSum += GetValue(*ts,dW);
-	}
+	
 
   return WSum;
 }
@@ -358,20 +330,7 @@ LGMdouble&  CollectDWAfterGrowth<TS,BUD>::operator()(LGMdouble& WSum, TreeCompar
 template <class TS, class BUD>
 TreeCompartment<TS,BUD>* BookkeepAfterZbrent<TS,BUD>::operator ()(TreeCompartment<TS,BUD>* tc)const
 {
-  if (GCSegment* ts = dynamic_cast<GCSegment*>(tc)) {
-    GCTree& tt = dynamic_cast<GCTree&>(GetTree(*ts));
-    SetValue(*ts, R, GetValue(*ts,R)+GetValue(*ts,dR) );
-    SetValue(*ts, dR, 0.0);
-    SetValue(*ts, Rh, GetValue(*ts,Rh)+sqrt(GetValue(*ts,dAs)/PI_VALUE) );
-    SetValue(*ts, dAs, 0.0);
-    SetValue(*ts,Ws,GetValue(tt,rho)*
-	       PI_VALUE*(pow(GetValue(*ts,R),2.0)-pow(GetValue(*ts,Rh),2.0))*
-	       GetValue(*ts,L) );
-    SetValue(*ts,Wh,GetValue(tt,rho)*
-	       PI_VALUE*pow(GetValue(*ts,Rh),2.0)*
-	       GetValue(*ts,L) );
-    SetValue(*ts,dW,0.0);
-  }
+ 
 
   return tc;      
 }

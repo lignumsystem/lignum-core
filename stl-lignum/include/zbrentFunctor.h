@@ -2,7 +2,6 @@
 #define ZBRENTFUNCTOR_H
 
 #include <Tree.h>
-#include <GCTree.h>
 #include <fstream>
 //#include <Algorithms.h>
 

@@ -643,15 +643,15 @@ MotherInfo& AddSugarMapleSegments<TS,BUD>::operator()(MotherInfo& mi, TreeCompar
 		PositionVector pet_e1(end_point+Point(0, 0.1, 0.05));
 		PositionVector pet_e2(end_point+Point(0, -0.1, 0.05));
 
-		LGMdouble ellipsis_a = sqrt(GetValue(tree, al) / (1.1*PI_VALUE));  ///**************'  
-		LGMdouble ellipsis_b = ellipsis_a / 1.1;		
+		LGMdouble Ellipse_a = sqrt(GetValue(tree, al) / (1.1*PI_VALUE));  ///**************'  
+		LGMdouble Ellipse_b = Ellipse_a / 1.1;		
 		PositionVector normal(rand()%100, rand()%100, 200);
 		normal.normalize();
 
-		BroadLeaf<Ellipsis> *leaf1 = new BroadLeaf<Ellipsis>(sf_p, v, dof_p, number_of_regions, Petiole((Point)pet_s,(Point)pet_e1), 
-											normal, Ellipsis(ellipsis_a, ellipsis_b));
-		BroadLeaf<Ellipsis> *leaf2 = new BroadLeaf<Ellipsis>(sf_p, v, dof_p, number_of_regions, Petiole((Point)pet_s,(Point)pet_e2), 
-											normal, Ellipsis(ellipsis_a, ellipsis_b));
+		BroadLeaf<cxxadt::Ellipse> *leaf1 = new BroadLeaf<cxxadt::Ellipse>(sf_p, v, dof_p, number_of_regions, Petiole((Point)pet_s,(Point)pet_e1), 
+											normal, Ellipse(Ellipse_a, Ellipse_b));
+		BroadLeaf<cxxadt::Ellipse> *leaf2 = new BroadLeaf<cxxadt::Ellipse>(sf_p, v, dof_p, number_of_regions, Petiole((Point)pet_s,(Point)pet_e2), 
+											normal, Ellipse(Ellipse_a, Ellipse_b));
 		SetValue(*leaf1, sf, 28);
 		SetValue(*leaf2, sf, 28);	
 	
@@ -934,17 +934,17 @@ MotherInfo& AddWhiteBirchSegments<TS,BUD>::operator()(MotherInfo& mi, TreeCompar
 			PositionVector pet_end(end_point+(Point)(newBudDirection*0.002));
 		
 
-			LGMdouble ellipsis_a;
-			LGMdouble ellipsis_b;
+			LGMdouble Ellipse_a;
+			LGMdouble Ellipse_b;
 
-			ellipsis_a = sqrt(GetValue(tree, al) / (1.1*PI_VALUE));  ///**************'  
-			ellipsis_b = ellipsis_a / 1.1;
+			Ellipse_a = sqrt(GetValue(tree, al) / (1.1*PI_VALUE));  ///**************'  
+			Ellipse_b = Ellipse_a / 1.1;
 			
 			PositionVector normal(rand()%100, rand()%100, 200);
 			normal.normalize();
 
-			BroadLeaf<Ellipsis> *leaf1 = new BroadLeaf<Ellipsis>(sf_p, v, dof_p, number_of_regions, Petiole((Point)pet_start,(Point)pet_end), 
-											normal, Ellipsis(ellipsis_a, ellipsis_b));
+			BroadLeaf<cxxadt::Ellipse> *leaf1 = new BroadLeaf<cxxadt::Ellipse>(sf_p, v, dof_p, number_of_regions, Petiole((Point)pet_start,(Point)pet_end), 
+											normal, Ellipse(Ellipse_a, Ellipse_b));
 		
 			SetValue(*leaf1, sf, 28); // GetValue(tree, sf));  ///**** onko sama.. sf ja SLA??
 			total_leaf_area += GetValue(*leaf1, A);

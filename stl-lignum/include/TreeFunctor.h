@@ -145,11 +145,15 @@ namespace Lignum{
       int& operator ()(int& id,TreeCompartment<TS,BUD>* ts)const;
     };
 
+	/*
+
+	Tämän totuetus on kadonnut??? 12.6.2003
   template <class TS,class BUD=DefaultBud<TS> >
     class FillWithWater:  public AdaptableTCFunction<TS,BUD>{
       public:
       TreeCompartment<TS,BUD>* operator()(TreeCompartment<TS,BUD>* tc)const;
     };
+	*/
 
 
   template <class TS,class BUD=DefaultBud<TS> >class CountCompartments{
@@ -375,6 +379,11 @@ namespace Lignum{
   
     };
 
+/*
+	template <class TS, class BUD>
+	TreeCompartment<TS,BUD>* DropAllLeaves<TS,BUD>::operator ()(TreeCompartment<TS,BUD>* tc)const;
+
+*/
 
 }//closing namespace Lignum
 #include <TreeFunctorI.h>

@@ -31,13 +31,16 @@ public:
 
 
  
-  //private:
+  
+  
   int Nleaves;            //Number of leaves
   float Aleaf;            //Area of one leaf, common to all leaves in this TS
   std::string data_info1;
   std::string data_info2;
 
   std::string leave_info;
+
+  int id;
 };
 
 

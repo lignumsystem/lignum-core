@@ -3,7 +3,6 @@
 
 #include <Point.h>
 #include <PositionVector.h>
-#include <Ellipsis.h>
 #include <Ellipse.h>
 #include <LGMdecl.h>
 
@@ -30,7 +29,7 @@ public:
   BroadLeafAttributes(double sf1,double tauL1,double dof1, const Petiole& petiole1,
 		      const PositionVector& leaf_normal, const SHAPE& shape1, 
 		      int number_of_sectors);
-  double degree_of_filling; //ellipsis covers the form of the maple leaf only partially
+  double degree_of_filling; //Ellipse covers the form of the maple leaf only partially
   double sf;                //specific leaf area
   double tauL;              //transmission coefficient
   KGC P;                    //photosynthetic production
@@ -39,7 +38,7 @@ public:
   KGC Qabs;                 //absorbed radiation
   Petiole petiole;          //leaf is at the end of petiole in 3D space
   PositionVector leaf_normal;    //the leaf normal in 3D space
-  SHAPE shape;           //the form of the leaf is modelled as an ellipsis
+  SHAPE shape;           //the form of the leaf is modelled as an Ellipse
   //vector for shading (must be synchronized with firmament)
   vector<LGMdouble>  sv; //the length of the vector == number of sectors 
 };

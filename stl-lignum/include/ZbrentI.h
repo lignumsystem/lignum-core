@@ -135,8 +135,14 @@ LGMdouble HwBracketFunction(LGMdouble& a, LGMdouble& b,
   LGMdouble sum_nfol = 0.0f;
   CollectNewHwFoliageMass<TS,BUD> collectNFM;
   sum_nfol = Accumulate(tree,  sum_nfol, collectNFM);
+
   
-  fb = deltaiW - WSum - sum_nfol;
+  LGMdouble nit = GetValue(tree, nitroLeaves);
+  LGMdouble aa_r = GetValue(tree, ar) * tree.tf.nitroRootShootRatio(nit);
+
+  LGMdouble rootGrowth = sum_nfol* aa_r;  
+  
+  fb = deltaiW - WSum - sum_nfol - rootGrowth;
   
   debug_file << "fa " << fa << "   fb " << fb << '\n';	
   debug_file << "haetaaan väliä  iteroidaan..." << '\n';
@@ -160,7 +166,9 @@ LGMdouble HwBracketFunction(LGMdouble& a, LGMdouble& b,
 
 	sum_nfol = 0;
 	sum_nfol = Accumulate(tree,  sum_nfol, collectNFM);
-    fb = deltaiW - WSum - (sum_nfol * a_r);
+
+	rootGrowth = sum_nfol * a_r;	//****** typpifunktio(lehdista)
+    fb = deltaiW - WSum - sum_nfol - rootGrowth;
 
 	debug_file << "lambda " << b << "   Wsum " << WSum << '\n';
 	debug_file << "fa " << fa << "   fb " << fb << '\n';
@@ -302,7 +310,15 @@ LGMdouble HwZbrent(LGMdouble x1,LGMdouble x2,LGMdouble fa, LGMdouble fb, LGMdoub
 
 		identity = 0.0;
 		WSum = Accumulate(tree,  identity, collectDW);
-		fb = deltaiW - WSum;
+
+
+		LGMdouble nit = GetValue(tree, nitroLeaves);
+		LGMdouble a_r = GetValue(tree, ar) * tree.tf.nitroRootShootRatio(nit);
+
+		LGMdouble sum_nfol = 0.0;
+		CollectNewHwFoliageMass<TS,BUD> collectHwWB;
+		LGMdouble rootGrowth = Accumulate(tree,  sum_nfol, collectHwWB) * a_r;	
+		fb = deltaiW - WSum - rootGrowth;
 	}
 
   MessageBox(NULL, "Maximum number of iterations", NULL, NULL);

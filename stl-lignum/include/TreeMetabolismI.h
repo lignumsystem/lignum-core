@@ -12,6 +12,7 @@ namespace Lignum{
 template <class TS,class BUD>
 void Tree<TS,BUD>::photosynthesis()
 {
+
   //Have TreeCompartments to do photosynthesis
   ForEach(*this, TreePhotosynthesis<TS,BUD>());
 	
@@ -22,26 +23,37 @@ void Tree<TS,BUD>::photosynthesis()
   LGMdouble sumPh;
   sumPh = Accumulate(*this, initPh, SumTreePhotosynthesis<TS,BUD>());
   
+  LGMdouble nit = GetValue(*this, nitroLeaves);
+  sumPh = sumPh * tf.nitroMaxPhotosynthesis(nit);
+
   SetValue(*this, P, sumPh);
 
 }
 
 
- //RESPIRATION
 
-
+//RESPIRATION
 template <class TS,class BUD>
 void Tree<TS,BUD>::respiration()
 {
-  //Have TreeCompartments to do photosynthesis
-  ForEach(*this, TreeRespiration<TS,BUD>());
+	//Have TreeCompartments to do photosynthesis
+	ForEach(*this, TreeRespiration<TS,BUD>());
+
+
+	//... and then SUM respiration rates of all segments and update tree M
+	LGMdouble initM = 0.0;
+	LGMdouble sumM;
+	sumM = Accumulate(*this, initM, SumTreeRespiration<TS,BUD>());
+
+
+	// Root respiration
+	LGMdouble nit_roots = GetValue(*this, nitroRoots);
   
+
+     sumM += GetValue(*this,mr)*GetValue(*this,Wr) * this->tf.nitroRespiration(nit_roots);
+
   
-  //... and then SUM respiration rates of all segments and update tree M
-  LGMdouble initM = 0.0;
-  LGMdouble sumM;
-  sumM = Accumulate(*this, initM, SumTreeRespiration<TS,BUD>());
-  SetValue(*this, M, sumM);
+	SetValue(*this, M, sumM);
 }
 
 

@@ -3,9 +3,13 @@
 
 #include <HwTreeSegment.h>
 #include <CfTreeSegment.h>
+#include <Ellipse.h>
 
+#ifndef _MSC_VER
 
 namespace Lignum{
+
+
 
 class MyBud;
 class MyHwBud;
@@ -21,13 +25,13 @@ public:
 };
 
 
-class MyHwTreeSegment:public HwTreeSegment<MyHwTreeSegment,MyHwBud>
+class MyHwTreeSegment:public HwTreeSegment<MyHwTreeSegment,MyHwBud, cxxadt::Ellipse>
 {
 public:
   MyHwTreeSegment(const Point& p, const PositionVector& d, const LGMdouble go,
 		  const METER l, const METER r, const METER rn,
 		  Tree<MyHwTreeSegment,MyHwBud>* t)
-    :HwTreeSegment<MyHwTreeSegment,MyHwBud>(p,d,go,l,r,rn,t){}
+    :HwTreeSegment<MyHwTreeSegment,MyHwBud, Ellipse>(p,d,go,l,r,rn,t){}
 };
 
 class MyCfTreeSegment:public CfTreeSegment<MyCfTreeSegment,MyCfBud>
@@ -40,4 +44,5 @@ public:
 };
 
 } //close namespace Lignum
+#endif
 #endif

@@ -9,6 +9,28 @@ namespace Lignum{
   template <class TS,class BUD>
   class TreePhotosynthesis
   {
+	
+    if (TS* tts = dynamic_cast<TS*>(tc))
+	{
+      LGMdouble PP = GetValue(*tts, P);
+      cumPh += PP;
+    }
+	
+    return cumPh;
+  }
+};
+
+
+template <class TS,class BUD>
+  class TreeRespiration{
+  public:
+  TreeCompartment<TS,BUD>* operator()(TreeCompartment<TS,BUD>* tc)const{
+    tc->respiration();
+    return tc;
+  }
+};
+
+
   public:
     TreeCompartment<TS,BUD>* operator()(TreeCompartment<TS,BUD>* tc)const{
       tc->photosynthesis();
@@ -21,13 +43,16 @@ namespace Lignum{
   public:
     LGMdouble operator () (LGMdouble& cumPh, TreeCompartment<TS,BUD>* tc)const
     {
-      if (TS* tts = dynamic_cast<TS*>(tc)){
-	LGMdouble PP = GetValue(*tts, P);
-	cumPh += PP;
+      if (TS* tts = dynamic_cast<TS*>(tc))
+	  {
+		LGMdouble PP = GetValue(*tts, P);
+		cumPh += PP;
       }
       return cumPh;
     }
   };
+
+
 
 
   template <class TS,class BUD>
@@ -45,10 +70,10 @@ namespace Lignum{
     LGMdouble operator () (LGMdouble& cumM, TreeCompartment<TS,BUD>* tc)const
     {
       if (TS* tts = dynamic_cast<TS*>(tc))
-	{
-	  LGMdouble M_ts = GetValue(*tts, M);
-	  cumM += M_ts;
-	}
+	  {
+		LGMdouble M_ts = GetValue(*tts, M);
+		cumM += M_ts;
+		}
       return cumM;
     }
   };
@@ -72,6 +97,7 @@ namespace Lignum{
       return data;
     }
   };
+
 }
 
 #endif

@@ -18,8 +18,7 @@ void HwTreeSegment<TS,BUD,S>::photosynthesis()
 
 }
 
-  //RESPIRATION rate of HwTreeSegment (sum of leaves + segment sapwood resp.)
-
+//RESPIRATION rate of HwTreeSegment (sum of leaves + segment sapwood resp.)
 template <class TS,class BUD,class S>
 void HwTreeSegment<TS,BUD,S>::respiration()
 {
@@ -33,7 +32,19 @@ void HwTreeSegment<TS,BUD,S>::respiration()
     m_hw += mf_par * GetValue(**i,Wf);
   }
 
-  m_hw += GetValue(tt, M) * GetValue(*this, Ws);
+ Tree<TS,BUD>& t = dynamic_cast<Tree<TS,BUD>&>(GetTree(*this));
+
+  // Effect of nitrogen on leaves
+  LGMdouble nit_leaves = GetValue(tt, nitroLeaves);
+  LGMdouble nit_wood = GetValue(tt, nitroWood);
+ 
+
+  m_hw *= tt.tf.nitroRespiration(nit_leaves);
+
+  // Respiration of wooden part, effect of nitrogen.
+  m_hw += GetValue(t,ms)*GetValue(*this,Ws) * tt.tf.nitroRespiration(nit_wood);
+
+ 
 
   SetValue(*this, M, m_hw);
 }

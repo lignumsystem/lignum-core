@@ -4,6 +4,8 @@
 #include <Bud.h>
 #include <MyTreeSegment.h>
 
+#ifndef _MSC_VER
+
 namespace Lignum{
   class MyTreeSegment;
   class MyHwTreeSegment;
@@ -32,4 +34,5 @@ namespace Lignum{
 }//closing namespace Lignum
 #endif
 
+#endif
 
