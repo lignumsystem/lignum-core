@@ -12,8 +12,7 @@ SRC = ../Axis/AxisFriend.cc  \
       ../Tree/Tree.cc \
       ../TreeSegment/BeamShading.cc \
       ../TreeSegment/BroadLeafMetabolism.cc \
-      ../TreeSegment/CfTreeSegment.cc \
-      ../RootSystem/RootSystem.cc
+      ../TreeSegment/CfTreeSegment.cc 
 
 OBJ = ${SRC:.cc=.o}
 
