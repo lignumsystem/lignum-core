@@ -12,36 +12,53 @@ detailed  botanical or  morphological  units rather  than with  highly
 aggregated plant compartments.
 
 The  term 'functional-structural  model' was  introduced  in [Silva97]
-that  compiles a series  of articles  extending the  traditional three
-step analysis  of an entity  (e.g.  a plant)  where the nature  of the
-intrinsic  processes  of the  entity  are  analysed, the  differential
-equations describing  the processes  are inferred and  solved possibly
-assuming some  reasonably sufficient geometry for the  entity. The key
-idea in the  various models presented in [Silva97]  was that the focus
-was set  on what  happens in  a single plant  element (such  as shoot,
-internode, leaf,  root hairs  etc.)  and defining  their interactions.
-Obviously,  due to  thousands  of interacting  units  such models  are
-implemented as computer  programs where the program acts  as the model
-and as the means of simulating the model behaviour.
+that compiles  a series of  articles where the  focus was set  on what
+happens in  a single  plant element (such  as shoot,  internode, leaf,
+root hairs etc.)  and  defining their interactions.  Obviously, due to
+possibly thousands of interacting units such models are implemented as
+computer programs where the program acts as the model and as the means
+to follow,  solve and analyse the  model behaviour (\textit{In silico}
+simulations).
 
-Winfried  Kurth  has   classified  existing  modelling  approaches  in
-forestry  into   three  categories  and  based   on  this  observation
-constructed a model triangle.  The  top apex of this triangle is taken
-up by aggregated  stand models.  Process based single  tree models and
-architectural tree  models are placed at  the two other  apices at the
-base of the  model triangle respectively.  Moving along  the sides and
-inside  the triangle  captures the  model continuum  including aspects
-from one or the other two modelling avenues.
+In  Montpellier, a  city with  over  10 centuries  of known  botanical
+heritage, the modelling group AMAP  at CIRAD ('French school') has the
+basis for  their plant growth  and analysis systems  AMAPsim, AMAPpara
+and AMAPmod  in the architectural analysis by  Halle\'{e} grouping the
+morphological caharacteristics of tropical trees into 25 model classes
+and the notion  of reiteration observed by Oldeman  where a plant body
+is able to duplicate its existing structure.
 
-Consequently there are practically two  ways to construct an FSTM. One
-can start from an architectural model adding functional, physiological
-details into it.  The second approach is to begin with a process based
-physiological model and extend it with structural details.
+AMAP re-introduced  the notion of  physiological age as  distinct from
+real age  to organize the irreversible stochastic  processes of birth,
+growth, branching and death of an apical bud (meristem). Each stage of
+the bud  from birth to  death can be  arranged into a  theoretical one
+dimensional reference  axis (\textit {axe  de r\'{e}f\'{e}rence}) with
+shifts  from one  stage to  another as  possible paths  to  modify the
+physiological age of  the bud.  The associated finite  automaton has a
+state for each stage in  the reference axis, a transition function for
+the shifts between the stages and additional geometric information for
+branching and  growth. This finite  automaton system is  sufficient to
+determine    architectural   tree   growth    including   reiteration,
+self-pruning   and   changes  in   form   as   tree  develops   called
+metamorphosis.  The  reference axis  was fully implemented  in AMAPsim
+used  to produce  realistic images  of important  trees and  plants in
+forestry and agriculture.
+
+
 
 Examples
+
 -AMAP 'French School'
--'Helsinki School'
+
 -'L-System School'
+
+-'Helsinki School'
+
+extending the  traditional three  step analysis of  a plant  where the
+nature  of the  intrinsic processes  of the  entity are  analysed, the
+differential  equations  describing  the  processes are  inferred  and
+solved possibly  assuming some reasonably sufficient  geometry for the
+entity.
 
 By  looking  The  two  perspectives  of  plant  modelling,  structural
 dynamics  and  physiological  processes,  have  evolved  independently
@@ -56,4 +73,12 @@ Current interest
 
 Objectives of this study.
  
+Winfried  Kurth  has   classified  existing  modelling  approaches  in
+forestry  into   three  categories  and  based   on  this  observation
+constructed a model triangle.  The  top apex of this triangle is taken
+up by aggregated  stand models.  Process based single  tree models and
+architectural tree models  are placed at the base  apices of the model
+triangle.  Moving along the sides and inside the triangle captures the
+model continuum including aspects from  one or the other two modelling
+avenues. 
 
