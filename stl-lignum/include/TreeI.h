@@ -15,6 +15,8 @@ template <class TS,class BUD>
 Tree<TS,BUD>::Tree(const Point<METER>& p, const PositionVector& d)
   :TreeCompartment<TS,BUD>(p,d,this),axis(p,d,this),f(5,5)
 {
+  //force the instantiation of BranchingPoint
+  BranchingPoint<TS,BUD>(p,d,this);
 }
 
 
