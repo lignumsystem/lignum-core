@@ -1,10 +1,9 @@
-
 #ifndef FIRMAMENT_H
 #define FIRMAMENT_H
-
 #include <math.h>
 #include <mathsym.h>
-#include <vector.h>
+//#include <boolean.h>
+#include <vector>
 #include <TMatrix.h>
 #include <LGMUnits.h>
 
@@ -12,9 +11,11 @@ namespace sky{
 using namespace Lignum;
 using namespace cxxadt;
 
-
 #define NUM_OF_AZIM 24
 #define NUM_OF_INCL 9
+
+
+
 /*=====================================================================================*/
 //Class Firmament implements the radiation coming from the sky.
 //Both direct (=sun) and diffuse radiation is dealt with separately.
@@ -155,6 +156,14 @@ using namespace cxxadt;
 
 22. int getNoOfInclinations()
     Returns number of inclination classes.
+
+23. void setDiffuseToUniform()
+    Changes the brightness of the sky uniform (=independent of inclination).
+    The amount of radiation to horizontal surface is not changed,
+    the reading of the ball sensor is multiplied by factor (2/1.714)
+    
+
+
 =====================================================================================
 */
 
@@ -206,6 +215,7 @@ public:
   }
   
   int getNoOfInclinations() { return num_of_incl; }
+  void setDiffuseToUniform();
 
 protected:
   int num_of_incl;
