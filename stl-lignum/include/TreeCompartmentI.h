@@ -71,7 +71,7 @@ LGMdouble GetValue(const TreeCompartment<TS,BUD>& tc, const LGMAD name)
 {
   LGMdouble unknown_value = 0.0;
 
-  if (name == age)
+  if (name == LGAage)
     return tc.tc_age;
 
   else
@@ -90,7 +90,7 @@ LGMdouble SetValue(TreeCompartment<TS,BUD>& tc, const LGMAD name, const LGMdoubl
 {
   LGMdouble old_value = GetValue(tc,name);
   
-  if (name == age)
+  if (name == LGAage)
     tc.tc_age = value;
 
   else

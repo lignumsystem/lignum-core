@@ -67,7 +67,7 @@ TreeCompartment<TS,BUD>*  AdjustStructureAfterZbrent<TS,BUD>::operator()(Structu
   	if (TreeSegment<TS,BUD>* ts = dynamic_cast<TreeSegment<TS,BUD>*>(tc))
 	{
 		SetPoint(*ts, sa.location);
-		if(GetValue(*ts,age) < R_EPSILON) 
+		if(GetValue(*ts,LGAage) < R_EPSILON) 
 		{ // new segment, must adjust subsequent elements	
 			Point base = GetPoint(*ts);
 			PositionVector dir = GetDirection(*ts);
@@ -152,7 +152,7 @@ TreeCompartment<GCSegment, GCBud>* StructuralGrowth::operator()
     }
 
     GCBud* bud = dynamic_cast<GCBud*>(GetTerminatingBud(*ax));
-    if(GetValue(*bud,age) > 0.0 && (GetValue(*bud,state) == ALIVE)) {
+    if(GetValue(*bud,LGAage) > 0.0 && (GetValue(*bud,state) == ALIVE)) {
       
       //OK, add new elements, some preparations
       
@@ -181,7 +181,7 @@ TreeCompartment<GCSegment, GCBud>* StructuralGrowth::operator()
       SetValue(*ts,dR,0.0);
       SetValue(*ts,dAs,0.0);
       SetValue(*ts,dW,0.0);
-      SetValue(*ts, age, 0.0);
+      SetValue(*ts, LGAage, 0.0);
       if(GetValue(*mother,to_right))
 	SetValue(*ts,to_right,false);
       else
@@ -238,7 +238,7 @@ TreeCompartment<GCSegment, GCBud>* StructuralGrowth::operator()
       PositionVector new_dir = dir + tan(angle) * turn;
       new_dir.normalize();
       SetDirection(*bud, new_dir);
-      SetValue(*bud, age, 0.0);
+      SetValue(*bud, LGAage, 0.0);
     }
 
 

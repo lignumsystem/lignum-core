@@ -32,7 +32,7 @@ LGMdouble& AdjustDiameterCfGrowth<TS,BUD>::operator()(LGMdouble& As, TreeCompart
 {
 	if (TreeSegment<TS,BUD>* tts = dynamic_cast<TreeSegment<TS,BUD>*>(tc))
 	{
-		if(GetValue(*tts, age) > R_EPSILON)
+		if(GetValue(*tts, LGAage) > R_EPSILON)
 		{
 			if(CfTreeSegment<TS,BUD> *cfsegment = dynamic_cast<CfTreeSegment<TS,BUD>*>(tts))
 			{	
@@ -100,7 +100,7 @@ LGMdouble& AdjustDiameterHwGrowth<TS,BUD>::operator()(LGMdouble& As, TreeCompart
 {
 	if (TreeSegment<TS,BUD>* tts = dynamic_cast<TreeSegment<TS,BUD>*>(tc))
 	{
-		if(GetValue(*tts, age) > R_EPSILON)
+		if(GetValue(*tts, LGAage) > R_EPSILON)
 		{
 			if(HwTreeSegment<TS,BUD> *hwsegment = dynamic_cast<HwTreeSegment<TS,BUD>*>(tts))
 			{
@@ -114,7 +114,7 @@ LGMdouble& AdjustDiameterHwGrowth<TS,BUD>::operator()(LGMdouble& As, TreeCompart
 			
 				if (file_out_pl.is_open())
 				{
-					file_out_pl << "Segmentti:" << "       ikä:" << GetValue(*tts, age) << endl;
+					file_out_pl << "Segmentti:" << "       ikä:" << GetValue(*tts, LGAage) << endl;
 					file_out_pl << " paikka: " << GetPoint(*hwsegment);
 					file_out_pl << ", suunta:" << GetDirection(*hwsegment) << "  ";
 					file_out_pl << "Asu:"<< Asu << "  r_h:" << r_h << "  dAs:" << dAs << endl;
@@ -175,7 +175,7 @@ LGMdouble& SetNewRing<TS,BUD>::operator()(LGMdouble& As, TreeCompartment<TS, BUD
 {
 	if (TreeSegment<TS,BUD>* tts = dynamic_cast<TreeSegment<TS,BUD>*>(tc))
 	{
-	   if(GetValue(*tts, age) > R_EPSILON)
+	   if(GetValue(*tts, LGAage) > R_EPSILON)
 	   {	
 			tts->SetAnnualGrowth(-1); 
 	   }
@@ -209,7 +209,7 @@ TreeCompartment<TS,BUD>* adjustSegmentSizeLambda<TS,BUD>::operator()
 {
 	if (TreeSegment<TS,BUD>* tts = dynamic_cast<TreeSegment<TS,BUD>*>(tc))
 	{
-	  if(GetValue(*tts, age) < R_EPSILON) 
+	  if(GetValue(*tts, LGAage) < R_EPSILON) 
 	  {
 
 		if (CfTreeSegment<TS,BUD>* cfts = dynamic_cast<CfTreeSegment<TS,BUD>*>(tts))
@@ -281,7 +281,7 @@ LGMdouble&  CollectDWAfterGrowth<TS,BUD>::operator()(LGMdouble& WSum, TreeCompar
 		{
 			Tree<TS,BUD>& tt = dynamic_cast<Tree<TS,BUD>&>(GetTree(*cfts));
 			
-			if(GetValue(*cfts, age) < R_EPSILON)
+			if(GetValue(*cfts, LGAage) < R_EPSILON)
 			{
 				WSum += GetValue(*cfts,Wf) + (GetValue(tt, rho) * PI_VALUE * pow(GetValue(*cfts, R),2))*GetValue(*cfts, L); //GetSapwoodArea(*cfts) + GetValue(*cfts,LGAWh);
 			}
@@ -302,7 +302,7 @@ LGMdouble&  CollectDWAfterGrowth<TS,BUD>::operator()(LGMdouble& WSum, TreeCompar
 		{
 			Tree<TS,BUD>& tt = dynamic_cast<Tree<TS,BUD>&>(GetTree(*hwts));
 			
-			if(GetValue(*hwts, age) < R_EPSILON)
+			if(GetValue(*hwts, LGAage) < R_EPSILON)
 			{
 				WSum += GetValue(*hwts,Wf) + (GetValue(tt, rho) * PI_VALUE * pow(GetValue(*hwts, R),2))*GetValue(*hwts, L); //GetSapwoodArea(*hwts) + GetValue(*hwts,LGAWh);
 			}

@@ -45,7 +45,7 @@ Tree<TS,BUD>::Tree(const Point& p, const PositionVector& d, LGMdouble len, LGMdo
   TreeSegment<TS,BUD> *ts = new TreeSegment<TS,BUD>(p,d, 0, len, rad,0, this);
 
   SetValue(*ts, omega, 1);
-  SetValue(*ts, age, 0);
+  SetValue(*ts, LGAage, 0);
 
   if(TS* tts = dynamic_cast<TS *>(ts))
     {
@@ -75,7 +75,7 @@ Tree<TS,BUD>::Tree(const Point& p, const PositionVector& d, LGMdouble len, LGMdo
 			       this);
   
   Bud<TS,BUD> *bud1 = new Bud<TS,BUD>(end_point, d, 1, this);
-  SetValue(*bud1, age, 1);
+  SetValue(*bud1, LGAage, 1);
   SetValue(*bud1, state, ALIVE);
 
   Axis<TS,BUD> &axis = GetAxis(*this);
@@ -95,7 +95,7 @@ Tree<TS,BUD>::Tree(const Point& p, const PositionVector& d, LGMdouble len, LGMdo
       v2.rotate(Point(0,0,0), PositionVector(0,0,1), delta_angle);
       Bud<TS,BUD> *new_bud = 
 	new Bud<TS,BUD>(GetPoint(*bud1), v2, 2, this);
-      SetValue(*new_bud,age, 1);
+      SetValue(*new_bud,LGAage, 1);
       SetValue(*new_bud,state, ALIVE);
       
       InsertTreeCompartment(*new_axes[index], new_bud);

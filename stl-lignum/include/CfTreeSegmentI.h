@@ -17,7 +17,7 @@ CfTreeSegment<TS,BUD>::CfTreeSegment(const Point& p, const PositionVector& d,
     LGMdouble wf =  GetValue(*t,af)*GetValue(*this,Sa);
     SetValue(*this,Wf,wf);
     //Remember original sapwood area As0
-    SetValue(*this,As0,GetValue(*this,LGAAs));
+    SetValue(*this,LGAAs0,GetValue(*this,LGAAs));
   }
 
 
@@ -31,7 +31,7 @@ LGMdouble GetValue(const CfTreeSegment<TS,BUD>& ts, const LGMAD name)
     //see also parameter af
     return GetValue(GetTree(ts),sf)*GetValue(ts,Wf);
   }
-  else if (name == As0)
+  else if (name == LGAAs0)
     return ts.cftsa.As0;
 
   else if (name == Hf)
@@ -68,7 +68,7 @@ template <class TS,class BUD>
 LGMdouble SetValue(CfTreeSegment<TS,BUD>& ts, const LGMAD name, const LGMdouble value)
 {
   LGMdouble old_value = GetValue(ts,name);
-  if (name == As0)
+  if (name == LGAAs0)
     ts.cftsa.As0 = value;
 
   else if (name == Hf)

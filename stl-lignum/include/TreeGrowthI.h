@@ -306,7 +306,7 @@ void StructuralPineGrowth(Axis<TS,BUD> &ax, const ParametricCurve& bud_fun, Tree
 			TS* ts = new TS(point, posvec, 0, length, radius, 0, &tree);
 
 			SetValue(*ts, omega, 1);
-			SetValue(*ts, age, 0);
+			SetValue(*ts, LGAage, 0);
 			SetValue(*ts, Wf, foliage_mass);	
 			SetValue(*ts, Rf, R_f);
 			SetValue(*ts, Rh, R_h);
@@ -350,7 +350,7 @@ void StructuralPineGrowth(Axis<TS,BUD> &ax, const ParametricCurve& bud_fun, Tree
 
 				v2.rotate(Point(0,0,0), direction, delta_angle);
 				Bud<TS,BUD> *new_bud = new Bud<TS,BUD>(GetPoint(*bud), v2, GetValue(*bud, omega)+1, &tree);
-				SetValue(*new_bud, age, 0);
+				SetValue(*new_bud, LGAage, 0);
 				SetValue(*new_bud, state, ALIVE);
 
 				InsertTreeCompartment(*new_axes[index], new_bud);
@@ -407,7 +407,7 @@ TreeCompartment<TS,BUD>* FoliageLossOfPineTree<TS,BUD>::operator()(TreeCompartme
 			
 
 			LGMdouble foliage_mass = GetValue(*cfts, Wf); 
-			int ag = GetValue(*cfts, age);
+			int ag = GetValue(*cfts, LGAage);
 			if (foliage_mass > 0 && ag>0)
 			{
 				LGMdouble pre = 1.0;
@@ -453,7 +453,7 @@ Axis<TS,BUD>& RemoveNewComparments(Axis<TS,BUD> &axis)
 		 
 		TreeCompartment<TS,BUD> *tc = dynamic_cast<TreeCompartment<TS,BUD>*>(*I);
 		
-		int age_ = GetValue(*tc, age);
+		int age_ = GetValue(*tc, LGAage);
 		if (age_ == 0)
 		{
 			//Moving terminating bud to the first removed treesegment
@@ -505,7 +505,7 @@ MotherInfo& AddSugarMapleSegments<TS,BUD>::operator()(MotherInfo& mi, TreeCompar
   
   if (axis = dynamic_cast<Axis<TS,BUD>*>(tc))
   {
-		if (GetValue(*axis, age) == 0)
+		if (GetValue(*axis, LGAage) == 0)
 			return mi;  //mother_in
 	  
 		q_in = GetSumValue(*axis, Qin, 1);
@@ -516,7 +516,7 @@ MotherInfo& AddSugarMapleSegments<TS,BUD>::operator()(MotherInfo& mi, TreeCompar
 		Bud<TS,BUD>* bud = dynamic_cast<Bud<TS,BUD> *>(GetTerminatingBud(*axis));
 
 		
-		if (GetValue(*bud, state) != ALIVE || GetValue(*bud, age) == 0)
+		if (GetValue(*bud, state) != ALIVE || GetValue(*bud, LGAage) == 0)
 		{
 			mi.Qin = motherQin;
 			mi.vi = vigour;
@@ -670,7 +670,7 @@ MotherInfo& AddSugarMapleSegments<TS,BUD>::operator()(MotherInfo& mi, TreeCompar
 		TS* ts = new TS(point, posvec, 0, segment_length, rad, 0, &tree);
 
 		SetValue(*ts, omega, 1);
-		SetValue(*ts, age, 0);
+		SetValue(*ts, LGAage, 0);
 		InsertLeaf(*ts, leaf1);
 		InsertLeaf(*ts, leaf2);
 		InsertTreeCompartmentSecondLast(*axis, ts);	
@@ -678,7 +678,7 @@ MotherInfo& AddSugarMapleSegments<TS,BUD>::operator()(MotherInfo& mi, TreeCompar
 		Point p = point + posvec * segment_length;
 
 		bp = new BranchingPoint<TS,BUD>(p, posvec, &tree);
-		SetValue(*bp, age, 0);
+		SetValue(*bp, LGAage, 0);
 
 		Axis<TS,BUD> *new_axis1 = new Axis<TS,BUD>();
 		Axis<TS,BUD> *new_axis2 = new Axis<TS,BUD>();
@@ -688,8 +688,8 @@ MotherInfo& AddSugarMapleSegments<TS,BUD>::operator()(MotherInfo& mi, TreeCompar
 		Bud<TS,BUD> *new_bud1 = new Bud<TS,BUD>(GetPoint(*bp), v2, GetValue(*bud, omega)+1, &tree);
 		v2.rotate(Point(0,0,0), direction, PI_VALUE);
 		Bud<TS,BUD> *new_bud2 = new Bud<TS,BUD>(GetPoint(*bp), v2, GetValue(*bud, omega)+1, &tree);
-		SetValue(*new_bud1, age, 0);
-		SetValue(*new_bud2, age, 0);
+		SetValue(*new_bud1, LGAage, 0);
+		SetValue(*new_bud2, LGAage, 0);
 		
 		LGMdouble rel_place = ((double)(1+tot_segments - number_of_segments))/tot_segments;
 		LGMdouble ad = apidom(rel_place);
@@ -759,7 +759,7 @@ MotherInfo& AddWhiteBirchSegments<TS,BUD>::operator()(MotherInfo& mi, TreeCompar
   
   if (axis = dynamic_cast<Axis<TS,BUD>*>(tc))
   {
-		if (GetValue(*axis, age) == 0)
+		if (GetValue(*axis, LGAage) == 0)
 			return mi;  //mother_in
 	  
 		q_in = GetSumValue(*axis, Qin, 1);
@@ -771,7 +771,7 @@ MotherInfo& AddWhiteBirchSegments<TS,BUD>::operator()(MotherInfo& mi, TreeCompar
 		Bud<TS,BUD>* bud = dynamic_cast<Bud<TS,BUD> *>(GetTerminatingBud(*axis));
 
 		
-		if (GetValue(*bud, state) != ALIVE || GetValue(*bud, age) == 0)
+		if (GetValue(*bud, state) != ALIVE || GetValue(*bud, LGAage) == 0)
 		{
 			mi.Qin = motherQin;
 			mi.vi = vigour;
@@ -955,7 +955,7 @@ MotherInfo& AddWhiteBirchSegments<TS,BUD>::operator()(MotherInfo& mi, TreeCompar
 			segments.push_back(ts);
 
 			SetValue(*ts, omega, 1);
-			SetValue(*ts, age, 0);
+			SetValue(*ts, LGAage, 0);
 		
 			InsertLeaf(*ts, leaf1);
 			InsertTreeCompartmentSecondLast(*axis, ts);	
@@ -963,14 +963,14 @@ MotherInfo& AddWhiteBirchSegments<TS,BUD>::operator()(MotherInfo& mi, TreeCompar
 			Point p = point + posvec * segment_length;
 
 			bp = new BranchingPoint<TS,BUD>(p, posvec, &tree);
-			SetValue(*bp, age, 0);
+			SetValue(*bp, LGAage, 0);
 
 			Axis<TS,BUD> *new_axis = new Axis<TS,BUD>();
 
 				
 			Bud<TS,BUD> *new_bud = new Bud<TS,BUD>(GetPoint(*bp), newBudDirection, GetValue(*bud, omega)+1, &tree);
 			
-			SetValue(*new_bud, age, 0);
+			SetValue(*new_bud, LGAage, 0);
 
 			LGMdouble rel_place = ((double)(1+tot_segments- number_of_segments))/tot_segments;
 			LGMdouble ad = apidom(rel_place);
@@ -1031,7 +1031,7 @@ LGMdouble& CollectNewCfFoliageMass<TS,BUD>::operator()(LGMdouble &sum, TreeCompa
 {
 	if(CfTreeSegment<TS,BUD> *cfsegment = dynamic_cast<CfTreeSegment<TS,BUD>*>(tc))
 	{
-		if (GetValue(*cfsegment, age) == 0)
+		if (GetValue(*cfsegment, LGAage) == 0)
 			sum += GetValue(*cfsegment, Wf);
 	}
 
@@ -1045,7 +1045,7 @@ LGMdouble& CollectNewHwFoliageMass<TS,BUD>::operator()(LGMdouble &sum, TreeCompa
 {
 	if(HwTreeSegment<TS,BUD> *hwsegment = dynamic_cast<HwTreeSegment<TS,BUD>*>(tc))
 	{
-		if (GetValue(*hwsegment, age) == 0)
+		if (GetValue(*hwsegment, LGAage) == 0)
 			sum += GetValue(*hwsegment, Wf);
 	}
 

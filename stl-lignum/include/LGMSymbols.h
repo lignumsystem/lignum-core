@@ -13,7 +13,7 @@ namespace Lignum{
   // LGMPD = LIGNUM Parameter Double
 
   // Wr           dry weight of the roots
-  enum LGMAD {LGAA,LGAAf,LGAAh, LGAAhair,LGAAs,As0,age,api, LGMcollision,Dbase,Dbh,dof, dR, H,Hf,Hm,ip,
+  enum LGMAD {LGAA,LGAAf,LGAAh, LGAAhair,LGAAs,LGAAs0,LGAage,api, LGMcollision,Dbase,Dbh,dof, dR, H,Hf,Hm,ip,
               lb,LM,LP,LWf,L,lw,M, MaxD,omega,P,
 	      Qin,Qabs,R,Rf,Rh,Rhair,RTop,Sa,LGMstatus,sw,tauL,LGMtype,V,Vh,Vhair,Vs,vi,
               Wf, LGAWr, LGAWs, LGAWh, LGAWhair};
@@ -23,8 +23,8 @@ namespace Lignum{
   //  LGAAh     Heartwood area
   //  LGAAhair  Root hair area
   //  LGAAs     Sapwood area
-  //  As0    Original sapwood area
-  //  age    age of object
+  //  LGAAs0    Original sapwood area
+  //  LGAage    age of object
   //  api    ???  
   //  Dbase  diameter at base
   //  Dbh    diameter at breast height

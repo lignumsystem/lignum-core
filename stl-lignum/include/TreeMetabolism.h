@@ -58,7 +58,7 @@ namespace Lignum{
   public:
     TreeCompartment<TS,BUD>* operator()(TreeCompartment<TS,BUD>* tc)const
     {
-      SetValue(*tc,age,GetValue(*tc,age)+1);
+      SetValue(*tc,LGAage,GetValue(*tc,LGAage)+1);
       return tc;
     }
   };

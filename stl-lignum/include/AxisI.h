@@ -126,7 +126,7 @@ LGMdouble GetSumValue(Axis<TS,BUD>& axis, LGMAD name, int Age)
               
 	  if (HwTreeSegment<TS,BUD,S>* hwts = dynamic_cast<HwTreeSegment<TS,BUD,S>*>(*I))
                 {
-                        if (GetValue(*hwts, age) == Age || Age == -1)
+                        if (GetValue(*hwts, LGAage) == Age || Age == -1)
                                 sum += GetValue(*hwts, name);   
                 }
                 I++;

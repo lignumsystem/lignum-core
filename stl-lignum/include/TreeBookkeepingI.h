@@ -11,7 +11,7 @@ namespace Lignum{
 template <class TS, class BUD>
 TreeCompartment<TS,BUD>*  Age<TS,BUD>::operator()(TreeCompartment<TS,BUD>* tc)const
 {
-	SetValue(*tc, age, GetValue(*tc,age)+delta_age);
+	SetValue(*tc, LGAage, GetValue(*tc,LGAage)+delta_age);
 
 	
 	return tc;

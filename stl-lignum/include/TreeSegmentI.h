@@ -23,7 +23,7 @@ ofstream &operator << (ofstream& os, TreeSegment<TS,BUD>& ts)
   os << "DIRECTION " << pv.getX() << " " << pv.getY() << " " << pv.getZ()
      << "  POSITION " << p.getX() << " " << p.getY() << " " << p.getZ() 
      << "  RADIUS " << GetValue(ts,R) << " " 
-     << "  LENGTH " << GetValue(ts,L) << "  AGE " << GetValue(ts,age) << flush;
+     << "  LENGTH " << GetValue(ts,L) << "  AGE " << GetValue(ts,LGAage) << flush;
   
   os << " END" << endl;
   
@@ -102,7 +102,7 @@ LGMdouble TreeSegment<TS,BUD>::GetTranspiration(LGMdouble time)
 template <class TS,class BUD>
 void TreeSegment<TS,BUD>::SetYearCircles()
 {
-  int ts_age = GetValue(*this,age);
+  int ts_age = GetValue(*this,LGAage);
   float r = GetValue(*this,R);
   float delta_r = r / (ts_age);
   for (int i=0; i<ts_age-1; i++)
@@ -284,7 +284,7 @@ LGMdouble GetValue(const TreeSegment<TS,BUD>& ts, const LGMAD name)
   else if (name == LGAAs)
     return GetValue(ts,LGAA) - GetValue(ts,LGAAh);
     
-  if (name == age)
+  if (name == LGAage)
     return ts.tc_age; 
 
   else if (name == H)
@@ -342,7 +342,7 @@ LGMdouble SetValue(TreeSegment<TS,BUD>& ts, const LGMAD name, const LGMdouble va
 {
   LGMdouble old_value = GetValue(ts,name);
   
-  if (name == age)
+  if (name == LGAage)
     ts.tc_age = value;
 
   else if (name == L)

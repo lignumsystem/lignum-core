@@ -32,7 +32,7 @@ template <class TS,class BUD>
 BranchingPoint<TS,BUD>::BranchingPoint():maxd(0.0)
 {
   tree = NULL;
-  SetValue(*this, age, 0);
+  SetValue(*this, LGAage, 0);
 }
 
 template <class TS,class BUD>

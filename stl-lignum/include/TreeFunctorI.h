@@ -470,7 +470,7 @@ namespace Lignum{
 	    stru.bottom_rad = r_;
 	  }
       
-	int _age = (int)GetValue(*ts, age);
+	int _age = (int)GetValue(*ts, LGAage);
 	if (_age > stru.age)
 	  stru.age = _age;
       
@@ -680,7 +680,7 @@ namespace Lignum{
 	      stru.bottom_rad = GetValue(*ts, R);
 	    }
 
-	  int _age = GetValue(*ts, age);
+	  int _age = GetValue(*ts, LGAage);
 	  if (_age > stru.age)
 	    stru.age = _age;
 	  /*You can't type cast to *both* Cf *and* Hw trees.
@@ -740,7 +740,7 @@ namespace Lignum{
 		  stru.bottom_rad = GetValue(*ts, R);
 		}
 
-	      int _age = GetValue(*ts, age);
+	      int _age = GetValue(*ts, LGAage);
 	      if (_age > stru.age)
 		stru.age = _age;
 	      /*You can't type cast to both Cf and Hw segment 

@@ -32,7 +32,7 @@ template <class TS,class BUD>
 void CfTreeSegment<TS,BUD>::aging()
 {
   //Add age (see foliage senescence below)
-  SetValue(*this,age,GetValue(*this,age)+1.0);
+  SetValue(*this,LGAage,GetValue(*this,LGAage)+1.0);
 
   //Sapwood senescence
   LGMdouble dAs = GetValue(GetTree(*this),ss) * GetValue(*this,LGAAs);
@@ -43,7 +43,7 @@ void CfTreeSegment<TS,BUD>::aging()
   //Foliage senescence
   const ParametricCurve& fm = GetFunction(GetTree(*this),LGMFM);
   //This implementation assumes declining function of age from 1 to 0.
-  LGMdouble Wf_new = fm(GetValue(*this,age))*GetValue(*this,Wf);
+  LGMdouble Wf_new = fm(GetValue(*this,LGAage))*GetValue(*this,Wf);
   SetValue(*this,Wf,Wf_new);  
 }
 
@@ -51,14 +51,14 @@ template <class TS, class BUD>
 TcData& CfTreeSegment<TS,BUD>::diameterGrowth(TcData& data)
 {
   //New segment (age == 0) is iteratively set. 
-  if (GetValue(*this,age) > 0.0){
+  if (GetValue(*this,LGAage) > 0.0){
     const ParametricCurve& fm = GetFunction(GetTree(*this),LGMFM);
     LGMdouble Asu = GetValue(data,LGAAs); //sapwood area from above
     LGMdouble Ahown  = GetValue(*this,LGAAh);//own heartwood
     //Sapwood  requirement  of  remaining  foliage,  assume  fm  returns
     //proportion initial  foliage present, declining function  from 1 to
     //0.
-    LGMdouble Asr = fm(GetValue(*this,age))*GetValue(*this,As0);
+    LGMdouble Asr = fm(GetValue(*this,LGAage))*GetValue(*this,LGAAs0);
     //possible new radius
     LGMdouble Rnew = sqrt((Asu + Ahown + Asr)/PI_VALUE);
     //compare Rnew to R, choose max

@@ -249,7 +249,7 @@ namespace Lignum{
       }
       //compute the VI for the segment
       else if (TS* ts = dynamic_cast<TS*>(tc)){
-	if (GetValue(*ts,age) > 0){
+	if (GetValue(*ts,LGAage) > 0){
 	//special case (in the beginning) when there are no segment
 	//diameters in  the list: add the  segment to the  list so you
 	//compare the segment to itself at least, and get a meaningful
