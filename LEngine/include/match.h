@@ -206,8 +206,10 @@ inline bool MatchRightContext(LstringIterator& pos,
     //1. if member in consider set and not match --> no context
     //2. if not in ignore set and not match --> no context
     //3. if in ignore set then the if-statement is false --> search context 
-    //cout << ((consider_set.find(pos.GetModuleId()) != consider_set.end()) && !(pos.GetModuleId() == *front)) << endl;
-    //cout << ((ignore_set.find(pos.GetModuleId()) == ignore_set.end()) && (!(pos.GetModuleId() == *front))) << endl; 
+    //cout      <<      ((consider_set.find(pos.GetModuleId())      !=
+    //consider_set.end()) && !(pos.GetModuleId() == *front)) << endl;
+    //cout       <<       ((ignore_set.find(pos.GetModuleId())      ==
+    //ignore_set.end()) && (!(pos.GetModuleId() == *front))) << endl;
     if (((consider_set.find(pos.GetModuleId()) != consider_set.end()) && !(pos.GetModuleId() == *front)) ||
 	((ignore_set.find(pos.GetModuleId()) == ignore_set.end()) && (!(pos.GetModuleId() == *front)))){
       has_right_context = false;
@@ -280,20 +282,21 @@ inline bool MatchLeftContext(LstringIterator& pos,
   //skip beginning of branch
   while (!fm_ls.empty() && !pos.AtBeginning()){
     //skip beginning of branch
-    while (pos.GetModuleId() == SB_id)
+    while (pos.GetModuleId() == SB_id){
       pos--;
+    }
     //now we should be on a path leading to module for which we serch 
     //the left context.
     //skip branch
     while (pos.GetModuleId() == EB_id){
       pos--;//Go into a branch
-      pos.FindBOB(); //Find [ symbol
+      //There might be an empty branch!!!: []
+      if (pos.GetModuleId() != SB_id)
+	pos.FindBOB(); //Find [ symbol
       pos--;//and the next symbol to the left should be on the path
     }
     //The head of left context should match current module in string
     front = fm_ls.begin();
-    //cout << "Left Context Comparing: "  << string(pos.GetCurrentModuleName()) << " " 
-    //	 << GetModuleName(*front) << endl;
     //Consider and ignore statements makes this a bit complicated
     //If the consider set is not empty consider only Modules in the set and brackets
     //If ignore list is not empty ignore Module if in the set
@@ -301,8 +304,10 @@ inline bool MatchLeftContext(LstringIterator& pos,
     //1. if member in consider set and not match --> no context
     //2. if not in ignore set and not match --> no context
     //3. if in ignore set then the if-statement is false --> search context 
-    //cout << ((consider_set.find(pos.GetModuleId()) != consider_set.end()) && !(pos.GetModuleId() == *front)) << endl;
-    //cout << ((ignore_set.find(pos.GetModuleId()) == ignore_set.end()) && (!(pos.GetModuleId() == *front))) << endl; 
+    //cout      <<      ((consider_set.find(pos.GetModuleId())      !=
+    //consider_set.end()) && !(pos.GetModuleId() == *front)) << endl;
+    //cout       <<       ((ignore_set.find(pos.GetModuleId())      ==
+    //ignore_set.end()) && (!(pos.GetModuleId() == *front))) << endl;
     if (((consider_set.find(pos.GetModuleId()) != consider_set.end()) && !(pos.GetModuleId() == *front))||
 	((ignore_set.find(pos.GetModuleId()) == ignore_set.end()) && (!(pos.GetModuleId() == *front)))) {
       //if no match then no left context
@@ -337,8 +342,9 @@ inline bool MatchLeftContext(LstringIterator& pos,
   //not, if  2) fails we cannot  have context, if 3)  fails the symbol
   //can be  ignored and current value of  has_left_context remains and
   //if 4) fails we cannot have context.
-  if (pos.AtBeginning() && (fm_ls.size() == 1) && (ignore_set.find(pos.GetModuleId()) == ignore_set.end()) &&
-      (pos.GetModuleId() == fm_ls.front())){
+  //&& (ignore_set.find(pos.GetModuleId()) == ignore_set.end)
+  if (pos.AtBeginning() && (fm_ls.size() == 1)&& (ignore_set.find(pos.GetModuleId()) == ignore_set.end()) && 
+						  (pos.GetModuleId() == fm_ls.front())){
     //cout << "  Comparing: " << GetModuleName(pos.GetModuleId()) << " " <<  GetModuleName( fm_ls.front())<< endl;
     has_left_context = true;
   }
@@ -347,7 +353,6 @@ inline bool MatchLeftContext(LstringIterator& pos,
     
     has_left_context = false;
   }	
-    
   //return to the original place in string
   while (current_pos != pos.CurrentPosition())
     pos++;
@@ -418,12 +423,10 @@ inline ProdCaller  ContextMatch(const LstringIterator& pos,
     if (match){
       match = MatchLeftContext(const_cast<LstringIterator&> (pos),GetProductionPrototype(i),caller_data,
 			       ignore_set,consider_set);
-      //cout << "Rule i " << i << " Left " << match << endl;
     }
     if (match){
       match = MatchRightContext(const_cast<LstringIterator&> (pos),GetProductionPrototype(i),caller_data,
 				ignore_set,consider_set);
-      //cout << "Rule i " << i << " Right " << match << endl;
     }
     i++;
   }
