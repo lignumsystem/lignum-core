@@ -248,7 +248,7 @@ PositionVector& PositionVector::normalize()
 }
 
 
-ostream& operator << (ostream& os, const PositionVector& pv)
+std::ostream& operator << (std::ostream& os, const PositionVector& pv)
 {
   cout << pv.getVector();
   return os;
