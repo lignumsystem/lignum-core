@@ -21,11 +21,11 @@ namespace cxxadt{
     Ellipse(const PositionVector& petiole0,
              const PositionVector& normal, 
 	     const double& semimajoraxis,  const double& semiminoraxis);
-    Point  getCenterPoint()  { return center;};
-    PositionVector getNormal() { return normal;};
-    double getSemimajorAxis(){ return semimajoraxis;};
+    Point  getCenterPoint() const { return center;};
+    PositionVector getNormal()const { return normal;};
+    double getSemimajorAxis()const{ return semimajoraxis;};
     Point  getSemimajorAxisPoint();
-    double getSemiminorAxis(){return semiminoraxis;};
+    double getSemiminorAxis()const{return semiminoraxis;};
     Point  getSemiminorAxisPoint();
     void   setCenterPoint(const Point& center0){center=center0;};
     void   setSemimajorAxis( const double& semimajoraxis0)
