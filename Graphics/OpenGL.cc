@@ -54,8 +54,8 @@ float my_cosine_min[MY_EDGES_MIN];
 float my_sine_min[MY_EDGES_MIN];
 
 
-float BUD_SIZE_MAX_RADIUS = 0.01;//0.002; // The diameter of a bud  
-float BUD_SIZE_LENGTH = 0.06; //0.012;     // The length of a bud
+float BUD_SIZE_MAX_RADIUS = 0.002;//0.002; // The diameter of a bud  
+float BUD_SIZE_LENGTH = 0.012; //0.012;     // The length of a bud
 
 double overstate = 1; // liioittelu 
 double overstateTran = 3; //15 & 50

@@ -53,7 +53,7 @@ void HwWrapper<TS,BUD>::VisualizeTree()
 
 
 template <class TS, class BUD>
-void HwWrapper<TS,BUD>::MakeStemDisplayList()
+void HwWrapper<TS,BUD>::MakeDisplayLists()
 {
   if (glIsList(intDisplaylistStem))
     {
@@ -63,14 +63,14 @@ void HwWrapper<TS,BUD>::MakeStemDisplayList()
   glGenTextures(1, (GLuint*)&intDisplaylistStem);
  
   glPushMatrix();
-  //glNewList(intDisplaylistStem);
+  glNewList(intDisplaylistStem, GL_COMPILE);
   VisualizeTree();
   glEndList();
   glPopMatrix();
 }
 
 template <class TS, class BUD>
-void CfWrapper<TS,BUD>::MakeStemDisplayList()
+void CfWrapper<TS,BUD>::MakeDisplayLists()
 {
 }
 
@@ -78,7 +78,7 @@ void CfWrapper<TS,BUD>::MakeStemDisplayList()
 template <class TS, class BUD>
 void CfWrapper<TS,BUD>::DrawTree()
 {
-
+cout << " drawing cftree " << endl;
 }
 
 template <class TS, class BUD>
@@ -97,6 +97,10 @@ void HwWrapper<TS,BUD>::DrawTree()
   glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);  
 
   glCallList(intDisplaylistStem);
+
+  cout << " drawing hwtree. List number  " << intDisplaylistStem  << endl;
+
+  VisualizeTree();
 }
 
 

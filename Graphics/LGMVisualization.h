@@ -24,6 +24,23 @@ namespace Lignum{
     }
   };
 
+
+ class MakeDisplayLists{
+  public:
+   void operator()(WrapperBase* wb){
+     wb->MakeDisplayLists();
+   }
+  };
+
+
+ class DrawTrees{
+  public:
+   void operator()(WrapperBase* wb){
+     wb->DrawTree();
+   }
+  };
+
+
 class LGMVisualization
 {
   static LGMVisualization* active_visualization;
@@ -47,7 +64,10 @@ class LGMVisualization
   void Loop(void);
   void Menu(int value);
   void StartVisualization();
+
+  void drawTrees(){for_each(trees.begin(),trees.end(),DrawTrees());}
   void hello(){for_each(trees.begin(),trees.end(),Hello());}
+void makeDisplayLists(){for_each(trees.begin(),trees.end(),MakeDisplayLists());}
 private:
   bool drawed;
 
@@ -56,8 +76,7 @@ private:
   void InitCallBacks();
   void ReDrawWindow(void);
   void ReDraw();
-  void MakeDisplayLists();
-
+ 
   void CountCamera(void);
   void SetLight(void);
   void SetValues(void);

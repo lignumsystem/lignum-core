@@ -62,6 +62,8 @@ namespace Lignum{
 	      glRotatef( rot_angle, rot_x, rot_y, 0);
 	      float rad_limit = 0.05;
 	      MakeCylinder(radius, radius, length, rad_limit); 
+
+	      //     cout << "makin a cylinder. Radius:" << radius << "Height "<< length << ".  Position "<< position << endl; 
 	      glPopMatrix();
 			
 	    }

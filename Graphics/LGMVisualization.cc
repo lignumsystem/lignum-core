@@ -56,18 +56,7 @@ namespace Lignum
   }
 
 
-  void LGMVisualization::MakeDisplayLists()
-  {
-    int s = trees.size();
-    for (int i=0; i<s; i++)
-      {
-	WrapperBase *wb = trees[i];
-      
-	cout << "puu "<< i << endl;
-	wb->VisualizeTree();
-      }
 
-  }
    
   void LGMVisualization::SetAntialising(bool antialisingOn)
   {
@@ -150,6 +139,10 @@ namespace Lignum
 
   
 
+    cout << "cam coords " << settings.cam_x << "   " << settings.cam_y << "   " << settings.cam_z <<endl; 
+
+    cout << "hx,hy,hz " << hx << " " << hy << " " << hz << endl;
+
     gluLookAt(settings.cam_x, settings.cam_y, settings.cam_z,// settings.camera x,y,z  
 	      hx, hy, hz-settings.cam_z, // look at x,y,z    
 	      0.0, 0.0, 1.0);	// which way up    
@@ -166,7 +159,7 @@ namespace Lignum
       }
       else
       {
-      DrawTree();
+       this->drawTrees();
       DrawBuds();
       DrawFoliage();
       }
@@ -184,6 +177,9 @@ namespace Lignum
       */
 
 
+   
+    drawTrees();
+    
 
     glPopMatrix();   
     glutSwapBuffers();        // Swap buffers  
@@ -469,6 +465,10 @@ namespace Lignum
   {
     active_visualization->NewWindowSize(new_x, new_y); 
   }
+
+
+
+
 
 }
 
