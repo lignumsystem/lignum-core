@@ -49,4 +49,3 @@ etags:
 	$(ETAGS)   TAGSFILE ../src/*.cc ../include/*.h
 depend:
 	makedepend $(INCLUDE) $(SRC) ../src/hrmatrix.cc
-# DO NOT DELETE
