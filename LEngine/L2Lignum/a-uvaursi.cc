@@ -31,7 +31,7 @@ int main(int argc, char** argv)
   for (int i=0; i < bearberryL.derivationLength() ; i++)
   {
     cout << "Step: " << i << endl;    
-    ForEach(bearberry,EvaluateCollisionForAllBuds<BearberrySegment,BearberryBud>(45.0*2.0*PI_VALUE/360.0,0.20));
+    ForEach(bearberry,EvaluateCollisionForAllBuds<BearberrySegment,BearberryBud>(65.0*2.0*PI_VALUE/360.0,0.20));
     bearberryL.lignumToLstring(bearberry,3,LGMtype,LGMstatus,LGMcollision);  
     bearberryL.derive();
     bearberryL.lstringToLignum(bearberry,3,LGMtype,LGMstatus,LGMcollision);
@@ -40,5 +40,5 @@ int main(int argc, char** argv)
 
   cout << endl;
   //Visualize LIGNUM - Graphics project needs to be fixed
-  VisualizeHwTree(bearberry);
+  VisualizeHwTree<BearberrySegment,BearberryBud,Ellipse>(bearberry);
 }
