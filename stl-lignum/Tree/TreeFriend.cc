@@ -18,7 +18,7 @@ namespace Lignum{
     lgmpd["sf"] = sf;
     lgmpd["sr"] = sr;
     lgmpd["ss"] = ss;
-    lgmpd["rho"] = rho;
+    lgmpd["LGPrhoW"] = LGPrhoW;
     lgmpd["LGPxi"] = LGPxi;
     lgmpd["LGPzbrentEpsilon"] = LGPzbrentEpsilon;
     lgmpd["LGPLn_par"] = LGPLn_par;

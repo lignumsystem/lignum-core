@@ -41,9 +41,9 @@ namespace Lignum{
       return GetValue(rs,LGAAhair)*GetValue(rs,LGAL) - GetValue(rs,LGAV);
       //Compound attributes, weights
     case LGAWs:               //sapwood weight
-      return GetValue(GetTree(rs),rho_root)*GetValue(rs,LGAVs);
+      return GetValue(GetTree(rs),LGPrho_root)*GetValue(rs,LGAVs);
     case LGAWhair:            //root hair weight
-      return GetValue(GetTree(rs),rho_hair)*GetValue(rs,LGAVhair);
+      return GetValue(GetTree(rs),LGPrho_hair)*GetValue(rs,LGAVhair);
     default:
       cout << "RootSegment GetValue unknown attribute: " << name << endl;
       return -1.0;

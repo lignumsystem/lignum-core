@@ -214,7 +214,7 @@ KGC GetSapwoodMass(const TreeSegment<TS,BUD>& ts)
   LGMdouble V3 = V1 - V2;
 
   //mass is density * volume
-  return GetValue(*(ts.tree),rho) * V3;
+  return GetValue(*(ts.tree),LGPrhoW) * V3;
 }
 
 
@@ -325,12 +325,12 @@ LGMdouble GetValue(const TreeSegment<TS,BUD>& ts, const LGMAD name)
     //sapwood volume
     LGMdouble v3 = v1 - v2;   
     //mass is density * volume
-    return GetValue(GetTree(ts),rho) * v3;
+    return GetValue(GetTree(ts),LGPrhoW) * v3;
   }
   //Perhaps we need own 'rho' for Wh?
   else if (name == LGAWh){
     LGMdouble v1 = PI_VALUE*pow(GetValue(ts,LGARh),2.0) * GetValue(ts,LGAL);
-    return GetValue(GetTree(ts),rho) * v1;
+    return GetValue(GetTree(ts),LGPrhoW) * v1;
   }
   else
     return GetValue(dynamic_cast<const TreeCompartment<TS,BUD>&>(ts), name);

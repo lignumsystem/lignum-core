@@ -139,13 +139,13 @@ LGMdouble GetValue(const Tree<TS,BUD>& tree, const LGMPD name)
   else if (name == ss)
     return tree.tp.ss;
 
-  else if (name == rho)
-    return tree.tp.rho;
+  else if (name == LGPrhoW)
+    return tree.tp.rhoW;
 
-  else if (name == rho_root)
+  else if (name == LGPrho_root)
     return tree.tp.rho_root;
   
-  else if ( name == rho_hair)
+  else if ( name == LGPrho_hair)
     return tree.tp.rho_hair;
 
   else if (name == LGPxi)
@@ -211,13 +211,13 @@ LGMdouble SetValue(Tree<TS,BUD>& tree, const LGMPD name, const LGMdouble value)
   else if (name == ss)
     tree.tp.ss = value;
 
-  else if (name == rho)
-    tree.tp.rho = value;
+  else if (name == LGPrhoW)
+    tree.tp.rhoW = value;
 
-  else if (name == rho_root)
+  else if (name == LGPrho_root)
     tree.tp.rho_root = value;
 
-  else if (name == rho_hair)
+  else if (name == LGPrho_hair)
     tree.tp.rho_hair = value;
 
   else if (name == LGPxi)

@@ -86,7 +86,7 @@ namespace Lignum{
   //Tree Parameter Double
   //Keep this list in synbc with MapLGMPD constructor in TreeFriend.cc
   enum LGMPD {af,al,ar,ca, dofp,lr,mf,mr,ms,na,nl,pr,q, rca, rld,sf, 
-              sla,sr,ss,rho,rho_root,rho_hair, LGPtauL,yc, LGPxi,
+              sla,sr,ss,LGPrhoW,LGPrho_root,LGPrho_hair, LGPyc, LGPxi,
 	      LGPzbrentEpsilon, LGPLn_par, LGPn_ang_par};
 
 
@@ -95,7 +95,7 @@ namespace Lignum{
  // ca					circulation angle
  // rca					random effect on circulation angle
  // rld					random effect on leaf distances in a single segment
- // yc					Foliage mass supported by 1m2 of sapwood
+ // LGPyc					Foliage mass supported by 1m2 of sapwood
   // sla					specific leaf area. sf determined for leaf..
   // cvs update
   //af = Needle mass - tree segment area (kg/m^2)relationship
@@ -109,14 +109,12 @@ namespace Lignum{
   //nl = Needle length (na and nl define the cylinder of foliage in CfTreeSegment)
   //pr = Proportion of bound solar radiation that is used in photosyntheesis
   //q  = segment shortening (becoming obsolete due to vigour index)
-  //rho= Density of  wood (carbon = 50% dry weight)
+  //LGPrhoW= Density of  wood in general (is usually used in Segment)
   //rho_root = Density root sapwood
-  //rho_hair = Density of root hair
+  //LGPrho_hair = Density of root hair
   //sf = specific leaf area (=leaf area/ leaf weight)
   //sr = Senescence rate of roots
   //ss = Senescence rate of sapwood
-  //LGPtauL = transmission coefficient of leaf (in direction of
-  //          the ray of light)
   //LGPxi = Fraction of heartwood in newly created tree segments
   //LGPzbrentEpsilon = accuracy in numerical computation in root finding (see Zbrent)
   //LGPLn_par = ????????????????? 

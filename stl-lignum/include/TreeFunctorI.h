@@ -481,7 +481,7 @@ namespace Lignum{
 	  stru.sum_Qin += GetValue(*ts, Qin);
 	}
   
-	LGMdouble rho_ = GetValue(tt, rho);
+	LGMdouble rho_ = GetValue(tt, LGPrhoW);
 
 	if(_age == 0) {
 	  stru.sum_Wf_new += GetValue(*ts, LGAWf);

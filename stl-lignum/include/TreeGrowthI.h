@@ -658,7 +658,7 @@ MotherInfo& AddSugarMapleSegments<TS,BUD>::operator()(MotherInfo& mi, TreeCompar
 
 		LGMdouble A_f = GetValue(*leaf1, A) + GetValue(*leaf2, A);
 		LGMdouble SLA_c = GetValue(tree, sla);
-		LGMdouble Y_c = GetValue(tree, yc);
+		LGMdouble Y_c = GetValue(tree, LGPyc);
 		LGMdouble A_sf = A_f / (SLA_c*Y_c);
 		LGMdouble x_i = GetValue(tree, LGPxi);
 		LGMdouble tot_A = A_sf / (1-x_i);
@@ -995,7 +995,7 @@ MotherInfo& AddWhiteBirchSegments<TS,BUD>::operator()(MotherInfo& mi, TreeCompar
 
 		LGMdouble A_f = total_leaf_area;
 		LGMdouble SLA_c = GetValue(tree, sla);
-		LGMdouble Y_c = GetValue(tree, yc);
+		LGMdouble Y_c = GetValue(tree, LGPyc);
 		LGMdouble A_sf = A_f / (SLA_c*Y_c);
 		x_i = GetValue(tree, LGPxi);
 		LGMdouble tot_A = A_sf / (1-x_i);	

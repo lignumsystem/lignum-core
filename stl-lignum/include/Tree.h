@@ -72,7 +72,7 @@ namespace Lignum{
     LGMdouble sf;            //Specific foliage area (=foliage area(total)/weight)
     LGMdouble sr;            //Senescence rate of roots
     LGMdouble ss;            //Senescence rate of sapwood
-    LGMdouble rho;           //Density of wood
+    LGMdouble rhoW;          //Density of wood
     LGMdouble rho_root;      //Density of root sapwood
     LGMdouble rho_hair;      //Density of root hair
     LGMdouble xi;            //Fraction of heartwood in new tree segments
