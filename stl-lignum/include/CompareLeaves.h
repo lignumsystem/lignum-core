@@ -104,58 +104,32 @@ namespace Lignum{
   void HwTreeSegmentLeafIntersect<SHAPE>::operator()(BroadLeaf<SHAPE>* l)
   {
 
-    cout << endl<<endl;
-
-    cout << "FROM leaf C: "
-	 <<GetShape(const_cast<BroadLeaf<SHAPE>&>(leaf)).getCenterPoint()
-	 <<flush;
-           
 
     vector<double> v(3);
     for (int i = 0; i < f.numberOfRegions();i++){
-      f.diffuseRegionRadiationSum(i,v); //direction of the light beam
-      const Point p1 = GetCenterPoint(leaf);  //center point of the leaf
+      //'v' direction of the light beam
+      //'Io' the radiant intensity of the sector 'i' 
+      MJ Io = f.diffuseRegionRadiationSum(i,v); 
 
-      //      cout<<"p1   ="<<p1<<endl;
+      //I suggest  common interface  to all shapes:  Triangle, Ellipse
+      //and Polygon.  I propose method 'intersectShape(const Point& p,
+      //const PositionVector& d)' where 'p' is the center point of the
+      //leaf  and 'd'  the  direction of  the  light beam.   Naturally
+      //nothing  prevents   to  implement  also  'intersectShape(const
+      //Point& p1, const Point& p2)' 
 
+      //the center point of the leaf
+      const Point p1 = GetCenterPoint(leaf);  
 
-      //second parameter - the light beam
+      //the second parameter - the light beam
       const PositionVector p2(v[0],v[1],v[2]);
-      //      cout<<"p2   ="<<p2<<endl;
-
-      //      PositionVector p1p2=p1-p2;
-    
-      //      cout <<"p1p2 ="<<p1p2<<endl;
-
-      //      cout << "     semimajoraxis "<<GetShape(*l).getSemimajorAxisPoint()<<endl;
-      //      cout << "     semiminoraxis "<<GetShape(*l).getSemiminorAxisPoint()<<endl;
-
+ 
       //now check if the light beam hits the leaf 'l'.
       if (GetShape(*l).intersectShape(p1,p2))
       {                
-	cout << " HIT: " << endl;
-	cout << " D: " << PositionVector(v[0],v[1],v[2]) << endl;
-	cout << " C: " << GetShape(*l).getCenterPoint()<< flush;
-	cout << " N: " << GetShape(*l).getNormal()<<endl;
-	cout << " L: " <<  GetShape(*l).getLeftCorner() 
-	     << " R: " <<  GetShape(*l).getRightCorner()
-	     << " A: " <<  GetShape(*l).getApexCorner() << endl;
+	
       }
-      else{
-	cout << " NOT HIT: " << endl;
-	cout << " D: " << PositionVector(v[0],v[1],v[2]) << endl;
-	cout << " C: " << GetShape(*l).getCenterPoint()<< flush;
-	cout << " N: " << GetShape(*l).getNormal()<<endl;
-	cout << " L: " <<  GetShape(*l).getLeftCorner() 
-	     << " R: " <<  GetShape(*l).getRightCorner()
-	     << " A: " <<  GetShape(*l).getApexCorner() << endl;
-      }
-      //I suggest common interface to all shapes: Triangle, Ellipse and Polygon.
-      //I  propose   method  'intersectShape(const  Point&   p,  const
-      //PositionVector& d)' where 'p' is  the center point of the leaf
-      //and 'd'  the direction of  the light beam.   Naturally nothing
-      //prevents  to implement  also 'intersectShape(const  Point& p1,
-      //const Point& p2)'
+ 
     }
   }
         
