@@ -3,6 +3,7 @@
 #include <list>
 
 #include <BroadLeaf.h>
+#include <Uniform.h>
 #include <LGMdecl.h>
 #include <LGMUnits.h>
 #include <LGMSymbols.h>
@@ -62,8 +63,9 @@ public:
 		:TreeSegment<TS,BUD>(p,pv,go,l,r,rn,tree){ SetValue(*this, vi, 1.0); }
   void photosynthesis();
   void respiration();
+  void createLeaves(vector<PositionVector>& petiole_directions);
 private:
-	std::list<BroadLeaf*> leaf_ls;
+  list<BroadLeaf*> leaf_ls;
 };
 
 
