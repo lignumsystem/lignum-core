@@ -391,17 +391,15 @@ template <class TS,class BUD>
 LGMdouble GetValue(const Tree<TS,BUD>& tree, const LGMAD name)
 {
 	
-	if (name == M)
-	{
-		
-	}
-
-	if (name == P)
-	{
-		
-	}
-	
-	return 0.0;
+  if (name == H){
+    Axis<TS,BUD>& axis = GetAxis(const_cast<Tree<TS,BUD>&>(tree));
+    list<TreeCompartment<TS,BUD>*>& ls = GetTreeCompartmentList(axis);
+    BUD* bud = dynamic_cast<BUD*>(ls.back());
+    return GetPoint(*bud).getZ();
+  }
+  else
+    cout << "Tree GetValue unknown parameter: " << name << endl;
+  return 0.0;
 }
 
 
