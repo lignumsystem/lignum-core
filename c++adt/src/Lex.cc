@@ -83,7 +83,7 @@ Lex& Lex::scanId()
     }
   }
 
-  buffer[i] = NULL;
+  buffer[i] = (char)NULL;
 
   token = new Token(CString(buffer),(TOKEN_TYPE)ID);
 
@@ -109,7 +109,7 @@ Lex& Lex::scanNum()
     }
   }
 
-  buffer[i] = NULL;
+  buffer[i] = (char) NULL;
 
   if (strstr(buffer,".") == NULL)
     token_type = (TOKEN_TYPE) INT;
@@ -132,7 +132,7 @@ Lex& Lex::scanSpecial()
   ifile.get(c);
 
   buffer[0] = c;
-  buffer[1] = NULL;
+  buffer[1] = (char)NULL;
   
   switch (c){
   case ':':
