@@ -5,7 +5,7 @@ namespace Lignum{
   template <>
   MapParameterType<LGMPD>::MapParameterType()
   {
-    lgmpd["af"] = af;
+    lgmpd["LGPaf"] = LGPaf;
     lgmpd["ar"] = ar;
     lgmpd["lr"] = lr;
     lgmpd["mf"] = mf;
@@ -16,7 +16,7 @@ namespace Lignum{
     lgmpd["pr"] = pr;
     lgmpd["q"] = q;
     lgmpd["sf"] = sf;
-    lgmpd["sr"] = sr;
+    lgmpd["LGPsr"] = LGPsr;
     lgmpd["LGPss"] = LGPss;
     lgmpd["LGPrhoW"] = LGPrhoW;
     lgmpd["LGPxi"] = LGPxi;
