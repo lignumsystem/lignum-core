@@ -1,0 +1,67 @@
+LEngine implements the  L-systems in LIGNUM using the  language L with
+extension allowing several tree species and multiple trees in the same
+program.  The  include directory contains all  necessary header files,
+the  lib  directory the  libL.a  library  and  the bin  directory  the
+compiler l2c  that takes L-system  definition file and compiles  it to
+C++.   To compile  LEngine project  for your  use type  "make lengine"
+(SGI/CC) or "make gnu" (GNU g++).
+
+
+L2Lignum shows how to integrate L-systems with LIGNUM.  To compile and
+run the sample program go to L2Lignum and type: 
+
+	SGI/CC  7.3.1 or higher	GNU g++ 3.04 or higher
+	======================= ======================
+	make distclean		make distclean
+	make depend		make "CCC=g++" depend
+	make l2lignum		make gnu
+	./l2lignum		./l2lignum
+
+
+The L2Lignum  contains a  simple program in  main.cc that  creates two
+species bearberry  and Scots pine  defined in lsys in  bearberry.L and
+pine9bp.L respectively. 
+
+Typically in  your (main) program  you first include Lignum.h  for the
+core  model of  LIGNUM and  your refinement  of tree  segment  and bud.
+After that  include lengine.h  that declares necessary  (system) files
+for L-system  implementation. Finally include  LSystem.h that provides
+the application programming interface  for rewriting process.  If your
+program  contains  several species  include  LSystem.h  once for  each
+species wrapped in a namespace. See main.cc for details.
+
+In  your L-system  definition file  include first  lengine.h  and then
+lsystem.h  that implements  the  rewriting process.   After that  your
+L-system specification will  follow. If you are going  to have several
+species in your program  enclose your specification including the file
+lsystem.h in a namespace. Make  sure the namespace names for LSystem.h
+(interface) and for the L-system (definition) matches. See bearberry.L
+and pine9bp.L in lsys for details.
+
+To compile  your program each L-system  file is first  compiled to C++
+with l2c. Then  all source files are compiled  with C/C++ compiler and
+linked to a single  executable program. The necessary L-system program
+library is libL.a implementing e.g. so called turtle.
+
+NOTE FOR L-SYSTEM FILES (TODO)
+
+Currently you must define at  least one dummy rule for interpretation.
+See  bearberry.L and  pine9bp.L for  an example.   This is  a  ToDo to
+augment the  grammar for the l2c  compiler (in the yacc  file l2c.y in
+L2C)  so   that  the  interpretation  part  will   be  optional.   The
+interpretation is for example used to separate the L-system model from
+its graphics rendering but for  us LIGNUM is visualized instead so the
+interpretation is more or less unnecessary.
+
+Do not  use any L-language  keywords inside comments in  your L-system
+definition file.  The  lexer part of the compiler  scans the L-file and
+assumes  C++ source  until a  keyword is  found. When  the  keyword is
+detected the token stream is  directed to the parser that compiles the
+L-language   to   C++   until   the   end  of   L-language   part   is
+found. Obviously, if this happens in a wrong place (for example inside
+a comment) the parser of l2c  will be confused. ToDo is to improve the
+lexer so  that the C/C++ comments  are stripped.  Second  option is to
+remove comments  from L-file with C++ preprocessor  before running the
+file  through  l2c  compiler.    Following  keywords  in  L  are  used
+(including colons): open, close, derivation length:, module, consider:
+ignore:, interpretation:, produce, Start:, StartEach:, EndEach:, End:.
