@@ -874,7 +874,7 @@ namespace Lignum{
       values = Accumulate(tr, values, getTreeValues);
   
       file << "P: " << GetValue(tr,P) << " M: "
-	   << GetValue(tr,M) << endl;
+	   << GetValue(tr,LGAM) << endl;
       file << "age: " << values.age << endl;
       file << "Height: " << values.height << "Height of CB: " <<
 	values.Hc << endl;

@@ -46,7 +46,7 @@ namespace Lignum{
     {
       if (TS* tts = dynamic_cast<TS*>(tc))
 	{
-	  LGMdouble M_ts = GetValue(*tts, M);
+	  LGMdouble M_ts = GetValue(*tts, LGAM);
 	  cumM += M_ts;
 	}
       return cumM;

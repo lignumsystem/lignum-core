@@ -25,7 +25,7 @@ void CfTreeSegment<TS,BUD>::respiration()
   Tree<TS,BUD>& t = GetTree(*this);
   //Rtot = Rfoliage + Rsapwood
   resp = GetValue(t, mf)*GetValue(*this,LGAWf) + GetValue(t,ms)*GetValue(*this,LGAWs);
-  SetValue(*this,M, resp);
+  SetValue(*this,LGAM, resp);
 }
 
 template <class TS,class BUD>

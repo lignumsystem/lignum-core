@@ -220,7 +220,7 @@ LGMdouble HwZbrent(LGMdouble x1,LGMdouble x2,LGMdouble fa, LGMdouble fb, LGMdoub
   LGMdouble identity = 0.0;
   CollectDWAfterGrowth<TS,BUD> collectDW;
 
-  LGMdouble deltaiW = GetValue(tree,P)-GetValue(tree,M); // - wSum_LambdaO;
+  LGMdouble deltaiW = GetValue(tree,P)-GetValue(tree,LGAM); // - wSum_LambdaO;
     
   fc=fb;
   for (iter=1;iter<=ITMAX;iter++) 
@@ -381,7 +381,7 @@ LGMdouble Zbrent(LGMdouble x1,LGMdouble x2,LGMdouble fa, LGMdouble fb, LGMdouble
   CollectNewCfFoliageMass<TS,BUD> collectNFM;
   sum_nfol = Accumulate(tree,  sum_nfol, collectNFM);
 
-  LGMdouble deltaiW = GetValue(tree,P)-GetValue(tree,M); // - wSum_LambdaO - (sum_nfol * a_r);
+  LGMdouble deltaiW = GetValue(tree,P)-GetValue(tree,LGAM); // - wSum_LambdaO - (sum_nfol * a_r);
   
   // **********************
   fc=fb;

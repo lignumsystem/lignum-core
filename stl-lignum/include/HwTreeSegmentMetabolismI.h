@@ -49,7 +49,7 @@ void HwTreeSegment<TS,BUD,S>::respiration()
 
  
 
-  SetValue(*this, M, m_hw);
+  SetValue(*this, LGAM, m_hw);
 }
 
 } //closing namespace Lignum

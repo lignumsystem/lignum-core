@@ -55,7 +55,7 @@ void Tree<TS,BUD>::respiration()
     sumM += GetValue(*this,mr)*GetValue(*this,LGAWr) * this->tf.nitroRespiration(nit_roots);
 
   
-	SetValue(*this, M, sumM);
+	SetValue(*this, LGAM, sumM);
 }
 
 

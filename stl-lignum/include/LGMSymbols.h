@@ -15,10 +15,9 @@ namespace Lignum{
   // Wr           dry weight of the roots
   enum LGMAD {LGAA,LGAAf,LGAAh, LGAAhair,LGAAs,LGAAs0,LGAage,api, LGAcollision,
               LGADbase,LGADbh,LGAdof, dR, LGAH,LGAHf,Hm,LGAip,
-              lb,LM,LP,LWf,LGAL,lw,M, MaxD,omega,P,
-	      Qin,Qabs,R,Rf,Rh,Rhair,RTop,Sa,LGMstatus,sw,tauL,LGMtype,V,Vh,
-	      Vhair,LGAvi,LGAVs,
-              LGAWf, LGAWr, LGAWs, LGAWh, LGAWhair};
+              lb,LM,LP,LWf,LGAL,lw,LGAM, MaxD,omega,P,
+	      Qin,Qabs,R,Rf,Rh,Rhair,RTop,Sa,LGMstatus,sw,tauL,LGMtype,V,Vh,Vhair,Vs,vi,
+	      Vhair,LGAvi,LGAVs,LGAWf, LGAWr, LGAWs, LGAWh, LGAWhair};
 
   //  LGAA      Segment area based on R (see GetValue)
   //  LGAAf     area of foliage
@@ -42,7 +41,7 @@ namespace Lignum{
   //  LWf    ???
   //  LGAL      length of segment
   //  lw     ???
-  //  M      rate of respiration (= amount of r. during the time step)
+  //  LGAM      rate of respiration (= amount of r. during the time step)
   //  MaxD   maximum diameter of the segments forking off and the segment above a branching point 
   //  omega  Gravelius order
   //  P      Photosynthetic rate (= amount of p. during time step)
