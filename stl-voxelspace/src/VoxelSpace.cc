@@ -559,8 +559,8 @@ namespace Lignum {
 
   //
   //	The function calculates the Qin and Qabs-values to every VoxelBox.
-  //
-  LGMdouble VoxelSpace::calculateTurbidLight()
+  //    self_shading determines if the box shades itself or not   
+  LGMdouble VoxelSpace::calculateTurbidLight(bool self_shading)
   {
     //ofstream file("calculateVoxelSpace.txt");
     updateStar();
@@ -570,8 +570,8 @@ namespace Lignum {
 	  {
 	    int num_dirs = sky->numberOfRegions();
 	    //This might  make the voxel  space slow in  execution: if
-	    //there  is something  is voxboxes  the following  loop is
-	    //executed.
+	    //there  is something  in the  voxel boxes,  the following
+	    //loop is executed.
 	    if (voxboxes[i1][i2][i3].isEmpty() == false)
 	      {				
 		for(int i = 0; i < num_dirs; i++)
@@ -587,19 +587,17 @@ namespace Lignum {
 		    vector<VoxelMovement> vec;		
 		    getRoute(vec, i1, i2, i3, radiation_direction);
 		    int size = vec.size();
-
+		    //other boxes
 		    if (size>1)
 		      for (int a=1; a<size; a++)
 			{
 			  VoxelMovement v1 = vec[a-1];
-			  VoxelMovement v2 = vec[a];
-			  
-			  LGMdouble ext = voxboxes[v1.x][v1.y][v1.z].
-			    extinction(v2.l); 
+			  VoxelMovement v2 = vec[a];			  
+			  LGMdouble ext = voxboxes[v1.x][v1.y][v1.z].extinction(v2.l); 
 			  iop = iop * ext;
 			}
-
-		    if (size>0)
+		    //the self shading 
+		    if (size>0 && self_shading)
 		      {
 			// qin is here the value on the surface of VoxelBox
 			LGMdouble qin = iop;

@@ -103,7 +103,7 @@ namespace Lignum {
     //VoxelSpace coordinate system
     Point getLocalPoint(const Point& p)const;
     void updateStar();
-    LGMdouble calculateTurbidLight();
+    LGMdouble calculateTurbidLight(bool self_shading = true);
     LGMdouble calculatePoplarLight();
     void setLightValues();
     void setLight();
