@@ -31,6 +31,7 @@ using namespace std;
 //   FindHwBoundingBox
 //   CollectFoliageMass
 //   CollectFoliageArea
+//   CollectSapwoodMass
 //   CollectQabs
 //   GetQinMax
 //   MoveTree
@@ -332,6 +333,13 @@ namespace Lignum{
 
   template <class TS,class BUD>
     class CollectFoliageArea
+    { 
+    public:
+      LGMdouble& operator()(LGMdouble &sum, TreeCompartment<TS,BUD>* tc)const;
+    };
+
+  template <class TS,class BUD>
+    class CollectSapwoodMass
     { 
     public:
       LGMdouble& operator()(LGMdouble &sum, TreeCompartment<TS,BUD>* tc)const;
