@@ -24,6 +24,8 @@ LGMVisualization* LGMVisualization::active_visualization = NULL;
 namespace Lignum
 {
 
+  
+
 LGMVisualization::LGMVisualization()
 {
   active_visualization = this;
@@ -47,7 +49,35 @@ void LGMVisualization::InitVisualization()
 void LGMVisualization::StartVisualization()
 {
   cout << "Launch OpenGL........" << endl;
+
+  MakeDisplayLists();
+
   glutMainLoop ();
+}
+
+
+void LGMVisualization::MakeDisplayLists()
+{
+  int s = trees.size();
+  for (int i=0; i<s; i++)
+    {
+      WrapperBase *wb = trees[i];
+      
+      cout << "puu "<< i << endl;
+      wb->VisualizeTree();
+     
+      
+      trees[i]->MakeStemDisplayList();
+      
+      if (CfWrapper<SugarMapleSegment,
+              SugarMapleBud> *cfwb = dynamic_cast<CfWrapper <SugarMapleSegment,
+              SugarMapleBud> *> (trees[i]))
+	{
+	  cfwb->MakeStemDisplayList();
+	  cout << "visualization of tree... " << endl;
+	}
+    }
+
 }
 
 void LGMVisualization::SetAntialising(bool antialisingOn)

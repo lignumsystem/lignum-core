@@ -17,7 +17,8 @@ enum DRAWMODE { STEM_MODE, FOLIAGE_MODE };
 
 namespace Lignum{
 
-
+  class SugarMapleSegment;
+  class SugarMapleBud;
 
 
 class LGMVisualization
@@ -52,6 +53,7 @@ private:
   void InitCallBacks();
   void ReDrawWindow(void);
   void ReDraw();
+  void MakeDisplayLists();
 
   void CountCamera(void);
   void SetLight(void);

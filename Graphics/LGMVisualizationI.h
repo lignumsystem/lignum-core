@@ -6,6 +6,8 @@
 namespace Lignum{
 
 
+
+
  template <class TS, class BUD>
  void LGMVisualization::AddHwTree(Tree<TS,BUD>& t)
 {
