@@ -19,6 +19,8 @@ namespace Lignum{
       return rs.rsa.Rh;    //Radius heartwood
     case Rhair:
       return rs.rsa.Rhair; //Radius root hair
+    case omega:
+      return rs.rsa.omega;
       //Compound attributes, areas
     case A:                //Segment area based on R
       return PI_VALUE*pow(GetValue(rs,R),2.0);
@@ -70,13 +72,22 @@ namespace Lignum{
     case Rhair:
       rs.rsa.Rhair = value;
       break;
+    case omega:
+      rs.rsa.omega = value;
+      break;
     default:
       cout << "RootSegment SetValue unknown (simple) attribute:"
 	   << name << endl;
     }
     return old_value;
   }
-    
+
+   template <class TR>
+   Point GetEndPoint(RootSegment<TR>& rs)
+   {
+      return GetPoint(rs)+GetValue(rs,L)*(Point)GetDirection(rs);
+   }
+
   //GetValue and SetValue  for RootTip. Attributes  status and  state feel
   //confusing, try  to rename them.  I believe  the enumeration STATUS
   //for state is the reason for confusion.
@@ -84,10 +95,12 @@ namespace Lignum{
   LGMdouble GetValue(const RootTip<TREE>& rt, LGMAD name)
   {
     switch (name){
-    LGMcollision:
+    case LGMcollision:
        return rt.rta.collision;
-    LGMstatus:
+    case LGMstatus:
        return rt.rta.status;
+    case omega:
+       return rt.rta.omega;
     default:
        cout << "RootTip GetValue unknown attribute: " << name << endl;
        return -1.0;
@@ -99,15 +112,19 @@ namespace Lignum{
   {
     LGMdouble old_value = GetValue(rt,name);
     switch (name){
-    LGMcollision:
+    case LGMcollision:
       rt.rta.collision = value;
       break;
-    LGMstatus:
+    case LGMstatus:
       rt.rta.status = value;
+      break;
+    case omega:
+      rt.rta.omega = value;
       break;
     default:
       cout << "RootTip SetValue unknown attribute: " << name << endl;
     }
+ 
     return old_value;
   }
 
