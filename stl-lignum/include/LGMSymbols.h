@@ -8,16 +8,19 @@ using namespace std;
 namespace Lignum{
 
 
-// Tree Attribute Double, Wm lisätty..Wr pois
+// Tree Attribute Double, Wm lisätty
+// Wr           dry weight of the roots
 enum LGMAD {A,age,dof,fin,fout,H,Hm,ip,lb,LM,LP,LWf,L,lw,M,omega,P,Pr,\
-            Qin,Qabs,R,Rf,Rh,sf,sw,tauL,Wf,Wm,Ws,Wh};  
+            Qin,Qabs,R,Rf,Rh,sf,sw,tauL,Wf,Wm,Ws,Wh,Wr};  
 
 
 //Tree Attribute STATUS
 enum LGMAS {state};
 
 //Tree Parameter Double
-enum LGMPD {af,ar,lr,mf,mr,ms,na,nl,pr,q,sr,ss,rho,xi,zbrentEpsilon}; 
+// zbrentEpsilon       Accuracy in solving the root of P - M -dW(lambda)
+enum LGMPD {af,ar,lr,mf,mr,ms,na,nl,pr,q,sr,ss,rho,xi,
+          zbrentEpsilon}; 
 
 //Tree Transit Variable Double
 enum LGMTD {lambda, g, eta, Er, k, rhow}; 
