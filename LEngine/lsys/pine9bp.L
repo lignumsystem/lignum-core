@@ -12,21 +12,17 @@ open Pine;
 //Defines the lsystem rewriting process. 
 #include <lsystem.h>
 
-const double L1 = 1.0;
-const double L2 = 0.6;
-const double L3 = 0.4;
-const double L4 = 0.3;
-const double L5 = 0.2;
-const double L6 = 0.1;
-const double L7 = 0.05;
+const double d1 = 0.8;
+const double d2 = 0.6;
+const double d3 = 0.5;
+const double d4 = 0.4;
+
 const double PI = 3.1415926535897932384;
 const double angle = PI/4.0;
 const double bend = 1.09;
 
 module F(double);
-module B(int,int,int);
-module P(double);
-module T(double);
+module B(int,double);
 module Pitch(double);
 module Roll(double);
 module Turn(double);
@@ -35,29 +31,29 @@ derivation length: 9;
 
 Start:
 {
-  produce B(1,1,1);
+  produce B(1,1.0);
 }
 
-B(A,a,l):
+B(A,l):
 {
    if (A==1)
-   produce F(L1) SB() Pitch(PI/4.0)  B(A+1,a,l) EB() 
-                 SB() Roll(PI/2.0) Pitch(PI/4.0) B(A+1,a,l) EB()
-                 SB() Roll(PI) Pitch(PI/4.0)   B(A+1,a,l) EB() 
-                 SB() Roll(3.0*PI/2.0) Pitch(PI/4.0)  B(A+1,a,l) EB()
-           B(A,a,l);
+   produce F(l) SB() Pitch(PI/4.0)  B(A+1,l*d2) EB() 
+                SB() Roll(PI/2.0) Pitch(PI/4.0) B(A+1,l*d2) EB()
+                SB() Roll(PI) Pitch(PI/4.0) B(A+1,l*d2) EB() 
+                SB() Roll(3.0*PI/2.0) Pitch(PI/4.0)  B(A+1,l*d2) EB()
+           B(A,l*d1);
   else if (A==2)
-  produce F(L3) SB() Turn(PI/4.0)  B(A+1,a,l) EB() 
-                SB() Turn(-PI/4.0) B(A+1,a,l) EB()
-          Pitch(-0.0)B(A,a,l);
+  produce F(l) SB() Turn(PI/4.0)  B(A+1,l*d3) EB() 
+                SB() Turn(-PI/4.0) B(A+1,l*d3) EB()
+          Pitch(-0.1)B(A,l*d2);
   else if (A==3)
-  produce F(L6) SB() Turn(PI/4.0)  B(A+1,a,l) EB() 
-                SB() Turn(-PI/4.0) B(A+1,a,l) EB()
-           B(A,a,l);
+  produce F(l) SB() Turn(PI/4.0)  B(A+1,l*d4) EB() 
+                  SB() Turn(-PI/4.0) B(A+1,l*d4) EB()
+           B(A,l*d3);
   else if (A==4)
-  produce F(L7) SB() B(A+1,a,l)  EB() B(A,a,l);
+  produce F(l) SB() B(A+1,l)  EB() B(A,l);
   else
-  produce B(A,a,l);          
+  produce B(A,l);          
 }
 
 F(s):
