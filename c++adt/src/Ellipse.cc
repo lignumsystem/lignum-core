@@ -21,11 +21,9 @@ namespace cxxadt{
     :normal(normal0),semimajoraxis(semimajoraxis0),
      semiminoraxis(semiminoraxis0)
   {
+    //x1u is (should be) in fact x1u()!
     PositionVector x1u(normal0.getZ(),0,-normal0.getX());
     x1u=x1u.normalize();
-
-    PositionVector y1u(Cross(normal0,x1u));
-    y1u=y1u.normalize();
  
     PositionVector petiolecenter(x1u*semimajoraxis0);
     PositionVector center0=petiole0+petiolecenter;
@@ -138,9 +136,9 @@ namespace cxxadt{
   //given by the O point(O - the first parameter the method) 
   //and direction B(B - the second parameter the method).
 
-
+  
  bool Ellipse::intersectShape(const Point& O,
-				const PositionVector& B0){
+			      const PositionVector& B0){
    double t;
    double cosangleBCXu,angleBCXu;
 
@@ -148,7 +146,7 @@ namespace cxxadt{
                                   //(the pyramid apex)
    PositionVector beam=B0;        //the light beam vector
 
-   beam = beam - o; //the light beam vector from O to B0
+   beam = beam - o; //the vector from O to B0
 
    PositionVector B;
    PositionVector c(center);
