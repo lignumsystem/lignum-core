@@ -69,6 +69,9 @@ $(LIB3):
 
 html:
 	enscript -E --color -Whtml --toc -p$(PROGFILES) ./include/*.h ./*/*.cc
+changelog:
+	rm -rf ChangeLog
+	rcs2log . > ChangeLog
 clean:
 	(cd lib; make clean)
 	rm -rf $(OBJ) $(ALGOBJ) core lignum algorithms broadleaf ii_files
