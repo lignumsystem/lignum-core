@@ -58,8 +58,8 @@ int main(int argc, char** argv)
   //individuals of  the same  species can be  simulated. Note  you can
   //leave out  the attribute  name and type  in the  template argument
   //list.
-  Pine::LSystem<MyTreeSegment,MyBud> pl1;
-  Pine::LSystem<MyTreeSegment,MyBud> pl2;
+  Pine::LSystem<MyCfTreeSegment,MyCfBud> pl1;
+  Pine::LSystem<MyCfTreeSegment,MyCfBud> pl2;
 
   //CSplants
   CSPlantA::LSystem<MyTreeSegment,MyBud> csla;
@@ -71,9 +71,9 @@ int main(int argc, char** argv)
   //berry...)
   Tree<MyTreeSegment,MyBud> bearberry(Point(0,0,0),
 				      PositionVector(0,0,1.0));
-  Tree<MyTreeSegment,MyBud> pine1(Point(0,0,0),
+  Tree<MyCfTreeSegment,MyCfBud> pine1(Point(0,0,0),
 				  PositionVector(0,0,1.0));
-  Tree<MyTreeSegment,MyBud> pine2(Point(0,0,0),
+  Tree<MyCfTreeSegment,MyCfBud> pine2(Point(0,0,0),
 				  PositionVector(0,0,1.0));
   Tree<MyTreeSegment,MyBud> csplant(Point(0,0,0),
 				    PositionVector(0,0,1.0));
@@ -157,5 +157,5 @@ int main(int argc, char** argv)
   //Update LIGNUM
   csla.lstringToLignum(csplant);  
   //Visualize LIGNUM
-  VisualizeLGMTree(csplant);
+  VisualizeLGMTree(pine2);
 }

@@ -49,7 +49,10 @@ LIBLSYS = -llsys
 LIBOGL =  -lglut -lGL -lGLU -lX11 -lXext -lXmu 
 
 LIBS     =  $(LIBVISUAL) $(LIBLSYS) $(LIBL) $(LIBLGM) $(LIBSKY) $(LIBADT) $(LIBOGL) \
-            $(LIBMATH) 
+            $(LIBMATH)
+
+LSYS =   bearberry.L pine9bp.L cs-plantA.L cs-plantB.L  cs-plantC.L \
+         cs-plantD.L cs-plant.L 
 
 PROGFILES = program-files.html
 
@@ -67,6 +70,12 @@ lignux:
 	make "CCC=g++" "CCCFLAGS=-c" "OPTIMIZE=-g" \
              "AR=ar"  "ARFLAGS=rv" "LIBD=lib32" l2lignum
 
+birch: birch.o l2c $(LIB1) $(LIB2) $(LIB3)  $(LIB4)  $(LIB5) $(LIB6)   
+	$(CCC)  -o $@ $(INCLUDE) $(OPTIMIZE) birch.o $(LIBFLAGS) $(LIBS)	
+
+gnubirch:
+	make "CCC=g++" "CCCFLAGS=-c" "OPTIMIZE=-g" \
+             "AR=ar"  "ARFLAGS=rv" "LIBD=lib32"  birch
 l2c:
 	(cd ../L2C; make "CCC=$(CCC)" "CCCFLAGS=$(CCCFLAGS)" "OPTIMIZE=$(OPTIMIZE)" \
                           "AR=ar" "ARFLAGS=rv" $@)
@@ -85,8 +94,8 @@ $(LIB5):
 	(cd ../../Graphics; make "CCC=$(CCC)" "CCCFLAGS=$(CCCFLAGS)" \
          "OPTIMIZE=$(OPTIMIZE)"  "AR=$(AR)"  "ARFLAGS = $(ARFLAGS)" $@)
 $(LIB6):
-	(cd ../lsys; make "CCC=$(CCC)" "CCCFLAGS=$(CCCFLAGS)" \
-         "OPTIMIZE=$(OPTIMIZE)"  "AR=$(AR)"  "ARFLAGS = $(ARFLAGS)" $@ )
+	(cd ../lsys; make distclean; make "CCC=$(CCC)" "CCCFLAGS=$(CCCFLAGS)" \
+         "OPTIMIZE=$(OPTIMIZE)"  "AR=$(AR)"  "ARFLAGS = $(ARFLAGS)" "LSYS=$(LSYS)" $@ )
 .cc.o: 
 	$(CCC) $(OPTIMIZE) $(CCCFLAGS) $(INCLUDE)  $< -o $@
 
@@ -96,7 +105,7 @@ changelog:
 	rm -rf ChangeLog
 	rcs2log . > ChangeLog
 clean:
-	rm -rf $(OBJ) $(LIBOBJ) Makedepend core ii_files
+	rm -rf *.o $(LIBOBJ) Makedepend core ii_files
 distclean: clean
 	rm -rf  l2lignum $(LIB4) Makedepend
 	(cd ../../Graphics; make distclean)
