@@ -11,7 +11,12 @@
  *of  RootCompartments. As  for above  ground part  generic algorithms
  *will be provided  to traverse the root system  and apply functors to
  *root compartments.  Also an  L-system implementation will follow for
- *modeling the dynamics of architectural development of the rot system
+ *modeling  the  dynamics of  architectural  development  of the  root
+ *system.  Finally, I propose "cleaning" GetValue and SetValue for the
+ *tree segment  as I've done  for root segment. Instead  of memorizing
+ *functions  for  compound  attributes  all access  to  attributes  is
+ *through  GetValue and  SetValue.  Note  also  that the  use of  same
+ *symbols is quite possible. See RootSystemI.h for implementation.
  *********************************************************************/
 
 #include <LGMSymbols.h>
@@ -19,46 +24,71 @@
 #include <Point.h>
 #include <PositionVector.h>
 #include <list>
+#include <algorithm>
 using namespace cxxadt;
 using namespace std;
-namespace Lignum {
 
-  class RootCompartment{
-    friend Point GetPoint(const RootCompartment& rc){return rc.p;}
-    friend PositionVector GetDirection(const RootCompartment& rc){return rc.d;}
-    void friend SetPoint(RootCompartment& rc,const Point& pos){rc.p = pos;}
-    void friend SetDirection(RootCompartment& rc,
+namespace Lignum {
+ 
+  template <class TREE>
+    class RootCompartment{
+    friend Point GetPoint(const RootCompartment<TREE>& rc){return rc.p;}
+    friend PositionVector GetDirection(const RootCompartment<TREE>& rc){
+      return rc.d;
+    }
+    friend void SetPoint(RootCompartment<TREE>& rc,const Point& pos){
+      rc.p = pos;
+    }
+    friend void SetDirection(RootCompartment<TREE>& rc,
 			     const PositionVector& dir){rc.d = dir;}
+    friend const TREE& GetTree(const RootCompartment<TREE>& rc){return rc.t;}
   public:
-    RootCompartment(const Point& pos, const PositionVector& dir):
-      p(pos),d(dir) {}
+    RootCompartment(const Point& point, const PositionVector& dir, 
+		    const TREE& tree):p(point),d(dir),t(tree) {}
   protected:
     Point p;
     PositionVector d;
+    const TREE& t;
   };
 
-  class RootAxis:public RootCompartment{
+  template <class TREE>
+    class RootAxis: public RootCompartment<TREE>{
+    list<RootCompartment<TREE>*>& GetRootCompartmentList(RootAxis<TREE>& ra){
+      return ra.tc_ls;
+    }
+    friend void InsertRootCompartment(RootAxis<TREE>& ra,
+				      const RootCompartment<TREE>* rpb){
+      ra.rc_ls.push_back(rpb);
+    }
   public:
-    RootAxis(const Point& pos, const PositionVector& dir):
-      RootCompartment(pos,dir){}
+    RootAxis(const Point& p, const PositionVector& d, const TREE& t):
+    RootCompartment<TREE>(p,d,t) {}
   private:
-    list<RootCompartment*> rc_ls; //list of root compartments
+    list<RootCompartment<TREE>*> rc_ls;
   };
 
-  class RootBranchingPoint:public RootCompartment{
+  template <class TREE>
+    class RootBranchingPoint:public RootCompartment<TREE>{
+    list<RootAxis<TREE>*>& GetAxisList(RootBranchingPoint<TREE>& rbp){
+      return rpb.ra_ls;
+    }
+    friend void InsertAxis(RootBranchingPoint<TREE>& rbp,
+			   const RootAxis<TREE>* ra){
+      rpb.ra_ls.push_back(ra);
+    }
   public:
-    RootBranchingPoint(const Point& pos, const PositionVector& dir):
-      RootCompartment(pos,dir){}
+    RootBranchingPoint(const Point& pos, const PositionVector& dir,
+		       const TREE& t):
+    RootCompartment<TREE>(pos,dir,t){}
   private:
-    list<RootAxis*> ra_ls; //list of root axes
+    list<RootAxis<TREE>*> ra_ls; //list of root axes
   };
-
 
   class RootSegmentAttributes{
   public:
     RootSegmentAttributes(METER Length,METER Radius,METER RTopRadius,
 			  METER Rheartwood, METER RhairRadius):
-      L(Length),R(Radius),RTop(RTopRadius),Rh(Rheartwood),Rhair(RhairRadius){}
+    L(Length),R(Radius),RTop(RTopRadius),Rh(Rheartwood),Rhair(RhairRadius){}
   public:
     METER L;      //Length
     METER R;      //Radius including bark
@@ -71,15 +101,19 @@ namespace Lignum {
   //consists of cylindrical layers  of heartwood and sapwood. The root
   //hair, i.e. fine roots, is  aggregated as the third third cyndrical
   //layer (c.f foliage for CfTreeSegment)
-  class RootSegment:public RootCompartment{
-    friend LGMdouble GetValue(const RootSegment& rs, LGMAD name);
-    friend LGMdouble SetValue(RootSegment& rs, LGMAD name, LGMdouble value);
+  template <class TREE>
+    class RootSegment:public RootCompartment<TREE>{
+    template <class TR>
+      friend LGMdouble GetValue(const RootSegment<TR>& rs, LGMAD name);
+    template <class TR>
+      friend LGMdouble SetValue(RootSegment<TR>& rs, LGMAD name,
+				LGMdouble value);
   public:
     RootSegment(const Point& pos, const PositionVector& dir,
 		METER Length,METER Radius,METER RTopRadius,
-		METER RheartwoodRadius, METER RhairRadius):
-      RootCompartment(pos,dir),rsa(Length,Radius,RTopRadius,
-				   RheartwoodRadius,RhairRadius){}
+		METER RheartwoodRadius, METER RhairRadius,const TREE& t):
+    RootCompartment<TREE>(pos,dir,t),rsa(Length,Radius,RTopRadius,
+					 RheartwoodRadius,RhairRadius){}
   private:
     RootSegmentAttributes rsa;
   };
@@ -87,28 +121,50 @@ namespace Lignum {
   class RootTipAttributes{
   public:
     RootTipAttributes(LGMdouble coll, LGMdouble st, STATUS s):
-      collision(coll),state(st),status(s){}
-    RootTipAttributes():collision(0),state(0),status(ALIVE){}
+    collision(coll),status(st),state(s){}
+    RootTipAttributes():collision(0),status(0),state(ALIVE){}
   public:
     LGMdouble collision; //collision with another root compartment
-    LGMdouble state;     //user defined counter
-    STATUS status;       //DEAD or ALIVE (c.f. Bud) 
+    LGMdouble status;    //user defined counter
+    STATUS state;        //DEAD  or ALIVE (c.f.   Bud), note  the type
+			 //STATUS is confusing!
   };
 
-  class RootTip:public RootCompartment{
-    friend LGMdouble GetValue(const RootTip& rt, LGMAD name);
-    friend LGMdouble SetValue(RootTip& rt, LGMAD name, LGMdouble value);
-    friend STATUS GetValue(const RootTip& rt, LGMAS name);
-    friend STATUS SetValue(RootTip& rt, LGMAS name, STATUS value);
+  template <class TREE>
+    class RootTip:public RootCompartment<TREE>{
+    template <class TR>
+      friend LGMdouble GetValue(const RootTip<TR>& rt, LGMAD name);
+    template <class TR>
+      friend LGMdouble SetValue(RootTip<TR>& rt, LGMAD name, LGMdouble value);
+    template <class TR>
+      friend STATUS GetValue(const RootTip<TR>& rt, LGMAS name);
+    template <class TR>
+      friend STATUS SetValue(RootTip<TR>& rt, LGMAS name, STATUS value);
   public:
     RootTip(const Point& pos, const PositionVector& dir,
-	    LGMdouble coll, LGMdouble state, STATUS status):
-      RootCompartment(pos,dir),rta(coll,state,status){}  
-    RootTip(const Point& pos, const PositionVector& dir):
-      RootCompartment(pos,dir){}
+	    LGMdouble coll, LGMdouble status, STATUS state, const TREE& t):
+    RootCompartment<TREE>(pos,dir,t),rta(coll,status,state){}
+    RootTip(const Point& pos, const PositionVector& dir, const TREE& t):
+    RootCompartment<TREE>(pos,dir,t){}
   private:
     RootTipAttributes rta;
   };
 
+  //Generic algorithms for root system (c.f. generic algorithms for Tree).
+  template <class TREE, class Function>
+    void ForEach(RootAxis<TREE>& ra, const Function f);
+  template <class TREE, class T, class BinOp>
+    T& Accumulate(RootAxis<TREE>& ra, T& init, const BinOp op);
+  template <class TREE, class T, class BinOp>
+    T& AccumulateDown(RootAxis<TREE>& ra, T& init, const BinOp op);
+  template <class TREE, class T, class BinOp>
+    void PropagateUp(RootAxis<TREE>& ra, T& init, const BinOp op);
+
 }//close namespace Lignum
+
+
 #endif
+
+//Implementation of root system and algorithms
+#include <RootSystemI.h>
+
