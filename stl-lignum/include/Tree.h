@@ -13,6 +13,7 @@
 #include <BranchingPoint.h>
 #include <TreeSegment.h>
 #include <Axis.h>
+#include <ConnectionMatrix.h>
 
 template <class TS>
 TP GetProduction(const Tree<TS>& t);
@@ -106,6 +107,11 @@ private:
   TreeFunctions tf;
   TreeParameters tp;
   TreeTransitVariables ttp;
+  //<<<<<<< Tree.h
+  ConnectionMatrix<TS> *cm;
+
+  //=======
+  //>>>>>>> 1.13
   Axis<TS> axis;
   RootSystem rs;
 };

@@ -45,6 +45,12 @@ TreeSegment<TS>::TreeSegment(const Point<METER>& p, const PositionVector& d, con
 
   //compute the sapwood mass
   SetTSAttributeValue(*this,Ws,GetSapwoodMass(*this)); 
+
+  //compute the initial pressure in the TreeSegment
+  tsa.Pr = -p.getZ() * 9.81 * 1000; 
+  tsa.Wm = 0.5 * 1000 * l/100 * R/100 * R/100 * 3.14;  
+  cout << "alku vesimäärä " << tsa.Wm << endl;
+   
 }
 
 template <class TS>

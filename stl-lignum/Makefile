@@ -1,7 +1,7 @@
 MAIN = main.cc 
 OBJ  = main.o 
 
-CCC = CC -64 -ptv -prelink 
+CCC = CC -64 -g -ptv -prelink 
 
 SUPPRESS = #-w 1155 -w 1183
 

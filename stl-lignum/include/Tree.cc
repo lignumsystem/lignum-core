@@ -40,24 +40,24 @@ Tree<TS>::Tree(const Point<METER>& p, const PositionVector& d)
 template <class TS>
 TreeSegment<TS>* Tree<TS>::GetTreeSegment(Axis<TS> &ax, TreeSegment<TS> *ts)
 {
-  list<TreeCompartment<MyTreeSegment>*>& ls = GetTreeCompartmentList(ax);
-  list<TreeCompartment<MyTreeSegment>*>::iterator I = ls.begin();
+  list<TreeCompartment<TS>*>& ls = GetTreeCompartmentList(ax);
+  list<TreeCompartment<TS>*>::iterator I = ls.begin();
   
   while(I != ls.end())
     {
-      if (TreeSegment<MyTreeSegment>* myts = dynamic_cast<TreeSegment<MyTreeSegment>*>(*I))
+      if (TreeSegment<TS>* myts = dynamic_cast<TreeSegment<TS>*>(*I))
 	{
 	  if (myts == ts)
 	    return myts;
 	}
-      if (BranchingPoint<MyTreeSegment>* mybp = dynamic_cast<BranchingPoint<MyTreeSegment>*>(*I))
+      if (BranchingPoint<TS>* mybp = dynamic_cast<BranchingPoint<TS>*>(*I))
       	{	 
 	  list<Axis<TS>*>& axis_ls = GetAxisList(*mybp);  	  
 	  list<Axis<TS>*>::iterator I = axis_ls.begin();
 	  while(I != axis_ls.end())
 	    {
-	      Axis<MyTreeSegment> *axis = *I;
-	      TreeSegment<MyTreeSegment> *t = GetTreeSegment(*axis, ts);
+	      Axis<TS> *axis = *I;
+	      TreeSegment<TS> *t = GetTreeSegment(*axis, ts);
 	      if (t != NULL)
 		return t;
 	      I++;	    
@@ -72,42 +72,58 @@ TreeSegment<TS>* Tree<TS>::GetTreeSegment(Axis<TS> &ax, TreeSegment<TS> *ts)
 template <class TS>
 void Tree<TS>::UpdateWaterFlow(TP time_step)
 {
-//    if (cm == NULL)
-//      cm = new ConnectionMatrix<MyTreeSegment>(axis);;
-//    cm->print();
-//  return;
-//    // This counts the flow in for every segment
-//    for (int i=0; i<cm->getSize(); i++){
-//      TreeSegment<MyTreeSegment> *out;
-//      if(cm->getTreeSegment(i) != NULL)  
-//        out = GetTreeSegment(this->axis, cm->getTreeSegment(i));
-//      if (out == NULL)
-//        cout << "ei l;ytynyt" << endl;
-//      else for (int a=0; a<cm->getSize(); a++){
-//        if (i != a && cm->getTreeSegment(i, a) != 0){
-//  	TreeSegment<MyTreeSegment> *in = GetTreeSegment(this->axis, cm->getTreeSegment(i,a));
-//  	SetTSAttributeValue(*in, Pr, CountFlow(*in, *out));
-//        }
-//      }	
-//    }
+  //<<<<<<< Tree.cc
+  
+  if (cm == NULL)
+    cm = new ConnectionMatrix<TS>(axis);
+  cm->print();
+  
+  // This counts the flow in for every segment
+  for (int i=0; i<cm->getSize(); i++){
+    TreeSegment<TS> *out;
+    if(cm->getTreeSegment(i) != NULL)  
+      out = GetTreeSegment(this->axis, cm->getTreeSegment(i));
+    
+    for (int a=0; a<cm->getSize(); a++){
+      if (i != a && cm->getTreeSegment(i, a) != 0){
+	TreeSegment<TS> *in = GetTreeSegment(this->axis, cm->getTreeSegment(i,a));
+	//cout << "In " << a << " Out " << i << "  ";
+	SetTSAttributeValue(*in, fin, CountFlow(*in, *out));
+      }
+      SetTSAttributeValue(*out, fout, 0);  // 
+    }	
+  }
+  
+  // This counts the flow out for every segment
+  for (i=0; i<cm->getSize(); i++){
+    TreeSegment<TS> *out;
+    if(cm->getTreeSegment(i) != 0)  
+      out = GetTreeSegment(this->axis, cm->getTreeSegment(i));
+    for (int a=0; a<cm->getSize(); a++){
+      if (i != a && cm->getTreeSegment(i,a) != 0){
+	TreeSegment<TS> *in = GetTreeSegment(this->axis, cm->getTreeSegment(i,a));
+	SetTSAttributeValue(*out, fout, GetTSAttributeValue(*out, fout)+GetTSAttributeValue(*in, fin));
+      }
+    }
+    TP new_pressure = GetTSAttributeValue(*out, Pr) - time_step * 
+      ( GetTSAttributeValue(*out, fin) - GetTSAttributeValue(*out, fout) - 
+	out->GetTranspiration(0.0));  
+   
+    //cout << GetTSAttributeValue(*out, fin) << " "<<GetTSAttributeValue(*out, fout) <<" uusi paine " << new_pressure << "  " <<time_step * 
+    //( GetTSAttributeValue(*out, fin) - GetTSAttributeValue(*out, fout) - 
+    //	out->GetTranspiration(0.0)) << endl << endl;
+    
+    //cout << i << ";  sis " <<  GetTSAttributeValue(*out, fin) << " ; ulos " << GetTSAttributeValue(*out, fout);
+    //  cout << " ; Paine " << GetTSAttributeValue(*out, Pr);
 
-//    // This counts the flow out for every segment
-//    for (i=0; i<cm->getSize(); i++){
-//      TreeSegment<MyTreeSegment> *out;
-//      if(cm->getTreeSegment(i) != 0)  
-//        out = GetTreeSegment(this->axis, cm->getTreeSegment(i));
-//      for (int a=0; a<cm->getSize(); a++){
-//        if (i != a && cm->getTreeSegment(i,a) != 0){
-//  	TreeSegment<MyTreeSegment> *in = GetTreeSegment(this->axis, cm->getTreeSegment(i,a));
-//  	SetTSAttributeValue(*out, fout, GetTSAttributeValue(*out, fout)+GetTSAttributeValue(*in, fin));
-//        }
-//      }
-//      TP new_pressure = GetTSAttributeValue(*out, Pr) + time_step * 
-//        ( GetTSAttributeValue(*out, fin) - GetTSAttributeValue(*out, fout) - 
-//  	out->GetTranspiration(0.0));     
-//      SetTSAttributeValue(*out, Pr, new_pressure); 
-//    }
-//    cm->print();
+    //cout << "uusi paine " << new_pressure << endl;
+    SetTSAttributeValue(*out, Pr, new_pressure); 
+
+    //cout << "; PaineUusi " << GetTSAttributeValue(*out, Pr) << endl;
+    SetTSAttributeValue(*out, Wm, GetTSAttributeValue(*out, Wm) + GetTSAttributeValue(*out, fin)-  GetTSAttributeValue(*out, fout)); 
+  }
+  cout << endl << endl << endl; 
+ 
 }
 
 
@@ -123,13 +139,18 @@ TP Tree<TS>::CountFlow(TreeSegment<TS> &in, TreeSegment<TS> &out)
   TP ar = GetTSAttributeValue(out, area);
   TP le = GetTSAttributeValue(out, L);
   TP he = GetTSAttributeValue(out, H);
-  TP pr_out = GetTSAttributeValue(out, Pr);
-  TP pr_in = GetTSAttributeValue(in, Pr);
+  TP pr_out = GetTSAttributeValue(out, Pr);  // Pressure in the element above
+  TP pr_in = GetTSAttributeValue(in, Pr);    // Pressure in the element below
  
-  return (density * permiability / viscosity) * (ar / le) * (pr_out - pr_in - density*gravity*he);
+
+
+  return (ttp.k / ttp.eta) * (ar / le) * (pr_in - pr_out); // - ttp.rhow * ttp.g*he);
+  
 }
 
 
+//<<<<<<< Tree.cc
+//=======
 /*
 
 //This method builds the connection matrix, where the structure of the tree
@@ -162,6 +183,7 @@ void Tree<TS>::BuiltConnectionMatrix()
 }
 */
 
+//>>>>>>> 1.12
 
 
 
