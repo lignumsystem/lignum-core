@@ -7,7 +7,7 @@ namespace cxxadt{
   public:
     Uniform(int seed = -1):iff(0){init(seed);}
     double init(int seed = -1){return uran(&seed);}
-    double operator () (int seed){return uran(&seed);}
+    double operator () (int seed = 1){return uran(&seed);}
   private:
     double uran(int* idum);
     int inext,inextp;

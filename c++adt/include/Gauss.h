@@ -9,7 +9,7 @@ namespace cxxadt{
   public:
     Gauss(int seed = -1):uniform(seed){}
     double init(int seed = -1){return uniform.init(seed);}
-    double operator()(double m, double s, int seed);
+    double operator()(double m, double s, int seed = 1);
   private:
     Uniform uniform;
   };
