@@ -26,9 +26,8 @@ class BroadLeafAttributes{
 public:
   BroadLeafAttributes(double sf1,double tauL1,double dof1, const Petiole& petiole1,
 		      const PositionVector& leaf_normal, const Ellipsis& shape1, 
-		      double lw, int number_of_sectors);
+		      int number_of_sectors);
   double degree_of_filling; //ellipsis covers the form of the maple leaf only partially
-  double lw;                 //the leaf weight per m2
   double sf;                //specific leaf area
   double tauL;              //transmission coefficient
   KGC P;                    //photosynthetic production
@@ -53,7 +52,7 @@ class BroadLeaf{
   friend PositionVector GetLeafNormal(const BroadLeaf& bl);
   friend Petiole& GetPetiole(BroadLeaf& bl);
 public:
-  BroadLeaf(LGMdouble sf,LGMdouble tauL,LGMdouble dof,LGMdouble lw,int number_of_sectors,
+  BroadLeaf(LGMdouble sf,LGMdouble tauL,LGMdouble dof,int number_of_sectors,
 	    const Petiole& petiole, const PositionVector& leaf_normal,
 	    const Ellipsis& shape);
 private:

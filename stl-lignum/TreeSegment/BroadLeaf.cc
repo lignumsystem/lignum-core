@@ -26,9 +26,9 @@ PositionVector GetDirection(const Petiole& p)
   return d;
 }
 
-BroadLeaf::BroadLeaf(LGMdouble sf,LGMdouble tauL,LGMdouble dof,LGMdouble lw,int number_of_sectors,
+BroadLeaf::BroadLeaf(LGMdouble sf,LGMdouble tauL,LGMdouble dof,int number_of_sectors,
 		     const Petiole& petiole,const PositionVector& leaf_normal,const Ellipsis& shape)
-  :bla(sf,tauL,dof,petiole,leaf_normal,shape,lw,number_of_sectors)
+  :bla(sf,tauL,dof,petiole,leaf_normal,shape,number_of_sectors)
 {
 
   //calculate and set the center of the leaf ellipse
@@ -51,9 +51,9 @@ BroadLeaf::BroadLeaf(LGMdouble sf,LGMdouble tauL,LGMdouble dof,LGMdouble lw,int 
 BroadLeafAttributes::BroadLeafAttributes(double sf1, double tauL1, 
 					 double dof1, const Petiole& petiole1,
 					 const PositionVector& leaf_normal1, 
-					 const Ellipsis& shape1,double lw1,
+					 const Ellipsis& shape1,
 					 int number_of_sectors)
-  :sf(sf1),tauL(tauL1),degree_of_filling(dof1),lw(lw1),P(0.0),M(0.0),Qabs(0.0),Qin(0.0),
+  :sf(sf1),tauL(tauL1),degree_of_filling(dof1),P(0.0),M(0.0),Qabs(0.0),Qin(0.0),
    petiole(petiole1),leaf_normal(leaf_normal1),shape(shape1),sv(number_of_sectors)
 {
   leaf_normal.normalize();
@@ -67,9 +67,6 @@ LGMdouble GetValue(const BroadLeaf& bl, const LGMAD name)
 
   if (name == dof)
     return  bl.bla.degree_of_filling;
-
-  else if (name == lw)
-    return bl.bla.lw;
 
   else if (name == sf)
     return bl.bla.sf;
@@ -90,7 +87,7 @@ LGMdouble GetValue(const BroadLeaf& bl, const LGMAD name)
     return  bl.bla.Qin;
 
   else if (name == LWf)
-    return  bl.bla.lw*GetValue(bl,A);
+    return  bl.bla.sf*GetValue(bl,A);
   else
     cout << "BroadLeaf unknown attribute: " << name << " returning 0.0" << endl;
  
@@ -107,9 +104,6 @@ LGMdouble SetValue(BroadLeaf& bl, const LGMAD name, const LGMdouble value)
 
   if (name == dof)
     bl.bla.degree_of_filling = value;
-
-  else if (name == lw)
-    bl.bla.lw = value;
 
   else if (name == sf)
     bl.bla.sf = value;
