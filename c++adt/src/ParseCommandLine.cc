@@ -7,6 +7,7 @@
 using namespace std;
 
 
+//This asumes that an argument follows the flag and returns it in its body
 
 string ParseCommandLine(int argc, char *argv[],const string& flag)
 {
@@ -26,5 +27,52 @@ string ParseCommandLine(int argc, char *argv[],const string& flag)
     i++;     //command line option
   }
   return clarg;
+}
+
+
+//This checks if an argument (=string not beginning with character
+//'-') follows the flag. The argument or empty string returned in clarg.
+
+bool ParseCommandLine(int argc, char *argv[],const string& flag, string& clarg)
+{
+  int i = 1;
+  bool found = false;
+
+  //loop through command line options
+  while (i < argc){
+    if (string(argv[i]) == flag){
+      found = true;
+      //pick the argument to command line option if exists, check
+      //first that we are not already at the last argument
+      if( (string(argv[i+1])[0] != '-') && (i < argc - 1) )
+	clarg = argv[++i]; //pick the argument to command line option
+      else
+	clarg = "";
+      break;
+    }
+    else
+      i++;   //jump to next item on command line
+  }
+  return found;
+}
+
+
+//This checks only if flag appears
+
+bool CheckCommandLine(int argc, char *argv[],const string& flag)
+{
+  int i = 1;
+  bool found = false;
+
+  //loop through command line options
+  while (i < argc){
+    if (string(argv[i]) == flag) {
+      found = true;
+      break;
+	}
+    else
+      i++;   //jump to next item on command line
+  }
+  return found;
 }
 
