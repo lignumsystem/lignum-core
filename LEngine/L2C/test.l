@@ -1,4 +1,4 @@
-#line 2 "test.l"
+//#line 2 "test.l"
 #include <stdio.h>
 #include <lglobal.h>
 #include <lsysintrfc.h>

@@ -45,7 +45,10 @@ B(A,a,l):
           
 }
 
-
+F(s):
+{
+  produce F(s);
+}
 
 interpretation:
 

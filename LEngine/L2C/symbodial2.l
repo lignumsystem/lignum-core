@@ -12,7 +12,7 @@ module Turn(double);
 module Pitch(double);
 
 
-derivation length: 2;
+derivation length: 3;
 
 Start:
 {
@@ -23,8 +23,6 @@ A():
 {
   produce F(0.3) SB() Turn(PI/2.0) A() EB() 
                  SB() Turn(-PI/2.0) A() EB()
-                 SB() Pitch(PI/2.0) A() EB()
-                 SB() Pitch(-PI/2.0) A() EB()
           B();
 }
 
