@@ -1,14 +1,35 @@
 #ifndef AXISI_H
 #define AXISI_H
 
+
 namespace Lignum{
+
+template <class TS,class BUD>
+TreeSegment<TS, BUD>* GetLastTreeSegment(Axis<TS,BUD>& axis)
+{
+	TreeSegment<TS, BUD> *ret = NULL;
+	
+	std::list<TreeCompartment<TS, BUD>*>& ls = axis.tc_ls;
+	std::list<TreeCompartment<TS, BUD>*>::iterator I = ls.begin();
+	while(I != ls.end())
+	{
+		if (TreeSegment<TS, BUD>* myts = dynamic_cast<TreeSegment<TS, BUD>*>(*I))
+		{
+			ret = myts;
+		}
+		I++;
+	}
+	return ret;
+}
 
 
 template <class TS,class BUD>
-Axis<TS,BUD>::~Axis()
+Axis<TS,BUD>::~Axis()  //***
 {
-  list<TreeCompartment<TS,BUD>*>::iterator first = tc_ls.begin();
-  list<TreeCompartment<TS,BUD>*>::iterator last = tc_ls.end();
+  MessageBeep(MB_ICONHAND);
+	
+  std::list<TreeCompartment<TS,BUD>*>::iterator first = tc_ls.begin();
+  std::list<TreeCompartment<TS,BUD>*>::iterator last = tc_ls.end();
 
   while (first != last)
     delete *first++;
@@ -35,21 +56,49 @@ Axis<TS,BUD>::Axis(const Point& p, const PositionVector& d, Tree<TS,BUD>* t)
 template <class TS,class BUD>
 void InsertTreeCompartment(Axis<TS,BUD>& axis, TreeCompartment<TS,BUD>* tc)
 {
-  axis.tc_ls.push_back(tc);
+	  axis.tc_ls.push_back(tc);
 }
 
 template <class TS,class BUD>
-list<TreeCompartment<TS,BUD>*>&  GetTreeCompartmentList(Axis<TS,BUD>& axis)
+void InsertTreeCompartmentSecondLast(Axis<TS,BUD>& axis, TreeCompartment<TS,BUD>* ts)
 {
-  return  axis.tc_ls;
+	std::list<TreeCompartment<TS,BUD>*>& ls = axis.tc_ls;
+	std::list<TreeCompartment<TS,BUD>*>::iterator I = ls.end(); 
+	I--;
+	
+	axis.tc_ls.insert(I, ts);	
+	
+
+
 }
+
+
 
 //Return the terminating bud of the axis
-template <class TS,class BUD>
+template <class TS, class BUD>
 Bud<TS,BUD>* GetTerminatingBud(const Axis<TS,BUD>& axis)
 {
   return (Bud<TS,BUD>*) axis.tc_ls.back();
 }
 
-}//closing namespace Lignum
+
+
+template <class TS,class BUD>
+std::list<TreeCompartment<TS,BUD>*>&  GetTreeCompartmentList(Axis<TS,BUD>& axis)
+{
+  return  axis.tc_ls;
+}
+
+
+template <class TS,class BUD>
+TreeCompartment<TS,BUD>* GetFirstTreeCompartment(Axis<TS,BUD>& axis)
+{
+  return axis.tc_ls.front();
+}
+
+
+
+}
+
+
 #endif
