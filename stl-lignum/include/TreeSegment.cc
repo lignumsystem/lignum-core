@@ -4,7 +4,7 @@
 TreeSegmentAttributes::TreeSegmentAttributes()
   :age(0),M(0.0),L(0.0),omega(0.0),P(0.0),Qin(0.0),Qabs(0.0),
    R(0.0),Rn(0.0),Pr(1.0),fin(0.0),fout(0.0)
-{
+{ 
 }
 
 template <class TS>
@@ -45,7 +45,12 @@ TreeSegment<TS>::TreeSegment(const Point<METER>& p, const PositionVector& d, con
   SetTSAttributeValue(*this,Wf,sa*wf);
 
   //compute the sapwood mass
-  SetTSAttributeValue(*this,Ws,GetSapwoodMass(*this)); 
+  SetTSAttributeValue(*this,Ws,GetSapwoodMass(*this));
+
+  //compute the initial pressure in the TreeSegment
+  tsa.Pr = -p.getZ() * 9.81 * 1000; 
+  tsa.Wm = 0.5 * 1000 * p.getZ() * l * R * R * 3.14;
+  cout << "säde " << R << endl;
 }
 
 template <class TS>
@@ -201,6 +206,9 @@ TP SetTSAttributeValue(TreeSegment<TS>& ts, const TAD name, const TP value)
 
   else if (name == Wf)
     ts.tsa.Rn = value;
+
+  else if (name == Wm)
+    ts.tsa.Wm = value;
 
   else if (name == Ws)
     ts.tsa.Ws = value;

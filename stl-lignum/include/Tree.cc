@@ -80,22 +80,24 @@ void Tree<TS>::UpdateWaterFlow(TP time_step)
 {
   if (cm == NULL)
     cm = new ConnectionMatrix<MyTreeSegment>(axis);;
-
+  cm->print();
+  
   // This counts the flow in for every segment
   for (int i=0; i<cm->getSize(); i++){
     TreeSegment<MyTreeSegment> *out;
     if(cm->getTreeSegment(i) != NULL)  
       out = GetTreeSegment(this->axis, cm->getTreeSegment(i));
-    if (out == NULL)
-      cout << "ei l;ytynyt" << endl;
-    else for (int a=0; a<cm->getSize(); a++){
+    
+    for (int a=0; a<cm->getSize(); a++){
       if (i != a && cm->getTreeSegment(i, a) != 0){
 	TreeSegment<MyTreeSegment> *in = GetTreeSegment(this->axis, cm->getTreeSegment(i,a));
-	SetTSAttributeValue(*in, Pr, CountFlow(*in, *out));
+	//cout << "In " << a << " Out " << i << "  ";
+	SetTSAttributeValue(*in, fin, CountFlow(*in, *out));
       }
+      SetTSAttributeValue(*out, fout, 0);  // 
     }	
   }
-
+  
   // This counts the flow out for every segment
   for (i=0; i<cm->getSize(); i++){
     TreeSegment<MyTreeSegment> *out;
@@ -110,9 +112,14 @@ void Tree<TS>::UpdateWaterFlow(TP time_step)
     TP new_pressure = GetTSAttributeValue(*out, Pr) + time_step * 
       ( GetTSAttributeValue(*out, fin) - GetTSAttributeValue(*out, fout) - 
 	out->GetTranspiration(0.0));     
+    cout << "Virtaukset kappale " << i << " " <<  GetTSAttributeValue(*out, fin) << " ja " << GetTSAttributeValue(*out, fout) << endl;
+    cout << "PAineet " << GetTSAttributeValue(*out, Pr);
+
     SetTSAttributeValue(*out, Pr, new_pressure); 
+    cout << " uusiPAineet " << GetTSAttributeValue(*out, Pr) << endl;
+    SetTSAttributeValue(*out, Wm, GetTSAttributeValue(*out, Wm) + GetTSAttributeValue(*out, fin)-  GetTSAttributeValue(*out, fout)); 
   }
-  cm->print();
+  
 }
 
 
@@ -120,12 +127,18 @@ void Tree<TS>::UpdateWaterFlow(TP time_step)
 template <class TS>
 TP Tree<TS>::CountFlow(TreeSegment<TS> &in, TreeSegment<TS> &out)
 {
-  TP ar = GetTSAttributeValue(out, area);
+  TP ar = GetTSAttributeValue(out, R) * GetTSAttributeValue(out, R) * 3.14;
   TP le = GetTSAttributeValue(out, L);
   TP he = GetTSAttributeValue(out, H);
   TP pr_out = GetTSAttributeValue(out, Pr);
   TP pr_in = GetTSAttributeValue(in, Pr);
  
+  
+  //cout << ar << " " << le << " "<< he << " " 
+  //cout << "Out: "<< pr_out << " In:" << pr_in << " " << endl;
+  //cout << ttp.k << " " << ttp.eta << " " << ttp.rhow << " " << ttp.g << " " << endl;
+  //cout << "FLOW " << ((ttp.k / ttp.eta) * (ar / le) * (pr_out - pr_in - ttp.rhow * ttp.g*he)) << endl;
+
   return (ttp.k / ttp.eta) * (ar / le) * (pr_out - pr_in - ttp.rhow * ttp.g*he);
 }
 
@@ -422,6 +435,7 @@ YEAR SetTreeAttributeValue(Tree<TS>& tree, const TAI name, const YEAR value)
 
   return old_value;
 }
+
 
 #ifdef TREE
 #include <stdlib.h>

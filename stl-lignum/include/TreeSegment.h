@@ -5,6 +5,7 @@
 #include <Point.h>
 #include <TreeCompartment.h>
 
+
 template<class TS>
 TP GetTreeParameterValue(const Tree<TS>& tree, const TPD name);
 
@@ -24,7 +25,7 @@ public:
   METER R;                //Radius including bark
   METER Rn;               //Heartwood radius
   METER Rf;               //Radius to foliage limit
-  KGC Wm;                  //Water mass of the tree segment 
+  KGC Wm;                 //Water mass of the tree segment 
   KGC Wf;                 //Foliage mass of the tree segment
   KGC Ws;                 //Sapwood mass of the tree segment
   list<METER> annual_rings; //Annual rings of the tree segment
@@ -47,7 +48,7 @@ public:
   virtual ~TreeSegment();
   TP GetTranspiration(TP time);
   TP GetPressure(){ return tsa.Pr;};
-
+  TreeSegmentAttributes& getTsa() { return tsa;};
 private:
   TreeSegmentAttributes tsa;
 };

@@ -15,6 +15,7 @@
 #include <Axis.h>
 #include <ConnectionMatrix.h>
 
+
 template <class TS>
 TP GetProduction(const Tree<TS>& t);
 
@@ -24,13 +25,13 @@ public:
   TreeParameters();
   TP af;            //Needle mass - tree segment area relationship
   TP ar;            //Foliage - root relationship
-
-  TP lr;            //L/R for a new tree segment
+  TP lr;            //L/R for a new tree segment   
   TP mf;            //Maintenance respiration rate of foliage
   TP mr;            //Maintenance respiration rate of roots
   TP ms;            //Maintenance respiration rate of sapwood
   TP na;            //needle angle (radian)
   TP nl;            //needle length
+
   TP pr;            //Propotion of bound solar radiation used in photosynthesis
   TP q;             //Tree segment shortening factor
   TP sr;            //Senescence rate of roots
@@ -62,6 +63,7 @@ public:
   KGC M;                 //Respiration of the tree during the time step
   KGC Wr;                //Root mass
 };
+
 
 class TreeFunctions{
 public:

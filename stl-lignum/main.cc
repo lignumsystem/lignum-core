@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
   Axis<MyTreeSegment>& axis = GetAxis(tree);
   //create the first tree segment
   TreeSegment<MyTreeSegment> *ts = 
-    new TreeSegment<MyTreeSegment>(Point<METER>(0,0,0),PositionVector(0,0,1.0),
+    new TreeSegment<MyTreeSegment>(Point<METER>(0,0,0.2),PositionVector(0,0,1.0),
 				   0,1,0.5,0.2,&tree);
   //create the branching point
   BranchingPoint<MyTreeSegment> *bp = 
@@ -87,7 +87,7 @@ int main(int argc, char *argv[])
   InsertTreeCompartment(axis,bud);
   
   ts = 
-    new TreeSegment<MyTreeSegment>(Point<METER>(0,0,0),PositionVector(0,0,1.0),
+    new TreeSegment<MyTreeSegment>(Point<METER>(0,0,0.3),PositionVector(0,0,1.0),
 				   0,1,0.5,0.2,&tree);
 
   bud = new  Bud<MyTreeSegment>(Point<METER>(0,0,0),
@@ -98,7 +98,7 @@ int main(int argc, char *argv[])
   InsertTreeCompartment(*axis2, ts);
 
  ts = 
-    new TreeSegment<MyTreeSegment>(Point<METER>(0,0,0),PositionVector(0,0,1.0),
+    new TreeSegment<MyTreeSegment>(Point<METER>(0,0,0.5),PositionVector(0,0,1.0),
 				   0,1,0.5,0.2,&tree);
 
  
@@ -109,21 +109,19 @@ int main(int argc, char *argv[])
 
 
   ts = 
-    new TreeSegment<MyTreeSegment>(Point<METER>(0,0,0),PositionVector(0,0,1.0),
+    new TreeSegment<MyTreeSegment>(Point<METER>(0,0,0.2),PositionVector(0,0,1.0),
   				   0,1,0.5,0.2,&tree);
   
   InsertTreeCompartment(*axis3, ts);
   
-  ts =   new TreeSegment<MyTreeSegment>(Point<METER>(0,0,0),PositionVector(0,0,1.0),
+  ts =   new TreeSegment<MyTreeSegment>(Point<METER>(0,0,0.4),PositionVector(0,0,1.0),
 					0,1,0.5,0.2,&tree);
   InsertTreeCompartment(*axis3, ts);
   
   
-  
-  tree.UpdateWaterFlow(1.0);
-  tree.UpdateWaterFlow(1.0); 
-  tree.UpdateWaterFlow(1.0); 
-  tree.UpdateWaterFlow(1.0);
+  for (int i=0; i<120; i++)
+    tree.UpdateWaterFlow(0.4);
+ 
   
 }
 
