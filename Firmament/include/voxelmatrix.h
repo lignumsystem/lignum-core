@@ -845,7 +845,7 @@ void addValues(Point voxel, double length, TreeSegment<TS,BUD> *ts)
   if(CfTreeSegment<TS,BUD>* cfts = dynamic_cast<CfTreeSegment<TS,BUD>*>(ts))  //****** ei k‰‰nny unixissa
 	{
 		r_f = GetValue(*cfts, Rf);
-		w_f = GetValue(*cfts, Wf)
+		w_f = GetValue(*cfts, Wf);
 	}
 
   matrix[x][y][z].setMeanLength(matrix[x][y][z].getMeanLength()*matrix[x][y][z].getSumLength());
