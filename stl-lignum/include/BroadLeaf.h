@@ -54,6 +54,7 @@ class BroadLeaf{
   friend Ellipsis& GetEllipsis(BroadLeaf& bl);
   friend vector<double> GetRadiationVector(BroadLeaf& bl);
   friend void SetRadiationVector(BroadLeaf& bl, const vector<LGMdouble>& v);
+  friend bool HasLeaves(const BroadLeaf& bl);
 public:
 
   BroadLeaf(LGMdouble sf,LGMdouble tauL,LGMdouble dof,int number_of_sectors,
