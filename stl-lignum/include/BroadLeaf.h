@@ -53,6 +53,7 @@ class BroadLeaf{
   friend Petiole& GetPetiole(BroadLeaf& bl);
   friend Ellipsis& GetEllipsis(BroadLeaf& bl);
 public:
+
   BroadLeaf(LGMdouble sf,LGMdouble tauL,LGMdouble dof,int number_of_sectors,
 	    const Petiole& petiole, const PositionVector& leaf_normal,
 	    const Ellipsis& shape);
