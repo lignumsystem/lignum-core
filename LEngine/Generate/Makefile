@@ -3,62 +3,36 @@ OS=IRIX64
 TARGET=$(OS).out/lengine
 LIBTRG=$(OS).out/liblengine.a
 
-OBJECTS=\
-lstring.o\
-lstriter.o\
-succstor.o\
-lsysintrfc.o\
-match.o
 
-include Make.$(OS)
+CCC = CC -64 -LANG:std
+CCCFLAGS =   -c
 
-
-INCDIRS=\
-$(PLATINC)\
--I../Globals
+OPTIMIZE = -g
+  
+AR = $(CCC) -ar
+ARFLAGS= -o
+ARFILE=liblengine.a
 
 
-LIBS=\
-$(PLATLIBS)
+SRC = lstring.cpp lstriter.cpp succstor.cpp lsysintrfc.cpp match.cpp
+OBJ = ${SRC:.cpp=.o}
 
+INCLUDE= -I../Globals
 
-LINKDIRS=\
-$(PLATLINKDIRS)
+.SUFFIXES: .o .cpp 
 
-CPPFILES=\
-${OBJECTS:.o=.cpp}
+sinclude Makedepend
 
-lib:
-	make $(LIBTRG)
-
-$(TARGET): test.o $(OBJECTS) ../lsys/lsys.o
-	$(LINK) $(LINKFLAGS) test.o $(OBJECTS) ../lsys/lsys.o $(LINKDIRS) $(LIBS) -o $(TARGET)
-
-
-
-$(LIBTRG): $(OBJECTS)
-	ar -ruv $(LIBTRG) $(OBJECTS)
+$(ARFILE): $(OBJ)
+	$(AR) $(ARFLAGS) $(ARFILE)  $(OBJ)
 
 .cpp.o:
-	$(CCPP) $(CCPPOPT) $(DEFINES) $(PLAT_DEFINES) $(INCDIRS) -o $@ $<
+	$(CCC) $(CCCFLAGS) $(OPTIMIZE) $(INCLUDE) -o $@ $<
 
-build:
-	make clean
-	make depend $(TARGET)
 
 clean:
-	-rm -f $(TARGET) $(OBJECTS) dependencies core
-	touch dependencies
-
+	rm -rf  $(OBJ) ii_files  core
+distclean: clean
+	rm -rf $(ARFILE) Makedepend
 depend: 
-	$(DEPEND) $(DEFINES) $(PLAT_DEFINES) $(INCDIRS) $(CPPFILES) > dependencies
-
-test:
-	make
-	$(TARGET) test.l 
-
-testd:
-	make
-	$(TARGET) test.l 1
-include dependencies
-
+	$(CCC) -M  $(INCLUDE) $(SRC)  > Makedepend
