@@ -12,6 +12,7 @@
 
 #include <iostream>
 #include <L2Lignum.h>
+#include <Lstring2Lignum.h>
 #include <MyTreeSegment.h>
 #include <MyBud.h>
 #include <OpenGLUnix.h>
@@ -119,16 +120,20 @@ void SaveAxis(Axis<TS,BUD> &ax, ofstream& file)
 int main(int argc, char** argv)
 {
   //ios::sync_with_stdio();
-
+  Tree<MyTreeSegment,MyBud> t1(Point(0,0,0),
+				 PositionVector(0,0,1.0));
   if (2==argc)
     strcpy(outputpth, argv[1]);
   else
     outputpth[0] = 0;
-
+  
   Start();
   mainstring.Add(succstrg);
   //Draw(0);
-  sleep(1);
+  L2Lignum(t1,mainstring);
+  //DisplayStructure(t1);
+  //cout << endl;
+  //sleep(1);
 
   {
     //cout << "Axiom:\n";
@@ -143,13 +148,18 @@ int main(int argc, char** argv)
   {
     Derive();
     //Draw(i);
-    sleep(1);
-/*
-    cout << "After " << i+1 << " step:\n";
-    LstringIterator iterator(mainstring);
-    iterator.Dump();
-    cout << "\n\n";
-*/
+    //sleep(1);
+    //cout << "Step " << i+1 << " Lstring" << endl;
+    //PrintLString(mainstring);
+    //cout << endl;
+    //cout << "Lignum" << endl;
+    Lstring2Lignum(t1,mainstring);
+    //DisplayStructure(t1);
+    //cout << endl << endl;
+    //    LstringIterator iterator(mainstring);
+    // iterator.Dump();
+    // cout << "\n\n";
+
   }
   End();
   
@@ -161,15 +171,16 @@ int main(int argc, char** argv)
     //cout << "\n\n";
   }
 
-  Tree<MyCfTreeSegment,MyBud> tree(Point(0,0,0),
+  Tree<MyTreeSegment,MyBud> tree(Point(0,0,0),
 				    PositionVector(0,0,1.0));
-  L2Lignum(tree,mainstring);
+  //L2Lignum(tree,mainstring);
   //DisplayStructureData id;
   //PropagateUp(tree,id,DisplayStructureFunctor<MyCfTreeSegment,MyBud>());
   //cout << endl;
   //DisplayStructure(tree);
-  SaveTree(GetAxis(tree),"Pinus.txt","Pinus");
-  VisualizeLGMTree(tree);
+  //SaveTree(GetAxis(tree),"Pinus.txt","Pinus");
+  //VisualizeLGMTree(tree);
+  VisualizeLGMTree(t1);
 
 //    {
 //      //Draw(100);
