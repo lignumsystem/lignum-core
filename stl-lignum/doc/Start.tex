@@ -26,20 +26,20 @@ consisting of  different  tree species.   Ideally  the units should be
 such that they can be divided  into more detailed tree compartments if
 necessary.
 
-Currently a tree is  modeled in \lignum\  with five units called  tree
-compartments.  The two basic units are  tree segment (TS) and bud (B).
-They are called basic  units because they  are not aggregates of other
-units.   Axis  (A) models one   single  branch in a    tree.  It is an
+Currently a  tree is modeled in  \lignum\ with five  units called tree
+compartments.  The two basic units  are tree segment (TS) and bud (B).
+They are called  basic units because they are  not aggregates of other
+units.   Axis (A)  models  one single  branch  in a  tree.   It is  an
 aggregate or more precisely a  sequence of tree segments and branching
-points (BP) ending with  a  terminating bud.   Each tree segment  only
-must be followed by exactly one branching point (Figure
-\ref{fig:struct}).  Branching point is an  aggregate of axes capturing
-the branching structure of  a tree.  The fifth  unit is  naturally the
+points (BP)  ending with  a terminating bud.   Each tree  segment only
+must   be   followed   by   exactly  one   branching   point   (Figure
+\ref{fig:struct}).  Branching point is  an aggregate of axes capturing
+the branching  structure of a tree.   The fifth unit  is naturally the
 tree itself, an aggregate of all its tree compartments.
 
 \begin{figure}[h]
 \begin{center}
-\includegraphics[width=0.8\textwidth,height=0.5\textwidth]{Lignum3D.eps}
+\includegraphics[width=0.8\textwidth,height=0.5\textwidth]{lignum3d.eps}
 \caption{\label{fig:struct} A model tree presented in \lignum\
 (left). Cf. young Scots pine produced by \lignum\ (right). A = Axis, 
 TS = Tree segment, BP = Branching Point, B =Bud.}
@@ -47,23 +47,32 @@ TS = Tree segment, BP = Branching Point, B =Bud.}
 \end{figure}
 
 The main functioning unit tree segment consists of sapwood, heartwood,
-bark and foliage and it  captures the main  metabolic functioning in a
-tree.  The  tree segment  corresponds roughly  to the  annual shoot in
-trees but in the strict modeling sense this  is not necessarily always
-the case, especially when modelling heartwood trees. Also annual rings
-are modeled.  In real the annual rings  are a result of differences in
+bark and foliage  and it captures the main  metabolic functioning in a
+tree.  The  tree segment  corresponds roughly to  the annual  shoot in
+trees but in the strict  modeling sense this is not necessarily always
+the case, especially when modelling deciduous trees. Also annual rings
+are modeled.  In real the annual  rings are a result of differences in
 diameter growth in the spring and later in the autumn.  In \lignum\ an
-annual ring  is a number  that is the  radius without bark of the tree
+annual ring  is a number that is  the radius without bark  of the tree
 after the growing period.  Thus to be precise the annual rings are not
-structural components  in \lignum\ but merely  a book keeping process.
+structural components  in \lignum\ but merely a  book keeping process.
 For coniferous trees all the structural components of the tree segment
-including foliage can be   modeled as (hollow) cylinders  (Figure ??A)
-but for heartwood trees the foliage needs another approach.  Clearly a
-more detailed description for the leaf is needed.
+including  foliage  can  be  modeled  as  (hollow)  cylinders  (Figure
+\ref{fig:segment}) but  for deciduous trees the  foliage needs another
+approach.  Clearly a more detailed description for the leaf is needed.
 
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=0.8\textwidth,height=0.5\textwidth]{lignum-segment.eps}
+\caption{\label{fig:segment} Tree segment for a coniferous tree (left).
+Tree segment for a deciduous tree (right). H = heartwood, S =
+sapwood, B = bark, LB = lateral bud, F = Foliage, P = petiole, N = leaf normal.}
+\end{center}
+
+\end{figure}
 To start  with one  can identify two  main structural  components in a
 leaf: the leaf itself and the petiole that connects a leaf to a shoot.
-Leaves in heartwood trees come in all shapes and sizes but in \lignum\
+Leaves in deciduous trees come in all shapes and sizes but in \lignum\
 the ellips is chosen to  be the form of a  model leaf.  More precisely
 an individual leaf of a   specific tree species   is modeled with  the
 smallest ellips that encloses the leaf.  For  some species this can be
@@ -72,14 +81,14 @@ is defined by  its starting and end  points.  The position of the leaf
 itself in space is defined by the end  point of the petiole connecting
 to one of the axes of the  leaf (ellips) and the  leaf normal.  One or
 more leaves can be connected to a tree segment.   The tree segment for
-heartwood trees is in Figure ??B.
+deciduous trees is in Figure \ref{fig:segment}.
 
 The bud is  an embryonic shoot,  the  growing point  of the  tree from
 which new shoots, leaves and flowers may develop.  Buds can be divided
 into  terminal buds   located at the   top of  axes  and  lateral  (or
-axillary)  buds located in the  tree segment.  For heartwood trees the
+axillary)  buds located in the  tree segment.  For deciduous trees the
 lateral buds are located where the petiole of  a leaf is attached to a
-tree segment (Figure ??B).
+tree segment (Figure \ref{fig:segment}).
 
 From the modeling point of view the branching point is the place where
 two or more  tree  segments are  connected  to each other.   The  axis
@@ -124,7 +133,7 @@ implementations in different units.
 \includegraphics[width=0.7\textwidth,height=0.5\textwidth]{lignum-classes.eps}
 \caption{\label{fig:omt} The class hierarchy in \lignum\ with OMT
 notation. Triangles and diamonds denote subclass relationship and 
-aggregation respectively. Hw = Heartwood, Cf = Coniferous.}
+aggregation respectively. Hw = Hardwood, Cf = Coniferous.}
 \end{center}
 \end{figure}
 
@@ -168,7 +177,7 @@ simply:
 \end{center}
 
 Similarly when modeling a birch the  first thing to do  is to create a
-subclass    of  heartwood    tree  segment    (HwTreeSegment,   Figure
+subclass    of  deciduous    tree  segment    (HwTreeSegment,   Figure
 \ref{fig:omt}) say,  BetulaPubescensTreeSegment.      After   the
 appropriate metabolic processes are  redefined a tree modeling a birch
 can be set up:
@@ -234,19 +243,25 @@ traverses  the tree from the  tip of the branches to   the base of the
 tree. PropagetUp does the inverse. It traverses the tree from the base
 to the tip of the branches.
 
-Finally  not all computations are well  suited or even possible within
+Finally not all  computations are well suited or  even possible within
 the structural description of a  tree provided by \lignum. For example
-assume that  the model  for photosynthesis is  based  on amount of PAR
-(photosynthetically   active  radiation).     Many   algorithms can be
-developed but to compute   the   PAR  but  in \lignum\  the    current
-implementation   is based on   pairwise  comparison of tree  segments.
-Perhaps  the  computations could  be  made within  \lignum\ itself but
-easier way  is to create  an algorithm  (using  e.g., Accumulate) that
-collects the tree  segments to a  new data structure better suited for
-the algorithm and  make the computations  for the PAR there.   Another
-example is the modeling work already being done. The flow of water can
-be modeled  using so called  connection matrix describing how the tree
-segments  are connected. This information  is  also in \lignum\ but it
-always up to the  modeler to decide the  trade off between the work to
-adapt the  computations to \lignum\ or  to create the  data structures
-from \lignum\ and work with the familiar modeling frame work.
+assume  that  the model  for  photosynthesis  is  based on  amount  of
+photosynthetically  active radiation  (PAR).  Many  algorithms  can be
+developed   to  compute   the  PAR   but  in   \lignum\   the  current
+implementation   is  based   on  the   pairwise  comparison   of  tree
+segments.  The complexity  of the  current algorithm  is  $O(n^2)$.  A
+better way could be to first create a (linear) algorithm using, e.g.,
+Accumulate that collects  the tree segments to a  new data structure.
+Then with the help of some heuristics a better than $O(n^2)$ algorithm
+for the computation of PAR might be found.
+
+Another example is the modeling  work already being done.  The flow of
+water can be modeled using  so called connection matrix describing how
+the tree segments are connected.  This information is also in \lignum\
+and PropagateUp algorithm can be used to pass information upwards in a
+tree. But it always up to  the modeler to decide the trade off between
+the work to  adapt the computations to \lignum\ or  to create the data
+structures  from \lignum\ and  use the familiar  modeling frame
+work.
+
+
