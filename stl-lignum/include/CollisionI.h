@@ -59,7 +59,9 @@ int& EvaluateCollisionForThisBud<TS,BUD>::
     }
 
     LGMdouble dotp = Dot(direction, diff);
-    if(c_cos < dotp / len) {
+    //If the dotp angle is inside the c_cos angle, then there is collision 
+    if(c_cos > dotp / len) {
+      //if the len is within the given distance
       if(len < c_distance) {
 	coll = 1;
       }
