@@ -47,8 +47,8 @@ namespace Lignum {
 	{
 	  LGMdouble fmass = GetValue(*cfts, LGAWf);
 	  //Reset values here
-	  SetValue(*cfts, Qabs, 0.0);
-	  SetValue(*cfts, Qin, 0.0);
+	  SetValue(*cfts, LGAQabs, 0.0);
+	  SetValue(*cfts, LGAQin, 0.0);
 	  if (fmass > R_EPSILON)
 	    {
 	      Point p = GetPoint(*cfts);

@@ -53,10 +53,10 @@ LGMdouble GetValue(const BroadLeaf<SHAPE>& bl, const LGMAD name)
   else if (name == LGAM)
     return  bl.bla.M;
   
-  else if (name == Qabs)
+  else if (name == LGAQabs)
     return  bl.bla.Qabs;
   
-  else if (name == Qin)
+  else if (name == LGAQin)
     return  bl.bla.Qin;
 
   else if (name == LGAWf)
@@ -90,10 +90,10 @@ LGMdouble SetValue(BroadLeaf<SHAPE>& bl, const LGMAD name, const LGMdouble value
   else if (name == LGAM)
     bl.bla.M = value;
   
-  else if (name == Qabs)
+  else if (name == LGAQabs)
     bl.bla.Qabs = value;
   
-  else if (name == Qin)
+  else if (name == LGAQin)
     bl.bla.Qin = value;
 
   else if (name == LGAWf)

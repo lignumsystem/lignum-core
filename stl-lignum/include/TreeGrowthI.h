@@ -260,7 +260,7 @@ void StructuralPineGrowth(Axis<TS,BUD> &ax, const ParametricCurve& bud_fun, Tree
 
 		if (CfTreeSegment<TS,BUD>* cfts = dynamic_cast<CfTreeSegment<TS,BUD>*>(treesegment))
 		{
-			I = GetValue(*cfts, Qin);
+			I = GetValue(*cfts, LGAQin);
 		}
 
 		LGMdouble i_p = I / B;
@@ -508,7 +508,7 @@ MotherInfo& AddSugarMapleSegments<TS,BUD>::operator()(MotherInfo& mi, TreeCompar
 		if (GetValue(*axis, LGAage) == 0)
 			return mi;  //mother_in
 	  
-		q_in = GetSumValue(*axis, Qin, 1);
+		q_in = GetSumValue(*axis, LGAQin, 1);
 		if (q_in == 0)
 			q_in = motherQin;
 		else 
@@ -762,7 +762,7 @@ MotherInfo& AddWhiteBirchSegments<TS,BUD>::operator()(MotherInfo& mi, TreeCompar
 		if (GetValue(*axis, LGAage) == 0)
 			return mi;  //mother_in
 	  
-		q_in = GetSumValue(*axis, Qin, 1);
+		q_in = GetSumValue(*axis, LGAQin, 1);
 
 		if (q_in == 0)
 			q_in = motherQin;

@@ -16,9 +16,8 @@ namespace Lignum{
   enum LGMAD {LGAA,LGAAf,LGAAh, LGAAhair,LGAAs,LGAAs0,LGAage,api, LGAcollision,
               LGADbase,LGADbh,LGAdof, dR, LGAH,LGAHf,Hm,LGAip,
               lb,LM,LP,LWf,LGAL,lw,LGAM, LGAMaxD,LGAomega,LGAP,
-	      Qin,Qabs,R,Rf,Rh,LGARhair,LGARTop,LGASa,LGMstatus, LGAtauL, LGAtype,LGAV,LGAVh,
-	      LGAVhair,LGAvi,LGAVs,
-              LGAWf, LGAWr, LGAWs, LGAWh, LGAWhair};
+	      LGAQabs,LGAQin,R,Rf,Rh, LGARhair,LGARTop,LGASa,LGMstatus, LGAtauL, LGAtype,LGAV,LGAVh,
+	      LGAVhair,LGAvi,LGAVs,LGAWf, LGAWr, LGAWs, LGAWh, LGAWhair};
 
   //  LGAA      Segment area based on R (see GetValue)
   //  LGAAf     area of foliage
@@ -31,7 +30,7 @@ namespace Lignum{
   //  LGAcollision a bud can examine its growth sector if it collides with an obstacle
   //  LGADbase  diameter at base
   //  LGADbh    diameter at breast height
-  //  LGAdof    degree of filling?
+  //  LGAdof    degree of filling
   //  LGAH      height of tree, also the Z coordinate at the segment end point 
   //  LGAHf     height (thickness) of cylindrical layer of foliage in a segment 
   //  Hm     ???
@@ -43,11 +42,13 @@ namespace Lignum{
   //  LGAL      length of segment
   //  lw     ???
   //  LGAM      rate of respiration (= amount of r. during the time step)
-  //  LGAMaxD   maximum diameter of the segments forking off and the segment above a branching point 
+  //  LGAMaxD   maximum diameter of the segments 
+  //            forking off and the segment above a 
+  //            branching point. needed to calculate LGAvi 
   //  LGAomega  Gravelius order
-  //  P      Photosynthetic rate (= amount of p. during time step)
-  //  Qin    incoming radiant flux
-  //  Qabs   amount of absorbed radiation
+  //  LGAP      Photosynthetic rate (= amount of p. during time step)
+  //  LGAQin    incoming radiant flux
+  //  LGAQabs   amount of absorbed radiation
   //  R      radius of segment (wood)
   //  Rf     radius of segment cylinder that contains also foliage (conifers)
   //  Rh     radius of heartwood

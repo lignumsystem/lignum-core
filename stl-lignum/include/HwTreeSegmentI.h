@@ -40,8 +40,8 @@ namespace Lignum{
       list<BroadLeaf<S>*>& ll = GetLeafList(const_cast<HwTreeSegment<TS,BUD,S>&>(ts));
       for(typename list<BroadLeaf<S>*>::iterator i = ll.begin();
 	  i != ll.end(); i++) {
-	SetValue(*i, Qabs, 0.0);
-	SetValue(*i, Qin, 0.0);
+	SetValue(*i, LGAQabs, 0.0);
+	SetValue(*i, LGAQin, 0.0);
 	SetRadiationVector(*i, one);
       }
 
@@ -121,18 +121,18 @@ namespace Lignum{
 	  value += GetValue(**I, LGAP);
 	return value;
 	}
-      else if (name == Qin){
+      else if (name == LGAQin){
 	std::list<BroadLeaf<S>*>& leaf_list = GetLeafList(const_cast<HwTreeSegment<TS,BUD,S>&>(ts));
 	typename std::list<BroadLeaf<S>*>::iterator I;
 	for(I = leaf_list.begin(); I != leaf_list.end(); I++)
-	  value += GetValue(**I, Qin);
+	  value += GetValue(**I, LGAQin);
 	return value;
       }
-      else if (name == Qabs){
+      else if (name == LGAQabs){
 	std::list<BroadLeaf<S>*>& leaf_list = GetLeafList(const_cast<HwTreeSegment<TS,BUD,S>&>(ts));
 	typename std::list<BroadLeaf<S>*>::iterator I;
 	for(I = leaf_list.begin(); I != leaf_list.end(); I++)
-	  value += GetValue(**I, Qabs);
+	  value += GetValue(**I, LGAQabs);
 	return value;
       }
       else if(name == LGAAf){

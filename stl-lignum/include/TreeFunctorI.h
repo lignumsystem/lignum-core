@@ -477,7 +477,7 @@ namespace Lignum{
 	stru.sum_Wf += GetValue(*ts, LGAWf);
 	if(GetValue(*ts, LGAWf) > R_EPSILON) {
 	  stru.num_s_fol++;
-	  stru.sum_Qabs += GetValue(*ts, Qabs);
+	  stru.sum_Qabs += GetValue(*ts, LGAQabs);
 	  stru.sum_Qin += GetValue(*ts, Qin);
 	}
   
@@ -688,18 +688,18 @@ namespace Lignum{
 	   *then directly casted to segment type one wants.
 	  if(CfTreeSegment<TS,BUD>* cfts = dynamic_cast<CfTreeSegment<TS,BUD>*>(ts))
 	    {
-	      stru.sum_Qabs += GetValue(*cfts, Qabs);
+	      stru.sum_Qabs += GetValue(*cfts, LGAQabs);
 	      stru.sum_Qin  += GetValue(*cfts, Qin);
 	      stru.sum_Wf += GetValue(*cfts, LGAWf);
 	      stru.sum_needle_area += 28 * GetValue(*cfts, LGAWf);
-	      stru.sum_QinNA += GetValue(*cfts, Qin) * 28 * GetValue(*cfts, LGAWf);
-	      stru.sum_QabsNA += GetValue(*cfts, Qabs) * 28 * GetValue(*cfts, LGAWf);
+	      stru.sum_QinNA += GetValue(*cfts, LGAQin) * 28 * GetValue(*cfts, LGAWf);
+	      stru.sum_QabsNA += GetValue(*cfts, LGAQabs) * 28 * GetValue(*cfts, LGAWf);
 	    }
 
 	  if(HwTreeSegment<TS,BUD>* hwts = dynamic_cast<HwTreeSegment<TS,BUD>*>(ts))
 	    {
-	      stru.sum_Qabs += GetValue(*hwts, Qabs);
-	      stru.sum_Qin  += GetValue(*hwts, Qin);
+	      stru.sum_Qabs += GetValue(*hwts, LGAQabs);
+	      stru.sum_Qin  += GetValue(*hwts, LGAQin);
 	      stru.sum_Wf += GetValue(*hwts, LGAWf);
 	    }
 	  */
@@ -753,14 +753,14 @@ namespace Lignum{
 		      ofstream file("debugsegments.txt", ios::app);
 					
 		      stru.num_segments++;
-		      LGMdouble qinnn = GetValue(*cfts, Qin); 				
-		      stru.sum_Qabs += GetValue(*cfts, Qabs);
-		      stru.sum_Qin  += GetValue(*cfts, Qin);
+		      LGMdouble qinnn = GetValue(*cfts, LGAQin); 				
+		      stru.sum_Qabs += GetValue(*cfts, LGAQabs);
+		      stru.sum_Qin  += GetValue(*cfts, LGAQin);
 		      stru.sum_Wf += GetValue(*cfts, LGAWf);
 		      stru.sum_needle_area += 28 * GetValue(*cfts, LGAWf);
 		      stru.sum_QinNA += GetValue(*cfts, Qin) * 28 * GetValue(*cfts, LGAWf);
-		      stru.sum_QabsNA += GetValue(*cfts, Qabs) * 28 * GetValue(*cfts, LGAWf);
-		      file << GetValue(*cfts, Qin) << " : " << GetValue(*cfts, Qabs) << " : ";
+		      stru.sum_QabsNA += GetValue(*cfts, LGAQabs) * 28 * GetValue(*cfts, LGAWf);
+		      file << GetValue(*cfts, LGAQin) << " : " << GetValue(*cfts, LGAQabs) << " : ";
 		      file << 28 * GetValue(*cfts, Wf) << ":" << GetPoint(*ts);
 		      file.close();
 		    }
@@ -769,8 +769,8 @@ namespace Lignum{
 
 	      if(HwTreeSegment<TS,BUD>* hwts = dynamic_cast<HwTreeSegment<TS,BUD>*>(ts))
 		{
-		  stru.sum_Qabs += GetValue(*hwts, Qabs);
-		  stru.sum_Qin  += GetValue(*hwts, Qin);
+		  stru.sum_Qabs += GetValue(*hwts, LGAQabs);
+		  stru.sum_Qin  += GetValue(*hwts, LGAQin);
 		  stru.sum_Wf += GetValue(*hwts, LGAWf);
 		}
 	      */
@@ -812,8 +812,8 @@ namespace Lignum{
 		  {
 		    file << "Wf:" << GetValue(**I, Wf) 
 			 << "  Area:" << GetValue(**I, A) << "   Qin:" 
-			 << GetValue(**I, Qin) << "   Qabs:" 
-			 << GetValue(**I, Qabs) << endl;
+			 << GetValue(**I, LGAQin) << "   Qabs:" 
+			 << GetValue(**I, LGAQabs) << endl;
 		  } 
 	      }
 	    } 

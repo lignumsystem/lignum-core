@@ -80,8 +80,8 @@ void EvaluateRadiationForHwTreeSegment<TS,BUD,S>::operator()
   number_of_sectors = firmament.numberOfRegions();
   for (Il = leaves.begin(); Il != leaves.end(); Il++) {
     result = GetRadiationVector(**Il);
-    SetValue(**Il, Qin, 0.0);
-    SetValue(**Il, Qabs, 0.0);
+    SetValue(**Il, LGAQin, 0.0);
+    SetValue(**Il, LGAQabs, 0.0);
     for(i = 0; i < number_of_sectors; i++) {
       radiation = firmament.diffuseRegionRadiationSum(i,radiation_direction);
       //cos of the angle between the leaf normal and the light beam
@@ -90,9 +90,9 @@ void EvaluateRadiationForHwTreeSegment<TS,BUD,S>::operator()
 				     radiation_direction[1], radiation_direction[2]) );
       a_dot_b = fabs(tmp_adotb);  
       help = radiation*result[i];
-      SetValue(**Il, Qin, help+GetValue(**Il, Qin));
+      SetValue(**Il, LGAQin, help+GetValue(**Il, LGAQin));
       help *= GetValue(**Il, LGAdof)*(GetShape(**Il).getArea())*a_dot_b;
-      SetValue(**Il, Qabs, help+GetValue(**Il, Qabs));
+      SetValue(**Il, LGAQabs, help+GetValue(**Il, LGAQabs));
     }
   }
 }
@@ -177,8 +177,8 @@ template <class TS, class BUD>
 TreeCompartment<TS,BUD>* EvaluateRadiationForCfTreeSegment<TS,BUD>::operator() (TreeCompartment<TS, BUD>* tc)const
 {
   if (TS* ts = dynamic_cast<TS*>(tc)){
-    SetValue(*ts, Qin, 0.0);
-    SetValue(*ts, Qabs, 0.0);
+    SetValue(*ts, LGAQin, 0.0);
+    SetValue(*ts, LGAQabs, 0.0);
     //Radiation  conditions are not  evaluated if  the segment  has no
     //foliage (in practice  there would be division by  0 in computing
     //absorbed radiation)
@@ -243,8 +243,8 @@ TreeCompartment<TS,BUD>* EvaluateRadiationForCfTreeSegment<TS,BUD>::operator() (
       s[i] *= Ask;
     }
     MJ Q_abs = accumulate(s.begin(),s.end(),0.0);
-    SetValue(*ts, Qabs, Q_abs);
-    SetValue(*ts, Qin, Q_in);
+    SetValue(*ts, LGAQabs, Q_abs);
+    SetValue(*ts, LGAQin, Q_in);
   }
   return tc;
 }

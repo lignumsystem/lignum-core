@@ -89,9 +89,9 @@ namespace Lignum {
       //Qabs computetd based on Qin, mean star and foliage area.
       qabs = b.getQin()*0.14*(GetValue(GetTree(ts), sf)*GetValue(ts, LGAWf));
 
-      SetValue(ts, Qabs, GetValue(ts, Qabs)+qabs);
+      SetValue(ts, LGAQabs, GetValue(ts, LGAQabs)+qabs);
 
-      SetValue(ts, Qin, GetValue(ts, Qin)+b.getQin()/num_parts);
+      SetValue(ts, LGAQin, GetValue(ts, LGAQin)+b.getQin()/num_parts);
 
      /*  cout <<  "Segment Z: " << GetPoint(ts).getZ() << " Box: "  */
 /* 	   <<  b.corner1.getX() << " " <<  b.corner1.getY() << " " << b.corner1.getZ()  */
