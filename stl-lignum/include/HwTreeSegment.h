@@ -1,9 +1,8 @@
 #ifndef HWTREESEGMENT_HPP
 #define HWTREESEGMENT_HPP
 #include <list>
-#include <Tree.h>
 
-
+#include <TreeSegment.h>
 #include <BroadLeaf.h>
 #include <Firmament.h>
 
@@ -26,21 +25,26 @@ class HwTreeSegment:public TreeSegment<TS,BUD>{
   template <class TS1,class BUD1>
   friend LGMdouble SetLeafArea(HwTreeSegment<TS1,BUD1>& ts, const LGMdouble value);
   template <class TS1,class BUD1>
+  friend LGMdouble SetValue(const HwTreeSegment<TS1,BUD1>& ts, const LGMAD name,
+			    const LGMdouble value);
+  template <class TS1,class BUD1>
   friend LGMdouble GetValue(const HwTreeSegment<TS1,BUD1>& ts, const LGMAD name);
 public:
   HwTreeSegment(const cxxadt::Point<METER>& p,const PositionVector& pv,
-		const LGMdouble go, const Lignum::METER l, const METER r,
+		const LGMdouble go, const METER l, const METER r,
 		const METER rn,Tree<TS,BUD>* tree)
     :TreeSegment<TS,BUD>(p,pv,go,l,r,rn,tree){}
-  void photosynthesis();
+  virtual void photosynthesis();
 private:
   list<BroadLeaf*> leaf_ls;
 };
 
+} //close namespace Lignum
+
 #include <HwTreeSegmentI.h>
 #include <HwTreeSegmentMetabolismI.h>
 
-} //close namespace Lignum
+
 
 
 

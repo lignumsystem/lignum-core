@@ -8,5 +8,5 @@ TreeSegmentAttributes::TreeSegmentAttributes()
 {
 }
 
-}
+}//closing namespace Lignum
 

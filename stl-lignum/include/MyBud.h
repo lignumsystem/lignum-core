@@ -1,13 +1,11 @@
 #ifndef MYBUD_H
 #define MYBUD_H
 
-
-
+#include <Bud.h>
 #include <MyTreeSegment.h>
 
-
 namespace Lignum{
-
+class MyTreeSegment;
 
 class MyBud:public Bud<MyTreeSegment,MyBud>{
  public:

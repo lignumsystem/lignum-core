@@ -2,7 +2,6 @@
 
 namespace Lignum{
 
-
   LGMdouble GetValue(const BetulaWithFlow& ts, const LGMBETULA name)
     {
       //  LGMdouble unknown_value = 0.0;
@@ -33,7 +32,7 @@ namespace Lignum{
     }
   
 
-}
+} //closing namespace Lignum
 
 
 

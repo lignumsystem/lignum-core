@@ -13,9 +13,10 @@
 #include <PositionVector.h>
 
 using namespace cxxadt;
+
+#include <LGMdecl.h>
 #include <Algorithms.h>
 #include <TreeFunctor.h>
-#include <LGMdecl.h>
 #include <TreeMetaFileParser.h>
 #include <RootSystem.h>
 #include <Bud.h>
@@ -27,6 +28,7 @@ using namespace cxxadt;
 #include <Axis.h>
 #include <ConnectionMatrix.h>
 #include <Firmament.h>
+
 using namespace sky;
 
 
@@ -88,7 +90,7 @@ public:
 };
 
 template <class TS,class BUD = DefaultBud<TS> >
-class Tree: public Lignum::TreeCompartment<TS,BUD>{
+class Tree: public TreeCompartment<TS,BUD>{
   template <class TS1,class BUD1>
   friend Axis<TS1,BUD1>& GetAxis(Tree<TS1,BUD1>& t);
   template <class TS1,class BUD1>

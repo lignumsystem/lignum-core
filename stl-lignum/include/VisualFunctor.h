@@ -42,7 +42,7 @@ public:
   METER& operator()(METER& r,TreeCompartment<TS,BUD>* tc)const;
 };
 
-}
+} //closing namespace Lignum
 
 #include <VisualFunctorI.h>
 

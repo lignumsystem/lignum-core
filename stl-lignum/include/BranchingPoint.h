@@ -10,7 +10,7 @@
 
 
 namespace Lignum{
-using namespace Lignum;
+
 using namespace cxxadt;
 
 template <class TS,class BUD=DefaultBud<TS> >

@@ -7,6 +7,7 @@
 #include <PositionVector.h>
 #include <LGMdecl.h>
 
+#include <TreeCompartment.h>
 
 namespace Lignum{
 

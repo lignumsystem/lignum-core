@@ -7,5 +7,5 @@ CfTreeSegmentAttributes::CfTreeSegmentAttributes()
 {
 }
 
-}
+}//closing namespace Lignum
 

@@ -1,6 +1,7 @@
 #ifndef HWTREESEGMENTI_H
 #define HWTREESEGMENTI_H
 
+namespace Lignum{
 
 template<class TS, class BUD >
 list<BroadLeaf*>& GetLeafList(HwTreeSegment<TS,BUD>& ts)
@@ -83,6 +84,13 @@ LGMdouble GetLeafArea(const HwTreeSegment<TS,BUD>& ts)
 }
 
 template<class TS, class BUD >
+LGMdouble SetValue(const HwTreeSegment<TS,BUD>& ts, const LGMAD name,  
+		   const LGMdouble value)
+{
+  return SetValue(dynamic_cast<const TreeSegment<TS,BUD>&>(ts), name);
+}
+
+template<class TS, class BUD >
 LGMdouble GetValue(const HwTreeSegment<TS,BUD>& ts, const LGMAD name)
 {
 
@@ -125,8 +133,6 @@ LGMdouble GetValue(const HwTreeSegment<TS,BUD>& ts, const LGMAD name)
 
 }
 
-
+}//closing namespace Lignum
 #endif
-
-
 

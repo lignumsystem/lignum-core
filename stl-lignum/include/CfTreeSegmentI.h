@@ -18,7 +18,7 @@ LGMdouble GetValue(const CfTreeSegment<TS,BUD>& ts, const LGMAD name)
     return ts.cftsa.Qabs;
 
   else
-    return GetValue(dynamic_cast<const TreeCompartment<TS,BUD>&>(ts), name);
+    return GetValue(dynamic_cast<const TreeSegment<TS,BUD>&>(ts), name);
 }
 
 
@@ -36,7 +36,7 @@ LGMdouble SetValue(CfTreeSegment<TS,BUD>& ts, const LGMAD name, const LGMdouble 
   else if (name == Qabs)
     ts.cftsa.Qabs = value;
   else
-    old_value = SetValue(dynamic_cast<TreeCompartment<TS,BUD>&>(ts), name,value);
+    old_value = SetValue(dynamic_cast<TreeSegment<TS,BUD>&>(ts), name,value);
 
   return old_value;
 }
@@ -46,5 +46,12 @@ LGMdouble SetValue(CfTreeSegment<TS,BUD>& ts, const LGMAD name, const LGMdouble 
 } //closing namespace Lignum
 
 #endif
+
+
+
+
+
+
+
 
 

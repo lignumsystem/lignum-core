@@ -7,7 +7,10 @@
 #include <PositionVector.h>
 #include <LGMdecl.h>
 
+#include <TreeSegment.h>
+
 namespace Lignum{
+
 using namespace cxxadt;
 
 class CfTreeSegmentAttributes{
@@ -30,7 +33,7 @@ public:
   CfTreeSegment(const Point<METER>& p,const PositionVector& pv,const LGMdouble go,const METER l,
                 const METER r,const METER rn,Tree<TS,BUD>* tree)
     :TreeSegment<TS,BUD>(p,pv,go,l,r,rn,tree){}
-  void photosynthesis();
+    virtual void photosynthesis();
 private:
   CfTreeSegmentAttributes cftsa;
 };

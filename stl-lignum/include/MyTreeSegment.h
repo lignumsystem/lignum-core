@@ -31,7 +31,7 @@ public:
 class MyCfTreeSegment:public CfTreeSegment<MyCfTreeSegment,MyBud>
 {
 public:
-  MyCfTreeSegment(const Point<METER>& p, const PositionVector& d, const LGMdouble go,
+  MyCfTreeSegment(const cxxadt::Point<METER>& p, const PositionVector& d, const LGMdouble go,
 		  const METER l, const METER r, const METER rn,
 		  Tree<MyCfTreeSegment,MyBud>* t)
     :CfTreeSegment<MyCfTreeSegment,MyBud>(p,d,go,l,r,rn,t){}

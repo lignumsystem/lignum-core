@@ -7,10 +7,10 @@
 namespace Lignum{
 
 template <class TS>
-class DefaultBud:public Lignum::Bud<TS,DefaultBud<TS> >{
+class DefaultBud:public Bud<TS,DefaultBud<TS> >{
  public:
-  DefaultBud(const Point<Lignum::METER>& p, const PositionVector& d, 
-	     const LGMdouble omega, Lignum::Tree<TS,DefaultBud<TS> >* tree)
+  DefaultBud(const Point<METER>& p, const PositionVector& d, 
+	     const LGMdouble omega, Tree<TS,DefaultBud<TS> >* tree)
     :Bud<TS,DefaultBud<TS> >(p,d,omega,tree){}
 };
 

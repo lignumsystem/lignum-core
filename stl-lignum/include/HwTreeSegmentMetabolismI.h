@@ -1,6 +1,7 @@
 #ifndef HWTREESEGMENTMETABOLISMI_H
 #define HWTREESEGMENTMETABOLISMI_H
 
+namespace Lignum{
 
 template <class TS,class BUD>
 void HwTreeSegment<TS,BUD>::photosynthesis()
@@ -15,4 +16,5 @@ void HwTreeSegment<TS,BUD>::photosynthesis()
 
 }
 
+} //closing namespace Lignum
 #endif

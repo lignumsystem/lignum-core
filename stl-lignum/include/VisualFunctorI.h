@@ -63,7 +63,7 @@ METER& SampleDiameterGrowth<TS,BUD>::operator()(METER& r,TreeCompartment<TS,BUD>
   return r;
 }
 
-}  
+}//closing namespace Lignum  
 
 #endif
 
