@@ -70,7 +70,7 @@ LGMdouble SetValue(CfTreeSegment<TS,BUD>& ts, const LGMAD name, const LGMdouble 
     ts.cftsa.Rf = value;
 
   else if (name == Wf)
-    ts.tsa.Wf = value;
+    ts.cftsa.Wf = value;
 
   else
     old_value = SetValue(dynamic_cast<TreeSegment<TS,BUD>&>(ts), name,value);

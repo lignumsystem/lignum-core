@@ -33,8 +33,8 @@ class CfTreeSegment:public TreeSegment<TS,BUD>{
 			    const LGMdouble);
 public:
   CfTreeSegment(const Point& p,const PositionVector& pv,const LGMdouble go,const METER l,
-                const METER r,const METER rn,Tree<TS,BUD>* tree)
-    :TreeSegment<TS,BUD>(p,pv,go,l,r,rn,tree){}
+                const METER r,const METER rn,Tree<TS,BUD>* tree);
+  //    :TreeSegment<TS,BUD>(p,pv,go,l,r,rn,tree){}
     virtual void photosynthesis();
 private:
   CfTreeSegmentAttributes cftsa;
