@@ -53,6 +53,8 @@ public:
   }
   void photosynthesis();
   void respiration();
+  TcData& diameterGrowth(TcData& data);
+  void aging();
   virtual void addLeaf(BroadLeaf<SHAPE>* l);
 protected:
   list<BroadLeaf<SHAPE>*> leaf_ls;

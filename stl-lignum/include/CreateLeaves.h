@@ -105,9 +105,11 @@ namespace Lignum{
     CreateTriangleLeaves<TS,BUD,T>::operator()(vector<PositionVector>& pdv,
 					       TreeCompartment<TS,BUD>* tc)const
     {
+      double rlsize=1.0;
       if (BUD* b = dynamic_cast<BUD*>(tc)){
 	if (GetValue(*b,LGAstatus) == 1){
 	  pdv.push_back(GetDirection(*b));
+          rlsize = GetValue(*b, LGAstatus);
 	  //Leaf created, set status to 0 	
 	  SetValue(*b,LGAstatus,0);
 	}
@@ -151,9 +153,20 @@ namespace Lignum{
 	  Point apex  = point + height*(Point)axis3;
 	  T shape(left,right,apex);
 	  BroadLeaf<T>* leaf = new BroadLeaf<T>(shape,petiole,leaf_normal);
+	
+          SetValue(*leaf, LGAdof, GetValue(GetTree(*tc), LGPdof));
+          SetValue(*leaf, LGAtauL, GetValue(GetTree(*tc), LGPtauL));
+          SetValue(*leaf, LGAsf, GetValue(GetTree(*tc), LGPsf));
+
+  
+	  double Af = rlsize * 0.08; //GetValue(GetTree(*ts), LGPaleafmax);
+	    //  cout<<"LGPaleafmax value: "<<GetValue(GetTree(*ts), LGPaleafmax)<<endl;
+         
+	    SetValue(*leaf, LGAA, 0.1);   //set the leaf area value, which is used in DumpLeaf()
+
 	  //Insert leaf
 	  ts->addLeaf(leaf);
-	  cout << "Leaf inserted" << endl;
+	  //**cout << "Leaf inserted" << endl;
 	}
 	//clear the vector; don't create leaves twice
 	pdv.clear();

@@ -40,7 +40,6 @@
 //been prefixed with LGA, LGP etc.
 
 namespace Lignum{
-
   //LGMAD = LIGNUM Attribute Double  *********************'
   
   // These symbols are used to access (GetValue, SetValue) the
@@ -48,6 +47,8 @@ namespace Lignum{
   // Bud, BrachingPoint, BroadLeaf in LIGNUM (in any compartment
   // except Tree). As regards GetValue, it may be that the value
   // returned is calculated on the basis of other variables.
+
+
 
   //If you add a new symbol be sure to document it carefully.
 
@@ -57,7 +58,8 @@ namespace Lignum{
               LGAL,LGAM, LGAMaxD,LGAomega,LGAP,LGAQabs,LGAQin,LGAR,LGARf,
               LGARh, LGARhair,LGARTop,LGASa,LGAsf,LGAstatus, LGAstate,LGAtauL, 
               LGAtype,LGAV,LGAVh,LGAVhair,LGAvi,LGAVs,LGAWf, LGAWs, 
-              LGAWh,  LGAWhair};
+              LGAWh,LGAWhair, LGAT};
+  //  LGAWh,  LGAWhair};
 
   //  0 LGAA      Segment base area based on R 
   //  1 LGAAf     Area of foliage
@@ -112,7 +114,10 @@ namespace Lignum{
   //  43 LGAWh     Mass of heartwood (kg C)
   //  44 LGAWhair  Mass of root hair (kg C)
 
+  // LGMAD = LIGNUM Attribute Double
 
+
+  // enum LGMFLOW { fin, fout, Pr, Wm };
 
   //LIGNUM  Parameter Double   ************************************
 
