@@ -1116,18 +1116,19 @@ namespace Lignum{
       return max_height;
     }
 
-/*
-template <class TS, class BUD>
-TreeCompartment<TS,BUD>* DropAllLeaves<TS,BUD>::operator ()(TreeCompartment<TS,BUD>* tc)const
+  template <class TS, class BUD, class SH>
+  TreeCompartment<TS,BUD>* DropAllLeaves<TS,BUD,SH>::operator ()(TreeCompartment<TS,BUD>* tc)const
 {
-	if (HwTreeSegment<TS,BUD>* hwts = dynamic_cast<HwTreeSegment<TS,BUD>*>(tc))
-	{
-		if (GetValue(*hwts, age) > 0.1)
-			DropLeaves(*hwts);
-	}
-	return tc;
+  if (HwTreeSegment<TS,BUD,SH>* hwts = dynamic_cast<HwTreeSegment<TS,BUD,SH>*>(tc)){
+    list<BroadLeaf<SH>*>& ls = GetLeafList(*hwts);
+    //Destroy leaves before clearing the list 
+    for_each(ls.begin(),ls.end(),DestroyLeaves<SH>());
+    //Now clear the list
+    ls.clear();
+  }
+  return tc;
 }
-*/
+
 
 }//closing namespace Lignum
 

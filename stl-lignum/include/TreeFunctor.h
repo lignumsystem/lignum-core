@@ -389,11 +389,20 @@ namespace Lignum{
   
     };
 
-/*
-	template <class TS, class BUD>
-	TreeCompartment<TS,BUD>* DropAllLeaves<TS,BUD>::operator ()(TreeCompartment<TS,BUD>* tc)const;
 
-*/
+  template <class SH>
+  class DestroyLeaves{
+  public:
+    void operator()(BroadLeaf<SH>* leaf){
+      delete leaf;
+    }
+  };
+
+  template <class TS, class BUD,class SH>
+  class DropAllLeaves{
+  public:
+    TreeCompartment<TS,BUD>* operator ()(TreeCompartment<TS,BUD>* tc)const;
+  };
 
 }//closing namespace Lignum
 #include <TreeFunctorI.h>

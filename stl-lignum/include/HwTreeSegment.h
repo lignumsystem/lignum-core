@@ -38,8 +38,6 @@ class HwTreeSegment:public TreeSegment<TS,BUD>
   template <class TS1,class BUD1,class S>
   friend LGMdouble GetValue(const HwTreeSegment<TS1,BUD1,S>& ts, const LGMAD name);
 
-  template <class TS1,class BUD1,class S>
-  friend void DropLeaves(HwTreeSegment<TS1,BUD1,S>& ts);
 
   template <class TS1,class BUD1, class S>
   friend std::list<BroadLeaf<S>*>& GetLeafList(HwTreeSegment<TS1,BUD1,S>& ts);

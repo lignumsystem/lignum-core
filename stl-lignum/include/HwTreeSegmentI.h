@@ -63,14 +63,6 @@ namespace Lignum{
     }
 
 
-  template<class TS, class BUD, class S>
-    void DropLeaves(HwTreeSegment<TS,BUD,S>& ts)
-    {
-      std::list<BroadLeaf<S>*>& leaf_list = 
-	GetLeafList(const_cast<HwTreeSegment<TS,BUD,S>&>(ts));
-      leaf_list.clear();
-    }
-
 
   //Sets the area of the all leaf ellipses, when the (true) area of the
   //all leaves is given as input. That is, every leaf gets the same (true) area

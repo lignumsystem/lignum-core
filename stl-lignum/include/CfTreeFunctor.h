@@ -11,16 +11,6 @@
 namespace Lignum{
 
 
-
-template <class TS,class BUD,class S=Ellipsis>
-class DropAllLeaves
-{
-public:
-  TreeCompartment<TS,BUD>* operator ()(TreeCompartment<TS,BUD>* tc)const;
-  
-};
-
-
 // This functor calculates the vigour values to segment with age=0
 template <class TS,class BUD>
 class CalculateVigours
