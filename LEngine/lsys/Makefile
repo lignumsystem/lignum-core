@@ -5,15 +5,14 @@ AR = $(CCC) -ar
 ARFLAGS= -o
 ARFILE=liblsys.a
 
-LSYSFILES= bearberry.L pine9bp.L 
+LSYSFILES= bearberry.L pine9bp.L cs-plant.L
 SRC=${LSYSFILES:.L=.cpp}
 OBJ=${SRC:.cpp=.o}
 
 AR =  $(CCC) -ar  
 ARFLAGS = -o 
 
-INCLUDE= -I../include -I/usr/include -I../../c++adt/include \
-         -I../../stl-lignum/include
+INCLUDE= -I../include -I../../c++adt/include -I../../stl-lignum/include
 
 .SUFFIXES: .L .cpp
 
