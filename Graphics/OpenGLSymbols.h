@@ -32,7 +32,8 @@ const int CFTREES_LIST = 22;
 const int HWTREES_LIST = 23;
 const int CFNEEDLES_LIST = 24;
 const int HWLEAVES_LIST = 25;
-
+const int FOREST_LIST_STEMS = 26;
+const int FOREST_LIST_NEEDLES = 27;
 
 static float NEEDLE_AREA = 0.00015; 
 static float NEEDLE_LENGTH = 0.05;      // Needle length

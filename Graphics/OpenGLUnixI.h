@@ -289,6 +289,129 @@ int VisualizeCfTree(Tree<TS,BUD> &tree)
 
 
 
+
+
+
+
+
+
+
+
+template <class TS,class BUD>
+  int VisualizeTreesAndVoxelSpace(vector<Tree<TS,BUD> *> trees 
+     ,VoxelSpace &vs)
+  {
+       
+ 
+
+    InitDrawing();
+    InitOpenGL();
+    init_window();
+
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    
+    glTexEnvf(GL_TEXTURE_2D, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
+    
+    stemtexture.Load("Manty.bmp", 512, 512);
+    
+    
+    cout << "tekstuurit ladattu..." << endl;
+
+    
+    int text_num = 0;
+    glNewList(FOREST_LIST, GL_COMPILE);
+    // glBindTexture(GL_TEXTURE_2D, text_num);
+    
+    for (int i=0; i<trees.size(); i++)
+      {
+	LGMdouble ini = 0.0;
+	Tree<TS, BUD>* tree = trees[i];
+
+	
+	DrawStemFunctor<TS,BUD> stemfunctor;
+        stemfunctor.min_rad = -99;
+        stemfunctor.max_rad = 999;
+        ForEach(*tree, stemfunctor);      
+      }
+    glEndList();
+    
+    cout << "puu esityslistat luotu " << endl;
+   
+    
+
+
+    cam_z = 3;
+    cam_x = 4;
+
+    lookat_z = 5;
+
+    glutMainLoop ();
+    
+
+    return 1;
+  }
+
+
+
+
+template <class TS,class BUD>
+void AddScotsPine(Tree<TS,BUD> &tree, int mode)
+{
+  if (mode == 1) //runko
+    {
+      GLfloat mat_amb[] = { 0.2, 0.3, 0.4, 1.0 }; 
+      GLfloat mat_dif[] = { 0.2, 0.4, 0.4, 1.0 }; 
+  
+      GLfloat mat_amb2[] = { 1.0, 0.5, 0.4, 1.0 }; 
+      glMaterialfv(GL_FRONT, GL_AMBIENT, mat_amb); 
+      glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_dif);
+      
+
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+      glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);  
+  
+      glDisable(GL_LIGHTING);
+      DrawStemFunctor<TS,BUD> stemfunctor;
+      stemfunctor.min_rad = -99;
+      stemfunctor.max_rad = 999;
+      ForEach(tree, stemfunctor);
+    }
+  
+  if (mode == 2) //neulaset
+    {
+      glEnable(GL_BLEND);
+      //UseTextures();
+      DrawNeedlesFunctor<TS, BUD> needles_functor;
+
+      glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+      glDisable(GL_LIGHTING);
+      
+      glPushMatrix();
+      glEnable(GL_CULL_FACE);
+      glCullFace(GL_FRONT);  
+      ForEach(tree, needles_functor); 
+      glCullFace(GL_BACK); 
+      ForEach(tree, needles_functor); 
+      
+      glDisable(GL_CULL_FACE);
+      glPopMatrix();
+      
+    
+      glDisable(GL_BLEND);
+      
+    }
+}
+
+ 
+
+
+
+
 }//closing namespace Lignum
 
 

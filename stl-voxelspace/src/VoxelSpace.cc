@@ -566,11 +566,12 @@ namespace Lignum {
   //
   void VoxelSpace::draw()
   {
-#ifdef _MSC_VER
+    //#ifdef _MSC_VER
     int num = 0;
     vector<VisualCube> cubes;
     vector<VisualCube> ordered_cubes;
 
+    cout << "koko " << Xn << " " << Yn << " " << Zn << endl;
     for(int i1=0; i1<Xn; i1++)
       for(int i2=0; i2<Yn; i2++)
 	for(int i3=0; i3<Zn; i3++)
@@ -601,6 +602,8 @@ namespace Lignum {
 	      }
 	  }
 
+    cout << "kuutioita jossa tavaraa " << cubes.size() << endl;
+
     for (int i = 0; i<num; i++)
       {
 	int max_dist = -10;
@@ -623,6 +626,7 @@ namespace Lignum {
 	  }
       }
 
+    cout << "piirtäminen " << endl;
     glPushMatrix();
 					
     glDisable(GL_LIGHTING);
@@ -646,7 +650,9 @@ namespace Lignum {
     glLineWidth(1);
 
     int s = ordered_cubes.size();
-    for (i = 0; i< s; i++)
+
+    cout << "kuutioita " << endl;
+    for (int i = 0; i< s; i++)
       {
 	VisualCube cube = cubes[i];
 		
@@ -748,8 +754,8 @@ namespace Lignum {
       }
     glEnable(GL_LIGHTING);
     glPopMatrix();
-    glEndList();
-#endif
+    // glEndList();
+    //#endif
   }
 
   //Write voxel boxes  to file. If 'all' is true  write all boxes else

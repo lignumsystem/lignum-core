@@ -29,6 +29,8 @@ using namespace Lignum;
 #include "OpenGLSymbols.h"
 #include <CTexture.h>
 #include <texture.h>
+#include <tga.h>
+#include <VoxelSpace.h>
 
 //#include <dpylc.h>
 //#include <CTexture.h>
@@ -47,6 +49,8 @@ float TEXTURE_LIMIT_MIN = 0.05;
 
 bool boolVoxelWithLines = false;
 bool boolShowVoxel = true;
+bool boolVisualizeVoxelSpace = false;
+VoxelSpace *voxel = NULL;
 
 int hours = 6;
 double minutes = 0;
@@ -102,6 +106,8 @@ void make_cylinder(float radius, float lenght, float radius_top=0.0);
 */
 void check_values(void);
 void setLight(void);
+
+
 /*
 void setSubLight(void);
 void Make_Leaves(void);
@@ -131,19 +137,17 @@ GLboolean       SHADOWS = true;
 GLboolean       HEARTWOOD = false;
 
 GLboolean       GRAP_ON_ALL_TIME = false;
-
 GLboolean       LIGHT_DIRECTION = false;
 GLboolean       LEAVES_ON = false;
 GLboolean       WALL_ON = false;
 GLboolean       GROUND_ON = true;
 GLboolean       ANTIALIASING_ON = true;
-
 GLboolean       LIGHTING_ON = false;
 GLboolean       READ_LEAVES = false;
 GLboolean       drawed = false;
-GLboolean       blackBackGround = true;
+GLboolean       blackBackGround = false;
 
-extern CTexture        text;
+CTexture        text;
 
 GLfloat lightx=1, lighty=3, lightz=2, lightw=0;
 GLfloat lightZeroPosition[] = {lightx, lighty, lightz, lightw};
@@ -154,11 +158,11 @@ int window1 = 0;
 int window2 = 0;
 int sub_window = 0;
 int sub_window2 = 0;
-
-extern GLfloat cam_x;
-extern GLfloat cam_y;
-extern GLfloat cam_z;
-
+/*
+GLfloat cam_x;
+GLfloat cam_y;
+GLfloat cam_z;
+*/
 double cam_x_old=5.0;
 double cam_y_old=0.0;
 double cam_z_old=1.0;
@@ -322,12 +326,28 @@ void redraw(void)
   setLight();
 
   
-  DrawTree();
-  DrawBuds();
-  DrawFoliage();
+  if (glIsList(FOREST_LIST_STEMS))
+    {
+      glCallList(FOREST_LIST_STEMS);
+      glCallList(FOREST_LIST_NEEDLES);
+    }
+  else
+    {
+      DrawTree();
+      DrawBuds();
+      DrawFoliage();
+    }
 
-  if (boolShowVoxel)
-    DrawVoxelCubes();  
+  if (boolVisualizeVoxelSpace)
+    if (voxel)
+      {
+	//	cout << "Visualization of VoxelSpace " << endl;
+	voxel->draw();
+      }
+
+  //vanha tapa
+  //if (boolShowVoxel)
+  //  DrawVoxelCubes();  
 
   glPopMatrix();   
   glutSwapBuffers();        // Swap buffers  
@@ -1011,8 +1031,6 @@ void CTexture::use()
 {
   glEnable(GL_TEXTURE_2D);
   glBindTexture(GL_TEXTURE_2D, texturenum);
-  //cout << "vaihdetaan runkotekstuuriksi, jonka nro on " << texturenum << endl;
- 
 }
 
 void CTexture::do_not_use()
@@ -1099,7 +1117,75 @@ void LoadImage(char *filename) {
 
 
 
+void InitGraphics()
+{
+  InitDrawing();
+  InitOpenGL();
+  init_window();
+  
+  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  
+  glTexEnvf(GL_TEXTURE_2D, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+  glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
+}
 
+
+
+void ForestStemsBegin()
+{
+  glNewList(FOREST_LIST_STEMS, GL_COMPILE);
+ 
+}
+
+void ForestNeedlesBegin()
+{
+  glNewList(FOREST_LIST_NEEDLES, GL_COMPILE);
+ 
+}
+
+
+void ForestEnd()
+{
+  glEndList();
+}
+
+
+void UseBmpTexture(char *filename)
+{
+  CTexture tex;
+  tex.Load(filename, 512, 512);
+  tex.use();
+}
+
+void UseTgaTexture(char *filename)
+{
+  char buff[15];
+  tga_t image;
+  
+  glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+  glEnable(GL_DEPTH_TEST);
+  glEnable(GL_TEXTURE_2D);
+ 
+  int num = image.GenId(); // let OpenGL give us a texture id
+  image.Load(filename, num);
+
+  glBindTexture(GL_TEXTURE_2D,num);
+}
+
+
+void AddVoxelSpaceToVisualization(VoxelSpace *vs)
+{
+  boolVisualizeVoxelSpace = true;
+  voxel = vs;
+}
+
+void StartVisualization()
+{
+  glutMainLoop ();
+}
 
 #include "OpenGLUnixI.h"
 

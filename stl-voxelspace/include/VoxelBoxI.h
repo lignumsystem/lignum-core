@@ -54,7 +54,11 @@ namespace Lignum {
 
       SetValue(ts, Qabs, GetValue(ts, Qabs)+qabs);
 
-      SetValue(ts, Qin, GetValue(ts, Qin)+b.getQin()/num_parts);  
+      SetValue(ts, Qin, GetValue(ts, Qin)+b.getQin()/num_parts);
+
+     /*  cout <<  "Segment Z: " << GetPoint(ts).getZ() << " Box: "  */
+/* 	   <<  b.corner1.getX() << " " <<  b.corner1.getY() << " " << b.corner1.getZ()  */
+/* 	   << " Qin: " << b.getQin() << endl;  */
     }
 
 

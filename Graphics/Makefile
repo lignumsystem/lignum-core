@@ -26,7 +26,7 @@ CCCFLAGS = -c  #-prelink -ptused   -ptv  #  -fullwarn
 
 INCLUDE = -I. -I../stl-lignum/include -I../c++adt/include \
           -I../Firmament/include -I/usr/freeware/include \
-          -I/usr/X11R6/include -I/sw/include
+          -I/usr/X11R6/include -I/sw/include -I../stl-voxelspace/include -I../ScotsPine/include
 
 #Glut library comes in 64 and 32 bit versions on SGI.  However neither CC or g++ can 
 #automatically search right library but we must explicitelly tell with LIBD where to search.

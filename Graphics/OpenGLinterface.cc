@@ -82,7 +82,7 @@ extern std::vector<NEEDLE_PLANE> nplanes;
 void InitOpenGL()
 {
   
-  glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+  glClearColor(0.9f, 0.9f, 0.9f, 0.9f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
 	glLightfv(GL_LIGHT0, GL_POSITION, light.LightPosition);
@@ -368,7 +368,7 @@ void DrawOrderedFoliage()
 
 	 glPushMatrix();
 	 glEnable(GL_CULL_FACE);
-     glCullFace(GL_FRONT);     
+	 glCullFace(GL_FRONT);     
 	 DrawOrderedNeedles();
  
 	 
