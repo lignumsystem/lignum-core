@@ -47,7 +47,7 @@ namespace Lignum {
 
       LGMdouble xx = GetValue(leaf, LGAA);   //LGAA is defined in LGMSymbols.h
       b.addLeafArea(xx);
-      b.addOneLeaf();
+      b.addOneLeaf(); //increase the number of leaves by one
       xx = GetValue(leaf, LGAWf);
       b.addLeafMass(xx);
     }
