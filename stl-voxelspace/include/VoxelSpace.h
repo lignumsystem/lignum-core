@@ -77,7 +77,7 @@ namespace Lignum {
       }
       
       void updateStar();
-      void resetQinQabs();
+      void reset();
       void dumpTrees();
 
       void setLightValues();
