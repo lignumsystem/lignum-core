@@ -104,7 +104,7 @@ namespace Lignum{
 	      Point np(position.getX()+xx, position.getY()+yy, position.getZ()+zz);		
 
 	      std::list<BroadLeaf<S>*>& leaf_list = GetLeafList(*hwts);
-	      std::list<BroadLeaf<S>*>::iterator I;
+	      typename std::list<BroadLeaf<S>*>::iterator I;
 	      for(I = leaf_list.begin(); I != leaf_list.end(); I++) 
 		{
 		  LGMdouble area = GetValue(**I, A);   //BroadLeaf returns true area of the leaf
