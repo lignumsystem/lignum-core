@@ -386,8 +386,9 @@ void PrintTreeInformation<TS,BUD>::operator() (Tree<TS,BUD>&  tr) {
   cout << "P: " << GetValue(tr,TreeP) << " M: "
        << GetValue(tr,TreeM) << endl;
   cout << "age: " << values.age << endl;
-  cout << "Height: " << values.height << "Height of CB: " <<
+  cout << "Height: " << values.height << " Height of crown base: " <<
     values.Hc << endl;
+  cout << "Basal diameter, cm: " << 200*values.bottom_rad << endl;
   cout << "sum_Wf: " << values.sum_Wf << endl;
   cout << "sum_Wf_new: " << values.sum_Wf_new << endl;
   cout << "sum_wood_in_newparts: " << values.sum_wood_in_newparts
@@ -397,48 +398,57 @@ void PrintTreeInformation<TS,BUD>::operator() (Tree<TS,BUD>&  tr) {
   cout << "sum_Wb: " << values.sum_Wb << endl;
   cout << "sum_Wsw: " << values.sum_Wsw << endl;
   cout << "sum_Whw: " << values.sum_Whw << endl;
-  if(values.num_segments > 0) {
-    cout << "mean_Qabs: " << values.sum_Qabs/(double)values.num_segments
-       << endl;
+  if(values.num_s_fol > 0) {
+    cout << "Qabs: " << values.sum_Qabs <<"  mean_Qabs: " 
+	 << values.sum_Qabs/(double)values.num_s_fol << endl;
+    cout << "Qin: " << values.sum_Qin <<  "  mean_Qin: "
+	 << values.sum_Qin/(double)values.num_s_fol << endl;
   }
 
   else {
-    cout << "mean_Qabs: " << 0.0 << endl;
+    cout << "Qabs: " << values.sum_Qabs  << "  mean_Qabs: " << 0.0 << endl;
+    cout << "Qin: " << values.sum_Qin  << "  mean_Qin: " <<  0.0 << endl;
   }
-  if(values.num_segments > 0) {
-    cout << "mean_Qin: " << values.sum_Qin/(double)values.num_segments
-       << endl;
-  }
-  else {
-    cout << "mean_Qin: " <<  0.0 << endl;
-  }
-  if(values.num_s_fol > 0)
-    cout << "mean_Qabs: " << values.sum_Qabs/(double)values.num_s_fol << endl;
-  else
-    cout << "mean_Qabs: " << 0.0 << endl;
+  
+  if(values.sum_Qin > R_EPSILON && values.sum_Wf > R_EPSILON) {
+    LGMdouble Qi = GetFirmament(tr).diffuseBallSensor();
+    if(Qi > R_EPSILON)
+      cout << "Qabs/(Qin*Wf) = " << values.sum_Qabs/(Qi*values.sum_Wf)
+	   << "    (should be 2...3)" << endl;
+       }
 
   cout << "num_buds: " << values.num_buds << endl;
   cout << "num_segments: " << values.num_segments << 
        "  no. segments w/ foliage: " << values.num_s_fol << endl;
   cout << "No. branches,  living: " << values.num_br_l << " dead: "
-       << values.num_br_l << endl;
+       << values.num_br_d << endl;
   if(values.num_br_l > 0)
     cout << "Mean len of living branches: " <<
       values.sum_br_len/(double)values.num_br_l << endl;
   else
     cout << "Mean len of living branches: " << 0.0 << endl;
+  if(values.num_br_d > 0)
+    cout << "Mean len of dead branches: " <<
+      values.sum_br_len_d/(double)values.num_br_d << endl;
+  else
+    cout << "Mean len of dead branches: " << 0.0 << endl;
 
-  cout << "height: " << values.height << endl;
-  cout << "bottom_rad: " << values.bottom_rad << endl << endl;
-  cout << "Height, m    Radius, cm,   HwRadius, cm" << endl;
+  cout << "Height, m    Diameter, cm,   HwDiameter, cm" << endl;
   for(int i1 = 0; i1 < values.taper_hei.size(); i1++) {
     cout << values.taper_hei[i1] << " " <<
-      100.0*values.taper_rad[i1]<< " " <<
-      100.0*values.taper_radh[i1] << endl;
+      200.0*values.taper_rad[i1]<< " " <<
+      200.0*values.taper_radhw[i1] << endl;
   }
   cout << endl;
-}
 
+  cout << "Height of whorl, m     Mean branch length, m" << endl;
+  for(int i1 = 0; i1 < values.mean_br_h.size(); i1++) {
+    cout << values.mean_br_h[i1] << " " <<
+      values.mean_brl[i1] << endl;
+
+  }
+
+}
 
 template <class TS,class BUD>
 TreeDataStruct& TreeData<TS,BUD>::operator()
@@ -468,35 +478,34 @@ TreeDataStruct& TreeData<TS,BUD>::operator()
       if (_age > stru.age)
 	stru.age = _age;
       
-      stru.sum_Qabs += GetValue(*ts, Qabs);
-      stru.sum_Qin += GetValue(*ts, Qin);
-
       stru.sum_Wf += GetValue(*ts, Wf);
-      if(GetValue(*ts, Wf) > R_EPSILON)
+      if(GetValue(*ts, Wf) > R_EPSILON) {
 	stru.num_s_fol++;
-
-      LGMdouble rho_ = GetValue(tt, rho);
+	stru.sum_Qabs += GetValue(*ts, Qabs);
+	stru.sum_Qin += GetValue(*ts, Qin);
+      }
+  
+    LGMdouble rho_ = GetValue(tt, rho);
 
       if(_age == 0) {
 	stru.sum_Wf_new += GetValue(*ts, Wf);
-	stru.sum_wood_in_newparts += rho_*L*2.0*PI_VALUE*r_*r_;
-	stru.sum_wood_new += rho_*L*2.0*PI_VALUE*r_*r_;
+	stru.sum_wood_in_newparts += rho_*l_*2.0*PI_VALUE*r_*r_;
+	stru.sum_wood_new += rho_*l_*2.0*PI_VALUE*r_*r_;
       }
 
-      stru.sum_Wsw += rho_*L*2.0*PI_VALUE*(r_*r_-rh_*rh_);
-      stru.sum_Whw += rho_*L*2.0*PI_VALUE*rh_*rh_;
+      stru.sum_Wsw += rho_*l_*2.0*PI_VALUE*(r_*r_-rh_*rh_);
+      stru.sum_Whw += rho_*l_*2.0*PI_VALUE*rh_*rh_;
 
-      stru.sum_wood_new += rho_*L*2.0*PI_VALUE*
+      stru.sum_wood_new += rho_*l_*2.0*PI_VALUE*
 	(r_*r_ - pow(r_-GetLastAnnualIncrement(*ts),2.0));
       
 
       // if main axis
-      //      if (ep.getX() == 0 && ep.getY() == 0)
       if(GetValue(*ts, omega) == 1)
 	{
   	  stru.taper_rad.push_back(GetValue(*ts, R)); 
   	  stru.taper_hei.push_back(ep.getZ());
-	  stru.taper_radh.push_back(GetValue(*ts, Rh));
+	  stru.taper_radhw.push_back(GetValue(*ts, Rh));
 
 	  stru.sum_Ws += rho_*L*2.0*PI_VALUE*r_*r_;
 
@@ -504,10 +513,6 @@ TreeDataStruct& TreeData<TS,BUD>::operator()
 
       else
 	stru.sum_Wb += rho_*L*2.0*PI_VALUE*r_*r_;
-
-      //If main branch
-      if(GetValue(*ts, omega) == 2)
-	stru.sum_br_len += l_;
 		
     }
   else if (Bud<TS,BUD>* bud = dynamic_cast<Bud<TS,BUD>*>(tc))
@@ -519,36 +524,53 @@ TreeDataStruct& TreeData<TS,BUD>::operator()
     TreeSegment<TS,BUD>* fs = GetFirstTreeSegment(*ax);
     if(fs != NULL)
       if(GetValue(*fs, omega) == 2) {
-   //is main branch, does it have foliage?
-	AddFoliageUntilSegment<TS,BUD> af(fs);
-	FolCheck fc;
-	AccumulateDown(GetTree(*fs), fc, af);
-	if(fc.result > R_EPSILON) {
-	  stru.num_br_l++;     //only those branches that have foliage
+   //is main branch, does it have foliage, i.e. is it living?
+	LGMdouble fol = GetBranchFoliage(*ax);
+	if(fol > R_EPSILON) {
+	  stru.num_br_l++;
+	  stru.sum_br_len += GetValue(*ax, L);
 	  if(GetPoint(*fs).getZ() < stru.Hc)
 	    stru.Hc = GetPoint(*fs).getZ();
 	}
+	else {
+	  stru.num_br_d++;  
+	  stru.sum_br_len_d += GetValue(*ax, L);
+	}
       }
   }
-
-
+    //calculate mean length of main branches in their whorls
+  else if(BranchingPoint<TS, BUD>* bp =
+	  dynamic_cast<BranchingPoint<TS,BUD>*>(tc)) {
+    std::list<Axis<TS, BUD>*>& axis_ls = GetAxisList(*bp);
+    if(axis_ls.size() > 0) {
+      std::list<Axis<TS, BUD>*>::iterator II = axis_ls.begin();
+      Axis<TS,BUD>* ax = *II;
+      TreeSegment<TS,BUD>* fs = GetFirstTreeSegment(*ax);
+      if(fs != NULL) {
+	if(GetValue(*fs, omega) == 2) {
+	  int num_ax = 0;
+	  LGMdouble tot_len = 0.0;
+	  
+	  while(II != axis_ls.end()) {
+	    ax = *II;       
+	    tot_len += GetValue(*ax, L);
+	    num_ax++;
+	    II++;   
+	  }
+	  if(num_ax == 0)
+	    stru.mean_brl.push_back(0.0);
+	  else
+	    stru.mean_brl.push_back(tot_len/(double)num_ax);
+	  
+	  stru.mean_br_h.push_back(GetPoint(*bp).getZ());
+	}
+      }
+    }
+  }
 
   return stru;
 }
 
-
-template <class TS,class BUD> FolCheck& 
-AddFoliageUntilSegment<TS,BUD>::operator()
-     (FolCheck& fc, TreeCompartment<TS,BUD>* tc)const {
-
-    if(TS* segment = dynamic_cast<TS *>(tc)) {
-      fc.w_f += GetValue(*segment, Wf);
-      if(segment == until) {
-	fc.result = fc.w_f;
-      }
-    }
-  return fc;
-}
 
 
 template <class TS, class BUD>

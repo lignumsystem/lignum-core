@@ -44,6 +44,7 @@ public:
     num_br_l = 0;
     num_br_d = 0;
     sum_br_len = 0.0;
+    sum_br_len_d = 0.0;
 
   }
 
@@ -69,9 +70,10 @@ public:
     if(this->Hc > s.Hc)
       this->Hc = s.Hc;
     this->num_s_fol += s.num_s_fol;
-    this->num_br_l = s.num_br_l;
-    this->num_br_d = s.num_br_d;
-    this->sum_br_len = s.sum_br_len;
+    this->num_br_l += s.num_br_l;
+    this->num_br_d += s.num_br_d;
+    this->sum_br_len += s.sum_br_len;
+    this->sum_br_len_d += s.sum_br_len_d;
   }
 
 
@@ -94,10 +96,13 @@ public:
   int num_s_fol;              //number of segments with foliage
   int num_br_l;               //number of branches living
   int num_br_d;               //number of branches dead
-  LGMdouble sum_br_len;       //total length of branches
+  LGMdouble sum_br_len;       //total length of branches, living
+  LGMdouble sum_br_len_d;     //total length of branches, dead
   std::vector<LGMdouble> taper_rad;
   std::vector<LGMdouble> taper_hei;
-  std::vector<LGMdouble> taper_radh;
+  std::vector<LGMdouble> taper_radhw;
+  std::vector<LGMdouble> mean_brl;
+  std::vector<LGMdouble> mean_br_h;
 };
 
 
@@ -107,40 +112,6 @@ class TreeData
 public:
   TreeDataStruct& operator()(TreeDataStruct& stru,
 			     TreeCompartment<TS,BUD>* tc)const;
-};
-
-//Functor AddFoliageUntilSegment checks if there is foliage above
-//and including this segment
-
- class FolCheck {
-   
- public:
-   FolCheck():w_f(0.0),result(0.0) {}
-   FolCheck& operator = (const FolCheck& fc){
-     w_f = fc.w_f;
-     result = fc.result;
-     return *this;
-   }
-   FolCheck& operator += (const FolCheck& fc){
-     w_f += fc.w_f;
-     result += fc.result;
-     return *this;
-   }
-   LGMdouble w_f;
-   LGMdouble result;
- };
-   
-
-template <class TS, class BUD>
-  class AddFoliageUntilSegment {
-  public:
-  AddFoliageUntilSegment(TreeSegment<TS,BUD>* segment) {
-    until  = segment;
-  }
-  FolCheck& operator ()
-    (FolCheck& w_f, TreeCompartment<TS,BUD>* ts)const;
-  private:
-  TreeSegment<TS,BUD>* until;
 };
 
 
