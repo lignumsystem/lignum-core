@@ -19,8 +19,6 @@ Tree<TS,BUD>::Tree(const Point& p, const PositionVector& d)
   :TreeCompartment<TS,BUD>(p,d,this),f(5,5),axis(p,d,this),
     root_axis(p,d,*this)
 {
-  //force the instantiation of BranchingPoint
-  BranchingPoint<TS,BUD>(p,d,this);
 }
 
 
