@@ -60,12 +60,12 @@ public:
   HwTreeSegment(const Point& p,const PositionVector& pv,
 		const LGMdouble go, const METER l, const METER r,
 		const METER rn,Tree<TS,BUD>* tree)
-		:TreeSegment<TS,BUD>(p,pv,go,l,r,rn,tree){ SetValue(*this, vi, 1.0); }
+  :TreeSegment<TS,BUD>(p,pv,go,l,r,rn,tree){ SetValue(*this, vi, 1.0); }
   void photosynthesis();
   void respiration();
-  void createLeaves(vector<PositionVector>& petiole_directions,
-		    METER pl,METER a,METER b);
-private:
+  virtual void createLeaves(vector<PositionVector>& petiole_directions,
+			    METER pl,METER a,METER b);
+protected:
   list<BroadLeaf*> leaf_ls;
 };
 
