@@ -63,7 +63,7 @@ double Ellipsis::setMinor(double b1)
 }//closing namespace cxxadt
 
 #ifdef ELLIPSIS
-#include <stream.h>
+#include <iostream>
 #include <stdlib.h>
 using namespace cxxadt;
 int main()
