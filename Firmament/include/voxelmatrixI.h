@@ -11,8 +11,8 @@ Matrix<TS,BUD>::Matrix(vector<Tree<TS, BUD> *> trees, double voxeledge)
 	int num = trees.size();
 
 	BoundingBox bbox;
-	FindBoundingBox<ScotsPineVisual, ScotsBud> fbb;
-	Tree<ScotsPineVisual, ScotsBud > *tree;
+	FindBoundingBox<TS,BUD> fbb;
+	Tree<TS,BUD> *tree;
 
 	for(i=0; i<num; i++)
 	  {
