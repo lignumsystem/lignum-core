@@ -14,6 +14,9 @@ LIBOBJ = ${LIBSRC:.cc=.o}
 BIRCHSRC = birch.cc
 BIRCHOBJ =  ${BIRCHSRC:.cc=.o}
 
+PINESRC = pine.cc
+PINEOBJ = ${PINESRC:.cc=.o}
+
 FORESTSRC = forest.cc
 FORESTOBJ = ${FORESTSRC:.cc=.o}
 
@@ -85,6 +88,12 @@ gnubirch:
 	make "CCC=g++" "CCCFLAGS=-c" "OPTIMIZE=-g" \
              "AR=ar"  "ARFLAGS=rv" "LIBD=lib32" "LSYS=birch.L" birch
 
+pine: l2c $(PINEOBJ) $(LIB1) $(LIB2) $(LIB3)  $(LIB4) $(LIB5) $(LIB6)   
+	$(CCC)  -o $@ $(INCLUDE) $(OPTIMIZE) $(PINEOBJ) $(LIBFLAGS) $(LIBS)
+gnupine: 
+	make "CCC=g++" "CCCFLAGS=-c" "OPTIMIZE=-g" \
+             "AR=ar"  "ARFLAGS=rv" "LIBD=lib32" "LSYS=pine9bp.L" pine
+
 forest: l2c $(FORESTOBJ) $(LIB1) $(LIB2) $(LIB3)  $(LIB4) $(LIB5) $(LIB6)  
 	$(CCC)  -o $@ $(INCLUDE) $(OPTIMIZE) $(FORESTOBJ) $(LIBFLAGS) $(LIBS)
 l2c:	
@@ -128,5 +137,5 @@ distclean: clean
 depend:
 	(cd ../../Graphics; make "CCC=$(CCC)"  depend)
 	(cd ../L2C; make "CCC=$(CCC)"  depend)
-	$(CCC) -M $(INCLUDE) $(SRC) $(LIBSRC) $(BIRCHSRC) $(FORESTSRC)  > Makedepend
+	$(CCC) -M $(INCLUDE) $(SRC) $(LIBSRC) $(BIRCHSRC) $(PINESRC) $(FORESTSRC)  > Makedepend
 
