@@ -2,7 +2,6 @@
 #include <iostream.h>
 #include <list>
 #include <algorithm>
-#include <list>
 #include <Tree.h>
 #include <MyTreeSegment.h>
 #include <MyBud.h>
@@ -28,8 +27,6 @@ CString ParseCommandLine(int argc, char *argv[],const CString& flag)
   return clarg;
 }
 
-
-
 int main(int argc, char *argv[])
 {
   
@@ -45,6 +42,7 @@ int main(int argc, char *argv[])
   if (clarg != empty)
     InitializeTree(hw_tree,clarg);
 
+  
   //Example 1.
   //create a tree with a structure [TS,[[B],[B]],B]
   //i.e, [TS,BP,B] which expands to [TS,[A,A],B] and to [TS,[[B],[B]],B]
@@ -218,8 +216,6 @@ int main(int argc, char *argv[])
   DisplayStructureData id;
   PropagateUp(cf_tree,id,DisplayStructureFunctor<MyCfTreeSegment,MyBud>());
   cout << endl;
-
-
 }
 
 

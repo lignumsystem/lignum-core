@@ -16,7 +16,7 @@ SUPPRESS = #-w 1155 -w 1183
 
 CCCFLAGS = -c -ptv -prelink #-fullwarn 
 
-INCLUDE = -Iinclude -I../c++adt/include  -I../abstypes/include
+INCLUDE = -Iinclude -I../c++adt/include 
 
 STL     = -I/usr/include/CC
 

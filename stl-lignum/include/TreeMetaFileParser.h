@@ -6,6 +6,7 @@
 
 using namespace cxxadt;
 
+
 class TreeMetaFileParser{
 public:
   TreeMetaFileParser(const CString& meta_file);
@@ -20,11 +21,12 @@ protected:
 private:
   enum FILE_MODE {PARAMETER,FUNCTION,INITIAL};
   FILE_MODE file_mode;
-  Table<CString,CString> file_tables[3]; //tables for the parameter files and functions
+  cxxadt::Table<CString,CString> file_tables[3]; //tables for the parameter files and functions
   // and initialization files
-  CString meta_file;     //meta file (describes where the actual files exists)
+  cxxadt::CString meta_file;     //meta file (describes where the actual files exists)
   Lex lex;               //lexical analysator for tokenizing the input file
 };
+
 
 #endif //TREE_METAFILE_PARSER_H
 
