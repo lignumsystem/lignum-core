@@ -54,14 +54,18 @@ namespace Lignum{
   };
 
   template <class TS, class BUD>
-  class AddAge{
+  class IncreaseAge{
   public:
+    IncreaseAge(LGMdouble a = 1.0):age(a){}
     TreeCompartment<TS,BUD>* operator()(TreeCompartment<TS,BUD>* tc)const
     {
-      SetValue(*tc,LGAage,GetValue(*tc,LGAage)+1);
+      SetValue(*tc,LGAage,GetValue(*tc,LGAage)+age);
       return tc;
     }
+  private:
+    LGMdouble age;
   };
+  
 
   template <class TS, class BUD>
   class TreeAging{
