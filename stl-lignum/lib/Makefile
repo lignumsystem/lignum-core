@@ -34,8 +34,8 @@ CCCFLAGS =   -c
 
 .SUFFIXES: .o .cc
 
-AR = $(CCC) -ar  
-ARFLAGS = -o 
+AR = $(ARCOMMAND)
+ARFLAGS = $(ARCOMMANDFLAGS)
 ARFILE = libLGM.a
 
 

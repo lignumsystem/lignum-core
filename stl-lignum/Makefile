@@ -12,6 +12,9 @@ CCC = CC -64
 #OPTIMIZE = -Ofast=ip28 -IPA
 OPTIMIZE   = -g 
 
+ARCOMMAND =  $(CCC) -ar  
+ARCOMMANDFLAGS = -o 
+
 SUPPRESS = #-w 1155 -w 1183
 
 CCCFLAGS = -c -ptv -prelink #-fullwarn 
@@ -44,10 +47,12 @@ algorithms: $(ALGOBJ) $(LIB1)  $(LIB2) $(LIB3)
 broadleaf: $(BLOBJ) $(LIB1)  $(LIB2) $(LIB3)
 	$(CCC) -ptv  -o $@ $(INCLUDE) $(OPTIMIZE) $(BLOBJ) $(LIBFLAGS) $(LIBS)	
 $(LIB1):
-	(cd ../c++adt/lib; make "CCC=$(CCC)" "CCCFLAGS=$(CCCFLAGS)" "OPTIMIZE=$(OPTIMIZE)" $@)
+	(cd ../c++adt/lib; make "CCC=$(CCC)" "CCCFLAGS=$(CCCFLAGS)" \
+         "OPTIMIZE=$(OPTIMIZE)" "AR=$(ARCOMMAND)"  "ARFLAGS = $(ARCOMMANDFLAGS)" $@)
 
 $(LIB2):
-	(cd lib; make "CCC=$(CCC)" "CCCFLAGS=$(CCCFLAGS)" "OPTIMIZE=$(OPTIMIZE)" $@)
+	(cd lib; make "CCC=$(CCC)" "CCCFLAGS=$(CCCFLAGS)" "OPTIMIZE=$(OPTIMIZE)" "AR=$(ARCOMMAND)" \
+         "ARFLAGS = $(ARCOMMANDFLAGS)" $@)
 
 $(LIB3):
 	(cd ../Firmament; make "CCC=$(CCC)" "CCCFLAGS=$(CCCFLAGS)" \
@@ -94,8 +99,8 @@ main.o: /usr/include/locale_attr.h ../c++adt/include/ParametricCurve.h
 main.o: /usr/include/CC/vector /usr/include/CC/stl_range_errors.h
 main.o: /usr/include/CC/stl_vector.h /usr/include/CC/stl_bvector.h
 main.o: /usr/include/float.h ../c++adt/include/Point.h /usr/include/math.h
-main.o: ../c++adt/include/mathsym.h ../c++adt/include/PointI.h
-main.o: ../c++adt/include/PositionVector.h ../c++adt/include/RMatrix.h
+main.o: ../c++adt/include/PointI.h ../c++adt/include/PositionVector.h
+main.o: ../c++adt/include/mathsym.h ../c++adt/include/RMatrix.h
 main.o: ../c++adt/include/TMatrix.h ../c++adt/include/TMatrixI.h
 main.o: include/Algorithms.h /usr/include/CC/functional include/LGMdecl.h
 main.o: include/LGMSymbols.h /usr/include/CC/map /usr/include/CC/stl_tree.h
@@ -109,11 +114,12 @@ main.o: ../c++adt/include/TableI.h ../c++adt/include/Lex.h
 main.o: include/RootSystem.h include/Bud.h include/BudI.h
 main.o: include/DefaultBud.h include/BranchingPoint.h
 main.o: include/BranchingPointI.h include/TreeSegment.h
-main.o: include/TreeSegmentI.h include/HwTreeSegment.h include/BroadLeaf.h
-main.o: ../c++adt/include/Ellipsis.h include/CfTreeSegment.h include/Axis.h
-main.o: include/AxisI.h ../c++adt/include/ConnectionMatrix.h
-main.o: ../Firmament/include/Firmament.h include/TreeI.h
-main.o: include/MyTreeSegment.h include/MyBud.h
+main.o: include/TreeSegmentI.h include/TreeSegmentMetabolismI.h
+main.o: include/HwTreeSegment.h include/BroadLeaf.h
+main.o: ../c++adt/include/Ellipsis.h ../Firmament/include/Firmament.h
+main.o: include/HwTreeSegmentI.h include/CfTreeSegment.h include/Axis.h
+main.o: include/AxisI.h ../c++adt/include/ConnectionMatrix.h include/TreeI.h
+main.o: include/TreeMetabolismI.h include/MyTreeSegment.h include/MyBud.h
 algorithms.o: /usr/include/stdlib.h /usr/include/standards.h
 algorithms.o: /usr/include/sgidefs.h /usr/include/CC/iostream.h
 algorithms.o: /usr/include/memory.h /usr/include/stddef.h
@@ -138,8 +144,8 @@ algorithms.o: ../c++adt/include/ParametricCurve.h /usr/include/CC/vector
 algorithms.o: /usr/include/CC/stl_range_errors.h /usr/include/CC/stl_vector.h
 algorithms.o: /usr/include/CC/stl_bvector.h /usr/include/float.h
 algorithms.o: ../c++adt/include/Point.h /usr/include/math.h
-algorithms.o: ../c++adt/include/mathsym.h ../c++adt/include/PointI.h
-algorithms.o: ../c++adt/include/PositionVector.h ../c++adt/include/RMatrix.h
+algorithms.o: ../c++adt/include/PointI.h ../c++adt/include/PositionVector.h
+algorithms.o: ../c++adt/include/mathsym.h ../c++adt/include/RMatrix.h
 algorithms.o: ../c++adt/include/TMatrix.h ../c++adt/include/TMatrixI.h
 algorithms.o: include/Algorithms.h /usr/include/CC/functional
 algorithms.o: include/LGMdecl.h include/LGMSymbols.h /usr/include/CC/map
@@ -154,11 +160,12 @@ algorithms.o: ../c++adt/include/TableI.h ../c++adt/include/Lex.h
 algorithms.o: include/RootSystem.h include/Bud.h include/BudI.h
 algorithms.o: include/DefaultBud.h include/BranchingPoint.h
 algorithms.o: include/BranchingPointI.h include/TreeSegment.h
-algorithms.o: include/TreeSegmentI.h include/HwTreeSegment.h
-algorithms.o: include/BroadLeaf.h ../c++adt/include/Ellipsis.h
-algorithms.o: include/CfTreeSegment.h include/Axis.h include/AxisI.h
-algorithms.o: ../c++adt/include/ConnectionMatrix.h
-algorithms.o: ../Firmament/include/Firmament.h include/TreeI.h
+algorithms.o: include/TreeSegmentI.h include/TreeSegmentMetabolismI.h
+algorithms.o: include/HwTreeSegment.h include/BroadLeaf.h
+algorithms.o: ../c++adt/include/Ellipsis.h ../Firmament/include/Firmament.h
+algorithms.o: include/HwTreeSegmentI.h include/CfTreeSegment.h include/Axis.h
+algorithms.o: include/AxisI.h ../c++adt/include/ConnectionMatrix.h
+algorithms.o: include/TreeI.h include/TreeMetabolismI.h
 algorithms.o: include/MyTreeSegment.h include/MyBud.h
 broadleaf.o: /usr/include/stdlib.h /usr/include/standards.h
 broadleaf.o: /usr/include/sgidefs.h /usr/include/CC/iostream.h
@@ -184,8 +191,8 @@ broadleaf.o: ../c++adt/include/ParametricCurve.h /usr/include/CC/vector
 broadleaf.o: /usr/include/CC/stl_range_errors.h /usr/include/CC/stl_vector.h
 broadleaf.o: /usr/include/CC/stl_bvector.h /usr/include/float.h
 broadleaf.o: ../c++adt/include/Point.h /usr/include/math.h
-broadleaf.o: ../c++adt/include/mathsym.h ../c++adt/include/PointI.h
-broadleaf.o: ../c++adt/include/PositionVector.h ../c++adt/include/RMatrix.h
+broadleaf.o: ../c++adt/include/PointI.h ../c++adt/include/PositionVector.h
+broadleaf.o: ../c++adt/include/mathsym.h ../c++adt/include/RMatrix.h
 broadleaf.o: ../c++adt/include/TMatrix.h ../c++adt/include/TMatrixI.h
 broadleaf.o: include/Algorithms.h /usr/include/CC/functional
 broadleaf.o: include/LGMdecl.h include/LGMSymbols.h /usr/include/CC/map
@@ -200,9 +207,10 @@ broadleaf.o: ../c++adt/include/TableI.h ../c++adt/include/Lex.h
 broadleaf.o: include/RootSystem.h include/Bud.h include/BudI.h
 broadleaf.o: include/DefaultBud.h include/BranchingPoint.h
 broadleaf.o: include/BranchingPointI.h include/TreeSegment.h
-broadleaf.o: include/TreeSegmentI.h include/HwTreeSegment.h
-broadleaf.o: include/BroadLeaf.h ../c++adt/include/Ellipsis.h
-broadleaf.o: include/CfTreeSegment.h include/Axis.h include/AxisI.h
-broadleaf.o: ../c++adt/include/ConnectionMatrix.h
-broadleaf.o: ../Firmament/include/Firmament.h include/TreeI.h
+broadleaf.o: include/TreeSegmentI.h include/TreeSegmentMetabolismI.h
+broadleaf.o: include/HwTreeSegment.h include/BroadLeaf.h
+broadleaf.o: ../c++adt/include/Ellipsis.h ../Firmament/include/Firmament.h
+broadleaf.o: include/HwTreeSegmentI.h include/CfTreeSegment.h include/Axis.h
+broadleaf.o: include/AxisI.h ../c++adt/include/ConnectionMatrix.h
+broadleaf.o: include/TreeI.h include/TreeMetabolismI.h
 broadleaf.o: include/MyTreeSegment.h include/MyBud.h
