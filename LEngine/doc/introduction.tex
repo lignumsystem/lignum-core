@@ -2,57 +2,104 @@
 
 Functional-structural tree models (FSTM) try to determine dynamics and
 growth of woody perennial  plants by assessing physiological processes
-(function)  in their three  dimensional arborescent  form (structure).
-Physiological  processes  or  plant  metabolism involves  for  example
-photosynthesis of  the foliage  using the radiation  regime encircling
-the  plant, respiration,  flow  of water,  nutrients  or hormones  and
-allocation of  nutritive substances.  The  three dimensional structure
-of the  tree and its  changes in time  should be modelled in  terms of
-detailed  botanical or  morphological  units rather  than with  highly
-aggregated plant compartments.
+in  their  (three dimensional)  arborescent  form.  The  physiological
+processes or  plant metabolism involves for  example photosynthesis of
+the foliage  depending on the  radiation regime encircling  the plant,
+respiration, flow  of water, nutrients  or hormones and  allocation of
+nutritive substances.   The structure of  the tree and its  changes in
+time  is  described  for  example with  state  variables  representing
+different  aggregated  tree compartments  or  with detailed  modelling
+components faithful to botanical or morphological units of plants.
 
-The  term 'functional-structural  model' was  introduced  in [Silva97]
-that compiles  a series of  articles where the  focus was set  on what
+The term 'functional-structural model' was introduced in [Mäkelä et al
+97] that compiles a series of articles where the focus was set on what
 happens in  a single  plant element (such  as shoot,  internode, leaf,
 root hairs etc.)  and  defining their interactions.  Obviously, due to
 possibly thousands of interacting units such models are implemented as
 computer programs where the program acts as the model and as the means
-to follow,  solve and analyse the  model behaviour (\textit{In silico}
+to follow,  solve and analyse the model  behaviour (\textit{In silico}
 simulations).
 
-In  Montpellier, a  city with  over  10 centuries  of known  botanical
-heritage, the modelling group AMAP  at CIRAD ('French school') has the
-basis for  their plant growth  and analysis systems  AMAPsim, AMAPpara
-and AMAPmod  in the architectural analysis by  Halle\'{e} grouping the
-morphological caharacteristics of tropical trees into 25 model classes
-and the notion  of reiteration observed by Oldeman  where a plant body
-is able to duplicate its existing structure.
+The research group at the  Department of Forest Ecology, University of
+Helsinki  ('Helsinki school')  has  since early  1970's monitored  and
+modelled  functioning  of  trees  and  their  environment  [Hari  99].
+Analysis  of the  collected data  originally focused  on understanding
+metabolism of  trees but the work  has extended to  analyze growth and
+development of individual trees and forest stands.
 
-AMAP re-introduced  the notion of  physiological age as  distinct from
-real age  to organize the irreversible stochastic  processes of birth,
-growth, branching and death of an apical bud (meristem). Each stage of
-the bud  from birth to  death can be  arranged into a  theoretical one
-dimensional reference  axis (\textit {axe  de r\'{e}f\'{e}rence}) with
-shifts  from one  stage to  another as  possible paths  to  modify the
-physiological age of  the bud.  The associated finite  automaton has a
-state for each stage in  the reference axis, a transition function for
-the shifts between the stages and additional geometric information for
-branching and  growth. This finite  automaton system is  sufficient to
-determine    architectural   tree   growth    including   reiteration,
-self-pruning   and   changes  in   form   as   tree  develops   called
-metamorphosis.  The  reference axis  was fully implemented  in AMAPsim
-used  to produce  realistic images  of important  trees and  plants in
-forestry and agriculture.
+The precursory modelling work [Hari  et al 82] for Scots pine presents
+the framework for the stand  models based on process-based single tree
+models where the  growth of trees is computed  from photosynthesis and
+respiration.  The light regime in  a forest stand is the driving force
+of  photosynthesis  in  a  tree  from  which  dry  matter  production,
+maintenance  and allocation to  different tree  compartments (foliage,
+stem, branches, root system  etc.)  represented as state variables are
+contrived using the principle of carbon balance.
+
+The  further analysis  of  the modelling  approach  has improved  tree
+models  and  lead to  deeper  understanding  the  mechanics of  carbon
+allocation,  structural  constraints controlling  tree  form and  tree
+interactions supporting the further development of stand models.
+
+To  mention a few,  [Mäkelä and  Hari 86]  describe tree  growth using
+photosynthetic  light   ratio  to  measure   competitive  ability  and
+differentiation of  trees.  [Nikinmaa  92] has optimization  model for
+photosynthesis  for  single  tree  involving light  extinction  within
+canopy and construction cost  branches; stand level dynamics considers
+nutrient   flows  explicitely.    [Sievänen  93]   studies  structural
+relationships  i.e.  pipe  model  for stem,  branches  and foliage  to
+express   tree  and   stand   growth  in   terms  of   height-diameter
+relationship.   Tree  and  stand   model  in  [Mäkelä  97]  represents
+geometric dimensions of woody organs  of stem, branches and roots with
+constant form parameters.  [Mäkelä et al 97] integrates two additional
+submodels  to calculate  these parameters  explicitely.  Result  is an
+explicit  representation of a  three dimensional  structure of  a tree
+stem used in wood quality (branchiness) analysis of Scots pine.
+
+LIGNUM is  a functional-structural single tree model  [Perttunen et al
+96] faithful to modelling  approach described (see e.g.  [Nikinmaa 92,
+Sievänen 93] and [Mäkelä 97])  but instead of aggregated tree parts it
+has  three dimensional  description of  the above  ground part  of the
+tree. Modeling the  functioning of the tree follows  the principles in
+[Hari et  al 82].   LIGNUM includes a  detailed model  of self-shading
+within a  tree crown [Perttunen et  al 98, Perttunen et  al 2001] from
+which the  radiation regime for  photosynthesis in different  parts of
+the  tree can  be  computed.  If  the  photosynthates produced  exceed
+respiration costs the net production  is allocated to new and existing
+tree structure  acquiring carbon balance. LIGNUM has  been applied for
+both coniferous [Perttunen  et al 96, Lo et al  2000] and broad leaved
+trees [Perttunen et al 2001].
+
+The main  focus in LIGNUM has  been to develop functional  part of the
+model.  Until now there has not been any method to formally define the
+architecural development of the tree structure.  Research has produced
+remarkable results in  this field however.  A leaf  of Barnsley's fern
+is a prominent example of  fractal theory [Mandelbrott 77] providing a
+way   to   describe   the   self  similarity   of   natural   objects.
+Lindenmayer-systems (L-systems)  invented 1968 by  Aristid Lindenmayer
+[Lindenmayer 68,71]  were initially meant to  describe the development
+of multicellular organisms. L-systems are string rewriting systems and
+their  research is  concerned  what phenomena  can  be described  with
+formal  languages.   Prusinkewicz,  Kurth  and other  scientists  have
+developed  both the theory,  tools and  applications for  plants using
+L-systems framework. [Halle et  al 1970] have studied tropical botany,
+analysed tree structure and  produced 25 architectural models based on
+branching  pattern,  senescense and  functioning  of  buds.  Based  on
+Halle's models  de Reffye [overview  de Reffye et  al 88, 90,  97] has
+developed botanically  firm automaton theory  and the theory  has been
+put into practice in AMAP software.
+ 
 
 
 
-Examples
+Schools:
 
--AMAP 'French School'
+-AMAP 'French School' (structure-->function)
 
--'L-System School'
+-'L-System School' (language)
 
--'Helsinki School'
+-'Helsinki School'  (function-->structure)
+
 
 extending the  traditional three  step analysis of  a plant  where the
 nature  of the  intrinsic processes  of the  entity are  analysed, the
@@ -82,3 +129,26 @@ triangle.  Moving along the sides and inside the triangle captures the
 model continuum including aspects from  one or the other two modelling
 avenues. 
 
+In  Montpellier, a  city with  over  10 centuries  of known  botanical
+heritage, the modelling group AMAP  at CIRAD ('French school') has the
+basis for  their plant growth  and analysis systems  AMAPsim, AMAPpara
+and AMAPmod  in the architectural analysis by  Halle\'{e} grouping the
+morphological caharacteristics of tropical trees into 25 model classes
+and the notion  of reiteration observed by Oldeman  where a plant body
+is able to duplicate its existing structure.
+
+AMAP re-introduced  the notion of  physiological age as  distinct from
+real age  to organize the irreversible stochastic  processes of birth,
+growth, branching and death of an apical bud (meristem). Each stage of
+the bud  from birth to  death can be  arranged into a  theoretical one
+dimensional reference  axis (\textit {axe  de r\'{e}f\'{e}rence}) with
+shifts  from one  stage to  another as  possible paths  to  modify the
+physiological age of  the bud.  The associated finite  automaton has a
+state for each stage in  the reference axis, a transition function for
+the shifts between the stages and additional geometric information for
+branching and  growth. This finite  automaton system is  sufficient to
+determine    architectural   tree   growth    including   reiteration,
+self-pruning   and   changes  in   form   as   tree  develops   called
+metamorphosis.  The  reference axis  was fully implemented  in AMAPsim
+used  to produce  realistic images  of important  trees and  plants in
+forestry and agriculture.
