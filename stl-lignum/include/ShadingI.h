@@ -177,13 +177,12 @@ template <class TS, class BUD>
 TreeCompartment<TS,BUD>* EvaluateRadiationForCfTreeSegment<TS,BUD>::operator() (TreeCompartment<TS, BUD>* tc)const
 {
   if (TS* ts = dynamic_cast<TS*>(tc)){
-
+    SetValue(*ts, Qin, 0.0);
+    SetValue(*ts, Qabs, 0.0);
     //Radiation  conditions are not  evaluated if  the segment  has no
     //foliage (in practice  there would be division by  0 in computing
     //absorbed radiation)
     if (GetValue(*ts, Wf) < R_EPSILON){
-	SetValue(*ts, Qin, 0.0);
-	SetValue(*ts, Qabs, 0.0);
 	return tc;
     }
 
@@ -200,9 +199,6 @@ TreeCompartment<TS,BUD>* EvaluateRadiationForCfTreeSegment<TS,BUD>::operator() (
     //and 3) inclination light beam hits the segment.
     ForEach(tt,s_e);
     
-    MJ Iop = 0.0;
-    MJ Q_in = 0.0;
-
     //implement  "Ip  =  Iope^(-Vp)",  s[i] =  radiation  coming  from
     //direction i after this
     vector<double>& s = s_e.getS();
@@ -211,15 +207,13 @@ TreeCompartment<TS,BUD>* EvaluateRadiationForCfTreeSegment<TS,BUD>::operator() (
 	s[i] = 0.0;
       }
       else {
-	Iop = firmament.diffuseRegionRadiationSum(i,radiation_direction);
-	s[i] = Iop*exp((double)-s[i]);
+	MJ Iop = firmament.diffuseRegionRadiationSum(i,radiation_direction);
+	s[i] = Iop*exp(-s[i]);
       }
     }
 
     //Total incoming radiation  
-    for (int i = 0; i < number_of_sectors; i++){
-      Q_in += s[i];
-    }
+    MJ Q_in = accumulate(s.begin(),s.end(),0.0);
 
     //s contains now incoming radiation from each sector. Evaluate how
     //much segment absorbs from incoming radation.
@@ -231,7 +225,7 @@ TreeCompartment<TS,BUD>* EvaluateRadiationForCfTreeSegment<TS,BUD>::operator() (
     sfk  = GetValue(tt, sf); //Foliage m2/kg from tree
 
     for (int i = 0; i < number_of_sectors; i++){
-      Iop = firmament.diffuseRegionRadiationSum(i,radiation_direction);
+      firmament.diffuseRegionRadiationSum(i,radiation_direction);
       a_dot_b = Dot(GetDirection(*ts), PositionVector(radiation_direction));
       inclination = PI_DIV_2 - acos(fabs(a_dot_b));
 
@@ -248,13 +242,7 @@ TreeCompartment<TS,BUD>* EvaluateRadiationForCfTreeSegment<TS,BUD>::operator() (
       Ask = (1.0 - exp(-extinction*((sfk*Wfk)/Ack)))*Ack;
       s[i] *= Ask;
     }
-    
-    //s contains now absorbed radiation for each sector. Sum it up.
-    LGMdouble Q_abs = 0.0;
-    for (int i = 0; i < number_of_sectors; i++){
-      Q_abs += s[i];
-    }
-
+    MJ Q_abs = accumulate(s.begin(),s.end(),0.0);
     SetValue(*ts, Qabs, Q_abs);
     SetValue(*ts, Qin, Q_in);
   }
@@ -286,7 +274,7 @@ TreeCompartment<TS,BUD>* ShadingEffectOfCfTreeSegment<TS,BUD>::operator()(TreeCo
     double distance = 0.0;
     vector<double> radiation_direction(3);
 
-    Tree<TS,BUD>& tt = dynamic_cast<Tree<TS,BUD> &>(GetTree(*ts));
+    Tree<TS,BUD>& tt = GetTree(*ts);
     
     FirmamentWithMask& firmament = GetFirmament(tt);
     
