@@ -259,7 +259,7 @@ void EvaluateRadiationForCfTreeSegment<TS,BUD>::operator()
   //Amount of absorbed radiation
 
   LGMdouble Q_abs = 0.0;
-  for (i = 0; ; i++){
+  for (i = 0; i < number_of_sectors; i++){
     Q_abs += shading_vector[i];
   }
 
