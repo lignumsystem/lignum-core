@@ -60,12 +60,13 @@ int Lignum2Lstring(list<Axis<TS,BUD>*>& ls, typename list<Axis<TS,BUD>*>::iterat
   return Lignum2Lstring(ls,current,ltr);
 }
       
-/**************************************************************
- *Add new structure to Lignum. It is assumed that the Lstring *
- *and Lignum match except the new structure in the Lstring.   *
- *This algorithm is similar to  L2Lignum but Lignum2Lstring   *
- *adds only the new structure in Lstring into Lignum          *
- **************************************************************/
+/*********************************************************
+ *Update the structure of LIGNUM and Lstring             *
+ *Currently only the length of the segment i.e.,         *
+ *the argument of turtle command F is updated.           *
+ *The algorithm is essentially the same as Lstring2Lignum*
+ *so other operations are easily added                   *
+ *********************************************************/ 
 template <class TS, class BUD>
 int Lignum2Lstring(list<TreeCompartment<TS,BUD>*>& ls,
 		   typename list<TreeCompartment<TS,BUD>*>::iterator current,
@@ -175,7 +176,7 @@ int Lignum2Lstring(list<TreeCompartment<TS,BUD>*>& ls,
 }
 
 /*********************************************************
- *Update the structure pf LIGNUM and Lstring             *
+ *Update the structure of LIGNUM and Lstring             *
  *Currently only the length of the segment i.e.,         *
  *the argument of turtle command F is updated.           *
  *The algorithm is essentially the same as Lstring2Lignum*
