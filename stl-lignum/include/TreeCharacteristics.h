@@ -179,6 +179,7 @@ namespace Lignum{
       segment_diameter_ls.push_back(d);
       return *this;
     }
+    double viSegmentBelow()const{return  vi_segment_below;}
     ViData& viSegmentBelow(double vi){
       vi_segment_below = vi;
       return *this;
@@ -223,6 +224,7 @@ namespace Lignum{
       }
       //compute the VI for the segment
       else if (TS* ts = dynamic_cast<TS*>(tc)){
+	if (GetValue(*ts,age) > 0){
 	//special case (in the beginning) when there are no segment
 	//diameters in  the list: add the  segment to the  list so you
 	//compare the segment to itself at least, and get a meaningful
@@ -239,6 +241,13 @@ namespace Lignum{
 	SetValue(*ts,vi,vi_value);
 	//This will be the new segment below VI
 	vi_data.viSegmentBelow(vi_value);
+	}
+	else{
+	  //Newly  created segment  will get  its vigour  from segment
+	  //below (length and diameter will be adjusted accordingly,
+	  //say Lsegment = lambda*vi*Qin/Qmax)
+	  SetValue(*ts,vi,vi_data.viSegmentBelow());
+	}
       }
       //We are done
       return vi_data;
