@@ -35,6 +35,7 @@ namespace Lignum
 
   void LGMVisualization::InitVisualization()
   {
+    InitCallBacks(); 
     glClearColor(0.9f, 0.9f, 0.9f, 0.9f);
 
     glLightfv(GL_LIGHT0, GL_POSITION, settings.light.LightPosition);
@@ -46,7 +47,6 @@ namespace Lignum
 
     SetLight();
     InitDrawing();
-    InitCallBacks();
   }
 
   void LGMVisualization::StartVisualization()
