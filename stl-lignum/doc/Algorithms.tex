@@ -1,0 +1,93 @@
+\section{Algorithms}
+
+So  far all  metabolic  processes and  queries  of the  status of  the
+simulated  tree can  be implemented  using one  of the  following four
+generic   algorithms:    ForEach,   Accumulate,   AccumulateDown   and
+PropagateUp.  Each of these algorithms traverse the tree in a slightly
+different manner  and take care  that the actual metabolic  process or
+query implemented  as a functor  is applied to each  tree compartment.
+Thus they eliminate the trouble  of writing repetitive and error prone
+explicit loops each  time a metabolic process or  query is implemented
+or refined.
+
+To  use  these algorithms  include  the  file  Algorithms.h into  your
+program. Sample use  of these algorithms can be  obtained by compiling
+and  running lignum in  its stl-lignum  project directory.  The sample
+tree used also here as an example consists of one main axis containing
+one tree segment, one branch whorl and the terminating bud. The branch
+whorl contains two auxilliary buds. Using the notation from our papers
+the tree can be written as:
+
+\begin{displaymath}
+[TS,[[B],[B]],B]
+\end{displaymath}
+
+Also the  functors used in subsequent  sections to clarify  the use of
+the  generic algorithms  are the  same as  used in  stl-lignum project
+directory.
+ 
+\subsection{void ForEach(Tree<TS>\& tree, const Function\& f)}
+
+ForEach  is similar  to STL-library  function for\_each.   In  fact it
+applies for\_each to  each list (i.e., the axis)  of tree compartments
+in a tree.  for\_each in turn simply applies a functor to each element
+in a sequence.
+
+\begin{description}
+    \item [Arguments] for the function.
+      \begin{description}
+        \item [tree] The tree.
+        \item [f] The unary functor taking a pointer to a tree compartment as an
+      argument. The functor must return the pointer to atree compartment.
+     \end{description} 
+   \item[Returns] The tree and tree compartments possibly modified by f.
+\end{description} 
+
+The implementation of ForEach uses the notion function composition. 
+That is, it defines  functions h and g such that given the user defined
+function f:
+
+\begin{displaymath}
+h = (g \circ f)(x) = g(f(x))
+\end{displaymath}
+
+The purpose of the function g is simply to traverse the tree.
+As an example consider the following functor DisplayType2:
+
+\begin{verbatim}
+template <class TS>
+class DisplayType2: public AdaptableTCFunction<TS>{
+public:
+   TreeCompartment<TS>* operator ()(TreeCompartment<TS>* ts)const;
+};
+\end{verbatim}
+
+The  easiest way  to  ensure proper  argument  and return  type for  a
+functor is  to inherit from  AdaptableTCFunction<TS>.  It is  an empty
+class   but  predefines   right   argument  and   return  types.   The
+implementation  of  the  sample  overloaded function  operator  simply
+prints out the type of a tree compartment.
+
+\begin{verbatim}
+template <class TS> TreeCompartment<TS>* 
+DisplayType2<TS>::operator()(TreeCompartment<TS>* tc)const
+{
+  if (Axis<TS>* myaxis =  dynamic_cast<Axis<TS>*>(tc)){
+    cout << "Hello, I'm Axis" << endl;
+  }
+  //checking other tree compartments similarly
+  else if ...  
+  ....
+  return tc;
+}
+\end{verbatim}
+
+The call to ForEach to print out the type of each tree compartment is
+simply 
+
+\begin{verbatim}
+ForEach(tree,DisplayType2<MyTreeSegment>());
+\end{verbatim}
+
+ForEach algorithm  can be used  to implement e.g.,  photosynthesis and
+respiration.
