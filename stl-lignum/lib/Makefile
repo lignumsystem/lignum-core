@@ -22,7 +22,7 @@ OBJ = ../Axis/AxisFriend.o \
       ../Tree/TreeFriend.o \
       ../Tree/Tree.o 
 
-INCLUDE = -I../include  -I../../c++adt/include
+INCLUDE = -I../include  -I../../c++adt/include -I../../Firmament/include
 STL = -I/usr/include/CC
 CCC = CC -64
 ETAGS = etags -d -T -C -o
