@@ -228,7 +228,8 @@ void DrawAllFoliage(CLignumWBDoc *doc)
 void DrawTree()
 {	
 
-  if (glIsList(FOREST_LIST))
+  if (glIsList(FOREST_LIST) || glIsList(CFTREES_LIST) 
+      || glIsList(HWTREES_LIST))
     {
       /*
       GLfloat mat_amb[] = { 0.5, 0.3, 0, 1.0 }; 
