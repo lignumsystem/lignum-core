@@ -397,7 +397,7 @@ int LSystem<TS,BUD,T,F>::lstring2Lignum(list<TreeCompartment<TS,BUD>*>& ls,
       //and the gravelius order of the terminating bud
       TS* ts = new TS(GetPoint(turtle_stack.top()),
 		      GetHeading(turtle_stack.top()),
-		      GetValue(*bud,LGAomega),arg1,GetValue(tree,LGPlr)*arg1,
+		      turtle_stack.size(),arg1,GetValue(tree,LGPlr)*arg1,
 		      0.0,&tree);
       SetValue(*ts,LGARh,GetValue(tree,LGPxi)*GetValue(*ts,LGAR));
       ls.insert(current,ts);
