@@ -31,7 +31,7 @@ int Lignum2Lstring(list<Axis<TS,BUD>*>& ls, typename list<Axis<TS,BUD>*>::iterat
   //Branching point sees "SB" --> axis
   if (strcmp(name,"SB") == 0){
     if (current == ls.end()){
-      cout << "BP error 1 structures should match" << endl;
+      cerr << "BP error 1 structures should match" << endl;
     }
     else if (Axis<TS,BUD>* axis = dynamic_cast<Axis<TS,BUD>*> (*current)){
       ltr++;
@@ -103,7 +103,7 @@ int Lignum2Lstring(list<TreeCompartment<TS,BUD>*>& ls,
     }
     //Current tree compartment is bud but the symbol is "SB" --> new branching point
     else if (Bud<TS,BUD>* bud = dynamic_cast<Bud<TS,BUD>*> (*current)){
-      cout << "Axis error 1 current is Bud structures should match" << endl; 
+      cerr << "Axis error 1 current is Bud structures should match" << endl; 
     }
     else{
       //We don't have other choices
@@ -113,11 +113,11 @@ int Lignum2Lstring(list<TreeCompartment<TS,BUD>*>& ls,
   //The symbol F means a tree segment
   else if (strcmp(name,"F") == 0){
     if (ls.empty()){
-      cout << "Axis error 3 list empty structres should match" << endl;
+      cerr << "Axis error 3 list empty structres should match" << endl;
     }
     //If the current tree compartment is a tree segment,
     //udate iterators
-    else if (TreeSegment<TS,BUD>* ts = dynamic_cast<TreeSegment<TS,BUD>*> (*current)){
+    else if (TS* ts = dynamic_cast<TS*> (*current)){
       //Get the argument of "F" to update the argument
       LGMdouble arg1 = GetValue(*ts,L);
       caller_data.Reset();
@@ -130,7 +130,7 @@ int Lignum2Lstring(list<TreeCompartment<TS,BUD>*>& ls,
     }
     //Current tree compartment is bud but the symbol is "F" --> new tree segment
     else if (Bud<TS,BUD>* bud = dynamic_cast<Bud<TS,BUD>*> (*current)){
-      cout << "Axis error 4 current is Bud structures should match" << endl;
+      cerr << "Axis error 4 current is Bud structures should match" << endl;
     }
     else{
       cerr << "Axis error 5  L file does not generate Lignum " << endl;
@@ -141,7 +141,7 @@ int Lignum2Lstring(list<TreeCompartment<TS,BUD>*>& ls,
   else if (strcmp(name,"B") == 0){
     //if the axis is empty --> new bud 
     if (ls.empty()){
-      cout << "Axis error 6 structures should match" << endl;
+      cerr << "Axis error 6 structures should match" << endl;
     }
     //If the current tree compartment is also bud
     //move the Lstring iterator forward
@@ -149,10 +149,10 @@ int Lignum2Lstring(list<TreeCompartment<TS,BUD>*>& ls,
       caller_data.Reset();
       caller_data.Strct.AddModuleAddr(ltr.Ptr());
       const char* pArg = caller_data.Strct.pArg(0);
-       for (int i = 0; i < vav.size(); i++){
-	 F arg = GetValue(*bud,vav[i]);
-	 memcpy(const_cast<char*>(pArg),&arg,sizeof(F));
-	 pArg += sizeof(F);
+      for (int i = 0; i < vav.size(); i++){
+	F arg = GetValue(*bud,vav[i]);
+	memcpy(const_cast<char*>(pArg),&arg,sizeof(F));
+	pArg += sizeof(F);
       }
       ltr++;
     }
@@ -209,7 +209,6 @@ int Lignum2Lstring(Tree<TS,BUD>& t, const Lstring& s,int argnum = 0,...)
     vav.push_back(va_arg(ap,T));
   }
   va_end(ap);
-  copy(vav.begin(),vav.end(),ostream_iterator<T>(cout, " "));
 
   return Lignum2Lstring<TS,BUD,T,F>(ls,ls.begin(),ltr,vav);
 }

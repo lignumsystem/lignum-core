@@ -11,7 +11,8 @@
 #include <succstor.h>
 
 #include <iostream>
-#include <L2Lignum.h>
+#include <Lignum.h>
+#include <Collision.h>
 #include <Lstring2Lignum.h>
 #include <Lignum2Lstring.h>
 #include <MyTreeSegment.h>
@@ -130,70 +131,18 @@ int main(int argc, char** argv)
   
   Start();
   mainstring.Add(succstrg);
-  //Draw(0);
-  Lstring2Lignum<MyTreeSegment,MyBud,LGMAD,LGMdouble>(t1,mainstring,2,LGMtype,LGMstatus);
-  //DisplayStructure(t1);
-  //cout << endl;
-  //sleep(1);
-
-  {
-    //cout << "Axiom:\n";
-    LstringIterator iterator(mainstring);
-    //iterator.Dump();
-    //cout << "\n\n";
-    //PrintLString(mainstring);
-    //cout << "\n\n";
-  }
+  Lstring2Lignum<MyTreeSegment,MyBud,LGMAD,LGMdouble>(t1,mainstring,3,LGMtype,LGMstatus,LGMcollision);
 
   for (int i=0; i<DerivationLength(); i++)
   {
+    ForEach(t1,EvaluateCollisionForAllBuds<MyTreeSegment,MyBud>(90.0*2.0*PI_VALUE/360.0,0.10));
+    Lignum2Lstring<MyTreeSegment,MyBud,LGMAD,LGMdouble>(t1,mainstring,3,LGMtype,LGMstatus,LGMcollision);    
     Derive();
-    //Draw(i);
-    //sleep(1);
-    //cout << "Step " << i+1 << " Lstring" << endl;
-    //PrintLString(mainstring);
-    //cout << endl;
-    //cout << "Lignum" << endl;
-    Lstring2Lignum<MyTreeSegment,MyBud,LGMAD,LGMdouble>(t1,mainstring,2,LGMtype,LGMstatus);
-    Lignum2Lstring<MyTreeSegment,MyBud,LGMAD,LGMdouble>(t1,mainstring,2,LGMtype,LGMstatus);
-    cout << "Deriv " << i << " Checking coordinates" << endl; 
-    Point p = GetPoint(t1);
-    PropagateUp(t1,p,CheckCoordinates<MyTreeSegment,MyBud>(0.00001));
-    //DisplayStructure(t1);
-    //cout << endl << endl;
-    //    LstringIterator iterator(mainstring);
-    // iterator.Dump();
-    // cout << "\n\n";
+    Lstring2Lignum<MyTreeSegment,MyBud,LGMAD,LGMdouble>(t1,mainstring,3,LGMtype,LGMstatus,LGMcollision);
+  }
+  End();  
 
-  }
-  End();
-  
-  {
-    //cout << "Final string:\n";
-    //LstringIterator iterator(mainstring);
-    //iterator.Dump();
-    //PrintLString(mainstring);
-    //cout << "\n\n";
-  }
-  Lignum2Lstring<MyTreeSegment,MyBud,LGMAD,LGMdouble>(t1,mainstring,2,LGMtype,LGMstatus);
-  int n = 0;
-  n = Accumulate(t1,n,CountTreeSegments<MyTreeSegment,MyBud>());
-  cout << "Segments " << n << endl;
-  //Lstring2Lignum(t1,mainstring);
-  //Tree<MyTreeSegment,MyBud> tree(Point(0,0,0),
-  //				 PositionVector(0,0,1.0));
-  //L2Lignum(tree,mainstring);
-  //DisplayStructureData id;
-  //PropagateUp(tree,id,DisplayStructureFunctor<MyCfTreeSegment,MyBud>());
-  //cout << endl;
-  //DisplayStructure(tree);
-  //SaveTree(GetAxis(tree),"Pinus.txt","Pinus");
-  //VisualizeLGMTree(tree);
   VisualizeLGMTree(t1);
-
-//    {
-//      //Draw(100);
-//    }
 
 }
 

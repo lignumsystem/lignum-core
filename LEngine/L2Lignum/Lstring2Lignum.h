@@ -129,7 +129,7 @@ int Lstring2Lignum(list<TreeCompartment<TS,BUD>*>& ls,
       current++;
     }
     //Current tree compartment is bud but the symbol is "SB" --> new branching point
-    else if (Bud<TS,BUD>* bud = dynamic_cast<Bud<TS,BUD>*> (*current)){
+    else if (BUD* bud = dynamic_cast<BUD*> (*current)){
       BranchingPoint<TS,BUD>* bp = new BranchingPoint<TS,BUD>(GetPoint(turtle_stack.top()),
 							      GetHeading(turtle_stack.top()),
 							      &tree);
@@ -175,7 +175,7 @@ int Lstring2Lignum(list<TreeCompartment<TS,BUD>*>& ls,
     }
     //If the current tree compartment is a tree segment,
     //no new structure but update turtle and iterators
-    else if (TreeSegment<TS,BUD>* ts = dynamic_cast<TreeSegment<TS,BUD>*> (*current)){
+    else if (TS* ts = dynamic_cast<TS*> (*current)){
       //Update point and direction
       SetPoint(*ts,GetPoint(turtle_stack.top()));
       SetDirection(*ts,GetHeading(turtle_stack.top()));
@@ -189,7 +189,7 @@ int Lstring2Lignum(list<TreeCompartment<TS,BUD>*>& ls,
       current++;
     }
     //Current tree compartment is bud but the symbol is "F" --> new tree segment
-    else if (Bud<TS,BUD>* bud = dynamic_cast<Bud<TS,BUD>*> (*current)){
+    else if (BUD* bud = dynamic_cast<BUD*> (*current)){
       //Lstring tells only the structure, use initial dimensions
       //and the gravelius order of the terminating bud
       TS* ts = new TS(GetPoint(turtle_stack.top()),GetHeading(turtle_stack.top()),
@@ -223,11 +223,11 @@ int Lstring2Lignum(list<TreeCompartment<TS,BUD>*>& ls,
       caller_data.Reset();
       caller_data.Strct.AddModuleAddr(ltr.Ptr());
       const char* pArg = caller_data.Strct.pArg(0);
-       for (int i = 0; i < vav.size(); i++){
-	 F arg = GetValue(*bud,vav[i]);
-	 memcpy(&arg,pArg,sizeof(F));
-	 SetValue(*(BUD*)bud,vav[i],arg);
-	 pArg += sizeof(F);
+      for (int i = 0; i < vav.size(); i++){
+	F arg = GetValue(*bud,vav[i]);
+	memcpy((char*)&arg,pArg,sizeof(F));
+	SetValue(*bud,vav[i],arg);
+	pArg += sizeof(F);
       }
       ls.insert(ls.begin(),bud);
       current = ls.begin();
@@ -235,7 +235,7 @@ int Lstring2Lignum(list<TreeCompartment<TS,BUD>*>& ls,
     }
     //If the current tree compartment is also bud
     //move the Lstring iterator forward
-    else if (Bud<TS,BUD>* bud = dynamic_cast<Bud<TS,BUD>*> (*current)){
+    else if (BUD* bud = dynamic_cast<BUD*>(*current)){
       //Update heading and position
       SetPoint(*bud,GetPoint(turtle_stack.top()));
       SetDirection(*bud,GetHeading(turtle_stack.top()));
@@ -244,8 +244,8 @@ int Lstring2Lignum(list<TreeCompartment<TS,BUD>*>& ls,
       const char* pArg = caller_data.Strct.pArg(0);
       for (int i = 0; i < vav.size(); i++){
 	F arg = GetValue(*bud,vav[i]);
-	memcpy(&arg,pArg,sizeof(F));
-	SetValue(*(BUD*)bud,vav[i],arg);
+	memcpy((char*)&arg,pArg,sizeof(F));
+	SetValue(*bud,vav[i],arg);
 	pArg += sizeof(F);
       }
       ltr++;
