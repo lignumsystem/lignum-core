@@ -60,7 +60,7 @@ void HwWrapper<TS,BUD>::MakeStemDisplayList()
       glDeleteLists(intDisplaylistStem,1);
     }
 
-  glGenTextures(1, &intDisplaylistStem);
+  glGenTextures(1, (GLuint*)&intDisplaylistStem);
  
   glPushMatrix();
   //glNewList(intDisplaylistStem);
