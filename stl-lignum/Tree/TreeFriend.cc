@@ -1,29 +1,37 @@
-#include <Tree.h>
+#include <InitializeTree.h>
 
 namespace Lignum{
 
-bool cmpstr::operator () (const char* s1,const char* s2)
-{
-  return strcmp(s1,s2) < 0;
-}
+  template <>
+  MapParameterType<LGMPD>::MapParameterType()
+  {
+    lgmpd["af"] = af;
+    lgmpd["ar"] = ar;
+    lgmpd["lr"] = lr;
+    lgmpd["mf"] = mf;
+    lgmpd["mr"] = mr;
+    lgmpd["ms"] = ms;
+    lgmpd["na"] = na;
+    lgmpd["nl"] = nl;
+    lgmpd["pr"] = pr;
+    lgmpd["q"] = q;
+    lgmpd["sr"] = sr;
+    lgmpd["ss"] = ss;
+    lgmpd["rho"] = rho;
+    lgmpd["xi"] = xi;
+    lgmpd["zbrentEpsilon"] = zbrentEpsilon;
+    lgmpd["Ln_par"] = Ln_par;
+    lgmpd["n_ang_par"] = n_ang_par;
+  }
 
-MapTPD::MapTPD()
-{
-  tpd["af"] = af;
-  tpd["ar"] = ar;
-  tpd["lr"] = lr;
-  tpd["mf"] = mf;
-  tpd["mr"] = mr;
-  tpd["ms"] = ms;
-  tpd["na"] = na;
-  tpd["nl"] = nl;
-  tpd["pr"] = pr;
-  tpd["q"] = q;
-  tpd["sr"] = sr;
-  tpd["ss"] = ss;
-  tpd["rho"] = rho;
-  tpd["xi"] = xi;
-  tpd["zbrentEpsilon"] = zbrentEpsilon;
-}
-
+  template <>
+  MapParameterType<LGMTD>::MapParameterType()
+  {
+    lgmpd["lambda"] = lambda;
+    lgmpd["g"] = g;
+    lgmpd["eta"] = eta;
+    lgmpd["Er"] = Er;
+    lgmpd["k"] = k;
+    lgmpd["rhow"] = rhow;
+  }
 }//closing namespace Lignum
