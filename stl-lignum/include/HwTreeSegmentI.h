@@ -16,19 +16,20 @@ namespace Lignum{
   template <class TS, class BUD >
     //The   bud  directions   are  collected   into  vetor   pd  using
     //AccumulateDown(tree,vector<PositionVector>(),AppendLeaves(),CreateLeaves())
-    void HwTreeSegment<TS,BUD>::createLeaves(vector<PositionVector>& pd)
+    void HwTreeSegment<TS,BUD>::createLeaves(vector<PositionVector>& pd,
+					     METER pl, METER a, METER b)
     {
       Point origo(0,0,0);
       Point point = GetEndPoint(*this);
       PositionVector up(0,0,1);
-      Ellipsis shape(0.10,0.10); //initial shape of a leaf
+      Ellipsis shape(a,b); //initial shape of a leaf
       Uniform u; //uniform random number [0,1]
       int seed = 3267;
       for (int i = 0; i < pd.size(); i++){
 	PositionVector pdir = pd[i];
 	//Leaves are  created at the end  of the segment  where the buds
 	//are, second argument is the intial length of the petiole
-	Petiole petiole(point,point + 0.30*(Point)pdir);
+	Petiole petiole(point,point + pl*(Point)pdir);
 	//Randomize  the leaf blade  normal by  rotating in  around axis
 	//that lies in the horizontal plane defined by cross product of
 	//petiole direction and up-vector
