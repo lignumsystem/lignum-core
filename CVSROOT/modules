@@ -61,4 +61,4 @@ poplar                -s Alice                poplar
 maple                                         &c++adt &stl-lignum &Firmament &LEngine&Graphics &stl-voxelspace &SugarMaple
 Lignum-Crobas                                 &c++adt &stl-lignum &Firmament &LEngine &Graphics &stl-voxelspace &Pine &ScotsPine &ScotsPineVisual &Lig-Crobas
 DataTree             -s JariP                 DataTree
-DataTreeAll                                   &c++adt &stl-lignum &Firmament &Graphics &DataTree
+DataTreeAll                                   &c++adt &stl-lignum &Firmament &stl-voxelspace &Graphics &DataTree
