@@ -6,7 +6,7 @@ ARFLAGS= -o
 ARFILE=liblsys.a
 
 LSYSFILES= bearberry.L pine9bp.L cs-plantA.L cs-plantB.L  cs-plantC.L \
-           cs-plantD.L cs-plant.L 
+           cs-plantD.L cs-plant.L birch.L
 SRC=${LSYSFILES:.L=.cpp}
 OBJ=${SRC:.cpp=.o}
 
