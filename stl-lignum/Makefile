@@ -3,18 +3,12 @@
 #To compile with g++ on SGI or on  Linux type
 #    make gnu  
 #or  (using copy paste)
-#    make "CCC=g++" "CCCFLAGS=-c" "OPTIMIZE=-O" "ARCOMMAND=ar"  "ARCOMMANDFLAGS=rv" algorithms 
+#    make "CCC=g++" "CCCFLAGS=-c" "OPTIMIZE=-O" "AR=ar"  "ARFLAGS=rv" algorithms 
 
-
-MAIN = main.cc
-OBJ  =  ${MAIN:.cc=.o} 
 
 ALGSRC = algorithms.cc 
 ALGOBJ  = ${ALGSRC:.cc=.o} 
 
-BLSRC  = broadleaf.cc
-BLOBJ  = ${BLSRC:.cc=.o} 
- 
 CCC = CC  -64 -LANG:std
 
 #OPTIMIZE = -Ofast=ip28 -IPA
@@ -62,8 +56,8 @@ $(LIB1):
          "OPTIMIZE=$(OPTIMIZE)" "AR=$(AR)"  "ARFLAGS = $(ARFLAGS)" $@)
 
 $(LIB2):
-	(cd lib; make "CCC=$(CCC)" "CCCFLAGS=$(CCCFLAGS)" "OPTIMIZE=$(OPTIMIZE)" "AR=$(AR)" \
-         "ARFLAGS = $(ARFLAGS)" $@)
+	(cd lib; make "CCC=$(CCC)" "CCCFLAGS=$(CCCFLAGS)" "OPTIMIZE=$(OPTIMIZE)" \
+         "AR=$(AR)" "ARFLAGS = $(ARFLAGS)" $@)
 
 $(LIB3):
 	(cd ../Firmament; make "CCC=$(CCC)" "CCCFLAGS=$(CCCFLAGS)" \
@@ -82,10 +76,10 @@ distclean: clean
 	(cd ../Firmament; make distclean)
 	(cd lib; make distclean)
 depend:
-	$(CCC) -M  $(INCLUDE) $(MAIN) $(ALGSRC) $(BLSRC) >> Makefile
-	(cd ../c++adt; make depend)
-	(cd ../Firmament; make depend)
-	(cd lib; make depend)
+	$(CCC) -M  $(INCLUDE) $(ALGSRC)  > Makedepend
+	(cd ../c++adt; make "CCC=$(CCC)"  depend)
+	(cd ../Firmament; make "CCC=$(CCC)"  depend)
+	(cd lib; make "CCC=$(CCC)" depend)
 
 #Do not delete this line -- make depend adds dependencies at the end of it
 #If committing Makefile to cvs please remove the dependencies first

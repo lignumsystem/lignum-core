@@ -20,7 +20,7 @@ PROGFILES = program-files.html
 
 $(ARFILE): 
 	(cd lib; make "CCC=$(CCC)" "CCCFLAGS=$(CCCFLAGS)" "OPTIMIZE=$(OPTIMIZE)" \
-                      "AR=$(AR)"  "ARFLAGS=$(ARFLAGS)") 
+                      "AR=$(AR)"  "ARFLAGS=$(ARFLAGS)" $@) 
 touch:
 	(cd lib; make touch)
 
@@ -35,4 +35,4 @@ distclean:
 etags:
 	(cd lib; make etags)
 depend:
-	(cd lib; make depend)
+	(cd lib; make "CCC=$(CCC)" depend)

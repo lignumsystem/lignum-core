@@ -22,6 +22,7 @@ AR =  $(CCC) -ar
 ARFLAGS =  -o
 ARFILE = libc++adt.a
 
+sinclude Makedepend
 
 $(ARFILE): $(OBJ)
 	$(AR) $(ARFLAGS) $(ARFILE) $(OBJ)
@@ -43,8 +44,6 @@ distclean: clean
 etags:
 	$(ETAGS)   TAGSFILE ../src/*.cc ../include/*.h
 depend:
-	$(CCC) -M  $(INCLUDE) $(SRC) ../src/hrmatrix.cc >> Makefile
+	$(CCC) -M  $(INCLUDE) $(SRC) ../src/hrmatrix.cc > Makedepend
 #Do not delete this line -- make depend adds dependencies at the end of it
 #If committing Makefile to cvs please remove the dependencies first
-
-

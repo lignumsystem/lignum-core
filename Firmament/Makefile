@@ -28,10 +28,12 @@ LIBS     = -lsky -lc++adt $(LIBMATH)
 
 .SUFFIXES: .o .cc
 
+sinclude Makedepend
+
 libsky.a:  $(OBJ)
 	$(AR) $(ARFLAGS) $(ARFILE) $(OBJ)
 libc++adt.a:
-	(cd ../c++adt/lib; make "CCC=$(CCC)" "CCCFLAGS=$(CCCFLAGS)" \
+	(cd ../c++adt; make "CCC=$(CCC)" "CCCFLAGS=$(CCCFLAGS)" \
          "OPTIMIZE=$(OPTIMIZE)" "AR=$(AR)"  "ARFLAGS = $(ARFLAGS)" $@)
 sky: $(MAIN)  
 	$(CCC) -DFIRMAMENT -g  -o $@  $(INCLUDE)  $(MAIN)  \
@@ -44,12 +46,11 @@ sky-dump: sky-dump.o libsky.a libc++adt.a
 
 clean:
 	rm -rf $(OBJ) sky sky-dump sky-dump.o core sky ii_files
-	rm -rf $(ARFILE)
-distclean:
-	(cd ../c++adt/lib; make distclean)
-	make clean
+distclean: clean
+	rm -f $(ARFILE)
+	(cd ../c++adt; make distclean)
 depend:
-	$(CCC) -M  $(INCLUDE) $(SRC) >> Makefile
+	$(CCC) -M  $(INCLUDE) $(SRC) > Makedepend
 
 #Do not delete this line -- make depend adds dependencies at the end of it
 #If committing Makefile to cvs please remove the dependencies first

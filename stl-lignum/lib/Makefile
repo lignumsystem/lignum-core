@@ -34,6 +34,7 @@ AR = $(ARCOMMAND)
 ARFLAGS = $(ARCOMMANDFLAGS)
 ARFILE = libLGM.a
 
+sinclude Makedepend
 
 $(ARFILE): $(OBJ)
 	$(AR) $(ARFLAGS) $(ARFILE) $(OBJ)
@@ -49,17 +50,12 @@ clean:
 
 distclean: clean
 	rm -rf $(OBJ) core $(ARFILE)
-	rm -rf ../Axis/ii_files ../BranchingPoint/ii_files
-	rm -rf ../Bud/ii_files ../Tree/ii_files 
-	rm -rf ../TreeMetaFileParser/ii_files
-	rm -rf ../TreeCompartment/ii_files ../TreeSegment/ii_files
-
+	rm -rf ../*/ii_files
 etags:
 	$(ETAGS)   TAGSFILE ../src/*.cc ../include/*.h
 
 depend:
-	$(CCC) -M  $(INCLUDE) $(SRC) >> Makefile
+	$(CCC) -M  $(INCLUDE) $(SRC) > Makedepend
 
 #Do not delete this line -- make depend adds dependencies at the end of it
 #If committing Makefile to cvs please remove the dependencies first
-
