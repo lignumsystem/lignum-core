@@ -11,7 +11,6 @@
 
 #include <VoxelBox.h>
 #include <VoxelSpace.h>
-#include <berncreator.h>
 #include <Bernoulli.h>
 
 #include <fstream>
@@ -316,6 +315,7 @@ namespace Lignum {
     //ofstream file("calculateVoxelSpace.txt");
     cout << " VoxelSpace::calculatePopLight Begin for poplar: " << endl;
     updateStar();
+    srand(time(NULL));
 
     for(int i1=0; i1<Xn; i1++)
       for(int i2=0; i2<Yn; i2++)
@@ -343,14 +343,15 @@ namespace Lignum {
 		    int size = vec.size();
 
 		    sumiop += iop; //WHERE IS THIS NEEDED??
-  
+
+		    long int seed = -rand();
 		      if (size>1)
 		      {
                       int a=1;
 		      bool flag=0;
-		      long int seed= time(0);
+		      // long int seed= time(0);
                       double p, result, test;
-                      StochasticLib obj(seed);
+                      Bernoulli ber(seed);
                       
                       while (a<size && flag==0)
 			{
@@ -362,7 +363,7 @@ namespace Lignum {
 			 
                           p=min(starsum, 1.0);     //need to work on my field data to get the p value
 			  // cout<<starsum<<" ";
-                          result=obj.Bernoulli(p);
+                          result=ber(0.3, 1);
 			  // cout<<result<<" ________________show result____________"<<endl; 
   			  if (result>0.5)
 			    flag=1;
@@ -391,9 +392,10 @@ namespace Lignum {
 		      {
                       int a=1;
 		      bool flag=0;
-		      long int seed= time(0);
+		      // long int seed= time(0);
+		      long int seed = -rand();
                       double p, result, test;
-                      StochasticLib obj(seed);
+                      Bernoulli ber(seed);
                       
                       while (a<size && flag==0)
 			{
@@ -405,7 +407,7 @@ namespace Lignum {
 			 
                           p=min(starsum, 1.0);     //need to work on my field data to get the p value
 			  // cout<<starsum<<" ";
-                          result=obj.Bernoulli(p);
+                          result=ber(0.3, 1);
 			  // cout<<result<<" ________________show result____________"<<endl; 
   			  if (result>0.5)
 			    flag=1;
@@ -698,7 +700,7 @@ namespace Lignum {
 
 
 
-
+  /*
 
   //
   //	Visualizes the VoxelSpace
@@ -898,7 +900,9 @@ namespace Lignum {
     glPopMatrix();
     // glEndList();
     //#endif
-  }
+    }*/
+
+
   //Write voxel boxes  to file. If 'all' is true  write all boxes else
   //write  only boxes  with foliage.  By  default 'all'  is true  (old
   //beaviour)
@@ -1016,7 +1020,7 @@ namespace Lignum {
   }
 
 
-  
+  /*  
   void VoxelSpace::draw(bool blackBG)
   {
     glEnable(GL_LIGHTING);
@@ -1149,7 +1153,7 @@ namespace Lignum {
 	  }
   }
 
-
+  */
 
 
 
