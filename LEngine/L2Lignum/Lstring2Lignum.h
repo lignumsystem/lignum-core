@@ -205,10 +205,11 @@ int Lstring2Lignum(list<TreeCompartment<TS,BUD>*>& ls,
       //Possible solutions are:
       //1. The second argument of "B" will be reserved for gravelius order
       //2. Carry and update the gravelius order as part of this algorithm
-      //3. Make a functor and update the tree with ForEach (probably the easieast)
+      //3. Make a functor and update the tree with ForEach
+      //4. The size of the turtle stack tells the Gravelius order (chosen)
       BUD* bud = new BUD(GetPoint(turtle_stack.top()),
 			 GetHeading(turtle_stack.top()),
-			 0.0,&tree);
+			 turtle_stack.size(),&tree);
       ls.insert(ls.begin(),bud);
       current = ls.begin();
       ltr++;
