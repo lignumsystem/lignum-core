@@ -27,17 +27,15 @@ namespace Lignum {
   class VoxelSpace
   {
     //VoxelBox::update Value  accesses private data  members--> friend
-    //declaration needed du to lack of access methods/functions
-    friend class VoxelBox;
-    template <class TS,class BUD>
-    friend void DumpCfTreeSegment(VoxelSpace &s, CfTreeSegment<TS, BUD> &ts);
+    //declaration needed due to lack of access methods/functions
 
-    template <class TS, class BUD, class S>
-    friend void DumpHwTreeSegment(VoxelSpace &s,
-				  HwTreeSegment<TS, BUD, S> &ts);
+    friend class VoxelBox;
 
     template <class TS,class BUD>
     friend void DumpCfTree(VoxelSpace &s, Tree<TS, BUD> &ts);
+
+    template <class TS,class BUD>
+    friend void DumpCfTreeSegment(VoxelSpace &s, CfTreeSegment<TS, BUD> &ts);
 
     template <class TS,class BUD>
     friend void SetCfTreeQabs(VoxelSpace &s, Tree<TS, BUD> &tree);
@@ -45,8 +43,16 @@ namespace Lignum {
     template <class TS,class BUD>
     friend void DumpHwTree(VoxelSpace &s, Tree<TS, BUD> &ts);
 
-    template <class TS,class BUD,class SH>
+    template <class TS, class BUD, class S>
+    friend void DumpHwTreeSegment(VoxelSpace &s,
+				  HwTreeSegment<TS, BUD, S> &ts);
+
+    template <class TS,class BUD>
     friend void SetHwTreeQabs(VoxelSpace &s, Tree<TS, BUD> &tree);
+
+    template <class TS, class BUD, class SHAPE>
+    friend void SetHwTreeSegmentQabs(VoxelSpace &space,
+		     HwTreeSegment<TS,BUD,SHAPE>& ts);
 
 
   public:
@@ -81,6 +87,10 @@ namespace Lignum {
 				    //VoxelSpace changes. Contents are
 				    //lost.
 
+    void move(const Point corner1); //Move Voxelspace so that its
+				    //lower left corner is set at
+				    //corner1
+
     int getNumberOfBoxes()const{ return Xn*Yn*Zn; }
     int getNumberOfFilledBoxes()const;
     int getNumberOfTreeSegments()const;
@@ -102,7 +112,7 @@ namespace Lignum {
     void setLightValues();
     void setLight();
  
-    void fillVoxelBoxes(LGMdouble inivalue);
+    void fillVoxelBoxes(M2 needleA, M2 leafA);
     void fillVoxelBoxes(LGMdouble inivalue, int beginZ, int endZ);
     //First four arguments are for box.S() STAR sum
     void fillVoxelBoxesWithNeedles(LGMdouble Sf, LGMdouble Wf, LGMdouble Rf, 
@@ -128,7 +138,7 @@ namespace Lignum {
     void writeVoxBoxesToFile(const string& filename, bool all = true);
     //Write voxel  boxes to file up to Z index
     void writeVoxBoxesToFile(const string& filename, int z);
-    void writeVoxBoxesToFile2(ofstream &file);
+    void writeVoxBoxesToFile2(const string& filename);
   private:
     LGMdouble Xbox, Ybox, Zbox;
     int Xn, Yn, Zn;
@@ -165,7 +175,7 @@ namespace Lignum {
     mutable VoxelSpace *space;
   };
 
-  //for poplar
+  //For deciduous trees, that is, hardwoods
   template <class TS,class BUD>
   class DumpHwTreeFunctor
   {
@@ -175,14 +185,23 @@ namespace Lignum {
   };
 
 
-  template <class TS,class BUD, class SH>
-  class SetHwTreeQabsFunctor
-  {
-  public:
-    TreeCompartment<TS,BUD>* operator ()(TreeCompartment<TS,BUD>* tc)const;
-    mutable VoxelSpace *space;
-  };
-
+  template <class TS,class BUD>
+    class SetHwTreeQabsFunctor
+    {
+    public:
+      TreeCompartment<TS,BUD>* operator ()(TreeCompartment<TS,BUD>* tc)const;
+      mutable VoxelSpace *space;
+    };
+  
+/*   template <class TS, class BUD, class SHAPE> */
+/*     class SetHwTreeSegmentQabs */
+/*     { */
+/*     public: */
+/*       void operator ()(VoxelSpace &space, */
+/* 		       HwTreeSegment<TS,BUD,SHAPE>* ts); */
+/*     }; */
+  
+  
 } // namespace Lignum
 
 #include "VoxelSpaceI.h"

@@ -195,6 +195,30 @@ namespace Lignum {
 
     }
 
+  //Move Voxelspace so that its lower left corner is set at corner
+
+  void VoxelSpace::move(const Point corner)
+  {
+    corner1 = corner;
+    
+    //Update also the other corner
+    corner2 = corner1 + Point((LGMdouble)Xn*Xbox, (LGMdouble)Yn*Ybox,
+			      (LGMdouble)Zn*Zbox);
+    
+    
+    //Set also the coordinates (=lower left corners) of the VoxelBoxes
+    for(int i1=0; i1<Xn; i1++)
+      for(int i2=0; i2<Yn; i2++)
+	for(int i3=0; i3<Zn; i3++)
+	  {
+	    Point c = corner1 +
+	      Point((LGMdouble)i1*Xbox, (LGMdouble)i2*Ybox,
+		    (LGMdouble)i3*Zbox); 
+	    voxboxes[i1][i2][i3].setVoxelSpace(this, c); 
+	  }
+    
+  }
+
 
   // 
   // Converts a global point to local point of the VoxelSpace
@@ -342,13 +366,13 @@ namespace Lignum {
   // A function used to fill all the VoxBoxes with a initial
   // value
   //
-  void VoxelSpace::fillVoxelBoxes(LGMdouble inivalue)
+  void VoxelSpace::fillVoxelBoxes(M2 needleA, M2 leafA)
   {
     for(int i1=0; i1<Xn; i1++)
       for(int i2=0; i2<Yn; i2++)
 	for(int i3=0; i3<Zn; i3++)
 	  {
-	    voxboxes[i1][i2][i3].setArea(inivalue,inivalue);
+	    voxboxes[i1][i2][i3].setArea(needleA,leafA);
 	  }
   }
 
@@ -434,7 +458,6 @@ namespace Lignum {
       for(int i2=0; i2<Yn; i2++)
 	for(int i3=0; i3<Zn; i3++)
 	  {
-	    double sumiop = 0.0;
 	    int num_dirs = sky->numberOfRegions();
 	    //This might  make the voxel  space slow in  execution: if
 	    //there  is something  is voxboxes  the following  loop is
@@ -455,8 +478,6 @@ namespace Lignum {
 		    vector<VoxelMovement> vec;		
 		    getRoute(vec, i1, i2, i3, radiation_direction);
 		    int size = vec.size();
-
-		    sumiop += iop; //WHERE IS THIS NEEDED??
 
 		    long int seed = -rand();
 		      if (size>1)
@@ -494,8 +515,6 @@ namespace Lignum {
 		
 		      }	
 		  }
-                // cout<<sumiop<<" is sumiop value"<<endl;
-		
 		//calculate the light for direct beam
 
 		vector<double> direct_direction(3);
@@ -558,35 +577,34 @@ namespace Lignum {
       for(int i2=0; i2<Yn; i2++)
 	for(int i3=0; i3<Zn; i3++)
 	  {
-	    double sumiop = 0.0;
 	    int num_dirs = sky->numberOfRegions();
 	    //This might  make the voxel  space slow in  execution: if
 	    //there  is something  is voxboxes  the following  loop is
 	    //executed.
 	    if (voxboxes[i1][i2][i3].isEmpty() == false)
 	      {				
-		for(int i = 0; i < num_dirs; i++)
+		//		for(int i = 0; i < num_dirs; i++)
+		for(int i = 0; i < 1; i++)
 		  {	
 		    vector<double> rad_direction(3);
-		    LGMdouble iop = sky->diffuseRegionRadiationSum(i,rad_direction);
-		    PositionVector radiation_direction(rad_direction[0], rad_direction[1], 
-						       rad_direction[2]);
+		    LGMdouble iop = sky->
+		      diffuseRegionRadiationSum(i,rad_direction);
+		    PositionVector
+		      radiation_direction(rad_direction[0],
+					  rad_direction[1], rad_direction[2]);
 		    radiation_direction.normalize();
-		    //cout <<  iop << endl;
 		    vector<VoxelMovement> vec;		
 		    getRoute(vec, i1, i2, i3, radiation_direction);
 		    int size = vec.size();
 
-		    sumiop += iop; //WHERE IS THIS NEEDED??
-		    
 		    if (size>1)
 		      for (int a=1; a<size; a++)
 			{
 			  VoxelMovement v1 = vec[a-1];
 			  VoxelMovement v2 = vec[a];
-								
-			  LGMdouble ext = voxboxes[v1.x][v1.y][v1.z].extinction(v2.l); 
-			  //voxboxes[v1.x][v1.y][v1.z].addInterceptedRadiation(iop*(1.0-ext));
+			  
+			  LGMdouble ext = voxboxes[v1.x][v1.y][v1.z].
+			    extinction(v2.l); 
 			  iop = iop * ext;
 			}
 
@@ -600,23 +618,26 @@ namespace Lignum {
 			LGMdouble inner_length = vec[0].l*2;
 
 			// vaimennuskerroin boksin läpi kulkiessa
-			LGMdouble ext2 = voxboxes[i1][i2][i3].extinction(inner_length);
+			LGMdouble ext2 = voxboxes[i1][i2][i3].
+			  extinction(inner_length);
 							
 			//säteilyn voimakkuus kun se tulee boksista ulos
 			LGMdouble qout = iop * ext2;
 
 			//ja vaimeneminen boksin sisällä
-			//cout << "Qin: " << qin << "Qout: " << qout << endl;
 			voxboxes[i1][i2][i3].addQabs(qin - qout);
 							
-			// Nyt lasketaan vain keskipisteeseen, eli boksin saama säteily
-			// on se arvo joka saadaan boksin keskipisteestä.
-			LGMdouble ext = voxboxes[i1][i2][i3].extinction(inner_length/2.0);
-			//voxboxes[i1][i2][i3].addInterceptedRadiation(iop*(1.0-ext));
+			// Nyt lasketaan vain keskipisteeseen, eli
+			// boksin saama säteily on se arvo joka
+			// saadaan boksin keskipisteestä.
+			LGMdouble ext = voxboxes[i1][i2][i3].
+			  extinction(inner_length/2.0);
 			iop = iop * ext;
 		      }
 
-		    voxboxes[i1][i2][i3].addRadiation(iop);	//säteily joka tulee..
+		    voxboxes[i1][i2][i3].addRadiation(iop); //säteily
+							    //joka
+							    //tulee..
 						
 		  }
 	      }
@@ -1059,8 +1080,10 @@ namespace Lignum {
     
   }	
   
-  void VoxelSpace::writeVoxBoxesToFile2(ofstream &file)
+  void VoxelSpace::writeVoxBoxesToFile2(const string& filename)
   {
+    ofstream file(filename.c_str());
+
     file << "Index "; 
     file << "Qabs " <<  "    Qin " << "     star " << "   needleArea " << " leafarea ";
     file << "  centerpoint " << endl;
@@ -1071,7 +1094,8 @@ namespace Lignum {
       for(int i2=0; i2<Yn; i2++)
 	for(int i3=0; i3<Zn; i3++)
 	  {
-	    if(voxboxes[i1][i2][i3].isEmpty() == false)
+	    //	    if(voxboxes[i1][i2][i3].isEmpty() == false)
+	    if(voxboxes[i1][i2][i3].isEmpty() == true)
 	      {
 		file <<  i1 << ":" << i2 << ":" << i3 << "   ";
 		Point p;

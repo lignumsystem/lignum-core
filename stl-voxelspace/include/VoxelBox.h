@@ -56,7 +56,7 @@ namespace Lignum {
     LGMdouble getLeafArea()const{return leafArea;}
     LGMdouble getFoliageMass()const{return needleMass + leafMass;}
 
-    void setArea(M2 larea, M2 narea);
+    void setArea( M2 needleA, M2 leafA);
     void setVoxelSpace(VoxelSpace *s, Point c);
 
     // Q_absbox

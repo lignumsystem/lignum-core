@@ -81,8 +81,6 @@ void VoxelBox::updateValues()
 }
 
 
-
-
 //
 //	Returns the extinction of the light traveling distance l inside
 //	this VoxelBox.
@@ -102,7 +100,7 @@ LGMdouble VoxelBox::extinction(LGMdouble l)const
 //	With this function the needle and leaf area can be set
 //  absolutely 
 //
-void VoxelBox::setArea(M2 larea, M2 narea)
+void VoxelBox::setArea(M2 narea, M2 larea)
 {
 	needleArea = narea;
 	leafArea = larea;
@@ -117,11 +115,11 @@ void VoxelBox::setArea(M2 larea, M2 narea)
 //
 bool VoxelBox::isEmpty()const
 {
-	
-	return (starSum==0); // && leafArea==0);
+	if(needleArea < R_EPSILON && leafArea < R_EPSILON)
+	  return true;
+	else
+	  return false;
 }
-
-
 
 //
 //	Adds the incoming radiation

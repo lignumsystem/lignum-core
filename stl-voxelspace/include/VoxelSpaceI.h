@@ -9,11 +9,9 @@ namespace Lignum {
   template <class TS,class BUD>
     void DumpCfTree(VoxelSpace &s, Tree<TS, BUD> &tree)
     {
-      
       DumpCfTreeFunctor<TS,BUD> f;
       f.space = &s;
       ForEach(tree, f);
-	
     }
 
   template <class TS, class BUD>
@@ -77,8 +75,7 @@ namespace Lignum {
 		}		
 	    }
 	}
-      return tc;
-    }
+      return tc;    }
 
   //Then HwTree & HwTreeSegment ==========================
 
@@ -119,10 +116,10 @@ namespace Lignum {
     }
 
 
-  template <class TS, class BUD, class SH>
+  template <class TS, class BUD>
     void SetHwTreeQabs(VoxelSpace &s, Tree<TS, BUD> &tree)
     {
-      SetHwTreeQabsFunctor<TS,BUD,SH> f;
+      SetHwTreeQabsFunctor<TS,BUD> f;
       f.space = &s;
       ForEach(tree, f);
     }
@@ -136,30 +133,38 @@ namespace Lignum {
   //calculation of absorbed radiation. The radiation coming to the
   //voxelbox (Qin) is recorded also as Qin for the leaf.
 
-  template <class TS, class BUD, class SH>
-    TreeCompartment<TS,BUD>* SetHwTreeQabsFunctor<TS,BUD,SH>::
+  template <class TS, class BUD>
+    TreeCompartment<TS,BUD>* SetHwTreeQabsFunctor<TS,BUD>::
     operator ()(TreeCompartment<TS,BUD>* tc)const
     {
-      if (HwTreeSegment<TS,BUD,SH>* hwts =
-	  dynamic_cast<HwTreeSegment<TS,BUD,SH>*>(tc))
+      if (TS* hwts =  dynamic_cast<TS*>(tc))
 	{
-	  Point p;
-	  LGMdouble la, bQin, lQabs;
-	  VoxelBox box;
-	  std::list<BroadLeaf<SH>*>& leaf_list = 
-	    GetLeafList(const_cast<HwTreeSegment<TS,BUD,SH>&>(ts));
-	  typename std::list<BroadLeaf<SH>*>::iterator I;
-	  for(I = leaf_list.begin(); I != leaf_list.end(); I++) {
-	    p = GetCenterPoint(**I);
-	    box = space->getVoxelBox(p);
-	    bQin = box.getQin();
-	    la = GetValue(**I,  LGAA);
-	    lQabs = 0.5 * bQin * la;
-	    SetValue(**I, LGAQabs, lQabs);
-	    SetValue(**I, LGAQin, bQin);
-	  }
-	}
+	  SetHwTreeSegmentQabs(*space, *hwts);
+	} 
       return tc;
     }
-}
+
+
+  template <class TS, class BUD, class SHAPE>
+    void SetHwTreeSegmentQabs(VoxelSpace &space,
+			      HwTreeSegment<TS,BUD,SHAPE>& ts)
+    {
+      Point p;
+      LGMdouble la, bQin, lQabs;
+      VoxelBox box;
+      list<BroadLeaf<SHAPE>*>& leaf_list = GetLeafList(ts);
+      typename list<BroadLeaf<SHAPE>*>::iterator I;
+      for(I = leaf_list.begin(); I != leaf_list.end(); I++) {
+	p = GetCenterPoint(**I);
+	box = space.getVoxelBox(p);
+	bQin = box.getQin();
+	la = GetValue(**I,  LGAA);
+	lQabs = 0.5 * bQin * la;
+	SetValue(**I, LGAQabs, lQabs);
+	SetValue(**I, LGAQin, bQin);
+      }
+    }
+
+} //End of namespace Lignum
+
 #endif
