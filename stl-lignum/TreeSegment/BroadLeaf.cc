@@ -159,6 +159,8 @@ PositionVector SetLeafNormal(BroadLeaf& bl, const PositionVector& n)
 {
   PositionVector vv = bl.bla.leaf_normal;
   bl.bla.leaf_normal = n;
+  //normalize the normal to unit vector. 
+  bl.bla.leaf_normal.normalize();
 
   return vv;
 }
@@ -219,3 +221,5 @@ void SetLeafPosition(BroadLeaf& bl, const Point<>& p)
 }
 
 }//closing namespace Lignum
+
+
