@@ -342,7 +342,7 @@ void redraw(void)
     if (voxel)
       {
 	//	cout << "Visualization of VoxelSpace " << endl;
-	voxel->draw();
+	voxel->draw(true);
       }
 
   //vanha tapa
