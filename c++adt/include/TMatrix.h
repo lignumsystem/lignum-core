@@ -19,6 +19,8 @@ using namespace std;
 template <class T> 
 class TMatrix {
 
+
+#ifdef _MSC_VER
   friend TMatrix<T> operator + (const TMatrix<T>& m1,const TMatrix<T>& m2);
 
   friend TMatrix<T> operator * (const TMatrix<T>& m1,const TMatrix<T>& m2);  
@@ -32,6 +34,31 @@ class TMatrix {
   friend TMatrix<T> operator * (const T scalar,const TMatrix<T>& m1);
 
   friend std::ostream& operator << (std::ostream& os, const TMatrix<T>& v1);
+
+#else
+ template <class T1>
+  friend TMatrix<T1> operator + (const TMatrix<T1>& m1,const TMatrix<T1>& m2);
+
+  template <class T1>
+  friend TMatrix<T1> operator * (const TMatrix<T1>& m1,const TMatrix<T1>& m2);
+
+  template <class T1>
+  friend vector<T1> operator * (const vector<T1>& v1, const TMatrix<T1>& m1);
+
+  template <class T1>
+  friend vector<T1> operator * (const TMatrix<T1>& m1, const vector<T1>& v1);
+
+  template <class T1>
+  friend TMatrix<T1> operator * (const TMatrix<T1>& m1,const T1 scalar);
+
+  template <class T1>
+  friend TMatrix<T1> operator * (const T1 scalar,const TMatrix<T1>& m1);
+
+  template <class T1>
+  friend ostream& operator << (ostream& os, const TMatrix<T1>& v1);
+#endif
+
+
 public:
   TMatrix();    
   TMatrix(const int rows, const int cols);
