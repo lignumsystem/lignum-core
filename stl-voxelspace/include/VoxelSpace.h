@@ -8,10 +8,6 @@
 #include <TMatrix3D.h>
 #include <VoxelBox.h>
 #include <Firmament.h>
-
-#include <ScotsBud.h>
-#include <ScotsPineVisual.h>
-
   
 namespace Lignum {
 
@@ -117,8 +113,6 @@ namespace Lignum {
     //First four arguments are for box.S() STAR sum
     void fillVoxelBoxesWithNeedles(LGMdouble Sf, LGMdouble Wf, LGMdouble Rf, 
 				   LGMdouble L, int beginZ, int endZ);
-    //Remove this, no concrete tree species here (Jari)
-    void AddScotspine(Tree<ScotsPineVisual, ScotsBud> &tree);
 
     BoundingBox& searchDimensions(BoundingBox &bbox,
 				  bool boolDimensionsWithNumBoxes);
@@ -142,7 +136,6 @@ namespace Lignum {
     TMatrix3D<VoxelBox> voxboxes;
   private:
   
-    vector<Tree<ScotsPineVisual,ScotsBud> *> vecScotspines;
 
     BoundingBox bbox;
 
