@@ -38,7 +38,6 @@ enum STEMMODE { SOLID, WIREMODEL };
   public:
    void operator()(WrapperBase* wb){
      wb->MakeWireModelLists();
-     cout << "making wiremodels! ********* -------- ********* " << endl;
    }
   };
 

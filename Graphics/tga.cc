@@ -60,7 +60,6 @@ int tga_t::Load(const char *name)
    byte info[7];
    FILE *iFile;
 
-   cout << "Load::TGA " << endl;
 
    if (!(iFile = fopen(name, "r+bt")))
       return Error(notFound, 0);
@@ -101,7 +100,6 @@ int tga_t::Load(const char *name)
 
    fclose(iFile);
 
-   cout << "TGA-tiedosto " << name << " ladattu" << endl;
    return 1;
 }
 

@@ -60,19 +60,13 @@ namespace Lignum
 
   void LGMVisualization::StartVisualization()
   {
-    cout << "Launch OpenGL........" << endl;
-
-   
     if (mode == SOLID)
     {
-	cout << "solid viz ***********" << endl;
-	for_each(trees.begin(),trees.end(),MakeDisplayLists(order_foliage));
+      for_each(trees.begin(),trees.end(),MakeDisplayLists(order_foliage));
     }
     else
     {
-	cout << "wire viz ************" << endl;
-//	MakeWireModelLists();
-	for_each(trees.begin(),trees.end(), MakeWireModelLists());
+      for_each(trees.begin(),trees.end(), MakeWireModelLists());
     }
    
 
@@ -102,8 +96,6 @@ namespace Lignum
   
     GLfloat lightPosition[] = {settings.lightx, settings.lighty, 
 			       settings.lightz, settings.lightw};
-
-    cout << "LIGHTING " << settings.lightx << settings.lighty << endl; 
     glLightfv (GL_LIGHT0, GL_POSITION, lightPosition);
     glEnable (GL_LIGHT0);
     glEnable (GL_LIGHTING);

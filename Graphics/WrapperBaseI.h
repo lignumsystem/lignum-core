@@ -39,9 +39,6 @@ void CfWrapper<TS,BUD>::VisualizeFoliage(int &active_texture)
 template <class TS, class BUD>
 void CfWrapper<TS,BUD>::VisualizeWireModel()
 {
-  cout << "Visualize WireModel cf-tree" << endl;
-  
-  
   DrawWireModelFunctor<TS,BUD> stemfunctor;
   ForEach(tree, stemfunctor);
   
@@ -50,8 +47,6 @@ void CfWrapper<TS,BUD>::VisualizeWireModel()
 template <class TS, class BUD>
 void HwWrapper<TS,BUD>::VisualizeWireModel()
 {
-  cout << "Visualize wiremodel of hw-tree" << endl;
-   
   DrawWireModelFunctor<TS,BUD> stemfunctor;
   ForEach(tree, stemfunctor);
   
@@ -78,7 +73,6 @@ void HwWrapper<TS,BUD>::VisualizeFoliage(int &active_texture)
     }
     else
     {
-	cout << "visualisoidaan lehdet " << endl;
 	glEnable(GL_BLEND);
 	glEnable(GL_TEXTURE_2D);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -310,7 +304,7 @@ void CfWrapper<TS,BUD>::MakeDisplayLists(bool orderfoliage)
     intDisplaylistFoliage = glGenLists(1);
     glPushMatrix();
     glNewList(intDisplaylistFoliage, GL_COMPILE);
-    int num = -1.0;
+    int num = -1;
     VisualizeFoliage(num);
     glEndList();
     glPopMatrix();
