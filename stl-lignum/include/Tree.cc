@@ -77,12 +77,9 @@ void Tree<TS,BUD>::UpdateWaterFlow(TP time_step, const ConnectionMatrix<TS,BUD> 
 	out->GetTranspiration(time_step));  
     
    
-     cout << i << ":virtaus sisään " <<  GetTSAttributeValue(*out, fin)*time_step << " ; ulos " << GetTSAttributeValue(*out, fout)*time_step << " haihdunta:" << out->GetTranspiration(time_step)*time_step  <<endl;
-    cout << "SUMMA = " <<  (GetTSAttributeValue(*out, fin) - GetTSAttributeValue(*out, fout) -  out->GetTranspiration(time_step))*time_step << " paineen muutos " <<  time_step * ttp.Er / Dw * 2 * ttp.rhow /
-      (PI_VALUE *  GetTSAttributeValue(*out, L) *  GetTSAttributeValue(*out, R)) *
-      ( GetTSAttributeValue(*out, fin) - GetTSAttributeValue(*out, fout) - 
-	out->GetTranspiration(time_step)) << endl;
-    cout << "uusi paine " << new_pressure << endl;
+     cout << i << ":virtaus sisään " <<  GetTSAttributeValue(*out, fin)*time_step << " ; ulos " << GetTSAttributeValue(*out, fout)*time_step << " haihdunta:" << out->GetTranspiration(time_step)*time_step;
+    cout << "SUMMA = " <<  (GetTSAttributeValue(*out, fin) - GetTSAttributeValue(*out, fout) -  out->GetTranspiration(time_step))*time_step << endl;
+   
         
     SetTSAttributeValue(*out, Pr, new_pressure);         
     SetTSAttributeValue(*out, Wm, GetTSAttributeValue(*out, Wm) + (GetTSAttributeValue(*out, fin)-  GetTSAttributeValue(*out, fout) - out->GetTranspiration(0.0))* time_step); 
@@ -105,20 +102,6 @@ TP Tree<TS,BUD>::CountFlow(TreeSegment<TS,BUD> &in, TreeSegment<TS,BUD> &out)
   TP pr_out = GetTSAttributeValue(out, Pr);  // Pressure in the element above
   TP pr_in = GetTSAttributeValue(in, Pr);    // Pressure in the element below
  
-  cout << " area " << ar << endl;
-  cout << "pituus " << le << endl;
-  cout << " korkeus ero " << he << endl;
-  cout << " paine ero " << pr_out - pr_in - (ttp.rhow * ttp.g * he) << endl;
-  cout << " vakio " <<  ttp.rhow * (ttp.k/ ttp.eta) * (ar / le) << endl;
-
-  /*
-  // cout << "paine sisaan" << pr_out << " ulos  " <<  pr_in << " hydro  " << ttp.rhow* ttp.g * he << " summa " <<(pr_out - pr_in) - (ttp.rhow * ttp.g * he) << endl;  
- 
-  */
-
- cout << "   virtaus " << ttp.rhow * (ttp.k/ ttp.eta) * (ar / le) * (pr_out - pr_in - (ttp.rhow * ttp.g * he)) << endl << endl;
-  
-
   return ttp.rhow * (ttp.k/ ttp.eta) * (ar / le) * (pr_out - pr_in - (ttp.rhow * ttp.g * he));
 }
 
