@@ -22,8 +22,6 @@ namespace Lignum{
     lgmpd["LGPrhoW"] = LGPrhoW;
     lgmpd["LGPxi"] = LGPxi;
     lgmpd["LGPzbrentEpsilon"] = LGPzbrentEpsilon;
-    lgmpd["LGPLn_par"] = LGPLn_par;
-    lgmpd["LGPn_ang_par"] = LGPn_ang_par;
   }
 
   template <>

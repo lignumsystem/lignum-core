@@ -1,14 +1,29 @@
 #ifndef LGMSYMBOLS_H
 #define LGMSYMBOLS_H
 
+//If you modify the contents of this file, please update also the
+//documentation in the beginning.
+
+//This file defines a number of enumerations for stl-ligum, namely
+//LGMAD = LIGNUM Attribute Double
+//LGMPD = LIGNUM Parameter Double
+//LGMTAD = LIGNUM Tree level attribute double.
+//LGMTD  = Tree Transit Variable Double
+//LGMF   = Functions known in a tree
+//FILE_MODE = For reading in different types of input
+//LGMVERBOSE = Verbose or scanty output
+//LGMFLOW = Flow symbols
+
+
+
 namespace Lignum{
+
+  //LGMAD = LIGNUM Attribute Double
 
   //OBS:  DO  NOT USE  ENUMERATIONS  AS  SIMPLE  VARIABLE NAMES!   For
   //example, NEVER create: double LGAWf;
   //AND, if you add a new symbol be sure to document it carefully, see
   //for example LGMAD below.
-  //LGMAD = LIGNUM Attribute Double
-  //LGMPD = LIGNUM Parameter Double
 
   enum LGMAD {LGAA,LGAAf,LGAAh, LGAAhair,LGAAs,LGAAs0,LGAage,LGAcollision,
               LGADbase,LGADbh,LGAdof, LGAdR, LGAH,LGAHf,LGAHTop,LGAip,
@@ -69,14 +84,48 @@ namespace Lignum{
   //  42 LGAWh     Mass of heartwood (kg C)
   //  43 LGAWhair  Mass of root hair (kg C)
 
+  //LIGNUM  Parameter Double
+  //Keep the LGMPD enumeration in sync with MapLGMPD table constructor
+  //in TreeFriend.cc. MapLGMPD maps the names of  the parameters found
+  //in configuration files to the symbolic names in LGMPD.
 
-  enum LGMFLOW { fin, fout, Pr, Wm };
+  enum LGMPD {LGPaf, LGPar, LGPdof, LGPlr, LGPmf, LGPmr, LGPms, LGPna,
+	      LGPnl, LGPpr, LGPq, LGPrhoW, LGPrho_hair, LGPrho_root, LGPsf,
+	      LGPsr, LGPss, LGPyc, LGPxi, LGPzbrentEpsilon };
+
+  // 1  LGPaf  Needle mass - tree segment area (kgC/m^2)relationship
+  // 2  LGPar  Foliage - root relationship
+  // 3  LGPdof Degree of filling (proportion leaf surface fills of geometric
+  //          shape - e.g. ellipsis - of the leaf). 
+  // 4  LGPlr  Length - radius relationship of a tree segment
+  // 5  LGPmf  Maintenance respiration rate of foliage
+  // 6  LGPmr  Maintenance respiration rate of roots
+  // 7  LGPms  Maintenance respiration rate of sapwood
+  // 8  LGPna  Needle angle (radians)
+  // 9  LGPnl  Needle length (na and nl define the cylinder of foliage in
+  //           CfTreeSegment)
+  // 10 LGPpr  Photsynthetic efficiency (=photos. rate = pr * intercepted rad.)
+  // 11 LGPq   Segment shortening factor (becoming obsolete due to vigour
+  //           index)
+  // 12 LGPrhoW      Density of  wood in general (is usually used in Segment)
+  // 13 LGPrho_hair  Density of root hair
+  // 14 LGPrho_root  Density root sapwood
+  // 15 LGPsf        Specific leaf area (=leaf area/ leaf weight)
+  // 16 LGPsr        Senescence rate of roots
+  // 17 LGPss        Senescence rate of sapwood
+  // 18 LGPyc	  Foliage mass (kgC) supported by 1 m^2 of sapwood
+  // 19 LGPxi        Fraction of heartwood in newly created tree segments
+  // 20 LGPzbrentEpsilon  Accuracy in numerical computation in root finding
+  //              (see Zbrent)
+
 
   //LGMTAD LIGNUM Tree level  attribute double.
   //Set LGMTADLENGTH to the number of enumerations in LGMTAD.  It will
   //intialize  the   vector<LGMdouble>  in  class   Tree  holding  the
   //attribute values.
+
   const int LGMTADLENGTH=5;
+
   enum LGMTAD {Treelb,TreeP,TreeM,TreeWr,TreeQinMax};
   // Treelb  Longest branch
   // TreeP   Tree level photosynthesis
@@ -84,60 +133,6 @@ namespace Lignum{
   // TreeWr  Root mass
   // TreeQinMax  Max Qin of all segments in a tree
 
-  //LIGNUM  Parameter Double
-  //Keep the LGMPD enumeration in sync with MapLGMPD table constructor
-  //in TreeFriend.cc. MapLGMPD maps the names of  the parameters found
-  //in configuration files to the symbolic names in LGMPD.
-  enum LGMPD {LGPaf,LGPar,LGPdof,LGPlr,LGPmf,LGPmr,LGPms,LGPna,
-	      LGPnl,LGPpr, LGPq, LGPsf, LGPsr,LGPss,LGPrhoW,
-	      LGPrho_root,LGPrho_hair, LGPyc, LGPxi,
-	      LGPzbrentEpsilon, LGPLn_par, LGPn_ang_par};
-
-  // LGPaf     Needle mass - tree segment area (kgC/m^2)relationship
-  // LGPar     Foliage - root relationship 
-  // LGPlr = Length - radius relationship of a tree segment
-  // LGPmf = Maintenance respiration rate of foliage
-  // LGPmr = Maintenance respiration rate of roots
-  // LGPms = Maintenance respiration rate of sapwood
-  // LGPna = Needle angle (radians)
-  // LGPnl = Needle length (na and nl define the cylinder of foliage in CfTreeSegment)
-  // LGPpr  Proportion of bound solar radiation that is used in photosyntheesis
-  // LGPq   Segment shortening (becoming obsolete due to vigour index)
-  // LGPrhoW      Density of  wood in general (is usually used in Segment)
-  // LGPrho_root  Density root sapwood
-  // LGPrho_hair  Density of root hair
-  // LGPsf        Specific leaf area (=leaf area/ leaf weight)
-  // LGPsr        Senescence rate of roots
-  // LGPss        Senescence rate of sapwood
-  // LGPyc	  Foliage mass (kgC) supported by 1 m^2 of sapwood
-  // LGPxi        Fraction of heartwood in newly created tree segments
-  // LGPzbrentEpsilon  Accuracy in numerical computation in root finding (see Zbrent)
-  // LGPLn_par = ????????????????? 
-  // LGPn_ang_par = ??????????????
-
- //cvs update
-  // al					Maximun size of a leaf
- // LGPyc					Foliage mass supported by 1m2 of sapwood
-  // LGPsla  specific leaf area. sf determined for leaf..
-  // cvs update
-
-  //LGPmf = Maintenance respiration rate of foliage
-  //LGPmr = Maintenance respiration rate of roots
-  //LGPms = Maintenance respiration rate of sapwood
-  //LGPna = Needle angle (radians)
-  //LGPnl = Needle length (na and nl define the cylinder of foliage in CfTreeSegment)
-  //LGPpr = Photsynthetic efficiency (=photos. rate = pr * intercepted rad.)
-  //LGPq  = segment shortening (becoming obsolete due to vigour index)
-  //LGPrhoW= Density of  wood in general (is usually used in Segment)
-  //rho_root = Density root sapwood
-  //LGPrho_hair = Density of root hair
-  //LGPsf = specific leaf area (=leaf area/ leaf weight)
-  //LGPsr = Senescence rate of roots
-  //LGPss = Senescence rate of sapwood
-  //LGPxi = Fraction of heartwood in newly created tree segments
-  //LGPzbrentEpsilon = accuracy in numerical computation in root finding (see Zbrent)
-  //LGPLn_par = ????????????????? 
-  //LGPn_ang_par = ??????????????
 
   //Tree Transit Variable Double
 
@@ -172,6 +167,9 @@ namespace Lignum{
   //If needed you may design verbose output for example
   //when initializing trees 
   enum LGMVERBOSE {QUIET,VERBOSE};
+
+  enum LGMFLOW { fin, fout, Pr, Wm };
+
 }//closing namespace Lignum
 
 
