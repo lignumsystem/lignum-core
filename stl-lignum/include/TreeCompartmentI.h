@@ -85,7 +85,7 @@ LGMdouble SetValue(TreeCompartment<TS,BUD>& tc, const LGMAD name, const LGMdoubl
     tc.age = value;
 
   else
-    cerr << "GetValue: Unknown attribute " << name << endl;
+    cerr << "SetValue: Unknown attribute " << name << endl;
 
   return old_value;
 }
