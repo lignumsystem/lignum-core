@@ -62,7 +62,7 @@ int ConnectionMatrix<TS,BUD>::CountTreeSegments(Axis<TS,BUD> &ax) const
 {
   int count = 0; 
   std::list<TreeCompartment<TS,BUD>*>& ls = GetTreeCompartmentList(ax);
-  std::list<TreeCompartment<TS,BUD>*>::iterator I = ls.begin();
+  typename std::list<TreeCompartment<TS,BUD>*>::iterator I = ls.begin();
   
   while(I != ls.end())
     {
@@ -71,8 +71,8 @@ int ConnectionMatrix<TS,BUD>::CountTreeSegments(Axis<TS,BUD> &ax) const
 	  count++;
 	}
       if (BranchingPoint<TS,BUD>* mybp = dynamic_cast<BranchingPoint<TS,BUD>*>(*I)){	 
-    std::list<Axis<TS,BUD>*>& axis_ls = GetAxisList(*mybp);  	  
-	std::list<Axis<TS,BUD>*>::iterator I = axis_ls.begin();
+	std::list<Axis<TS,BUD>*>& axis_ls = GetAxisList(*mybp);  	  
+	typename std::list<Axis<TS,BUD>*>::iterator I = axis_ls.begin();
 	while(I != axis_ls.end()){
 	  Axis<TS,BUD> *axis = *I;
 	  count = count + CountTreeSegments(*axis);
@@ -93,7 +93,7 @@ void ConnectionMatrix<TS,BUD>::TraverseAxis(Axis<TS,BUD>& ax, TreeSegment<TS,BUD
 {
   TreeSegment<TS,BUD> *lastSegment = ts;
   std::list<TreeCompartment<TS,BUD>*>& ls = GetTreeCompartmentList(ax);
-  std::list<TreeCompartment<TS,BUD>*>::iterator I = ls.begin();
+  typename std::list<TreeCompartment<TS,BUD>*>::iterator I = ls.begin();
   
   while(I != ls.end()){      
     if (TreeSegment<TS,BUD>* myts = dynamic_cast<TreeSegment<TS,BUD>*>(*I)){
@@ -102,7 +102,7 @@ void ConnectionMatrix<TS,BUD>::TraverseAxis(Axis<TS,BUD>& ax, TreeSegment<TS,BUD
     }      
       if (BranchingPoint<TS,BUD>* mybp = dynamic_cast<BranchingPoint<TS,BUD>*>(*I)){
 	std::list<Axis<TS,BUD>*>& axis_ls = GetAxisList(*mybp);  	  
-	std::list<Axis<TS,BUD>*>::iterator I = axis_ls.begin();
+	typename std::list<Axis<TS,BUD>*>::iterator I = axis_ls.begin();
 	while(I != axis_ls.end()){
 	  Axis<TS,BUD> *axis = *I;
 	  if (lastSegment)
