@@ -330,19 +330,19 @@ namespace Lignum {
 	    //executed.
 	    if (voxboxes[i1][i2][i3].isEmpty() == false)
 	      {				
-		for(int i=0; i<num_dirs; i++)
+		for(int i = 0; i < num_dirs; i++)
 		  {	
-		    std::vector<double> rad_direction(3);
+		    vector<double> rad_direction(3);
 		    LGMdouble iop = sky->diffuseRegionRadiationSum(i,rad_direction);
 		    PositionVector radiation_direction(rad_direction[0], rad_direction[1], 
 						       rad_direction[2]);
 		    radiation_direction.normalize();
-		    
-		    std::vector<VoxelMovement> vec;		
+		    //cout <<  iop << endl;
+		    vector<VoxelMovement> vec;		
 		    getRoute(vec, i1, i2, i3, radiation_direction);
 		    int size = vec.size();
 
-		    sumiop += iop;
+		    sumiop += iop; //WHERE IS THIS NEEDED??
 		    
 		    if (size>1)
 		      for (int a=1; a<size; a++)
