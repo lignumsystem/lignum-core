@@ -584,8 +584,62 @@ template <class TS, class BUD>
   return sum;
 }
 
+/*********************************************************************
+ Sample functor  to delete axes (branches)  in the tree.   Axis: If an
+ axis can  be deleted mark  it dead.  BranchingPoint: Delete  the dead
+ axes and erase them from  the the list.  TreeSegment: Collect foliage
+ mass, the  criteria to delete axes.  Algorithm  ensures that 'delete'
+ is not applied to main axis.
 
-
+ There are a  couple of caveats in deleting  axes and branching points
+ in a  tree this way.   Due to the  fact that the  main axis is  not a
+ pointer, we cannot  simply apply 'delete' on axes.   That would cause
+ an error if delete is called on the main axis.  Also if explicit call
+ to ~Axis() is  used this can result problems  on program exit: (main)
+ axis may already have been  destroyed inclusive the list of branching
+ points. This means  that the list does not  have any methods availabe
+ either! Naturally  call to any list  method in such  case will result
+ runtime error. Note  also that destruction and erasing  the axes must
+ be done at the same  place (BranchingPoint). Once deleted there is no
+ way to check  afterwards (in some other place) if  an axis is deleted
+ or not; using/checking deleted pointer results unspecified behaviour.
+ Sometimes I just love C++...
+*********************************************************************/ 
+template <class TS, class BUD>
+LGMdouble& DeleteDeadBranches<TS,BUD>::operator()(LGMdouble& foliage, 
+						  TreeCompartment<TS,BUD>* tc)const
+{
+  //Collect foliage
+  if (TS* ts = dynamic_cast<TS*>(tc)){
+    foliage = foliage + GetValue(*ts,Wf);
+  }
+  //If received no foliage  axis can be deleted.
+  else if (Axis<TS,BUD>* axis =  dynamic_cast<Axis<TS,BUD>*>(tc)){
+    if (foliage < R_EPSILON){
+      SetValue(*axis,state,DEAD);
+    }
+  }
+  else if (BranchingPoint<TS,BUD>* bp =  
+	   dynamic_cast<BranchingPoint<TS,BUD>*>(tc)){
+    list<Axis<TS,BUD>*>& axis_ls = GetAxisList(*bp);
+    typename list<Axis<TS,BUD>*>::iterator first = axis_ls.begin();
+    //All deleted axes are now explicitely DEAD
+    while (first != axis_ls.end()){
+      //Find them
+      if (GetValue(**first,state) == DEAD){
+	//delete and  erase them from the list
+	cout << "BranchingPoint erasing axis" << endl;
+	delete *first;
+	first = axis_ls.erase(first);
+      }
+      else{
+	cout << "Something behind first" << endl;
+	first++;
+      }
+    }
+  }
+  return foliage;
+}
 
 }//closing namespace Lignum
 
