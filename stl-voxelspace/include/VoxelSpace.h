@@ -192,15 +192,6 @@ namespace Lignum {
       mutable VoxelSpace *space;
     };
   
-/*   template <class TS, class BUD, class SHAPE> */
-/*     class SetHwTreeSegmentQabs */
-/*     { */
-/*     public: */
-/*       void operator ()(VoxelSpace &space, */
-/* 		       HwTreeSegment<TS,BUD,SHAPE>* ts); */
-/*     }; */
-  
-  
 } // namespace Lignum
 
 #include "VoxelSpaceI.h"
