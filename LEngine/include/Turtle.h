@@ -19,12 +19,23 @@ class Turtle{
   Turtle();       //Initial turtle heading up at point (0,0,0)
   Turtle(const Point& p);
   Turtle(const Turtle& t);
-  Turtle& turn(const RADIAN a);
-  Turtle& pitch(const RADIAN a);
-  Turtle& roll(const RADIAN a);
-  Turtle& hroll();
-  Turtle& forward(const double d);
-  Turtle& up();
+  Turtle& turn(const RADIAN a);//rotation round up
+  Turtle& pitch(const RADIAN a);//rotation round left
+  Turtle& roll(const RADIAN a);//rotation round heding
+  Turtle& hroll();//rotation round heading so that left becomes horizontal 
+  Turtle& hrz();//rotations  of  HLU so  that  turtle heading  becomes
+		//horizontal in world coordinates
+  Turtle& forward(const double d);//turtle forward
+  Turtle& up();//rotations of  HLU round horizontal so  that turtle up
+	       //is pointing directly up in world coordinates
+  Turtle& hdir(const RADIAN a);//set the turtles heading to angle 'a'
+				//from  world  up,  rotate  HLU  round
+				//horizontal.
+  Turtle& hup(const RADIAN a);//set the  turtles heading to  angle 'a'
+			      //from world  up if and  only if heading
+			      //is  pointing  downwards  in the  world
+			      //coordinates,    rotate    HLU    round
+			      //horizontal
  private:
   Turtle& normalize();
   PositionVector h; //heading (z)

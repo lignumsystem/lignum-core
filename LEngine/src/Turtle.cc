@@ -63,6 +63,74 @@ Turtle& Turtle::hroll()
    
   return *this;
 }
+
+//Rotations of  HLU round  horizontal (UpxH) so  that heading  will be
+//horizontal (c.f. up)
+Turtle& Turtle::hrz()
+{
+  Point o(0,0,0);
+  PositionVector up(0,0,1);
+  //Check heading not already horizontal 
+  if (fabs(h.getZ()) > R_EPSILON){
+    //angle  to up
+    double angle = acos(Dot(up,h));
+    //angle to horizontal
+    angle = PI_VALUE/2.0 - angle;
+    PositionVector horizontal = Cross(up,h);
+    horizontal.normalize();
+    h.rotate(o,horizontal,angle);
+    l.rotate(o,horizontal,angle);
+    u.rotate(o,horizontal,angle);
+  }
+  return *this;
+}
+
+//Set the  turtle heading direction pointing to  'angle'.  The 'angle'
+//is measured from world up.  Rotate HLU round horizontal (UpxH) as in
+//up and hrz
+Turtle& Turtle::hdir(const RADIAN angle)
+{ 
+  Point o(0,0,0);
+  PositionVector up(0,0,1);
+  //heading angle from up to h
+  double hangle = acos(Dot(up,h));
+  //the amount of rotation required and the direction (the sign of the
+  //subtraction)
+  hangle = angle-hangle;
+  PositionVector horizontal = Cross(up,h);
+  horizontal.normalize();
+  h.rotate(o,horizontal,hangle);
+  l.rotate(o,horizontal,hangle);
+  u.rotate(o,horizontal,hangle);
+  return *this;
+}
+
+//As in hdir set the  turtle heading direction pointing to 'angle' but
+//if and only if heading is pointing downwards The 'angle' is measured
+//from world up.  Rotate HLU round horizontal (UpxH) as in up and hrz
+Turtle& Turtle::hup(const RADIAN angle)
+{ 
+  Point o(0,0,0);
+  PositionVector up(0,0,1);
+  //Check if heading upwards in the world coordinates
+  if (h.getZ() >= 0.0){
+    return *this;
+  }
+  else{
+    //heading angle from up to h
+    double hangle = acos(Dot(up,h));
+    //the amount of rotation required and the direction (the sign of the
+    //subtraction)
+    hangle = angle-hangle;
+    PositionVector horizontal = Cross(up,h);
+    horizontal.normalize();
+    h.rotate(o,horizontal,hangle);
+    l.rotate(o,horizontal,hangle);
+    u.rotate(o,horizontal,hangle);
+  }
+  return *this;
+}
+
 //Move the turtle forward,
 //Units are in principle arbitrary, but 
 //for LIGNUM we will use meters.
@@ -88,7 +156,7 @@ Turtle& Turtle::up()
     PositionVector horizontal = Cross(up,h);
     horizontal.normalize();
     u.rotate(o,horizontal,-angle);
-    l.rotate(o,horizontal,-angle);
+    l.rotate(o,horizontal,-angle);//maintain turtle coordinate system 
     h.rotate(o,horizontal,-angle);
   }
   return *this;
