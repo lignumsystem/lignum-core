@@ -290,24 +290,28 @@ LGMdouble GetValue(const TreeSegment<TS,BUD>& ts, const LGMAD name)
     return ts.tsa.Rtop;
   
   else if(name == LGAvi)
-	  return ts.tsa.vigour;
+    return ts.tsa.vigour;
 
+  else if (name == LGAV)
+    return  PI_VALUE*pow(GetValue(ts,LGAR),2.0) * GetValue(ts,LGAL);
+  
+  else if (name == LGAVh)
+    return  PI_VALUE*pow(GetValue(ts,LGARh),2.0) * GetValue(ts,LGAL);
+
+  else if (name == LGAVs)
+    return GetValue(ts,LGAV) - GetValue(ts,LGAVh);
+ 
   //Personally  I prefer minimum  set of  variables or  attributes and
   //compute others  like Ws  or Wh (we  have to do  these computations
   //anyway). These 3 lines should not be a computational cost.
   else if (name == LGAWs){
-     //volume up to R
-    LGMdouble v1 = PI_VALUE*pow(GetValue(ts,LGAR),2.0) * GetValue(ts,LGAL);
-    //heartwood volume
-    LGMdouble v2 = PI_VALUE*pow(GetValue(ts,LGARh),2.0) * GetValue(ts,LGAL);
-    //sapwood volume
-    LGMdouble v3 = v1 - v2;   
+    LGMdouble v1 = GetValue(ts,LGAVs);   
     //mass is density * volume
-    return GetValue(GetTree(ts),LGPrhoW) * v3;
+    return GetValue(GetTree(ts),LGPrhoW) * v1;
   }
   //Perhaps we need own 'rho' for Wh?
   else if (name == LGAWh){
-    LGMdouble v1 = PI_VALUE*pow(GetValue(ts,LGARh),2.0) * GetValue(ts,LGAL);
+    LGMdouble v1 = GetValue(ts,LGAVh);
     return GetValue(GetTree(ts),LGPrhoW) * v1;
   }
   else
