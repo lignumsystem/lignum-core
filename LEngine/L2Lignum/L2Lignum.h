@@ -29,7 +29,7 @@ int L2Lignum(BranchingPoint<TS,BUD>& bp, LstringIterator& iterator,
 	      stack<Turtle>& turtle_stack)
 {
   if (iterator.AtEnd()){
-    cout << "BP Error end of string" << endl;
+    cerr<< "BP Error end of string" << endl;
     return 1; //exit
   }
   const char* name = iterator.GetCurrentModuleName();
@@ -66,7 +66,7 @@ int L2Lignum(Axis<TS,BUD>& axis, LstringIterator& iterator,
   CallerData caller_data;
 
   if (iterator.AtEnd()){
-    cout << "Axis end of string" << endl;
+    //cout << "Axis end of string" << endl;
     return 1; //exit
   }
 
@@ -128,7 +128,7 @@ int L2Lignum(Axis<TS,BUD>& axis, LstringIterator& iterator,
   //Bud
   else if (strcmp(name,"B") == 0){
     Point p = GetPoint(turtle_stack.top());
-    cout << "Turtle size: "<<  turtle_stack.size() << endl;
+    //cout << "Turtle size: "<<  turtle_stack.size() << endl;
     Bud<TS,BUD>* bud = new Bud<TS,BUD>(GetPoint(turtle_stack.top()),
 				       GetHeading(turtle_stack.top()),
 				       0.0,&GetTree(axis));
