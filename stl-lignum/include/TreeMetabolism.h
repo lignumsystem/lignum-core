@@ -54,6 +54,16 @@ namespace Lignum{
   };
 
   template <class TS, class BUD>
+  class AddAge{
+  public:
+    TreeCompartment<TS,BUD>* operator()(TreeCompartment<TS,BUD>* tc)const
+    {
+      SetValue(*tc,age,GetValue(*tc,age)+1);
+      return tc;
+    }
+  };
+
+  template <class TS, class BUD>
   class TreeAging{
   public:
     TreeCompartment<TS,BUD>* operator()(TreeCompartment<TS,BUD>* tc)const
