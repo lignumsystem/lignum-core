@@ -46,13 +46,11 @@ namespace Lignum {
       //LGMdouble lenght = GetValue(ts, L);
 	
       LGMdouble S_f = GetValue(GetTree(ts), sf);
-      if (S_f == 0)
-	S_f = 28;
       LGMdouble farea = S_f * GetValue(ts, Wf) / num_parts;
       LGMdouble qabs = 0.0;
 
       
-      if (farea>0 && b.needleArea>0 && b.star>0)
+      if (farea>R_EPSILON && b.needleArea>R_EPSILON && b.star>R_EPSILON)
 	{
 	  qabs = b.Q_abs * (farea / b.needleArea);
 	  //qabs = b.interceptedRadiation * (farea / b.needleArea);
