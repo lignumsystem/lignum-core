@@ -14,6 +14,14 @@ using namespace std;
 class PositionVector{
   friend double Dot(const PositionVector& pv1,const PositionVector& pv2);
   friend PositionVector Cross(const PositionVector& pv1,const PositionVector& pv2);
+  friend PositionVector operator + (const PositionVector &pv1, const PositionVector &pv2);
+  friend PositionVector operator - (const PositionVector &pv1, const PositionVector &pv2);
+  friend PositionVector operator * (const double scalar, const PositionVector &pv);
+  friend PositionVector operator * (const PositionVector& pv, const double scalar);
+  friend double operator || (const PositionVector &pv1, const PositionVector &pv2);
+  //  friend T operator && (const PositionVector &pv1, const PositionVector &pv2);
+  friend ostream& operator << (ostream& os, const PositionVector& pv);
+  friend bool operator == (const PositionVector &pv1, const PositionVector &pv2);
 public:
   PositionVector();
   PositionVector(const double x, const double y, const double z);
@@ -22,6 +30,9 @@ public:
   PositionVector(const Point<>& p);
   PositionVector& rotate(ROTATION direction, RADIAN angle);
   PositionVector& operator = (const PositionVector& pv);
+  PositionVector& operator += (const PositionVector& point); 
+  PositionVector& operator -= (const PositionVector& point);
+  PositionVector& operator *= (const double scalar);
   double length()const;
   double alpha()const;
   double beta()const;
@@ -34,3 +45,4 @@ private:
 
 }//close namespace cxxadt
 #endif
+

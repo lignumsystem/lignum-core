@@ -84,6 +84,12 @@ PositionVector Cross(const PositionVector& pv1,const PositionVector& pv2)
   return PositionVector(x,y,z);
 }
 
+//Multiply with a scalar, return the result, do not change the vector itself
+PositionVector ScalMult(const PositionVector& pv, double a)
+{
+  return PositionVector(a*pv.getVector()[0], a*pv.getVector()[1], a*pv.getVector()[2]);
+}
+
 //Normalize the vector
 //by making its length 1.
 //The vector is now directon vector
@@ -105,9 +111,99 @@ ostream& operator << (ostream& os, const PositionVector& pv)
   return os;
 }
 
+
+//Modify the PositionVector by adding another PositionVector to it
+PositionVector& PositionVector::operator += (const PositionVector& pv)
+{
+  v[0] += pv.v[0];
+  v[1] += pv.v[1];
+  v[2] += pv.v[2];
+    
+  return *this;
+}
+
+//Modify the PositionVector by subtracting another PositionVector from it
+PositionVector& PositionVector::operator -= (const PositionVector& pv)
+{
+  v[0] -= pv.v[0];
+  v[1] -= pv.v[1];
+  v[2] -= pv.v[2];
+    
+  return *this;
+}
+
+//Modify the PositionVector by multiplying it with a scalar constant
+PositionVector& PositionVector::operator *= (const double scalar)
+{
+  v[0] *= scalar;
+  v[1] *= scalar;
+  v[2] *= scalar;
+
+  return *this;
+}
+
+//friend operator to add two PositionVectors
+PositionVector operator + (const PositionVector& pv1, const PositionVector& pv2)
+{
+  PositionVector p(pv1.v[0] + pv2.v[0], pv1.v[1] + pv2.v[1],
+		   pv1.v[2] + pv2.v[2]);
+
+  return p;
+}
+
+//friend operator to subtract two PositionVectors
+PositionVector operator - (const PositionVector& pv1, const PositionVector& pv2)
+{
+  PositionVector p(pv1.v[0] - pv2.v[0], pv1.v[1] - pv2.v[1],
+		   pv1.v[2] - pv2.v[2]);
+    
+  return p;
+}
+
+//friend operator to multiply a PositionVector with scalar
+PositionVector operator * (const double scalar, const PositionVector& pv)
+{
+  PositionVector p(scalar * pv.v[0], scalar * pv.v[1], scalar * pv.v[2]);
+    
+  return p;
+}
+
+//friend operator to multiply a PositionVector with scalar
+PositionVector operator * (const PositionVector& p, const double s)
+{
+  return s * p;
+}
+
+//friend operator to calculate distance between two PositionVectors
+double operator || (const PositionVector& pv1, const PositionVector& pv2)
+{
+  double x, y, z;
+  x = pv1.v[0] - pv2.v[0];
+  y = pv1.v[1] - pv2.v[1];
+  z = pv1.v[2] - pv2.v[2];
+
+  return sqrt(pow(x,2.0) + pow(y,2.0) + pow(z,2.0));
+}
+
+//compare equality (in R_EPSILON sense)
+bool operator == (const PositionVector& pv1, const PositionVector& pv2)
+{
+  return (maximum(pv1.getVector()[0]-pv2.getVector()[0],
+		  pv2.getVector()[0]-pv1.getVector()[0]) < R_EPSILON) && 
+         (maximum(pv1.getVector()[1]-pv2.getVector()[1],
+		  pv2.getVector()[1]-pv1.getVector()[1]) < R_EPSILON) &&
+         (maximum(pv1.getVector()[2]-pv2.getVector()[2],
+		  pv2.getVector()[2]-pv1.getVector()[2]) < R_EPSILON);
+}
+
+
+
+
+
 }//closing namespace cxxadt
 #ifdef PV
 
+using namespace cxxadt;
 
 int main()
 {
@@ -211,8 +307,25 @@ int main()
   
   cout << "Cross(PositionVector(1,2,-2),PositionVector(3,0,1))" <<endl;
   cout << Cross(PositionVector(1,2,-2),PositionVector(3,0,1)) <<endl;
+
+  PositionVector x(1,0,0), y(0,1,0), z(0,0,1);
+  cout << "Testing operations programmed (copied from Point) by Risto." << endl;
+  cout << "(1,0,0) + (0,1,0) = " << x + y << endl;
+  cout << "(1,0,0) - (0,0,1) = " << x - z << endl;
+  cout << "10 * (0,1,0) = " << 10.0 * y << endl;
+  cout << "(0,1,0) * 10 = " << y * 10.0 << endl;
+  cout << "Distance of (1,0,0) and (0,1,0) by || = " << (double)(x || y) << endl;
+  cout << "(0,0,1) == (0,0,1), yes! " << (bool)(z == z) << endl;
+  cout << "(0,0,1) == (0,0,1.0001), no! " <<
+    (bool)(z == (z+PositionVector(0,0,0.0001))) << endl;
+  cout << "(1,0,0) += (0,1,0) = " << (PositionVector)(x += y) << endl;
+  cout << "Restore (1,0,0), ((1,0,0)+=(0,1,0))-=(0,1,0) = " <<
+    (PositionVector)(x-=y) << " yes" << endl;
+  cout << "(1,0,0) *= 10 = " << (PositionVector)(x *= 10.0) << endl;
+  
 }
 
 #endif
+
 
 
