@@ -48,7 +48,7 @@ BISON=bison
 
 BISONOPT=-d --debug -p l
 
-$(TARGET): $(OBJECTS)
+$(TARGET): l2c_tab.cpp lex_l.cpp $(OBJECTS)  
 	$(LINK) $(LINKFLAGS) $(OBJECTS) $(LINKDIRS) $(LIBS) -o $(TARGET)
 
 match: depend $(MATCHOBJECTS) 
