@@ -2,12 +2,11 @@
 
 \section{Compiling LIGNUM}
 
-The  program implementing  \lignum\  is written  with  C++ under  UNIX
-environment. This guide tells how to compile and run the core model of
-\lignum\  under Silicon  Graphics Irix  6.x machines with native SGI
-$ \rm MIPSpro^{TM}$ C++ 7.x compilers.  As \lignum\ is ported to other
-machine  architectures  they  will  be  documented  as  well.   
-
+The  program implementing  \lignum\  is written  with  C++ under  $\rm
+UNIX^{TM}$ environment. This section tells  how to compile and run the
+core model of  \lignum\ under Silicon Graphics Irix  6.x machines with
+native SGI $ \rm MIPSpro^{TM}$  C++ 7.x compilers.  The ports to other
+machine architectures will be documented as soon as they are done.
 
 The source  code implementing  the core model  of \lignum\  called LGM
 (libLGM.a) is located in stl-lignum directory. The LGM library depends
@@ -49,16 +48,20 @@ prerequisite is newer than the target.
 \subsection{Predefined Macros}
 
 There are several Makefiles that are used to compile the core model of
-\lignum\ and the c++adt library.   To  keep  these  two
-libraries consistent,  e.g., to compile for  the 32 or  64 bit machine
-architectures some useful common macros are predefined.
+\lignum\  and the  c++adt library.   To keep  the LGM  and  the c++adt
+libraries consistent  (e.g., to compile for  the 32 or  64 bit machine
+architectures) and to ease the change of a compiler some useful common
+macros throughout the Makefiles are predefined.
 
 \begin{enumerate}
 \item CCC: The compiler. The default value is CC -64 to compile 64 bit code.
 \item CCCFLAGS: General flags for the compiler. The default value is 
- -c -ptv -prelink to be verbose (-ptv) when compiling templates.
+ -c  -ptv. The  -c option  must  be present  to tell  the compiler  to
+  generate  only object files  (i.e., no  linkage) from  source files.
+  The  -ptv option  tells the  compiler to  be verbose  when compiling
+  templates.
 \item OPTIMIZE: Flags to optimize the object code. The default value
-is -g.
+is -g to generate information for the debugger.
 \end{enumerate}
 For example to maximize the performance for 64 bit code for IP28
 target platform using inter procedural analysis with default settings type:
