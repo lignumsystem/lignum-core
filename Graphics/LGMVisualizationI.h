@@ -10,10 +10,10 @@ namespace Lignum{
 
 
 
- template <class TS, class BUD>
+  template <class TS, class BUD, class SHAPE>
  void LGMVisualization::AddHwTree(Tree<TS,BUD>& t, string stemTex, string folTex)
 {
-    HwWrapper<TS,BUD> *wb = new HwWrapper<TS,BUD>(t);
+  HwWrapper<TS,BUD,SHAPE> *wb = new HwWrapper<TS,BUD,SHAPE>(t);
 
 
    

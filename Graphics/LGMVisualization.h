@@ -68,7 +68,7 @@ class LGMVisualization
   static LGMVisualization* active_visualization;
   public:
 
-  template <class TS, class BUD>
+  template <class TS, class BUD,class SHAPE>
   void AddHwTree(Tree<TS, BUD>& t, string stemTex, string folTex);
   
   template <class TS, class BUD>
