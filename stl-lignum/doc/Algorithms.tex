@@ -1,21 +1,22 @@
 \section{Algorithms}
 
-So far   all metabolic processes  and   queries of the status   of the
-simulated tree can  be implemented  using  one of the  following  four
-generic algorithms:      ForEach,     Accumulate,  AccumulateDown  and
-PropagateUp.  Each of these algorithms traverse the tree in a slightly
-different manner  and take care that the   actual metabolic process or
-query implemented as  a functor is  applied to  each tree compartment.
-Thus they eliminate the trouble of writing  repetitive and error prone
-explicit loops each  time a metabolic process  or query is implemented
-or refined. The algorithmic complexity for each of these algorithms is
-$O(n)$.
+So  far all   metabolic processes and   queries  of the  status of the
+simulated  tree can be  implemented using  one  of the following  four
+generic    algorithms:   ForEach,  Accumulate,   AccumulateDown    and
+PropagateUp.  Each of these traverse the tree  in a slightly different
+manner  and take   care that  the actual   metabolic process or  query
+implemented  as a functor  is applied to  each tree compartment.  Thus
+these algorithms eliminate the trouble of writing repetitive and error
+prone explicit loops  each time    a  metabolic process or query    is
+implemented  or refined.      The algorithms are    linear,  i.e., the
+algorithmic  complexity is $O(n)$, where  $n$   is the number of  tree
+compartments.
 
-To  use   these algorithms  include the  file  Algorithms.h  into your
-program. Examples of these algorithms can be obtained by compiling and
-running  the  program  \tt   algorithms   \rm  in stl-lignum   project
-directory.  To compile the program type \tt make algorithms\rm.
-
+To   use these generic  algorithms  include the file Algorithms.h into
+your   program.   Examples of these   algorithms   can be  obtained by
+compiling  and running  the  program \tt algorithms  \rm in stl-lignum
+project   directory.   To    compile    the program type    \tt   make
+algorithms\rm.
 
 The sample  tree  used in  the   examples consists  of one  main  axis
 containing one tree segment, one branch whorl and the terminating bud.
