@@ -5,6 +5,7 @@
 #include <MyTreeSegment.h>
 #include <MyBud.h>
 #include <Tree.h>
+#include <Shading.h>
 
 using namespace Lignum;
 
@@ -217,6 +218,17 @@ int main(int argc, char *argv[])
   DisplayStructureData id;
   PropagateUp(cf_tree,id,DisplayStructureFunctor<MyCfTreeSegment,MyBud>());
   cout << endl;
+
+//Radiation
+  EvaluateRadiationForTree(hw_tree, WrapRadiationEvaluations<
+		    EvaluateRadiationForHwTreeSegment<MyHwTreeSegment,MyBud>,
+		    MyHwTreeSegment,MyBud>() );
+  //	    MyHwTreeSegment,MyBud>("Radiationextinction.txt") );
+
+  EvaluateRadiationForTree(cf_tree,WrapRadiationEvaluations<
+		    EvaluateRadiationForCfTreeSegment<MyCfTreeSegment,MyBud>,
+		    MyCfTreeSegment,MyBud>("Radiationextinction.txt") );
+
 
   //Photosynthesis
    SetValue(cf_tree, pr, 1.0);      //Set the photosynthesis parameter

@@ -115,7 +115,7 @@ main.o: /usr/include/CC/fstream.h ../c++adt/include/ParametricCurve.h
 main.o: /usr/include/CC/vector /usr/include/CC/stl_range_errors.h
 main.o: /usr/include/CC/stl_vector.h /usr/include/CC/stl_bvector.h
 main.o: /usr/include/float.h ../c++adt/include/Point.h /usr/include/math.h
-main.o: ../c++adt/include/PositionVector.h ../c++adt/include/mathsym.h
+main.o: ../c++adt/include/mathsym.h ../c++adt/include/PositionVector.h
 main.o: ../c++adt/include/RMatrix.h ../c++adt/include/Rotation.h
 main.o: ../c++adt/include/TMatrix.h ../c++adt/include/TMatrixI.h
 main.o: ../c++adt/include/PointI.h include/LGMdecl.h include/LGMSymbols.h
@@ -142,6 +142,7 @@ main.o: ../c++adt/include/ConnectionMatrix.h
 main.o: ../c++adt/include/ConnectionMatrixI.h include/TreeI.h
 main.o: include/TreeMetabolismI.h include/TreeBookkeepingI.h
 main.o: /usr/include/CC/typeinfo /usr/include/CC/exception
+main.o: include/TreeRadiationI.h include/Shading.h include/ShadingI.h
 main.o: include/MyTreeSegment.h include/MyBud.h
 algorithms.o: /usr/include/stdlib.h /usr/include/standards.h
 algorithms.o: /usr/include/sgidefs.h /usr/include/CC/iostream.h
@@ -203,6 +204,7 @@ algorithms.o: ../c++adt/include/ConnectionMatrix.h
 algorithms.o: ../c++adt/include/ConnectionMatrixI.h include/TreeI.h
 algorithms.o: include/TreeMetabolismI.h include/TreeBookkeepingI.h
 algorithms.o: /usr/include/CC/typeinfo /usr/include/CC/exception
+algorithms.o: include/TreeRadiationI.h include/Shading.h include/ShadingI.h
 broadleaf.o: /usr/include/stdlib.h /usr/include/standards.h
 broadleaf.o: /usr/include/sgidefs.h /usr/include/CC/iostream.h
 broadleaf.o: /usr/include/memory.h /usr/include/stddef.h /usr/include/CC/list
@@ -232,8 +234,8 @@ broadleaf.o: /usr/include/CC/fstream.h ../c++adt/include/ParametricCurve.h
 broadleaf.o: /usr/include/CC/vector /usr/include/CC/stl_range_errors.h
 broadleaf.o: /usr/include/CC/stl_vector.h /usr/include/CC/stl_bvector.h
 broadleaf.o: /usr/include/float.h ../c++adt/include/Point.h
-broadleaf.o: /usr/include/math.h ../c++adt/include/PositionVector.h
-broadleaf.o: ../c++adt/include/mathsym.h ../c++adt/include/RMatrix.h
+broadleaf.o: /usr/include/math.h ../c++adt/include/mathsym.h
+broadleaf.o: ../c++adt/include/PositionVector.h ../c++adt/include/RMatrix.h
 broadleaf.o: ../c++adt/include/Rotation.h ../c++adt/include/TMatrix.h
 broadleaf.o: ../c++adt/include/TMatrixI.h ../c++adt/include/PointI.h
 broadleaf.o: include/LGMdecl.h include/LGMSymbols.h /usr/include/CC/map
@@ -261,4 +263,5 @@ broadleaf.o: ../c++adt/include/ConnectionMatrix.h
 broadleaf.o: ../c++adt/include/ConnectionMatrixI.h include/TreeI.h
 broadleaf.o: include/TreeMetabolismI.h include/TreeBookkeepingI.h
 broadleaf.o: /usr/include/CC/typeinfo /usr/include/CC/exception
+broadleaf.o: include/TreeRadiationI.h include/Shading.h include/ShadingI.h
 broadleaf.o: include/MyTreeSegment.h include/MyBud.h
