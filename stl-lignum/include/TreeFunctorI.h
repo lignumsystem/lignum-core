@@ -103,6 +103,12 @@ namespace Lignum{
     DCLData dcl;
     AccumulateDown(tr,dcl,AddBranchWf(),
     		   DiameterCrownBase<TS,BUD>());
+    LGMdouble d13 = GetValue(tr,LGADbh);
+    LGMdouble d13hw = GetValue(tr,LGADbh);
+    if(d13 < R_EPSILON) d13 = 0.0;
+    if(d13 < R_EPSILON) d13hw = 0.0;
+    LGMdouble  dbhw= GetValue(tr, LGADbaseHw);
+    LGMdouble  db= GetValue(tr, LGADbase);
 
     //out is either equal to cout or a file
 
@@ -114,11 +120,19 @@ namespace Lignum{
     out << "Tree height: " << values.bolLen << " m,  highest point: "
 	 << values.tHeight << " m, Height of crown base: "
 	 << values.Hc << "  m" << endl;
-    out << "Basal diameter:  " << 200*values.bottom_rad 
-	 << "  cm, diam at CB: " << 100.0*dcl.DCrownBase()
-	 << "  cm,  Hw diam. at CB:  " << 100.0*dcl.DHWCrownBase()
-	 << "  cm" << endl;
-    out.precision(3);
+    out.precision(1);
+    out << "Basal diameter: "  << setw(4) << 100*db
+	<< " cm, Heartwood d at base:  " << setw(4) << 100*dbhw
+	<< " cm" <<endl;
+    out << "Diameter at BH: "  << setw(4) << 100*d13
+	<< " cm, Heartwood at BH:      " << setw(4) << 100*d13hw
+	<< " cm" <<endl;
+
+    out << "Diameter at CB: "  << setw(4) << 100*dcl.DCrownBase()
+	<< " cm, Heartwood at CB:      " << setw(4) << 100*dcl.DHWCrownBase()
+	<< " cm" <<endl;
+    
+   out.precision(4);
     out << "Foliage mass:                       " << values.sum_Wf
 	 << "  kg C,  Foliage area:  " << values.sum_Af << " m2" << endl;
     out << "F. mass in new parts:               " << values.sum_Wf_new
@@ -129,7 +143,7 @@ namespace Lignum{
 	 << "  kg C" << endl;
     out << "Mass of stemwood:                   " << values.sum_Ws
 	 << "  kg C" << endl;
-    out << "Mass of brancwood:                  " << values.sum_Wb
+    out << "Mass of branchwood:                 " << values.sum_Wb
 	 << "  kg C" << endl;
     out << "Mass of sapwood:                    " << values.sum_Wsw
 	 << "  kg C" << endl;
@@ -145,45 +159,55 @@ namespace Lignum{
       out << "Foliage area / Biomass (m2/kg C):  " << 0.0 << endl;
 
 
-
-
-    LGMdouble d13 = GetValue(tr,LGADbh);
-    LGMdouble d13hw = GetValue(tr,LGADbh);
-    //    LGMdouble apu = GetValue(tr, LGADbaseHw);
-
-
+    out.precision(1);
+    if(db > R_EPSILON) {
+      out << "FolA/Cross-sec A at base, m2/m2:  "
+	   << setw(6)<< values.sum_Af/(PI_VALUE*db*db/4.0)
+	   << " FolA/Sapwood A at base, m2/m2: "
+	   << setw(6) <<values.sum_Af/(PI_VALUE*(db*db-
+			  dbhw*dbhw)/4.0)
+	   << endl;
+    }
+    else {
+      out << "FolA/Cross-sec A at base, m2/m2:  "
+	   << setw(6)<< 0.0
+	   << " FolA/Sapwood A at base, m2/m2: "
+	   << setw(6)<< 0.0  << endl;
+    }
 
 
     if(d13 > R_EPSILON) {
-      out << "FolA/Cross-sec A at BH, m2/m2:      "
-	   << values.sum_Af/(PI_VALUE*d13*d13/4.0)
-	   << "FolA/Sapwood A at BH, m2/m2: "
-	   << values.sum_Af/(PI_VALUE*(d13*d13-
+      out << "FolA/Cross-sec A at BH, m2/m2:    "
+	   << setw(6)<< values.sum_Af/(PI_VALUE*d13*d13/4.0)
+	   << "FolA/Sapwood A at BH, m2/m2:    "
+	   << setw(6)<< values.sum_Af/(PI_VALUE*(d13*d13-
 			  d13hw*d13hw)/4.0)
 	   << endl;
     }
     else {
-      out << "FolA/Cross-sec A at BH, m2/m2:      "
-	   << 0.0
-	   << " FolA/Sapwood A at BH, m2/m2: "
-	   << 0.0  << endl;
+      out << "FolA/Cross-sec A at BH, m2/m2:    "
+	   << setw(6)<< 0.0
+	   << " FolA/Sapwood A at BH, m2/m2:   "
+	   << setw(6)<< 0.0  << endl;
     }
 
     if(dcl.DCrownBase() > R_EPSILON) {
-      out << "FolA/Cross-sec A at CB, m2/m2:      "
+      out << "FolA/Cross-sec A at CB, m2/m2:    " <<setw(6)
 	   << values.sum_Af/(PI_VALUE*dcl.DCrownBase()*dcl.DCrownBase()/4.0)
-	   << " FolA/Sapwood A at CB, m2/m2: "
+	   << " FolA/Sapwood A at CB, m2/m2:   " << setw(6)
 	   << values.sum_Af/(PI_VALUE*(dcl.DCrownBase()*dcl.DCrownBase()-
 				  dcl.DHWCrownBase()*dcl.DHWCrownBase())/4.0)
 	   << endl;
     }
     else {
-    out << "FolA/Cross-sec A at CB, m2/m2:        "
-	   << 0.0
-	   << " FolA/Sapwood A at CB, m2/m2: "
-	   << 0.0
+      out << "FolA/Cross-sec A at CB, m2/m2:    "
+	   << setw(6)<< 0.0
+	   << " FolA/Sapwood A at CB, m2/m2:   "
+	   << setw(6)<< 0.0
 	   << endl;
     }
+
+    out.precision(2);
 
     if(values.num_s_fol > 0) {
       out << "Qabs:                               "
