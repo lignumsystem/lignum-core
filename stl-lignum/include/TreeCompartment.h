@@ -29,7 +29,7 @@ namespace Lignum{
 
 inline LGMdouble GetValue(const TcData& data, LGMAD name)
 {
-  if (name == As)
+  if (name == LGAAs)
     return data.Asu;
   else{
     cout << "TcData GetValue unknown name: " << name << endl;

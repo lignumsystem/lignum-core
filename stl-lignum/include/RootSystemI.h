@@ -22,23 +22,23 @@ namespace Lignum{
     case omega:
       return rs.rsa.omega;
       //Compound attributes, areas
-    case A:                //Segment area based on R
+    case LGAA:                //Segment area based on R
       return PI_VALUE*pow(GetValue(rs,R),2.0);
-    case Ah:               //Heartwood area
+    case LGAAh:               //Heartwood area
       return PI_VALUE*pow(GetValue(rs,Rh),2.0);
-    case As:               //Sapwood Area
-      return GetValue(rs,A) - GetValue(rs,Ah);
-    case Ahair:            //Root hair area
-      return PI_VALUE*pow(GetValue(rs,Rhair),2.0) - GetValue(rs,A);
+    case LGAAs:               //Sapwood Area
+      return GetValue(rs,LGAA) - GetValue(rs,LGAAh);
+    case LGAAhair:            //Root hair area
+      return PI_VALUE*pow(GetValue(rs,Rhair),2.0) - GetValue(rs,LGAA);
       //Compound attributes, volumes
     case V:                //Segment volume based on A
-      return GetValue(rs,A)*GetValue(rs,L);
+      return GetValue(rs,LGAA)*GetValue(rs,L);
     case Vh:               //Heartwood volume
-      return GetValue(rs,Ah)*GetValue(rs,L);
+      return GetValue(rs,LGAAh)*GetValue(rs,L);
     case Vs:               //Sapwood volume
       return GetValue(rs,V) - GetValue(rs,Vh);
     case Vhair:            //Root hair volume
-      return GetValue(rs,Ahair)*GetValue(rs,L) - GetValue(rs,V);
+      return GetValue(rs,LGAAhair)*GetValue(rs,L) - GetValue(rs,V);
       //Compound attributes, weights
     case LGAWs:               //sapwood weight
       return GetValue(GetTree(rs),rho_root)*GetValue(rs,Vs);

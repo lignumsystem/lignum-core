@@ -275,14 +275,14 @@ METER GetLastAnnualIncrement(const TreeSegment<TS,BUD>& ts)
 template <class TS,class BUD>
 LGMdouble GetValue(const TreeSegment<TS,BUD>& ts, const LGMAD name)
 {
-  if (name == A)
+  if (name == LGAA)
     return PI_VALUE*pow(GetValue(ts,R), 2.0);
   
-  else if (name == Ah)
+  else if (name == LGAAh)
     return PI_VALUE*pow(GetValue(ts,Rh), 2.0);
 
-  else if (name == As)
-    return GetValue(ts,A) - GetValue(ts,Ah);
+  else if (name == LGAAs)
+    return GetValue(ts,LGAA) - GetValue(ts,LGAAh);
     
   if (name == age)
     return ts.tc_age; 

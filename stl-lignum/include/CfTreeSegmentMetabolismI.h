@@ -35,8 +35,8 @@ void CfTreeSegment<TS,BUD>::aging()
   SetValue(*this,age,GetValue(*this,age)+1.0);
 
   //Sapwood senescence
-  LGMdouble dAs = GetValue(GetTree(*this),ss) * GetValue(*this,As);
-  LGMdouble Ah_new =  dAs + GetValue(*this, Ah);
+  LGMdouble dAs = GetValue(GetTree(*this),ss) * GetValue(*this,LGAAs);
+  LGMdouble Ah_new =  dAs + GetValue(*this, LGAAh);
   LGMdouble Rh_new = sqrt(Ah_new/PI_VALUE);
   SetValue(*this,Rh,Rh_new);
 
@@ -53,8 +53,8 @@ TcData& CfTreeSegment<TS,BUD>::diameterGrowth(TcData& data)
   //New segment (age == 0) is iteratively set. 
   if (GetValue(*this,age) > 0.0){
     const ParametricCurve& fm = GetFunction(GetTree(*this),LGMFM);
-    LGMdouble Asu = GetValue(data,As); //sapwood area from above
-    LGMdouble Ahown  = GetValue(*this,Ah);//own heartwood
+    LGMdouble Asu = GetValue(data,LGAAs); //sapwood area from above
+    LGMdouble Ahown  = GetValue(*this,LGAAh);//own heartwood
     //Sapwood  requirement  of  remaining  foliage,  assume  fm  returns
     //proportion initial  foliage present, declining function  from 1 to
     //0.
@@ -67,7 +67,7 @@ TcData& CfTreeSegment<TS,BUD>::diameterGrowth(TcData& data)
     SetValue(*this,R,Rnew);
   }
   //Pass down sapwood area requirement
-  SetValue(data,As,GetValue(*this,As)); 
+  SetValue(data,LGAAs,GetValue(*this,LGAAs)); 
   
   return data;
 }

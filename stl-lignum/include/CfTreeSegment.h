@@ -31,15 +31,15 @@ namespace Lignum{
   public:
     CfData& operator = (TcData&  tcd){
       CfData& cfdata = dynamic_cast<CfData&>(tcd);
-      SetValue(*this,As,GetValue(cfdata,As)); 
+      SetValue(*this,LGAAs,GetValue(cfdata,LGAAs)); 
       return *this;
     }
     CfData& operator += (TcData& tcd){
       CfData& cfdata = dynamic_cast<CfData&>(tcd);
-      SetValue(*this,As,GetValue(*this,As)+GetValue(cfdata,As));
+      SetValue(*this,LGAAs,GetValue(*this,LGAAs)+GetValue(cfdata,LGAAs));
       return *this;
     }
-    void clear(){SetValue(*this,As,0.0);} 
+    void clear(){SetValue(*this,LGAAs,0.0);} 
   };
 
   template <class TS,class BUD=DefaultBud<TS> >

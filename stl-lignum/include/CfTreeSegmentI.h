@@ -17,7 +17,7 @@ CfTreeSegment<TS,BUD>::CfTreeSegment(const Point& p, const PositionVector& d,
     LGMdouble wf =  GetValue(*t,af)*GetValue(*this,Sa);
     SetValue(*this,Wf,wf);
     //Remember original sapwood area As0
-    SetValue(*this,As0,GetValue(*this,As));
+    SetValue(*this,As0,GetValue(*this,LGAAs));
   }
 
 
@@ -26,7 +26,7 @@ LGMdouble GetValue(const CfTreeSegment<TS,BUD>& ts, const LGMAD name)
 {
   //  LGMdouble unknown_value = 0.0;
 
-  if (name == Af){
+  if (name == LGAAf){
     //Given Wf use sf to compute foliage area: sf*Wf ((m2/kg)*kg) 
     //see also parameter af
     return GetValue(GetTree(ts),sf)*GetValue(ts,Wf);

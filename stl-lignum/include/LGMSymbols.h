@@ -4,7 +4,7 @@
 namespace Lignum{
 
   //OBS: DO NOT USE ENUMERATIONS AS VARIABLE NAMES!
-  //For example, _NEVER_ create double Wf;
+  //For example, _NEVER_ create: double Wf;
 
   //_AND_, if you add a new symbol be sure to document it carefully!
 
@@ -13,16 +13,16 @@ namespace Lignum{
   // LGMPD = LIGNUM Parameter Double
 
   // Wr           dry weight of the roots
-  enum LGMAD {A,Af,Ah, Ahair,As,As0,age,api, LGMcollision,Dbase,Dbh,dof, dR, H,Hf,Hm,ip,
+  enum LGMAD {LGAA,LGAAf,LGAAh, LGAAhair,LGAAs,As0,age,api, LGMcollision,Dbase,Dbh,dof, dR, H,Hf,Hm,ip,
               lb,LM,LP,LWf,L,lw,M, MaxD,omega,P,
 	      Qin,Qabs,R,Rf,Rh,Rhair,RTop,Sa,LGMstatus,sw,tauL,LGMtype,V,Vh,Vhair,Vs,vi,
               Wf, LGAWr, LGAWs, LGAWh, LGAWhair};
 
-  //  A      Segment area based on R (see GetValue)
-  //  Af     area of foliage
-  //  Ah     Heartwood area
-  //  Ahair  Root hair area
-  //  As     Sapwood area
+  //  LGAA   Segment area based on R (see GetValue)
+  //  LGAAf     area of foliage
+  //  LGAAh     Heartwood area
+  //  LGAAhair  Root hair area
+  //  LGAAs     Sapwood area
   //  As0    Original sapwood area
   //  age    age of object
   //  api    ???  
