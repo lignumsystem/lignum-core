@@ -131,7 +131,7 @@ int main(int argc, char** argv)
   Start();
   mainstring.Add(succstrg);
   //Draw(0);
-  L2Lignum(t1,mainstring);
+  Lstring2Lignum<MyTreeSegment,MyBud,LGMAD,LGMdouble>(t1,mainstring,2,LGMtype,LGMstatus);
   //DisplayStructure(t1);
   //cout << endl;
   //sleep(1);
@@ -154,7 +154,11 @@ int main(int argc, char** argv)
     //PrintLString(mainstring);
     //cout << endl;
     //cout << "Lignum" << endl;
-    Lstring2Lignum(t1,mainstring);
+    Lstring2Lignum<MyTreeSegment,MyBud,LGMAD,LGMdouble>(t1,mainstring,2,LGMtype,LGMstatus);
+    Lignum2Lstring<MyTreeSegment,MyBud,LGMAD,LGMdouble>(t1,mainstring,2,LGMtype,LGMstatus);
+    cout << "Deriv " << i << " Checking coordinates" << endl; 
+    Point p = GetPoint(t1);
+    PropagateUp(t1,p,CheckCoordinates<MyTreeSegment,MyBud>(0.00001));
     //DisplayStructure(t1);
     //cout << endl << endl;
     //    LstringIterator iterator(mainstring);
@@ -171,7 +175,10 @@ int main(int argc, char** argv)
     //PrintLString(mainstring);
     //cout << "\n\n";
   }
-  //Lignum2Lstring(t1,mainstring);
+  Lignum2Lstring<MyTreeSegment,MyBud,LGMAD,LGMdouble>(t1,mainstring,2,LGMtype,LGMstatus);
+  int n = 0;
+  n = Accumulate(t1,n,CountTreeSegments<MyTreeSegment,MyBud>());
+  cout << "Segments " << n << endl;
   //Lstring2Lignum(t1,mainstring);
   //Tree<MyTreeSegment,MyBud> tree(Point(0,0,0),
   //				 PositionVector(0,0,1.0));

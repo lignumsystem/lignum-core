@@ -1,6 +1,7 @@
 #ifndef LIGNUM2LSTRING_H
 #define LIGNUM2LSTRING_H
 
+#include <stdarg.h>
 #include <string.h>
 #include <stack>
 #include <list>
@@ -14,9 +15,9 @@ using namespace std;
 #include <Lignum.h>
 using namespace Lignum;
 
-template <class TS, class BUD>
+template <class TS, class BUD, class T, class F>
 int Lignum2Lstring(list<Axis<TS,BUD>*>& ls, typename list<Axis<TS,BUD>*>::iterator current, 
-		   LstringIterator& ltr)
+		   LstringIterator& ltr, vector<T>& vav)
 {
 
   //Lstring must not end in a branching point 
@@ -36,7 +37,7 @@ int Lignum2Lstring(list<Axis<TS,BUD>*>& ls, typename list<Axis<TS,BUD>*>::iterat
       ltr++;
       //Proceed to the axis
       list<TreeCompartment<TS,BUD>*>& tc_ls = GetTreeCompartmentList(*axis);
-      Lignum2Lstring(tc_ls,tc_ls.begin(),ltr);
+      Lignum2Lstring<TS,BUD,T,F>(tc_ls,tc_ls.begin(),ltr,vav);
       //Proceed to next axis
       current++;
     }
@@ -57,7 +58,7 @@ int Lignum2Lstring(list<Axis<TS,BUD>*>& ls, typename list<Axis<TS,BUD>*>::iterat
     return 0; //end of bp
   }
   //Proceed to next axis
-  return Lignum2Lstring(ls,current,ltr);
+  return Lignum2Lstring<TS,BUD,T,F>(ls,current,ltr,vav);
 }
       
 /*********************************************************
@@ -67,10 +68,10 @@ int Lignum2Lstring(list<Axis<TS,BUD>*>& ls, typename list<Axis<TS,BUD>*>::iterat
  *The algorithm is essentially the same as Lstring2Lignum*
  *so other operations are easily added                   *
  *********************************************************/ 
-template <class TS, class BUD>
+template <class TS, class BUD,class T, class F>
 int Lignum2Lstring(list<TreeCompartment<TS,BUD>*>& ls,
 		   typename list<TreeCompartment<TS,BUD>*>::iterator current,
-		   LstringIterator& ltr)
+		   LstringIterator& ltr, vector<T>& vav)
 {
   CallerData caller_data;
 
@@ -96,7 +97,7 @@ int Lignum2Lstring(list<TreeCompartment<TS,BUD>*>& ls,
       //Proceed into the branching point
       list<Axis<TS,BUD>*>& al= GetAxisList(*bp);
       //Note we DO NOT return here but will construct the branching point
-      Lignum2Lstring(al,al.begin(),ltr);
+      Lignum2Lstring<TS,BUD,T,F>(al,al.begin(),ltr,vav);
       //Branching point done, move the current to the next tree segment
       current++;
     }
@@ -118,7 +119,6 @@ int Lignum2Lstring(list<TreeCompartment<TS,BUD>*>& ls,
     //udate iterators
     else if (TreeSegment<TS,BUD>* ts = dynamic_cast<TreeSegment<TS,BUD>*> (*current)){
       //Get the argument of "F" to update the argument
-      caller_data.Strct.AddModuleAddr(ltr.Ptr());
       LGMdouble arg1 = GetValue(*ts,L);
       caller_data.Reset();
       caller_data.Strct.AddModuleAddr(ltr.Ptr());
@@ -145,8 +145,15 @@ int Lignum2Lstring(list<TreeCompartment<TS,BUD>*>& ls,
     }
     //If the current tree compartment is also bud
     //move the Lstring iterator forward
-    else if (Bud<TS,BUD>* bud = dynamic_cast<Bud<TS,BUD>*> (*current)){
-      //Move forward in the string
+    else if (BUD* bud = dynamic_cast<BUD*> (*current)){
+      caller_data.Reset();
+      caller_data.Strct.AddModuleAddr(ltr.Ptr());
+      const char* pArg = caller_data.Strct.pArg(0);
+       for (int i = 0; i < vav.size(); i++){
+	 F arg = GetValue(*bud,vav[i]);
+	 memcpy(const_cast<char*>(pArg),&arg,sizeof(F));
+	 pArg += sizeof(F);
+      }
       ltr++;
     }
     else{
@@ -172,7 +179,7 @@ int Lignum2Lstring(list<TreeCompartment<TS,BUD>*>& ls,
     ltr++;
   }
   //Deal with the  next symbol
-  return Lignum2Lstring(ls,current,ltr);
+  return Lignum2Lstring<TS,BUD,T,F>(ls,current,ltr,vav);
 }
 
 /*********************************************************
@@ -182,13 +189,24 @@ int Lignum2Lstring(list<TreeCompartment<TS,BUD>*>& ls,
  *The algorithm is essentially the same as Lstring2Lignum*
  *so other operations are easily added                   *
  *********************************************************/ 
-template <class TS, class BUD>
-int Lignum2Lstring(Tree<TS,BUD>& t, const Lstring& s)
+template <class TS, class BUD, class T, class F>
+int Lignum2Lstring(Tree<TS,BUD>& t, const Lstring& s,int argnum = 0,...)
 {
+  va_list ap;
+  vector<T> vav;
+
   LstringIterator ltr(s);
   Axis<TS,BUD>& axis = GetAxis(t);
   list<TreeCompartment<TS,BUD>*>& ls = GetTreeCompartmentList(axis);
-  return Lignum2Lstring(ls,ls.begin(),ltr);
+
+  va_start(ap,argnum);
+  for (int i = 0; i < argnum; i++){
+    vav.push_back(va_arg(ap,T));
+  }
+  va_end(ap);
+  copy(vav.begin(),vav.end(),ostream_iterator<int>(cout, " "));
+
+  return Lignum2Lstring<TS,BUD,T,F>(ls,ls.begin(),ltr,vav);
 }
 
 
