@@ -1,11 +1,8 @@
-#include <stdio.h>
-#include <iostream.h>
-#include <time.h>
-#include <math.h>
+#include <Lsystem.h>
 #include <mathsym.h>
 using namespace cxxadt;
-#include <lglobal.h>
-#include <lsysintrfc.h>
+
+namespace Bearberry{
 
 const int D    = 1.0; //dominant    apical
 const int S    = 2.0; //subdominant apical
@@ -190,7 +187,8 @@ F(s) :
 }
 
 
-
+}
+using namespace Bearberry;
 
 
 
