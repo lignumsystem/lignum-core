@@ -27,4 +27,7 @@ private:
 };
 
 }//close namespace Lignum
+
+#include <ConnectionMatrixI.h>
+
 #endif
