@@ -303,9 +303,6 @@ namespace Lignum{
     if(d13 < R_EPSILON) d13hw = 0.0;
     LGMdouble  dbhw= GetValue(tr, LGADbaseHw);
     LGMdouble  db= GetValue(tr, LGADbase);
-    LGMdouble p = 0.0, m = 0.0;
-    LGMdouble P = Accumulate(tr,p,SumTreePhotosynthesis<TS,BUD>());
-    LGMdouble M =  Accumulate(tr,m,SumTreeRespiration<TS,BUD>());
 
     int noSeg0 = 0;
     noSeg0 = Accumulate(tr,noSeg0,GetNewZeroSegments<TS,BUD>());
@@ -320,7 +317,8 @@ namespace Lignum{
 	<< 10.0*values.sum_Af/(values.sum_Wf+values.sum_Wb+values.sum_Ws+
 			       GetValue(tr,TreeWr))
 	<< " " << values.max_Qin << " " <<  values.sum_Qabs << " "
-	<< P << " " << M
+      //Note that TreeP and TreeM must be set/updated before GetValue
+  	<< GetValue(tr,TreeP) << " " << GetValue(tr,TreeM)
 	<< " " <<  values.num_segments << " " << values.num_buds
 	<< " " << noSegAll << " " << noSeg0 << " " << values.num_br_l 
 	<< " " << GetValue(tr,TreeWr) << endl;
