@@ -9,7 +9,7 @@ template <class TS,class BUD,class S>
 void HwTreeSegment<TS,BUD,S>::photosynthesis()
 {
   Tree<TS,BUD>& tt = dynamic_cast<Tree<TS,BUD>&>(GetTree(*this));
-  LGMdouble p0 = GetValue(tt, pr);
+  LGMdouble p0 = GetValue(tt, LGPpr);
 
   for(typename list<BroadLeaf<S>*>::iterator i = leaf_ls.begin();
 	i != leaf_ls.end(); i++) {

@@ -87,7 +87,7 @@ namespace Lignum{
   //LIGNUM Parameter Double
   //Keep this list in synbc with MapLGMPD constructor in TreeFriend.cc
 
-  enum LGMPD {LGPaf,al,ar,dofp,lr,mf,mr,ms,na,nl,pr,q, LGPsf, 
+  enum LGMPD {LGPaf,al,ar,dofp,lr,mf,mr,ms,na,LGPnl,LGPpr, LGPq, LGPsf, 
               LGPsr,LGPss,LGPrhoW,LGPrho_root,LGPrho_hair, LGPyc, LGPxi,
 	      LGPzbrentEpsilon, LGPLn_par, LGPn_ang_par};
 
@@ -106,8 +106,8 @@ namespace Lignum{
   //ms = Maintenance respiration rate of sapwood
   //na = Needle angle (radians)
   //nl = Needle length (na and nl define the cylinder of foliage in CfTreeSegment)
-  //pr = Proportion of bound solar radiation that is used in photosyntheesis
-  //q  = segment shortening (becoming obsolete due to vigour index)
+  //LGPpr = Photsynthetic efficiency (=photos. rate = pr * intercepted rad.)
+  //LGPq  = segment shortening (becoming obsolete due to vigour index)
   //LGPrhoW= Density of  wood in general (is usually used in Segment)
   //rho_root = Density root sapwood
   //LGPrho_hair = Density of root hair

@@ -119,13 +119,13 @@ LGMdouble GetValue(const Tree<TS,BUD>& tree, const LGMPD name)
   else if (name == na)
     return tree.tp.na;
 
-  else if (name == nl)
+  else if (name == LGPnl)
     return tree.tp.nl;
 
-  else if (name == pr)
+  else if (name == LGPpr)
     return tree.tp.pr;
 
-  else if (name == q)
+  else if (name == LGPq)
     return tree.tp.q;
 
   else if (name == LGPsf)
@@ -191,13 +191,13 @@ LGMdouble SetValue(Tree<TS,BUD>& tree, const LGMPD name, const LGMdouble value)
   else if (name == na)
     tree.tp.na = value;
 
-  else if (name == nl)
+  else if (name == LGPnl)
     tree.tp.nl = value;
 
-  else if (name == pr)
+  else if (name == LGPpr)
     tree.tp.pr = value;
 
-  else if (name == q)
+  else if (name == LGPq)
     tree.tp.q = value;
 
   else if (name == LGPsf)
