@@ -17,19 +17,19 @@ TreeMetaFileParser::TreeMetaFileParser(const string& file)
   
   //Default file names (keyword file name pair) for different functions
   //1. Adjusted length
-   file_tables[FUNCTION].insert("LGMAL","Al.fn");
+  file_tables[FUNCTION].insert("LGMAL","");
   //2.Foliage mortality
-  file_tables[FUNCTION].insert("LGMFM","pf.fn");
+  file_tables[FUNCTION].insert("LGMFM","");
   //3.Degree of Interaction (relative shadiness)
-  file_tables[FUNCTION].insert("LGMIP","ip.fn");
+  file_tables[FUNCTION].insert("LGMIP","");
   //4.The effect of light to number of the buds. 
-  file_tables[FUNCTION].insert("LGMLONB","LOnB.fn");
+  file_tables[FUNCTION].insert("LGMLONB","");
   //5.Number of New Buds
-  file_tables[FUNCTION].insert("LGMNB","fnb.fn");
+  file_tables[FUNCTION].insert("LGMNB","");
   //6.Function of vigour index
-  file_tables[FUNCTION].insert("LGMVI","Vi.fn");
+  file_tables[FUNCTION].insert("LGMVI","");
   //7.The effect of vigour index to the number of the buds. 
-  file_tables[FUNCTION].insert("LGMVIONB","ViOnB.fn");
+  file_tables[FUNCTION].insert("LGMVIONB","");
 
 
   //Initial tree. Possibly getting obsolete due to L-systems
