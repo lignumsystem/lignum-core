@@ -260,7 +260,7 @@ TreeCompartment<TS,BUD>* DrawNeedlesFunctor<TS,BUD>::operator()(TreeCompartment<
 
       //if a very short segment do not visualize foliage
       //it just eats up memory
-      if (GetValue(*cfts, LGAWf) > R_EPSILON && (GetValue(*cfts,L) > 0.01))
+      if (GetValue(*cfts, LGAWf) > R_EPSILON && (GetValue(*cfts,LGAL) > 0.01))
 	{               
 	      
 	  glPushMatrix();
