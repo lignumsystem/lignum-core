@@ -34,7 +34,12 @@
 typedef unsigned char byte;
 #endif
 
+//And the vendors just can't agree where the headers are...
+#if defined(__APPLE__) || defined(MACOSX)
+#include <OpenGL/gl.h>
+#else
 #include <GL/gl.h>
+#endif
 
 struct tga_t
 {
