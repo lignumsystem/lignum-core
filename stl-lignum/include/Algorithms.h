@@ -14,7 +14,7 @@ template <class TS, class T, class BinOp>
 class AccumulateOp2{
  public:
   AccumulateOp2(const BinOp& op1);
-  TreeCompartment<TS>* operator()(T& id,TreeCompartment<TS>* tc)const;
+  T& operator()(T& id,TreeCompartment<TS>* tc)const;
  private:
   BinOp op1;
 };
@@ -51,7 +51,7 @@ template <class TS, class Function>
 void ForEach(Tree<TS>& tree, const Function& f);
 
 template <class TS, class T, class BinOp>
-void Accumulate(Tree<TS>& tree, T& init, const BinOp& op);
+T& Accumulate(Tree<TS>& tree, T& init, const BinOp& op);
 
 template <class TS, class T, class BinOp>
 void AccumulateDown(Tree<TS>& tree, T& init, const BinOp& op);
