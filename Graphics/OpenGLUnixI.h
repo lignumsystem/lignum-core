@@ -174,20 +174,38 @@ template <class TREE>
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     
-    glTexEnvf(GL_TEXTURE_2D, GL_TEXTURE_ENV_MODE, GL_REPLACE);
-    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+    //glTexEnvf(GL_TEXTURE_2D, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+    //glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
     
-    cfstemtexture.Load("Manty.bmp", 512, 512);
+    //cfstemtexture.Load("Manty.bmp", 512, 512);
     hwstemtexture.Load("koivu.bmp", 512, 512);
-    
-    // LoadGLTextures("neulaset5.tga", "lehti.tga");
-    //MakeLeaveTable();
+    cfstemtexture.Load("Manty.bmp", 512, 512);
+
+    LoadGLTextures("neulaset5.tga", "lehti.tga");
+    MakeLeaveTable();
     
     
     list<VTree*>& ls1 =  GetCfTreeList(f);
     list<VTree*>::iterator b1 = ls1.begin();
     list<VTree*>::iterator e1 = ls1.end();
     
+    if (glIsList(CFNEEDLES_LIST))
+      glDeleteLists(CFNEEDLES_LIST,1);
+    
+    glNewList(CFNEEDLES_LIST, GL_COMPILE);
+    while (b1 != e1)
+      {
+	//I can  check that the tree type  matches but how to  decide if a
+	//tree is coniferous or hardwood, how to see what is behind TREE?
+	if (TREE* t = dynamic_cast<TREE*>(*b1))
+	  {
+	    ForestNeedles(*t);
+	  }
+	b1++;
+      }
+    glEndList();
+
+b1 = ls1.begin();
     if (glIsList(CFTREES_LIST))
       glDeleteLists(CFTREES_LIST,1);
     
@@ -205,22 +223,7 @@ template <class TREE>
       }
     glEndList();
 
-    b1 = ls1.begin();
-    if (glIsList(CFNEEDLES_LIST))
-      glDeleteLists(CFNEEDLES_LIST,1);
-    
-    glNewList(CFNEEDLES_LIST, GL_COMPILE);
-    while (b1 != e1)
-      {
-	//I can  check that the tree type  matches but how to  decide if a
-	//tree is coniferous or hardwood, how to see what is behind TREE?
-	if (TREE* t = dynamic_cast<TREE*>(*b1))
-	  {
-	    ForestNeedles(*t);
-	  }
-	b1++;
-      }
-    glEndList();
+   
     
   }
 
@@ -250,8 +253,9 @@ template <class TREE>
        }
      glEndList();
 
-     LoadGLTextures("neulaset5.tga", "lehti.tga");
-     MakeLeaveTable();
+     //LoadGLTextures("neulaset5.tga");
+//  LoadGLTextures("neulaset5.tga", "lehti.tga");
+//     MakeLeaveTable();
 
      b2 = ls2.begin();
      if (glIsList(HWLEAVES_LIST))

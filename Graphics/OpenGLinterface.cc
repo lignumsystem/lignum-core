@@ -294,16 +294,16 @@ void DrawTree()
   
   extern bool TEXTURES_ON;
 
-  /*
-  GLfloat mat_amb[] = { 0.5, 0.3, 0, 1.0 }; 
-  GLfloat mat_dif[] = { 0.8, 0.4, 0, 1.0 }; 
+ 
+  GLfloat mat_amb[] = { 0.2, 0.3, 0.4, 1.0 }; 
+  GLfloat mat_dif[] = { 0.2, 0.4, 0.4, 1.0 }; 
   
   glMaterialfv(GL_FRONT, GL_AMBIENT, mat_amb); 
   glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_dif);
   
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-  */   
+  glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);  
  //glDisable(GL_TEXTURE_2D);
   
   if (TEXTURES_ON)

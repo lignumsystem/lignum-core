@@ -162,7 +162,7 @@ template <class TS, class BUD>
       rot_y =    direction.getVector()[0];
       rot_angle = (360/(2*PI_VALUE))*acos((double)direction.getVector()[2]);
       radius = GetValue(*cfts, R);
-	  
+
       if (GetValue(*cfts, Wf) > 0)
 	{               
 	      
