@@ -32,7 +32,6 @@ namespace Lignum {
 	}
 
       b.number_of_segments++;
-      b.needleMass += fmass;
     }
 
 
