@@ -229,3 +229,76 @@ void NoTextures()
 {
 	glDisable(GL_TEXTURE_2D);  
 }
+
+
+
+//Function -- makeBGR        
+//Converts a RGB buffer to BGR
+void makeBGR (unsigned char *p, int size)
+{
+        unsigned char temp;
+        int i;
+
+        for (i = 0; i < size * 3; i += 3)
+        {
+                temp = p[i];
+                p[i] = p[i + 2];
+                p[i + 2] = temp;
+        }
+}
+
+// Function -- writeTGA        
+// Writes a buffer to a .tga file, buffer should be RGB
+void writeTGA (char *name, unsigned char *buff, int w, int h)
+{
+  const char *header = "\x00\x00\x02\x00\x00\x00\x00\x00\x00\x00\x00\x00";
+  unsigned char info[6];
+  FILE *s;
+  
+  s = fopen (name, "w");
+  
+  // write the header to the file
+  fwrite (header, sizeof (char), 12, s);
+  
+  // image dimension information
+  info[0] = w;
+  info[1] = (w >> 8);
+  info[2] = h;
+  info[3] = (h >> 8);
+  info[4] = 24;
+  info[5] = 0;
+  
+  // write dimension info to file
+  fwrite (&info, sizeof (char), 6, s);
+  
+  // since the frame buffer is RGB we need to 
+  //convert it to BGR for a targa file
+  makeBGR (buff, w * h);
+  
+  // dump the image data to the file
+  fwrite (buff, sizeof (char), w * h * 3, s);
+  
+  fclose (s);
+}
+
+// Function -- screenShot        
+// Read the current image data from the frame buffer and write it to a file
+int screenShot (char *fName, int winW, int winH)
+{
+  unsigned char *fBuffer;  
+  fBuffer = (unsigned char *)malloc (winW * winH * 3);
+  //fBuffer = calloc (winW * winH * 3, sizeof (char));
+  
+  // no memory allocated for image data
+  if (fBuffer == NULL)
+    return 0;
+  
+  // read our image data from the frame buffer
+  glReadPixels (0, 0, winW, winH, GL_RGB, GL_UNSIGNED_BYTE, fBuffer);
+  
+  // write the image data to a .tga file
+  writeTGA (fName, fBuffer, winW, winH);  
+  free (fBuffer);  
+  return 1;
+}
+

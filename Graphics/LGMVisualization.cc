@@ -1,13 +1,25 @@
 #include <stdafx.h>
 
 #include <LGMVisualization.h>
+#include <Tree.h>
+#include <ScotsBud.h>
+#include <ScotsPineVisual.h>
+#include <OpenGLfunctions.h>
+//#include <OpenGLUnix.h>
+
+using namespace Lignum;
+
+LGMVisualization* LGMVisualization::active_visualization = NULL;
 
 #if defined( APPLE ) || defined(MACOSX)
 #include <OpenGL/gl.h>
 #include <OpenGL/glu.h>
+#include <GLUT/glut.h>
 #else
 #include <GL/gl.h>
-#include <GL/gl.h>
+#include <GL/glu.h>
+#include <GL/glx.h>
+#include <GL/glut.h>
 #endif
 
 
@@ -17,6 +29,7 @@ namespace Lignum
 
 LGMVisualization::LGMVisualization()
 {
+  active_visualization = this;
 }
 
 
@@ -30,8 +43,15 @@ void LGMVisualization::InitVisualization()
 
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_FASTEST);
 	glShadeModel(GL_SMOOTH);
+
+	InitCallBacks();
 }
 
+void LGMVisualization::StartVisualization()
+{
+  cout << "Launch OpenGL........" << endl;
+  glutMainLoop ();
+}
 
 void LGMVisualization::SetAntialising(bool antialisingOn)
 {
@@ -41,7 +61,7 @@ void LGMVisualization::SetAntialising(bool antialisingOn)
 
 void LGMVisualization::AddScotsPine(Tree<ScotsPineVisual, ScotsBud> *tree)
 {
-	scotspine.push_back(tree);
+	scotspines.push_back(tree);
 }
 
 
@@ -62,7 +82,7 @@ void LGMVisualization::DrawScotsPine(Tree<ScotsPineVisual, ScotsBud> &tree, DRAW
       glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);  
   
       glDisable(GL_LIGHTING);
-      DrawStemFunctorTree<ScotsPineVisual, ScotsBud> stemfunctor;
+      DrawStemFunctor<ScotsPineVisual, ScotsBud> stemfunctor;
       stemfunctor.min_rad = -99;
       stemfunctor.max_rad = 999;
       ForEach(tree, stemfunctor);
@@ -72,7 +92,7 @@ void LGMVisualization::DrawScotsPine(Tree<ScotsPineVisual, ScotsBud> &tree, DRAW
     {
       glEnable(GL_BLEND);
       //UseTextures();
-      DrawNeedlesFunctor<Tree<ScotsPineVisual, ScotsBud> needles_functor;
+      DrawNeedlesFunctor<ScotsPineVisual, ScotsBud> needles_functor;
 
       glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
       glDisable(GL_LIGHTING);
@@ -105,7 +125,7 @@ void LGMVisualization::SetLight(void)
 {
 	GLfloat mat_amb[] = {.4,.4,.2,1};
   
-	GLfloat lightPosition[] = {lightx, lighty, lightz, lightw};
+	GLfloat lightPosition[] = {settings.lightx, settings.lighty, settings.lightz, settings.lightw};
 
 	glLightfv (GL_LIGHT0, GL_POSITION, lightPosition);
 	glEnable (GL_LIGHT0);
@@ -121,6 +141,11 @@ void LGMVisualization::SetValues(void)
 void LGMVisualization::CheckValues(void)
 {
 	//Arvojen tarkastus jos haluaa rajoituksia
+}
+
+void LGMVisualization::ReDraw(void)
+{
+  ReDrawWindow();
 }
 
 
@@ -156,8 +181,8 @@ void LGMVisualization::ReDrawWindow(void)
   //hy = 0;
   //hz = 0.6;
 
-  settings.settings.cam_x = (settings.settings.cam_x - hx) * 0.001 * settings.y_move; 
-  settings.settings.cam_y = (settings.settings.cam_y - hy) * 0.001 * settings.y_move; 
+  settings.cam_x = (settings.cam_x - hx) * 0.001 * settings.y_move; 
+  settings.cam_y = (settings.cam_y - hy) * 0.001 * settings.y_move; 
   //settings.cam_z = 1;
 
   
@@ -206,7 +231,7 @@ void LGMVisualization::ReDrawWindow(void)
 
 void LGMVisualization::NewWindowSize(GLsizei new_x, GLsizei new_y)
 {
-  glutSetWindow(window1);
+  glutSetWindow(settings.window1);
 
   glViewport (0, 0, new_x, new_y);
   settings.WINDOW_SIZE_X = new_x;
@@ -299,14 +324,14 @@ void LGMVisualization::ChangeMouseButton(int button, int state, int x, int y)
     settings.mouse_x=0;
     settings.mouse_y=0;   
     settings.LEFTBUTTON=DOWN;
-    MOVEMENT=true;
+    settings.MOVEMENT=true;
     break;
 
   case GLUT_MIDDLE_BUTTON:  // Middle button is pressed
     settings.mouse_x=0;
     settings.mouse_y=0;
     settings.MIDDLEBUTTON=DOWN;
-    MOVEMENT=true;
+    settings.MOVEMENT=true;
     break;
   
   default:
@@ -359,7 +384,7 @@ void LGMVisualization::Loop(void)
 }
 
 
-void LGMVisualization:Menu(int value)
+void LGMVisualization::Menu(int value)
 { 
   switch(value)
     { 
@@ -376,8 +401,8 @@ void LGMVisualization:Menu(int value)
       break;
 
     case 13:
-      glutSetWindow(window1);
-      screenShot ("shot.tga", WINDOW_SIZE_X, WINDOW_SIZE_Y);
+      glutSetWindow(settings.window1);
+      screenShot ("shot.tga", settings.WINDOW_SIZE_X, settings.WINDOW_SIZE_Y);
       break;
     
     case 14:
@@ -409,15 +434,15 @@ void LGMVisualization::InitCallBacks()
 
   glutInitWindowPosition (400, 20);          // Window size and place
   glutInitWindowSize(settings.WINDOW_SIZE_X, settings.WINDOW_SIZE_Y);    
-  window1 = glutCreateWindow ("Window"); //argv[0]);                 // Open a window    
-  glutReshapeFunc(NewWindowSize);          // Call this function if the size is changed  
-  glutKeyboardFunc(KeyPress);                // Call this funktion when a key is pressed 
-  glutMouseFunc (ChangeMouseButton);                      // Mouse events
-  glutMotionFunc(MouseMotion);
-  glutIdleFunc (Loop);                        // This is called when nothing happens
-  glutSpecialFunc(Arrows);
-  glutDisplayFunc(ReDraw);                    // The draw-function
-  glutCreateMenu(Menu);                          // Make the menu
+  settings.window1 = glutCreateWindow ("Window"); //argv[0]);                 // Open a window    
+  glutReshapeFunc(StaticNewWindowSize);          // Call this function if the size is changed  
+  glutKeyboardFunc(StaticKeyPress);                // Call this funktion when a key is pressed 
+  glutMouseFunc (StaticChangeMouseButton);                      // Mouse events
+  glutMotionFunc(StaticMouseMotion);
+  glutIdleFunc (StaticLoop);                        // This is called when nothing happens
+  glutSpecialFunc(StaticArrows);
+  glutDisplayFunc(StaticReDraw);                    // The draw-function
+  glutCreateMenu(StaticMenu);                          // Make the menu
  
   glutAddMenuEntry("Leaves on/off__________________", 14);
   glutAddMenuEntry("Textures on/off_________________", 15);
@@ -434,4 +459,54 @@ void LGMVisualization::InitCallBacks()
 }
 
 
+void LGMVisualization::StaticMouseMotion(int x, int y)
+{
+  active_visualization->MouseMotion(x, y);  
 }
+
+
+void LGMVisualization::StaticLoop(void)
+{
+  active_visualization->Loop();  
+}
+
+
+void LGMVisualization::StaticArrows(int key, int x, int y)
+{
+  active_visualization->Arrows(key, x, y);  
+}
+
+
+void LGMVisualization::StaticReDraw(void)
+{
+  active_visualization->ReDraw();  
+}
+
+
+void LGMVisualization::StaticMenu(int value)
+{
+  active_visualization->Menu(value);  
+}
+
+void LGMVisualization::StaticChangeMouseButton(int button, int state, int x, int y)
+{
+  active_visualization->ChangeMouseButton(button,state,x,y);  
+}
+
+
+
+void LGMVisualization::StaticKeyPress(unsigned char key, int x, int y)
+{
+  active_visualization->Keypress(key, x, y);  
+}
+
+
+
+void LGMVisualization::StaticNewWindowSize(GLsizei new_x, GLsizei new_y)
+{
+  active_visualization->NewWindowSize(new_x, new_y); 
+}
+
+}
+
+

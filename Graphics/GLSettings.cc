@@ -2,6 +2,7 @@
 #include <stdafx.h>
 
 #include <GLSettings.h>
+#include <OpenGLSymbols.h>
 
 #if defined( APPLE ) || defined(MACOSX)
 #include <OpenGL/gl.h>
@@ -12,10 +13,12 @@
 #endif
 
 
+
+
 GLSettings::GLSettings()
 {
 	antialising_on = true;
-	folige_on = false;
+	foliage_on = false;
 	textures_on = true;
 	lighting_on = true;
 	fog_on = false;

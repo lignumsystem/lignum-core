@@ -36,4 +36,7 @@ void UseTextures();
 void NoTextures();
 
 
+void makeBGR (unsigned char *p, int size);
+void writeTGA (char *name, unsigned char *buff, int w, int h);
+int screenShot (char *fName, int winW, int winH);
 #endif

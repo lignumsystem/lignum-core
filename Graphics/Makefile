@@ -4,7 +4,7 @@
 #    make gnu 
 
 SRC=OpenGL.cc  OpenGLUnix.cc OpenGLfunctions.cc  OpenGLinterface.cc tga.cc \
-    texture.cc 
+    texture.cc GLSettings.cc LGMVisualization.cc LGMVoxelVisualization.cc 
 OBJ=${SRC:.cc=.o}
 
 ALGSRC = algorithms.cc 
@@ -100,3 +100,4 @@ depend:
 
 #Do not delete this line -- make depend adds dependencies at the end of it
 #If committing Makefile to cvs please remove the dependencies first
+# DO NOT DELETE

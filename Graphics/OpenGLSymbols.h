@@ -2,7 +2,30 @@
 #define OPENGLSYMBOLS_H
 
 
+#define UP 0
+#define DOWN 1
 
+
+
+enum LIGHT_TYPE { AMBIENT, DIFFUSE, AMBIENT_AND_DIFFUSE, SPECULAR };
+enum DRAW_TYPE {stem, wiremodel, waterflow, betula_make_leaves, betula_leaves, betula_ani_leaves, needles, needles_tex, needles_tex_ordered, buds_dead, gliricidia_leaves,buds_alive, year_lines, year_lines_secround};
+enum REDRAW_MODE { rd_normal, rd_waterdraw, rd_yearline_gp, rd_yearcircles, rd_manybetulas, rd_cross };
+enum CAMERA_MODE { turn_camera, move_camera };
+
+
+struct LIGHT
+{
+	LIGHT_TYPE type;
+	float value[4];
+};
+
+struct LIGHT_VAL 
+{
+	float LightPosition[4];  
+	LIGHT ambient;
+	LIGHT specular;
+	LIGHT diffuse;
+};
 
 
 const int TREE_BIG = 1;

@@ -3,34 +3,37 @@
 #define GLSETTINGS
 
 
+#include <OpenGLinterface.h>
+
 
 
 class GLSettings
 {
 public:
+  GLSettings();
 	bool antialising_on;
-	bool folige_on;
+	bool foliage_on;
 	bool textures_on;
 	bool lighting_on;
 	bool fog_on;
 	bool show_voxel_on;
 	bool boolVoxelWithLines;
 
-	GLfloat LightPosition[4];
+	float LightPosition[4];
 	LIGHT_VAL light;
 
-	GLfloat cam_x;
-	GLfloat cam_y;
-	GLfloat cam_z;
+	float cam_x;
+	float cam_y;
+	float cam_z;
 
-	GLfloat lookat_x;
-	GLfloat lookat_y;
-	GLfloat lookat_z;
+	float lookat_x;
+	float lookat_y;
+	float lookat_z;
 
-	GLfloat m_xRotate;
-	GLfloat m_yRotate;
-	GLfloat m_xrRotate;
-	GLfloat m_yrRotate;
+	float m_xRotate;
+	float m_yRotate;
+	float m_xrRotate;
+	float m_yrRotate;
 
 	bool blackBackGround;
 
@@ -48,10 +51,10 @@ public:
 	int MIDDLEBUTTON;
 	int RIGHTBUTTON;
 
-	GLfloat lightx;
-	GLfloat lighty;
-	GLfloat lightz;
-	GLfloat lightw;
+	float lightx;
+	float lighty;
+	float lightz;
+	float lightw;
 
 	int head_xy;
 	float head_z;
@@ -59,7 +62,7 @@ public:
 	int WINDOW_SIZE_X;
 	int WINDOW_SIZE_Y;
 
-	GLboolean MOVEMENT;
+	bool MOVEMENT;
 	
 };
 

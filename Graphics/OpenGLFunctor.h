@@ -1,9 +1,13 @@
 #ifndef OPENGLFUNCTOR_H
 #define OPENGLFUNCTOR_H
 
+#include <OpenGLSymbols.h>
 #include <vector>
 #include <Point.h>
 #include <Lignum.h>
+
+
+
 
 namespace Lignum
 {
