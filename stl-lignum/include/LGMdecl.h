@@ -26,13 +26,23 @@ namespace Lignum{
   template <class TREE> class RootBranchingPoint;
   template <class TREE> class RootTip;
  
-
+  //Assert  and Message as  message boxes  for Windows,  otherwise use
+  //standard assert and cout respectively. The argument 'expr' must be
+  //a string.
 #ifdef _MSC_VER
   //Windows assert for GUI 
 #define LGMassert(expr) ASSERT(expr)
 #else
   //Standard C-library assert
 #define LGMassert(expr) assert(expr)
+#endif
+
+#ifdef _MSC_VER
+  //Windows message box
+#define LGMMessage(expr) MessageBox(NULL,expr, NULL, NULL)
+#else
+  //Output to cout
+#define  LGMMessage(expr) cout << expr << endl
 #endif
 
 }//closing namepace Lignum
