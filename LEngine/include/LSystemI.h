@@ -393,8 +393,11 @@ int LSystem<TS,BUD,T,F>::lstring2Lignum(list<TreeCompartment<TS,BUD>*>& ls,
     else if (BUD* bud = dynamic_cast<BUD*> (*current)){
       //Lstring tells only the structure, use initial dimensions
       //and the gravelius order of the terminating bud
-      TS* ts = new TS(GetPoint(turtle_stack.top()),GetHeading(turtle_stack.top()),
-		      GetValue(*bud,LGAomega),arg1,0.01,0.0,&tree);
+      TS* ts = new TS(GetPoint(turtle_stack.top()),
+		      GetHeading(turtle_stack.top()),
+		      GetValue(*bud,LGAomega),arg1,GetValue(tree,LGPlr)*arg1,
+		      0.0,&tree);
+      SetValue(*ts,LGARh,GetValue(tree,LGPxi)*GetValue(*ts,LGAR));
       ls.insert(current,ts);
       //Update turtle
       turtle_stack.top().forward(arg1);
