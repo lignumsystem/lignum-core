@@ -23,6 +23,8 @@ namespace Lignum {
     template <class TS,class BUD>
       friend void DumpSegment(VoxelBox &b, const CfTreeSegment<TS,BUD>& ts, 
 			    int num_parts);
+    template <class SH>
+      friend void DumpLeaf(VoxelBox &b, const BroadLeaf<SH>& leaf);
 
     template <class TS,class BUD>
       friend void SetSegmentQabs(VoxelBox &b, CfTreeSegment<TS,BUD>& ts, 
@@ -44,14 +46,15 @@ namespace Lignum {
     Point getCenterPoint()const;
     Point getCornerPoint()const;
     int getNumSegments()const{ return number_of_segments; }
+    int getNumLeaves()const{ return number_of_leaves; }
     LGMdouble getAreaDensity();
     LGMdouble getQabs()const{ return Q_abs; }
     LGMdouble getQin()const{ return Q_in; }
     LGMdouble getStarSum()const{ return starSum; }
     LGMdouble getStar()const{ return star; }
     LGMdouble getNeedleMass()const{return needleMass;}
-    // returns the foliage mass of the voxel box
-    LGMdouble getFoliageMass(void)const{ return needleMass; }
+    LGMdouble getLeafArea()const{return leafArea;}
+    LGMdouble getFoliageMass()const{return needleMass + leafMass;}
 
     void setArea(M2 larea, M2 narea);
     void setVoxelSpace(VoxelSpace *s, Point c);
@@ -62,12 +65,14 @@ namespace Lignum {
     void addNeedleArea(M2 narea) { needleArea += narea; }
     void addNeedleMass(M2 nmass) { needleMass += nmass; }
     void addLeafArea(M2 larea) { leafArea += larea; }
+    void addLeafMass(LGMdouble lmass) {leafMass += lmass; }
     void addQabs(LGMdouble val) { Q_abs += val; }
     void addInterceptedRadiation(LGMdouble rad) { interceptedRadiation += rad; }
     void addStarSum(LGMdouble star){starSum += star;}
-
     void increaseNumberOfSegments(){number_of_segments++;}
-    LGMdouble S(LGMdouble phi, LGMdouble sf, LGMdouble Wf, LGMdouble r, LGMdouble l);
+    void addOneLeaf() {number_of_leaves++;}
+    LGMdouble S(LGMdouble phi, LGMdouble sf, LGMdouble Wf,
+		LGMdouble r, LGMdouble l);
   protected:
     void resetQinQabs(){Q_in = 0.0; Q_abs = 0.0;interceptedRadiation = 0.0;}
     void resetCfData(){starSum = 0.0;needleArea = 0.0;needleMass = 0.0;}
@@ -82,7 +87,9 @@ namespace Lignum {
     LGMdouble Q_abs;
 
     LGMdouble needleMass;
+    LGMdouble leafMass;
     int number_of_segments;
+    int number_of_leaves;
 
   private:
     void init();	

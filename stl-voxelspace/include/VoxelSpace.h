@@ -32,22 +32,22 @@ namespace Lignum {
     template <class TS,class BUD>
     friend void DumpCfTreeSegment(VoxelSpace &s, CfTreeSegment<TS, BUD> &ts);
 
+    template <class TS, class BUD, class S>
+    friend void DumpHwTreeSegment(VoxelSpace &s,
+				  HwTreeSegment<TS, BUD, S> &ts);
+
     template <class TS,class BUD>
     friend void DumpCfTree(VoxelSpace &s, Tree<TS, BUD> &ts);
 
     template <class TS,class BUD>
     friend void SetCfTreeQabs(VoxelSpace &s, Tree<TS, BUD> &tree);
-    //define for  poplar (Fine, but we should  consider general names
-    //for the "dumping" of hw segments, Jari)
-    template <class TS,class BUD, class S>
-    friend void DumpPopTreeSegment(VoxelSpace &s, HwTreeSegment<TS,BUD, S> &ts);
      
     template <class TS,class BUD>
-    friend void DumpPopTree(VoxelSpace &s, Tree<TS, BUD> &ts);
+    friend void DumpHwTree(VoxelSpace &s, Tree<TS, BUD> &ts);
 
-    template <class TS,class BUD>
-    friend void SetPopTreeQabs(VoxelSpace &s, Tree<TS, BUD> &tree);
-    //define for poplar done
+    template <class TS,class BUD,class SH>
+    friend void SetHwTreeQabs(VoxelSpace &s, Tree<TS, BUD> &tree);
+
 
   public:
 
@@ -79,8 +79,8 @@ namespace Lignum {
     //VoxelSpace coordinate system
     Point getLocalPoint(const Point& p)const;
     void updateStar();
-    LGMdouble calculateLight();
-    LGMdouble calculatePopLight();
+    LGMdouble calculateTurbidLight();
+    LGMdouble calculatePoplarLight();
     void setLightValues();
     void setLight();
  
@@ -92,7 +92,8 @@ namespace Lignum {
     //Remove this, no concrete tree species here (Jari)
     void AddScotspine(Tree<ScotsPineVisual, ScotsBud> &tree);
 
-    BoundingBox& searchDimensions(BoundingBox &bbox, bool boolDimensionsWithNumBoxes);
+    BoundingBox& searchDimensions(BoundingBox &bbox,
+				  bool boolDimensionsWithNumBoxes);
 
     void searchDimensions(bool boolDimensionsWithNumBoxes=true){ 
       searchDimensions(bbox, boolDimensionsWithNumBoxes); 
@@ -140,9 +141,8 @@ namespace Lignum {
     mutable VoxelSpace *space;
   };
 
-
   template <class TS,class BUD>
-  class SetQabsCfTreeFunctor
+  class SetCfTreeQabsFunctor
   {
   public:
     TreeCompartment<TS,BUD>* operator ()(TreeCompartment<TS,BUD>* tc)const;
@@ -151,7 +151,7 @@ namespace Lignum {
 
   //for poplar
   template <class TS,class BUD>
-  class DumpPopTreeFunctor
+  class DumpHwTreeFunctor
   {
   public:
     TreeCompartment<TS,BUD>* operator ()(TreeCompartment<TS,BUD>* tc)const;
@@ -159,16 +159,13 @@ namespace Lignum {
   };
 
 
-  template <class TS,class BUD>
-  class SetQabsPopTreeFunctor
+  template <class TS,class BUD, class SH>
+  class SetHwTreeQabsFunctor
   {
   public:
     TreeCompartment<TS,BUD>* operator ()(TreeCompartment<TS,BUD>* tc)const;
     mutable VoxelSpace *space;
   };
-  //for poplar done
-
-
 
 } // namespace Lignum
 

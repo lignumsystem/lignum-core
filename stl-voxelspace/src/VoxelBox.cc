@@ -7,21 +7,25 @@ namespace Lignum {
 //
 //	Constructor of the class VoxelBox
 //
-VoxelBox::VoxelBox(VoxelSpace *s)
-{ 
-	space = s; 
-	init();
-}
+  VoxelBox::VoxelBox(VoxelSpace *s):
+    needleArea(0.0), leafArea(0.0), Q_in(0.0), Q_abs(0.0), star(0.0),
+    starSum(0.0), needleMass(0.0), leafMass(0.0), number_of_segments(0),
+    number_of_leaves(0), interceptedRadiation(0.0)
+  { 
+    space = s;
+  }
 
 
 //
 //	Default constructor of the class VoxelBox
 //
-VoxelBox::VoxelBox()
-{ 
-	space = NULL; 
-	init();
-}
+  VoxelBox::VoxelBox(): 
+    needleArea(0.0), leafArea(0.0), Q_in(0.0), Q_abs(0.0), star(0.0),
+    starSum(0.0), needleMass(0.0), leafMass(0.0), number_of_segments(0),
+    number_of_leaves(0), interceptedRadiation(0.0)
+  { 
+    space = NULL; 
+  }
 
 void VoxelBox::init()
 { 
@@ -34,6 +38,7 @@ void VoxelBox::init()
 	needleMass = 0.0;
 
 	number_of_segments = 0;
+	number_of_leaves = 0;
 	interceptedRadiation = 0.0;
 }
 
@@ -71,10 +76,9 @@ void VoxelBox::updateValues()
 	star = 0.14; //FOR NEEDLES
 	//DO NOT FORGET TO RESET!!!
 	
-	val_c = star * (needleArea / (space->Xbox * space->Ybox * space->Zbox));
-	//val_b = k_b * (leafArea / (space->Xbox * space->Ybox * space->Zbox));
-	val_b = 0.0;        //FOR TESTING ONLY!!!!
-
+	val_c = star * (needleArea / (space->Xbox * space->Ybox *
+				      space->Zbox));
+	val_b = k_b * (leafArea / (space->Xbox * space->Ybox * space->Zbox));
 }
 
 
@@ -162,18 +166,12 @@ LGMdouble VoxelBox::getAreaDensity()
 	return star + val_b;
 }
 
-
-
-
-//
 //
 //
 LGMdouble VoxelBox::SAc(LGMdouble phi, LGMdouble r, LGMdouble l)
 {
   return 2 * l * cos(phi) * r + PI_VALUE * r * r * sin(phi);
 }
-
-
 
 
 
@@ -191,9 +189,6 @@ LGMdouble VoxelBox::S(LGMdouble phi, LGMdouble Sf, LGMdouble Wf, LGMdouble r, LG
 	
 	return SAc(phi, r, l)*(1 - exp(-K(phi)*Sf*Wf/SAc(phi, r, l)))/(Sf*Wf);
 }
-
-
-
 
 
 

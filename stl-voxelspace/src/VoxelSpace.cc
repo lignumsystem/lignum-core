@@ -181,7 +181,8 @@ namespace Lignum {
     LGMdouble dist = 0;
 
 
-    while(startx>=0 && starty>=0 && startz>=0 && startx<Xn && starty<Yn && startz<Zn)
+    while(startx>=0 && starty>=0 && startz>=0 && startx<Xn &&
+	  starty<Yn && startz<Zn)
       {
 	VoxelMovement vm;
 
@@ -209,9 +210,8 @@ namespace Lignum {
 	    next_z = next_z + zmove;
 	  }
 		
-		
-		
-	if (startx>=-1 && starty>=-1 && startz>=-1 && startx<Xn+1 && starty<Yn+1 && startz<Zn+1)
+	if (startx>=-1 && starty>=-1 && startz>=-1 && startx<Xn+1 &&
+	    starty<Yn+1 && startz<Zn+1)
 	  {
 	    vm.x = startx;
 	    vm.y = starty;
@@ -260,7 +260,8 @@ namespace Lignum {
 	  }
   }
 
-  void VoxelSpace::fillVoxelBoxesWithNeedles(LGMdouble Sf, LGMdouble Wf, LGMdouble Rf, LGMdouble L,
+  void VoxelSpace::fillVoxelBoxesWithNeedles(LGMdouble Sf, LGMdouble Wf,
+					     LGMdouble Rf, LGMdouble L,
 					     int beginZ, int endZ)
   {
     for(int i1=0; i1<Xn; i1++)
@@ -274,7 +275,8 @@ namespace Lignum {
 	      for (double phi=0; phi<PI_VALUE/2.0; phi+=PI_VALUE/16)
 		{
 		  //As in DumpSegment
-		  voxboxes[i1][i2][i3].addStarSum(voxboxes[i1][i2][i3].S(phi,Sf,Wf,Rf,L)/8.0);
+		  voxboxes[i1][i2][i3].addStarSum(voxboxes[i1][i2][i3].
+						  S(phi,Sf,Wf,Rf,L)/8.0);
 		  voxboxes[i1][i2][i3].updateValues();
 		}
 	      voxboxes[i1][i2][i3].increaseNumberOfSegments();
@@ -308,12 +310,13 @@ namespace Lignum {
 
 
   //
-  //	for Poplar: The function calculates the Qin and Qabs-values to every VoxelBox.
+  //	for Poplar: The function calculates the Qin and Qabs-values to
+  //	every VoxelBox.
   //
-  LGMdouble VoxelSpace::calculatePopLight()
+  LGMdouble VoxelSpace::calculatePoplarLight()
   {
     //ofstream file("calculateVoxelSpace.txt");
-    cout << " VoxelSpace::calculatePopLight Begin for poplar: " << endl;
+    cout << " VoxelSpace::calculatePoplarLight Begin for poplar: " << endl;
     updateStar();
     srand(time(NULL));
 
@@ -321,7 +324,6 @@ namespace Lignum {
       for(int i2=0; i2<Yn; i2++)
 	for(int i3=0; i3<Zn; i3++)
 	  {
-
 	    double sumiop = 0.0;
 	    int num_dirs = sky->numberOfRegions();
 	    //This might  make the voxel  space slow in  execution: if
@@ -333,9 +335,11 @@ namespace Lignum {
 		for(int i = 0; i < num_dirs; i++)
 		  {	
 		    vector<double> rad_direction(3);
-		    LGMdouble iop = sky->diffuseRegionRadiationSum(i,rad_direction);
-		    PositionVector radiation_direction(rad_direction[0], rad_direction[1], 
-						       rad_direction[2]);
+		    LGMdouble iop = 
+		      sky->diffuseRegionRadiationSum(i,rad_direction);
+		    PositionVector 
+		      radiation_direction(rad_direction[0], rad_direction[1], 
+					  rad_direction[2]);
 		    radiation_direction.normalize();
 		    //cout <<  iop << endl;
 		    vector<VoxelMovement> vec;		
@@ -361,7 +365,8 @@ namespace Lignum {
 					
                           LGMdouble starsum=voxboxes[v1.x][v1.y][v1.y].getStarSum();			
 			 
-                          p=min(starsum, 1.0);     //need to work on my field data to get the p value
+                          p=min(starsum, 1.0);     //need to work on my
+			  //field data to get the p value
 			  // cout<<starsum<<" ";
                           result=ber(0.3, 1);
 			  // cout<<result<<" ________________show result____________"<<endl; 
@@ -433,10 +438,10 @@ namespace Lignum {
   //
   //	The function calculates the Qin and Qabs-values to every VoxelBox.
   //
-  LGMdouble VoxelSpace::calculateLight()
+  LGMdouble VoxelSpace::calculateTurbidLight()
   {
     //ofstream file("calculateVoxelSpace.txt");
-    cout << " VoxelSpace::calculateLight Begin: " << endl;
+    cout << " VoxelSpace::calculateTurbidLight Begin: " << endl;
     updateStar();
     cout << " Star values updated " << endl;    
     for(int i1=0; i1<Xn; i1++)
@@ -677,10 +682,8 @@ namespace Lignum {
   }
 
 
-
-
   //
-  //	This function is called after calculateLight-function. The light values calculated in VoxelBoxes
+  //	This function is called after calculateTurbidLight-function. The light values calculated in VoxelBoxes
   //	are now tranformed to treesegments.
   //
   void VoxelSpace::setLightValues()
