@@ -21,9 +21,9 @@ namespace Lignum{
     CreateLeaves(METER l, METER semi_major, METER semi_minor):pl(l),a(semi_major),b(semi_minor){}
     vector<PositionVector>& operator()(vector<PositionVector>& v,
 				       TreeCompartment<TS,BUD>* tc)const;
-    METER pl;
-    METER a;
-    METER b;
+    METER pl;//Petiole length
+    METER a; //semi major axis of leaf ellips
+    METER b; //semi minor axis od leaf ellips
   };
 
   template <class TS, class BUD>

@@ -23,7 +23,10 @@ namespace Lignum{
       Point point = GetEndPoint(*this);
       PositionVector up(0,0,1);
       Ellipsis shape(a,b); //initial shape of a leaf
-      Uniform u; //uniform random number [0,1]
+      static Uniform u; //uniform random number [0,1] for setting leaf
+			//normals;  static makes it  common throughout
+			//the  program and  not reinitialized  in each
+			//call.
       int seed = 3267;
       for (int i = 0; i < pd.size(); i++){
 	PositionVector pdir = pd[i];
