@@ -254,20 +254,31 @@ int main(int argc, char *argv[])
   //This computes Qin and Qabs for one segment (pairwise comparison)
   EvaluateRadiationForCfTreeSegment<MyCfTreeSegment,MyCfBud> R(K);
   //For all segments simply call ForEach
-  ForEach(cf_tree,R);
+  //ForEach(cf_tree,R);
   //Photosynthesis
-   SetValue(cf_tree, pr, 1.0);      //Set the photosynthesis parameter
-   SetValue(hw_tree, pr, 1.0);
-   hw_tree.photosynthesis();
-   cout << endl << "Photosynthesis (should be = ?): "
-	 << GetValue(hw_tree, TreeP) << endl;
-   cf_tree.photosynthesis();
-   cout << endl << "Photosynthesis (should be = 1*100): "
-	<< GetValue(cf_tree, TreeP) << endl;
-   cf_tree.respiration();
-   cout << endl << "cf_tree Photosynthesis (): "
-	<< GetValue(cf_tree, TreeM) << endl;
-   hw_tree.respiration();
+  SetValue(cf_tree, pr, 1.0);      //Set the photosynthesis parameter
+  SetValue(hw_tree, pr, 1.0);
+  //hw_tree.photosynthesis();
+  //    cout << endl << "Photosynthesis (should be = ?): "
+  // 	 << GetValue(hw_tree, TreeP) << endl;
+  ForEach(hw_tree, TreePhotosynthesis<MyHwTreeSegment,MyHwBud>());
+  LGMdouble sumP = 0.0;
+  sumP = Accumulate(hw_tree,sumP,SumTreePhotosynthesis<MyHwTreeSegment,MyHwBud>());
+  cout << "P for HwTree is: " << sumP << endl; 
+  
+  //cf_tree.photosynthesis();
+  ForEach(cf_tree, TreePhotosynthesis<MyCfTreeSegment,MyCfBud>());
+  sumP = 0.0;
+  sumP = Accumulate(cf_tree,sumP,SumTreePhotosynthesis<MyCfTreeSegment,MyCfBud>());
+  cout << "P for CfTree is: " << sumP 
+       << " (should be = 1*100): " << endl;
+   //cf_tree.respiration();
+  ForEach(cf_tree,TreeRespiration<MyCfTreeSegment,MyCfBud>());
+  LGMdouble sumM = 0.0;
+  sumM = Accumulate(cf_tree,sumM,SumTreeRespiration<MyCfTreeSegment,MyCfBud>());
+  sumM += GetValue(cf_tree,mr)*GetValue(cf_tree,LGAWr);
+  cout << "M for CfTree is: " << sumM << endl; 
+   //hw_tree.respiration();
    cout << endl << "hw_tree Respiration (): "
 	<< GetValue(cf_tree, TreeM) << endl;
 
