@@ -115,12 +115,8 @@ bool LoadGLTextures(char *name)
    //	image.Load("textures\\vaahtera1.tga", texIds[1]);
    // 	image.Load("textures\\koivuvk1.tga", texIds[1]);
   	
-   const int num_textures = 1;
-   AUX_RGBImageRec *TextureImage[num_textures];
-   memset(TextureImage,0, sizeof(void *));
-
-      
-   return texIds[0];
+  
+   return true;
 }
 
 
