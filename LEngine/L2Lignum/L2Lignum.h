@@ -30,6 +30,7 @@ int L2Lignum(BranchingPoint<TS,BUD>& bp, LstringIterator& iterator,
 {
 
   const char* name = iterator.GetCurrentModuleName();
+  cout << "BP Module name " << name << endl;
 
   //Branching point sees "SB" --> new Axis
   if (strcmp(name,"SB") == 0){
@@ -58,15 +59,17 @@ template <class TS, class BUD>
 int L2Lignum(Axis<TS,BUD>& axis, LstringIterator& iterator, 
 	     stack<Turtle>& turtle_stack)
 {
-  const char* name = NULL;
   CallerData caller_data;
 
   if (iterator.AtEnd()){
     return 1; //exit
   }
 
-  else if (strcmp(name,"EB") == 0){
+  const char* name =  iterator.GetCurrentModuleName();
+  cout << "Axis module name " << name  << endl; 
+  if (strcmp(name,"EB") == 0){
     turtle_stack.pop();
+    iterator++;
     return 2; //end of axis
   } 
   //Forward, also create a segment
@@ -81,7 +84,6 @@ int L2Lignum(Axis<TS,BUD>& axis, LstringIterator& iterator,
     InsertTreeCompartment(axis,ts);
     turtle_stack.top().forward(arg1);
     iterator++;
-    return L2Lignum(axis,iterator,turtle_stack);
   }
   //Axis sees "SB" --> new Branching point
   //Also push the current status of the turtle to the stack
@@ -93,7 +95,7 @@ int L2Lignum(Axis<TS,BUD>& axis, LstringIterator& iterator,
     InsertTreeCompartment(axis,bp);
     turtle_stack.push(turtle_stack.top());
     //Read the branching point
-    return L2Lignum(*bp,iterator,turtle_stack);
+    L2Lignum(*bp,iterator,turtle_stack);
   }
   //Turn
   else if (strcmp(name,"Turn") == 0){
@@ -103,7 +105,6 @@ int L2Lignum(Axis<TS,BUD>& axis, LstringIterator& iterator,
     memcpy(&arg1,caller_data.Strct.pArg(0),sizeof(double));
     turtle_stack.top().turn(arg1);
     iterator++;
-    return L2Lignum(axis,iterator,turtle_stack);
   }
   //Pitch
   else if (strcmp(name,"Pitch") == 0){
@@ -113,7 +114,6 @@ int L2Lignum(Axis<TS,BUD>& axis, LstringIterator& iterator,
     memcpy(&arg1,caller_data.Strct.pArg(0),sizeof(double));
     turtle_stack.top().pitch(arg1);
     iterator++;
-    return L2Lignum(axis,iterator,turtle_stack);
   }
   //Roll
   else if (strcmp(name,"Roll") == 0){
@@ -123,21 +123,20 @@ int L2Lignum(Axis<TS,BUD>& axis, LstringIterator& iterator,
     memcpy(&arg1,caller_data.Strct.pArg(0),sizeof(double));
     turtle_stack.top().roll(arg1);
     iterator++;
-    return L2Lignum(axis,iterator,turtle_stack);
   }
   //Bud
   else if (strcmp(name,"B") == 0){
     Bud<TS,BUD>* bud = new Bud<TS,BUD>(GetPoint(turtle_stack.top()),
 				       GetHeading(turtle_stack.top()),
 				       0.0,&GetTree(axis));
+    InsertTreeCompartment(axis,bud);
     iterator++;
-    return L2Lignum(axis,iterator,turtle_stack);
   }
   //Ignore other symbols, go forward in the string
   else{
     iterator++;
-    return L2Lignum(axis,iterator,turtle_stack);
   }
+  return L2Lignum(axis,iterator,turtle_stack);
 }
 
 

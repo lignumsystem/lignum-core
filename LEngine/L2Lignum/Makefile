@@ -6,7 +6,7 @@
 SRC= Turtle.cc main.cc
 OBJ  = Turtle.o main.o
 
-CCC = CC  -LANG:std
+CCC = CC -64 -LANG:std
 
 #OPTIMIZE = -Ofast=ip28 -IPA
 OPTIMIZE   = -g 
@@ -23,7 +23,7 @@ INCLUDE = -I. -I../../c++adt/include -I../../Firmament/include \
 
 STL     = -I/usr/include/CC
 
-LIBFLAGS = -L../../c++adt/lib -L../../stl-lignum/lib -L../../Firmament/lib -L../Generate/Linux.out
+LIBFLAGS = -L../../c++adt/lib -L../../stl-lignum/lib -L../../Firmament/lib -L../Generate/IRIX64.out
 
 LIB1   = libc++adt.a
 LIB2   = libLGM.a

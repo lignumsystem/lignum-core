@@ -90,6 +90,9 @@ int main(int argc, char** argv)
   Tree<MyCfTreeSegment,MyBud> tree(Point(0,0,0),
 			     PositionVector(0,0,1.0));
   L2Lignum(tree,mainstring);
+  DisplayStructureData id;
+  PropagateUp(tree,id,DisplayStructureFunctor<MyCfTreeSegment,MyBud>());
+  cout << endl;
 
 //    {
 //      //Draw(100);
