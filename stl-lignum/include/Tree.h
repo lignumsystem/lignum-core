@@ -42,7 +42,7 @@ using namespace sky;
 namespace Lignum{
 
 	//cvs update
-	/*
+
   struct SmallCube
   {
     int x,y,z;
@@ -56,7 +56,6 @@ namespace Lignum{
 
     bool ready;
   };
-  */
 
   class TreeParameters{
   public:
