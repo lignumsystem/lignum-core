@@ -17,13 +17,13 @@ using namespace Lignum;
 //It has its center at Point ps
 //other properties are defined by BroadLeaf leaf, PosVector petiole
 
-//If hits, ellipsisBeamShading returns 1,
-//otherwise ellipsisBeamShading returns 0
+//If hits, EllipseBeamShading returns 1,
+//otherwise EllipseBeamShading returns 0
 // 
 //
 //
 
-int ellipsisBeamShading(Point& p0,
+int EllipseBeamShading(Point& p0,
 			PositionVector& v, BroadLeaf<Ellipse>& leaf)
 {
 
