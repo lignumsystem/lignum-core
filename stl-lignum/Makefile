@@ -6,6 +6,7 @@ ALGOBJ  = algorithms.o
 
 CCC = CC -64 
 
+#OPTIMIZE = -Ofast=ip28 -IPA
 OPTIMIZE   = -g 
 
 SUPPRESS = #-w 1155 -w 1183
