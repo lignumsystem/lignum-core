@@ -26,10 +26,12 @@ gnu:
 lignux: 
 	make "CCC=g++" "CCCFLAGS=-c" "OPTIMIZE=-g" \
              "AR=ar"  "ARFLAGS=rv" "LIBD=lib32" lengine
-clean: 
+clean:
+	rm -f src/*.o 
 	(cd L2C; make clean)
 	(cd L2Lignum; make clean)
 distclean: 
+	rm -f src/*.o
 	(cd L2Lignum; make distclean)
 	rm -f bin/l2c lib/libL.a
 depend: 
