@@ -219,14 +219,10 @@ depend:
 ../BetulaWithFlow/BetulaWithFlow.o: ../include/Axis.h ../include/AxisI.h
 ../BetulaWithFlow/BetulaWithFlow.o: ../../c++adt/include/ConnectionMatrix.h
 ../BetulaWithFlow/BetulaWithFlow.o: ../../c++adt/include/ConnectionMatrixI.h
+../BetulaWithFlow/BetulaWithFlow.o: ../include/TreeRadiation.h
 ../BetulaWithFlow/BetulaWithFlow.o: ../include/TreeI.h
 ../BetulaWithFlow/BetulaWithFlow.o: ../include/TreeMetabolismI.h
-../BetulaWithFlow/BetulaWithFlow.o: ../include/TreeBookkeepingI.h
-../BetulaWithFlow/BetulaWithFlow.o: /usr/include/CC/typeinfo
-../BetulaWithFlow/BetulaWithFlow.o: /usr/include/CC/exception
 ../BetulaWithFlow/BetulaWithFlow.o: ../include/TreeRadiationI.h
-../BetulaWithFlow/BetulaWithFlow.o: ../include/Shading.h
-../BetulaWithFlow/BetulaWithFlow.o: ../include/ShadingI.h
 ../BetulaWithFlow/BetulaWithFlow.o: ../include/BetulaWithFlowI.h
 ../BranchingPoint/BranchingPointFriend.o: ../include/BranchingPoint.h
 ../BranchingPoint/BranchingPointFriend.o: /usr/include/CC/list
@@ -668,10 +664,9 @@ depend:
 ../Tree/TreeFriend.o: ../include/AxisI.h
 ../Tree/TreeFriend.o: ../../c++adt/include/ConnectionMatrix.h
 ../Tree/TreeFriend.o: ../../c++adt/include/ConnectionMatrixI.h
-../Tree/TreeFriend.o: ../include/TreeI.h ../include/TreeMetabolismI.h
-../Tree/TreeFriend.o: ../include/TreeBookkeepingI.h /usr/include/CC/typeinfo
-../Tree/TreeFriend.o: /usr/include/CC/exception ../include/TreeRadiationI.h
-../Tree/TreeFriend.o: ../include/Shading.h ../include/ShadingI.h
+../Tree/TreeFriend.o: ../include/TreeRadiation.h ../include/TreeI.h
+../Tree/TreeFriend.o: ../include/TreeMetabolismI.h
+../Tree/TreeFriend.o: ../include/TreeRadiationI.h
 ../Tree/Tree.o: ../include/Tree.h /usr/include/CC/algorithm
 ../Tree/Tree.o: /usr/include/CC/stl_algobase.h /usr/include/CC/stl_config.h
 ../Tree/Tree.o: /usr/include/standards.h /usr/include/CC/stl_relops.h
@@ -734,11 +729,9 @@ depend:
 ../Tree/Tree.o: ../include/CfTreeSegment.h ../include/CfTreeSegmentI.h
 ../Tree/Tree.o: ../include/CfTreeSegmentMetabolismI.h ../include/Axis.h
 ../Tree/Tree.o: ../include/AxisI.h ../../c++adt/include/ConnectionMatrix.h
-../Tree/Tree.o: ../../c++adt/include/ConnectionMatrixI.h ../include/TreeI.h
-../Tree/Tree.o: ../include/TreeMetabolismI.h ../include/TreeBookkeepingI.h
-../Tree/Tree.o: /usr/include/CC/typeinfo /usr/include/CC/exception
-../Tree/Tree.o: ../include/TreeRadiationI.h ../include/Shading.h
-../Tree/Tree.o: ../include/ShadingI.h
+../Tree/Tree.o: ../../c++adt/include/ConnectionMatrixI.h
+../Tree/Tree.o: ../include/TreeRadiation.h ../include/TreeI.h
+../Tree/Tree.o: ../include/TreeMetabolismI.h ../include/TreeRadiationI.h
 ../TreeSegment/BeamShading.o: ../include/Shading.h ../include/Tree.h
 ../TreeSegment/BeamShading.o: /usr/include/CC/algorithm
 ../TreeSegment/BeamShading.o: /usr/include/CC/stl_algobase.h
@@ -840,10 +833,8 @@ depend:
 ../TreeSegment/BeamShading.o: ../include/Axis.h ../include/AxisI.h
 ../TreeSegment/BeamShading.o: ../../c++adt/include/ConnectionMatrix.h
 ../TreeSegment/BeamShading.o: ../../c++adt/include/ConnectionMatrixI.h
-../TreeSegment/BeamShading.o: ../include/TreeI.h ../include/TreeMetabolismI.h
-../TreeSegment/BeamShading.o: ../include/TreeBookkeepingI.h
-../TreeSegment/BeamShading.o: /usr/include/CC/typeinfo
-../TreeSegment/BeamShading.o: /usr/include/CC/exception
+../TreeSegment/BeamShading.o: ../include/TreeRadiation.h ../include/TreeI.h
+../TreeSegment/BeamShading.o: ../include/TreeMetabolismI.h
 ../TreeSegment/BeamShading.o: ../include/TreeRadiationI.h
 ../TreeSegment/BeamShading.o: ../include/ShadingI.h
 ../TreeSegment/BroadLeafMetabolism.o: ../include/BroadLeaf.h

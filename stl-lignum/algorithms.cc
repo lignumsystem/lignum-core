@@ -8,6 +8,7 @@
 #include <Shading.h>
 
 using namespace Lignum;
+using namespace sky;
 
 string ParseCommandLine(int argc, char *argv[],const string& flag)
 {
@@ -236,11 +237,15 @@ int main(int argc, char *argv[])
    hw_tree.photosynthesis();
    cout << endl << "Photosynthesis (should be = ?): "
 	 << GetValue(hw_tree, P) << endl;
-   UpdateTreePhotosynthesis(hw_tree);
    cf_tree.photosynthesis();
-   UpdateTreePhotosynthesis(cf_tree);
    cout << endl << "Photosynthesis (should be = 1*100): "
 	<< GetValue(cf_tree, P) << endl;
+   cf_tree.respiration();
+   cout << endl << "cf_tree Photosynthesis (): "
+	<< GetValue(cf_tree, M) << endl;
+   hw_tree.respiration();
+   cout << endl << "hw_tree Respiration (): "
+	<< GetValue(cf_tree, M) << endl;
 }
 
 

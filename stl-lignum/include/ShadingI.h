@@ -3,8 +3,9 @@
 
 #include <mathsym.h>
 #include <time.h>
-
+#include <Tree.h>
 using namespace Lignum;
+using namespace sky;
 
 #define HIT_THE_FOLIAGE 1
 #define NO_HIT 0
@@ -30,7 +31,7 @@ int cylinderBeamShading(const Point& r0, const PositionVector& b,
 
 //This method is not necessary for hardwoods. Having this this 'do
 //nothing' method defined makes sure that programs compiles even if
-//constructor of WrapRadiationEvaluations<F,TS,BUD> is invoked with
+//constructor of SGetFIWrapRadiationEvaluations<F,TS,BUD> is invoked with
 //string argumend for hardwoods.
 template <class TS,class BUD>
 void EvaluateRadiationForHwTreeSegment<TS,BUD>::setExtinction(ParametricCurve& K_in)
@@ -51,9 +52,8 @@ void EvaluateRadiationForHwTreeSegment<TS,BUD>::operator()
   if (leaves.empty()) return;
 
   Tree<TS,BUD>& tt = GetTree(*ts);
-  Firmament& firm = GetFirmament(tt);
-  
-  Firmament& firmament = GetFirmament(tt);
+  //  Firmament& firmament = GetFirmament(tt);
+  Firmament firmament;
   int number_of_sectors = firmament.numberOfRegions();
   double tmp_adotb = 0, a_dot_b = 0.0;
   double help;
@@ -124,13 +124,14 @@ vector<LGMdouble>& ShadingEffectOfLeaf<TS,BUD>::operator()(vector<LGMdouble>& v,
       return v;
 
     Tree<TS,BUD>& tt = dynamic_cast<Tree<TS,BUD> &>(GetTree(*ts));
-    Firmament& firm = GetFirmament(tt);
+    //    Firmament& firmament = GetFirmament(tt);
+  Firmament firmament;
 
     Point mp;
     int i = 0, number_of_sectors = 0, result = 0;
     LGMdouble Vp = 0.0;
     vector<double> radiation_direction(3);
-    number_of_sectors = firm.numberOfRegions();
+    number_of_sectors = firmament.numberOfRegions();
   
     //XXXthis loop will contain the actual comparisons of tree segments and leaves
     //compare each leaf in shaded tree segment to each leaf in shading tree segment
@@ -144,7 +145,7 @@ vector<LGMdouble>& ShadingEffectOfLeaf<TS,BUD>::operator()(vector<LGMdouble>& v,
     for (Ishding = llshding.begin(); Ishding != llshding.end(); Ishding++){
       for (i = 0; i < number_of_sectors; i++){
 	//the radiation from the sector i
-	firm.diffuseRegionRadiationSum(i,radiation_direction);
+	firmament.diffuseRegionRadiationSum(i,radiation_direction);
 	tmp = PositionVector(radiation_direction[0],
 			     radiation_direction[1],
 			     radiation_direction[2]);
@@ -197,7 +198,8 @@ void EvaluateRadiationForCfTreeSegment<TS,BUD>::operator()
     }
 
   Tree<TS,BUD>& tt = GetTree(*ts);
-  Firmament& firmament = GetFirmament(tt);
+  //  Firmament& firmament = GetFirmament(tt);
+  Firmament firmament;
   int number_of_sectors = firmament.numberOfRegions();
   double a_dot_b = 0.0;
   vector<double> radiation_direction(3);
@@ -291,8 +293,9 @@ vector<LGMdouble>& ShadingEffectOfCfTreeSegment<TS,BUD>::
     vector<double> radiation_direction(3);
 
     Tree<TS,BUD>& tt = dynamic_cast<Tree<TS,BUD> &>(GetTree(*ts));
-    Firmament& firm = GetFirmament(tt);
-    number_of_sectors = firm.numberOfRegions();
+    sky::Firmament& firmament = GetFirmament(tt);
+
+    number_of_sectors = firmament.numberOfRegions();
 
     LGMdouble fol_dens = GetValue(*ts,Wf)/
       (PI_VALUE*(pow(GetValue(*ts,Rf),2.0)-pow(GetValue(*ts,R),2.0))

@@ -139,10 +139,8 @@ main.o: include/HwTreeSegmentI.h include/HwTreeSegmentMetabolismI.h
 main.o: include/CfTreeSegment.h include/CfTreeSegmentI.h
 main.o: include/CfTreeSegmentMetabolismI.h include/Axis.h include/AxisI.h
 main.o: ../c++adt/include/ConnectionMatrix.h
-main.o: ../c++adt/include/ConnectionMatrixI.h include/TreeI.h
-main.o: include/TreeMetabolismI.h include/TreeBookkeepingI.h
-main.o: /usr/include/CC/typeinfo /usr/include/CC/exception
-main.o: include/TreeRadiationI.h include/Shading.h include/ShadingI.h
+main.o: ../c++adt/include/ConnectionMatrixI.h include/TreeRadiation.h
+main.o: include/TreeI.h include/TreeMetabolismI.h include/TreeRadiationI.h
 main.o: include/MyTreeSegment.h include/MyBud.h
 algorithms.o: /usr/include/stdlib.h /usr/include/standards.h
 algorithms.o: /usr/include/sgidefs.h /usr/include/CC/iostream.h
@@ -201,9 +199,8 @@ algorithms.o: ../c++adt/include/Lex.h include/RootSystem.h
 algorithms.o: include/DefaultBud.h include/BranchingPoint.h
 algorithms.o: include/BranchingPointI.h include/Axis.h include/AxisI.h
 algorithms.o: ../c++adt/include/ConnectionMatrix.h
-algorithms.o: ../c++adt/include/ConnectionMatrixI.h include/TreeI.h
-algorithms.o: include/TreeMetabolismI.h include/TreeBookkeepingI.h
-algorithms.o: /usr/include/CC/typeinfo /usr/include/CC/exception
+algorithms.o: ../c++adt/include/ConnectionMatrixI.h include/TreeRadiation.h
+algorithms.o: include/TreeI.h include/TreeMetabolismI.h
 algorithms.o: include/TreeRadiationI.h include/Shading.h include/ShadingI.h
 broadleaf.o: /usr/include/stdlib.h /usr/include/standards.h
 broadleaf.o: /usr/include/sgidefs.h /usr/include/CC/iostream.h
@@ -260,8 +257,6 @@ broadleaf.o: include/HwTreeSegmentMetabolismI.h include/CfTreeSegment.h
 broadleaf.o: include/CfTreeSegmentI.h include/CfTreeSegmentMetabolismI.h
 broadleaf.o: include/Axis.h include/AxisI.h
 broadleaf.o: ../c++adt/include/ConnectionMatrix.h
-broadleaf.o: ../c++adt/include/ConnectionMatrixI.h include/TreeI.h
-broadleaf.o: include/TreeMetabolismI.h include/TreeBookkeepingI.h
-broadleaf.o: /usr/include/CC/typeinfo /usr/include/CC/exception
-broadleaf.o: include/TreeRadiationI.h include/Shading.h include/ShadingI.h
-broadleaf.o: include/MyTreeSegment.h include/MyBud.h
+broadleaf.o: ../c++adt/include/ConnectionMatrixI.h include/TreeRadiation.h
+broadleaf.o: include/TreeI.h include/TreeMetabolismI.h
+broadleaf.o: include/TreeRadiationI.h include/MyTreeSegment.h include/MyBud.h

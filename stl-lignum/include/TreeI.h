@@ -1,6 +1,6 @@
 #ifndef TREEI_H
 #define TREEI_H
-
+using namespace sky;
 namespace Lignum{
 
 template <class TS,class BUD>
@@ -20,85 +20,6 @@ Tree<TS,BUD>::Tree(const Point& p, const PositionVector& d)
 }
 
 
-template <class TS,class BUD>
-void Tree<TS,BUD>::UpdateWaterFlow(LGMdouble time_step, const ConnectionMatrix<TS,BUD> &cm)
-{
-  int i = 0;
-  // This counts the flow in for every segment
-  for (i=0; i<cm.getSize(); i++){
-    TreeSegment<TS,BUD> *out;
-    if(cm.getTreeSegment(i) != NULL)  
-      out = cm.getTreeSegment(i);
-    
-    for (int a=0; a<cm.getSize(); a++){
-      if (i != a && cm.getTreeSegment(i, a) != 0){
-
-	TreeSegment<TS,BUD> *in = cm.getTreeSegment(i,a);	
-	SetValue(*in, fin, CountFlow(*in, *out));
-      }
-      SetValue(*out, fout, 0);   
-    }	
-  }
-
-  TreeSegment<TS,BUD> *in = cm.getTreeSegment(0);
-  SetValue(*in, fin, cm.getSize() * 0.12e-9);
-  
-  // This counts the flow out for every segment
-  for (i=0; i<cm.getSize(); i++){
-    TreeSegment<TS,BUD> *out;
-    if(cm.getTreeSegment(i) != 0)  
-      out = cm.getTreeSegment(i);
-    for (int a=0; a<cm.getSize(); a++){
-      if (i != a && cm.getTreeSegment(i,a) != 0){
-	TreeSegment<TS,BUD> *in = cm.getTreeSegment(i,a);
-	SetValue(*out, fout, GetValue(*out, fout)+GetValue(*in, fin));
-      }
-    }
-
-    LGMdouble Dw = GetValue(*out, R);  //diameter of sapwood
-    
-    LGMdouble new_pressure = GetValue(*out, Pr) + time_step * ttp.Er / Dw * 2  /
-      (ttp.rhow * PI_VALUE *  GetValue(*out, L) *  GetValue(*out, R)) *
-      ( GetValue(*out, fin) - GetValue(*out, fout) - 
-	out->GetTranspiration(time_step));  
-    
-   
-     cout << i << ":virtaus sisään " <<  GetValue(*out, fin)*time_step << " ; ulos " 
-	  << GetValue(*out, fout)*time_step << " haihdunta:" << out->GetTranspiration(time_step)*time_step;
-    cout << "SUMMA = " <<  (GetValue(*out, fin) - GetValue(*out, fout) -  out->GetTranspiration(time_step))*time_step 
-	 << endl;
-   
-        
-    SetValue(*out, Pr, new_pressure);         
-    SetValue(*out, Wm, GetValue(*out, Wm) + (GetValue(*out, fin)-  GetValue(*out, fout) - out->GetTranspiration(0.0))* time_step); 
-  }
-  cout << endl; 
-}
-
-
-
-// This method counts the flow from the TreeSegment below (out) to the TreeSegment above.
-
-template <class TS,class BUD>
-LGMdouble Tree<TS,BUD>::CountFlow(TreeSegment<TS,BUD> &in, TreeSegment<TS,BUD> &out)
-
-{
-  LGMdouble ar = GetValue(out, A);
-  LGMdouble le = GetValue(out, L);
-  LGMdouble he = GetValue(in, Hm) - GetValue(out, Hm);
-
-  LGMdouble pr_out = GetValue(out, Pr);  // Pressure in the element above
-  LGMdouble pr_in = GetValue(in, Pr);    // Pressure in the element below
- 
-  return ttp.rhow * (ttp.k/ ttp.eta) * (ar / le) * (pr_out - pr_in - (ttp.rhow * ttp.g * he));
-}
-
-
-template <class TS,class BUD>
-sky::Firmament& GetFirmament(Tree<TS,BUD>& tree)
-{
-  return tree.f;
-}
 
 
 //The initialization of the tree.
@@ -369,10 +290,10 @@ string GetTreeInitializationFile(Tree<TS,BUD>& tree) {
 }
 
 
-//  template <class TS,class BUD>
-//  Firmament& GetFirmament(const Tree<TS,BUD>& tree) {
-//    return tree.f;
-//  }
+template <class TS,class BUD>
+sky::Firmament& GetFirmament(const Tree<TS,BUD>& tree) {
+  return tree.f;
+}
 
 
 

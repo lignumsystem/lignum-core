@@ -124,17 +124,15 @@ class Tree: public TreeCompartment<TS,BUD>{
   template <class TS1,class BUD1>
   friend sky::Firmament& GetFirmament(Tree<TS1,BUD1>& tree);
 
-  template <class TS1,class BUD1>
-  friend LGMdouble UpdateTreePhotosynthesis(Tree<TS1,BUD1>& tree);
-
   template <class TS1, class BUD1, class F>
   friend void EvaluateRadiationForTree(Tree<TS1,BUD1>& tree, const F& f);
 
 public:
   Tree();
   Tree(const Point& p, const PositionVector& d);
-  void UpdateWaterFlow(LGMdouble time, const ConnectionMatrix<TS,BUD> &cm);
   void photosynthesis();
+  void respiration();
+  //  bool structuralGrowth();
 
 private:
   LGMdouble CountFlow(TreeSegment<TS,BUD> &in, TreeSegment<TS,BUD> &out);
@@ -155,7 +153,7 @@ private:
 
 #include <TreeI.h>
 #include <TreeMetabolismI.h>
-#include <TreeBookkeepingI.h>
+//#include <TreeBookkeepingI.h>
 #include <TreeRadiationI.h>
 
 #endif

@@ -80,12 +80,6 @@ LGMdouble GetValue(const TreeSegment<TS,BUD>& ts, const LGMAD name)
 
   if (name == A)
     return PI_VALUE*pow(ts.tsa.R,2.0);
-
-  else if (name == fin)
-    return ts.tsa.fin;
-  
-  else if (name == fout)
-    return ts.tsa.fout;
   
   else if (name == H)
     return ts.point.getZ();
@@ -95,9 +89,6 @@ LGMdouble GetValue(const TreeSegment<TS,BUD>& ts, const LGMAD name)
 
   else if (name == L)
     return ts.tsa.L;
-
-  else if (name == Pr)
-    return ts.tsa.Pr;
 
   else if (name == M)
     return ts.tsa.M;
@@ -114,8 +105,6 @@ LGMdouble GetValue(const TreeSegment<TS,BUD>& ts, const LGMAD name)
   else if (name == Rtop)
     return ts.tsa.Rtop;
   
-  else if (name == Wm)
-    return ts.tsa.Wm;
 
   else if (name == Ws) {
     LGMdouble V1 = (PI_VALUE * pow((double)ts.tsa.R,2.0)) * ts.tsa.L;
@@ -150,20 +139,11 @@ LGMdouble SetValue(TreeSegment<TS,BUD>& ts, const LGMAD name, const LGMdouble va
   if (name == L)
     ts.tsa.L = value;
   
-  else if (name == fin)
-   ts.tsa.fin = value;
-  
-  else if (name == fout)
-    ts.tsa.fout = value;
-
   else if (name == M)
     ts.tsa.M = value;
 
   else if (name == omega)
     ts.tsa.omega = value;
-
-  else if (name == Pr)
-    ts.tsa.Pr = value;
 
   else if (name == R)
     ts.tsa.R = value;
@@ -173,15 +153,6 @@ LGMdouble SetValue(TreeSegment<TS,BUD>& ts, const LGMAD name, const LGMdouble va
 
   else if (name == Rtop)
     ts.tsa.Rtop = value;
-
-  else if (name == Wm)
-    ts.tsa.Wm = value;
-
-  else if (name == Ws)
-    ts.tsa.Ws = value;
-
-  else if (name == Wh)
-    ts.tsa.Wh = value;
 
   else
     //    cerr << "TreeSegment: Unknown attribute " << name << endl;

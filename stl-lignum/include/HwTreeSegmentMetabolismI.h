@@ -3,6 +3,8 @@
 
 namespace Lignum{
 
+  //PHOTOSYNHETIC rate of HwTreeSegment (sum of those of leaves)
+
 template <class TS,class BUD>
 void HwTreeSegment<TS,BUD>::photosynthesis()
 {
@@ -14,6 +16,26 @@ void HwTreeSegment<TS,BUD>::photosynthesis()
     (*i)->photosynthesis(p0);
   }
 
+}
+
+  //RESPIRATION rate of HwTreeSegment (sum of leaves + segment sapwood resp.)
+
+template <class TS,class BUD>
+void HwTreeSegment<TS,BUD>::respiration()
+{
+  Tree<TS,BUD>& tt = dynamic_cast<Tree<TS,BUD>&>(GetTree(*this));
+
+  LGMdouble m_hw = 0.0;
+  LGMdouble mf_par = GetValue(tt, mf);
+
+  for(list<BroadLeaf*>::iterator i = leaf_ls.begin();
+	i != leaf_ls.end(); i++) {
+    m_hw += mf_par * GetValue(**i,Wf);
+  }
+
+  m_hw += GetValue(tt, M) * GetValue(*this, Ws);
+
+  SetValue(*this, M, m_hw);
 }
 
 } //closing namespace Lignum

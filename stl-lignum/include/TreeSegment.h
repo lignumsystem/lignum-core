@@ -17,17 +17,12 @@ class TreeSegmentAttributes{
 public:
   TreeSegmentAttributes();
   METER L;                //Length of the tree segment
-  KGC M;                  //Respiration of the tree segment during the time step
   LGMdouble omega;               //Gravelius order
-  PA Pr;                  //Pressure
-  LGMdouble fin;                 //Amount of water coming in
-  LGMdouble fout;                //Amount of water going out
   METER R;                //Radius including bark
   METER Rtop;             //Radius at top
   METER Rh;               //Heartwood radius
-  KGC Wm;                 //Water mass of the tree segment 
-  KGC Ws;                 //Sapwood mass of the tree segment
-  KGC Wh;                 //Dry-weight (kg C) of heartwood
+  KGC P;                  //Amount of photosynthesis during time step (=rate of P.)
+  KGC M;                  //Amount of respiration during time step (=rate of R.)
   list<METER> annual_rings; //Annual rings of the tree segment
 };
 
@@ -36,6 +31,8 @@ template <class TS,class BUD=DefaultBud<TS> >
 class TreeSegment: public TreeCompartment<TS,BUD>{ 
   template <class TS1,class BUD1>
   friend list<METER> GetAnnualRings(const TreeSegment<TS1,BUD1>& ts);
+  template <class TS1,class BUD1>
+  Point GetEndPoint(const TreeSegment<TS1,BUD1>& ts);
   template <class TS1,class BUD1>
   friend KGC GetSapwoodMass(const TreeSegment<TS1,BUD1>& ts);
   template <class TS1,class BUD1>
@@ -49,7 +46,7 @@ public:
   virtual ~TreeSegment();
   LGMdouble GetTranspiration(LGMdouble time);
   TreeSegmentAttributes& getTsa(){return tsa;}
-  //  void photosynthesis();  OBS! TreeSegment does not have photosynthesis,
+  // void photosynthesis();  OBS! TreeSegment does not have photosynthesis,
   //it is either CfTreeSegment or HwTreeSegment which handle it in their own ways
 private:
   TreeSegmentAttributes tsa;
