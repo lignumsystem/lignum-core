@@ -344,21 +344,21 @@ LGMdouble SetValue(TreeSegment<TS,BUD>& ts, const LGMAD name, const LGMdouble va
   if (name == age)
     ts.age = value;
 
-  if (name == L)
+  else if (name == L)
   {
-		if (value == 0)
-			ts.tsa.L = 0.01;
-		else ts.tsa.L = value;
+    if (value == 0)
+      ts.tsa.L = 0.01;
+    else ts.tsa.L = value;
   }
   
   else if (name == dR)
   {
-	  	int size = ts.tsa.annual_rings.size();
-		if (size>1)
-		{
-			LGMdouble rad = ts.tsa.annual_rings[size-2];
-			ts.tsa.annual_rings[size-1] = value+rad;
-		}
+    int size = ts.tsa.annual_rings.size();
+    if (size>1)
+      {
+	LGMdouble rad = ts.tsa.annual_rings[size-2];
+	ts.tsa.annual_rings[size-1] = value+rad;
+      }
   }
  
   else if (name == M)
@@ -370,9 +370,6 @@ LGMdouble SetValue(TreeSegment<TS,BUD>& ts, const LGMAD name, const LGMdouble va
   else if (name == R)
 	 ts.tsa.R = value;
   
- // else if (name == Rf)
-   // ts.tsa.Rf = value;
-
   else if (name == Rh)
     ts.tsa.Rh = value;
 
