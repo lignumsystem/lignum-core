@@ -350,7 +350,16 @@ template <class TS,class BUD>
 LGMdouble GetValue(const Tree<TS,BUD>& tree, const LGMAD name)
 {
 	
-  if (name == LGAH){
+  if (name == LGAage){
+    Axis<TS,BUD>& axis = GetAxis(const_cast<Tree<TS,BUD>&>(tree));
+    list<TreeCompartment<TS,BUD>*>& ls = GetTreeCompartmentList(axis);
+    if (ls.size()>= 1){//one bud or the first segment
+      return GetValue(*ls.front(),LGAage);
+    }
+    else
+      return 0.0;
+  }
+  else if (name == LGAH){
     Axis<TS,BUD>& axis = GetAxis(const_cast<Tree<TS,BUD>&>(tree));
     list<TreeCompartment<TS,BUD>*>& ls = GetTreeCompartmentList(axis);
     BUD* bud = dynamic_cast<BUD*>(ls.back());
@@ -397,7 +406,7 @@ LGMdouble GetValue(const Tree<TS,BUD>& tree, const LGMAD name)
     return d13.second;
   }
   else
-    cout << "Tree GetValue unknown parameter: " << name << endl;
+    cout << "Tree GetValue unknown attribute: " << name << endl;
   return 0.0;
 }
 
