@@ -54,9 +54,11 @@ namespace Lignum {
 
   template <class TREE>
     class RootAxis: public RootCompartment<TREE>{
-    friend list<RootCompartment<TREE>*>& GetRootCompartmentList(RootAxis<TREE>& ra);
-    friend void InsertRootCompartment(RootAxis<TREE>& ra,
-				      const RootCompartment<TREE>* rpb);
+    template <class TREE1>
+    friend list<RootCompartment<TREE1>*>& GetRootCompartmentList(RootAxis<TREE1>& ra);
+    template <class TREE1>
+    friend void InsertRootCompartment(RootAxis<TREE1>& ra,
+				      const RootCompartment<TREE1>* rpb);
   public:
     RootAxis(const Point& p, const PositionVector& d, const TREE& t):
     RootCompartment<TREE>(p,d,t) {}
@@ -67,13 +69,10 @@ namespace Lignum {
 
   template <class TREE>
     class RootBranchingPoint:public RootCompartment<TREE>{
-    friend list<RootAxis<TREE>*>& GetAxisList(RootBranchingPoint<TREE>& rbp){
-      return rbp.ra_ls;
-    }
-    friend void InsertAxis(RootBranchingPoint<TREE>& rbp,
-			   const RootAxis<TREE>* ra){
-      rpb.ra_ls.push_back(ra);
-    }
+    template <class TREE1>
+    friend list<RootAxis<TREE1>*>& GetAxisList(RootBranchingPoint<TREE1>& rbp);
+    template <class TREE1>
+    friend void InsertAxis(RootBranchingPoint<TREE1>& rbp,const RootAxis<TREE1>* ra);
   public:
     RootBranchingPoint(const Point& pos, const PositionVector& dir,
 		       const TREE& t):

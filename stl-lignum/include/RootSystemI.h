@@ -161,6 +161,15 @@ namespace Lignum{
 			       const RootCompartment<TREE>* rpb){
     ra.rc_ls.push_back(rpb);
   }
+  template <class TREE>
+    list<RootAxis<TREE>*>& GetAxisList(RootBranchingPoint<TREE>& rbp){
+    return rbp.ra_ls;
+  }
+  template <class TREE>
+    void InsertAxis(RootBranchingPoint<TREE>& rbp,
+		    const RootAxis<TREE>* ra){
+    rpb.ra_ls.push_back(ra);
+  }
 }//closing namespace Lignum
 
 #endif
