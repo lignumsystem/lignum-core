@@ -157,7 +157,7 @@ namespace cxxadt{
   //if the COB angle less the COX angle
 
  bool Ellipse::intersectEllipse(const Point& O,
-				  const Point& B){
+				const Point& B){
    double cosangleBCXu,angleBCXu;
    double cosangleCOX, angleCOX;
    double cosangleCOB, angleCOB;
@@ -174,8 +174,8 @@ namespace cxxadt{
    if ( (CB.length()*x1u().length()) !=0 )
      cosangleBCXu=Dot(CB,x1u())/(CB.length()*x1u().length());
    else{
-      cout<<"Check positions for the OB vector "<<
-            "and the ellipse plane"<<endl;
+     cout <<"1. Check positions for the OB vector "
+          << "and the ellipse plane"<<endl;
       return false;
    };
  
@@ -190,8 +190,8 @@ namespace cxxadt{
    if ( (OC.length()*OX.length()) !=0 )
      cosangleCOX=Dot(OC,OX)/(OC.length()*OX.length());
    else{
-      cout<<"Check positions for the OB vector "<<
-            "and the ellipse plane"<<endl;
+     cout<<"2. Check positions for the OB vector "
+	 <<"and the ellipse plane"<<endl;
       return false;
    };
   
@@ -200,8 +200,8 @@ namespace cxxadt{
    if ( (OB.length()*OC.length()) !=0 )
      cosangleCOB=Dot(OB,OC)/(OB.length()*OC.length());
    else{
-      cout<<"Check positions for the OB vector "<<
-            "and the ellipse plane"<<endl;
+     cout<<"3. Check positions for the OB vector "
+	 <<"and the ellipse plane"<<endl;
       return false;
    };
   
