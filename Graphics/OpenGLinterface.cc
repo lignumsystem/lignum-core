@@ -220,6 +220,7 @@ void DrawAllFoliage(CLignumWBDoc *doc)
 
 void DrawTree()
 {	
+
   if (glIsList(FOREST_LIST))
     {
       GLfloat mat_amb[] = { 0.5, 0.3, 0, 1.0 }; 
@@ -252,8 +253,7 @@ void DrawTree()
       return;
     }
   
-  ///***************
-  cout << "ei" << endl;
+  
 #ifdef _MSC_VER
   glCallList(TREE);
   

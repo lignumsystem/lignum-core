@@ -18,6 +18,7 @@
 
 using namespace Lignum;
 
+extern vector<SmallCube> cubes;
 
 extern CTexture stemtexture;
 
@@ -25,8 +26,10 @@ namespace Lignum{
 
 template <class TS,class BUD>
   int VisualizeLGMTreesWithVoxelSpace(vector<Tree<TS,BUD> *> trees, 
-				      vector<SmallCube> cubes)
+				      vector<SmallCube> c)
   {
+    cubes = c;
+
     InitDrawing();
     InitOpenGL();
     init_window();
@@ -42,12 +45,13 @@ template <class TS,class BUD>
     stemtexture.Load("Manty.bmp", 512, 512);
     
     
-    cout << "tekstuurit kaytossa**************************** " << endl;
+    cout << "tekstuurit ladattu..." << endl;
 
     
-    int text_num;
+    int text_num = 0;
     glNewList(FOREST_LIST, GL_COMPILE);
-    glBindTexture(GL_TEXTURE_2D, text_num);
+    // glBindTexture(GL_TEXTURE_2D, text_num);
+    
     for (int i=0; i<trees.size(); i++)
       {
 	LGMdouble ini = 0.0;
@@ -57,11 +61,11 @@ template <class TS,class BUD>
 	DrawStemFunctor<TS,BUD> stemfunctor;
         stemfunctor.min_rad = -99;
         stemfunctor.max_rad = 999;
-        ForEach(*tree, stemfunctor);
-	
-	cout << "lisätään puu visualisointiin " << endl;
-       
+        ForEach(*tree, stemfunctor);      
       }
+    glEndList();
+
+    cout << "puu esityslistat luotu " << endl;
     glEndList();
     
     glutMainLoop ();

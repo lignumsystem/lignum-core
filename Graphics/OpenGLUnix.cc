@@ -82,7 +82,7 @@ extern GUS<Lignum::BetulaWithFlow, DefaultBud<Lignum::BetulaWithFlow> > gus;
 */
 
 
-
+void DrawVoxelCubes();
 //void make_color_palette();
 //void subRedraw(void);
 //void subRedraw2(void);
@@ -191,7 +191,7 @@ int n_lea = 0;
 
 
 
- 
+vector<SmallCube> cubes;
 
 
 //Function -- makeBGR        
@@ -316,11 +316,10 @@ void redraw(void)
 	     hx, hy, hz-cam_z,          // look at x,y,z    
 	     0.0, 0.0, 1.0);           // which way up    
 
-  //cout << "1:" << cam_x << "  " << cam_y << "  " << cam_z << endl;
-  //cout << "2:" << hx << "  " << hy << "  " << hz-cam_z << endl << endl;
- 
- setLight();
+  
+  setLight();
 
+  DrawVoxelCubes();
   DrawTree();
   DrawBuds();
     
@@ -333,6 +332,163 @@ void redraw(void)
 
 
 
+void DrawVoxelCubes()
+{
+  int num = cubes.size();
+  
+  //cout << "kuutiota " << num << endl;
+  vector<SmallCube> ordered_cubes;
+
+  for (int i=0; i<num; i++)
+    {
+      SmallCube &cube = cubes[i];
+      LGMdouble xx = cube.x_coord;
+      LGMdouble yy = cube.y_coord;
+      LGMdouble zz = cube.z_coord;
+      cube.dist = pow(cam_x-xx, 2) + pow(cam_y-yy, 2) + pow(cam_z-zz, 2); 
+      
+     
+    }
+
+
+  
+  for (int i = 0; i<num; i++)
+    {
+      int max_dist = -10;
+      int mem_num = -1;
+      int a = cubes.size();
+      for (int ii=0; ii<a; ii++)
+	{
+	  SmallCube c = cubes[ii];
+	  if (c.ready == false)
+	    {
+	      if (c.dist > max_dist)
+		mem_num = ii;
+	    }
+	}
+      if (mem_num > -1)
+	{
+	  SmallCube &c = cubes[mem_num];
+	  c.ready = true;
+	  ordered_cubes.push_back(c);
+	}
+    }
+
+  glLineWidth(1);
+  glColor3f(1,0.2,0.2);
+  
+  glBegin(GL_LINES);
+  glVertex3f(0,0,0);
+  glVertex3f(5,0,0);
+  
+  glVertex3f(0,0,0);
+  glVertex3f(0,5,0);
+  
+  glVertex3f(0,0,0);
+  glVertex3f(0,0,5);
+  glEnd();
+  
+  glLineWidth(1);
+  
+  int s = ordered_cubes.size();
+  for (int i = 0; i< s; i++)
+    {
+      SmallCube cube = ordered_cubes[i];
+     
+      
+      glColor3f(0.2,0.2,1);
+      
+      //puolikas sivusta
+      float hedge = 0.5 * cube.edge;
+
+      //pikkukuution keskipiste: 
+      float xx = cube.x_coord;
+      float yy = cube.y_coord;
+      float zz = cube.z_coord;
+      
+      glBegin(GL_LINE_LOOP);
+      glVertex3f(xx+hedge, yy-hedge, zz+hedge);
+      glVertex3f(xx+hedge, yy+hedge, zz+hedge);
+      glVertex3f(xx+hedge, yy+hedge, zz-hedge);
+      glVertex3f(xx+hedge, yy-hedge, zz-hedge);
+      glEnd();
+      
+      glBegin(GL_LINE_LOOP);
+      glVertex3f(xx-hedge, yy-hedge, zz+hedge);
+      glVertex3f(xx-hedge, yy+hedge, zz+hedge);
+      glVertex3f(xx-hedge, yy+hedge, zz-hedge);
+      glVertex3f(xx-hedge, yy-hedge, zz-hedge);
+      glEnd();
+      
+      glBegin(GL_LINES);
+      glVertex3f(xx+hedge, yy-hedge, zz+hedge);
+      glVertex3f(xx-hedge, yy-hedge, zz+hedge);
+      glVertex3f(xx+hedge, yy+hedge, zz+hedge);
+      glVertex3f(xx-hedge, yy+hedge, zz+hedge);
+      
+      glVertex3f(xx+hedge, yy+hedge, zz-hedge);
+      glVertex3f(xx-hedge, yy+hedge, zz-hedge);
+      glVertex3f(xx+hedge, yy-hedge, zz-hedge);
+      glVertex3f(xx-hedge, yy-hedge, zz-hedge);
+      glEnd();
+      
+      
+      float shadow_odd = 0.1 + cube.areaden * (0.3 * pow((2*hedge),3)); 
+      
+      
+
+      glEnable(GL_BLEND);
+      glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+      glColor4f(0.0, 0.8, 0.0, shadow_odd);
+      
+      glBegin(GL_POLYGON);
+      glVertex3f(xx-hedge, yy-hedge, zz+hedge);
+      glVertex3f(xx-hedge, yy+hedge, zz+hedge);
+      glVertex3f(xx-hedge, yy+hedge, zz-hedge);
+      glVertex3f(xx-hedge, yy-hedge, zz-hedge);
+      glEnd();
+      
+      glBegin(GL_POLYGON);
+      glVertex3f(xx+hedge, yy-hedge, zz+hedge);
+      glVertex3f(xx+hedge, yy-hedge, zz-hedge);
+      glVertex3f(xx+hedge, yy+hedge, zz-hedge);
+      glVertex3f(xx+hedge, yy+hedge, zz+hedge);
+      glEnd();
+      
+      
+      glBegin(GL_POLYGON);
+      glVertex3f(xx-hedge, yy+hedge, zz-hedge);
+      glVertex3f(xx-hedge, yy+hedge, zz+hedge);
+      glVertex3f(xx+hedge, yy+hedge, zz+hedge);
+      glVertex3f(xx+hedge, yy+hedge, zz-hedge);
+      glEnd();
+      
+      glBegin(GL_POLYGON);
+      glVertex3f(xx-hedge, yy-hedge, zz-hedge);
+      glVertex3f(xx+hedge, yy-hedge, zz-hedge);
+      glVertex3f(xx+hedge, yy-hedge, zz+hedge);
+      glVertex3f(xx-hedge, yy-hedge, zz+hedge);
+      glEnd();
+
+
+
+      glBegin(GL_POLYGON);
+      glVertex3f(xx-hedge, yy-hedge, zz-hedge);
+      glVertex3f(xx-hedge, yy+hedge, zz-hedge);
+      glVertex3f(xx+hedge, yy+hedge, zz-hedge);
+      glVertex3f(xx+hedge, yy-hedge, zz-hedge);
+      glEnd();
+      
+      glBegin(GL_POLYGON);
+      glVertex3f(xx-hedge, yy-hedge, zz+hedge);
+      glVertex3f(xx+hedge, yy-hedge, zz+hedge);
+      glVertex3f(xx+hedge, yy+hedge, zz+hedge);
+      glVertex3f(xx-hedge, yy+hedge, zz+hedge);
+      glEnd();
+      
+      glDisable(GL_BLEND); 
+    }
+}
 
 
 

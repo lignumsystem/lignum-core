@@ -3,13 +3,14 @@
 
 #include <Tree.h>
 #include "OpenGLinterface.h"
+//#include <VoxelMatrix.h>
 
 
 void init_window (); //int argc, char** argv);
 
 namespace Lignum{
   
-  
+  /*
   struct SmallCube
   {
     int x,y,z;
@@ -22,7 +23,8 @@ namespace Lignum{
 
     bool ready;
   };
-  
+  */
+
   template <class TS,class BUD>
     int VisualizeLGMTreesWithVoxelSpace(vector<Tree<TS,BUD> *> trees, 
 					vector<SmallCube> cubes);
