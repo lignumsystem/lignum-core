@@ -87,8 +87,10 @@ namespace Lignum{
       DCL(dcl.DCL),BWf(dcl.BWf),HCB(dcl.HCB){}
     double DCrownBase(){return DCL;}
     double HCrownBase(){return HCB;} 
+    double DHWCrownBase() {return DHWCB;}
     void DCrownBase(double d){DCL = d;}
-    void HCrownBase(double h){HCB = h;} 
+    void HCrownBase(double h){HCB = h;}
+    void DHWCrownBase(double dhw) {DHWCB = dhw;}
     //helper methods to collect foliage in side branches
     double BranchWf(){return BWf;} 
     void BranchWf(double wf){BWf = wf;}
@@ -97,6 +99,7 @@ namespace Lignum{
     double DCL;  //diameter at crown limit
     double BWf ; //folige mass in a branch
     double HCB;  //height of the crown base
+    double DHWCB;  //Diameter of heartwood at crown base
   };
 
   class AddBranchWf{
@@ -125,6 +128,7 @@ namespace Lignum{
 	  if (dcl.BranchWf() > 0.0){
 	    //set the segment diameter to the diameter crown base
 	    dcl.DCrownBase(2.0*GetValue(*ts,LGAR));
+	    dcl.DHWCrownBase(2.0*GetValue(*ts,LGARh));
 	    //set the segment height to the crown base
 	    dcl.HCrownBase(GetPoint(*ts).getZ());
 	    //reset  foliage  so  if  the branches  in  the  immediate
