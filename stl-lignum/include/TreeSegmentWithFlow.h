@@ -22,16 +22,17 @@ public:
 template <class TS,class BUD=DefaultBud<TS> > 
 class TreeSegmentWithFlow
 {
-	friend LGMdouble GetValue(const TreeSegmentWithFlow<TS,BUD>& tc, const LGMFLOW name);
-
-    friend LGMdouble SetValue(TreeSegmentWithFlow<TS,BUD>& tc, const LGMFLOW name,
-				const LGMdouble value);
-	private:
-		LGMdouble wm;
-		TreeSegmentWithFlowAttributes tswf;
-
-	public:
-		TreeSegmentWithFlow();
+  template <class TS1, class BUD1>
+  friend LGMdouble GetValue(const TreeSegmentWithFlow<TS1,BUD1>& tc, const LGMFLOW name);
+  template <class TS1, class BUD1>
+  friend LGMdouble SetValue(TreeSegmentWithFlow<TS1,BUD1>& tc, const LGMFLOW name,
+			    const LGMdouble value);
+  private:
+  LGMdouble wm;
+  TreeSegmentWithFlowAttributes tswf;
+  
+  public:
+  TreeSegmentWithFlow();
 };
 
 template <class TS,class BUD>
