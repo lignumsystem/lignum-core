@@ -32,4 +32,18 @@ void InitializaForRadiation(HwTreeSegment<TS,BUD>& ts)
 
 }
 
+
+template<class TS, class BUD >
+bool HasLeaves(HwTreeSegment<TS,BUD>& ts)
+{
+  list<BroadLeaf*>& leaf_list = GetLeafList(ts);
+  if(leaf_list.empty()) {
+    return false;
+  }
+  else
+    return true;
+
+}
+
+
 #endif
