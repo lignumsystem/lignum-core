@@ -4,7 +4,7 @@
 #include <vector>
 #include <Point.h>
 #include <LGMUnits.h>
-#include <Tree.h>
+#include <Lignum.h>
 
 namespace Lignum
 {
@@ -43,7 +43,7 @@ public:
 
 
 
-template <class TS,class BUD>
+template <class TS,class BUD,class S = Ellipsis>
 class DrawLeavesFunctor
 {
 public:

@@ -71,12 +71,12 @@ namespace Lignum{
 
 
 
-  template <class TS, class BUD>
-    TreeCompartment<TS,BUD>* DrawLeavesFunctor<TS,BUD>::operator()(TreeCompartment<TS,BUD>* tc)const
+  template <class TS, class BUD,class S>
+    TreeCompartment<TS,BUD>* DrawLeavesFunctor<TS,BUD,S>::operator()(TreeCompartment<TS,BUD>* tc)const
     {
       if (TreeSegment<TS, BUD>* ts = dynamic_cast<TreeSegment<TS, BUD>*>(tc))
 	{  			
-	  if (HwTreeSegment<TS,BUD>* hwts = dynamic_cast<HwTreeSegment<TS,BUD>*>(ts))
+	  if (HwTreeSegment<TS,BUD,S>* hwts = dynamic_cast<HwTreeSegment<TS,BUD,S>*>(ts))
 	    {
 			
 	      float length;
@@ -103,8 +103,8 @@ namespace Lignum{
 
 	      Point np(position.getX()+xx, position.getY()+yy, position.getZ()+zz);		
 
-	      std::list<BroadLeaf*>& leaf_list = GetLeafList(*hwts);
-	      std::list<BroadLeaf*>::iterator I;
+	      std::list<BroadLeaf<S>*>& leaf_list = GetLeafList(*hwts);
+	      std::list<BroadLeaf<S>*>::iterator I;
 	      for(I = leaf_list.begin(); I != leaf_list.end(); I++) 
 		{
 		  LGMdouble area = GetValue(**I, A);   //BroadLeaf returns true area of the leaf
