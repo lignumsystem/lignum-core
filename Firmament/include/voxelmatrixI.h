@@ -546,14 +546,13 @@ double Matrix<TS,BUD>::getLight(TreeSegment<TS,BUD> *ts)
 
       SetValue(*cfts, Qin, q_in);
       W_f = GetValue(*cfts, Wf);
-      sf = 2.0 * PI_VALUE * GetValue(*cfts,Rf) * GetValue(*ts,L);
       
       LGMdouble needle_length = GetValue(GetTree(*cfts),nl);
       LGMdouble needle_angle = GetValue(GetTree(*cfts),na);
       SetValue(*cfts, Rf,needle_length * sin(needle_angle)+ GetValue(*ts,R));
       needle_rad = GetValue(*cfts, Rf);
   
-      sf = 28.1;
+      sf = GetValue(GetTree(*cfts),sf);
       LGMdouble star = 0;
   
 	
@@ -674,7 +673,7 @@ void Matrix<TS,BUD>::printIncomingRadiation() const
 				<< (y-Y_0)*edge << " "
 				<< (z-Z_0)*edge + 0.5*edge << " "
 				<< "incomingradiation ";
-		matrix[x][y][z].printIncomingRadiation();
+		file << matrix[x][y][z].getRadiationSum();
 		file << endl;
       }
 
@@ -699,7 +698,7 @@ void Matrix<TS,BUD>::printIncomingRadiation() const
 	     << (y-Y_0)*edge << " "
 	     << (z-Z_0)*edge + 0.5*edge << " "
 	     << "incomingradiation ";
-	matrix[x][y][z].printIncomingRadiation();
+	cout << matrix[x][y][z].getRadiationSum();
 	cout << endl;
       }
 #endif
