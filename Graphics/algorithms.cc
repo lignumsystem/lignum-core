@@ -66,18 +66,18 @@ int main(int argc, char *argv[])
     new BranchingPoint<MyHwTreeSegment,MyBud>(Point(0,0,0),
 				      PositionVector(0,0,1.0),&hw_tree);
   //create the terminating bud
-  Bud<MyHwTreeSegment,MyBud> *bud = new  Bud<MyHwTreeSegment,MyBud>(Point(0,0,0),
-						    PositionVector(0,0,1.0),
+  Bud<MyHwTreeSegment,MyBud> *bud = new  Bud<MyHwTreeSegment,MyBud>(Point(0,0,1),
+						    PositionVector(-1,1,1.0),
 						    0,
 						    &hw_tree);
   //create a branch with one bud (Axis containing one Bud) into the branching point
-  InsertTerminatingBud(*bp,new Bud<MyHwTreeSegment,MyBud>(Point(0,0,0),
-						  PositionVector(0,0,1.0),
+  InsertTerminatingBud(*bp,new Bud<MyHwTreeSegment,MyBud>(Point(0,0,1.1),
+						  PositionVector(0,1,1.0),
 						  0,
 						  &hw_tree));
   //create another branch with one bud (Axis containing one Bud) into the branching point
-  InsertTerminatingBud(*bp,new Bud<MyHwTreeSegment,MyBud>(Point(0,0,0),
-						  PositionVector(0,0,1.0),
+  InsertTerminatingBud(*bp,new Bud<MyHwTreeSegment,MyBud>(Point(0,0,1.05),
+						  PositionVector(0,2,1.0),
 						  0,
 						  &hw_tree));
 
@@ -145,24 +145,24 @@ int main(int argc, char *argv[])
   //create the first tree segment
   MyCfTreeSegment *cf_ts = 
     new MyCfTreeSegment(Point(0,0,0),PositionVector(0,0,1.0),
-			0,1,0.5,0.2,&cf_tree);
+			0,1,0.1,0.2,&cf_tree);
   SetValue(*cf_ts, Qabs, 100.0);                //this segment has absorbed radiation
   //create the branching point
   BranchingPoint<MyCfTreeSegment,MyBud> *cf_bp = 
     new BranchingPoint<MyCfTreeSegment,MyBud>(Point(0,0,0),
 				      PositionVector(0,0,1.0),&cf_tree);
   //create the terminating bud
-  Bud<MyCfTreeSegment,MyBud> *cf_bud = new  Bud<MyCfTreeSegment,MyBud>(Point(0,0,0),
-						    PositionVector(0,0,1.0),
+  Bud<MyCfTreeSegment,MyBud> *cf_bud = new  Bud<MyCfTreeSegment,MyBud>(Point(0,0,1.0),
+						    PositionVector(0,-1,1.0),
 						    0,
 						    &cf_tree);
   //create a branch with one bud (Axis containing one Bud) into the branching point
-  InsertTerminatingBud(*cf_bp,new Bud<MyCfTreeSegment,MyBud>(Point(0,0,0),
-						  PositionVector(0,0,1.0),
+  InsertTerminatingBud(*cf_bp,new Bud<MyCfTreeSegment,MyBud>(Point(0,0,1.1),
+						  PositionVector(0,1,1.0),
 						  0,
 						  &cf_tree));
   //create another branch with one bud (Axis containing one Bud) into the branching point
-  InsertTerminatingBud(*cf_bp,new Bud<MyCfTreeSegment,MyBud>(Point(0,0,0),
+  InsertTerminatingBud(*cf_bp,new Bud<MyCfTreeSegment,MyBud>(Point(0,0,1.05),
 						  PositionVector(0,0,1.0),
 						  0,
 						  &cf_tree));

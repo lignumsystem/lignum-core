@@ -350,7 +350,9 @@ void outPut(float x, float y, char *string)
 
 void MakeCylinder(float radius, float rad_top, float length, float rad_limit, float xx, float yy)
 {
-  const float PI = (float)3.14159265;
+ 
+
+ const float PI = (float)3.14159265;
   int edges = 16;
  edges = (int)(radius / 0.0001);
  
@@ -365,19 +367,23 @@ void MakeCylinder(float radius, float rad_top, float length, float rad_limit, fl
   if (rad_top == 0 || rad_top > radius)
 	  rad_top = radius;
 
- cout << "särmiä " << edges << endl;
+  //cout << "särmiä " << edges << endl;
 
   GLfloat cosine,sine, x=0, y=last_texY, cos_top, sin_top;
   GLfloat tex_x= texX_odd*(float)(radius * 3.14 / edges);  
   float d = tex_x * edges;
   GLfloat tex_y= texY_odd*length;
 
+  tex_x = tex_x * 0.06;
+  tex_y = tex_y * 0.06;
+
   if (rad_limit == 0)
   {
+   
 	last_texY = 0;
-    tex_x = texX_odd * 0.003;
+	tex_x = texX_odd * 0.003;
   }	
-  
+ 
  
   if (rad_limit<0)
   {
@@ -431,7 +437,7 @@ void MakeCylinder(float radius, float rad_top, float length, float rad_limit, fl
       cos_top = cosine * rad_top;
       sin_top = sine * rad_top;
       
-      cout << "normal " << cosine << " " << sine << endl;
+      //cout << "normal " << cosine << " " << sine << endl;
       cosine *= radius;
       sine *= radius; 
       
@@ -452,6 +458,7 @@ void MakeCylinder(float radius, float rad_top, float length, float rad_limit, fl
       tex2[0+i*2] = x;
       tex2[1+i*2] = y+tex_y;
       
+      //cout << x << " " << y << " " << y+tex_y << endl;
       
       x=x+tex_x;
     }
@@ -709,8 +716,13 @@ void MakeWireModel(float radius, float length)
 
 
 
+
+
+
 void make_bud()
 {
+  
+
   float radius=0.0;
   float radius2;
   float rad_gro = BUD_SIZE_MAX_RADIUS/3;

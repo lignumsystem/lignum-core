@@ -129,7 +129,7 @@ Display        *dpy;
 Window          win;
 
 GLboolean       MOVEMENT = TRUE;
-GLboolean       TEXTURES_ON = TRUE;
+GLboolean       TEXTURES_ON = FALSE;
 GLboolean       FOLIAGE_ON = FALSE;
 GLboolean       SHADOWS = TRUE;
 GLboolean       HEARTWOOD = FALSE;
@@ -322,13 +322,13 @@ void redraw(void)
 	     hx, hy, hz-cam_z,          // look at x,y,z    
 	     0.0, 0.0, 1.0);           // which way up    
 
-  cout << "1:" << cam_x << "  " << cam_y << "  " << cam_z << endl;
-  cout << "2:" << hx << "  " << hy << "  " << hz-cam_z << endl << endl;
+  //cout << "1:" << cam_x << "  " << cam_y << "  " << cam_z << endl;
+  //cout << "2:" << hx << "  " << hy << "  " << hz-cam_z << endl << endl;
  
  setLight();
 
   DrawTree();
-  
+  DrawBuds();
     
 
   glPopMatrix();   
@@ -379,7 +379,7 @@ void new_window_size (GLsizei new_x, GLsizei new_y)
   gluPerspective (25.0,            // Width of field of view 
                   new_x/new_y,     // Shape of new view 
                   .1,              // Shortest visible distance 
-                  12);             // Longest visible distance 
+                  52);             // Longest visible distance 
   
 		  
   glMatrixMode (GL_MODELVIEW);     // change to the modelview matrix
@@ -559,6 +559,12 @@ void mouse_motion(int x, int y)
 	  drawed = FALSE;
 	}
      
+      if (MIDDLE_BUTTON == DOWN && mouse_x != x)        // Middle button is pressed 
+	{                               
+	  cam_z += (mouse_x - x)/100.0;
+	  drawed = FALSE;
+	}
+
       // Left button is pressed
       if (LEFT_BUTTON == DOWN && (mouse_x != x || mouse_y != y))  
 	{    
@@ -673,13 +679,15 @@ void setLight(void)
   
   GLfloat lightPosition[] = {lightx, lighty, lightz, lightw};
 
-  cout << "valo " << lightx <<lighty << lightz <<  lightw << endl;
+  //cout << "valo " << lightx <<lighty << lightz <<  lightw << endl;
   glLightfv (GL_LIGHT0, GL_POSITION, lightPosition);
   // glLightfv (GL_LIGHT0, GL_AMBIENT, mat_amb); 
   glEnable (GL_LIGHT0);
   glEnable (GL_LIGHTING);
   
 }
+
+
 
 
 
@@ -773,6 +781,8 @@ void make_petiole()
 
 void CTexture::Load(char *filename, int fw, int fh)
 {
+  cout << "Ladataan tekstuuri " << endl;
+
   FILE *f;
 
   data = new char[(fw*fh)*3];

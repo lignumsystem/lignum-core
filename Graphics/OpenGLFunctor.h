@@ -15,6 +15,14 @@ namespace Lignum
 
 
 
+template <class TS,class BUD>
+class DrawBudFunctor
+{
+public:
+  TreeCompartment<TS,BUD>* operator()(TreeCompartment<TS,BUD>* tc)const; 
+  DRAW_TYPE mode;
+};
+
 
 template <class TS,class BUD>
 class DrawStemFunctor

@@ -41,6 +41,33 @@ void MakeLeaveList(Tree<TS,BUD> &tree, int xsize, int ysize)
 }
 
 
+template <class TS,class BUD>
+void MakeBudList(Tree<TS,BUD> &tree, bool alive)
+{
+ 
+  glPushMatrix();
+  DrawBudFunctor<TS,BUD> budsfunctor;
+
+  if (alive)
+    {
+      if (glIsList(BUDS_ALIVE))
+	glDeleteLists(BUDS_ALIVE, 1);
+      glNewList(BUDS_ALIVE, GL_COMPILE);
+      budsfunctor.mode = buds_alive;
+    }
+  else
+    {
+      if (glIsList(BUDS_DEAD))
+	glDeleteLists(BUDS_DEAD, 1);
+      glNewList(BUDS_DEAD, GL_COMPILE);
+      budsfunctor.mode = buds_dead;
+    }
+
+  ForEach(tree, budsfunctor);
+  glEndList();
+  glPopMatrix();
+}
+
 
 template <class TS,class BUD>
 void MakeTreeList(Tree<TS,BUD> &tree, LGMdouble limit)

@@ -10,14 +10,23 @@
 namespace Lignum{
 
 
+template <class TS, class BUD>
+TreeCompartment<TS,BUD>* DrawBudFunctor<TS,BUD>::operator()(TreeCompartment<TS,BUD>* tc)const
+{
+  if (Bud<TS,BUD>* mybud = dynamic_cast<Bud<TS, BUD>*>(tc))
+    {
+      cout << "Budi!" << endl;
+      drawBud(mybud, mode);
+    } 
 
+  return tc;
+}
 
 
 
 template <class TS, class BUD>
 TreeCompartment<TS,BUD>* DrawStemFunctor<TS,BUD>::operator()(TreeCompartment<TS,BUD>* tc)const
 {
-	
 	if (TreeSegment<TS, BUD>* ts = dynamic_cast<TreeSegment<TS, BUD>*>(tc))
 	{  			
 		LGMdouble radius = GetValue(*ts, R);

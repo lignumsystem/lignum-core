@@ -179,4 +179,12 @@ algorithms.o: ../stl-lignum/include/CfTreeSegmentI.h
 algorithms.o: ../stl-lignum/include/CfTreeSegmentMetabolismI.h
 algorithms.o: ../stl-lignum/include/Lignum.h ../stl-lignum/include/MyBud.h
 algorithms.o: ../stl-lignum/include/Shading.h
-algorithms.o: ../stl-lignum/include/ShadingI.h ./OpenGLUnix.h
+algorithms.o: ../stl-lignum/include/ShadingI.h ./OpenGLUnix.h ./OpenGLUnixI.h
+algorithms.o: OpenGL.h OpenGLSymbols.h OpenGLinterface.h /usr/include/GL/gl.h
+algorithms.o: /usr/include/GL/glu.h OpenGLinterfaceI.h OpenGLfunctions.h
+algorithms.o: OpenGLFunctor.h OpenGLFunctorI.h CTexture.h
+algorithms.o: /usr/include/GL/glx.h /usr/include/X11/Xlib.h
+algorithms.o: /usr/include/sys/types.h /usr/include/X11/X.h
+algorithms.o: /usr/include/X11/Xfuncproto.h /usr/include/X11/Xosdefs.h
+algorithms.o: /usr/include/X11/Xutil.h /usr/include/X11/Xmd.h
+algorithms.o: /usr/include/GL/glxtokens.h /usr/include/GL/glut.h

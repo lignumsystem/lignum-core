@@ -5,7 +5,7 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 
-
+ 
 
 #include "TreeVariables.h"
 
@@ -13,10 +13,14 @@
 #include "OpenGLfunctions.h"
 #include "OpenGLFunctor.h"
 #include "OpenGL.h"
+#include "CTexture.h"
+
 
 #include <string>
 #include <vector>
 #include <math.h>
+
+extern CTexture stemtexture;
 
 GLfloat m_xRotate;   //left button values
 GLfloat m_yRotate;
@@ -183,7 +187,7 @@ void DrawAllFoliage(CLignumWBDoc *doc)
 	 int n= doc->betulas.size();
 
 	 glEnable(GL_BLEND);
-     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	 glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	 glBindTexture(GL_TEXTURE_2D, texIds[0]);
 	
 
@@ -213,47 +217,63 @@ void DrawAllFoliage(CLignumWBDoc *doc)
 
 void DrawTree()
 {	
+  
 	///***************
 #ifdef _MSC_VER
   glCallList(TREE);
   
 #else
+  
+  extern bool TEXTURES_ON;
+
   GLfloat mat_amb[] = { 0.5, 0.3, 0, 1.0 }; 
   GLfloat mat_dif[] = { 0.8, 0.4, 0, 1.0 }; 
   
   glMaterialfv(GL_FRONT, GL_AMBIENT, mat_amb); 
   glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_dif);
   
-  // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-  //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-  //glDisable(GL_TEXTURE_2D);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	   
+ //glDisable(GL_TEXTURE_2D);
   
-  //glBindTexture(GL_TEXTURE_2D, texture[0]);
-  //  glCullFace(GL_FRONT);
-  //glEnable(GL_CULL_FACE);
-  
-  // glColor3f(.5,.3,0);
+  if (TEXTURES_ON)
+    {
+      stemtexture.use();
+      glDisable(GL_LIGHTING);
+    }
+  else
+    {
+      glEnable(GL_LIGHTING);
+    }
 
-  //MakeCylinder(0.3, 0.2, 1, 0.1);
-  //glEnable(GL_LIGHTING);
+
+  //glEnable(GL_CULL_FACE);
+  //glDisable(GL_LIGHTING);
+  //glCullFace(GL_BACK);
   glPushMatrix();
+
   if (glIsList(TREE_BIG)==false)
     cout << "Virhe:puuta ei maaritelty " << endl;
   glCallList(TREE_BIG);
   glPopMatrix();
+
   
-  //glBindTexture(GL_TEXTURE_2D, texture[1]);
+  
   glPushMatrix();
   if (glIsList(TREE_SMALL) == false)
     cout << "Virhe:puuta ei määritelty " << endl;
   glCallList(TREE_SMALL);
   glPopMatrix();
 	  
+  stemtexture.do_not_use();
+  
  
-  //glCullFace(GL_BACK);
   //glDisable(GL_CULL_FACE);
 #endif
 }
+
+
 
 void DrawOrderedFoliage()
 {
@@ -323,13 +343,23 @@ void DrawFirmament()
 
 void DrawBuds()
 {
-	GLfloat mat_amb1[] = { 0.7, 0.7, 0.1, 1.0 };
-	GLfloat mat_amb2[] = { 0.2, 0.2, 0.1, 1.0 };
-      
-	glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, mat_amb1);
-	glCallList(BUDS_ALIVE);
-    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, mat_amb2);
-    glCallList(BUDS_DEAD);  
+  glEnable(GL_LIGHTING);
+  glDisable(GL_TEXTURE_2D);
+
+  GLfloat mat_amb1[] = { 0.7, 0.7, 0.1, 1.0 };
+  GLfloat mat_amb2[] = { 0.2, 0.2, 0.1, 1.0 };
+  
+  glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, mat_amb1);
+  if(glIsList(BUDS_ALIVE))
+    glCallList(BUDS_ALIVE);
+  else 
+    cout << "ei määritelty ALIVE " << endl;
+  
+  glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, mat_amb2);
+  if(glIsList(BUDS_DEAD))
+    glCallList(BUDS_DEAD);
+  else 
+    cout << "ei määritelty DEAD " << endl;
 }
 
 
