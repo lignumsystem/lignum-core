@@ -501,6 +501,7 @@ TreeDataStruct& TreeData<TS,BUD>::operator()
 	  stru.sum_Ws += rho_*L*2.0*PI_VALUE*r_*r_;
 
 	}
+
       else
 	stru.sum_Wb += rho_*L*2.0*PI_VALUE*r_*r_;
 
