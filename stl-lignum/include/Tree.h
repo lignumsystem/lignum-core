@@ -12,6 +12,7 @@ using namespace std;
 #include <ParametricCurve.h>
 #include <Point.h>
 #include <PositionVector.h>
+#include <ParseCommandLine.h>
 
 using namespace cxxadt;
 
