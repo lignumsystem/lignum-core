@@ -1,3 +1,5 @@
+#Keep this file in sync with "firmament.txt"
+#(number of inclinations)
 #Gap data from Duchesnay, open canopy
 0       100.0 
 1	100.0 

@@ -42,12 +42,12 @@ sky-dump: sky-dump.o libsky.a libc++adt.a
 	$(CCC) $(OPTIMIZE) $(SUPPRESS) $(CCCFLAGS) $(INCLUDE) $< -o $@
 
 clean:
-	rm -rf $(OBJ) sky sky-dump core sky ii_files
+	rm -rf $(OBJ) sky sky-dump sky-dump.o core sky ii_files
 	rm -rf $(ARFILE)
 distclean:
 	(cd ../c++adt/lib; make distclean)
-	rm -rf $(OBJ)  core sky ii_files 
-	rm -rf $(ARFILE)
+	make clean
+
 depend: 
 	makedepend $(INCLUDE) $(STL) $(MAIN)
 # DO NOT DELETE
