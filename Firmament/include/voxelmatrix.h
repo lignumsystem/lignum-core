@@ -8,8 +8,7 @@
 #include <Tree.h>
 #include <fstream>
 #include <vector>
-
-
+#include <ScotsPineVisual.h>
 
 using namespace std;
 
@@ -142,7 +141,7 @@ private:
 
 
 
-#include "voxelmatrixI.h"
+#include <voxelmatrixI.h>
 
 
 #endif

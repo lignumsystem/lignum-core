@@ -333,13 +333,20 @@ Matrix<TS,BUD>::Matrix(Tree<TS,BUD> *tree, double voxeledge)
 {
   int i, j, k;                           // Loop counters
   Point *base = new Point(0,0,0);
-  TreeInfo info = tree->collectTreeInfo();
-
+ 
   edge = voxeledge;
 
   //
   // Calculate voxel matrixes dimensions
   //
+  BoundingBox init, bbox;
+ 
+  bbox = Accumulate(*tree, init, FindBoundingBox<TS,BUD>() );
+ 
+  Point span = bbox.getMax() - bbox.getMin();
+  LGMdouble max_branch = sqrt(pow(span.getX()/2.0,2.0) +
+                              pow(span.getY()/2.0,2.0));
+
   X = (int)(2*info.max_branch/edge)+2;          // depth
   Y = (int)(2*info.max_branch/edge)+2;          // width
   Z = (int)(info.tree_length/edge)+1;           // heigth of the matrix
