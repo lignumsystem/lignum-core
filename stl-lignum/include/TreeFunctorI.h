@@ -224,6 +224,38 @@ DisplayStructureFunctor<TS,BUD>:: operator ()(DisplayStructureData& id,
   return tc;
 }
 
+
+//Check coordinates: Each tree compartment should match
+//the "id" given. Segment changes the "id" to its end point 
+template <class TS,class BUD> TreeCompartment<TS,BUD>* 
+CheckCoordinates<TS,BUD>:: operator ()(Point& id,
+				       TreeCompartment<TS,BUD>* tc)const
+{
+  Point p = GetPoint(*tc);
+
+  if (Axis<TS,BUD>* axis = dynamic_cast<Axis<TS,BUD>*>(tc)){
+    if (id != p)
+      cout << "A: p || id " << (p || id) << endl;
+  }
+
+  else if (BranchingPoint<TS,BUD>* bp = dynamic_cast<BranchingPoint<TS,BUD>*>(tc)){
+    if (id != p)
+      cout <<  "BP: p || id " << (p || id) << endl;
+  }
+
+  else if (TreeSegment<TS,BUD>* ts = dynamic_cast<TreeSegment<TS,BUD>*>(tc)){
+    if (id != p)
+      cout << "TS: p || id " << (p || id) << endl; 
+    id = GetEndPoint(*ts);
+  }
+
+  else if (Bud<TS,BUD>* bud = dynamic_cast<Bud<TS,BUD>*>(tc)){
+    if (id != p)
+      cout << "B: p || id " << (p || id) << endl; 
+  }
+  return tc;
+}
+
 }//closing namespace Lignum
 
 #endif
