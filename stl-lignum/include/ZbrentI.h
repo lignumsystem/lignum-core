@@ -28,7 +28,7 @@ LGMdouble BracketFunction(LGMdouble& a, LGMdouble& b, LGMdouble& fa, LGMdouble& 
 
 
   a = 0.0;
-  b = GetValue(tree, lambda);
+  b = GetValue(tree, Treelambda);
   
   // deltaiW
   LGMdouble deltaiW = GetValue(tree, LGAP) - GetValue(tree, M);  
@@ -69,7 +69,7 @@ LGMdouble BracketFunction(LGMdouble& a, LGMdouble& b, LGMdouble& fa, LGMdouble& 
 	adjustSizeL.rel_lambda = b / a;
 
 	
-    SetValue(tree, lambda, b);
+    SetValue(tree, Treelambda, b);
     ForEach(tree, adjustSizeL);
 
     AsIni = 0.0;
@@ -110,7 +110,7 @@ LGMdouble HwBracketFunction(LGMdouble& a, LGMdouble& b,
   AdjustDiameterHwGrowth<TS,BUD> diamGrowth;
 
   a = 0.0;
-  b = GetValue(tree, lambda);
+  b = GetValue(tree, Treelambda);
   
 
   LGMdouble deltaiW = GetValue(tree, LGAP) - GetValue(tree, LGAM); 
@@ -137,7 +137,7 @@ LGMdouble HwBracketFunction(LGMdouble& a, LGMdouble& b,
     b = b * 1.30 + 0.1;
     LGMassert(b/a > 0);
 	
-    SetValue(tree, lambda, b);
+    SetValue(tree, Treelambda, b);
     AdjustNewLambda(tree);
  
 
@@ -181,14 +181,14 @@ LGMdouble HwZbrent(LGMdouble x1,LGMdouble x2,LGMdouble fa, LGMdouble fb, LGMdoub
   //  DGrowthInfo dgi,dgi_ident;
   
   
-  LGMdouble last_lambda = GetValue(tree,lambda);
+  LGMdouble last_lambda = GetValue(tree,Treelambda);
 
   if (last_lambda == 0)
 			debug_file << "kohta1: last lambda == 0 !!!!!!!!!!!!!!!!!!!!!!!!!!!!" << endl;
 
   
 
-  LGMdouble b = x2; // GetValue(tree,lambda);
+  LGMdouble b = x2; // GetValue(tree,Treelambda);
  
   LGMdouble AsIni = 0.0, WSum;
   AdjustDiameterHwGrowth<TS,BUD> diamGrowth;
@@ -212,8 +212,8 @@ LGMdouble HwZbrent(LGMdouble x1,LGMdouble x2,LGMdouble fa, LGMdouble fb, LGMdoub
 
 		if (fabs(fc) < fabs(fb)) 
 		{
-			a= b; //GetValue(tree,lambda);
-			b= c; //SetValue(tree,lambda,c);
+			a= b; //GetValue(tree,Treelambda);
+			b= c; //SetValue(tree,Treelambda,c);
 			c=a;
 			fa=fb;
 			fb=fc;
@@ -221,16 +221,16 @@ LGMdouble HwZbrent(LGMdouble x1,LGMdouble x2,LGMdouble fa, LGMdouble fb, LGMdoub
 		}
 
 
-		tol1=2.0*EPS*fabs(GetValue(tree,lambda))+0.5*tol;
+		tol1=2.0*EPS*fabs(GetValue(tree,Treelambda))+0.5*tol;
 		xm=0.5*(c-b);
     
 		if (fabs(xm) <= tol1 || fb == 0.0)
 		{
-			SetValue(tree,lambda, b);
+			SetValue(tree,Treelambda, b);
 			AdjustNewLambda(tree);
 
 			debug_file << " Lopullinen lambda=" << b << '\n';
-			return GetValue(tree,lambda);
+			return GetValue(tree,Treelambda);
 		}
 
 		if (fabs(e) >= tol1 && fabs(fa) > fabs(fb)) 
@@ -271,16 +271,16 @@ LGMdouble HwZbrent(LGMdouble x1,LGMdouble x2,LGMdouble fa, LGMdouble fb, LGMdoub
 			e=d;
 		}
 
-		a=b; //GetValue(tree, lambda);
+		a=b; //GetValue(tree, Treelambda);
 		fa=fb;
 
 		if (fabs(d) > tol1)
-			b += d; //SetValue(tree,lambda,GetValue(tree,lambda)+d);
+			b += d; //SetValue(tree,Treelambda,GetValue(tree,Treelambda)+d);
 		else
 			b += (xm > 0.0 ? fabs(tol1) : -fabs(tol1));
 	
 
-		SetValue(tree,lambda, b);
+		SetValue(tree,Treelambda, b);
 		AdjustNewLambda(tree);
 
 		AsIni = 0.0;
@@ -299,7 +299,7 @@ LGMdouble HwZbrent(LGMdouble x1,LGMdouble x2,LGMdouble fa, LGMdouble fb, LGMdoub
 	}
 
   MessageBox(NULL, "Maximum number of iterations", NULL, NULL);
-  return GetValue(tree, lambda);	
+  return GetValue(tree, Treelambda);	
   
 }
 
@@ -337,14 +337,14 @@ LGMdouble Zbrent(LGMdouble x1,LGMdouble x2,LGMdouble fa, LGMdouble fb, LGMdouble
   //  DGrowthInfo dgi,dgi_ident;
   adjustSegmentSizeLambda<TS,BUD> adjustSizeL;
   
-  LGMdouble last_lambda = GetValue(tree,lambda);
+  LGMdouble last_lambda = GetValue(tree,Treelambda);
 
   if (last_lambda == 0)
 			debug_file << "kohta1: last lambda == 0 !!!!!!!!!!!!!!!!!!!!!!!!!!!!" << endl;
 
   adjustSizeL.rel_lambda = 1;
 
-  LGMdouble b = x2; // GetValue(tree,lambda);
+  LGMdouble b = x2; // GetValue(tree,Treelambda);
  
   LGMdouble AsIni = 0.0, WSum;
   AdjustDiameterCfGrowth<TS,BUD> diamGrowth;
@@ -377,8 +377,8 @@ LGMdouble Zbrent(LGMdouble x1,LGMdouble x2,LGMdouble fa, LGMdouble fb, LGMdouble
 		
 		if (fc < fb) //fabs(fc) < fabs(fb)) 
 		{
-			a= b; //GetValue(tree,lambda);
-			b= c; //SetValue(tree,lambda,c);
+			a= b; //GetValue(tree,Treelambda);
+			b= c; //SetValue(tree,Treelambda,c);
 			c= a;
 			fa=fb;
 			fb=fc;
@@ -386,22 +386,22 @@ LGMdouble Zbrent(LGMdouble x1,LGMdouble x2,LGMdouble fa, LGMdouble fb, LGMdouble
 		}
 	
 
-		tol1=2.0*EPS*fabs(GetValue(tree,lambda))+0.5*tol;
+		tol1=2.0*EPS*fabs(GetValue(tree,Treelambda))+0.5*tol;
 		xm=0.5*(c-b);
     
 		if (fabs(xm) <= tol1 || fb == 0.0)
 		{
-			SetValue(tree,lambda, b);
+			SetValue(tree,Treelambda, b);
 
 			if (b==0)
 				debug_file << "kohta2: b == 0 !!!!!!!!!!!!!!!!!!!!!!!!!!!!" << endl;
 
-		//	debug_file << "rel_lambda " << (GetValue(tree,lambda) / last_lambda) << '\n';
-			adjustSizeL.rel_lambda = GetValue(tree,lambda) / last_lambda; 
+		//	debug_file << "rel_lambda " << (GetValue(tree,Treelambda) / last_lambda) << '\n';
+			adjustSizeL.rel_lambda = GetValue(tree,Treelambda) / last_lambda; 
 			ForEach(tree, adjustSizeL);
 
 			debug_file << " Lopullinen lambda=" << b << '\n';
-			return GetValue(tree,lambda);
+			return GetValue(tree,Treelambda);
 		}
 
 		if (fabs(e) >= tol1 && fabs(fa) > fabs(fb)) 
@@ -442,22 +442,22 @@ LGMdouble Zbrent(LGMdouble x1,LGMdouble x2,LGMdouble fa, LGMdouble fb, LGMdouble
 			e=d;
 		}
 
-		a=b; //GetValue(tree, lambda);
+		a=b; //GetValue(tree, Treelambda);
 		fa=fb;
 
 		if (fabs(d) > tol1)
-			b += d; //SetValue(tree,lambda,GetValue(tree,lambda)+d);
+			b += d; //SetValue(tree,Treelambda,GetValue(tree,Treelambda)+d);
 		else
 			b += (xm > 0.0 ? fabs(tol1) : -fabs(tol1));
 	
 
-		SetValue(tree,lambda, b);
-		LGMdouble odd = GetValue(tree,lambda) / last_lambda;
+		SetValue(tree,Treelambda, b);
+		LGMdouble odd = GetValue(tree,Treelambda) / last_lambda;
 		adjustSizeL.rel_lambda =  odd;
 
 	//	debug_file << "rel_lambda " << odd << '\n';
 
-		last_lambda = GetValue(tree,lambda);
+		last_lambda = GetValue(tree,Treelambda);
 		if (last_lambda == 0)
 			debug_file << " last lambda == 0 !!!!!!!!!!!!!!!!!!!!!!!!!!!!" << endl;
 
@@ -478,7 +478,7 @@ LGMdouble Zbrent(LGMdouble x1,LGMdouble x2,LGMdouble fa, LGMdouble fb, LGMdouble
 	}
 
   MessageBox(NULL, "Maximum number of iterations", NULL, NULL);
-  return GetValue(tree, lambda);	
+  return GetValue(tree, Treelambda);	
   
 }
 
@@ -555,7 +555,7 @@ bool AdjustIncrementHwZbrent(Tree<TS,BUD>& tree)
 
 
 template <class TS,class BUD>
-void AdjustNewLambda(Tree<TS,BUD> &tree)
+void AdjustNewLambday(Tree<TS,BUD> &tree)
 {
 	Axis<TS,BUD> &axis = GetAxis(tree);
 

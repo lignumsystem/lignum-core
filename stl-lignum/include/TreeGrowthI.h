@@ -250,7 +250,7 @@ void StructuralPineGrowth(Axis<TS,BUD> &ax, const ParametricCurve& bud_fun, Tree
 		PositionVector posvec = GetDirection(*bud);
 
 
-		LGMdouble lda = GetValue(tree, lambda);
+		LGMdouble lda = GetValue(tree, Treelambda);
 
 		ASSERT(lda>0);
 
@@ -534,7 +534,7 @@ MotherInfo& AddSugarMapleSegments<TS,BUD>::operator()(MotherInfo& mi, TreeCompar
 		PositionVector posvec = GetDirection(*bud);
 
 		Tree<TS,BUD> &tree = GetTree(*bud);
-		LGMdouble lda = GetValue(tree, lambda);
+		LGMdouble lda = GetValue(tree, Treelambda);
 
 		//ASSERT(lda>0);
 

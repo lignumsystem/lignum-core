@@ -58,8 +58,8 @@ namespace Lignum{
       void initialize(Tree<TS,BUD>& t);
       private:
       TreeMetaFileParser tmfp; //tree configuration file parser
-      MapParameterType<LGMPD> maplgmpd; //map parameter name to LGMPD enumeration  
-      MapParameterType<LGMTD> maplgmtd; //map transit variable to LGMTD enumeration
+      MapParameterType<LGMPD> maplgmpd; //map parameter name to LGMPD
+                                       //enumeration  
       LGMVERBOSE verbose;   //echo intialiazation process and its result
     };
 

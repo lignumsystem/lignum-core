@@ -19,9 +19,6 @@ namespace Lignum{
     {
       Lex lex;
       map<string,LGMPD,Cmpstring>::iterator itpd =  maplgmpd.begin();
-      map<string,LGMTD,Cmpstring>::iterator ittd =  maplgmtd.begin();
-
-      
       
       //1. Parse parameters for a tree
       string file = tmfp.getParameterFile("Tree");
@@ -46,14 +43,11 @@ namespace Lignum{
 	if ((itpd = maplgmpd.find(name.getValue())) != maplgmpd.end()){
 	  SetValue(tree,(*itpd).second,p);
 	}
-	//Second, could be transit parameter, e.g., intitial value for lambda
-	else if ((ittd = maplgmtd.find(name.getValue())) != maplgmtd.end()){  
-	  SetValue(tree,(*ittd).second,p);
-	}
-	//Unkonown, parameter (check MapLGMPD and MapLGMTD listings in TreeFriend.cc)
+	//Unkonown, parameter (check MapLGMPD and listing in TreeFriend.cc)
 	else{
 	  if (verbose){
-	    cerr << "Unknown parameter for tree: " << name.getValue().c_str() << endl;
+	    cerr << "Unknown parameter for tree: " << name.getValue().c_str()
+		 << endl;
 	  }
 	}
 	//next parameter

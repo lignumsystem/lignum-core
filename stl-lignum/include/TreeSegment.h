@@ -8,10 +8,7 @@
 #include <PositionVector.h>
 #include <LGMdecl.h>
 #include <LGMSymbols.h>
-#include <TreeSegmentWithFlow.h>
 #include <TreeCompartment.h>
-
-
 
 #ifdef _MSC_VER
 extern int num_of_leaves;

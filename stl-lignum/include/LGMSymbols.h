@@ -8,12 +8,10 @@
 //LGMAD = LIGNUM Attribute Double
 //LGMPD = LIGNUM Parameter Double
 //LGMTAD = LIGNUM Tree level attribute double.
-//LGMTD  = Tree Transit Variable Double
 //LGMF   = Functions known in a tree
 //FILE_MODE = For reading in different types of input
 //LGMVERBOSE = Verbose or scanty output
 //LGMFLOW = Flow symbols
-
 
 
 namespace Lignum{
@@ -125,26 +123,16 @@ namespace Lignum{
   //intialize  the   vector<LGMdouble>  in  class   Tree  holding  the
   //attribute values.
 
-  const int LGMTADLENGTH=5;
+  const int LGMTADLENGTH=6;
 
-  enum LGMTAD {Treelb,TreeP,TreeM,TreeWr,TreeQinMax};
+  enum LGMTAD {Treelambda,Treelb,TreeP,TreeM,TreeWr,TreeQinMax};
   // Treelb  Longest branch
   // TreeP   Tree level photosynthesis
   // TreeM   Tree level respiration
   // TreeWr  Root mass
   // TreeQinMax  Max Qin of all segments in a tree
+  // Treelambda; Variable to balance carbon balance equation
 
-
-  //Tree Transit Variable Double
-
-  enum LGMTD {lambda, g, eta, Er, k, rhow}; 
-  //lambda  Elongates and shortens segments in tree to allocate photosynthates
-  //         (see Zbrent)
-  //g = ?????????????????450 258 34 57 / 450 686 02 40
-  //eta = ???????????????
-  //Er = ????????????????
-  //k =  ????????????????
-  //rhow = ??????????????
 
   //There are parameters and functions and graphics 
   //to configure the tree. The initial tree (INITIAL) 

@@ -37,7 +37,7 @@ LGMdouble& AdjustDiameterCfGrowth<TS,BUD>::operator()(LGMdouble& As, TreeCompart
 			if(CfTreeSegment<TS,BUD> *cfsegment = dynamic_cast<CfTreeSegment<TS,BUD>*>(tts))
 			{	
 				Tree<TS,BUD> &tree = dynamic_cast<Tree<TS,BUD>&>(GetTree(*tts));
-				LGMdouble la = GetValue(tree,lambda);
+				LGMdouble la = GetValue(tree,Treelambda);
 
 			
 				LGMdouble Asu = As; //Sapwood area ylhaalta
@@ -105,7 +105,7 @@ LGMdouble& AdjustDiameterHwGrowth<TS,BUD>::operator()(LGMdouble& As, TreeCompart
 			if(HwTreeSegment<TS,BUD> *hwsegment = dynamic_cast<HwTreeSegment<TS,BUD>*>(tts))
 			{
 				Tree<TS,BUD> &tree = dynamic_cast<Tree<TS,BUD>&>(GetTree(*tts));
-			//	LGMdouble la = GetValue(tree,lambda);
+			//	LGMdouble la = GetValue(tree,Treelambda);
 
 			
 				LGMdouble Asu = As; //Sapwood area ylhaalta

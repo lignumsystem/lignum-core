@@ -68,9 +68,9 @@ namespace Lignum{
                       // of geometric shape - e.g. ellipsis - of the leaf).
     LGMdouble aleafmax;    //Maximum size of a leaf (m2)
     
-    LGMdouble yc;			//Foliage mass supported by 1m2 of sapwood
+    LGMdouble yc;     //Foliage mass supported by 1m2 of sapwood
   };
-
+ 
   //TreeAttributes  are  in a  (long)  vector  indexed by  enumeration
   //LGMTAD defined in LGMSymbols.h
   class TreeAttributes{
@@ -86,28 +86,20 @@ namespace Lignum{
     ParametricCurve fm;   //foliage mortality 
     ParametricCurve vi;   //vigour index function
     ParametricCurve al;   //adjusted  length. For  example  for making
-						  //branches below 0.002  to have length 0 and
-						  //branches  between   0.002  and  0.01  have
-						  //length 0.002 (short segments)...
+    
+//branches below 0.002  to have length 0 and
+    //branches between 0.002 and 0.01 have length 0.002 (short
+    //segments)...
+    
     ParametricCurve LightOnNumBuds; // the  effect of light  to number
-						  // of  the buds. If  no effect the
-						  //  value  is  always  1  of  this
-						  // function
+    // of  the buds. If  no effect the
+    //  value  is  always  1  of  this
+    // function
+    
     ParametricCurve VigourOnNumBuds;// the  effect of vigour  index to
-						  // the  number of the  buds. If no
-						  // effect the value is always 1 of
-						  // this function
-  };
-
-  class TreeTransitVariables{
-  public:
-    TreeTransitVariables();
-    LGMdouble lambda;        //Variable to balance carbon balance equation
-    LGMdouble g;             //Gravity
-    LGMdouble eta;           //Dynamic viscosity of water
-    LGMdouble k;             //Wood spesific conductivity or permeability
-    LGMdouble rhow;          //Density of water
-    LGMdouble Er;            //Elastic modulus of wood in radial direction
+    // the  number of the  buds. If no
+    // effect the value is always 1 of
+    // this function
   };
 
   class TreeInitializationFiles{
@@ -116,10 +108,9 @@ namespace Lignum{
 
     string treeFile;
   };
-
+  
   template <class TS,class BUD = DefaultBud<TS> >
     class Tree: public TreeCompartment<TS,BUD>{
-
 
       template <class TS1,class BUD1>
 
@@ -147,12 +138,6 @@ namespace Lignum{
       template <class TS1,class BUD1>
       friend LGMdouble SetValue(Tree<TS1,BUD1>& tree, const LGMPD  name, 
 				const LGMdouble value);
-      template <class TS1,class BUD1>
-      friend LGMdouble GetValue(const Tree<TS1,BUD1>& tree, const LGMTD name);
-
-      template <class TS1,class BUD1>
-      friend LGMdouble SetValue(Tree<TS1,BUD1>& tree, const LGMTD name,
-				const LGMdouble value);
 
       template <class TS1,class BUD1>
       friend string GetTreeInitializationFile(Tree<TS1,BUD1>& tree);
@@ -175,25 +160,20 @@ namespace Lignum{
       Tree(const Point& p, const PositionVector& d, 
 	   LGMdouble len, LGMdouble rad, int num_buds);
 
-      void UpdateWaterFlow(LGMdouble time, const ConnectionMatrix<TS,BUD> &cm);
       void photosynthesis();
       void respiration();
       TreeFunctions tf;  //cvs update
 
 	
     private:
-      LGMdouble CountFlow(TreeSegment<TS,BUD> &in, TreeSegment<TS,BUD> &out);
       TreeAttributes ta;
       TreeParameters tp;
-      TreeTransitVariables ttp;
-      
+     
       TreeInitializationFiles tif;
       FirmamentWithMask f;
       Axis<TS,BUD> axis;
       RootAxis<Tree<TS,BUD> > root_axis;
     };
-
-
 
   //Tree with Firmament (FRMNT)
   template <class FRMNT, class TS, class BUD = DefaultBud<TS> > 

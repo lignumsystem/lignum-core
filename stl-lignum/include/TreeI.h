@@ -239,34 +239,7 @@ LGMdouble SetValue(Tree<TS,BUD>& tree, const LGMPD name, const LGMdouble value)
   return old_value;
 }
 
-template <class TS,class BUD>
-LGMdouble GetValue(const Tree<TS,BUD>& tree, const LGMTD name)
-{
-  if (name == lambda)
-    return tree.ttp.lambda;
-  
-  else{
-    cerr << "Tree: GetValue unknown LGMTD parameter: " 
-	 << name << " returning 0.0" 
-	 << endl;
-  }
 
-  return 0.0;
-}
-
-template <class TS,class BUD>
-LGMdouble SetValue(Tree<TS,BUD>& tree, const LGMTD name, const LGMdouble value)
-{
-  LGMdouble old_value = GetValue(tree,name);
-  
-  if (name == lambda)
-    tree.ttp.lambda = value;
-  else{
-    cerr << "SetValue unknown parameter: " << name << " returning "
-	 << old_value << endl;
-  }
-  return old_value;
-}
 
 //Index the tree attribute vector with range check.
 template <class TS,class BUD>

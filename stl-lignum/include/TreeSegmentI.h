@@ -1,13 +1,7 @@
 #ifndef TREESEGMENTI_H
 #define TREESEGMENTI_H
 
-
-
-
 #include <Tree.h>
-
-
-
 
 namespace Lignum{
   //Please orginize headers or rewrite "<<" operator
@@ -86,18 +80,6 @@ TreeSegment<TS,BUD>::TreeSegment(const Point& p, const PositionVector& d, const 
   //the first annual ring
   tsa.annual_rings.push_back(r);
 }
-
-
-
-
-//This method returns the amount[kg] of transpired water. 
-//Time interval[s] is given as parameter
-template <class TS,class BUD>
-LGMdouble TreeSegment<TS,BUD>::GetTranspiration(LGMdouble time)
-{
-  return 0.12e-9;
-}
-
 
 template <class TS,class BUD>
 void TreeSegment<TS,BUD>::SetYearCircles()

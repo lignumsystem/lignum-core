@@ -24,14 +24,5 @@ namespace Lignum{
     lgmpd["LGPzbrentEpsilon"] = LGPzbrentEpsilon;
   }
 
-  template <>
-  MapParameterType<LGMTD>::MapParameterType()
-  {
-    lgmpd["lambda"] = lambda;
-    lgmpd["g"] = g;
-    lgmpd["eta"] = eta;
-    lgmpd["Er"] = Er;
-    lgmpd["k"] = k;
-    lgmpd["rhow"] = rhow;
-  }
+
 }//closing namespace Lignum
