@@ -1,8 +1,12 @@
 #ifndef LSYSTEM_H
 #define LSYSTEM_H
-
+#include <stack>
+#include <lstring.h>
+#include <lstriter.h>
 #include <Lsystem.h>
+#include <Turtle.h>
 
+ProdCaller  ContextMatch(const LstringIterator& pos,CallerData& caller_data,int& prod);
 SuccessorStorage succstrg;
 
 void _Add(const void* pX, int size)
@@ -14,18 +18,57 @@ class LSystem{
  public:
   void start();
   void derive();
-  template <class TS, class BUD, class N, class F>
-    int lstring2Lignum(Tree<TS,BUD>& t,int argnum = 0,...);
+  int derivationLength();
+  void end();
   template <class TS, class BUD, class N, class F>
     int lignum2Lstring(Tree<TS,BUD>& t,int argnum = 0,...);
+  template <class TS, class BUD, class N, class F>
+    int lstring2Lignum(Tree<TS,BUD>& t,int argnum = 0,...);
+ protected:
+  template <class TS, class BUD, class N, class F>
+    int lignum2Lstring(Tree<TS,BUD>& t, vector<N>& vav);
+  template <class TS, class BUD,class T,class F>
+    int lignum2Lstring(list<Axis<TS,BUD>*>& ls, 
+		       typename list<Axis<TS,BUD>*>::iterator current, 
+		       LstringIterator& ltr, vector<T>& vav);
+  template <class TS, class BUD, class T, class F>
+    int lignum2Lstring(list<TreeCompartment<TS,BUD>*>& ls,
+		       typename list<TreeCompartment<TS,BUD>*>::iterator current,
+		       LstringIterator& ltr, vector<T>& vav);
+  template <class TS, class BUD, class N, class F>
+    int lstring2Lignum(Tree<TS,BUD>& t, vector<N>& vav);
+  template <class TS, class BUD, class T, class F>
+    int lstring2Lignum(list<TreeCompartment<TS,BUD>*>& ls,
+		       typename list<TreeCompartment<TS,BUD>*>::iterator current,
+		       Tree<TS,BUD>& tree,
+		       LstringIterator& ltr,
+		       stack<Turtle>& turtle_stack,vector<T>& vav);
+
+  template <class TS, class BUD,class T,class F>
+    int lstring2Lignum(list<Axis<TS,BUD>*>& ls, 
+		       typename list<Axis<TS,BUD>*>::iterator current, 
+		       Tree<TS,BUD>& tree, LstringIterator& ltr, 
+		       stack<Turtle>& turtle_stack, vector<T>& vav);	       
  private:
   Lstring mainstring;
   Lstring derivedstring;
 };
 
+
 inline void LSystem::start()
 {
   Start();
+  mainstring.Add(succstrg);
+}
+
+inline void LSystem::end()
+{
+  End();
+}
+
+inline int derivationLength()
+{
+  return DerivationLength();
 }
 
 inline void LSystem::derive()
@@ -55,5 +98,7 @@ inline void LSystem::derive()
   mainstring.Swap(derivedstring);
   EndEach();
 }
+
+#include <LSystemI.h>
 
 #endif
