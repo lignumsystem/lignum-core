@@ -29,7 +29,7 @@ ostream &operator << (ostream& os, BranchingPoint<TS,BUD>& ts)
 
 
 template <class TS,class BUD>
-BranchingPoint<TS,BUD>::BranchingPoint()
+BranchingPoint<TS,BUD>::BranchingPoint():maxd(0.0)
 {
   tree = NULL;
   SetValue(*this, age, 0);
@@ -38,7 +38,7 @@ BranchingPoint<TS,BUD>::BranchingPoint()
 template <class TS,class BUD>
 BranchingPoint<TS,BUD>::BranchingPoint(const Point& p, const PositionVector& d,
 				       Tree<TS,BUD>* t)
-  :TreeCompartment<TS,BUD>(p,d,t)
+  :TreeCompartment<TS,BUD>(p,d,t),maxd(0.0)
 {
 }
 
@@ -53,6 +53,28 @@ BranchingPoint<TS,BUD>::~BranchingPoint()
   }
 }
 
+template <class TS,class BUD>
+double GetValue(BranchingPoint<TS,BUD>& bp, LGMAD name)
+{
+  if (name == MaxD){
+    return bp.maxd;
+  }
+  else{
+    cout << "GetValue in BP, unknown name: " << name << endl;
+    return 0.0;
+  }
+}
+
+template <class TS,class BUD>
+double SetValue(BranchingPoint<TS,BUD>& bp, LGMAD name, LGMdouble value)
+{
+  LGMdouble old_value = GetValue(bp,name);
+  if (name == MaxD){    
+    bp.maxd = value;
+  }
+  return old_value;
+}
+    
 // return the value of biggest radius of a segment forking away 
 template <class TS,class BUD>
 LGMdouble GetMaxRadius(BranchingPoint<TS,BUD>& bp)
