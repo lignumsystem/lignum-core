@@ -4,7 +4,7 @@
 #include <Point.h>
 #include <PositionVector.h>
 #include <Ellipsis.h>
-
+#include <Ellipse.h>
 #include <LGMdecl.h>
 
 namespace Lignum{
@@ -24,7 +24,7 @@ private:
   Point end;
 };
 
-template <class SHAPE = Ellipsis>
+template <class SHAPE>
 class BroadLeafAttributes{
 public:
   BroadLeafAttributes(double sf1,double tauL1,double dof1, const Petiole& petiole1,
@@ -44,7 +44,7 @@ public:
   vector<LGMdouble>  sv; //the length of the vector == number of sectors 
 };
 
-template <class SHAPE = Ellipsis>
+template <class SHAPE>
 class BroadLeaf{
   template <class S>
   friend LGMdouble GetValue(const BroadLeaf<S>& bl, const LGMAD name);
