@@ -1,8 +1,9 @@
 \section{L-system mimicking pine growth}\label{sec:L1}
-The L-system mimicking pine growth starts with one bud.  Main axis, (O
-= 0),  creates one  segment and four  branches forking off.   Then the
-side  branches  (O=1,  O=2)  create  one segment  and  two  additional
-branches.  Ramification stops after third order branches.
+The L-system  mimicking pine  growth starts with  one segment  and one
+bud.   Main axis, (A  = 1),  creates one  segment and  four branches
+forking off.   These side  branches (A =  2) create one  segment and
+four additional  branches (A = 3).  Ramification  stops after fourth
+order branches. Branching shortens the segment length (d1-d4).
 
 %\begin{figure}[p]
 %% \begin{picture}(1,1)
@@ -10,31 +11,52 @@ branches.  Ramification stops after third order branches.
 %% \end{picture}
 \begin{verbatim}
 open Pine;
-const double PI = 3.14159; 
+const double d1 = 0.9;
+const double d2 = 0.6;
+const double d3 = 0.4;
+const double d4 = 0.3;
+const double PI = 3.1415926535897932384;
+const double angle = PI/4.0;
+const double bend = 2.0;
+
+module F(double);
 module B(int,double);
-Start:{produce B(0,1.0);}
-B(O,L):
+module Pitch(double);
+module Roll(double);
+module Turn(double);
+module Bend(double);
+
+Start:{produce F(0.30)SB()EB()B(1,1.0);}
+
+B(A,l):
 {
-  if (O==0)
-  produce F(L) SB() Pitch(45)  B(O+1,L*0.6) EB() 
-               SB() Roll(90) Pitch(45) B(O+1,L*0.6) EB()
-               SB() Roll(180) Pitch(45) B(O+1,L*0.6) EB() 
-               SB() Roll(270) Pitch(45) B(O+1,L*0.6) EB()
-          B(O,L*0.8);
-  else if (O==1)
-  produce F(L) SB() Turn(45)  B(O+1,L*0.5) EB() 
-               SB() Turn(-45) B(O+1,L*0.5) EB()
-          Pitch(-5)B(O,L*0.6);
-  else if (O==2)
-  produce F(L) SB() Turn(45)  B(O+1,L*0.4) EB() 
-               SB() Turn(-45) B(O+1,L*0.4) EB()
-           B(O,L*0.5);
-  else if (O==3)
-  produce F(L) SB() B(O+1,L)  EB() B(O,L);
+   if (A==1)
+   produce F(l) SB() Pitch(PI/4.0)  B(A+1,l*d2) EB() 
+                SB() Roll(PI/2.0) Pitch(PI/4.0) B(A+1,l*d2) EB()
+                SB() Roll(PI) Pitch(PI/4.0)  B(A+1,l*d2) EB() 
+                SB() Roll(3.0*PI/2.0) Pitch(PI/4.0)  B(A+1,l*d2) EB()
+           B(A,l*d1);
+  else if (A==2)
+  produce  Bend(0.2) F(l) SB() Turn(PI/4.0)  B(A+1,l*d3) EB() 
+                SB() Turn(-PI/4.0) B(A+1,l*d3) EB()
+                SB() Pitch(PI/4.0) B(A+1,l*d3) EB()
+                SB() Pitch(-PI/4.0) B(A+1,l*d3) EB()
+           Bend(-0.1)B(A,l*d2);
+  else if (A==3)
+  produce F(l) SB() Turn(PI/4.0)  B(A+1,l*d4) EB() 
+                  SB() Turn(-PI/4.0) B(A+1,l*d4) EB()
+           B(A,l*d3);
+  else if (A==4)
+  produce F(l) SB() B(A+1,l)  EB() B(A,l);
   else
-  produce B(O,L);          
+  produce B(A,l);          
+}
+Bend(s):
+{
+   produce Pitch(s*bend);
 }
 close Pine;
+
 \end{verbatim}
 %% \begin{picture}(1,1)
 %% \put(0,0){\line(1,0){370}}
