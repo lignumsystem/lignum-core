@@ -5,48 +5,17 @@
 namespace Lignum{
 
   /********************************************************************
-   *createLeaves is intented to  be used with L-systems for broadleved*
-   *trees. L-system  can easily define the  positions and orientations*
-   *of segments and  buds, but leaves are a  bit more complicated. For*
-   *LIGNUM we can assume that  the leaf petiole takes the direction of*
-   *the bud. Leaf blade is an  ellipse but the orientation of the leaf*
-   *normal  is must  be  defined. createLeaves  sets  the leaf  normal*
-   *upward random.                                                    *
+   addLeaf replaces createLeaf.  Because the  shape of the leaf can be
+   ellips,  triangle   or  even   polygon,  we  simply   transfer  the
+   responsibility   to  the   modeller   to  create   the  leaf.   See
+   CreateLeaves.h how to create ellips shape leaves.
    ********************************************************************/
   template <class TS, class BUD, class S>
     //The   bud  directions   are  collected   into  vetor   pd  using
     //AccumulateDown(tree,vector<PositionVector>(),AppendLeaves(),CreateLeaves())
-    void HwTreeSegment<TS,BUD,S>::createLeaves(vector<PositionVector>& pd,
-					       METER pl, METER a, METER b)
+    void HwTreeSegment<TS,BUD,S>::addLeaf(BroadLeaf<S>* leaf)
     {
-      Point origo(0,0,0);
-      Point point = GetEndPoint(*this);
-      PositionVector up(0,0,1);
-      Ellipsis shape(a,b); //initial shape of a leaf
-      static Uniform u; //uniform random number [0,1] for setting leaf
-			//normals;  static makes it  common throughout
-			//the  program and  not reinitialized  in each
-			//call.
-      int seed = 3267;
-      for (int i = 0; i < pd.size(); i++){
-	PositionVector pdir = pd[i];
-	//Leaves are  created at the end  of the segment  where the buds
-	//are, second argument is the intial length of the petiole
-	Petiole petiole(point,point + pl*(Point)pdir);
-	//Randomize  the leaf blade  normal by  rotating in  around axis
-	//that lies in the horizontal plane defined by cross product of
-	//petiole direction and up-vector
-	PositionVector plane = Cross(pdir,up);
-	//limit the rotation  of the leaf normal to  [-90,90] degrees so
-	//that the leaf normal does not point downwards
-	double ran = (-90.0 +180.0*u(seed))*2.0*PI_VALUE/360; //(radians)
-	PositionVector leaf_normal(0,0,1);
-	leaf_normal.rotate(origo,plane,ran);
-	BroadLeaf<S>* leaf = new BroadLeaf<S>(shape,petiole,leaf_normal);
-	leaf_ls.push_back(leaf);
-      }
-      //clear the vector; don't create leaves twice
-      pd.clear();
+      leaf_ls.push_back(leaf);
     }
 
   template<class TS, class BUD, class S>

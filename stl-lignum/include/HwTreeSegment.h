@@ -62,8 +62,7 @@ public:
   :TreeSegment<TS,BUD>(p,pv,go,l,r,rn,tree){ SetValue(*this, vi, 1.0); }
   void photosynthesis();
   void respiration();
-  virtual void createLeaves(vector<PositionVector>& petiole_directions,
-			    METER pl,METER a,METER b);
+  virtual void addLeaf(BroadLeaf<SHAPE>* l);
 protected:
   list<BroadLeaf<SHAPE>*> leaf_ls;
 };
