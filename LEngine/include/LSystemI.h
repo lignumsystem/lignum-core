@@ -206,13 +206,13 @@ int LSystem<TS,BUD,N,F>::lignumToLstring(Tree<TS,BUD>& t, int argnum,...)
   va_list ap;
   vector<N> vav;
 
-  //The C library standard requires that in call to va_arg 
-  //the second (last) type parameter must *not* be array, function, float 
-  //or integer type that changes when promoted. Unfortunately this means
-  //that  the enumeration N that will denote the set of names of 
-  //the variables of type F cannot be used. But we pass int to va_arg 
-  //and type cast the return value back to N. Some compilers accept (as SGI CC)
-  // N as such but it should be an error.
+  //The C library standard requires  that in call to va_arg the second
+  //(last)  type parameter  must *not*  be array,  function,  float or
+  //integer type that changes  when promoted. Unfortunately this means
+  //that the  enumeration N that will  denote the set of  names of the
+  //variables of type F cannot be  used. But we pass int to va_arg and
+  //type cast  the return value back  to N. Some  compilers accept (as
+  //SGI CC) N as such but it should be an error.
   va_start(ap,argnum);
   for (int i = 0; i < argnum; i++){
     vav.push_back(static_cast<N>(va_arg(ap,int)));
@@ -539,12 +539,12 @@ int LSystem<TS,BUD,N,F>::lstringToLignum(Tree<TS,BUD>& t, int argnum,...)
   va_list ap;
   vector<N> vav;
 
-  //The C library standard requires that in call to va_arg 
-  //the second (last) type parameter must *not* be array, function, float 
-  //or integer type that changes when promoted. Unfortunately this means
-  //that  the enumeration N that will denote the set of names of 
-  //the variables of type F cannot be used. But we pass int to va_arg 
-  //and type cast the return value back to N. Some compilers (as SGI CC) 
+  //The C library standard requires  that in call to va_arg the second
+  //(last)  type parameter  must *not*  be array,  function,  float or
+  //integer type that changes  when promoted. Unfortunately this means
+  //that the  enumeration N that will  denote the set of  names of the
+  //variables of type F cannot be  used. But we pass int to va_arg and
+  //type cast the  return value back to N. Some  compilers (as SGI CC)
   //accept N as such but it should be an error.
   va_start(ap,argnum);
   for (int i = 0; i < argnum; i++){

@@ -1,12 +1,12 @@
 /*********************************************************************
  *The  class  LSystem provides  programming  interface  to L-system  *
  *rewriting of  the language L that lsystem.h  implements.  Note that*
- *neither lsystem.h nor this  file LSystem.h are wrapped with #infdef*
+ *neither lsys.h nor this  file  LSystem.h  are wrapped  with #infdef*
  *... #define ... #endif directives to prevent multiple inclusions of*
  *the header files. This is because both LSystem.h and lsystem.h must*
  *be  included several  times, once  for each  species of  the model.*
  *Multiple  decalarations and  definitions are  prevented by wrapping*
- *LSystem.h and lsystem.h in namespaces.                             *
+ *LSystem.h and lsys.h in namespaces.                             *
  *********************************************************************/
 #include <lsys.h>
 
@@ -34,7 +34,10 @@ class LSystem{
  void print(bool arg=false);
  int lignumToLstring(Tree<TS,BUD>& t,int argnum = 0,...);
  int lstringToLignum(Tree<TS,BUD>& t,int argnum = 0,...);
+ int rootSystemToLstring(Tree<TS,BUD>& t,int argnum = 0,...);
+ int lstringToRootSystem(Tree<TS,BUD>& t,int argnum = 0,...);
  protected:
+ //above ground part
  int lignum2Lstring(Tree<TS,BUD>& t, vector<N>& vav);
  int lignum2Lstring(list<Axis<TS,BUD>*>& ls, 
 		    typename list<Axis<TS,BUD>*>::iterator current, 
@@ -51,7 +54,29 @@ class LSystem{
  int lstring2Lignum(list<Axis<TS,BUD>*>& ls, 
 		    typename list<Axis<TS,BUD>*>::iterator current, 
 		    Tree<TS,BUD>& tree, LstringIterator& ltr, 
-		    stack<Turtle>& turtle_stack, vector<N>& vav);	       
+		    stack<Turtle>& turtle_stack, vector<N>& vav);
+ //root system part
+ int rootSystem2Lstring(Tree<TS,BUD>& t, vector<N>& vav);
+ int rootSystem2Lstring(list<RootAxis<Tree<TS,BUD> >*>& ls, 
+			typename list<RootAxis<Tree<TS,BUD> > *>::iterator 
+			current, 
+			LstringIterator& ltr, vector<N>& vav);
+ int rootSystem2Lstring(list<RootCompartment<Tree<TS,BUD> >*>& ls,
+			typename list<RootCompartment<Tree<TS,BUD> >*>::iterator 
+			current,
+			LstringIterator& ltr, vector<N>& vav);
+ int lstring2RootSystem(Tree<TS,BUD>& t, vector<N>& vav);
+ int lstring2RootSystem(list<RootCompartment<Tree<TS,BUD> >*>& ls,
+			typename list<RootCompartment<Tree<TS,BUD> >*>::iterator 
+			current,
+			Tree<TS,BUD>& tree,
+			LstringIterator& ltr,
+			stack<Turtle>& turtle_stack,vector<N>& vav);
+ int lstring2RootSystem(list<RootAxis<Tree<TS,BUD> >*>& ls, 
+			typename list<RootAxis<Tree<TS,BUD> >*>::iterator current, 
+			Tree<TS,BUD>& tree, LstringIterator& ltr, 
+			stack<Turtle>& turtle_stack, vector<N>& vav);
+
  private:
   Lstring mainstring;
   Lstring derivedstring;
@@ -128,5 +153,7 @@ inline void LSystem<TS,BUD,N,F>::print(bool arg)
   cout << endl;
 }
 
-
+//Implementation of the conversion for the above ground part
 #include <LSystemI.h>
+//Implementation of the conversion for the root system
+#include <LSystemForRootsI.h>
