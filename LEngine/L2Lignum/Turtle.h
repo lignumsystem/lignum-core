@@ -22,6 +22,7 @@ class Turtle{
   Turtle& roll(const RADIAN a);
   Turtle& forward(const double d);
  private:
+  Turtle& normalize();
   PositionVector h; //heading (z)
   PositionVector l; //left    (x)
   PositionVector u; //up      (y)
