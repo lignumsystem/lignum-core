@@ -11,9 +11,9 @@ using namespace Lignum;
 #define NO_HIT 0
 
 //Method to compute radiation interception by the leaves of the segment
-TreeCompartment<Lignum::BetulaWithFlow,DefaultBud<Lignum::BetulaWithFlow> >*
-EvaluateRadiation::operator()
-  (TreeCompartment<Lignum::BetulaWithFlow, DefaultBud<Lignum::BetulaWithFlow> >* tc)const
+template <class TS, class BUD>
+TreeCompartment<TS,BUD>* EvaluateRadiation<TS,BUD>::operator()
+  (TreeCompartment<TS, BUD>* tc)const
 {
   if (HwTreeSegment<TS,BUD>* ts = dynamic_cast<HwTreeSegment<TS,BUD>*> (tc)){
    
@@ -76,18 +76,16 @@ EvaluateRadiation::operator()
 }
 
 
-
-EvaluateRadiationForLeaf::EvaluateRadiationForLeaf(Lignum::BetulaWithFlow* ts,
-						   BroadLeaf* lf)
+template <class TS,class BUD> 
+EvaluateRadiationForLeaf<class TS, class BUD>::EvaluateRadiationForLeaf(TreeCompartment<TS,BUD>* ts,
+									BroadLeaf* lf)
 {
-  shaded_s = ts;
+  shaded_s = dynamic_cast<BetulaWithFlow*>(ts);
   shaded_l = lf;
 }
 
-
-vector<LGMdouble>& EvaluateRadiationForLeaf::operator()
-  (vector<LGMdouble>& v, TreeCompartment<Lignum::BetulaWithFlow,
-   DefaultBud<Lignum::BetulaWithFlow> >* tc)const
+template <class TS,class BUD>
+vector<LGMdouble>& EvaluateRadiationForLeaf::operator()(vector<LGMdouble>& v, TreeCompartment<TS,BUD>* tc)const
 {
   int beamShading(Point& p0, PositionVector& v,
 		BroadLeaf& leaf);
