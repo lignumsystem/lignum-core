@@ -23,10 +23,11 @@ void EvaluateCollisionForAllBuds<TS,BUD>::operator()
     Tree<TS,BUD>& tt = dynamic_cast<Tree<TS,BUD> &>(GetTree(*its_me));
     
     int initial = 0;
-    int collision = AccumulateDown(tt, initial, col_eval);
+    int collision = Accumulate(tt, initial, col_eval);
 
     if(collision>=1) {
       SetValue(*its_me,LGMcollision,1.0);
+
     }
   }
 
@@ -40,7 +41,7 @@ template <class TS,class BUD>
 int& EvaluateCollisionForThisBud<TS,BUD>::
     operator()(int& coll, TreeCompartment<TS,BUD>* tc)const {
 
-  if(!coll) {
+  if(coll != 1) {
     if (TreeSegment<TS,BUD>* ts = dynamic_cast<TreeSegment<TS,BUD>*>(tc))
       ;
     else if(Bud<TS,BUD>* b = dynamic_cast<Bud<TS,BUD>*>(tc))
@@ -49,7 +50,7 @@ int& EvaluateCollisionForThisBud<TS,BUD>::
       return coll;
 
     Point p = GetPoint(*tc);
-    PositionVector diff(point - p);
+    PositionVector diff(p - point);
 
     LGMdouble len = diff.length();
 
@@ -58,7 +59,7 @@ int& EvaluateCollisionForThisBud<TS,BUD>::
     }
 
     LGMdouble dotp = Dot(direction, diff);
-    if(c_cos > dotp / len) {
+    if(c_cos < dotp / len) {
       if(len < c_distance) {
 	coll = 1;
       }

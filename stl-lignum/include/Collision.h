@@ -58,7 +58,7 @@ public:
   EvaluateCollisionForThisBud(LGMdouble angle = PI_VALUE/2.0,
 			      LGMdouble distance = 1.0 /* meters */) {
     c_angle = angle;
-    c_cos = cos(angle/2.0); //Note calculations made with half of cone angle
+    c_cos = cos(angle/2.0); //Note: calculations made with half of cone angle
     c_distance = distance;
   }
 
