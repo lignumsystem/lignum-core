@@ -51,6 +51,7 @@ class BroadLeaf{
   friend Point<> GetCenterPoint(const BroadLeaf& bl);
   friend void SetCenterPoint(BroadLeaf& bl, const Point<>& p);
   friend PositionVector GetLeafNormal(const BroadLeaf& bl);
+  friend PositionVector SetLeafNormal(BroadLeaf& bl, const PositionVector& n);
   friend Petiole& GetPetiole(BroadLeaf& bl);
   friend Ellipsis& GetEllipsis(BroadLeaf& bl);
   friend vector<double> GetRadiationVector(BroadLeaf& bl);

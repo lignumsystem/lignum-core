@@ -155,6 +155,15 @@ PositionVector GetLeafNormal(const BroadLeaf& bl)
   return bl.bla.leaf_normal;
 }
 
+PositionVector SetLeafNormal(BroadLeaf& bl, const PositionVector& n)
+{
+  PositionVector vv = bl.bla.leaf_normal;
+  bl.bla.leaf_normal = n;
+
+  return vv;
+}
+
+
 Petiole& GetPetiole(BroadLeaf& bl)
 {
   return bl.bla.petiole;
