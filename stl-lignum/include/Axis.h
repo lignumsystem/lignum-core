@@ -1,9 +1,12 @@
 #ifndef AXIS_H
 #define AXIS_H
 
+#include <algorithm>
+#include <numeric>
 #include <list>
 #include <Point.h>
 #include <PositionVector.h>
+#include <TreeFunctor.h>
 #include <TreeCompartment.h>
 #include <Bud.h>
 #include <DefaultBud.h>
@@ -20,5 +23,8 @@ public:
 private:
   list<TreeCompartment<TS,BUD>*> tc_ls;
 };
+
+//The implementations of methods and functions Axis
+#include <AxisI.h>
 
 #endif

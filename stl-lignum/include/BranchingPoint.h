@@ -2,6 +2,9 @@
 #define BRANCHINGPOINT_H
 
 #include <list>
+#include <algorithm>
+#include <numeric>
+#include <TreeFunctor.h>
 #include <TreeCompartment.h>
 #include <Axis.h>
 #include <DefaultBud.h>
@@ -18,6 +21,8 @@ public:
 private:
   list<Axis<TS,BUD>*> axis_ls;
 };
+
+#include <BranchingPointI.h>
 
 #endif
 

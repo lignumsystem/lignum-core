@@ -27,4 +27,5 @@ private:
   BudAttributes ba;
 };
 
+#include <BudI.h>
 #endif

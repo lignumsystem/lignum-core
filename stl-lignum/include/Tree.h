@@ -74,15 +74,14 @@ class Tree: public TreeCompartment<TS,BUD>{
   friend Axis<TS,BUD>& GetAxis(Tree<TS,BUD>& t){return t.axis;}
   friend TP GetProduction(const Tree<TS,BUD>& t);
   friend void InitializeTree(Tree<TS,BUD>& tree, const CString& meta_file);
-  friend TP GetTreeAttributeValue(const Tree<TS,BUD>& tree, const TAD name);
-  
-  friend YEAR GetTreeAttributeValue(const Tree<TS,BUD>& tree, const TAI name);
-  template <class T1,class T2>
-  friend T2 SetTreeAttributeValue(Tree<TS,BUD>& tree, const T1 name, const T2 value);
-  friend TP GetTreeParameterValue(const Tree<TS,BUD>& tree, const TPD name);
-  friend TP SetTreeParameterValue(Tree<TS,BUD>& tree, const TPD  name, const TP value);
-  friend TP GetTreeTransitVariableValue(const Tree<TS,BUD>& tree, const TTD name);
-  friend TP SetTreeTransitVariableValue(Tree<TS,BUD>& tree, const TTD name, const TP value);
+  friend TP GetAttributeValue(const Tree<TS,BUD>& tree, const TAD name);
+  friend YEAR GetAttributeValue(const Tree<TS,BUD>& tree, const TAI name);
+  friend TP SetAttributeValue(Tree<TS,BUD>& tree, const TAD name, const TP value);
+  friend YEAR SetAttributeValue(Tree<TS,BUD>& tree, const TAI name, const YEAR value);
+  friend TP GetParameterValue(const Tree<TS,BUD>& tree, const TPD name);
+  friend TP SetParameterValue(Tree<TS,BUD>& tree, const TPD  name, const TP value);
+  friend TP GetTransitVariableValue(const Tree<TS,BUD>& tree, const TTD name);
+  friend TP SetTransitVariableValue(Tree<TS,BUD>& tree, const TTD name, const TP value);
 public:
   Tree();
   Tree(const Point<METER>& p, const PositionVector& d);
@@ -98,6 +97,8 @@ private:
   Axis<TS,BUD> axis;
   RootSystem rs;
 };
+
+#include <TreeI.h>
 #endif
 
 

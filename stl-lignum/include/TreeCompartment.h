@@ -1,6 +1,7 @@
 #ifndef TREECOMPARTMENT_H
 #define TREECOMPARTMENT_H
 
+#include <stream.h>
 #include <LGMdecl.h>
 #include <LGMUnits.h>
 #include <Point.h>
@@ -20,5 +21,7 @@ protected:
   PositionVector direction;
   Tree<TS,BUD>* tree;
 };
+
+#include <TreeCompartmentI.h>
 
 #endif

@@ -6,9 +6,8 @@
 #include <TreeCompartment.h>
 #include <DefaultBud.h>
 
-template<class TS,class BUD>
-TP GetTreeParameterValue(const Tree<TS,BUD>& tree, const TPD name);
-
+template <class TS, class BUD>
+extern TP GetParameterValue(const Tree<TS,BUD>& tree, const TPD name);
 
 class TreeSegmentAttributes{
 public:
@@ -39,6 +38,8 @@ class TreeSegment: public TreeCompartment<TS,BUD>{
   friend KGC GetSapwoodMass(const TreeSegment<TS,BUD>& ts);
   friend TP GetTSAttributeValue(const TreeSegment<TS,BUD>& ts, const TAD name);
   friend YEAR GetTSAttributeValue(const TreeSegment<TS,BUD>& ts, const TAI name);
+  friend TP GetAttributeValue(const TreeSegment<TS,BUD>& ts, const TAD name);
+  friend YEAR GetAttributeValue(const TreeSegment<TS,BUD>& ts, const TAI name);
   friend TP SetTSAttributeValue(TreeSegment<TS,BUD>& ts, const TAD name, const TP value);
   friend YEAR SetTSAttributeValue(TreeSegment<TS,BUD>& ts, const TAI name, 
 				  const YEAR  value);
@@ -53,6 +54,8 @@ public:
 private:
   TreeSegmentAttributes tsa;
 };
+
+#include <TreeSegmentI.h>
 
 #endif
 

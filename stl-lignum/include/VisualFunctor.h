@@ -34,6 +34,6 @@ public:
   GLS<TS,BUD>& operator()(GLS<TS,BUD>& gls,TreeCompartment<TS,BUD>* tc)const;
 };
 
-
+#include <VisualFunctorI.h>
 
 #endif

@@ -1,6 +1,8 @@
 #ifndef TREEFUNCTOR_H
 #define TREEFUNCTOR_H
 
+#include <iostream.h>
+
 #include <Tree.h>
 #include <Algorithms.h>
 
@@ -69,12 +71,8 @@ public:
 				       TreeCompartment<TS,BUD>* ts)const;
 };
 
-/*
-class CountElements{
-public:
-  void operator ()TreeCompartment<TS>* ts);
 
-}
-*/
+#include <TreeFunctorI.h>
+
 #endif
 

@@ -47,6 +47,17 @@ class PropagateUpOp2{
   BinOp op1;
 };
 
+template <class TS,class BUD, class T, class BinOp1,class BinOp2>
+class PropagateUpOp3{
+ public:
+  PropagateUpOp3(const BinOp1& op1, const class BinOp2& op2);
+  TreeCompartment<TS,BUD>* operator()(T& id,TreeCompartment<TS,BUD>* tc)const;
+ private:
+  BinOp1 op1;
+  BinOp2 op2;
+};
+
+
 template <class TS,class BUD, class Function>
 class ForEachOp2:public AdaptableTCFunction<TS,BUD>{
  public:
@@ -55,7 +66,6 @@ class ForEachOp2:public AdaptableTCFunction<TS,BUD>{
  private:
   Function f;
 };
-
 
 template <class TS,class BUD, class Function>
 void ForEach(Tree<TS,BUD>& tree, const Function& f);
@@ -66,8 +76,16 @@ T& Accumulate(Tree<TS,BUD>& tree, T& init, const BinOp& op);
 template <class TS,class BUD, class T, class BinOp>
 T& AccumulateDown(Tree<TS,BUD>& tree, T& init, const BinOp& op);
 
+template <class TS,class BUD, class T, class BinOp1, class BinOp2>
+T& AccumulateDown(Tree<TS,BUD>& tree, T& init, const BinOp1& op1, const BinOp2& op2);
 template <class TS,class BUD, class T, class BinOp>
 void PropagateUp(Tree<TS,BUD>& tree, T& init, const BinOp& op1);
+ 
+template <class TS,class BUD, class T, class BinOp1, class BinOp2>
+void PropagateUp(Tree<TS,BUD>& tree, T& init, const BinOp1& op1, const BinOp2& op2);
+
+//The implementations of Generic Algorithms
+#include <AlgorithmsI.h>
 
 #endif
 
