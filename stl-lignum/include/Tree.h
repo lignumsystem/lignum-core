@@ -101,10 +101,10 @@ public:
 template <class TS,class BUD = DefaultBud<TS> >
 class Tree: public TreeCompartment<TS,BUD>{
   template <class TS1,class BUD1>
-  friend Axis<TS1,BUD1>& GetAxis(Tree<TS1,BUD1>& t);
+  friend class InitializeTree;
 
   template <class TS1,class BUD1>
-  friend void InitializeTree(Tree<TS1,BUD1>& tree, const string& meta_file);
+  friend Axis<TS1,BUD1>& GetAxis(Tree<TS1,BUD1>& t);
 
   template <class TS1,class BUD1>
   friend LGMdouble GetValue(const Tree<TS1,BUD1>& tree, const LGMAD name);
@@ -135,6 +135,9 @@ class Tree: public TreeCompartment<TS,BUD>{
   template <class TS1,class BUD1>
   friend FirmamentWithMask& GetFirmament(Tree<TS1,BUD1>& tree);
 
+  template <class TS1,class BUD1>
+  friend const ParametricCurve& GetFunction(const Tree<TS1,BUD1>& tree, LGMF name);
+
   template <class TS1, class BUD1, class F>
   friend void EvaluateRadiationForTree(Tree<TS1,BUD1>& tree, const F& f);
 
@@ -143,8 +146,6 @@ public:
   Tree(const Point& p, const PositionVector& d);
   void photosynthesis();
   void respiration();
-  TreeFunctions tf; //growth functions must have acces to functions
-
 private:
   LGMdouble CountFlow(TreeSegment<TS,BUD> &in, TreeSegment<TS,BUD> &out);
   TreeAttributes ta;
@@ -156,6 +157,7 @@ private:
   RootSystem rs;
 };
 
+//Tree with Firmament (FRMNT)
 template <class FRMNT, class TS, class BUD = DefaultBud<TS> > 
 class FTree: public Tree<TS,BUD>{
 public:
@@ -166,21 +168,10 @@ private:
 
 }//closing namespace Lignum
 
+#include <InitializeTree.h>
 #include <TreeI.h>
 #include <TreeMetabolismI.h>
 #include <TreeRadiationI.h>
 
 #endif
-
-
-
-
-
-
-
-
-
-
-
-
 

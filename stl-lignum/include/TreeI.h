@@ -20,69 +20,6 @@ Tree<TS,BUD>::Tree(const Point& p, const PositionVector& d)
 }
 
 
-
-
-//The initialization of the tree.
-//Install parameters and functions.
-//TreeMetaFileParser  parsers the 'meta_file'
-//and after that the file names for the parameters and functions 
-//are known. 
-//Parameters: Then the lexer 'lex' can tokenize the parameter files
-//to a list of: [name,value,name,value,...,name,value,ENDFILE]
-//Then install the parameters.
-//Functions: Functions are represented as parametric curves
-//that are given as (x,y) pairs in an ASCII file
-//ParametricCurve can read and create internal representation
-//for a parametric curve and evaluate it in any point.
-template <class TS,class BUD>
-void InitializeTree(Tree<TS,BUD>& tree, const string& meta_file)
-{
-  LGMdouble p;
-  string file;
-  Lex lex;
-  Token name,value;
-  TreeMetaFileParser tmfp(meta_file);
-  MapTPD maptpd;
-
-  tmfp.parse();
-
-  file = tmfp.getParameterFile("Tree");
-  cout << "Reading parameters for tree from: " << file << endl;
-  lex.scan(file);
-
-  name = lex.getToken();
-  while (name.getType() != ENDFILE){
-    value = lex.getToken(); 
-    p = (LGMdouble) atof(value.getValue().c_str());
-    cout << " Parameter: " << name.getValue() << " = " << p << endl;
-    if (name.getValue() == string("lambda"))
-      SetValue(tree,lambda,p);
-    else{
-      string str = name.getValue();
-      map<string,LGMPD,cmpstr>::iterator tpd = maptpd.tpd.find(str.c_str());
-      SetValue(tree,(*tpd).second,p);
-    }
-    name = lex.getToken();
-  }
-
-  file = tmfp.getFunctionFile(string("Buds"));
-  cout << "Reading function for number of new buds from: " << file << endl;
-  tree.tf.nb.install(file.c_str());
-
-  file = tmfp.getFunctionFile(string("DoI"));
-  cout << "Reading function for DoI from: " << file << endl;
-  tree.tf.ip.install(file.c_str());
-
-  file = tmfp.getFunctionFile(string("FoliageMortality"));
-  cout << "Reading function for foliage mortality from: " << file << endl;
-  tree.tf.fm.install(file.c_str());
-
-  file = tmfp.getTreeInitializationFile(string("Tree"));
-  cout << "Reading tree initialization file from: " << file << endl;
-  tree.tif.install(file.c_str());
-
-}
-
 //Get a parameter value 
 template <class TS,class BUD>
 LGMdouble GetValue(const Tree<TS,BUD>& tree, const LGMPD name)
@@ -241,12 +178,8 @@ LGMdouble GetValue(const Tree<TS,BUD>& tree, const LGMAD name)
      return tree.ta.Wr;
 
   else {
-    //    cerr << "GetValue  unknown attribute: " << name << " returning 0.0" 
-    //	 << endl;
     return GetValue(dynamic_cast<const TreeCompartment<TS,BUD>&>(tree), name);
   }
-
-  //  return 0.0;
 }
 
 template <class TS,class BUD>
@@ -267,8 +200,6 @@ LGMdouble SetValue(Tree<TS,BUD>& tree, const LGMAD name, const LGMdouble value)
     tree.ta.Wr = value;
 
   else{
-//      cerr << "SetValue unknown attribute: " << name << " returning " 
-//  	 << old_value << endl;
     old_value=SetValue(dynamic_cast<TreeCompartment<TS,BUD>&>(tree),name,value);
   }
 
@@ -282,6 +213,27 @@ Axis<TS,BUD>& GetAxis(Tree<TS,BUD>& t)
   return t.axis;
 }
 
+//Return a tree function as a ParametricCurve
+template<class TS, class BUD>
+const ParametricCurve& GetFunction(const Tree<TS,BUD>& tree, LGMF name)
+{  
+
+  if (name == FOLIAGEMORTALITY){
+    return tree.tf.fm;
+  }
+  else if (name == DEGREEOFINTERACTION){
+     return tree.tf.ip;
+  }
+  else if (name == NUMBEROFBUDS){
+    return tree.tf.nb;
+  }
+  else{
+    cerr << "GetFunction unknown function: " << name << endl;
+  }
+  //Error happened return useless local reference. 
+  return ParametricCurve();
+}
+  
 //At the moment returns the name of the only (ASCII) file that contains
 //the definition of the initial tree. Later - maybe - several such files.
 template<class TS, class BUD>
