@@ -1085,7 +1085,7 @@ void Matrix<TS,BUD>::calculateLight(Firmament *firm, int x, int y, int z)
       newTraversePath(direction, radiationsum, *point, *startvoxel);
     }
 
-  cout << "Total radiation " << total_radiation << endl;
+  //  cout << "Total radiation " << total_radiation << endl;
 
   //
   // Calculate the direct radiation
