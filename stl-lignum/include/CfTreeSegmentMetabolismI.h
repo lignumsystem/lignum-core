@@ -35,7 +35,7 @@ void CfTreeSegment<TS,BUD>::aging()
   SetValue(*this,LGAage,GetValue(*this,LGAage)+1.0);
 
   //Sapwood senescence
-  LGMdouble dAs = GetValue(GetTree(*this),ss) * GetValue(*this,LGAAs);
+  LGMdouble dAs = GetValue(GetTree(*this),LGPss) * GetValue(*this,LGAAs);
   LGMdouble Ah_new =  dAs + GetValue(*this, LGAAh);
   LGMdouble Rh_new = sqrt(Ah_new/PI_VALUE);
   SetValue(*this,LGARh,Rh_new);

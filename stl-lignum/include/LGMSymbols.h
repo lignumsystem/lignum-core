@@ -86,7 +86,7 @@ namespace Lignum{
   //Tree Parameter Double
   //Keep this list in synbc with MapLGMPD constructor in TreeFriend.cc
   enum LGMPD {af,al,ar,ca, dofp,lr,mf,mr,ms,na,nl,pr,q, rca, rld,sf, 
-              sla,sr,ss,LGPrhoW,LGPrho_root,LGPrho_hair, LGPyc, LGPxi,
+              sla,LGPsr,LGPss,LGPrhoW,LGPrho_root,LGPrho_hair, LGPyc, LGPxi,
 	      LGPzbrentEpsilon, LGPLn_par, LGPn_ang_par};
 
 
@@ -113,8 +113,8 @@ namespace Lignum{
   //rho_root = Density root sapwood
   //LGPrho_hair = Density of root hair
   //sf = specific leaf area (=leaf area/ leaf weight)
-  //sr = Senescence rate of roots
-  //ss = Senescence rate of sapwood
+  //LGPsr = Senescence rate of roots
+  //LGPss = Senescence rate of sapwood
   //LGPxi = Fraction of heartwood in newly created tree segments
   //LGPzbrentEpsilon = accuracy in numerical computation in root finding (see Zbrent)
   //LGPLn_par = ????????????????? 
