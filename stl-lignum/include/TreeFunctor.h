@@ -21,7 +21,7 @@ public:
 template <class TS>
 class CountCompartments{
 public:
-  void operator ()(int& id,TreeCompartment<TS>* ts)const;
+  int& operator ()(int& id,TreeCompartment<TS>* ts)const;
 };
 
 template <class TS>

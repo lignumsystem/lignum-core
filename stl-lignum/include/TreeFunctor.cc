@@ -52,15 +52,7 @@ TreeCompartment<TS>* DisplayType2<TS>::operator()(TreeCompartment<TS>* tc)const
 }
 
 template <class TS>
-void CountTreeSegments<TS>::operator()(int& n,TreeCompartment<TS>* tc)const
-{
-  if (TreeSegment<TS>* myts = dynamic_cast<TreeSegment<TS>*>(tc))
-    n++;
-  
-}
-
-template <class TS>
-void CountCompartments<TS>::operator()(int& n,TreeCompartment<TS>* tc)const
+int& CountCompartments<TS>::operator()(int& n,TreeCompartment<TS>* tc)const
 {
   if (Axis<TS>* myaxis =  dynamic_cast<Axis<TS>*>(tc)){
     cout << "Hello, I'm Axis ";
@@ -81,6 +73,7 @@ void CountCompartments<TS>::operator()(int& n,TreeCompartment<TS>* tc)const
   //counting them all
   n+=1;
   cout << n << endl;
+  return n;
 }
 
 template <class TS>
