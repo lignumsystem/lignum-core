@@ -57,15 +57,15 @@ CCCFLAGS = -c  #-prelink -ptused   -ptv  #  -fullwarn
 
 INCLUDE = -I../../c++adt/include -I../../Firmament/include \
           -I../../stl-lignum/include -I../include \
-          -I../../Graphics -I/usr/freeware/include \
-          -I/usr/X11R6/include -I/sw/include
-
+          -I../../Graphics -I../../stl-voxelspace/include \
+          -I../../ScotsPine/include -I../../ScotsPineVisual \
+          -I/usr/freeware/include -I/usr/X11R6/include -I/sw/include
 STL     = -I/usr/include/CC
 
 LIBD = lib64
 LIBFLAGS = -L../../c++adt/lib -L../../stl-lignum/lib -L../../Firmament/lib \
-           -L. -L../lsys -L../../Graphics -L/usr/X11R6/lib -L/usr/freeware/$(LIBD) \
-           -L/sw/lib -L/usr/$(LIBD)
+           -L. -L../lsys -L../../Graphics -L/usr/X11R6/lib -L../../stl-voxelspace/lib \
+           -L/usr/freeware/$(LIBD)  -L/sw/lib -L/usr/$(LIBD)
 
 LIB1   = libc++adt.a
 LIB2   = libLGM.a
@@ -73,6 +73,7 @@ LIB3   = libsky.a
 LIB4   = libL.a
 LIB5   = libVisual.a
 LIB6   = liblsys.a
+LIB7   = libvoxel.a
 
 LIBADT = -lc++adt
 LIBLGM = -lLGM
@@ -81,10 +82,11 @@ LIBL   = -lL
 LIBMATH  = -lm 
 LIBVISUAL = -lVisual
 LIBLSYS = -llsys
+LIBVOXEL = -lvoxel
 
 LIBOGL =  -lglut -lGL -lGLU -lX11 -lXext -lXmu 
 
-LIBS     =  $(LIBVISUAL) $(LIBLSYS) $(LIBL) $(LIBLGM) $(LIBSKY) $(LIBADT) $(LIBOGL) \
+LIBS     =  $(LIBVISUAL) $(LIBLSYS) $(LIBL) $(LIBVOXEL) $(LIBLGM) $(LIBSKY) $(LIBADT) $(LIBOGL) \
             $(LIBMATH)
 
 
