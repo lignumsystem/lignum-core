@@ -33,6 +33,7 @@ using namespace cxxadt;
 #include <FirmamentWithMask.h>
 #include <TreeRadiation.h>
 #include <TreeBookkeeping.h>
+#include <TreeCharacteristics.h>
 
 using namespace sky;
 
@@ -213,7 +214,7 @@ namespace Lignum{
 	   LGMdouble len, LGMdouble rad, int num_buds);
 
       void UpdateWaterFlow(LGMdouble time, const ConnectionMatrix<TS,BUD> &cm);
-	  void photosynthesis();
+	void photosynthesis();
       void respiration();
       TreeFunctions tf;  //cvs update
 
