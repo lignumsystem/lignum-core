@@ -157,11 +157,78 @@ void Delete2ndLastTreeCompartment(Axis<TS,BUD>& axis)
 }
 
 
+template <class TS,class BUD>
+LGMdouble GetValue(Axis<TS,BUD>& ax, LGMAD name)
+{
+  //  LGMdouble unknown_value = 0.0;
+  if (name == L) {
+    std::list<TreeCompartment<TS, BUD>*>& ls = ax.tc_ls;
+    std::list<TreeCompartment<TS, BUD>*>::iterator I = ls.begin();
+    LGMdouble len = 0.0;
+    while(I != ls.end()) {
+      if (TS* ts = dynamic_cast<TS*>(*I))
+	len += GetValue(*ts, L);
+      I++;
+    }
+    return len;
+  }
+  else if (name == Wf) {
+    std::list<TreeCompartment<TS, BUD>*>& ls = ax.tc_ls;
+    std::list<TreeCompartment<TS, BUD>*>::iterator I = ls.begin();
+    LGMdouble w_f = 0.0;
+    while(I != ls.end()) {
+      if (TS* ts = dynamic_cast<TS*>(*I))
+	w_f += GetValue(*ts, Wf);
+      I++;
+    }
+    return w_f;
+  }
+  else
+    cout << "Axis: Unknown attribute: " << name  << endl;
+ 
+  return 0.0;
+}                                                                               
+
+
+template <class TS,class BUD>
+LGMdouble GetBranchFoliage(Axis<TS,BUD>& ax) {
+  
+  LGMdouble w_fol = 0.0;
+  
+  std::list<TreeCompartment<TS, BUD>*>& ls = ax.tc_ls;
+  std::list<TreeCompartment<TS, BUD>*>::iterator I = ls.begin();
+  while(I != ls.end()) {
+    if (TS* ts = dynamic_cast<TS*>(*I)) {
+      w_fol += GetValue(*ts, Wf);
+    }
+
+
+    if(BranchingPoint<TS, BUD>* bp = dynamic_cast<BranchingPoint<TS, BUD>*>(*I)) { 
+      std::list<Axis<TS, BUD>*>& axis_ls = GetAxisList(*bp);          
+      std::list<Axis<TS, BUD>*>::iterator II = axis_ls.begin();
+	  
+      while(II != axis_ls.end()) {
+	Axis<TS,BUD> *axis = *II;       
+	w_fol += GetBranchFoliage(*axis);                     
+	II++;   
+      }
+	  
+    }
+
+    I++;
+  }
+
+  return w_fol;
+}
+
+
 
 
 }//closing namesapce
 
 
 #endif
+
+
 
 
