@@ -8,6 +8,16 @@
 
 namespace Lignum{
 
+//PrintTreeInformation collects and prints out information about the
+//tree. It uses functor TreeData to collect the information with
+//Accumulate
+
+template <class TS, class BUD>
+  class PrintTreeInformation {
+  public:
+  void operator() (Tree<TS,BUD>&  tr);
+};
+
   //TreeData is used to collect (Accumulate) data on a tree.
   //it uses TreeDataStruct
 
@@ -29,6 +39,12 @@ public:
     num_segments = 0;
     height = 0.0;
     bottom_rad = 0.0;
+    Hc = R_HUGE;
+    num_s_fol = 0;
+    num_br_l = 0;
+    num_br_d = 0;
+    sum_br_len = 0.0;
+
   }
 
   TreeDataStruct& operator += (const TreeDataStruct& s) {
@@ -50,6 +66,12 @@ public:
       this->height =  s.height;
     if(this->bottom_rad < s.bottom_rad)
       this->bottom_rad = s.bottom_rad;
+    if(this->Hc > s.Hc)
+      this->Hc = s.Hc;
+    this->num_s_fol += s.num_s_fol;
+    this->num_br_l = s.num_br_l;
+    this->num_br_d = s.num_br_d;
+    this->sum_br_len = s.sum_br_len;
   }
 
 
@@ -68,6 +90,11 @@ public:
   int num_segments;
   LGMdouble height;
   LGMdouble bottom_rad;
+  LGMdouble Hc;               //Height of grown base
+  int num_s_fol;              //number of segments with foliage
+  int num_br_l;               //number of branches living
+  int num_br_d;               //number of branches dead
+  LGMdouble sum_br_len;       //total length of branches
   std::vector<LGMdouble> taper_rad;
   std::vector<LGMdouble> taper_hei;
   std::vector<LGMdouble> taper_radh;
@@ -80,6 +107,40 @@ class TreeData
 public:
   TreeDataStruct& operator()(TreeDataStruct& stru,
 			     TreeCompartment<TS,BUD>* tc)const;
+};
+
+//Functor AddFoliageUntilSegment checks if there is foliage above
+//and including this segment
+
+ class FolCheck {
+   
+ public:
+   FolCheck():w_f(0.0),result(0.0) {}
+   FolCheck& operator = (const FolCheck& fc){
+     w_f = fc.w_f;
+     result = fc.result;
+     return *this;
+   }
+   FolCheck& operator += (const FolCheck& fc){
+     w_f += fc.w_f;
+     result += fc.result;
+     return *this;
+   }
+   LGMdouble w_f;
+   LGMdouble result;
+ };
+   
+
+template <class TS, class BUD>
+  class AddFoliageUntilSegment {
+  public:
+  AddFoliageUntilSegment(TreeSegment<TS,BUD>* segment) {
+    until  = segment;
+  }
+  FolCheck& operator ()
+    (FolCheck& w_f, TreeCompartment<TS,BUD>* ts)const;
+  private:
+  TreeSegment<TS,BUD>* until;
 };
 
 

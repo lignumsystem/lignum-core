@@ -337,8 +337,6 @@ Point GetBoundingBox(Axis<TS,BUD> &ax, Point &p)
 
 
 
-
-
 //Find the boundig box for a tree, i.e. inside which the tree lies
 //Only those segments that carry foliage are considered. This has to
 //be checked separately for coniferous (CfTreeSegment) and deciduous
@@ -373,6 +371,73 @@ FindBoundingBox<TS,BUD>::operator ()(BoundingBox& b_box,
    
 }
 
+//PrintTreeInformation collects and prints out information about the
+//tree. It uses functor TreeData to collect the information with
+//Accumulate
+
+template <class TS, class BUD>
+void PrintTreeInformation<TS,BUD>::operator() (Tree<TS,BUD>&  tr) {
+
+  TreeDataStruct values;
+  TreeData<TS,BUD> getTreeValues;
+  
+  values = Accumulate(tr, values, getTreeValues);
+  
+  cout << "P: " << GetValue(tr,P) << " M: "
+       << GetValue(tr,M) << endl;
+  cout << "age: " << values.age << endl;
+  cout << "Height: " << values.height << "Height of CB: " <<
+    values.Hc << endl;
+  cout << "sum_Wf: " << values.sum_Wf << endl;
+  cout << "sum_Wf_new: " << values.sum_Wf_new << endl;
+  cout << "sum_wood_in_newparts: " << values.sum_wood_in_newparts
+       << endl;
+  cout << "sum_wood_new: " << values.sum_wood_new << endl;
+  cout << "sum_Ws: " << values.sum_Ws << endl;
+  cout << "sum_Wb: " << values.sum_Wb << endl;
+  cout << "sum_Wsw: " << values.sum_Wsw << endl;
+  cout << "sum_Whw: " << values.sum_Whw << endl;
+  if(values.num_segments > 0) {
+    cout << "mean_Qabs: " << values.sum_Qabs/(double)values.num_segments
+       << endl;
+  }
+
+  else {
+    cout << "mean_Qabs: " << 0.0 << endl;
+  }
+  if(values.num_segments > 0) {
+    cout << "mean_Qin: " << values.sum_Qin/(double)values.num_segments
+       << endl;
+  }
+  else {
+    cout << "mean_Qin: " <<  0.0 << endl;
+  }
+  if(values.num_s_fol > 0)
+    cout << "mean_Qabs: " << values.sum_Qabs/(double)values.num_s_fol << endl;
+  else
+    cout << "mean_Qabs: " << 0.0 << endl;
+
+  cout << "num_buds: " << values.num_buds << endl;
+  cout << "num_segments: " << values.num_segments << 
+       "  no. segments w/ foliage: " << values.num_s_fol << endl;
+  cout << "No. branches,  living: " << values.num_br_l << " dead: "
+       << values.num_br_l << endl;
+  if(values.num_br_l > 0)
+    cout << "Mean len of living branches: " <<
+      values.sum_br_len/(double)values.num_br_l << endl;
+  else
+    cout << "Mean len of living branches: " << 0.0 << endl;
+
+  cout << "height: " << values.height << endl;
+  cout << "bottom_rad: " << values.bottom_rad << endl << endl;
+  cout << "Height, m    Radius, cm,   HwRadius, cm" << endl;
+  for(int i1 = 0; i1 < values.taper_hei.size(); i1++) {
+    cout << values.taper_hei[i1] << " " <<
+      100.0*values.taper_rad[i1]<< " " <<
+      100.0*values.taper_radh[i1] << endl;
+  }
+  cout << endl;
+}
 
 
 template <class TS,class BUD>
@@ -407,6 +472,8 @@ TreeDataStruct& TreeData<TS,BUD>::operator()
       stru.sum_Qin += GetValue(*ts, Qin);
 
       stru.sum_Wf += GetValue(*ts, Wf);
+      if(GetValue(*ts, Wf) > R_EPSILON)
+	stru.num_s_fol++;
 
       LGMdouble rho_ = GetValue(tt, rho);
 
@@ -424,9 +491,9 @@ TreeDataStruct& TreeData<TS,BUD>::operator()
       
 
       // if main axis
-      if (ep.getX() == 0 && ep.getY() == 0)
+      //      if (ep.getX() == 0 && ep.getY() == 0)
+      if(GetValue(*ts, omega) == 1)
 	{
-
   	  stru.taper_rad.push_back(GetValue(*ts, R)); 
   	  stru.taper_hei.push_back(ep.getZ());
 	  stru.taper_radh.push_back(GetValue(*ts, Rh));
@@ -436,15 +503,50 @@ TreeDataStruct& TreeData<TS,BUD>::operator()
 	}
       else
 	stru.sum_Wb += rho_*L*2.0*PI_VALUE*r_*r_;
-	
+
+      //If main branch
+      if(GetValue(*ts, omega) == 2)
+	stru.sum_br_len += l_;
 		
     }
   else if (Bud<TS,BUD>* bud = dynamic_cast<Bud<TS,BUD>*>(tc))
     {
       stru.num_buds++;
     }
- 
+
+  else if(Axis<TS, BUD>* ax = dynamic_cast<Axis<TS,BUD>*>(tc)) {
+    TreeSegment<TS,BUD>* fs = GetFirstTreeSegment(*ax);
+    if(fs != NULL)
+      if(GetValue(*fs, omega) == 2) {
+   //is main branch, does it have foliage?
+	AddFoliageUntilSegment<TS,BUD> af(fs);
+	FolCheck fc;
+	AccumulateDown(GetTree(*fs), fc, af);
+	if(fc.result > R_EPSILON) {
+	  stru.num_br_l++;     //only those branches that have foliage
+	  if(GetPoint(*fs).getZ() < stru.Hc)
+	    stru.Hc = GetPoint(*fs).getZ();
+	}
+      }
+  }
+
+
+
   return stru;
+}
+
+
+template <class TS,class BUD> FolCheck& 
+AddFoliageUntilSegment<TS,BUD>::operator()
+     (FolCheck& fc, TreeCompartment<TS,BUD>* tc)const {
+
+    if(TS* segment = dynamic_cast<TS *>(tc)) {
+      fc.w_f += GetValue(*segment, Wf);
+      if(segment == until) {
+	fc.result = fc.w_f;
+      }
+    }
+  return fc;
 }
 
 
