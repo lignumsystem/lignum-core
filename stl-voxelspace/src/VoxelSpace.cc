@@ -509,6 +509,27 @@ namespace Lignum {
 	  }
     return qin;
   }  
+
+  //Return Min and Max foliage mass in the voxel boxes. The first holds
+  //the minimum value and the second the maximum value
+  pair<double,double> VoxelSpace::getMinMaxNeedleMass()
+  {
+    pair<double,double> p(0.0,0.0);
+
+    for(int i1=0; i1<Xn; i1++)
+      for(int i2=0; i2<Yn; i2++)
+	for(int i3=0; i3<Zn; i3++)
+	  {
+	    double fm = voxboxes[i1][i2][i3].getNeedleMass();
+	    //new minimum
+	    if (fm < p.first)
+	      p.first = fm;
+	    //new maximum
+	    if (fm > p.second)
+	      p.second = fm;
+	  }
+    return p;
+  }
   //
   //	This function dumps every tree included in the VoxelSpace to
   //	VoxelBoxes.
@@ -574,7 +595,7 @@ namespace Lignum {
     vector<VisualCube> cubes;
     vector<VisualCube> ordered_cubes;
 
-    cout << "koko " << Xn << " " << Yn << " " << Zn << endl;
+    //cout << "koko " << Xn << " " << Yn << " " << Zn << endl;
     for(int i1=0; i1<Xn; i1++)
       for(int i2=0; i2<Yn; i2++)
 	for(int i3=0; i3<Zn; i3++)
@@ -605,7 +626,7 @@ namespace Lignum {
 	      }
 	  }
 
-    cout << "kuutioita jossa tavaraa " << cubes.size() << endl;
+    //cout << "kuutioita jossa tavaraa " << cubes.size() << endl;
 
     for (int i = 0; i<num; i++)
       {
@@ -629,7 +650,7 @@ namespace Lignum {
 	  }
       }
 
-    cout << "piirtäminen " << endl;
+    //cout << "piirtäminen " << endl;
     glPushMatrix();
 					
     glDisable(GL_LIGHTING);
@@ -654,7 +675,7 @@ namespace Lignum {
 
     int s = ordered_cubes.size();
 
-    cout << "kuutioita " << endl;
+    //cout << "kuutioita " << endl;
     for (int i = 0; i< s; i++)
       {
 	VisualCube cube = cubes[i];
