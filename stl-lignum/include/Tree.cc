@@ -16,11 +16,11 @@ TreeAttributes::TreeAttributes()
 
 TreeTransitVariables::TreeTransitVariables()
 {
-  lambda = 0.0;        
-  TP g = 9.81;          
-  TP eta = 1;        
-  TP k = 1;             
-  TP rhow = 1000;
+  lambda = 0.1;        
+  g = 9.81;          
+  eta = 1;        
+  k = 1;             
+  rhow = 1000;
 }
 
 
@@ -80,8 +80,7 @@ void Tree<TS>::UpdateWaterFlow(TP time_step)
 {
   if (cm == NULL)
     cm = new ConnectionMatrix<MyTreeSegment>(axis);;
-  cm->print();
-return;
+
   // This counts the flow in for every segment
   for (int i=0; i<cm->getSize(); i++){
     TreeSegment<MyTreeSegment> *out;
@@ -121,52 +120,15 @@ return;
 template <class TS>
 TP Tree<TS>::CountFlow(TreeSegment<TS> &in, TreeSegment<TS> &out)
 {
-  TP gravity = 9.81;
-  TP viscosity = 1;
-  TP permiability = 1;
-  TP density = 1000;
-
   TP ar = GetTSAttributeValue(out, area);
   TP le = GetTSAttributeValue(out, L);
   TP he = GetTSAttributeValue(out, H);
   TP pr_out = GetTSAttributeValue(out, Pr);
   TP pr_in = GetTSAttributeValue(in, Pr);
  
-  return (density * permiability / viscosity) * (ar / le) * (pr_out - pr_in - density*gravity*he);
+  return (ttp.k / ttp.eta) * (ar / le) * (pr_out - pr_in - ttp.rhow * ttp.g*he);
 }
 
-
-/*
-
-//This method builds the connection matrix, where the structure of the tree
-//is stored. 
-template <class TS>
-void Tree<TS>::BuiltConnectionMatrix()
-{  
-  TreeSegment<MyTreeSegment> *lastSegment = NULL;
-  list<TreeCompartment<MyTreeSegment>*>& ls = GetTreeCompartmentList(axis);
-  list<TreeCompartment<MyTreeSegment>*>::iterator I = ls.begin();
-  cm = new ConnectionMatrix<MyTreeSegment>(CountTreeSegments(this->axis));
-
-  while(I != ls.end()){      
-    if (TreeSegment<MyTreeSegment>* myts = dynamic_cast<TreeSegment<MyTreeSegment>*>(*I)){	
-      cm->AddConnection(lastSegment, myts);
-      lastSegment = myts;
-    }      
-    if (BranchingPoint<MyTreeSegment>* mybp = dynamic_cast<BranchingPoint<MyTreeSegment>*>(*I)){
-      list<Axis<TS>*>& axis_ls = GetAxisList(*mybp);  	  
-      list<Axis<TS>*>::iterator I = axis_ls.begin();
-      while(I != axis_ls.end()){	      
-	Axis<MyTreeSegment> *axis = *I;
-	if (lastSegment)
-	  makeAxis(*axis, *lastSegment);
-	I++;
-      }  
-    }  
-    I++;
-  }
-}
-*/
 
 
 
@@ -208,6 +170,16 @@ void InitializeTree(Tree<TS>& tree, const CString& meta_file)
     cout << " Parameter: " << name.getValue() << " = " << p << endl;
     if (name.getValue() == CString("lambda"))
       SetTreeTransitVariableValue(tree,lambda,p);
+    else if (name.getValue() == CString("g"))
+      SetTreeTransitVariableValue(tree,g,p);
+    else if (name.getValue() == CString("eta"))
+      SetTreeTransitVariableValue(tree,eta,p);
+    else if (name.getValue() == CString("k"))
+      SetTreeTransitVariableValue(tree,k,p);
+    else if (name.getValue() == CString("rhow"))
+      SetTreeTransitVariableValue(tree,rhow,p);
+
+
     else{
       CString str = name.getValue();
       map<const char*,TPD,cmpstr>::iterator tpd = maptpd.tpd.find(str);
