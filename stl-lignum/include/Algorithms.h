@@ -28,6 +28,16 @@ class ReverseAccumulateOp2{
   BinOp op1;
 };
 
+template <class TS,class BUD, class T, class BinOp1, class BinOp2>
+class ReverseAccumulateOp3{
+ public:
+  ReverseAccumulateOp3(const BinOp1& op1, const BinOp2& op2);
+  T& operator()(T& id,TreeCompartment<TS,BUD>* tc)const;
+ private:
+  BinOp1 op1;
+  BinOp2 op2;
+};
+
 template <class TS,class BUD, class T, class BinOp>
 class PropagateUpOp2{
  public:
