@@ -154,8 +154,38 @@ MyExampleSignal<TS,BUD>::operator()(int& n,
   return tc;
 }
 
+template <class TS,class BUD> int&
+DisplayStructure<TS,BUD>::operator()(int& depth,TreeCompartment<TS,BUD>* tc)const
+{
+  if (Axis<TS,BUD>* myaxis =  dynamic_cast<Axis<TS,BUD>*>(tc)){
+    cout << "[" << flush;
+    depth++;
+  }
 
+  else if (BranchingPoint<TS,BUD>* mybp = dynamic_cast<BranchingPoint<TS,BUD>*>(tc)){
+    cout << "[" << flush;
+    depth++;
+  }
 
+  else if (TreeSegment<TS,BUD>* myts = dynamic_cast<TreeSegment<TS,BUD>*>(tc)){
+    cout << "TS," << flush;
+  }
+
+  else if (Bud<TS,BUD>* mybud =  dynamic_cast<Bud<TS,BUD>*>(tc)){
+    if (depth > 1){
+      cout << "B]]," << flush;
+      depth--;depth--;
+    }
+    else{ //depth == 1
+      cout << "B]" << flush;
+      depth--;
+    }
+  }
+  else 
+    cout << "Who??" << flush;
+
+  return depth;
+}
 
 
 
