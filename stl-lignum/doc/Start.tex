@@ -33,14 +33,14 @@ units.   Axis (A)  models  one single  branch  in a  tree.   It is  an
 aggregate or more precisely a  sequence of tree segments and branching
 points (BP)  ending with a terminating  bud (Figure \ref{fig:struct}).
 The fifth unit  is naturally the tree itself, an  aggregate of all its
-tree compartments.  This has  caused some confusion  so let us  make a
-exact unambiguous definition of the model structure in \lignum.
+tree  compartments.   The  structure   of  \lignum\  has  caused  some
+confusion so let us make a exact unambiguous (recursive) definition.
 
 \begin{definition}[\lignum]
-Model  tree \lignum\ consists  of one  axis.  An  axis is  a (possibly
-empty)  sequence  of  tree  segments  and  branching  points  and  one
-terminating bud.  Each  tree segment only must be  followed by exactly
-one branching point.   Branching point is a set  of axes capturing the
+The model tree  \lignum\ consists of one axis.  An  axis is a possibly
+empty sequence of tree  segments, branching points and one terminating
+bud.  Each tree segment only must be followed by exactly one branching
+point.  Branching  point is a set  of zero or more  axes capturing the
 branching structure of the model tree.
 \end{definition} 
 
