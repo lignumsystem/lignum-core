@@ -1,7 +1,10 @@
 #ifndef TREEMETABOLISM_H
 #define TREEMETABOLISM_H
 
-#include <Tree.h>
+
+#include <LGMdecl.h>
+#include <LGMSymbols.h>
+#include <TreeCompartment.h>
 
 
 namespace Lignum{
