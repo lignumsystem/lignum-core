@@ -108,7 +108,7 @@ using namespace cxxadt;
 13.   MJ diffuseBallSensor(void)
        Intensity of diffuse radiation as recorded by a ball sensor.
 
-14.   MJ diffuseForestRegionRadiationSum(int n, float z, float x,  float la, float ke,
+14.A. MJ diffuseForestRegionRadiationSum(int n, float z, float x,  float la, float ke,
                                                        float H, float Hc,
                                                vector<double>& direction)
        As 9. but the point where the radiation is coming to is in a forest.
@@ -130,6 +130,13 @@ using namespace cxxadt;
          If n < 0 or n > total number of regions - 1, return -1.0
         (see comments in program code for more information about this method)
 
+14.B. MJ diffuseForestRegionRadiationSum(int n, float z, float x,  float la, float ke,
+                                         float H, float Hc,vector<double>& direction,
+                                         double arg)
+      Like above 14.A., but but the forest density  function 'f' must be  in the file
+      "fdensity.fun" and  the last  parameter 'arg' is  the argument  to the function (y =f(arg)), 
+      say e.g. forest age or D1.3.
+ 
 15.  void outDiff()
        Prints out ( cout << ) the diffuse radiation intensity sector by sector.
 
@@ -179,9 +186,12 @@ public:
   MJ diffuseForestRegionRadiationSum(int n, float z, float x,  float la, float ke,
 				     float H, float Hc,
 				     vector<double>& direction);
+  //Like above,  but the forest density  function must be  in the file
+  //"fdensity.fun" and  the last  parameter 'arg' is  the argument  (y =
+  //f(arg)), say e.g. forest age or D1.3. 
   MJ diffuseForestRegionRadiationSum(int n, float z, float x,  float la, float ke,
 				     float H, float Hc,
-				     vector<double>& direction,int tree_age);
+				     vector<double>& direction,double arg);
   void outDiff() {
     cout << diffuseRad << endl;
   }

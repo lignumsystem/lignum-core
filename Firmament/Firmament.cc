@@ -584,11 +584,11 @@ MJ Firmament::diffuseForestRegionRadiationSum(int n, float z, float x, float la,
 
 //The diffuseForestRegionRadiationSum as  above but the density.fun is
 //a ParametricCurve that contains the  forest density as a function of
-//tree age, given  as the last parameter. If  no density.fun found the
+//some 'arg', given  as the last parameter. If  no density.fun found the
 //forest density is 2500 trees/ha.
 MJ Firmament::diffuseForestRegionRadiationSum(int n, float z, float x, float la,
 					      float ke, float H, float Hc,
-					      vector<double>& direction,int tree_age)
+					      vector<double>& direction,double arg)
 
 
 {
@@ -606,7 +606,7 @@ MJ Firmament::diffuseForestRegionRadiationSum(int n, float z, float x, float la,
       fdens.install("fdensity.fun");
     }
   }
-  double dens = fdens(tree_age);
+  double dens = fdens(arg);
   //Check for suitable segment number
 
   if(n < 0 || n > numOfSectors - 1) return (MJ) -1.0;
