@@ -3,7 +3,8 @@
 #To compile with g++ on SGI or on  Linux type 
 #    make gnu 
 
-SRC=OpenGL.cc  OpenGLUnix.cc OpenGLfunctions.cc  OpenGLinterface.cc texture.cc 
+SRC=OpenGL.cc  OpenGLUnix.cc OpenGLfunctions.cc  OpenGLinterface.cc tga.cc \
+    texture.cc 
 OBJ=${SRC:.cc=.o}
 
 ALGSRC = algorithms.cc 

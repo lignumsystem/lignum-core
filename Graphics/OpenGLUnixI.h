@@ -100,7 +100,7 @@ int VisualizeLGMTree(Tree<TS,BUD> &tree)
  
   stemtexture.Load("Manty.bmp", 512, 512);
 
-  LoadGLTextures("neulaset5.tga);
+  LoadGLTextures("neulaset5.tga");
   
 
   cout << "tekstuurit kaytossa******************************************** " << endl;

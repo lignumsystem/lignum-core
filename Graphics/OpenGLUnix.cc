@@ -324,6 +324,7 @@ void redraw(void)
   
   DrawTree();
   DrawBuds();
+  DrawFoliage();
 
   if (boolShowVoxel)
     DrawVoxelCubes();  

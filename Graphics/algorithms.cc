@@ -32,15 +32,15 @@ int main(int argc, char *argv[])
 {
   
   //using explicitely Tree from  namespace Lignum;
-  Tree<MyHwTreeSegment,MyBud> hw_tree(Point(0,0,0),
+  Tree<MyHwTreeSegment,MyHwBud> hw_tree(Point(0,0,0),
 				      PositionVector(0,0,1.0));
   //by default the tree is from namespace Lignum
-  Tree<MyCfTreeSegment,MyBud> cf_tree(Point(0,0,0),
+  Tree<MyCfTreeSegment,MyCfBud> cf_tree(Point(0,0,0),
 				      PositionVector(0,0,1.0));
 
-  FTree<FirmamentWithMask,MyCfTreeSegment,MyBud> ftree1(Point(0,0,0),
+  FTree<FirmamentWithMask,MyCfTreeSegment,MyCfBud> ftree1(Point(0,0,0),
 							PositionVector(0,0,1.0));
-  FTree<Firmament,MyCfTreeSegment,MyBud> ftree2(Point(0,0,0),
+  FTree<Firmament,MyCfTreeSegment,MyCfBud> ftree2(Point(0,0,0),
 						PositionVector(0,0,1.0));
   string clarg,empty;
 
@@ -54,30 +54,30 @@ if (clarg != empty)
   //Example 1.
   //create a tree with a structure [TS,[[B],[B]],B]
   //i.e, [TS,BP,B] which expands to [TS,[A,A],B] and to [TS,[[B],[B]],B]
-  //A= Axis<MyHwTreeSegment,MyBud>, BP = BranchingPoint<MyHwTreeSegment,MyBud>, 
-  //TS = TreeSegment<MyHwTreeSegment>,MyBud<MyHwTreeSegment,MyBud> and 
-  //B = Bud<MyHwTreeSegment,MyBud>
-  Axis<MyHwTreeSegment,MyBud>& axis = GetAxis(hw_tree);
+  //A= Axis<MyHwTreeSegment,MyHwBud>, BP = BranchingPoint<MyHwTreeSegment,MyHwBud>, 
+  //TS = TreeSegment<MyHwTreeSegment>,MyBud<MyHwTreeSegment,MyHwBud> and 
+  //B = Bud<MyHwTreeSegment,MyHwBud>
+  Axis<MyHwTreeSegment,MyHwBud>& axis = GetAxis(hw_tree);
   //create the first tree segment
   MyHwTreeSegment *ts = 
     new  MyHwTreeSegment(Point(0,0,0),PositionVector(0,0,1.0),
 			 0,1,0.5,0.2,&hw_tree);
   //create the branching point
-  BranchingPoint<MyHwTreeSegment,MyBud> *bp = 
-    new BranchingPoint<MyHwTreeSegment,MyBud>(Point(0,0,0),
+  BranchingPoint<MyHwTreeSegment,MyHwBud> *bp = 
+    new BranchingPoint<MyHwTreeSegment,MyHwBud>(Point(0,0,0),
 				      PositionVector(0,0,1.0),&hw_tree);
   //create the terminating bud
-  Bud<MyHwTreeSegment,MyBud> *bud = new  Bud<MyHwTreeSegment,MyBud>(Point(0,0,1),
+  Bud<MyHwTreeSegment,MyHwBud> *bud = new  Bud<MyHwTreeSegment,MyHwBud>(Point(0,0,1),
 						    PositionVector(-1,1,1.0),
 						    0,
 						    &hw_tree);
   //create a branch with one bud (Axis containing one Bud) into the branching point
-  InsertTerminatingBud(*bp,new Bud<MyHwTreeSegment,MyBud>(Point(0,0,1.1),
+  InsertTerminatingBud(*bp,new Bud<MyHwTreeSegment,MyHwBud>(Point(0,0,1.1),
 						  PositionVector(0,1,1.0),
 						  0,
 						  &hw_tree));
   //create another branch with one bud (Axis containing one Bud) into the branching point
-  InsertTerminatingBud(*bp,new Bud<MyHwTreeSegment,MyBud>(Point(0,0,1.05),
+  InsertTerminatingBud(*bp,new Bud<MyHwTreeSegment,MyHwBud>(Point(0,0,1.05),
 						  PositionVector(0,2,1.0),
 						  0,
 						  &hw_tree));
@@ -92,20 +92,20 @@ if (clarg != empty)
   //using the ForEach algorithm
 
   cout << "Testing ForEach algorithm with DisplayType" << endl;
-  ForEach(hw_tree,DisplayType<MyHwTreeSegment,MyBud>());
+  ForEach(hw_tree,DisplayType<MyHwTreeSegment,MyHwBud>());
   cout << endl;
 
-  cout << "Example 1: Tree<MyHwTreeSegment,MyBud> with TreeSegment<MyHwTreeSegment,MyBud>" << endl;
+  cout << "Example 1: Tree<MyHwTreeSegment,MyHwBud> with TreeSegment<MyHwTreeSegment,MyHwBud>" << endl;
   cout << "Testing ForEach algorithm with DisplayType2" << endl;
   
   
-  ForEach(hw_tree,DisplayType2<MyHwTreeSegment,MyBud>());
+  ForEach(hw_tree,DisplayType2<MyHwTreeSegment,MyHwBud>());
   cout << endl;
   int i = 0;
 
   //traverse the tree, echo  and count the number of tree compartments
   cout << "Testing Accumulate algorithm with CountCompartments" << endl;
-  int cc = Accumulate(hw_tree,i,CountCompartments<MyHwTreeSegment,MyBud>());
+  int cc = Accumulate(hw_tree,i,CountCompartments<MyHwTreeSegment,MyHwBud>());
   cout << "Number of Compartments: " << endl;
   cout << "Return value: " << cc << " Modified identity: " << i << endl;
 
@@ -115,7 +115,7 @@ if (clarg != empty)
   //traverse the tree, echo  and count the number of tree compartments
   cout << "Testing AccumulateDown algorithm with "
        << "CountCompartmentsReverse" << endl; 
-  cc = AccumulateDown(hw_tree,i,CountCompartmentsReverse<MyHwTreeSegment,MyBud>());
+  cc = AccumulateDown(hw_tree,i,CountCompartmentsReverse<MyHwTreeSegment,MyHwBud>());
   cout << "Number of Compartments: " << endl;
   cout << "Return value: " << cc << " Modified identity: " << i << endl;
   cout << endl;
@@ -124,7 +124,7 @@ if (clarg != empty)
   cc= 0;
   //traverse the tree, echo  and count the number of tree compartments
   cout << "Testing AccumulateDown algorithm with CountCompartments" << endl;
-  cc = AccumulateDown(hw_tree,i,CountCompartments<MyHwTreeSegment,MyBud>());
+  cc = AccumulateDown(hw_tree,i,CountCompartments<MyHwTreeSegment,MyHwBud>());
   cout << "Number of Compartments: " << endl;
   cout << "Return value: " << cc << " Modified identity: " << i << endl;
   cout << endl;
@@ -132,7 +132,7 @@ if (clarg != empty)
   i = 0;
   //traverse the tree, echo  and count the number branches
   cout << "Testing PropagateUp algorithm with MyExampleSignal" << endl;
-  PropagateUp(hw_tree,i,MyExampleSignal<MyHwTreeSegment,MyBud>());
+  PropagateUp(hw_tree,i,MyExampleSignal<MyHwTreeSegment,MyHwBud>());
 
 
   
@@ -142,28 +142,28 @@ if (clarg != empty)
   //i.e, [TS,BP,B] which expands to [TS,[A,A],B] and to [TS,[[B],[B]],B]
   //A= Axis<MyCfTreeSegment,MyBud>, BP = BranchingPoint<MyCfTreeSegment,MyBud>, 
   //TS = MyCfTreeSegment and B = Bud<MyCfBud,MyBud> 
-  Axis<MyCfTreeSegment,MyBud>& cf_axis = GetAxis(cf_tree);
+  Axis<MyCfTreeSegment,MyCfBud>& cf_axis = GetAxis(cf_tree);
   //create the first tree segment
   MyCfTreeSegment *cf_ts = 
     new MyCfTreeSegment(Point(0,0,0),PositionVector(0,0,1.0),
 			0,1,0.1,0.2,&cf_tree);
   SetValue(*cf_ts, Qabs, 100.0);                //this segment has absorbed radiation
   //create the branching point
-  BranchingPoint<MyCfTreeSegment,MyBud> *cf_bp = 
-    new BranchingPoint<MyCfTreeSegment,MyBud>(Point(0,0,0),
+  BranchingPoint<MyCfTreeSegment,MyCfBud> *cf_bp = 
+    new BranchingPoint<MyCfTreeSegment,MyCfBud>(Point(0,0,0),
 				      PositionVector(0,0,1.0),&cf_tree);
   //create the terminating bud
-  Bud<MyCfTreeSegment,MyBud> *cf_bud = new  Bud<MyCfTreeSegment,MyBud>(Point(0,0,1.0),
+  Bud<MyCfTreeSegment,MyCfBud> *cf_bud = new  Bud<MyCfTreeSegment,MyCfBud>(Point(0,0,1.0),
 						    PositionVector(0,-1,1.0),
 						    0,
 						    &cf_tree);
   //create a branch with one bud (Axis containing one Bud) into the branching point
-  InsertTerminatingBud(*cf_bp,new Bud<MyCfTreeSegment,MyBud>(Point(0,0,1.1),
+  InsertTerminatingBud(*cf_bp,new Bud<MyCfTreeSegment,MyCfBud>(Point(0,0,1.1),
 						  PositionVector(0,1,1.0),
 						  0,
 						  &cf_tree));
   //create another branch with one bud (Axis containing one Bud) into the branching point
-  InsertTerminatingBud(*cf_bp,new Bud<MyCfTreeSegment,MyBud>(Point(0,0,1.05),
+  InsertTerminatingBud(*cf_bp,new Bud<MyCfTreeSegment,MyCfBud>(Point(0,0,1.05),
 						  PositionVector(0,0,1.0),
 						  0,
 						  &cf_tree));
@@ -177,19 +177,19 @@ if (clarg != empty)
   //traverse the tree and print out  the datatypes of tree compartments
   //using the ForEach algorithm
   cout << endl;
-  cout << "Example 2: Tree<MyCfTreeSegment,MyBud> with MyCfTreeSegment" << endl;
+  cout << "Example 2: Tree<MyCfTreeSegment,MyCfBud> with MyCfTreeSegment" << endl;
   cout << "Testing ForEach algorithm with DisplayType2" << endl;
   cout << "Testing ForEach algorithm with DisplayType2" << endl;
 
   
-  ForEach(cf_tree,DisplayType2<MyCfTreeSegment,MyBud>());
+  ForEach(cf_tree,DisplayType2<MyCfTreeSegment,MyCfBud>());
 
   cout << endl;
   i = 0;
 
   //traverse the tree, echo  and count the number of tree compartments
   cout << "Testing Accumulate algorithm with CountCompartments" << endl;
-  cc = Accumulate(cf_tree,i,CountCompartments<MyCfTreeSegment,MyBud>());
+  cc = Accumulate(cf_tree,i,CountCompartments<MyCfTreeSegment,MyCfBud>());
   cout << "Number of Compartments: " << endl;
   cout << "Return value: " << cc << " Modified identity: " << i << endl;
 
@@ -199,7 +199,7 @@ if (clarg != empty)
   //traverse the tree, echo  and count the number of tree compartments
   cout << "Testing AccumulateDown algorithm with "
        << "CountCompartmentsReverse" << endl; 
-  cc = AccumulateDown(cf_tree,i,CountCompartmentsReverse<MyCfTreeSegment,MyBud>());
+  cc = AccumulateDown(cf_tree,i,CountCompartmentsReverse<MyCfTreeSegment,MyCfBud>());
   cout << "Number of Compartments: " << endl;
   cout << "Return value: " << cc << " Modified identity: " << i << endl;
   cout << endl;
@@ -208,7 +208,7 @@ if (clarg != empty)
   cc= 0;
   //traverse the tree, echo  and count the number of tree compartments
   cout << "Testing AccumulateDown algorithm with CountCompartments" << endl;
-  cc = AccumulateDown(cf_tree,i,CountCompartments<MyCfTreeSegment,MyBud>());
+  cc = AccumulateDown(cf_tree,i,CountCompartments<MyCfTreeSegment,MyCfBud>());
   cout << "Number of Compartments: " << endl;
   cout << "Return value: " << cc << " Modified identity: " << i << endl;
   cout << endl;
@@ -216,7 +216,7 @@ if (clarg != empty)
   i = 0;
   //traverse the tree, echo  and count the number branches
   cout << "Testing PropagateUp algorithm with MyExampleSignal" << endl;
-  PropagateUp(cf_tree,i,MyExampleSignal<MyCfTreeSegment,MyBud>());
+  PropagateUp(cf_tree,i,MyExampleSignal<MyCfTreeSegment,MyCfBud>());
 
   cout << endl;
   //traverse the tree and display the structure
@@ -227,18 +227,18 @@ if (clarg != empty)
   //traverse the tree and display the structure
   cout << "Testing PropagateUp algorithm with DisplayStructureFunctor" << endl;
   DisplayStructureData id;
-  PropagateUp(cf_tree,id,DisplayStructureFunctor<MyCfTreeSegment,MyBud>());
+  PropagateUp(cf_tree,id,DisplayStructureFunctor<MyCfTreeSegment,MyCfBud>());
   cout << endl;
 
 //Radiation
   EvaluateRadiationForTree(hw_tree, WrapRadiationEvaluations<
-		    EvaluateRadiationForHwTreeSegment<MyHwTreeSegment,MyBud>,
-		    MyHwTreeSegment,MyBud>() );
-  //	    MyHwTreeSegment,MyBud>("Radiationextinction.txt") );
+		    EvaluateRadiationForHwTreeSegment<MyHwTreeSegment,MyHwBud>,
+		    MyHwTreeSegment,MyHwBud>() );
+  //	    MyHwTreeSegment,MyCfBud>("Radiationextinction.txt") );
 
   EvaluateRadiationForTree(cf_tree,WrapRadiationEvaluations<
-		    EvaluateRadiationForCfTreeSegment<MyCfTreeSegment,MyBud>,
-		    MyCfTreeSegment,MyBud>("Radiationextinction.txt") );
+		    EvaluateRadiationForCfTreeSegment<MyCfTreeSegment,MyCfBud>,
+		    MyCfTreeSegment,MyCfBud>("Radiationextinction.txt") );
 
 
   //Photosynthesis

@@ -228,7 +228,6 @@ void MakeNeedlesList(Tree<TS,BUD> &tree)
         glPushMatrix();
         glNewList(NEEDLES_TEX, GL_COMPILE);     
         UseTextures();
-        MessageBeep(MB_OK);
         DrawNeedlesFunctor<TS, BUD> needles_functor;
         ForEach(tree, needles_functor);
                 
