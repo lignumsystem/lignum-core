@@ -40,10 +40,10 @@ AccumulateTreeCompartments<TS,BUD,T,BinOp>::AccumulateTreeCompartments(const Bin
 template <class TS,class BUD, class T, class BinOp>
 T& AccumulateTreeCompartments<TS,BUD,T,BinOp>:: operator()(T& id,TreeCompartment<TS,BUD>* tc)const
 {
-  if (TreeSegment<TS,BUD>* ts = dynamic_cast<TreeSegment<TS,BUD>*>(tc))
+  if (TS* ts = dynamic_cast<TS*>(tc))
     id = op1(id,ts);
 
-  else if (Bud<TS,BUD>* bud = dynamic_cast<Bud<TS,BUD>*>(tc))
+  else if (BUD* bud = dynamic_cast<BUD*>(tc))
     id = op1(id,bud);
 
   else if (Axis<TS,BUD>* axis = dynamic_cast<Axis<TS,BUD>*>(tc)){
@@ -78,10 +78,10 @@ template <class TS,class BUD, class T, class BinOp>
 T& AccumulateDownTreeCompartments<TS,BUD,T,BinOp>::operator()(T& id,
 						TreeCompartment<TS,BUD>* tc)const
 {
-  if (TreeSegment<TS,BUD>* ts = dynamic_cast<TreeSegment<TS,BUD>*>(tc))
+  if (TS* ts = dynamic_cast<TS*>(tc))
     id = op1(id,ts);
 
-  else if (Bud<TS,BUD>* bud = dynamic_cast<Bud<TS,BUD>*>(tc))
+  else if (BUD* bud = dynamic_cast<BUD*>(tc))
     id = op1(id,bud);
 
   //traverse the axes with "fresh" id elements  
@@ -124,10 +124,10 @@ template <class TS,class BUD, class T, class BinOp1, class BinOp2>
 T& AccumulateDownTreeCompartments2<TS,BUD,T,BinOp1,BinOp2>::operator()(T& id,
 							    TreeCompartment<TS,BUD>* tc)const
 {
-  if (TreeSegment<TS,BUD>* ts = dynamic_cast<TreeSegment<TS,BUD>*>(tc))
+  if (TS* ts = dynamic_cast<TS*>(tc))
     id = op2(id,ts);
 
-  else if (Bud<TS,BUD>* bud = dynamic_cast<Bud<TS,BUD>*>(tc))
+  else if (BUD* bud = dynamic_cast<BUD*>(tc))
     id = op2(id,bud);
 
   //for branch whorl instead of default += operator apply user defined
@@ -173,10 +173,10 @@ PropagateUpTreeCompartments<TS,BUD,T,BinOp>::operator()(T& id,
 {
 	#ifdef _MSC_VER //cvs
 	#else
-  if (TreeSegment<TS,BUD>* ts = dynamic_cast<TreeSegment<TS,BUD>*>(tc))
+  if (TS* ts = dynamic_cast<TS*>(tc))
     op1(id,ts);
 
-  else if (Bud<TS,BUD>* bud = dynamic_cast<Bud<TS,BUD>*>(tc))
+  else if (BUD* bud = dynamic_cast<BUD*>(tc))
     op1(id,bud);
 
   //when propagating up apply op1 before continuing along the axis.
@@ -216,10 +216,10 @@ TreeCompartment<TS,BUD>*
 PropagateUpTreeCompartments2<TS,BUD,T,BinOp1,BinOp2>::operator()(T& id,
 								 TreeCompartment<TS,BUD>* tc)const
 {
-  if (TreeSegment<TS,BUD>* ts = dynamic_cast<TreeSegment<TS,BUD>*>(tc))
+  if (TS* ts = dynamic_cast<TS*>(tc))
     op2(id,ts);
 
-  else if (Bud<TS,BUD>* bud = dynamic_cast<Bud<TS,BUD>*>(tc))
+  else if (BUD* bud = dynamic_cast<BUD*>(tc))
     op2(id,bud);
 
   else if (Axis<TS,BUD>* axis = dynamic_cast<Axis<TS,BUD>*>(tc)){
