@@ -118,10 +118,10 @@ void SetFirmament(Tree<TS,BUD>& tree, sky::Firmament& firm )
 //ParametricCurve can read and create internal representation
 //for a parametric curve and evaluate it in any point.
 template <class TS,class BUD>
-void InitializeTree(Tree<TS,BUD>& tree, const CString& meta_file)
+void InitializeTree(Tree<TS,BUD>& tree, const string& meta_file)
 {
   LGMdouble p;
-  CString file;
+  string file;
   Lex lex;
   Token name,value;
   TreeMetaFileParser tmfp(meta_file);
@@ -136,33 +136,33 @@ void InitializeTree(Tree<TS,BUD>& tree, const CString& meta_file)
   name = lex.getToken();
   while (name.getType() != ENDFILE){
     value = lex.getToken(); 
-    p = (LGMdouble) atof((const char *)value.getValue());
+    p = (LGMdouble) atof(value.getValue().c_str());
     cout << " Parameter: " << name.getValue() << " = " << p << endl;
-    if (name.getValue() == CString("lambda"))
+    if (name.getValue() == string("lambda"))
       SetValue(tree,lambda,p);
     else{
-      CString str = name.getValue();
-      map<const char*,LGMPD,cmpstr>::iterator tpd = maptpd.tpd.find(str);
+      string str = name.getValue();
+      map<const char*,LGMPD,cmpstr>::iterator tpd = maptpd.tpd.find(str.c_str());
       SetValue(tree,(*tpd).second,p);
     }
     name = lex.getToken();
   }
 
-  file = tmfp.getFunctionFile(CString("Buds"));
+  file = tmfp.getFunctionFile(string("Buds"));
   cout << "Reading function for number of new buds from: " << file << endl;
-  tree.tf.nb.install(file);
+  tree.tf.nb.install(file.c_str());
 
-  file = tmfp.getFunctionFile(CString("DoI"));
+  file = tmfp.getFunctionFile(string("DoI"));
   cout << "Reading function for DoI from: " << file << endl;
-  tree.tf.ip.install(file);
+  tree.tf.ip.install(file.c_str());
 
-  file = tmfp.getFunctionFile(CString("FoliageMortality"));
+  file = tmfp.getFunctionFile(string("FoliageMortality"));
   cout << "Reading function for foliage mortality from: " << file << endl;
-  tree.tf.fm.install(file);
+  tree.tf.fm.install(file.c_str());
 
-  file = tmfp.getTreeInitializationFile(CString("Tree"));
+  file = tmfp.getTreeInitializationFile(string("Tree"));
   cout << "Reading tree initialization file from: " << file << endl;
-  tree.tif.install(file);
+  tree.tif.install(file.c_str());
 
 }
 
@@ -368,7 +368,7 @@ Axis<TS,BUD>& GetAxis(Tree<TS,BUD>& t)
 //At the moment returns the name of the only (ASCII) file that contains
 //the definition of the initial tree. Later - maybe - several such files.
 template<class TS, class BUD>
-CString GetTreeInitializationFile(Tree<TS,BUD>& tree) {
+string GetTreeInitializationFile(Tree<TS,BUD>& tree) {
   return tree.tif.treeFile;
 }
 

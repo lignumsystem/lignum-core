@@ -2,26 +2,26 @@
 #include <iostream.h>
 #include <list>
 #include <algorithm>
-#include <list>
-
+#include <string>
 #include <Tree.h>
-
 #include <MyTreeSegment.h>
 #include <MyBud.h>
+
+
 
 using namespace Lignum;
 
 
 
-CString ParseCommandLine(int argc, char *argv[],const CString& flag)
+string ParseCommandLine(int argc, char *argv[],const string& flag)
 {
   int i = 1;
-  CString clarg;
+  string clarg;
 
   //loop through command line options, argc - 1 checks possible missing last argument
   //to command line option does not cause core dump
   while (i < argc - 1){ 
-    if (CString(argv[i]) == flag){
+    if (string(argv[i]) == flag){
       clarg = argv[++i]; //pick the argument to command line option
       break; 
     }
@@ -43,10 +43,12 @@ int main(int argc, char *argv[])
   Ellipsis e(4.0,6.0);
 
   Tree<MyHwTreeSegment,MyBud> hw_tree(Point<>(0,0,0),PositionVector(0,0,1.0));
-  BroadLeaf bl(1.0,1.0,3.0,4.0,100,pe,d,e);
+  BranchingPoint<MyHwTreeSegment,MyBud> bp(Point<METER>(0,0,0),
+					   PositionVector(0,0,1.0),&hw_tree);
+  BroadLeaf bl(1.0,1.0,3.0,100,pe,d,e);
 	       
 
-  CString clarg,empty;
+  string clarg,empty;
 
 
   clarg = ParseCommandLine(argc,argv,"-file");

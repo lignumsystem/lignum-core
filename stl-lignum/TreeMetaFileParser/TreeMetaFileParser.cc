@@ -2,7 +2,7 @@
 using namespace cxxadt;
 //Define the default files for parameters and functions
 //initialize file_mode to PARAMETER
-TreeMetaFileParser::TreeMetaFileParser(const cxxadt::CString& file)
+TreeMetaFileParser::TreeMetaFileParser(const string& file)
   :meta_file(file),file_mode(PARAMETER)
 {
   //Default paramenter files for different tree compartments and firmament
@@ -33,21 +33,21 @@ TreeMetaFileParser& TreeMetaFileParser::parse()
   return *this;
 }
 
-cxxadt::CString TreeMetaFileParser::getParameterFile(const cxxadt::CString& type)
+string TreeMetaFileParser::getParameterFile(const string& type)
 {
-  cxxadt::CString file = file_tables[PARAMETER].lookup(type);
+  string file = file_tables[PARAMETER].lookup(type);
   return file;
 }
 
-cxxadt::CString TreeMetaFileParser::getFunctionFile(const cxxadt::CString& type)
+string TreeMetaFileParser::getFunctionFile(const string& type)
 {
-  cxxadt::CString file = file_tables[FUNCTION].lookup(type);
+  string file = file_tables[FUNCTION].lookup(type);
   return file;
 }
 
-cxxadt::CString TreeMetaFileParser::getTreeInitializationFile(const cxxadt::CString& type)
+string TreeMetaFileParser::getTreeInitializationFile(const string& type)
 {
-  cxxadt::CString file = file_tables[INITIAL].lookup(type);
+  string file = file_tables[INITIAL].lookup(type);
   return file;
 }
 
@@ -73,21 +73,21 @@ TreeMetaFileParser& TreeMetaFileParser::parseFiles()
     return *this;
   }
   //try to parse parameter files
-  else if (token.getValue() == cxxadt::CString("Parameters")){
+  else if (token.getValue() == string("Parameters")){
     lex.getToken(); //extract keyword
     lex.getToken(); //extract ':'
     file_mode = PARAMETER;    //change the mode to PARAMETER
     return this->parseFile(); //parse the file name 
   }
   //if no parameter files, try to parse function files
-  else if (token.getValue() == cxxadt::CString("Functions")){
+  else if (token.getValue() == string("Functions")){
     lex.getToken(); //extract keyword
     lex.getToken(); //extract ':'
     file_mode = FUNCTION;   //change the mode to FUNCTION
     return this->parseFile();
   }
   //if no function files, try to parse initialization files
-  else if (token.getValue() == cxxadt::CString("InitialTree")){
+  else if (token.getValue() == string("InitialTree")){
     lex.getToken(); //extract keyword
     lex.getToken(); //extract ':'
     file_mode = INITIAL;    //change the mode to INITIAL
@@ -106,8 +106,8 @@ TreeMetaFileParser& TreeMetaFileParser::parseFiles()
 TreeMetaFileParser& TreeMetaFileParser::parseFile()
 {
   Token token = lex.getToken();
-  cxxadt::CString key;
-  cxxadt::CString file_name;
+  string key;
+  string file_name;
 
   //last file already parsed, end of file encountered
   if (token.getType() == ENDFILE){

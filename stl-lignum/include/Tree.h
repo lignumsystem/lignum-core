@@ -7,7 +7,7 @@
 #include <iostream.h>
 #include <stream.h>
 
-#include <CString.h>
+#include <string>
 #include <ParametricCurve.h>
 #include <Point.h>
 #include <PositionVector.h>
@@ -82,9 +82,9 @@ public:
 
 class TreeInitializationFiles{
 public:
-  void install(CString file) {treeFile = file;}
+  void install(string file) {treeFile = file;}
 
-  CString treeFile;
+  string treeFile;
 };
 
 template <class TS,class BUD = DefaultBud<TS> >
@@ -92,7 +92,7 @@ class Tree: public Lignum::TreeCompartment<TS,BUD>{
   template <class TS1,class BUD1>
   friend Axis<TS1,BUD1>& GetAxis(Tree<TS1,BUD1>& t);
   template <class TS1,class BUD1>
-  friend void InitializeTree(Tree<TS1,BUD1>& tree, const CString& meta_file);
+  friend void InitializeTree(Tree<TS1,BUD1>& tree, const string& meta_file);
   template <class TS1,class BUD1>
   friend LGMdouble GetValue(const Tree<TS1,BUD1>& tree, const LGMAD name);
   template <class TS1,class BUD1>
@@ -109,7 +109,7 @@ class Tree: public Lignum::TreeCompartment<TS,BUD>{
   friend LGMdouble SetValue(Tree<TS1,BUD1>& tree, const LGMTD name,
 			    const LGMdouble value);
   template <class TS1,class BUD1>
-  friend CString GetTreeInitializationFile(Tree<TS1,BUD1>& tree);
+  friend string GetTreeInitializationFile(Tree<TS1,BUD1>& tree);
   template <class TS1,class BUD1>
   friend sky::Firmament& GetFirmament(Tree<TS,BUD>& tree);
 public:

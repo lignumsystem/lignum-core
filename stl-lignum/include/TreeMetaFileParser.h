@@ -9,11 +9,11 @@ using namespace cxxadt;
 
 class TreeMetaFileParser{
 public:
-  TreeMetaFileParser(const CString& meta_file);
+  TreeMetaFileParser(const string& meta_file);
   TreeMetaFileParser& parse();
-  CString getParameterFile(const CString& type);
-  CString getFunctionFile(const CString& type);
-  CString getTreeInitializationFile(const CString& type);
+  string getParameterFile(const string& type);
+  string getFunctionFile(const string& type);
+  string getTreeInitializationFile(const string& type);
 protected:
   TreeMetaFileParser& parseMetaFile();     //top level method to parse meta file
   TreeMetaFileParser& parseFiles();        //this method does the parsing by
@@ -21,9 +21,9 @@ protected:
 private:
   enum FILE_MODE {PARAMETER,FUNCTION,INITIAL};
   FILE_MODE file_mode;
-  cxxadt::Table<CString,CString> file_tables[3]; //tables for the parameter files and functions
+  cxxadt::Table<string,string> file_tables[3]; //tables for the parameter files and functions
   // and initialization files
-  cxxadt::CString meta_file;     //meta file (describes where the actual files exists)
+  string meta_file;     //meta file (describes where the actual files exists)
   Lex lex;               //lexical analysator for tokenizing the input file
 };
 
