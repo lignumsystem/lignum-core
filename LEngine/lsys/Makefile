@@ -1,5 +1,6 @@
 OS=IRIX64
 TARGET=$(OS).out/liblsys.a
+LSYSL= lsys.L
 LSYSSRC=lsys.cpp
 CPPSRC=
 
@@ -7,11 +8,13 @@ OBJECTS=${CPPSRC:.cpp=.o}
 
 include Make.$(OS)
 
-INCDIRS= -I../Globals -I/usr/include
+INCDIRS= -I../Globals -I/usr/include -I../../c++adt/include -I../../stl-lignum/include
 
-$(TARGET): $(OBJECTS) lsys.o
+$(TARGET): $(LSYSSRC) lsys.o
 	$(AR) $(AROPT) $(TARGET) $(OBJECTS) lsys.o
 
+$(LSYSSRC): $(LSYSL)
+	../L2C/IRIX64.out/l2c  $(LSYSL)  $(LSYSSRC)
 
 lsys.o: $(LSYSSRC) 
 	$(CCPPI) $(CPPOPT) -I/usr/include $(INCDIRS) $(LSYSSRC)
@@ -25,8 +28,8 @@ lsys.o: $(LSYSSRC)
 #$(LSYSSRC): ../L2C/lsys.ii
 #cp ../L2C/lsys.ii $(LSYSSRC)
 clean:
-	-rm $(TARGET) $(OBJECTS) lsys.o
-	-rm dependencies
+	-rm -f $(TARGET) $(OBJECTS) lsys.cpp lsys.o
+	-rm -f dependencies
 	touch dependencies
 
 
@@ -38,4 +41,3 @@ depend:
 	$(DEPEND) $(DEFINES) $(PLAT_DEFINES) $(INCDIRS) $(CPPSRC) > dependencies
 
 include dependencies
-
