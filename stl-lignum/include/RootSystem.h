@@ -45,6 +45,7 @@ namespace Lignum {
   public:
     RootCompartment(const Point& point, const PositionVector& dir, 
 		    const TREE& tree):p(point),d(dir),t(tree) {}
+    virtual ~RootCompartment(){}
   protected:
     Point p;
     PositionVector d;
@@ -53,8 +54,8 @@ namespace Lignum {
 
   template <class TREE>
     class RootAxis: public RootCompartment<TREE>{
-    list<RootCompartment<TREE>*>& GetRootCompartmentList(RootAxis<TREE>& ra){
-      return ra.tc_ls;
+    friend list<RootCompartment<TREE>*>& GetRootCompartmentList(RootAxis<TREE>& ra){
+      return ra.rc_ls;
     }
     friend void InsertRootCompartment(RootAxis<TREE>& ra,
 				      const RootCompartment<TREE>* rpb){
@@ -63,14 +64,15 @@ namespace Lignum {
   public:
     RootAxis(const Point& p, const PositionVector& d, const TREE& t):
     RootCompartment<TREE>(p,d,t) {}
+    virtual ~RootAxis(){}
   private:
     list<RootCompartment<TREE>*> rc_ls;
   };
 
   template <class TREE>
     class RootBranchingPoint:public RootCompartment<TREE>{
-    list<RootAxis<TREE>*>& GetAxisList(RootBranchingPoint<TREE>& rbp){
-      return rpb.ra_ls;
+    friend list<RootAxis<TREE>*>& GetAxisList(RootBranchingPoint<TREE>& rbp){
+      return rbp.ra_ls;
     }
     friend void InsertAxis(RootBranchingPoint<TREE>& rbp,
 			   const RootAxis<TREE>* ra){
@@ -80,6 +82,7 @@ namespace Lignum {
     RootBranchingPoint(const Point& pos, const PositionVector& dir,
 		       const TREE& t):
     RootCompartment<TREE>(pos,dir,t){}
+    virtual ~RootBranchingPoint(){}
   private:
     list<RootAxis<TREE>*> ra_ls; //list of root axes
   };
@@ -87,14 +90,16 @@ namespace Lignum {
   class RootSegmentAttributes{
   public:
     RootSegmentAttributes(METER Length,METER Radius,METER RTopRadius,
-			  METER Rheartwood, METER RhairRadius):
-    L(Length),R(Radius),RTop(RTopRadius),Rh(Rheartwood),Rhair(RhairRadius){}
+			  METER Rheartwood, METER RhairRadius,LGMdouble go):
+    L(Length),R(Radius),RTop(RTopRadius),Rh(Rheartwood),Rhair(RhairRadius),
+      omega(go){}
   public:
     METER L;      //Length
     METER R;      //Radius including bark
     METER RTop;   //Radius at top
     METER Rh;     //Heartwood radius
     METER Rhair;  //Radius including root hair
+    LGMdouble omega; //Gravelius order
   };
 
   //RootSegment  is the  main functioning  unit.  As  tree  segment it
@@ -108,26 +113,31 @@ namespace Lignum {
     template <class TR>
       friend LGMdouble SetValue(RootSegment<TR>& rs, LGMAD name,
 				LGMdouble value);
+    template <class TR>
+      friend Point GetEndPoint(RootSegment<TR>& rs);
   public:
     RootSegment(const Point& pos, const PositionVector& dir,
 		METER Length,METER Radius,METER RTopRadius,
-		METER RheartwoodRadius, METER RhairRadius,const TREE& t):
+		METER RheartwoodRadius, METER RhairRadius, LGMdouble go,
+		const TREE& t):
     RootCompartment<TREE>(pos,dir,t),rsa(Length,Radius,RTopRadius,
-					 RheartwoodRadius,RhairRadius){}
+					 RheartwoodRadius,RhairRadius,go){}
+    virtual ~RootSegment(){}
   private:
     RootSegmentAttributes rsa;
   };
 
   class RootTipAttributes{
   public:
-    RootTipAttributes(LGMdouble coll, LGMdouble st, STATUS s):
-    collision(coll),status(st),state(s){}
-    RootTipAttributes():collision(0),status(0),state(ALIVE){}
+    RootTipAttributes(LGMdouble coll, LGMdouble st, STATUS s, LGMdouble go):
+    collision(coll),status(st),state(s),omega(go){}
+    RootTipAttributes():collision(0),status(0),state(ALIVE),omega(0){}
   public:
     LGMdouble collision; //collision with another root compartment
     LGMdouble status;    //user defined counter
     STATUS state;        //DEAD  or ALIVE (c.f.   Bud), note  the type
 			 //STATUS is confusing!
+    LGMdouble omega;     //Gravelius order
   };
 
   template <class TREE>
@@ -142,10 +152,13 @@ namespace Lignum {
       friend STATUS SetValue(RootTip<TR>& rt, LGMAS name, STATUS value);
   public:
     RootTip(const Point& pos, const PositionVector& dir,
-	    LGMdouble coll, LGMdouble status, STATUS state, const TREE& t):
-    RootCompartment<TREE>(pos,dir,t),rta(coll,status,state){}
-    RootTip(const Point& pos, const PositionVector& dir, const TREE& t):
-    RootCompartment<TREE>(pos,dir,t){}
+	    LGMdouble coll, LGMdouble status, STATUS state, LGMdouble go,
+	    const TREE& t):
+    RootCompartment<TREE>(pos,dir,t),rta(coll,status,state,go){}
+    RootTip(const Point& pos, const PositionVector& dir, LGMdouble go,
+	    const TREE& t):
+    RootCompartment<TREE>(pos,dir,t),rta(0,0,ALIVE,go){}
+    virtual ~RootTip(){}
   private:
     RootTipAttributes rta;
   };
@@ -157,6 +170,9 @@ namespace Lignum {
     T& Accumulate(RootAxis<TREE>& ra, T& init, const BinOp op);
   template <class TREE, class T, class BinOp>
     T& AccumulateDown(RootAxis<TREE>& ra, T& init, const BinOp op);
+  template <class TREE, class T, class BinOp1, class BinOp2>
+    T& AccumulateDown(RootAxis<TREE>& ra, T& init, const BinOp1 op1, 
+		      const BinOp2 op2);
   template <class TREE, class T, class BinOp>
     void PropagateUp(RootAxis<TREE>& ra, T& init, const BinOp op);
 
