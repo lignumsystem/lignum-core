@@ -101,7 +101,7 @@ namespace Lignum{
   class TreeDataStruct
       {
   public:
-      TreeDataStruct::TreeDataStruct():
+      TreeDataStruct():
 	age(0), sum_Wf(0.0), sum_Wf_new(0.0), sum_wood_in_newparts(0.0),
 	sum_wood_new(0.0), sum_Ws(0.0), sum_Wb(0.0), sum_Wsw(0.0),
 	sum_Whw(0.0), sum_Af(0.0), sum_Qabs(0.0), max_Qin(0.0), sum_Qin(0.0), 
