@@ -2,6 +2,7 @@
 #ifndef FIRMAMENT_H
 #define FIRMAMENT_H
 
+#include <fstream.h>
 #include <math.h>
 #include <mathsym.h>
 #include <vector.h>
