@@ -1,5 +1,5 @@
-SRC = Firmament.cc FirmamentWithMask.cc MineSet.cc Interlen.cc \
-       Voxel.cc voxellattice.cc voxelmatrix.cc
+SRC = Firmament.cc FirmamentWithMask.cc MineSet.cc Interlen.cc 
+
 OBJ  = ${SRC:.cc=.o}
  
 CCC = CC -64 -LANG:std
