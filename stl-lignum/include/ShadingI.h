@@ -61,7 +61,7 @@ void EvaluateRadiationForHwTreeSegment<TS,BUD,S>::operator()
   
   vector<LGMdouble> result(number_of_sectors);
   vector<LGMdouble> init(number_of_sectors);
-  typename list<BroadLeaf<S>*>::iterator Il = leaves.begin();
+  list<BroadLeaf<S>*>::iterator Il = leaves.begin();
 
   ShadingEffectOfLeaf<TS,BUD>  s_e(hwts, *Il);
 
@@ -135,7 +135,7 @@ vector<LGMdouble>& ShadingEffectOfLeaf<TS,BUD,S>::operator()(vector<LGMdouble>& 
     //to each sector
 
     list<BroadLeaf<S>*>& llshding = GetLeafList(*ts);
-    typename list<BroadLeaf<S>*>::iterator Ishding;
+    list<BroadLeaf<S>*>::iterator Ishding;
     PositionVector tmp;
     mp = GetCenterPoint(*shaded_l);
 
@@ -184,7 +184,9 @@ template <class TS, class BUD>
 void EvaluateRadiationForCfTreeSegment<TS,BUD>::operator()
   (TreeSegment<TS, BUD>* ts)const
 {
-  CfTreeSegment<TS,BUD>* cfts = dynamic_cast<CfTreeSegment<TS,BUD>*>(ts);
+  CfTreeSegment<TS,BUD>* cfts;
+  if (cfts = dynamic_cast<CfTreeSegment<TS,BUD>*>(ts))
+	  ;
 
   // Radiation conditions are not evaluated if the segment has no foliage
   if (GetValue(*cfts, Wf) < R_EPSILON)
@@ -235,7 +237,7 @@ void EvaluateRadiationForCfTreeSegment<TS,BUD>::operator()
   vector<LGMdouble> absorbed_radiation(number_of_sectors);
   Lk = GetValue(*cfts, L); //length is > 0.0, otherwise we would not bee here
   Rk = GetValue(*cfts, Rf);  //Radius to foliage limit 
-  sfk  = GetValue(tt, af);
+  sfk  = GetValue(tt, sf); //GetValue(tt, af);
   Wfk = GetValue(*cfts, Wf);
 
   for (i = 0; i < number_of_sectors; i++){

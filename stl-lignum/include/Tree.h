@@ -40,6 +40,8 @@ using namespace sky;
 
 namespace Lignum{
 
+	//cvs update
+	/*
   struct SmallCube
   {
     int x,y,z;
@@ -53,6 +55,7 @@ namespace Lignum{
 
     bool ready;
   };
+  */
 
   class TreeParameters{
   public:
@@ -125,8 +128,14 @@ namespace Lignum{
 
   template <class TS,class BUD = DefaultBud<TS> >
     class Tree: public TreeCompartment<TS,BUD>,public VTree{
-      template <class TS1,class BUD1>
+
+
+#ifdef _MSC_VER  //cvs update
+#else
+	template <class TS1,class BUD1>
       friend class InitializeTree;
+#endif // _MSC_VER
+      
 
       template <class TS1,class BUD1>
       friend Axis<TS1,BUD1>& GetAxis(Tree<TS1,BUD1>& t);
@@ -177,12 +186,14 @@ namespace Lignum{
 
       void photosynthesis();
       void respiration();
-      private:
+	  TreeFunctions tf;  //cvs update
+	
+	private:
       LGMdouble CountFlow(TreeSegment<TS,BUD> &in, TreeSegment<TS,BUD> &out);
       TreeAttributes ta;
       TreeParameters tp;
       TreeTransitVariables ttp;
-      TreeFunctions tf;
+      
       TreeInitializationFiles tif;
       FirmamentWithMask f;
       Axis<TS,BUD> axis;

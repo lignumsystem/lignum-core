@@ -112,9 +112,9 @@ template <class TS,class BUD>
 class FoliageLossOfPineTree //: public AdaptableTCFunction<TS,BUD> 
 {
 public:
-	FoliageLossOfPineTree(ParametricCurve d) { doi_fun = d; }
+	FoliageLossOfPineTree(ParametricCurve d) { fol_mor = d; }
 	TreeCompartment<TS,BUD>* operator()(TreeCompartment<TS,BUD>* tc)const;
-	ParametricCurve doi_fun;
+	ParametricCurve fol_mor;
 };
 
 

@@ -641,6 +641,468 @@ LGMdouble& DeleteDeadBranches<TS,BUD>::operator()(LGMdouble& foliage,
   return foliage;
 }
 
+
+
+
+
+template <class TS,class BUD>
+int& SetOmega<TS,BUD>::operator()(int& oomega,
+TreeCompartment<TS,BUD>* tc)const
+{
+
+  if (TS* ts = dynamic_cast<TS *>(tc))
+    {
+      SetValue(*ts, omega, oomega);
+    }
+  else if (BUD* bud = dynamic_cast<BUD *>(tc))
+    {
+      SetValue(*bud, omega, oomega);
+    }
+  else if(Axis<TS, BUD>* ax =
+  dynamic_cast<Axis<TS,BUD>*>(tc))
+    {
+      oomega += 1;
+    }
+
+  return oomega;
+}
+
+
+
+template <class TS,class BUD>
+InfoStruct& TreeInfo<TS,BUD>::operator()(InfoStruct& stru, TreeCompartment<TS,BUD>* tc)const
+{
+	if (TreeSegment<TS,BUD>* ts = dynamic_cast<TreeSegment<TS,BUD>*>(tc))
+	{
+		stru.num_segments++;
+		Point ep = GetEndPoint(*ts);
+		if (stru.height < ep.getZ())
+			stru.height = ep.getZ();
+
+		if (GetPoint(*ts).getZ() == 0)
+		{
+			stru.bottom_rad = GetValue(*ts, R);
+		}
+
+		int _age = GetValue(*ts, age);
+		if (_age > stru.age)
+			stru.age = _age;
+
+		if(CfTreeSegment<TS,BUD>* cfts = dynamic_cast<CfTreeSegment<TS,BUD>*>(ts))
+		{
+			stru.sum_Qabs += GetValue(*cfts, Qabs);
+			stru.sum_Qin  += GetValue(*cfts, Qin);
+			stru.sum_Wf += GetValue(*cfts, Wf);
+			stru.sum_needle_area += 28 * GetValue(*cfts, Wf);
+			stru.sum_QinNA += GetValue(*cfts, Qin) * 28 * GetValue(*cfts, Wf);
+			stru.sum_QabsNA += GetValue(*cfts, Qabs) * 28 * GetValue(*cfts, Wf);
+		}
+
+		if(HwTreeSegment<TS,BUD>* hwts = dynamic_cast<HwTreeSegment<TS,BUD>*>(ts))
+		{
+			stru.sum_Qabs += GetValue(*hwts, Qabs);
+			stru.sum_Qin  += GetValue(*hwts, Qin);
+			stru.sum_Wf += GetValue(*hwts, Wf);
+		}
+
+		// if main axis
+		if (ep.getX() == 0 && ep.getY() == 0)
+		{
+			stru.taper_rad.push_back(GetValue(*ts, R));
+			stru.taper_hei.push_back(ep.getZ());
+		}
+
+
+
+	}
+	else if (Bud<TS,BUD>* bud = dynamic_cast<Bud<TS,BUD>*>(tc))
+	{
+		stru.num_buds++;
+	}
+	return stru;
+}
+
+
+template <class TS,class BUD>
+InfoStruct& TreePartInfo<TS,BUD>::operator()(InfoStruct& stru, TreeCompartment<TS,BUD>* tc)const
+{
+	if (TreeSegment<TS,BUD>* ts = dynamic_cast<TreeSegment<TS,BUD>*>(tc))
+	{
+		Point sp = GetPoint(*ts);
+		if (sp.getZ() > minh && sp.getZ()<=maxh)
+		{
+			
+			Point ep = GetEndPoint(*ts);
+			if (stru.height < ep.getZ())
+				stru.height = ep.getZ();
+
+			if (GetPoint(*ts).getZ() == 0)
+			{
+				stru.bottom_rad = GetValue(*ts, R);
+			}
+
+			int _age = GetValue(*ts, age);
+			if (_age > stru.age)
+				stru.age = _age;
+
+			if(CfTreeSegment<TS,BUD>* cfts = dynamic_cast<CfTreeSegment<TS,BUD>*>(ts))
+			{
+				LGMdouble wf = GetValue(*cfts, Wf);
+				if (wf > 0.0)
+				{
+					ofstream file("debugsegments.txt", ios::app);
+					
+					stru.num_segments++;
+					LGMdouble qinnn = GetValue(*cfts, Qin); 				
+					stru.sum_Qabs += GetValue(*cfts, Qabs);
+					stru.sum_Qin  += GetValue(*cfts, Qin);
+					stru.sum_Wf += GetValue(*cfts, Wf);
+					stru.sum_needle_area += 28 * GetValue(*cfts, Wf);
+					stru.sum_QinNA += GetValue(*cfts, Qin) * 28 * GetValue(*cfts, Wf);
+					stru.sum_QabsNA += GetValue(*cfts, Qabs) * 28 * GetValue(*cfts, Wf);
+					file << GetValue(*cfts, Qin) << " : " << GetValue(*cfts, Qabs) << " : ";
+					file << 28 * GetValue(*cfts, Wf) << ":" << GetPoint(*ts);
+					file.close();
+				}
+				
+			}
+
+			if(HwTreeSegment<TS,BUD>* hwts = dynamic_cast<HwTreeSegment<TS,BUD>*>(ts))
+			{
+				stru.sum_Qabs += GetValue(*hwts, Qabs);
+				stru.sum_Qin  += GetValue(*hwts, Qin);
+				stru.sum_Wf += GetValue(*hwts, Wf);
+			}
+
+			// if main axis
+			if (ep.getX() == 0 && ep.getY() == 0)
+			{
+				stru.taper_rad.push_back(GetValue(*ts, R));
+				stru.taper_hei.push_back(ep.getZ());
+			}
+		}
+	}
+	else if (Bud<TS,BUD>* bud = dynamic_cast<Bud<TS,BUD>*>(tc))
+	{
+		Point sp = GetPoint(*tc);
+		if (sp.getZ() > minh && sp.getZ() < maxh)
+		{
+		stru.num_buds++;
+		}
+	}
+	return stru;
+}
+
+
+template <class TS, class BUD >
+void SaveLeafInfo(Axis<TS,BUD> &ax, std::ofstream& file)
+{  	
+	std::list<TreeCompartment<TS, BUD>*>& ls = GetTreeCompartmentList(ax);
+	std::list<TreeCompartment<TS, BUD>*>::iterator I = ls.begin();
+
+
+	
+	while(I != ls.end())
+    {   		
+		TreeSegment<TS, BUD>* myts = dynamic_cast<TreeSegment<TS, BUD>*>(*I);	
+      
+		if (TreeSegment<TS, BUD>* myts = dynamic_cast<TreeSegment<TS, BUD>*>(*I))
+		{  
+			if (HwTreeSegment<TS,BUD>* hwts = dynamic_cast<HwTreeSegment<TS,BUD>*>(myts))
+			{
+				std::list<BroadLeaf<Ellipsis> *> &leaves = GetLeafList(*hwts);
+				std::list<BroadLeaf<Ellipsis> *>::iterator I = leaves.begin();
+			
+			
+				for (I = leaves.begin(); I != leaves.end(); I++) 
+				{
+					file << "Wf:" << GetValue(**I, Wf) << "  Area:" << GetValue(**I, A) << "   Qin:" << GetValue(**I, Qin) << "   Qabs:" << GetValue(**I, Qabs) << endl;
+			
+				} 
+			
+			}
+		} 
+      
+	 if (BranchingPoint<TS, BUD>* mybp = dynamic_cast<BranchingPoint<TS, BUD>*>(*I))
+		{ 
+			std::list<Axis<TS, BUD>*>& axis_ls = GetAxisList(*mybp);  	  
+			std::list<Axis<TS, BUD>*>::iterator II = axis_ls.begin();
+
+			
+			while(II != axis_ls.end())
+			{
+				Axis<TS,BUD> *axis = *II;	
+				SaveLeafInfo(*axis, file);			 
+				II++;	
+			}
+		
+		}
+
+    
+      I++;
+    }
+	
+}
+
+
+
+template <class TS, class BUD>
+void SaveTree(Axis<TS,BUD> &ax, CString file_name, CString treetype)
+{
+	const char *tmp = LPCTSTR(treetype);
+
+	ofstream file(file_name);
+	file << tmp << endl;
+	SaveAxis(ax, file, false);
+	file << "Lehtia puussa " << num_of_leaves << '\n';
+	file.close();
+}
+
+
+//WriteTreeInformation collects and prints out information about the
+//tree. It uses functor TreeData to collect the information with
+//Accumulate
+template <class TS, class BUD>
+void WriteTreeInformation(Tree<TS,BUD>&  tr, std::ofstream& file) 
+{
+  TreeDataStruct values;
+  TreeData<TS,BUD> getTreeValues;
+  
+  values = Accumulate(tr, values, getTreeValues);
+  
+  file << "P: " << GetValue(tr,P) << " M: "
+       << GetValue(tr,M) << endl;
+  file << "age: " << values.age << endl;
+  file << "Height: " << values.height << "Height of CB: " <<
+    values.Hc << endl;
+  file << "sum_Wf: " << values.sum_Wf << endl;
+  file << "sum_Wf_new: " << values.sum_Wf_new << endl;
+  file << "sum_wood_in_newparts: " << values.sum_wood_in_newparts
+       << endl;
+  file << "sum_wood_new: " << values.sum_wood_new << endl;
+  file << "sum_Ws: " << values.sum_Ws << endl;
+  file << "sum_Wb: " << values.sum_Wb << endl;
+  file << "sum_Wsw: " << values.sum_Wsw << endl;
+  file << "sum_Whw: " << values.sum_Whw << endl;
+  if(values.num_segments > 0) {
+    file << "mean_Qabs: " << values.sum_Qabs/(double)values.num_segments
+       << endl;
+  }
+
+  else {
+    file << "mean_Qabs: " << 0.0 << endl;
+  }
+  if(values.num_segments > 0) {
+    file << "mean_Qin: " << values.sum_Qin/(double)values.num_segments
+       << endl;
+  }
+  else {
+    file << "mean_Qin: " <<  0.0 << endl;
+  }
+  if(values.num_s_fol > 0)
+    file << "mean_Qabs: " << values.sum_Qabs/(double)values.num_s_fol << endl;
+  else
+    file << "mean_Qabs: " << 0.0 << endl;
+
+  file << "num_buds: " << values.num_buds << endl;
+  file << "num_segments: " << values.num_segments << 
+       "  no. segments w/ foliage: " << values.num_s_fol << endl;
+  file << "No. branches,  living: " << values.num_br_l << " dead: "
+       << values.num_br_l << endl;
+  if(values.num_br_l > 0)
+    file << "Mean len of living branches: " <<
+      values.sum_br_len/(double)values.num_br_l << endl;
+  else
+    file << "Mean len of living branches: " << 0.0 << endl;
+
+  file << "height: " << values.height << endl;
+  file << "bottom_rad: " << values.bottom_rad << endl << endl;
+  file << "Height, m    Radius, cm,   HwRadius, cm" << endl;
+  for(int i1 = 0; i1 < values.taper_hei.size(); i1++) {
+    file << values.taper_hei[i1] << " " <<
+      100.0*values.taper_rad[i1]<< " " <<
+      100.0*values.taper_radh[i1] << endl;
+  }
+  file << endl;  
+}
+
+
+
+
+
+
+template <class TS, class BUD>
+void PrintTreeInformationToFile<TS,BUD>::operator() (Tree<TS,BUD>&  tr, ostream& os) 
+{
+  TreeDataStruct values;
+  TreeData<TS,BUD> getTreeValues;
+  
+  values = Accumulate(tr, values, getTreeValues);
+  
+  //os << "P: " << GetValue(tr,TreeP) << " M: " << endl;
+  //*******     << GetValue(tr,TreeM) << endl;
+  os << "age: " << values.age << endl;
+  os << "Height: " << values.height << " Height of crown base: " <<
+    values.Hc << endl;
+  os << "Basal diameter, cm: " << 200*values.bottom_rad << endl;
+  os << "sum_Wf: " << values.sum_Wf << endl;
+  os << "sum_Wf_new: " << values.sum_Wf_new << endl;
+  os << "sum_wood_in_newparts: " << values.sum_wood_in_newparts
+       << endl;
+  os << "sum_wood_new: " << values.sum_wood_new << endl;
+  os << "sum_Ws: " << values.sum_Ws << endl;
+  os << "sum_Wb: " << values.sum_Wb << endl;
+  os << "sum_Wsw: " << values.sum_Wsw << endl;
+  os << "sum_Whw: " << values.sum_Whw << endl;
+  if(values.num_s_fol > 0) {
+    os << "Qabs: " << values.sum_Qabs <<"  mean_Qabs: " 
+	 << values.sum_Qabs/(double)values.num_s_fol << endl;
+    os << "Qin: " << values.sum_Qin <<  "  mean_Qin: "
+	 << values.sum_Qin/(double)values.num_s_fol << endl;
+  }
+
+  else {
+    os << "Qabs: " << values.sum_Qabs  << "  mean_Qabs: " << 0.0 << endl;
+    os << "Qin: " << values.sum_Qin  << "  mean_Qin: " <<  0.0 << endl;
+  }
+  
+  if(values.sum_Qin > R_EPSILON && values.sum_Wf > R_EPSILON) {
+    LGMdouble Qi = GetFirmament(tr).diffuseBallSensor();
+    if(Qi > R_EPSILON)
+      os << "Qabs/(Qin*Wf) = " << values.sum_Qabs/(Qi*values.sum_Wf)
+	   << "    (should be 2...3)" << endl;
+       }
+
+  os << "num_buds: " << values.num_buds << endl;
+  os << "num_segments: " << values.num_segments << 
+       "  no. segments w/ foliage: " << values.num_s_fol << endl;
+  os << "No. branches,  living: " << values.num_br_l << " dead: "
+       << values.num_br_d << endl;
+  if(values.num_br_l > 0)
+    os << "Mean len of living branches: " <<
+      values.sum_br_len/(double)values.num_br_l << endl;
+  else
+    os << "Mean len of living branches: " << 0.0 << endl;
+  if(values.num_br_d > 0)
+    os << "Mean len of dead branches: " <<
+      values.sum_br_len_d/(double)values.num_br_d << endl;
+  else
+    os << "Mean len of dead branches: " << 0.0 << endl;
+
+  if(values.num_br_l > 0) {
+    os << "Cross-sectional area at branch base: " <<
+      values.sum_br_Ac/(double)values.num_br_l << endl;
+     os << "Cross-sectional area of sapwood at branch base: " <<
+      values.sum_br_As/(double)values.num_br_l << endl;
+  }
+  else {
+    os << "Cross-sectional area at branch base: " << 0.0 << endl;
+    os << "Cross-sectional area of sapwood at branch base: " << 0.0 << endl;
+  }
+
+  os << "Height, m    Diameter, cm,   HwDiameter, cm" << endl;
+  for(int i1 = 0; i1 < values.taper_hei.size(); i1++) {
+    os << values.taper_hei[i1] << " " <<
+      200.0*values.taper_rad[i1]<< " " <<
+      200.0*values.taper_radhw[i1] << endl;
+  }
+  os << endl;
+
+  os << "Height of whorl, m     Mean branch length, m" << endl;
+  for(int i1 = 0; i1 < values.mean_br_h.size(); i1++) {
+    os << values.mean_br_h[i1] << " " <<
+      values.mean_brl[i1] << endl;
+
+  }
+}
+
+
+
+template <class TS, class BUD >
+void SaveAxis(Axis<TS,BUD> &ax, std::ofstream& file, bool only_segments)
+{  	
+	bool min_save = false;
+	
+	std::list<TreeCompartment<TS, BUD>*>& ls = GetTreeCompartmentList(ax);
+	std::list<TreeCompartment<TS, BUD>*>::iterator I = ls.begin();
+
+	if (!min_save && only_segments==false)
+		file << "AXIS"<< endl;
+	
+	while(I != ls.end())
+    {   		
+		TreeSegment<TS, BUD>* myts = dynamic_cast<TreeSegment<TS, BUD>*>(*I);	
+      
+		if (TreeSegment<TS, BUD>* myts = dynamic_cast<TreeSegment<TS, BUD>*>(*I))
+		{  
+			if (TreeSegment<TS, BUD> *ts = dynamic_cast<TreeSegment<TS, BUD>*>(*I))
+			{
+				if (!min_save)
+					file << "TS"<< " ";
+				file << *ts;    //* otettu en
+			}
+		} 
+      
+	 if (BranchingPoint<TS, BUD>* mybp = dynamic_cast<BranchingPoint<TS, BUD>*>(*I))
+		{ 
+			std::list<Axis<TS, BUD>*>& axis_ls = GetAxisList(*mybp);  	  
+			std::list<Axis<TS, BUD>*>::iterator II = axis_ls.begin();
+
+			BranchingPoint<TS, BUD>* bp = dynamic_cast<BranchingPoint<TS, BUD>*>(*I);
+			if (!min_save && only_segments==false)
+			{
+				file << "BP"<< " ";
+				file << *bp << endl;
+			}
+			while(II != axis_ls.end())
+			{
+				Axis<TS,BUD> *axis = *II;	
+				SaveAxis(*axis, file, only_segments);			 
+				II++;	
+			}
+			if (!min_save && only_segments==false)
+				file << "BP_END"<< endl;
+		}
+
+     if (Bud<TS, BUD>* mybud = dynamic_cast<Bud<TS, BUD>*>(*I))
+		{
+			Bud<TS, BUD>* bud = dynamic_cast<Bud<TS, BUD>*>(*I);
+			if(!min_save && only_segments==false)
+			{
+				file << "BUD"<< " ";
+				file << *bud << endl;
+			}
+		}
+		
+      I++;
+    }
+	if (!min_save && only_segments==false)
+		file << "AXIS_END"<< endl;
+}
+
+
+
+
+template <class TS, class BUD>
+LGMdouble& TreeHeight<TS,BUD>::operator()(LGMdouble &max_height, TreeCompartment<TS,BUD>* tc)const
+{
+	if (TreeSegment<TS,BUD>* ts = dynamic_cast<TreeSegment<TS,BUD>*>(tc))
+	{
+		Point p = GetPoint(*ts);
+		LGMdouble length = GetValue(*ts, L);
+		PositionVector dir = GetDirection(*ts);
+		dir.normalize;
+
+		LGMdouble h = p.getZ() + dir.getZ()*length;
+		if (h> max_height)
+			max_height = h;
+	}
+	return max_height;
+}
+
+
+
+
 }//closing namespace Lignum
 
 #endif

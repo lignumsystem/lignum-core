@@ -9,8 +9,7 @@ extern float minLimitForSecBud[];
 
 extern ofstream file_out_pl;
 extern ParametricCurve nol_fun;
-
-//extern LGMdouble wSum_Lambda0; // = 0.0;
+extern LGMdouble wSum_Lambda0; // = 0.0;
 
 
 template <class TS, class BUD, class F>
@@ -18,14 +17,14 @@ bool Growth(Tree<TS,BUD>& tree, F& f)
 {	
 	//Structural growth possible only if photosynthesis > respiration
 
-	LGMdouble photo = GetValue(tree, TreeP);
-	LGMdouble respi = GetValue(tree, TreeM);
+	LGMdouble photo = GetValue(tree, P);
+	LGMdouble respi = GetValue(tree, M);
 	
 	LGMdouble P_avail = photo - respi;
 
 	if(!(P_avail > 0.0))
 	{
-	  //MessageBox(NULL, "  photosynthesis =< respiration " , NULL, NULL);
+		MessageBox(NULL, "  photosynthesis =< respiration " , NULL, NULL);
 		return false;
 	}
 	
@@ -98,7 +97,11 @@ bool GrowthOfPineTree<TS,BUD>::operator()(Tree<TS,BUD>& tree)
 	AdjustDiameterCfGrowth<TS,BUD> adDiamGrowth; 
 	AsIni = AccumulateDown(tree, AsIni, adDiamGrowth);
   
-	
+	//Lasketaan kasvuenergia kun lambda = 0
+	LGMdouble identity = 0.0;
+	CollectDWAfterGrowth<TS,BUD> collectDW;
+	wSum_Lambda0 = Accumulate(tree,  identity, collectDW);
+
 
 	Axis<TS,BUD>& main_stem = GetAxis(tree);
 
@@ -127,6 +130,10 @@ bool GrowthOfHwTree<TS,BUD>::operator()(Tree<TS,BUD>& tree)
 	AdjustDiameterHwGrowth<TS,BUD> adDiamGrowth; 
 	AsIni = AccumulateDown(tree, AsIni, adDiamGrowth);
   
+	//Lasketaan kasvuenergia kun lambda = 0
+	LGMdouble identity = 0.0;
+	CollectDWAfterGrowth<TS,BUD> collectDW;
+	wSum_Lambda0 = Accumulate(tree,  identity, collectDW);
 
 	
 	Axis<TS,BUD>& main_stem = GetAxis(tree);
@@ -162,9 +169,18 @@ bool GrowthOfWhiteBirch<TS,BUD>::operator()(Tree<TS,BUD>& tree)
 	AdjustDiameterHwGrowth<TS,BUD> adDiamGrowth; 	
 	AsIni = AccumulateDown(tree, AsIni, adDiamGrowth);
 
-	
-	LGMdouble photo = GetValue(tree, TreeP);
-	LGMdouble respi = GetValue(tree, TreeM);
+	//Lasketaan kasvuenergia kun lambda = 0
+	LGMdouble identity = 0.0;
+	CollectDWAfterGrowth<TS,BUD> collectDW;
+	wSum_Lambda0 = Accumulate(tree,  identity, collectDW);
+
+/*
+	file_out_pl.open("paksuusdebug.txt");
+	file_out_pl << "edellisen kierroksen lambda " << GetValue(tree, lambda) << endl;
+	file_out_pl << "KULUNUT KASVUENERGIA " << wSum_Lambda0 << endl;
+	*/
+	LGMdouble photo = GetValue(tree, P);
+	LGMdouble respi = GetValue(tree, M);
 	LGMdouble P_avail = photo - respi;
 
 		
@@ -182,7 +198,18 @@ bool GrowthOfWhiteBirch<TS,BUD>::operator()(Tree<TS,BUD>& tree)
 	AddWhiteBirchSegments<TS,BUD> functor;
 	PropagateUp(tree, init, functor);
 
-	
+	/*
+	file_out_pl << "Photos " << photo << endl;
+	file_out_pl << "respi  " << respi << endl;
+	file_out_pl << "Energiaa kasvuun " << (P_avail - wSum_Lambda0) << endl;
+		
+	file_out_pl.close();
+*/
+	//WinExec("notepad paksuusdebug.txt", SW_SHOW);
+	//Sleep(200);
+
+	//WinExec("del paksuusdebug.txt", SW_SHOW);
+
 	return true;
 }
 
@@ -225,7 +252,7 @@ void StructuralPineGrowth(Axis<TS,BUD> &ax, const ParametricCurve& bud_fun, Tree
 
 		LGMdouble lda = GetValue(tree, lambda);
 
-		//ASSERT(lda>0);
+		ASSERT(lda>0);
 
 		Firmament& f = GetFirmament(tree);
 		LGMdouble B = f.diffuseBallSensor();
@@ -243,14 +270,22 @@ void StructuralPineGrowth(Axis<TS,BUD> &ax, const ParametricCurve& bud_fun, Tree
 			LGMdouble omeg = GetValue(*bud, omega);
 
 			LGMdouble _q = GetValue(tree, q);
-			LGMdouble f_l = 1.1* i_p - 0.1;
+			
+			Tree<TS,BUD> &tree = GetTree(*treesegment);
+			ParametricCurve doi_fun = tree.tf.ip;
+			
+			if (i_p < 0.1)
+				i_p = 0.1;
+
+			LGMdouble f_l = doi_fun(ip); 
+				//**f_l = 1.1* i_p - 0.1;
 			LGMdouble f_w = 1 - (omeg-1) * _q;
 
 			if (f_w < 0)
 				f_w = 0.0;
 
-			if (f_l < 0)
-				f_l = 0.0;
+			if (f_l < 0.01)
+				f_l = 0.01;
 
 			LGMdouble l_r = GetValue(tree, lr);
 			LGMdouble a_f = GetValue(tree, af);
@@ -277,11 +312,11 @@ void StructuralPineGrowth(Axis<TS,BUD> &ax, const ParametricCurve& bud_fun, Tree
 			SetValue(*ts, Rh, R_h);
 			
 
-			//ASSERT(GetSapwoodArea(*ts) >= 0);
+			ASSERT(GetSapwoodArea(*ts) >= 0);
 
 			InsertTreeCompartmentSecondLast(ax, ts);
 			
-			Point p = point + (Point)posvec;
+			Point p = point + posvec;
 			bp = new BranchingPoint<TS,BUD>(p, posvec, &tree);	
 			
 			PositionVector buddir[10];
@@ -364,18 +399,21 @@ void StructuralPineGrowth(Axis<TS,BUD> &ax, const ParametricCurve& bud_fun, Tree
 template <class TS, class BUD>
 TreeCompartment<TS,BUD>* FoliageLossOfPineTree<TS,BUD>::operator()(TreeCompartment<TS,BUD>* tc)const
 {
+	
 	if (TreeSegment<TS,BUD>* tts = dynamic_cast<TreeSegment<TS,BUD>*>(tc))
 	{ 
 		if (CfTreeSegment<TS,BUD>* cfts = dynamic_cast<CfTreeSegment<TS,BUD>*>(tts))
 		{
+			
+
 			LGMdouble foliage_mass = GetValue(*cfts, Wf); 
 			int ag = GetValue(*cfts, age);
 			if (foliage_mass > 0 && ag>0)
-			{		
+			{
 				LGMdouble pre = 1.0;
 				LGMdouble next = 1.0;
-				pre = doi_fun(ag-1);
-				next = doi_fun(ag);
+				pre = fol_mor(ag-1);
+				next = fol_mor(ag);
 
 				foliage_mass = foliage_mass * next/pre;
 				SetValue(*cfts, Wf, foliage_mass); 
@@ -506,7 +544,7 @@ MotherInfo& AddSugarMapleSegments<TS,BUD>::operator()(MotherInfo& mi, TreeCompar
 	
 		LGMdouble i_p = I / B;
 		
-		//ASSERT(i_p>0);
+		ASSERT(i_p>0);
 
 		LGMdouble omeg = GetValue(*bud, omega);
 
@@ -566,10 +604,10 @@ MotherInfo& AddSugarMapleSegments<TS,BUD>::operator()(MotherInfo& mi, TreeCompar
 			}
 
 			LGMdouble sum = 0.0;
-			for (int i=0; i<number_of_segments; i++)
+			for (i=0; i<number_of_segments; i++)
 				sum = sum + odds[i];
 			sum = sum / number_of_segments;
-			for (int i=0; i<number_of_segments; i++)
+			for (i=0; i<number_of_segments; i++)
 				odds[i] = odds[i] / sum;
 		}
 	
@@ -610,9 +648,9 @@ MotherInfo& AddSugarMapleSegments<TS,BUD>::operator()(MotherInfo& mi, TreeCompar
 		PositionVector normal(rand()%100, rand()%100, 200);
 		normal.normalize();
 
-		BroadLeaf *leaf1 = new BroadLeaf(sf_p, v, dof_p, number_of_regions, Petiole((Point)pet_s,(Point)pet_e1), 
+		BroadLeaf<Ellipsis> *leaf1 = new BroadLeaf<Ellipsis>(sf_p, v, dof_p, number_of_regions, Petiole((Point)pet_s,(Point)pet_e1), 
 											normal, Ellipsis(ellipsis_a, ellipsis_b));
-		BroadLeaf *leaf2 = new BroadLeaf(sf_p, v, dof_p, number_of_regions, Petiole((Point)pet_s,(Point)pet_e2), 
+		BroadLeaf<Ellipsis> *leaf2 = new BroadLeaf<Ellipsis>(sf_p, v, dof_p, number_of_regions, Petiole((Point)pet_s,(Point)pet_e2), 
 											normal, Ellipsis(ellipsis_a, ellipsis_b));
 		SetValue(*leaf1, sf, 28);
 		SetValue(*leaf2, sf, 28);	
@@ -830,10 +868,10 @@ MotherInfo& AddWhiteBirchSegments<TS,BUD>::operator()(MotherInfo& mi, TreeCompar
 			}
 
 			LGMdouble sum = 0.0;
-			for (int i=0; i<number_of_segments; i++)
+			for (i=0; i<number_of_segments; i++)
 				sum = sum + odds[i];
 			sum = sum / number_of_segments;
-			for (int i=0; i<number_of_segments; i++)
+			for (i=0; i<number_of_segments; i++)
 				odds[i] = odds[i] / sum;
 		}
 		
@@ -905,7 +943,7 @@ MotherInfo& AddWhiteBirchSegments<TS,BUD>::operator()(MotherInfo& mi, TreeCompar
 			PositionVector normal(rand()%100, rand()%100, 200);
 			normal.normalize();
 
-			BroadLeaf *leaf1 = new BroadLeaf(sf_p, v, dof_p, number_of_regions, Petiole((Point)pet_start,(Point)pet_end), 
+			BroadLeaf<Ellipsis> *leaf1 = new BroadLeaf<Ellipsis>(sf_p, v, dof_p, number_of_regions, Petiole((Point)pet_start,(Point)pet_end), 
 											normal, Ellipsis(ellipsis_a, ellipsis_b));
 		
 			SetValue(*leaf1, sf, 28); // GetValue(tree, sf));  ///**** onko sama.. sf ja SLA??
@@ -968,7 +1006,7 @@ MotherInfo& AddWhiteBirchSegments<TS,BUD>::operator()(MotherInfo& mi, TreeCompar
 		#ifdef _MSC_VER
 		ASSERT(R_h >= 0);
 		#endif
-		for(int i=0; i<segments.size(); i++)
+		for(i=0; i<segments.size(); i++)
 		{
 			SetValue(*segments[i], R, radius);
 			SetValue(*segments[i], Rh, R_h);

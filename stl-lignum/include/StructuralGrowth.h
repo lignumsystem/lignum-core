@@ -1,7 +1,7 @@
 #ifndef STRUCTURALGROWTH_H
 #define STRUCTURALGROWTH_H
 
-
+#include <GCTree.h>
 
 namespace Lignum{
 

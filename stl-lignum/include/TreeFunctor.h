@@ -46,6 +46,9 @@ namespace Lignum{
       sum_br_len = 0.0;
       sum_br_len_d = 0.0;
 
+	  sum_br_As = 0.0;
+      sum_br_Ac = 0.0;
+
     }
 
     TreeDataStruct& operator += (const TreeDataStruct& s) {
@@ -88,6 +91,8 @@ namespace Lignum{
     LGMdouble sum_Whw;         // Heartwood (in all segments)
     LGMdouble sum_Qabs;         // Absorbed radiation
     LGMdouble sum_Qin;         // Incoming radiation
+	LGMdouble sum_br_As;
+    LGMdouble sum_br_Ac; 
     int num_buds;
     int num_segments;
     LGMdouble height;
@@ -103,6 +108,8 @@ namespace Lignum{
     std::vector<LGMdouble> taper_radhw;
     std::vector<LGMdouble> mean_brl;
     std::vector<LGMdouble> mean_br_h;
+
+	std::vector<LGMdouble> taper_radh;
   };
 
 
@@ -234,13 +241,7 @@ namespace Lignum{
 
 
 
-  template <class TS,class BUD>
-    class TreeHeight
-  {
-  public:
-    LGMdouble& operator ()(LGMdouble& max_height, TreeCompartment<TS,BUD>* tc)const;
   
-  };
 
 
 
@@ -283,6 +284,92 @@ namespace Lignum{
     LGMdouble& operator()(LGMdouble& foliage, TreeCompartment<TS,BUD>* tc)const;
   };
 
+
+//cvs update: LignumWB:n käytössä olevat funktorit
+
+class InfoStruct
+{
+public:
+	
+
+	int age;
+	LGMdouble sum_QinNA;
+	LGMdouble sum_QabsNA;
+	LGMdouble sum_Wf;
+	LGMdouble sum_Qabs;
+	LGMdouble sum_Qin;
+	LGMdouble sum_needle_area;
+	int num_buds;
+	int num_segments;
+	LGMdouble height;
+	LGMdouble bottom_rad;
+	std::vector<LGMdouble> taper_rad;
+	std::vector<LGMdouble> taper_hei;
+};
+
+
+
+template <class TS, class BUD>
+class SetOmega
+{
+public:
+	int& operator()(int& oomega, TreeCompartment<TS,BUD>* tc)const;
+};
+
+
+
+template <class TS,class BUD>
+class TreeInfo
+{ 
+public:
+	InfoStruct& operator()(InfoStruct &stru, TreeCompartment<TS,BUD>* tc)const;
+};
+
+
+
+template <class TS,class BUD>
+class TreePartInfo
+{ 
+public:
+	InfoStruct& operator()(InfoStruct &stru, TreeCompartment<TS,BUD>* tc)const;
+	float maxh;
+	float minh;
+};
+
+
+
+template <class TS, class BUD >
+void SaveLeafInfo(Axis<TS,BUD> &ax, ofstream& file);
+
+
+template <class TS, class BUD>
+void SaveTree(Axis<TS,BUD> &tr, CString file_name, CString treetype);
+
+
+template <class TS, class BUD>
+void WriteTreeInformation(Tree<TS,BUD>&  tr, ofstream& file);
+
+
+
+
+template <class TS, class BUD>
+  class PrintTreeInformationToFile {
+  public:
+  void operator() (Tree<TS,BUD>&  tr, ostream& os);
+};
+
+
+template <class TS, class BUD>
+void SaveAxis(Axis<TS,BUD> &ax, ofstream& file, bool only_segents);
+
+
+template <class TS,class BUD>
+class TreeHeight
+{
+public:
+  LGMdouble& operator ()(LGMdouble& max_height, TreeCompartment<TS,BUD>* tc)const;
+  
+};
 
 
 }//closing namespace Lignum

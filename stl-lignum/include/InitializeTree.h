@@ -10,6 +10,10 @@
 using namespace std;
 using namespace cxxadt;
 
+
+#ifdef _MSC_VER  //cvs update
+#else
+
 namespace Lignum{
   //MapParameterType maps name of the parameter to its enumeration.
   //The class can be instantiated with different enumerations 
@@ -46,7 +50,8 @@ namespace Lignum{
       return lgmpd.find(l);
     }
 
-  template <class TS, class BUD = DefaultBud<TS> >
+	
+  template <class TS, class BUD=DefaultBud<TS> >
     class InitializeTree{
       public:
       InitializeTree(const string& file, const LGMVERBOSE verbose = QUIET);
@@ -57,8 +62,10 @@ namespace Lignum{
       MapParameterType<LGMTD> maplgmtd; //map transit variable to LGMTD enumeration
       LGMVERBOSE verbose;   //echo intialiazation process and its result
     };
+
 }//closing namespace Lignum
   
 #include <InitializeTreeI.h>
 
+#endif
 #endif
