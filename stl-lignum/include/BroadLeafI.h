@@ -125,7 +125,7 @@ LGMdouble SetValue(BroadLeaf<SHAPE>& bl, const LGMAD name, const LGMdouble value
 }
 
 template <class SHAPE>  
-const Point& GetCenterPoint(const BroadLeaf<SHAPE>& bl)
+const Point GetCenterPoint(const BroadLeaf<SHAPE>& bl)
 {
   return bl.bla.shape.getCenterPoint();
 }

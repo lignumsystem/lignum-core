@@ -54,7 +54,7 @@ class BroadLeaf{
 			    const LGMdouble value);
 
   template <class S>
-  friend const Point& GetCenterPoint(const BroadLeaf<S>& bl);
+  friend const Point GetCenterPoint(const BroadLeaf<S>& bl);
 
   template <class S>
   friend void SetCenterPoint(BroadLeaf<S>& bl, const Point& p);
