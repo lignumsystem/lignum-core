@@ -59,10 +59,10 @@ BroadLeafAttributes::BroadLeafAttributes(double sf1, double tauL1,
   leaf_normal.normalize();
 }
 
-BLD GetValue(const BroadLeaf& bl, const BLA name)
+BLD GetValue(const BroadLeaf& bl, const LGMAD name)
 {
 
-  if (name == Larea)
+  if (name == A)
     return  bl.bla.shape.getArea();
 
   if (name == dof)
@@ -83,14 +83,14 @@ BLD GetValue(const BroadLeaf& bl, const BLA name)
   else if (name == LM)
     return  bl.bla.M;
   
-  else if (name == LQabs)
+  else if (name == Qabs)
     return  bl.bla.Qabs;
   
-  else if (name == LQin)
+  else if (name == Qin)
     return  bl.bla.Qin;
 
   else if (name == LWf)
-    return  bl.bla.lw*GetValue(bl,Larea);
+    return  bl.bla.lw*GetValue(bl,A);
   else
     cout << "BroadLeaf unknown attribute: " << name << " returning 0.0" << endl;
  
@@ -98,11 +98,11 @@ BLD GetValue(const BroadLeaf& bl, const BLA name)
 }
 
 
-BLD SetValue(BroadLeaf& bl, const BLA name, const BLD value)
+BLD SetValue(BroadLeaf& bl, const LGMAD name, const BLD value)
 {
   BLD old_value= GetValue(bl,name);
 
-  if (name == Larea)
+  if (name == A)
     bl.bla.shape.setArea(value);
 
   if (name == dof)
@@ -123,10 +123,10 @@ BLD SetValue(BroadLeaf& bl, const BLA name, const BLD value)
   else if (name == LM)
     bl.bla.M = value;
   
-  else if (name == LQabs)
+  else if (name == Qabs)
     bl.bla.Qabs = value;
   
-  else if (name == LQin)
+  else if (name == Qin)
     bl.bla.Qin = value;
 
   else 

@@ -80,7 +80,7 @@ template <class TS,class BUD>
 TP Tree<TS,BUD>::CountFlow(TreeSegment<TS,BUD> &in, TreeSegment<TS,BUD> &out)
 
 {
-  TP ar = GetValue(out, area);
+  TP ar = GetValue(out, A);
   TP le = GetValue(out, L);
   TP he = GetValue(in, Hm) - GetValue(out, Hm);
 
@@ -130,7 +130,7 @@ void InitializeTree(Tree<TS,BUD>& tree, const CString& meta_file)
       SetValue(tree,lambda,p);
     else{
       CString str = name.getValue();
-      map<const char*,TPD,cmpstr>::iterator tpd = maptpd.tpd.find(str);
+      map<const char*,LGMPD,cmpstr>::iterator tpd = maptpd.tpd.find(str);
       SetValue(tree,(*tpd).second,p);
     }
     name = lex.getToken();
@@ -156,7 +156,7 @@ void InitializeTree(Tree<TS,BUD>& tree, const CString& meta_file)
 
 //Get a parameter value 
 template <class TS,class BUD>
-TP GetValue(const Tree<TS,BUD>& tree, const TPD name)
+TP GetValue(const Tree<TS,BUD>& tree, const LGMPD name)
 {
   if (name == af)
     return tree.tp.af;
@@ -209,7 +209,7 @@ TP GetValue(const Tree<TS,BUD>& tree, const TPD name)
 
 //Change a parameter value, return the old value
 template <class TS,class BUD>
-TP SetValue(Tree<TS,BUD>& tree, const TPD name, const TP value)
+TP SetValue(Tree<TS,BUD>& tree, const LGMPD name, const TP value)
 {
   TP old_value = GetValue(tree,name);
 
@@ -263,7 +263,7 @@ TP SetValue(Tree<TS,BUD>& tree, const TPD name, const TP value)
 }
 
 template <class TS,class BUD>
-TP GetValue(const Tree<TS,BUD>& tree, const TTD name)
+TP GetValue(const Tree<TS,BUD>& tree, const LGMTD name)
 {
   if (name == lambda)
     return tree.ttp.lambda;
@@ -277,7 +277,7 @@ TP GetValue(const Tree<TS,BUD>& tree, const TTD name)
 }
 
 template <class TS,class BUD>
-TP SetValue(Tree<TS,BUD>& tree, const TTD name, const TP value)
+TP SetValue(Tree<TS,BUD>& tree, const LGMTD name, const TP value)
 {
   TP old_value = GetValue(tree,name);
   
@@ -291,10 +291,12 @@ TP SetValue(Tree<TS,BUD>& tree, const TTD name, const TP value)
 }
 
 template <class TS,class BUD>
-TP GetValue(const Tree<TS,BUD>& tree, const TAD name)
+TP GetValue(const Tree<TS,BUD>& tree, const LGMAD name)
 { 
-  
-  if (name == lb)
+  if (name == age)
+    return tree.ta.age;
+
+  else if (name == lb)
     return tree.ta.lb;
 
   else if (name == P)
@@ -315,22 +317,12 @@ TP GetValue(const Tree<TS,BUD>& tree, const TAD name)
 }
 
 template <class TS,class BUD>
-YEAR GetValue(const Tree<TS,BUD>& tree, const TAI name)
-{
-  if (name == age)
-    return  tree.ta.age;
-  else{
-     cerr << "GetValue unknown attribute: " << name << " returning 0.0"
-	  << endl;
-  }
-
-  return 0;
-}
-
-template <class TS,class BUD>
-TP SetValue(Tree<TS,BUD>& tree, const TAD name, const TP value)
+TP SetValue(Tree<TS,BUD>& tree, const LGMAD name, const TP value)
 {
   TP old_value = GetValue(tree,name);
+
+  if (name == age)
+    return tree.ta.lb = value;
 
   if (name == lb)
     tree.ta.lb = value;
@@ -352,20 +344,6 @@ TP SetValue(Tree<TS,BUD>& tree, const TAD name, const TP value)
   return old_value;
 }
   
-template <class TS,class BUD>
-YEAR SetValue(Tree<TS,BUD>& tree, const TAI name, const YEAR value)
-{
-  YEAR old_value = GetValue(tree,name);
-
-  if (name == age)
-    tree.ta.age = value;
-  else{
-    cerr << "SetValue unknown attribute: " << name << " returning " 
-	 << old_value << endl;
-  }
-
-  return old_value;
-}
 
 template <class TS,class BUD>
 Axis<TS,BUD>& GetAxis(Tree<TS,BUD>& t)

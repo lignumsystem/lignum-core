@@ -54,7 +54,7 @@ public:
 class TreeAttributes{
 public:
   TreeAttributes();
-  YEAR age;              //Age of the tree
+  double age;            //Age of the tree
   METER lb;              //Longest branch (as vertical projection from the main stem)
   KGC P;                 //Photosynthesis of the tree during the time step
   KGC M;                 //Respiration of the tree during the time step
@@ -93,14 +93,12 @@ class Tree: public TreeCompartment<TS,BUD>{
   friend Axis<TS,BUD>& GetAxis(Tree<TS,BUD>& t);
   friend TP GetProduction(const Tree<TS,BUD>& t);
   friend void InitializeTree(Tree<TS,BUD>& tree, const CString& meta_file);
-  friend TP GetValue(const Tree<TS,BUD>& tree, const TAD name);
-  friend YEAR GetValue(const Tree<TS,BUD>& tree, const TAI name);
-  friend TP SetValue(Tree<TS,BUD>& tree, const TAD name, const TP value);
-  friend YEAR SetValue(Tree<TS,BUD>& tree, const TAI name, const YEAR value);
-  friend TP GetValue(const Tree<TS,BUD>& tree, const TPD name);
-  friend TP SetValue(Tree<TS,BUD>& tree, const TPD  name, const TP value);
-  friend TP GetValue(const Tree<TS,BUD>& tree, const TTD name);
-  friend TP SetValue(Tree<TS,BUD>& tree, const TTD name, const TP value);
+  friend TP GetValue(const Tree<TS,BUD>& tree, const LGMAD name);
+  friend TP SetValue(Tree<TS,BUD>& tree, const LGMAD name, const TP value);
+  friend TP GetValue(const Tree<TS,BUD>& tree, const LGMPD name);
+  friend TP SetValue(Tree<TS,BUD>& tree, const LGMPD  name, const TP value);
+  friend TP GetValue(const Tree<TS,BUD>& tree, const LGMTD name);
+  friend TP SetValue(Tree<TS,BUD>& tree, const LGMTD name, const TP value);
   friend CString GetTreeInitializationFile(Tree<TS,BUD>& tree);
 public:
   Tree();

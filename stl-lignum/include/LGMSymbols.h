@@ -7,23 +7,20 @@ using namespace std;
 
 namespace Lignum{
 
-//Broad Leaf Attributes
-enum BLA {Larea,dof,lw,sf,tauL,LP,LM,LQabs,LQin,LWf}; 
 
 // Tree Attribute Double, Wm lisätty..Wr pois
-enum TAD {area,fin,fout,H,Hm,ip,lb,L,M,omega,P,Pr,Qin,Qabs,R,Rf,Rn,Wf,Wm,Ws};  
+enum LGMAD {A,age,dof,fin,fout,H,Hm,ip,lb,LM,LP,LWf,L,lw,M,omega,P,Pr,\
+            Qin,Qabs,R,Rf,Rn,sf,sw,tauL,Wf,Wm,Ws};  
 
-//TreeAttribute Integer
-enum TAI {age};
 
 //Tree Attribute STATUS
-enum TAS {state};
+enum LGMAS {state};
 
 //Tree Parameter Double
-enum TPD {af,ar,lr,mf,mr,ms,na,nl,pr,q,sr,ss,rho,xi}; 
+enum LGMPD {af,ar,lr,mf,mr,ms,na,nl,pr,q,sr,ss,rho,xi}; 
 
 //Tree Transit Variable Double
-enum TTD {lambda, g, eta, Er, k, rhow}; 
+enum LGMTD {lambda, g, eta, Er, k, rhow}; 
 
 class cmpstr{
 public:
@@ -33,7 +30,7 @@ public:
 class MapTPD{
 public:
   MapTPD();
-  map<const char *,TPD,cmpstr> tpd;
+  map<const char *,LGMPD,cmpstr> tpd;
 };
 
 }//closing namespace Lignum

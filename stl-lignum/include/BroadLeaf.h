@@ -46,8 +46,8 @@ public:
 
 
 class BroadLeaf{
-  friend BLD GetValue(const BroadLeaf& bl, const BLA name);
-  friend BLD SetValue(BroadLeaf& bl, const BLA name, const BLD value);
+  friend BLD GetValue(const BroadLeaf& bl, const LGMAD name);
+  friend BLD SetValue(BroadLeaf& bl, const LGMAD name, const BLD value);
   friend Point<> GetCenterPoint(const BroadLeaf& bl);
   friend void SetCenterPoint(BroadLeaf& bl, const Point<>& p);
   friend PositionVector GetLeafNormal(const BroadLeaf& bl);

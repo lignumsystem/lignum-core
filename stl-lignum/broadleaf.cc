@@ -54,7 +54,7 @@ int main(int argc, char *argv[])
     InitializeTree(hw_tree,clarg);
 
   cout << GetCenterPoint(bl) << endl;
-  cout << GetValue(bl,Larea) << endl;
+  cout << GetValue(bl,A) << endl;
 }
 
 

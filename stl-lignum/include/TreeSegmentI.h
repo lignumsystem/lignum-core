@@ -83,12 +83,15 @@ KGC GetSapwoodMass(const TreeSegment<TS,BUD>& ts)
 }
 
 template <class TS,class BUD>
-TP GetValue(const TreeSegment<TS,BUD>& ts, const TAD name)
+TP GetValue(const TreeSegment<TS,BUD>& ts, const LGMAD name)
 {
   TP unknown_value = 0.0;
 
-  if (name == area)
+  if (name == A)
     return PI_VALUE*pow(ts.tsa.R,2.0);
+
+  else if (name == age)
+    return ts.tsa.age;
 
   else if (name == fin)
     return ts.tsa.fin;
@@ -147,26 +150,16 @@ TP GetValue(const TreeSegment<TS,BUD>& ts, const TAD name)
   return unknown_value;
 }
 
-template <class TS,class BUD>
-YEAR GetValue(const TreeSegment<TS,BUD>& ts,const TAI name)
-{
-  int unknown_value = 0;
-
-  if (name == age)
-    return ts.tsa.age;
-
-  else
-     cout << "Unknown attribute returning" << unknown_value << endl;
-
-  return unknown_value;
-}
 
 template <class TS,class BUD>
-TP SetValue(TreeSegment<TS,BUD>& ts, const TAD name, const TP value)
+TP SetValue(TreeSegment<TS,BUD>& ts, const LGMAD name, const TP value)
 {
   TP old_value = GetValue(ts,name);
   
-  if (name == L)
+  if (name == age)
+    ts.tsa.age = value;
+
+  else if (name == L)
     ts.tsa.L = value;
   
   else if (name == fin)
@@ -217,17 +210,6 @@ TP SetValue(TreeSegment<TS,BUD>& ts, const TAD name, const TP value)
   return old_value;
 }
 
-template <class TS,class BUD>
-YEAR SetValue(TreeSegment<TS,BUD>& ts, const TAI name, const YEAR  value)
-{
-  YEAR old_value = GetValue(ts,name);
-
-  if (name == age)
-    ts.tsa.age = value;
-  else
-    cerr << "TreeSegment: Unknown attribute " << name << endl;
-  return old_value;
-}
 
 }//close namespace Lignum
 

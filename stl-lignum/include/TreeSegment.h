@@ -14,7 +14,7 @@ using namespace cxxadt;
 class TreeSegmentAttributes{
 public:
   TreeSegmentAttributes();
-  YEAR age;               //Age of the tree segment
+  double age;               //Age of the tree segment
   METER L;                //Length of the tree segment
   KGC M;                  //Respiration of the tree segment during the time step
   TP omega;               //Gravelius order
@@ -38,11 +38,8 @@ template <class TS,class BUD=DefaultBud<TS> >
 class TreeSegment: public TreeCompartment<TS,BUD>{ 
   friend list<METER> GetAnnualRings(const TreeSegment<TS,BUD>& ts);
   friend KGC GetSapwoodMass(const TreeSegment<TS,BUD>& ts);
-  friend TP GetValue(const TreeSegment<TS,BUD>& ts, const TAD name);
-  friend YEAR GetValue(const TreeSegment<TS,BUD>& ts, const TAI name);
-  friend TP SetValue(TreeSegment<TS,BUD>& ts, const TAD name, const TP value);
-  friend YEAR SetValue(TreeSegment<TS,BUD>& ts, const TAI name, 
-				const YEAR  value);
+  friend TP GetValue(const TreeSegment<TS,BUD>& ts, const LGMAD name);
+  friend TP SetValue(TreeSegment<TS,BUD>& ts, const LGMAD name, const TP value);
 public:
   TreeSegment();
   TreeSegment(const Point<METER>& p, const PositionVector& d, const TP go,

@@ -19,10 +19,10 @@ public:
 
 template <class TS,class BUD=DefaultBud<TS> >
 class Bud: public TreeCompartment<TS,BUD>{
-friend TP GetValue(const Bud<TS,BUD>& bud, const TAD name);
-friend TP SetValue(Bud<TS,BUD>& bud, const TAD name, const TP value);
-friend STATUS GetValue(const Bud<TS,BUD>& bud, const TAS name);
-friend STATUS SetValue(Bud<TS,BUD>& bud, const TAS name, const STATUS value);
+friend TP GetValue(const Bud<TS,BUD>& bud, const LGMAD name);
+friend TP SetValue(Bud<TS,BUD>& bud, const LGMAD name, const TP value);
+friend STATUS GetValue(const Bud<TS,BUD>& bud, const LGMAS name);
+friend STATUS SetValue(Bud<TS,BUD>& bud, const LGMAS name, const STATUS value);
 public:
   Bud();
   Bud(const Point<METER>& p, const PositionVector& d, const TP omega, Tree<TS,BUD>* tree);

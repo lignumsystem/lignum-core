@@ -45,7 +45,7 @@ BranchingPoint<TS,BUD>& Bud<TS,BUD>::createBranchingPoint()const
 }
 
 template <class TS,class BUD>   
-TP GetValue(const Bud<TS,BUD>& bud, const TAD name)
+TP GetValue(const Bud<TS,BUD>& bud, const LGMAD name)
 {
   if (name == omega)
     return bud.ba.omega;
@@ -62,7 +62,7 @@ TP GetValue(const Bud<TS,BUD>& bud, const TAD name)
 }
 
 template<class TS, class BUD>
-TP SetValue(Bud<TS,BUD>& bud, const TAD name, const TP value)
+TP SetValue(Bud<TS,BUD>& bud, const LGMAD name, const TP value)
 {
 
   TP old_value = GetValue(bud,name);
@@ -82,7 +82,7 @@ TP SetValue(Bud<TS,BUD>& bud, const TAD name, const TP value)
 }
 
 template<class TS, class BUD>
-STATUS GetValue(const Bud<TS,BUD>& bud, const TAS name)
+STATUS GetValue(const Bud<TS,BUD>& bud, const LGMAS name)
 {
   if (name == state)
     return bud.ba.state;
@@ -96,7 +96,7 @@ STATUS GetValue(const Bud<TS,BUD>& bud, const TAS name)
 }
 
 template <class TS,class BUD>    
-STATUS SetValue(Bud<TS,BUD>& bud, const TAS name, const STATUS value)
+STATUS SetValue(Bud<TS,BUD>& bud, const LGMAS name, const STATUS value)
 {
   STATUS old_value = GetValue(bud,name);
 

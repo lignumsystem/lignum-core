@@ -95,8 +95,9 @@ main.o: include/TreeCompartment.h include/TreeCompartmentI.h
 main.o: include/TreeFunctorI.h include/TreeMetaFileParser.h
 main.o: ../c++adt/include/Table.h ../c++adt/include/DList.h
 main.o: ../c++adt/include/DListElement.h ../c++adt/include/boolean.h
-main.o: ../c++adt/include/Lex.h include/RootSystem.h include/Bud.h
-main.o: include/BudI.h include/DefaultBud.h include/BranchingPoint.h
+main.o: ../c++adt/include/TableI.h ../c++adt/include/Lex.h
+main.o: include/RootSystem.h include/Bud.h include/BudI.h
+main.o: include/DefaultBud.h include/BranchingPoint.h
 main.o: include/BranchingPointI.h include/TreeSegment.h
 main.o: include/TreeSegmentI.h include/HwTreeSegment.h include/BroadLeaf.h
 main.o: ../c++adt/include/Ellipsis.h include/CfTreeSegment.h include/Axis.h
@@ -138,8 +139,9 @@ algorithms.o: include/TreeCompartment.h include/TreeCompartmentI.h
 algorithms.o: include/TreeFunctorI.h include/TreeMetaFileParser.h
 algorithms.o: ../c++adt/include/Table.h ../c++adt/include/DList.h
 algorithms.o: ../c++adt/include/DListElement.h ../c++adt/include/boolean.h
-algorithms.o: ../c++adt/include/Lex.h include/RootSystem.h include/Bud.h
-algorithms.o: include/BudI.h include/DefaultBud.h include/BranchingPoint.h
+algorithms.o: ../c++adt/include/TableI.h ../c++adt/include/Lex.h
+algorithms.o: include/RootSystem.h include/Bud.h include/BudI.h
+algorithms.o: include/DefaultBud.h include/BranchingPoint.h
 algorithms.o: include/BranchingPointI.h include/TreeSegment.h
 algorithms.o: include/TreeSegmentI.h include/HwTreeSegment.h
 algorithms.o: include/BroadLeaf.h ../c++adt/include/Ellipsis.h
@@ -182,8 +184,9 @@ broadleaf.o: include/TreeCompartment.h include/TreeCompartmentI.h
 broadleaf.o: include/TreeFunctorI.h include/TreeMetaFileParser.h
 broadleaf.o: ../c++adt/include/Table.h ../c++adt/include/DList.h
 broadleaf.o: ../c++adt/include/DListElement.h ../c++adt/include/boolean.h
-broadleaf.o: ../c++adt/include/Lex.h include/RootSystem.h include/Bud.h
-broadleaf.o: include/BudI.h include/DefaultBud.h include/BranchingPoint.h
+broadleaf.o: ../c++adt/include/TableI.h ../c++adt/include/Lex.h
+broadleaf.o: include/RootSystem.h include/Bud.h include/BudI.h
+broadleaf.o: include/DefaultBud.h include/BranchingPoint.h
 broadleaf.o: include/BranchingPointI.h include/TreeSegment.h
 broadleaf.o: include/TreeSegmentI.h include/HwTreeSegment.h
 broadleaf.o: include/BroadLeaf.h ../c++adt/include/Ellipsis.h
