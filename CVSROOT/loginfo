@@ -23,6 +23,7 @@
 ^file-reader  Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  mika.lehtonen@metla.fi
 ^converter  Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  mika.lehtonen@metla.fi 
 ^stl-lignum Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi mika.lehtonen@metla.fi eero.nikinmaa@helsinki.fi  c1344@er.uqam.ca mln52@mizzou.edu 
+^stl-voxelspace Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi mika.lehtonen@metla.fi 
 ^c\+\+adt  Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi mika.lehtonen@metla.fi eero.nikinmaa@helsinki.fi   c1344@er.uqam.ca mln52@mizzou.edu 
 ^Firmament Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi   mika.lehtonen@metla.fi eero.nikinmaa@helsinki.fi c1344@er.uqam.ca mln52@mizzou.edu 
 ^ScotsPine  Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  mika.lehtonen@metla.fi  
