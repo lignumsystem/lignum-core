@@ -53,22 +53,23 @@ functions to return  environmental information to the L  system in the
 GROGRA  program.    Once  implemented,  these   separate  programs  or
 predefined functions are easily used and reused.
 
-The  functionalities enhancing L system  languages make it possible to
-realize parts  of the  simulations using  general  purpose programming
+The functionalities  enhancing L system languages make  it possible to
+realize  parts of  the simulations  using general  purpose programming
 languages (e.g.  unit to unit interactions) that would be difficult to
-implement with the parallel rewriting semantics.   The design of L and
-L+C allows embedding of C++,  thus making such constructs unnecessary. 
+implement with the parallel rewriting  semantics.  The design of L and
+L+C allows embedding of  C++, thus making such constructs unnecessary.
 But note that the time spent in these environmental models is the time
-spent outside the   L system   formalism  with  some  general  purpose
+spent  outside  the  L  system  formalism with  some  general  purpose
 programming language.  Hence, complicated architectural tree and plant
-models, such as FSTM's, implemented using  L systems inevitably employ
-both an L system and general purpose  language parts.  LIGNUM combined
-with  L   language also contains  those   parts, although in different
-proportions than  models realized with L  system tools.  Therefore, as
-the quest goes on  to find optimal  formalisms and modelling paradigms
-to implement complicated plant and  tree models, our current  solution
-is to  mix   L systems,  general  purpose programming   languages  and
-programming librariesPITAISKO SELITTAA MITA NE OVAT?.
+models, such as FSTM's,  implemented using L systems inevitably employ
+both an L system and  general purpose language parts.  LIGNUM combined
+with  L language  also  contains those  parts,  although in  different
+proportions than  models realized with L system  tools.  Therefore, as
+the quest goes  on to find optimal formalisms  and modelling paradigms
+to implement  complicated plant and tree models,  our current solution
+is  to  mix  L  systems,  general purpose  programming  languages  and
+programming libraries implementing submodels such as radiation climate
+and soil properties..
  
 A  further challenge  to  tree  and plant  modelling  is to  implement
 source-sink  relationships  in architectural  tree  and plant  models.
@@ -85,8 +86,20 @@ A  hybrid  approach  utilizing  both  L systems  and  general  purpose
 languages  or other  means (e.g.   solvers of  differential equations)
 offers one alternative.
 
-It  would definitely  be an  interesting exercise  in itself  to study
-carefully  the  convergence  between  LIGNUM  and L  systems  and  the
+\citet{coates:03} suggest that linking  empirical studies to models is
+the  best way  to  provide  insight and  better  understanding of  the
+implications  of the  silvicultural strategies  and the  importance of
+structure  in  forest  stands.   For example  \citet{chantal:03}  have
+studied the early development, size  and morphology, of Scots pine and
+Norway spruce in an  experimental gap-edge environment with asymmetric
+distribution of  radiation. Such experimental work  to understand tree
+regeneration might benefit if the LIGNUM model was applied to describe
+the study  plots, the  gap-edge zones, size  of the gaps,  the spatial
+distribution  of seedlings, and  then based  on the  radiation climate
+simulate the sapling development.
+
+Finally, it would  definitely be an interesting exercise  in itself to
+study carefully the  convergence between LIGNUM and L  systems and the
 practical issues  involved by fully  implementing the model in  some L
 system  tool, say L+C  \citep{karwowski:02}.  Some  modelling efforts,
 especially  phenomena  involving single  or  directly connected  plant
