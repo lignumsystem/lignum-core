@@ -260,16 +260,17 @@ TreeCompartment<TS,BUD>* DrawNeedlesFunctor<TS,BUD>::operator()(TreeCompartment<
 
       //if a very short segment do not visualize foliage
       //it just eats up memory
-      if (GetValue(*cfts, Wf) > 0 && (GetValue(*cfts,L) > 0.01)
+      if (GetValue(*cfts, Wf) > R_EPSILON && (GetValue(*cfts,L) > 0.01))
 	{               
 	      
 	  glPushMatrix();
 	  glTranslatef(position.getX(), position.getY(), position.getZ());
 	  if (rot_angle > 0.01)
 	    glRotatef( rot_angle, rot_x, rot_y, 0);
-
+	  
 	  glDisable(GL_LIGHTING);
-	  draw_texfoliage_planes(length, radius, GetValue(*cfts, Wf), GetValue(*cfts, age));
+	  draw_texfoliage_planes(length, radius, GetValue(*cfts, Wf), 
+				 GetValue(*cfts, age));
 	  glEnable(GL_LIGHTING);
 	  glPopMatrix();
 	}                       
