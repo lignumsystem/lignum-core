@@ -7,8 +7,13 @@
 
 SRC= main.cc
 OBJ  = ${SRC:.cc=.o}
+
 LIBSRC= Turtle.cc
 LIBOBJ = ${LIBSRC:.cc=.o}
+
+BIRCHSRC = birch.cc
+BIRCHOBJ =  ${BIRCHSRC:.cc=.o}
+
 CCC = CC -64 -LANG:std
 
 #OPTIMIZE = -Ofast=ip28 -IPA
@@ -70,8 +75,8 @@ lignux:
 	make "CCC=g++" "CCCFLAGS=-c" "OPTIMIZE=-g" \
              "AR=ar"  "ARFLAGS=rv" "LIBD=lib32" l2lignum
 
-birch: birch.o l2c $(LIB1) $(LIB2) $(LIB3)  $(LIB4)  $(LIB5) $(LIB6)   
-	$(CCC)  -o $@ $(INCLUDE) $(OPTIMIZE) birch.o $(LIBFLAGS) $(LIBS)	
+birch:  l2c $(BIRCHOBJ) $(LIB1) $(LIB2) $(LIB3)  $(LIB4) $(LIB5) $(LIB6)   
+	$(CCC)  -o $@ $(INCLUDE) $(OPTIMIZE) $(BIRCHOBJ) $(LIBFLAGS) $(LIBS)
 
 gnubirch:
 	make "CCC=g++" "CCCFLAGS=-c" "OPTIMIZE=-g" \
@@ -105,7 +110,7 @@ changelog:
 	rm -rf ChangeLog
 	rcs2log . > ChangeLog
 clean:
-	rm -rf *.o $(LIBOBJ) Makedepend core ii_files
+	rm -rf *.o  Makedepend core ii_files
 distclean: clean
 	rm -rf  l2lignum $(LIB4) Makedepend
 	(cd ../../Graphics; make distclean)
@@ -117,5 +122,5 @@ distclean: clean
 depend:
 	(cd ../../Graphics; make "CCC=$(CCC)"  depend)
 	(cd ../L2C; make "CCC=$(CCC)"  depend)
-	$(CCC) -M $(INCLUDE) $(SRC)  > Makedepend
+	$(CCC) -M $(INCLUDE) $(SRC) $(LIBSRC) $(BIRCHSRC) > Makedepend
 
