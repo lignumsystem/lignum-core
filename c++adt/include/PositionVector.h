@@ -9,6 +9,8 @@
 using namespace std;
 
 class PositionVector{
+  friend double Dot(const PositionVector& pv1,const PositionVector& pv2);
+  friend PositionVector Cross(const PositionVector& pv1,const PositionVector& pv2);
 public:
   PositionVector();
   PositionVector(const double x, const double y, const double z);
