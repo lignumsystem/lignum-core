@@ -15,13 +15,13 @@ namespace cxxadt{
   }
 
   Ellipse::Ellipse(const PositionVector& petiole0,
-                  const PositionVector& normal0, 
-		  const double& semimajoraxis0,  
-                  const double& semiminoraxis0)
+		   const PositionVector& normal0, 
+		   const double& semimajoraxis0,  
+		   const double& semiminoraxis0)
     :normal(normal0),semimajoraxis(semimajoraxis0),
      semiminoraxis(semiminoraxis0)
   {
-    //x1u is (should be) in fact x1u()!
+    //x1u is (should be) in fact call to x1u()!
     PositionVector x1u(normal0.getZ(),0,-normal0.getX());
     x1u=x1u.normalize();
  
@@ -123,41 +123,47 @@ vector<Point>& Ellipse::getVertexVector(vector<Point>& points)const
 //This case  with the base point as the scaling center 
 
   double Ellipse::setArea(double area,  const Point& base){
+    
+    double areaold, areanew, scalcoef; 
+    double adbasex, adbasey, adbasez;
 
-   double areaold, areanew,
-         scalcoef; 
-   double adbasex, adbasey, adbasez;
-  
-   areaold=getArea();
-   areanew=area; 
+    //Set the scaling around the center point
+    setCenterPoint(base);
 
-   scalcoef=sqrt(areanew/areaold);
+    areaold=getArea();
+    areanew=area; 
 
-   adbasex= base.getX()*(1-scalcoef);
-   adbasey= base.getY()*(1-scalcoef);
-   adbasez= base.getZ()*(1-scalcoef);
+    scalcoef=sqrt(areanew/areaold);
 
-   vector<Point> points;
-   points.push_back(getSemimajorAxisPoint());
-   points.push_back(getSemiminorAxisPoint());
-   Point x,p;
+    adbasex= base.getX()*(1-scalcoef);
+    adbasey= base.getY()*(1-scalcoef);
+    adbasez= base.getZ()*(1-scalcoef);
 
-   for(int i=0; i< static_cast<int>(points.size()); i++){
-    p=(Point)points[i];
-    x.setX(p.getX() *scalcoef  + adbasex);
-    x.setY(p.getY() *scalcoef  + adbasey);
-    x.setZ(p.getZ() *scalcoef  + adbasez);
-    switch(i){
-     case 0:
-      setSemimajorAxis(getCenterPoint() || x);
-      break;
-     case 1:
-      setSemiminorAxis(getCenterPoint() || x);
-      break;
+    vector<Point> points;
+    points.push_back(getSemimajorAxisPoint());
+    points.push_back(getSemiminorAxisPoint());
+    Point x,p;
+
+    for(int i=0; i< static_cast<int>(points.size()); i++){
+      p=(Point)points[i];
+      x.setX(p.getX() *scalcoef  + adbasex);
+      x.setY(p.getY() *scalcoef  + adbasey);
+      x.setZ(p.getZ() *scalcoef  + adbasez);
+      switch(i){
+      case 0:
+	setSemimajorAxis(getCenterPoint() || x);
+	break;
+      case 1:
+	setSemiminorAxis(getCenterPoint() || x);
+	break;
+      };
     };
-   };
 
-   return getArea();
+    //Move  the scale  center (i.e.  the ellipse)  to the  new ellipse
+    //center
+    PositionVector from_base_to_center(x1u()*getSemimajorAxis());
+    center=Point((PositionVector)base+from_base_to_center);
+    return getArea();
   }
 
 
