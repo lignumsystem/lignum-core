@@ -12,15 +12,15 @@ namespace cxxadt{
 #define R_EPSILON 1.0e-20
 
 template <class T>
-inline T maximum(T a,T b)
+inline T maximum(T A, T B)
 {
-  (A > B) ? A : B;
+  return (A > B) ? A : B;
 }
 
 template <class T>
-inline T minimum(T a,T b)
+inline T minimum(T A, T B)
 {
-  (A < B) ? A : B;
+  return (A < B) ? A : B;
 }
 
 typedef double RADIAN;
