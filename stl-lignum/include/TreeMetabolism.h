@@ -21,16 +21,10 @@ class SumTreePhotosynthesis{
 public:
   LGMdouble operator () (LGMdouble& cumPh, TreeCompartment<TS,BUD>* tc)const
   {
-    if (CfTreeSegment<TS,BUD>* tts = dynamic_cast<CfTreeSegment<TS,BUD>*>(tc))
-	{
+    if (TreeSegment<TS,BUD>* tts = dynamic_cast<TreeSegment<TS,BUD>*>(tc)){
       LGMdouble PP = GetValue(*tts, P);
       cumPh += PP;
     }
-	else if (HwTreeSegment<TS,BUD>* tts = dynamic_cast<HwTreeSegment<TS,BUD>*>(tc))
-	{
-	  LGMdouble PP = GetValue(*tts, P);
-      cumPh += PP;
-	}
     return cumPh;
   }
 };
