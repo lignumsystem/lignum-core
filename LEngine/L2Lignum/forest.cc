@@ -3,7 +3,7 @@
 //Include the implementation of the tree segment and bud
 #include <MyTreeSegment.h>
 #include <MyBud.h>
-
+#include <VisualFunctor.h>
 
 //Impelements VisualizeLGMTree
 #include <OpenGLUnix.h>
@@ -23,45 +23,87 @@ namespace Pine{
 
 int main(int argc, char** argv)
 {
+  const int N = 10;
+  vector<Birch::LSystem<MyHwTreeSegment,MyHwBud,LGMAD,LGMdouble>*> birchLV(N);
+  vector<Tree<MyHwTreeSegment,MyHwBud>*> birchV(N);
+						 
+  vector<Pine::LSystem<MyCfTreeSegment,MyCfBud,LGMAD,LGMdouble>*> pineLV(N);
+  vector<Tree<MyCfTreeSegment,MyCfBud>*> pineV(N);
 
-  Birch::LSystem<MyHwTreeSegment,MyHwBud,LGMAD,LGMdouble> birchL;
-  Pine::LSystem<MyCfTreeSegment,MyCfBud,LGMAD,LGMdouble> pineL;
-  Tree<MyHwTreeSegment,MyHwBud> birch(Point(0,0,0),
-				      PositionVector(0,0,1.0));
-  
-  Tree<MyCfTreeSegment,MyCfBud> pine(Point(0.3,0.3,0),
-				     PositionVector(0,0,1.0));
-  birchL.start();
-  birchL.lstringToLignum(birch,1,LGMstatus);
-  for (int i=0; i < 5 ; i++)
-  {
-    cout << "Step: " << i << endl;    
-    ForEach(birch,DropAllLeaves<MyHwTreeSegment,MyHwBud>());
-    birchL.lignumToLstring(birch,1,LGMstatus);  
-    birchL.derive();
-    birchL.lstringToLignum(birch,1,LGMstatus);
-    vector<PositionVector> pv;
-    AccumulateDown(birch,pv,
-    		   AppendSequence<vector<PositionVector> >(),
-    		   CreateLeaves<MyHwTreeSegment,MyHwBud>(0.5,0.2,0.1));
+  for (int i = 0; i <  birchLV.size(); i++){
+    birchLV[i] = new Birch::LSystem<MyHwTreeSegment,MyHwBud,LGMAD,LGMdouble>();
+    pineLV[i] = new Pine::LSystem<MyCfTreeSegment,MyCfBud,LGMAD,LGMdouble>();
   }
-  birchL.end();  
 
-
-  pineL.start();
-  pineL.lstringToLignum(pine,1,LGMstatus);
-  for (int i=0; i < 5 ; i++)
-  {
-    cout << "Step: " << i << endl;    
-    pineL.lignumToLstring(pine,1,LGMstatus);  
-    pineL.derive();
-    pineL.lstringToLignum(pine,1,LGMstatus);
+  int x = 0; int y = 0;
+  for (int i = 0; i < N; i++){
+    pineV[i] = new Tree<MyCfTreeSegment,MyCfBud>(Point(x,y,0),
+						 PositionVector(0,0,1));
+    y+=2.0;
+    birchV[i] = new Tree<MyHwTreeSegment,MyHwBud>(Point(x,y,0),
+						  PositionVector(0,0,1));
+    x+=2;
+    if (y == 6)
+      y = 0;
+    cout << "i: " << i << endl;
   }
-  pineL.end();  
+
+  for (int i = 0; i <  birchLV.size(); i++){
+    cout << "pine i: " << i << endl;
+    pineLV[i]->start();
+    pineLV[i]->lstringToLignum(*pineV[i]);
+  }
+  for (int i = 0; i <  birchLV.size(); i++){
+    cout << "birch i: " << i << endl;
+    birchLV[i]->start();
+    birchLV[i]->lstringToLignum(*birchV[i]);
+  }
+
+
+  const int BDL = 9;
+  for (int s = 0; s < BDL; s++){
+    for (int i = 0; i <  birchLV.size(); i++){
+      cout << "Birch step: " << s << endl;    
+      ForEach(*(birchV[i]),DropAllLeaves<MyHwTreeSegment,MyHwBud>());
+      birchLV[i]->lignumToLstring(*(birchV[i]),1,LGMstatus);  
+      birchLV[i]->derive();
+      birchLV[i]->lstringToLignum(*(birchV[i]),1,LGMstatus);
+      vector<PositionVector> pv;
+      AccumulateDown(*(birchV[i]),pv,
+		     AppendSequence<vector<PositionVector> >(),
+		     CreateLeaves<MyHwTreeSegment,MyHwBud>(0.5,0.2,0.1));
+    }
+  }
+
+  const int PDL = 5;
+  for (int s = 0; s < PDL; s++){
+    for (int i = 0; i <  pineLV.size(); i++){
+      cout << "Pine step: " << s << endl;    
+      pineLV[i]->lignumToLstring(*(pineV[i]));  
+      pineLV[i]->derive();
+      pineLV[i]->lstringToLignum(*(pineV[i]));
+    }
+  }
 
   Forest f;
-  InsertCfTree(f,pine);
-  InsertHwTree(f,birch);
+
+  for (int i = 0; i <  pineV.size(); i++){
+    InsertCfTree(f,*(pineV[i]));
+  }
+
+  for (int i = 0; i <  birchV.size(); i++){
+    InsertHwTree(f,*(birchV[i]));
+  }
+  METER d = 0;
+  AccumulateDown<Tree<MyCfTreeSegment,MyCfBud> >(f,d,
+						 SampleDiameterGrowth<MyCfTreeSegment, MyCfBud>());
+  KGC fm = 0.0;
+  AccumulateDown<Tree<MyCfTreeSegment,MyCfBud> >(f,fm,SubtractFoliage<KGC>(0.06),
+						 SampleFoliageMass<MyCfTreeSegment, MyCfBud>(0.200));
+  d = 0.0;
+  AccumulateDown<Tree<MyHwTreeSegment,MyHwBud> >(f,d,
+						 SampleDiameterGrowth<MyHwTreeSegment, MyHwBud>());
+
   Initialize3DForest<Tree<MyCfTreeSegment, MyCfBud> >(f);
   VisualizeForest<Tree<MyHwTreeSegment, MyHwBud> >(f);
 }
