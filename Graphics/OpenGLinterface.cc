@@ -436,10 +436,34 @@ void DrawFoliage()
       glPushMatrix();
       glEnable(GL_CULL_FACE);
       glCullFace(GL_FRONT);     
-      glCallList(NEEDLES_TEX); 
       
-      glCullFace(GL_BACK);     	 
-      glCallList(NEEDLES_TEX);
+      if (glIsList(NEEDLES_TEX))
+	{
+	  glCallList(NEEDLES_TEX); 
+	}
+      else 
+	{  //Tree<TS,BUD> &tree
+	  glPushMatrix();
+	  UseTextures();
+	  //DrawNeedlesFunctor<TS, BUD> needles_functor;
+	  //ForEach(tree, needles_functor);
+	  glPopMatrix();
+	}
+
+      glCullFace(GL_BACK); 
+      if (glIsList(NEEDLES_TEX))
+	{
+	  glCallList(NEEDLES_TEX);
+	}
+      else 
+	{//Tree<TS,BUD> &tree
+	  glPushMatrix();
+	  UseTextures();
+	  //DrawNeedlesFunctor<TS, BUD> needles_functor;
+	  // ForEach(tree, needles_functor);
+	  glPopMatrix();
+	}
+
       glDisable(GL_CULL_FACE);
       glPopMatrix();
       
