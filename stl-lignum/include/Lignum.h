@@ -5,4 +5,5 @@
 //That will create a nested namespace and will cause strange
 //errors difficult to track when including header files
 #include <Tree.h>
+#include <LGMUtility.h>
 #endif
