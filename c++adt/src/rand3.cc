@@ -1,4 +1,4 @@
-#include <iostream.h>
+#include <iostream>
 #include <stdlib.h>
 #include <time.h>
 //	Random numbers:	ran3  	uniform deviates 
