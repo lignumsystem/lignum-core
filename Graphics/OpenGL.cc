@@ -561,17 +561,17 @@ int make_texfoliage_planes_lists(Point position, float rot_angle, float rot_x, f
 
   amount = 0.23 * fol_mas * 28.6 / NEEDLE_AREA;
   
-  int amount2 = fol_mas / 0.0000035;
+  int amount2 = static_cast<int>(fol_mas / 0.0000035);
   
   LGMdouble tex_len = 0.1;
   LGMdouble tex_per_plane = lenght / tex_len;
   int needles_per_tex = 30;
 
-  int needles_per_plane = tex_per_plane * needles_per_tex;
+  int needles_per_plane = static_cast<int>(tex_per_plane * needles_per_tex);
 
   if (needles_per_plane == 0)
 	  return number;
-  int directions = amount2 / needles_per_plane;
+  int directions = static_cast<int>(amount2 / needles_per_plane);
 
   //float t = amount / directions / 10;
 
