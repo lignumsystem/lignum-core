@@ -24,9 +24,9 @@ void EvaluateCollisionForAllBuds<TS,BUD>::operator()
     
     int initial = 0;
     int collision = AccumulateDown(tt, initial, col_eval);
-    
-    if(collision==1) {
-      cout <<  "*its_me" << " : collision detected." << endl;
+
+    if(collision>=1) {
+      SetValue(*its_me,LGMcollision,1.0);
     }
   }
 
@@ -47,24 +47,23 @@ int& EvaluateCollisionForThisBud<TS,BUD>::
       ;
     else
       return coll;
-    
+
     Point p = GetPoint(*tc);
     PositionVector diff(point - p);
 
     LGMdouble len = diff.length();
 
-    if(len < R_EPSILON) {
+    if(len < R_EPSILON) {      
       return coll;
     }
 
     LGMdouble dotp = Dot(direction, diff);
-
     if(c_cos > dotp / len) {
       if(len < c_distance) {
 	coll = 1;
       }
     }
-
+    
   }
 
   return coll;
