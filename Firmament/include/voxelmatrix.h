@@ -110,7 +110,7 @@ public:
 
   double edge;
 	int X, Y, Z;
-	// X_0, Y_0, Z_0;
+	int X_0, Y_0, Z_0;
 	Voxel ***matrix;
 
 
