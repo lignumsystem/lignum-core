@@ -48,6 +48,8 @@ namespace Lignum{
     LGMdouble af;            //Needle mass - tree segment area relationship
     LGMdouble aleafmax;      //Maximum size of a leaf (m2)
     LGMdouble ar;            //Foliage - root relationship
+    LGMdouble apical;        //Length of segment (new) forking off (lateral) =
+                             //LGPapical * Len of not forking off
     LGMdouble dof;           //Degree  of   filling  (proportion  leaf
 			     //surface  fills  of  geometric  shape  -
 			     //e.g. ellipsis - of the leaf).

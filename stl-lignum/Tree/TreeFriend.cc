@@ -27,6 +27,8 @@ namespace Lignum{
     lgmpd["LGPxi"] = LGPxi;
     lgmpd["LGPyc"] = LGPyc;
     lgmpd["LGPzbrentEpsilon"] = LGPzbrentEpsilon;
+    lgmpd["LGPapical"] = LGPapical;
+    
   }
 
 
