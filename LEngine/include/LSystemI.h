@@ -399,7 +399,10 @@ int LSystem<TS,BUD,T,F>::lstring2Lignum(list<TreeCompartment<TS,BUD>*>& ls,
 		      GetHeading(turtle_stack.top()),
 		      turtle_stack.size(),arg1,GetValue(tree,LGPlr)*arg1,
 		      0.0,&tree);
-      SetValue(*ts,LGARh,GetValue(tree,LGPxi)*GetValue(*ts,LGAR));
+      //LGPxi defines the area of heartwood in relation to sapwood, i.e.
+      //Ah = LGPxi * As ; this results in the following equation for Rh
+      SetValue(*ts,LGARh,sqrt(GetValue(tree,LGPxi)/(1.0+GetValue(tree,LGPxi)))
+			      *GetValue(*ts,LGAR));
       ls.insert(current,ts);
       //Update turtle
       turtle_stack.top().forward(arg1);
