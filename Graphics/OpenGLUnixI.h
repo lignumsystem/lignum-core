@@ -362,7 +362,7 @@ void drawBud(Bud<TS,BUD> *bud, DRAW_TYPE mode)
   if (rot_angle > 0.01)
     glRotatef( rot_angle, rot_x, rot_y, 0);
   
-  make_bud();
+  make_bud(mode);
   glPopMatrix();
 
 }
@@ -388,7 +388,7 @@ int VisualizeCfTree(Tree<TS,BUD> &tree)
   glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
  
   stemtexture.Load("Manty.bmp", 512, 512);
-  LoadGLTextures("lehti.tga"); //neulaset5.tga");  //**** CFLoadGLTextures
+  LoadGLTextures("neulaset5.tga");  //**** CFLoadGLTextures
   
 
 
