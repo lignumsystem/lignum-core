@@ -79,6 +79,7 @@ namespace Lignum{
       this->num_br_d += s.num_br_d;
       this->sum_br_len += s.sum_br_len;
       this->sum_br_len_d += s.sum_br_len_d;
+      return *this;
     }
 
 

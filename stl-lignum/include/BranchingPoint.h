@@ -8,9 +8,6 @@
 #include <PositionVector.h>
 #include <LGMdecl.h>
 
-
-
-
 using namespace cxxadt;
 
 namespace Lignum{

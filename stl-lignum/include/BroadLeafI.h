@@ -40,7 +40,7 @@ BroadLeafAttributes<SHAPE>::BroadLeafAttributes(double sf1, double tauL1,
 						const PositionVector& leaf_normal1, 
 						const SHAPE& shape1,
 						int number_of_sectors)
-  :sf(sf1),tauL(tauL1),degree_of_filling(dof1),P(0.0),M(0.0),Qabs(0.0),Qin(0.0),
+  :degree_of_filling(dof1),sf(sf1),tauL(tauL1),P(0.0),M(0.0),Qin(0.0),Qabs(0.0),
      petiole(petiole1),leaf_normal(leaf_normal1),shape(shape1),sv(number_of_sectors)
 {
   leaf_normal.normalize();

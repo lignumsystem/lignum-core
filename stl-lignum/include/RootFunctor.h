@@ -65,12 +65,12 @@ namespace Lignum{
 
     else if (RootSegment<TREE>* rs = dynamic_cast<RootSegment<TREE>*>(rc)){
       //the comma is because we know that a branching point will follow 
-      cout << "TS," << flush;
+      cout << "RS," << flush;
     
     }
 
     else if (RootTip<TREE>* rt =  dynamic_cast<RootTip<TREE>*>(rc)){
-      cout << "B" << flush;
+      cout << "T" << flush;
     }
   }
 
