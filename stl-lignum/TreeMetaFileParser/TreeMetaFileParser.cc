@@ -16,6 +16,7 @@ TreeMetaFileParser::TreeMetaFileParser(const CString& file)
   file_tables[FUNCTION].insert("Buds","fnb.fn");
   //3.Degree of Interaction (relative shadiness)
   file_tables[FUNCTION].insert("DoI","ip.fn");
+  file_tables[INITIAL].insert("Tree","");
   
 }
 
@@ -41,6 +42,12 @@ CString TreeMetaFileParser::getParameterFile(const CString& type)
 CString TreeMetaFileParser::getFunctionFile(const CString& type)
 {
   CString file = file_tables[FUNCTION].lookup(type);
+  return file;
+}
+
+CString TreeMetaFileParser::getTreeInitializationFile(const CString& type)
+{
+  CString file = file_tables[INITIAL].lookup(type);
   return file;
 }
 
@@ -79,6 +86,14 @@ TreeMetaFileParser& TreeMetaFileParser::parseFiles()
     file_mode = FUNCTION;   //change the mode to FUNCTION
     return this->parseFile();
   }
+  //if no function files, try to parse initialization files
+  else if (token.getValue() == CString("InitialTree")){
+    lex.getToken(); //extract keyword
+    lex.getToken(); //extract ':'
+    file_mode = INITIAL;    //change the mode to INITIAL
+    return this->parseFile(); //parse the file name 
+  }
+
   //new file
   else{
     return parseFile();
