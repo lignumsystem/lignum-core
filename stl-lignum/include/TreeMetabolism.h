@@ -21,7 +21,7 @@ class SumTreePhotosynthesis{
 public:
   LGMdouble operator () (LGMdouble& cumPh, TreeCompartment<TS,BUD>* tc)const
   {
-    if (TreeSegment<TS,BUD>* tts = dynamic_cast<TreeSegment<TS,BUD>*>(tc)){
+    if (TS* tts = dynamic_cast<TS*>(tc)){
       LGMdouble PP = GetValue(*tts, P);
       cumPh += PP;
     }
@@ -44,7 +44,7 @@ class SumTreeRespiration{
 public:
   LGMdouble operator () (LGMdouble& cumM, TreeCompartment<TS,BUD>* tc)const
   {
-    if (TreeSegment<TS,BUD>* tts = dynamic_cast<TreeSegment<TS,BUD>*>(tc))
+    if (TS* tts = dynamic_cast<TS*>(tc))
 	{
       LGMdouble M_ts = GetValue(*tts, M);
       cumM += M_ts;
