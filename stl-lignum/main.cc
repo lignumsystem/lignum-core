@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
  //create the first tree segment
   TreeSegment<MyTreeSegment> *ts = 
     new TreeSegment<MyTreeSegment>(Point<METER>(0,0,0),PositionVector(0,0,1.0),
-				   0,1,0.5,0.2,&tree);
+				   0, 0.4, 0.3, 0.2,&tree);
   //create the branching point
   BranchingPoint<MyTreeSegment> *bp = 
     new BranchingPoint<MyTreeSegment>(Point<METER>(0,0,0),
@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
 
   TreeSegment<MyTreeSegment> *ts2 = 
     new TreeSegment<MyTreeSegment>(Point<METER>(0,0,0.3),PositionVector(0,0,1.0),
-				   0, 1, 0.5, 0.2,&tree);
+				   0, 0.4, 0.3, 0.2,&tree);
   //The tree will now look as  [TS,[[B],[B]],B]
   InsertTreeCompartment(axis,ts);
   InsertTreeCompartment(axis,bp);
@@ -96,8 +96,10 @@ int main(int argc, char *argv[])
 					0,1,0.5,0.2,&tree);
   InsertTreeCompartment(*axis3, ts);
   */
+  int count;
   char aa = 'a';
 
+  Accumulate(tree, count, CountTreeSegments<MyTreeSegment>()); 
   while (aa != 'q')
     { 
       //for (int i=0; i<2; i++)

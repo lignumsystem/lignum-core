@@ -38,39 +38,7 @@ Tree<TS>::Tree(const Point<METER>& p, const PositionVector& d)
 
 
 template <class TS>
-TreeSegment<TS>* Tree<TS>::GetTreeSegment(Axis<TS> &ax, TreeSegment<TS> *ts)
-{
-  list<TreeCompartment<TS>*>& ls = GetTreeCompartmentList(ax);
-  list<TreeCompartment<TS>*>::iterator I = ls.begin();
-  
-  while(I != ls.end())
-    {
-      if (TreeSegment<TS>* myts = dynamic_cast<TreeSegment<TS>*>(*I))
-	{
-	  if (myts == ts)
-	    return myts;
-	}
-      if (BranchingPoint<TS>* mybp = dynamic_cast<BranchingPoint<TS>*>(*I))
-      	{	 
-	  list<Axis<TS>*>& axis_ls = GetAxisList(*mybp);  	  
-	  list<Axis<TS>*>::iterator I = axis_ls.begin();
-	  while(I != axis_ls.end())
-	    {
-	      Axis<TS> *axis = *I;
-	      TreeSegment<TS> *t = GetTreeSegment(*axis, ts);
-	      if (t != NULL)
-		return t;
-	      I++;	    
-	    }
-	}      
-      I++;
-    }
-  return NULL;
-}
-
-
-template <class TS>
-void Tree<TS>::UpdateWaterFlow(TP time_step)
+void Tree<TS>::UpdateWaterFlow(TP time_step, const ConnectionMatrix<TS> &cm)
 {
   //<<<<<<< Tree.cc
   
@@ -82,11 +50,11 @@ void Tree<TS>::UpdateWaterFlow(TP time_step)
   for (int i=0; i<cm->getSize(); i++){
     TreeSegment<TS> *out;
     if(cm->getTreeSegment(i) != NULL)  
-      out = GetTreeSegment(this->axis, cm->getTreeSegment(i));
+      out = cm->getTreeSegment(i);
     
     for (int a=0; a<cm->getSize(); a++){
       if (i != a && cm->getTreeSegment(i, a) != 0){
-	TreeSegment<TS> *in = GetTreeSegment(this->axis, cm->getTreeSegment(i,a));
+	TreeSegment<TS> *in = cm->getTreeSegment(i,a);
 	//cout << "In " << a << " Out " << i << "  ";
 	SetTSAttributeValue(*in, fin, CountFlow(*in, *out));
       }
@@ -98,10 +66,10 @@ void Tree<TS>::UpdateWaterFlow(TP time_step)
   for (i=0; i<cm->getSize(); i++){
     TreeSegment<TS> *out;
     if(cm->getTreeSegment(i) != 0)  
-      out = GetTreeSegment(this->axis, cm->getTreeSegment(i));
+      out = cm->getTreeSegment(i);
     for (int a=0; a<cm->getSize(); a++){
       if (i != a && cm->getTreeSegment(i,a) != 0){
-	TreeSegment<TS> *in = GetTreeSegment(this->axis, cm->getTreeSegment(i,a));
+	TreeSegment<TS> *in = cm->getTreeSegment(i,a);
 	SetTSAttributeValue(*out, fout, GetTSAttributeValue(*out, fout)+GetTSAttributeValue(*in, fin));
       }
     }

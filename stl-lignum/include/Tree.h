@@ -24,7 +24,6 @@ public:
   TreeParameters();
   TP af;            //Needle mass - tree segment area relationship
   TP ar;            //Foliage - root relationship
-
   TP lr;            //L/R for a new tree segment
   TP mf;            //Maintenance respiration rate of foliage
   TP mr;            //Maintenance respiration rate of roots
@@ -99,19 +98,15 @@ class Tree: public TreeCompartment<TS>{
 public:
   Tree();
   Tree(const Point<METER>& p, const PositionVector& d);
-  void UpdateWaterFlow(TP time);
+  void UpdateWaterFlow(TP time, const ConnectionMatrix<TS> &cm);
 private:
-  TreeSegment<TS>* GetTreeSegment(Axis<TS> &ax, TreeSegment<TS> *as); 
+ 
   TP CountFlow(TreeSegment<TS> &in, TreeSegment<TS> &out);
   TreeAttributes ta;
   TreeFunctions tf;
   TreeParameters tp;
   TreeTransitVariables ttp;
-  //<<<<<<< Tree.h
-  ConnectionMatrix<TS> *cm;
-
-  //=======
-  //>>>>>>> 1.13
+ 
   Axis<TS> axis;
   RootSystem rs;
 };
