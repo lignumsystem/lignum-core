@@ -167,16 +167,18 @@ namespace Lignum{
   //intialize  the   vector<LGMdouble>  in  class   Tree  holding  the
   //attribute values.
 
-  const int LGMTADLENGTH=6;
+  const int LGMTADLENGTH=7;
 
-  enum LGMTAD {Treelambda,Treelb,TreeP,TreeM,TreeWr,TreeQinMax};
+  enum LGMTAD {Treelambda,Treelb,TreeP,TreeM,TreeWr,TreeQinMax,
+	       TreeRefRadiation};
   // Treelb  Longest branch
   // TreeP   Tree level photosynthesis
   // TreeM   Tree level respiration
   // TreeWr  Root mass
   // TreeQinMax  Max Qin of all segments in a tree
-  // Treelambda; Variable to balance carbon balance equation
-
+  // Treelambda  Variable to balance carbon balance equation
+  // TreeRefRadiation   Variable that is used as reference radiation
+  //                     in calculations in tree (e.g. lentgth growth)
 
 
   //LGMF   = Functions known in a tree   ********************************
