@@ -39,7 +39,7 @@ namespace Lignum {
     LGMdouble extinction(LGMdouble l)const;
 
     //reset the box to 0
-    void reset(){resetQinQabs(); resetCfData();}
+    void reset(){resetQinQabs(); resetCfData();resetHwData();}
 
     bool isEmpty()const;
 
@@ -77,7 +77,13 @@ namespace Lignum {
 		LGMdouble r, LGMdouble l);
   protected:
     void resetQinQabs(){Q_in = 0.0; Q_abs = 0.0;interceptedRadiation = 0.0;}
-    void resetCfData(){starSum = 0.0;needleArea = 0.0;needleMass = 0.0;}
+    void resetCfData(){
+      starSum = 0.0;needleArea = 0.0;needleMass = 0.0;
+      number_of_segments =0;
+    }
+    void resetHwData(){
+      leafArea = 0.0;leafMass = 0.0;number_of_leaves = 0;
+    }
     LGMdouble star;
     LGMdouble starSum;
     LGMdouble SAc(LGMdouble phi, LGMdouble r, LGMdouble l);
