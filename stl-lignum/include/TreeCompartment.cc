@@ -12,6 +12,11 @@ TreeCompartment<TS>::TreeCompartment(const Point<METER>& p, const PositionVector
 				 Tree<TS>* t)
   :point(p),direction(d)
 {
+  //normalize the direction vector
+  //to avoid domain problems e.g., with visualization
+  //using built-in acos etc. functions. 
+  direction.normalize();
+
   tree = t;
 }
 
