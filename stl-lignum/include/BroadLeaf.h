@@ -40,8 +40,6 @@ public:
   Petiole petiole;          //leaf is at the end of petiole in 3D space
   PositionVector leaf_normal;    //the leaf normal in 3D space
   SHAPE shape;           //the form of the leaf is modelled as an ellipsis
-  Point center;             //the center point of the leaf
-
   //vector for shading (must be synchronized with firmament)
   vector<LGMdouble>  sv; //the length of the vector == number of sectors 
 };

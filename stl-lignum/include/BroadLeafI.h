@@ -9,21 +9,6 @@ BroadLeaf<SHAPE>::BroadLeaf(LGMdouble sf,LGMdouble tauL,LGMdouble dof,int number
   :bla(sf,tauL,dof,petiole,leaf_normal,shape,number_of_sectors)
 {
 
-  //calculate and set the center of the leaf ellipse
-  Point petiol_proj;    //projection of petiole on leaf ellipse
-  Point petiol;         //Petiole as a vector (Point!)
-  petiol = GetEndPoint(petiole) - GetStartPoint(petiole);
-  vector<double> v = leaf_normal.getVector();
-  Point lnp(v[0],v[1],v[2]);
-  petiol_proj = petiol - Dot(leaf_normal,PositionVector(petiol)) * lnp;
-  double b = (double)shape.getSemiminorAxis();
-  double ppl = sqrt((double)Dot(PositionVector(petiol_proj), PositionVector(petiol_proj)));
-
-  if(ppl < 1.0e-10)
-    bla.center = GetEndPoint(petiole);  // If petiole perpendicular to leaf ellipse
-  // center = end of petiole (this is a bit arbitrary)
-  else
-    bla.center = GetEndPoint(petiole) + (b/ppl) * petiol_proj;
 }
 
 template <class SHAPE>  
@@ -125,7 +110,7 @@ LGMdouble SetValue(BroadLeaf<SHAPE>& bl, const LGMAD name, const LGMdouble value
 template <class SHAPE>  
 Point GetCenterPoint(const BroadLeaf<SHAPE>& bl)
 {
-  return bl.bla.center;
+  return bl.bla.shape.getCenterPoint();
 }
 
 template <class SHAPE>  
@@ -160,7 +145,7 @@ SHAPE& GetShape(BroadLeaf<SHAPE>& bl)
 template <class SHAPE>  
 void SetCenterPoint(BroadLeaf<SHAPE>& bl, const Point& p)
 {
-  bl.bla.center = p;
+  bl.bla.shape.setCenterPoint(p);
 }
 
 template <class SHAPE>  
