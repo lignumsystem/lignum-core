@@ -36,6 +36,7 @@ using namespace std;
 //   DeleteDeadBranches
 //   PrintTreeSegmentInformationToFile
 //   PrintTreeSegmentInformationToFileByAxis
+//   DropAllLeaves
 
 //Functors-functions below used in LIGNUM WorkBench are not listed. 
 
@@ -167,7 +168,7 @@ namespace Lignum{
     out(out)
       {
      out << "age db d13 H Hc Wf Ws Wb Af LAR QinM Qabs P M NoSeg NoBud"
-       " NoSegN NSegNZ NBranches"
+       " NoSegN NSegNZ NBranches Wr"
 	<< endl;
       }
     void operator() (Tree<TS,BUD>&  tr);

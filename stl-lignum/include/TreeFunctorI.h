@@ -8,6 +8,7 @@
 //   CountCompartments
 //   CountCompartmentsReverse
 //   PrintTreeInformation
+//   PrintTreeInformation2
 //   DisplayStructure
 //   CheckCoordinates
 //   GetBoundingBox     ****is this obsolete?
@@ -20,6 +21,7 @@
 //   DeleteDeadBranches
 //   PrintTreeSegmentInformationToFile
 //   PrintTreeSegmentInformationToFileByAxis
+//   DropAllLeaves
 
 //Functors-functions below used in LIGNUM WorkBench are not listed. 
 
@@ -315,11 +317,13 @@ namespace Lignum{
 	<< " "
 	<< values.sum_Ws << " " << values.sum_Wb << " " << values.sum_Af
 	<< " "
-	<< 10.0*values.sum_Af/(values.sum_Wf+values.sum_Ws+GetValue(tr,TreeWr))
+	<< 10.0*values.sum_Af/(values.sum_Wf+values.sum_Wb+values.sum_Ws+
+			       GetValue(tr,TreeWr))
 	<< " " << values.max_Qin << " " <<  values.sum_Qabs << " "
 	<< P << " " << M
 	<< " " <<  values.num_segments << " " << values.num_buds
-	<< " " << noSegAll << " " << noSeg0 << " " << values.num_br_l << endl;
+	<< " " << noSegAll << " " << noSeg0 << " " << values.num_br_l 
+	<< " " << GetValue(tr,TreeWr) << endl;
   }
 
 
