@@ -904,6 +904,11 @@ void VoxelSpace::draw(bool blackBG)
     vector<VisualCube> cubes;
     vector<VisualCube> ordered_cubes;
 
+    pair<double, double> pa = getMinMaxNeedleMass();
+    double max = pa.second;
+
+    if (max == 0) return;
+
     //cout << "koko " << Xn << " " << Yn << " " << Zn << endl;
     for(int i1=0; i1<Xn; i1++)
       for(int i2=0; i2<Yn; i2++)
@@ -921,7 +926,7 @@ void VoxelSpace::draw(bool blackBG)
 		cube.ready = false;
 		cube.areaden = voxboxes[i1][i2][i3].getAreaDen(); 
 
-	
+		nmass = voxboxes[i1][i2][i3].getNeedleMass();
 	      
 		
 		
@@ -943,8 +948,28 @@ void VoxelSpace::draw(bool blackBG)
 	      
 		//cout << cube.areaden << endl;
 
-		GLfloat mat_amb[] = { 0.1, 1, 0.1, 1.0 }; 
-		GLfloat mat_dif[] = { 0.1, 1, 0.1, 1.0 }; 
+
+		double green=0.0;
+		double red=0.0;
+		double blue=0.0;
+		if (blackBG)
+		  {
+		    red = 0.0;
+		    blue = 0.0;
+		    green = nmass / max; 
+		  }
+		else
+		  {
+		    green = 1.0;
+		    red = (max-nmass)/max;
+		    blue= (max-nmass)/max
+		  }
+		
+
+	       
+
+		GLfloat mat_amb[] = { red, green, blue, 1.0 }; 
+		GLfloat mat_dif[] = { red, green, blue, 1.0 }; 
 		
 		glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_amb); 
 		glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_dif);
