@@ -37,6 +37,7 @@ Graphics	      -s MikaL		      Graphics
 lignum		      			      lignum		      	    
 lignum-presentations  			      lignum-presentations  	    
 LEngine		      -s JariP		      LEngine			    
+LPine                 -s JariP                LPine
 MOTTI                 -s MikaL		      MOTTI		      	    
 opengl		      -s MikaL		      opengl		      	    
 references	      			      references	      	    
@@ -52,6 +53,7 @@ watervisual	      			      watervisual
 webdocs		      			      webdocs		      	    
 WhiteBirch            			      WhiteBirch            	    
 CityTree              -s JariP                CityTree
+ctree                 -s JariP                ctree
 lignum-core           			      &c++adt &stl-lignum &Firmament
 poplar                -s Alice                poplar
 
