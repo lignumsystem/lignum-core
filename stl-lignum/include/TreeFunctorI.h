@@ -497,7 +497,7 @@ namespace Lignum{
       
 
 	// if main axis
-	if(GetValue(*ts, omega) == 1)
+	if(GetValue(*ts, LGAomega) == 1)
 	  {
 	    stru.taper_rad.push_back(GetValue(*ts, R)); 
 	    stru.taper_hei.push_back(ep.getZ());
@@ -519,7 +519,7 @@ namespace Lignum{
     else if(Axis<TS, BUD>* ax = dynamic_cast<Axis<TS,BUD>*>(tc)) {
       TreeSegment<TS,BUD>* fs = GetFirstTreeSegment(*ax);
       if(fs != NULL)
-	if(GetValue(*fs, omega) == 2) {
+	if(GetValue(*fs, LGAomega) == 2) {
 	  //is main branch, does it have foliage, i.e. is it living?
 	  LGMdouble fol = GetBranchFoliage(*ax);
 	  if(fol > R_EPSILON) {
@@ -648,11 +648,11 @@ namespace Lignum{
 
       if (TS* ts = dynamic_cast<TS *>(tc))
 	{
-	  SetValue(*ts, omega, oomega);
+	  SetValue(*ts, LGAomega, oomega);
 	}
       else if (BUD* bud = dynamic_cast<BUD *>(tc))
 	{
-	  SetValue(*bud, omega, oomega);
+	  SetValue(*bud, LGAomega, oomega);
 	}
       else if(Axis<TS, BUD>* ax =
 	      dynamic_cast<Axis<TS,BUD>*>(tc))

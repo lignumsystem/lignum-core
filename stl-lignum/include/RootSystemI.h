@@ -19,7 +19,7 @@ namespace Lignum{
       return rs.rsa.Rh;    //Radius heartwood
     case Rhair:
       return rs.rsa.Rhair; //Radius root hair
-    case omega:
+    case LGAomega:
       return rs.rsa.omega;
       //Compound attributes, areas
     case LGAA:                //Segment area based on R
@@ -72,7 +72,7 @@ namespace Lignum{
     case Rhair:
       rs.rsa.Rhair = value;
       break;
-    case omega:
+    case LGAomega:
       rs.rsa.omega = value;
       break;
     default:
@@ -99,7 +99,7 @@ namespace Lignum{
        return rt.rta.collision;
     case LGMstatus:
        return rt.rta.status;
-    case omega:
+    case LGAomega:
        return rt.rta.omega;
     default:
        cout << "RootTip GetValue unknown attribute: " << name << endl;
@@ -118,7 +118,7 @@ namespace Lignum{
     case LGMstatus:
       rt.rta.status = value;
       break;
-    case omega:
+    case LGAomega:
       rt.rta.omega = value;
       break;
     default:

@@ -44,7 +44,7 @@ Tree<TS,BUD>::Tree(const Point& p, const PositionVector& d, LGMdouble len, LGMdo
   
   TreeSegment<TS,BUD> *ts = new TreeSegment<TS,BUD>(p,d, 0, len, rad,0, this);
 
-  SetValue(*ts, omega, 1);
+  SetValue(*ts, LGAomega, 1);
   SetValue(*ts, LGAage, 0);
 
   if(TS* tts = dynamic_cast<TS *>(ts))

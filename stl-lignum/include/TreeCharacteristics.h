@@ -120,7 +120,7 @@ namespace Lignum{
       //if segment
       if (TS* ts = dynamic_cast<TS*>(tc)){
 	//main axis
-	if (GetValue(*ts,omega) == 1){
+	if (GetValue(*ts,LGAomega) == 1){
 	  //if branches in the immediate branching point above have foliage
 	  if (dcl.BranchWf() > 0.0){
 	    //set the segment diameter to the diameter crown base
@@ -360,7 +360,7 @@ namespace Lignum{
     {
       if (TS* ts = dynamic_cast<TS*>(tc)){
 	//main axis
-	if (GetValue(*ts,omega) == 1){
+	if (GetValue(*ts,LGAomega) == 1){
 	  double wf = data.Wf();
 	  double z = GetEndPoint(*ts).getZ();
 	  //foliage collected from the branches forking off 

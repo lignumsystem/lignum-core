@@ -28,7 +28,7 @@ Bud<TS,BUD>::Bud(const Point& p, const PositionVector& d, const LGMdouble go,
 	     Tree<TS,BUD>* t)
   :TreeCompartment<TS,BUD>(p,d,t)
 {
-  SetValue(*this,omega,go);
+  SetValue(*this,LGAomega,go);
 }
 
 template <class TS,class BUD>
@@ -58,7 +58,7 @@ LGMdouble GetValue(const Bud<TS,BUD>& bud, const LGMAD name)
   if (name == LGAcollision){
     return bud.ba.collision;
   }
-  else if (name == omega)
+  else if (name == LGAomega)
     return bud.ba.omega;
 
   else if (name == LGAip)
@@ -84,7 +84,7 @@ LGMdouble SetValue(Bud<TS,BUD>& bud, const LGMAD name, const LGMdouble value)
   if (name == LGAcollision){    
     bud.ba.collision = value;
   }
-  else if (name == omega)
+  else if (name == LGAomega)
     bud.ba.omega = value;
 
   else if (name == LGAip)

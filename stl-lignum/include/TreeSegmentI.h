@@ -77,7 +77,7 @@ TreeSegment<TS,BUD>::TreeSegment(const Point& p, const PositionVector& d, const 
 			     const METER l, const METER r, const METER rh, Tree<TS,BUD>* t)
   :TreeCompartment<TS,BUD>(p,d,t)
 {	
-  SetValue(*this,omega,go);
+  SetValue(*this,LGAomega,go);
   SetValue(*this,LGAL,l);
   SetValue(*this,R,r);
   SetValue(*this,Rh,rh);
@@ -299,7 +299,7 @@ LGMdouble GetValue(const TreeSegment<TS,BUD>& ts, const LGMAD name)
   else if (name == LGAM)
     return ts.tsa.M;
 
-  else if (name == omega)
+  else if (name == LGAomega)
     return ts.tsa.omega;
 
   else if (name == R)
@@ -361,7 +361,7 @@ LGMdouble SetValue(TreeSegment<TS,BUD>& ts, const LGMAD name, const LGMdouble va
   else if (name == LGAM)
     ts.tsa.M = value;
 
-  else if (name == omega)
+  else if (name == LGAomega)
     ts.tsa.omega = value;
 
   else if (name == R)

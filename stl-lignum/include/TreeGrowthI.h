@@ -267,7 +267,7 @@ void StructuralPineGrowth(Axis<TS,BUD> &ax, const ParametricCurve& bud_fun, Tree
 		
 		if(i_p>0);
 		{
-			LGMdouble omeg = GetValue(*bud, omega);
+			LGMdouble omeg = GetValue(*bud, LGAomega);
 
 			LGMdouble _q = GetValue(tree, q);
 			
@@ -305,7 +305,7 @@ void StructuralPineGrowth(Axis<TS,BUD> &ax, const ParametricCurve& bud_fun, Tree
 
 			TS* ts = new TS(point, posvec, 0, length, radius, 0, &tree);
 
-			SetValue(*ts, omega, 1);
+			SetValue(*ts, LGAomega, 1);
 			SetValue(*ts, LGAage, 0);
 			SetValue(*ts, LGAWf, foliage_mass);	
 			SetValue(*ts, Rf, R_f);
@@ -349,7 +349,7 @@ void StructuralPineGrowth(Axis<TS,BUD> &ax, const ParametricCurve& bud_fun, Tree
 				new_axes[index] = new Axis<TS,BUD>();
 
 				v2.rotate(Point(0,0,0), direction, delta_angle);
-				Bud<TS,BUD> *new_bud = new Bud<TS,BUD>(GetPoint(*bud), v2, GetValue(*bud, omega)+1, &tree);
+				Bud<TS,BUD> *new_bud = new Bud<TS,BUD>(GetPoint(*bud), v2, GetValue(*bud, LGAomega)+1, &tree);
 				SetValue(*new_bud, LGAage, 0);
 				SetValue(*new_bud, state, ALIVE);
 
@@ -546,7 +546,7 @@ MotherInfo& AddSugarMapleSegments<TS,BUD>::operator()(MotherInfo& mi, TreeCompar
 		
 		ASSERT(i_p>0);
 
-		LGMdouble omeg = GetValue(*bud, omega);
+		LGMdouble omeg = GetValue(*bud, LGAomega);
 
 		LGMdouble q = 0.1;
 		LGMdouble f_l = 1.1* i_p - 0.1;
@@ -669,7 +669,7 @@ MotherInfo& AddSugarMapleSegments<TS,BUD>::operator()(MotherInfo& mi, TreeCompar
 
 		TS* ts = new TS(point, posvec, 0, segment_length, rad, 0, &tree);
 
-		SetValue(*ts, omega, 1);
+		SetValue(*ts, LGAomega, 1);
 		SetValue(*ts, LGAage, 0);
 		InsertLeaf(*ts, leaf1);
 		InsertLeaf(*ts, leaf2);
@@ -685,9 +685,9 @@ MotherInfo& AddSugarMapleSegments<TS,BUD>::operator()(MotherInfo& mi, TreeCompar
 
 
 			
-		Bud<TS,BUD> *new_bud1 = new Bud<TS,BUD>(GetPoint(*bp), v2, GetValue(*bud, omega)+1, &tree);
+		Bud<TS,BUD> *new_bud1 = new Bud<TS,BUD>(GetPoint(*bp), v2, GetValue(*bud, LGAomega)+1, &tree);
 		v2.rotate(Point(0,0,0), direction, PI_VALUE);
-		Bud<TS,BUD> *new_bud2 = new Bud<TS,BUD>(GetPoint(*bp), v2, GetValue(*bud, omega)+1, &tree);
+		Bud<TS,BUD> *new_bud2 = new Bud<TS,BUD>(GetPoint(*bp), v2, GetValue(*bud, LGAomega)+1, &tree);
 		SetValue(*new_bud1, LGAage, 0);
 		SetValue(*new_bud2, LGAage, 0);
 		
@@ -801,7 +801,7 @@ MotherInfo& AddWhiteBirchSegments<TS,BUD>::operator()(MotherInfo& mi, TreeCompar
 		
 		ASSERT(i_p>0);
 
-		LGMdouble omeg = GetValue(*bud, omega);
+		LGMdouble omeg = GetValue(*bud, LGAomega);
 
 		LGMdouble q = 0.1;
 		LGMdouble f_l = 1.1* i_p - 0.1;
@@ -954,7 +954,7 @@ MotherInfo& AddWhiteBirchSegments<TS,BUD>::operator()(MotherInfo& mi, TreeCompar
 			TS* ts = new TS(point, posvec, 0, segment_length, radius, 0, &tree);
 			segments.push_back(ts);
 
-			SetValue(*ts, omega, 1);
+			SetValue(*ts, LGAomega, 1);
 			SetValue(*ts, LGAage, 0);
 		
 			InsertLeaf(*ts, leaf1);
@@ -968,7 +968,7 @@ MotherInfo& AddWhiteBirchSegments<TS,BUD>::operator()(MotherInfo& mi, TreeCompar
 			Axis<TS,BUD> *new_axis = new Axis<TS,BUD>();
 
 				
-			Bud<TS,BUD> *new_bud = new Bud<TS,BUD>(GetPoint(*bp), newBudDirection, GetValue(*bud, omega)+1, &tree);
+			Bud<TS,BUD> *new_bud = new Bud<TS,BUD>(GetPoint(*bp), newBudDirection, GetValue(*bud, LGAomega)+1, &tree);
 			
 			SetValue(*new_bud, LGAage, 0);
 
