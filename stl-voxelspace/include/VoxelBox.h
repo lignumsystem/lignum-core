@@ -1,13 +1,8 @@
 #ifndef VOXELBOX_H
 #define VOXELBOX_H
 
-
-
-
-#include <Lignum.h>
 #include <fstream>
-
-using namespace cxxadt;
+#include <Lignum.h>
 
 
 
@@ -22,8 +17,8 @@ struct VisualCube
 
 namespace Lignum {
 
-
 class VoxelSpace;
+
 
 class VoxelBox
 {
