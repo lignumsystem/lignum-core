@@ -4,7 +4,7 @@
 #include <MyBud.h>
 #include <Shading.h>
 #include <Collision.h>
-#include <VoxelSpace.h>
+
 
 using namespace std;
 using namespace Lignum;
