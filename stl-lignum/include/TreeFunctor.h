@@ -71,8 +71,18 @@ class DisplayStructureFunctor{
 public:
   TreeCompartment<TS,BUD>* operator ()(DisplayStructureData& id,
 				       TreeCompartment<TS,BUD>* ts)const;
+
+
 };
 
+template <class TS,class BUD=DefaultBud<TS> >
+class CheckCoordinates{
+public:
+  TreeCompartment<TS,BUD>* operator ()(Point& id,
+				       TreeCompartment<TS,BUD>* ts)const;
+
+
+};
 }//closing namespace Lignum
 #include <TreeFunctorI.h>
 
