@@ -162,7 +162,7 @@ vector<Point>& Ellipse::getVertexVector(vector<Point>& points)const
     //Move  the scale  center (i.e.  the ellipse)  to the  new ellipse
     //center
     PositionVector from_base_to_center(x1u()*getSemimajorAxis());
-    center=Point((PositionVector)base+from_base_to_center);
+    center=Point((const PositionVector)base+from_base_to_center);
     return getArea();
   }
 
