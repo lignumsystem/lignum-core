@@ -1,4 +1,3 @@
-
 #ifndef FIRMAMENT_H
 #define FIRMAMENT_H
 
@@ -205,7 +204,17 @@ public:
     else
       return areasByInclination[n];
   }
+ 
+  int getAzimDivision(int n)
+{
+    if(n < 0 || n > num_of_incl - 1)
+      return -1;
+    else
+      return azimDivisions[n];
+}
   
+
+
   int getNoOfInclinations() { return num_of_incl; }
 
 protected:

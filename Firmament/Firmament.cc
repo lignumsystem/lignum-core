@@ -685,6 +685,10 @@ double Firmament::getAzimuth(int n)
   return zoneAzims[nIncl][nAzim];
 }  
 
+
+
+
+
 }//closing namespace sky
 
 #ifdef  FIRMAMENT
@@ -827,10 +831,11 @@ int  main(int argc, char* argv[])
     cout << i << " " << firmament.getInclinationIndex(i) << " " <<
       firmament.getAzimuthIndex(i) << endl;
 
-  cout << endl << " Area of sector in inclination class" << endl;
+  cout << endl << " Area of sector in inclination class and no. sectors" << endl;
   cout << " n   " << "Area (,steradians?)" << endl;
-  for(i = 0; i < firmament.getNoOfInclinations() - 1; i++)
-    cout << " " << i << "  " << firmament.getSectorArea(i) << endl;
+  for(i = 0; i < firmament.getNoOfInclinations(); i++)
+    cout << " " << i << "  " << firmament.getSectorArea(i)
+	 << "  " << firmament.getAzimDivision(i)  << endl;
 
 
   cout << "f2 After resize" << endl;
