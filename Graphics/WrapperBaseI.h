@@ -68,35 +68,34 @@ void HwWrapper<TS,BUD>::VisualizeStem(int &active_texture)
 template <class TS, class BUD>
 void HwWrapper<TS,BUD>::VisualizeFoliage(int &active_texture)
 {
-    glBindTexture(GL_TEXTURE_2D, intFoliageTexture );
-    glPushMatrix();
-    DrawLeavesFunctor<TS, BUD> func(1, 1);
-    ForEach(tree, func);    
-    glPopMatrix();
+    if (bmpImage)
+    {
+	glBindTexture(GL_TEXTURE_2D, intFoliageTexture );
+	glPushMatrix();
+	DrawLeavesFunctor<TS, BUD> func(1, 1);
+	ForEach(tree, func);    
+	glPopMatrix();
+    }
+    else
+    {
+	cout << "visualisoidaan lehdet " << endl;
+	glEnable(GL_BLEND);
+	glEnable(GL_TEXTURE_2D);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glBindTexture(GL_TEXTURE_2D, intFoliageTexture );
+	glDisable(GL_LIGHTING);
+	
+	glPushMatrix();
+	glEnable(GL_CULL_FACE);
+	DrawLeavesFunctor<TS, BUD> func(1, 1);
+	glCullFace(GL_FRONT);
+	ForEach(tree, func);    
 
-
-
-/*
-    cout << "visualisoidaan lehdet " << endl;
-  glEnable(GL_BLEND);
-  glEnable(GL_TEXTURE_2D);
-  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-  glBindTexture(GL_TEXTURE_2D, intFoliageTexture );
-  glDisable(GL_LIGHTING);
-  
-  glPushMatrix();
-  glEnable(GL_CULL_FACE);
-  DrawLeavesFunctor<TS, BUD> func(1, 1);
-  glCullFace(GL_FRONT);
-  ForEach(tree, func);    
-  // glPopMatrix();
-
-  //glPushMatrix();
-  glCullFace(GL_BACK);     	 
-  ForEach(tree, func);
-  glDisable(GL_CULL_FACE);
-  glPopMatrix();
-*/	
+	glCullFace(GL_BACK);     	 
+	ForEach(tree, func);
+	glDisable(GL_CULL_FACE);
+	glPopMatrix();
+    }	
 }
 
 

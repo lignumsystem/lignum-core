@@ -27,6 +27,7 @@ public:
  int intDisplaylistStem; //displaylists
  int intDisplaylistFoliage;
  bool ordfoliage;
+ bool bmpImage;
 };
 
 
