@@ -75,6 +75,26 @@ Turtle& Turtle::forward(const double d)
   return *this;
 }
 
+//Rotate  turtle vectors  HLU to  make the  turtle to  look up  in the
+//world coordinates (heading up)
+Turtle& Turtle::up()
+{
+  Point o(0,0,0);
+  PositionVector up(0,0,1);
+  double angle = acos(Dot(up,h));  //angle from up to h
+  //the  direction of  rotation, i.e.  the  sign of  angle, should  be
+  //correct
+  if (fabs(angle) > R_EPSILON){
+    PositionVector horizontal = Cross(up,h);
+    horizontal.normalize();
+    u.rotate(o,horizontal,-angle);
+    l.rotate(o,horizontal,-angle);
+    h.rotate(o,horizontal,-angle);
+  }
+  return *this;
+}
+
+
 Turtle& Turtle::normalize()
 {
   u.normalize();
