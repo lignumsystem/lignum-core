@@ -369,6 +369,16 @@ LGMdouble GetValue(const Tree<TS,BUD>& tree, const LGMAD name)
     else
       return 0.0;
   }
+  else if (name == LGADbaseHw){
+    Axis<TS,BUD>& axis = GetAxis(const_cast<Tree<TS,BUD>&>(tree));
+    list<TreeCompartment<TS,BUD>*>& ls = GetTreeCompartmentList(axis);
+    if (ls.size()> 1){
+      TS* ts= dynamic_cast<TS*>(*(ls.begin()));
+      return 2.0*GetValue(*ts,LGARh);
+    }
+    else
+      return 0.0;
+  }
   else if (name == LGADbh){
     Axis<TS,BUD>& axis = GetAxis(const_cast<Tree<TS,BUD>&>(tree));
     list<TreeCompartment<TS,BUD>*>& ls = GetTreeCompartmentList(axis);
@@ -377,6 +387,15 @@ LGMdouble GetValue(const Tree<TS,BUD>& tree, const LGMAD name)
     //dbh >= 1.3 will assign its diameter to Dbh.
     for_each(ls.rbegin(),ls.rend(),dbh);
     return dbh.dbh();
+  }
+  else if (name == LGADbhHw){
+    Axis<TS,BUD>& axis = GetAxis(const_cast<Tree<TS,BUD>&>(tree));
+    list<TreeCompartment<TS,BUD>*>& ls = GetTreeCompartmentList(axis);
+    DiameterBreastHeight<TS,BUD> dbh;
+    //traverse the axis in reverse order, the last segment having
+    //dbh >= 1.3 will assign its diameter to Dbh and Hw diam at BH
+    for_each(ls.rbegin(),ls.rend(),dbh);
+    return dbh.dbhhw();
   }
   else
     cout << "Tree GetValue unknown parameter: " << name << endl;
