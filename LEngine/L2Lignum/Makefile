@@ -96,6 +96,10 @@ gnupine:
 
 forest: l2c $(FORESTOBJ) $(LIB1) $(LIB2) $(LIB3)  $(LIB4) $(LIB5) $(LIB6)  
 	$(CCC)  -o $@ $(INCLUDE) $(OPTIMIZE) $(FORESTOBJ) $(LIBFLAGS) $(LIBS)
+
+gnuforest:
+	make "CCC=g++" "CCCFLAGS=-c" "OPTIMIZE=-g" \
+             "AR=ar"  "ARFLAGS=rv" "LIBD=lib32" "LSYS=pine9bp.L birch.L" forest
 l2c:	
 	(cd ../L2C; make "CCC=$(CCC)" "CCCFLAGS=$(CCCFLAGS)" "OPTIMIZE=$(OPTIMIZE)" \
                           "AR=ar" "ARFLAGS=rv" $@)
