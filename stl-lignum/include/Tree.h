@@ -111,7 +111,7 @@ class Tree: public Lignum::TreeCompartment<TS,BUD>{
   template <class TS1,class BUD1>
   friend string GetTreeInitializationFile(Tree<TS1,BUD1>& tree);
   template <class TS1,class BUD1>
-  friend sky::Firmament& GetFirmament(Tree<TS,BUD>& tree);
+  friend sky::Firmament& GetFirmament(Tree<TS1,BUD1>& tree);
 public:
   Tree();
   Tree(const Point<METER>& p, const PositionVector& d);
