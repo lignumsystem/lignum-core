@@ -49,7 +49,7 @@ TreeSegment<TS>::TreeSegment(const Point<METER>& p, const PositionVector& d, con
 
   //compute the initial pressure in the TreeSegment
   tsa.Pr = -p.getZ() * 9.81 * 1000; 
-  tsa.Wm = 0.5 * 1000 * p.getZ() * l * R * R * 3.14;
+  tsa.Wm = 0.5 * 1000 * p.getZ() * l * R/100 * R/100 * 3.14;
   cout << "säde " << R << endl;
 }
 

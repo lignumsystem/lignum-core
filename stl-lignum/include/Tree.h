@@ -20,6 +20,7 @@ template <class TS>
 TP GetProduction(const Tree<TS>& t);
 
 
+
 class TreeParameters{
 public:
   TreeParameters();
@@ -39,6 +40,7 @@ public:
   TP rho;           //Density of wood
   TP xi;            //Fraction of heartwood in new tree segments
 };
+
 
 
 
@@ -81,6 +83,7 @@ public:
   TP k;             //Wood spesific conductivity or permeability
   TP rhow;          //Density of water
 };
+
 
 
 

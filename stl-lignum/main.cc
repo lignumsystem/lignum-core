@@ -118,10 +118,15 @@ int main(int argc, char *argv[])
 					0,1,0.5,0.2,&tree);
   InsertTreeCompartment(*axis3, ts);
   
-  
-  for (int i=0; i<120; i++)
-    tree.UpdateWaterFlow(0.4);
- 
+  char aa = 'a';
+
+  while (aa != 'q')
+    { 
+      for (int i=0; i<10; i++)
+	tree.UpdateWaterFlow(180.4);
+      cout << endl << endl;
+      cin >> aa;
+    }
   
 }
 

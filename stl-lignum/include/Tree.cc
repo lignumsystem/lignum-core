@@ -1,5 +1,5 @@
 #include <Tree.h>
-
+#include <math.h>
 
 
 TreeParameters::TreeParameters()
@@ -18,8 +18,8 @@ TreeTransitVariables::TreeTransitVariables()
 {
   lambda = 0.1;        
   g = 9.81;          
-  eta = 1;        
-  k = 1;             
+  eta = 1*pow(2.7, -3);        
+  k = 1*pow(2.7, -10);             
   rhow = 1000;
 }
 
@@ -110,13 +110,17 @@ void Tree<TS>::UpdateWaterFlow(TP time_step)
       }
     }
     TP new_pressure = GetTSAttributeValue(*out, Pr) + time_step * 
-      ( GetTSAttributeValue(*out, fin) - GetTSAttributeValue(*out, fout) - 
+      ( -GetTSAttributeValue(*out, fin) + GetTSAttributeValue(*out, fout) - 
 	out->GetTranspiration(0.0));     
-    cout << "Virtaukset kappale " << i << " " <<  GetTSAttributeValue(*out, fin) << " ja " << GetTSAttributeValue(*out, fout) << endl;
-    cout << "PAineet " << GetTSAttributeValue(*out, Pr);
+    //cout << GetTSAttributeValue(*out, fin) << " "<<GetTSAttributeValue(*out, fout) <<" uusi paine " << new_pressure << "  " <<time_step * 
+    //  ( GetTSAttributeValue(*out, fin) - GetTSAttributeValue(*out, fout) - 
+    //out->GetTranspiration(0.0)) << endl;
+    
+    // cout << i << ";  sis " <<  GetTSAttributeValue(*out, fin) << " ; ulos " << GetTSAttributeValue(*out, fout);
+    //cout << " ; Paine " << GetTSAttributeValue(*out, Pr);
 
     SetTSAttributeValue(*out, Pr, new_pressure); 
-    cout << " uusiPAineet " << GetTSAttributeValue(*out, Pr) << endl;
+    // cout << "; PaineUusi " << GetTSAttributeValue(*out, Pr) << endl;
     SetTSAttributeValue(*out, Wm, GetTSAttributeValue(*out, Wm) + GetTSAttributeValue(*out, fin)-  GetTSAttributeValue(*out, fout)); 
   }
   
