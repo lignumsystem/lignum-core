@@ -47,7 +47,7 @@ void VoxelBox::setVoxelSpace(VoxelSpace *s, Point c)
 	space = s; 
 	corner1 = c;
 
-	UpdateValues();
+	updateValues();
 }
 
 
@@ -57,7 +57,7 @@ void VoxelBox::setVoxelSpace(VoxelSpace *s, Point c)
 //	this VoxelBox. 
 //
 //NOTE: k_b is hard coded  to 0.5, STAR to 0.14 and val_b to 0.14!!!!!!!!
-void VoxelBox::UpdateValues()
+void VoxelBox::updateValues()
 {
 	LGMassert(space->Xbox>0);
 	LGMassert(space->Ybox>0);
@@ -84,7 +84,7 @@ void VoxelBox::UpdateValues()
 //	Returns the extinction of the light traveling distance l inside
 //	this VoxelBox.
 //
-LGMdouble VoxelBox::extinction(LGMdouble l)
+LGMdouble VoxelBox::extinction(LGMdouble l)const
 {
   //val_c conifers, val_b broad-leaves  
   double tmp = -val_c*l - val_b*l;
@@ -103,7 +103,7 @@ void VoxelBox::setArea(M2 larea, M2 narea)
 {
 	needleArea = narea;
 	leafArea = larea;
-	UpdateValues();
+	updateValues();
 }
 
 
@@ -112,7 +112,7 @@ void VoxelBox::setArea(M2 larea, M2 narea)
 //	any foliage. This assumes starSum is computed and indeed has a
 //	value!!!!
 //
-bool VoxelBox::isEmpty()
+bool VoxelBox::isEmpty()const
 {
 	
 	return (starSum==0); // && leafArea==0);
@@ -133,9 +133,9 @@ void VoxelBox::addRadiation(LGMdouble r)
 //
 //	returns the center point of the VoxelBox
 //
-Point& VoxelBox::getCenterPoint(Point &point)
+Point VoxelBox::getCenterPoint()const
 {
-	point = corner1 + Point(space->Xbox/2.0, space->Ybox/2.0, space->Zbox/2.0);
+	Point point = corner1 + Point(space->Xbox/2.0, space->Ybox/2.0, space->Zbox/2.0);
 	return point;
 }
 
@@ -145,7 +145,7 @@ Point& VoxelBox::getCenterPoint(Point &point)
 //
 // Returns the corner point of the VoxelBox
 //
-Point VoxelBox::getCornerPoint()
+Point VoxelBox::getCornerPoint()const
 {
 	return corner1;
 }
@@ -156,9 +156,9 @@ Point VoxelBox::getCornerPoint()
 //
 // returns the area density of the VoxelBox
 //
-LGMdouble VoxelBox::getAreaDen()
+LGMdouble VoxelBox::getAreaDensity()
 {
-	UpdateValues();
+	updateValues();
 	return star + val_b;
 }
 

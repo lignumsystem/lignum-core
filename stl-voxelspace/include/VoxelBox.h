@@ -21,37 +21,37 @@ namespace Lignum {
   {
 	
     template <class TS,class BUD>
-      friend void dumpSegment(VoxelBox &b, const CfTreeSegment<TS,BUD>& ts, 
+      friend void DumpSegment(VoxelBox &b, const CfTreeSegment<TS,BUD>& ts, 
 			    int num_parts);
 
     template <class TS,class BUD>
-      friend void setSegmentQabs(VoxelBox &b, CfTreeSegment<TS,BUD>& ts, 
+      friend void SetSegmentQabs(VoxelBox &b, CfTreeSegment<TS,BUD>& ts, 
 			       int num_parts);
-
+    friend ostream &operator << (ostream& os, VoxelBox &b);
   public:
     VoxelBox(VoxelSpace *s); 
     VoxelBox();
-
-    LGMdouble extinction(LGMdouble l);
     //Recalculate star and val_c,  k_b and val_b
     //currently star and k_b hard-coded!!
-    void UpdateValues();
+    void updateValues();
+    LGMdouble extinction(LGMdouble l)const;
+
     //reset the box to 0
     void reset(){resetQinQabs(); resetCfData();}
-    void resetQinQabs(){Q_in = 0.0; Q_abs = 0.0;interceptedRadiation = 0.0;}
-    void resetCfData(){starSum = 0.0;needleArea = 0.0;needleMass = 0.0;}
 
-    bool isEmpty();
+    bool isEmpty()const;
 
-    Point& getCenterPoint(Point &point);
-    Point getCornerPoint();
-    int getNumSegments() { return number_of_segments; }
-    LGMdouble getAreaDen();
-    LGMdouble getQabs() { return Q_abs; }
-    LGMdouble getQin() { return Q_in; }
-    LGMdouble getStarSum() { return starSum; }
-    LGMdouble getStar() { return star; }
-    LGMdouble getNeedleMass(){return needleMass;}
+    Point getCenterPoint()const;
+    Point getCornerPoint()const;
+    int getNumSegments()const{ return number_of_segments; }
+    LGMdouble getAreaDensity();
+    LGMdouble getQabs()const{ return Q_abs; }
+    LGMdouble getQin()const{ return Q_in; }
+    LGMdouble getStarSum()const{ return starSum; }
+    LGMdouble getStar()const{ return star; }
+    LGMdouble getNeedleMass()const{return needleMass;}
+    // returns the foliage mass of the voxel box
+    LGMdouble getFoliageMass(void)const{ return needleMass; }
 
     void setArea(M2 larea, M2 narea);
     void setVoxelSpace(VoxelSpace *s, Point c);
@@ -65,15 +65,12 @@ namespace Lignum {
     void addQabs(LGMdouble val) { Q_abs += val; }
     void addInterceptedRadiation(LGMdouble rad) { interceptedRadiation += rad; }
     void addStarSum(LGMdouble star){starSum += star;}
+
     void increaseNumberOfSegments(){number_of_segments++;}
-    friend ostream &operator << (ostream& os, VoxelBox &b);
-
     LGMdouble S(LGMdouble phi, LGMdouble sf, LGMdouble Wf, LGMdouble r, LGMdouble l);
-  public:
-    // returns the foliage mass of the voxel box
-    LGMdouble getFoliageMass(void) { return needleMass; }
-
   protected:
+    void resetQinQabs(){Q_in = 0.0; Q_abs = 0.0;interceptedRadiation = 0.0;}
+    void resetCfData(){starSum = 0.0;needleArea = 0.0;needleMass = 0.0;}
     LGMdouble star;
     LGMdouble starSum;
     LGMdouble SAc(LGMdouble phi, LGMdouble r, LGMdouble l);
@@ -91,8 +88,8 @@ namespace Lignum {
     void init();	
     Point corner1;
 
-    LGMdouble val_c;
-    LGMdouble val_b;
+    LGMdouble val_c; //coniferous
+    LGMdouble val_b; //broadleaf
     LGMdouble k_c;
     LGMdouble k_b;
 

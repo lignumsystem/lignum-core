@@ -9,7 +9,7 @@ namespace Lignum {
   //	Updates also the star value 
   //
   template <class TS,class BUD>
-    void dumpSegment(VoxelBox &b, const CfTreeSegment<TS,BUD>& ts, int num_parts)
+    void DumpSegment(VoxelBox &b, const CfTreeSegment<TS,BUD>& ts, int num_parts)
     {	
       LGMdouble r_f = GetValue(ts, LGARf);
       LGMdouble lenght = GetValue(ts, LGAL) / num_parts;
@@ -36,9 +36,9 @@ namespace Lignum {
     }
 
 
-   //dumpSegment for poplar
+   //DumpSegment for poplar
    template <class TS,class BUD, class S>
-    void dumpSegment(VoxelBox &b, HwTreeSegment<TS, BUD, S> &ts, int num_parts)
+    void DumpSegment(VoxelBox &b, HwTreeSegment<TS, BUD, S> &ts, int num_parts)
     {
       //NOTE: This is the same implementation as for Coniferous tree!!!!!??????
       //HwTrees don't have LGARf!!!!
@@ -79,7 +79,7 @@ namespace Lignum {
   //	Calculates the Qabs value to the CfTreeSegment
   //
   template <class TS,class BUD>
-    void setSegmentQabs(VoxelBox &b, CfTreeSegment<TS,BUD>& ts, int num_parts)
+    void SetSegmentQabs(VoxelBox &b, CfTreeSegment<TS,BUD>& ts, int num_parts)
     {
       //LGMdouble r_f = GetValue(ts, Rf);
       //LGMdouble lenght = GetValue(ts, L);
@@ -95,9 +95,9 @@ namespace Lignum {
 
       SetValue(ts, LGAQin, GetValue(ts, LGAQin)+b.getQin()/num_parts);
 
-     /*  cout <<  "Segment Z: " << GetPoint(ts).getZ() << " Box: "  */
-/* 	   <<  b.corner1.getX() << " " <<  b.corner1.getY() << " " << b.corner1.getZ()  */
-/* 	   << " Qin: " << b.getQin() << endl;  */
+//       cout <<  "Segment Z: " << GetPoint(ts).getZ() << " Box: "
+// 	   <<  b.corner1.getX() << " " <<  b.corner1.getY() << " " << b.corner1.getZ()
+// 	   << " Qin: " << b.getQin() << endl;
     }
 
 

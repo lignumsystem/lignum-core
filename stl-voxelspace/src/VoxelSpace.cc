@@ -6,7 +6,6 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <GL/glut.h>
-//#include <GL/glaux.h>
 #endif
 
 #include <VoxelBox.h>
@@ -94,7 +93,7 @@ namespace Lignum {
   //	p : global point
   //	return : local point
   //
-  Point VoxelSpace::getLocalPoint(Point p)
+  Point VoxelSpace::getLocalPoint(const Point& p)const
   {
     return p - corner1;
   }
@@ -145,7 +144,8 @@ namespace Lignum {
   // dir	  : direction
   // returns : the route stored in a vector
   //
-  std::vector<VoxelMovement>& VoxelSpace::getRoute(std::vector<VoxelMovement> &vec, int startx, int starty, int startz, PositionVector dir)
+  std::vector<VoxelMovement>& VoxelSpace::getRoute(std::vector<VoxelMovement> &vec, int startx, 
+						   int starty, int startz, PositionVector dir)const
   {
     dir.normalize();	
 
@@ -273,12 +273,12 @@ namespace Lignum {
 	      //for-loop runs eight times (says mika).
 	      for (double phi=0; phi<PI_VALUE/2.0; phi+=PI_VALUE/16)
 		{
-		  //As in dumpSegment
+		  //As in DumpSegment
 		  voxboxes[i1][i2][i3].addStarSum(voxboxes[i1][i2][i3].S(phi,Sf,Wf,Rf,L)/8.0);
-		  voxboxes[i1][i2][i3].UpdateValues();
+		  voxboxes[i1][i2][i3].updateValues();
 		}
 	      voxboxes[i1][i2][i3].increaseNumberOfSegments();
-	      voxboxes[i1][i2][i3].UpdateValues();
+	      voxboxes[i1][i2][i3].updateValues();
 	    }
 	  }
   }
@@ -329,7 +329,7 @@ namespace Lignum {
 	    //executed.
 	    if (voxboxes[i1][i2][i3].isEmpty() == false)
 	      {				
-		voxboxes[i1][i2][i3].UpdateValues();
+		voxboxes[i1][i2][i3].updateValues();
 		for(int i = 0; i < num_dirs; i++)
 		  {	
 		    vector<double> rad_direction(3);
@@ -591,7 +591,7 @@ namespace Lignum {
       for(int i2=0; i2<Yn; i2++)
 	for(int i3=0; i3<Zn; i3++)
 	  {
-	    voxboxes[i1][i2][i3].UpdateValues(); 
+	    voxboxes[i1][i2][i3].updateValues(); 
 	  }
 
   }
@@ -606,7 +606,7 @@ namespace Lignum {
 	  }
   } 
 
-  LGMdouble VoxelSpace::getQabs()
+  LGMdouble VoxelSpace::getQabs()const
   {
     LGMdouble qabs = 0.0;
     for(int i1=0; i1<Xn; i1++)
@@ -618,7 +618,7 @@ namespace Lignum {
     return qabs;
   }  
 
-  LGMdouble VoxelSpace::getQin()
+  LGMdouble VoxelSpace::getQin()const
   {
     LGMdouble qin = 0.0;
     for(int i1=0; i1<Xn; i1++)
@@ -632,7 +632,7 @@ namespace Lignum {
 
   //Return Min and Max foliage mass in the voxel boxes. The first holds
   //the minimum value and the second the maximum value
-  pair<double,double> VoxelSpace::getMinMaxNeedleMass()
+  pair<double,double> VoxelSpace::getMinMaxNeedleMass()const
   {
     pair<double,double> p(0.0,0.0);
 
@@ -651,7 +651,7 @@ namespace Lignum {
     return p;
   }
   //
-  //	This function dumps every tree included in the VoxelSpace to
+  //	This function Dumps every tree included in the VoxelSpace to
   //	VoxelBoxes.
   //
   void VoxelSpace::dumpTrees()
@@ -664,7 +664,7 @@ namespace Lignum {
     for (i = 0; i<size; i++)
       {
 	//This does not compile on Linux g++ with ScotsPineVisual
-	//dumpCfTree(*this, *vecScotspines[i]);
+	//DumpCfTree(*this, *vecScotspines[i]);
       }
 
     for(int i1=0; i1<Xn; i1++)
@@ -672,7 +672,7 @@ namespace Lignum {
 	for(int i3=0; i3<Zn; i3++)
 	  {
 				
-	    voxboxes[i1][i2][i3].UpdateValues(); 
+	    voxboxes[i1][i2][i3].updateValues(); 
 	  }
   }
 
@@ -691,7 +691,7 @@ namespace Lignum {
     size = vecScotspines.size();
     for (i = 0; i<size; i++)
       {
-	setCfTreeQabs(*this, *vecScotspines[i]);
+	SetCfTreeQabs(*this, *vecScotspines[i]);
       }
   } 
 
@@ -730,10 +730,10 @@ namespace Lignum {
 		cube.z = c1.getZ();
 
 		cube.ready = false;
-		cube.areaden = voxboxes[i1][i2][i3].getAreaDen(); 
+		cube.areaden = voxboxes[i1][i2][i3].getAreaDensity(); 
 
 		Point cpoint;
-		voxboxes[i1][i2][i3].getCenterPoint(cpoint); 
+		cpoint = voxboxes[i1][i2][i3].getCenterPoint(); 
 
 		float xx = cpoint.getX();
 		float yy = cpoint.getY();
@@ -962,7 +962,7 @@ namespace Lignum {
 	      {
 		file <<  i1 << ":" << i2 << ":" << i3 << "   ";
 		Point p;
-		voxboxes[i1][i2][i3].getCenterPoint(p);
+		p = voxboxes[i1][i2][i3].getCenterPoint();
 					
 		file << voxboxes[i1][i2][i3];
 		file << "  " << p << " ";
@@ -989,7 +989,7 @@ namespace Lignum {
 
 
 
-  int VoxelSpace::getNumVoxBoxes()
+  int VoxelSpace::getNumberOfFilledBoxes()const
   {
     int count = 0;
     for(int i1=0; i1<Xn; i1++)
@@ -1004,7 +1004,7 @@ namespace Lignum {
     return count;
   }
 
-  int VoxelSpace::getNumTreeSegments()
+  int VoxelSpace::getNumberOfTreeSegments()const
   {
     int count=0;
     for(int i1=0; i1<Xn; i1++)
@@ -1048,7 +1048,7 @@ namespace Lignum {
 		cube.z = c1.getZ();
 
 		cube.ready = false;
-		cube.areaden = voxboxes[i1][i2][i3].getAreaDen(); 
+		cube.areaden = voxboxes[i1][i2][i3].getAreaDensity(); 
 
 		LGMdouble nmass = voxboxes[i1][i2][i3].getNeedleMass();
 	      
