@@ -34,7 +34,7 @@
 ^LEngine/doc Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi
 ^LEngine Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  mln52@mizzou.edu
 ^Graphics Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi mhlehton@cc.hut.fi  c1344@er.uqam.ca mln52@mizzou.edu
-^CityTree Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi theikura@cc.hut.fi
+^CityTree Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi theikura@cc.hut.fi minna.terho@metla.fi
 
 
 
