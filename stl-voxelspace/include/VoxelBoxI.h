@@ -23,10 +23,7 @@ namespace Lignum {
       b.addNeedleArea(farea);
       b.addNeedleMass(fmass);
 
-	
-	
       LGMdouble needle_rad = GetValue(ts, Rf);
-
 	
       //Tarkistettu että for-looppi ajetaan tasan 8 kertaa (mika).
       for (double phi=0; phi<PI_VALUE/2.0; phi+=PI_VALUE/16)
@@ -55,6 +52,7 @@ namespace Lignum {
       LGMdouble farea = S_f * GetValue(ts, Wf) / num_parts;
       LGMdouble qabs = 0.0;
 
+      
       if (farea>0 && b.needleArea>0 && b.star>0)
 	{
 	  qabs = b.Q_abs * (farea / b.needleArea);

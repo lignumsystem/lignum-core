@@ -32,25 +32,27 @@ namespace Lignum {
       VoxelSpace();
       VoxelSpace(Point corner1, Point corner2, 
 		 int xn, int yn, int zn,
-		 Firmament &f);
+		 Firmament& f);
       //constructor defining corner points, voxel box size,
       //number of boxes (size of the matrix) and the sky.
       VoxelSpace(Point corner1, Point corner2, 
 		 double xsize, double ysize, double zsize,
 		 int xn, int yn, int zn,
-		 Firmament &f);
+		 Firmament& f);
       int GetNumBoxes() { return Xn*Yn*Zn; }
       int getNumTreeSegments();
 
 
       VoxelBox& getVoxelBox(Point p);
-      LGMdouble calculateLight(ostream& os);
+      LGMdouble calculateLight();
 
       std::vector<VoxelMovement>& getRoute(std::vector<VoxelMovement> &vec, int startx, int starty, int startz, PositionVector dir);
 
       void fillVoxelBoxes(LGMdouble inivalue);
-
-	
+      void fillVoxelBoxes(LGMdouble inivalue, int beginZ, int endZ);
+      void fillVoxelBoxesWithNeedles(LGMdouble fmass, LGMdouble sf, 
+				     int beginZ, int endZ);
+      
       void AddScotspine(Tree<ScotsPineVisual, ScotsBud> &tree);
 
       template <class TS,class BUD>
@@ -65,7 +67,8 @@ namespace Lignum {
       BoundingBox& searchDimensions(BoundingBox &bbox, bool boolDimensionsWithNumBoxes);
 
       void searchDimensions(bool boolDimensionsWithNumBoxes=true) { searchDimensions(bbox, boolDimensionsWithNumBoxes); };
-
+      
+      void updateStar();
       void dumpTrees();
 
       void setLightValues();
@@ -95,9 +98,6 @@ namespace Lignum {
       Point corner2;
 	
       LGMdouble Xspan, Yspan, Zspan;
-
-	
-
 	
       int getXindex(LGMdouble xcoord);
       int getYindex(LGMdouble ycoord);
