@@ -8,6 +8,8 @@
 #include <string.h>
 #include <CString.h>
 
+namespace cxxadt{
+
 using namespace  std;
 class ParametricCurve{
 public:
@@ -25,4 +27,5 @@ private:
   int num_of_elements;
 };
 
+} //close namespace cxxadt
 #endif

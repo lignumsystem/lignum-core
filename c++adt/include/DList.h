@@ -4,6 +4,8 @@
 #include <DListElement.h>
 //enum BOOLEAN {FALSE,TRUE};
 #include <boolean.h>
+
+namespace cxxadt{
 /*=============================================================
 ** DList is a two-way list. The elements of list are linked together
 ** with pointers to previous and next element. Each list element
@@ -118,5 +120,7 @@ inline int DList::length()
 {
   return listLength;
 }
+
+} //closing namespace cxxadt
 
 #endif /*DList*/

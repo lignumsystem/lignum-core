@@ -1,4 +1,7 @@
-#include <Point.h>
+#ifndef POINTI_H
+#define POINTI_H
+
+namespace cxxadt{
 
 //The assignment
 template <class T>
@@ -110,6 +113,9 @@ ostream& operator << (ostream& os, const Point<T>& point)
   return os;
 }
 
+} //close namespace cxxadt
+
+#endif //POINTI_H
 
 #ifdef POINT
 #define  NL endl

@@ -54,11 +54,11 @@ depend:
 ../src/CString.o: /usr/include/stddef.h /usr/include/CC/iomanip.h
 ../src/CString.o: /usr/include/CC/generic.h /usr/include/CC/stdiostream.h
 ../src/CString.o: /usr/include/CC/fstream.h
+../src/DList.o: /usr/include/CC/iostream.h /usr/include/memory.h
+../src/DList.o: /usr/include/stddef.h /usr/include/sgidefs.h
+../src/DList.o: /usr/include/stdlib.h /usr/include/standards.h
 ../src/DList.o: ../include/DList.h ../include/DListElement.h
-../src/DList.o: ../include/boolean.h /usr/include/CC/iostream.h
-../src/DList.o: /usr/include/memory.h /usr/include/stddef.h
-../src/DList.o: /usr/include/sgidefs.h /usr/include/stdlib.h
-../src/DList.o: /usr/include/standards.h
+../src/DList.o: ../include/boolean.h
 ../src/DListElement.o: ../include/DListElement.h /usr/include/stdlib.h
 ../src/DListElement.o: /usr/include/standards.h /usr/include/sgidefs.h
 ../src/Ellipsis.o: ../include/Ellipsis.h /usr/include/math.h
@@ -118,11 +118,11 @@ depend:
 ../src/PositionVector.o: /usr/include/CC/stl_uninitialized.h
 ../src/PositionVector.o: /usr/include/CC/stl_vector.h
 ../src/PositionVector.o: /usr/include/CC/stl_bvector.h ../include/Point.h
-../src/PositionVector.o: ../include/RMatrix.h ../include/TMatrix.h
-../src/PositionVector.o: /usr/include/CC/stream.h /usr/include/CC/iomanip.h
-../src/PositionVector.o: /usr/include/CC/generic.h
+../src/PositionVector.o: ../include/PointI.h ../include/RMatrix.h
+../src/PositionVector.o: ../include/TMatrix.h /usr/include/CC/stream.h
+../src/PositionVector.o: /usr/include/CC/iomanip.h /usr/include/CC/generic.h
 ../src/PositionVector.o: /usr/include/CC/stdiostream.h
-../src/PositionVector.o: /usr/include/CC/fstream.h
+../src/PositionVector.o: /usr/include/CC/fstream.h ../include/TMatrixI.h
 ../src/RMatrix.o: ../include/RMatrix.h /usr/include/math.h
 ../src/RMatrix.o: /usr/include/sgidefs.h /usr/include/standards.h
 ../src/RMatrix.o: ../include/mathsym.h ../include/TMatrix.h
@@ -141,3 +141,4 @@ depend:
 ../src/RMatrix.o: /usr/include/assert.h /usr/include/CC/stl_construct.h
 ../src/RMatrix.o: /usr/include/CC/stl_uninitialized.h
 ../src/RMatrix.o: /usr/include/CC/stl_vector.h /usr/include/CC/stl_bvector.h
+../src/RMatrix.o: ../include/TMatrixI.h

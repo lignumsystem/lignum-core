@@ -5,6 +5,8 @@
 #include <mathsym.h>
 #include <TMatrix.h>
 
+namespace cxxadt{
+
 /*===================================================================
 **RMatrix ("Rotation Matrix") is a matrix to apply
 **table of functions to given angle. The result is a FMatrix
@@ -37,6 +39,8 @@ private:
   ROTATION r_direction;
   RADIAN (*(fn_matrix_table[RMATRIX_SIZE][RMATRIX_SIZE * RMATRIX_SIZE]))(RADIAN);
 };
+
+}//close namespace cxxadt
 
 #endif
 

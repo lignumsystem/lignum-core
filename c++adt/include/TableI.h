@@ -1,4 +1,7 @@
-#include <Table.h>
+#ifndef TABLEI_H
+#define TABLEI_H
+
+namespace cxxadt{
 
 template <class K,class D>
 TableElmt<K,D>::TableElmt(const K& new_key,const D& new_data)
@@ -74,6 +77,9 @@ D& Table<K,D>::lookup(const K& new_key)
   
 }
     
+}//namespace cxxadt
+
+#endif //TABLEI_H
 
 #ifdef TABLE
 #include <CString.h>

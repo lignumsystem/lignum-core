@@ -7,6 +7,8 @@
 #include <Point.h>
 #include <RMatrix.h>
 
+namespace cxxadt{
+
 using namespace std;
 
 class PositionVector{
@@ -30,4 +32,5 @@ private:
   vector<double> v;
 };
 
+}//close namespace cxxadt
 #endif

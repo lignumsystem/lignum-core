@@ -1,7 +1,10 @@
-#include <TMatrix.h>
+#ifndef TMATRIXI_H
+#define TMATRIXI_H
+
 #include <iostream.h>
 #include <stdlib.h>
 
+namespace cxxadt{
 
 template <class T> TMatrix<T>::TMatrix()
 {
@@ -281,6 +284,8 @@ ostream& operator << (ostream& os, const vector<T>& v1)
 }
 
 
+} //namespace cxxadt
+#endif //TMATRIXI_H
 
 #ifdef TMATRIX
 

@@ -7,6 +7,8 @@
 #include <ctype.h>
 #include <stream.h>
 
+namespace cxxadt{
+
 /*======================================================================================
 **Class CString implements some operations on string
 **A friends:
@@ -104,6 +106,10 @@ inline int operator != (const CString& str1, const CString& str2)
 {
   return strcmp(str1.string,str2.string) != 0;
 }
+
+}//close namespace cxxadt
+
 #endif
   
   
+

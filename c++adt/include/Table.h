@@ -2,6 +2,8 @@
 #define TABLE_H
 
 #include <DList.h>
+namespace cxxadt{
+
 template <class K,class D> class Table;
 
 template <class K,class D>
@@ -24,4 +26,6 @@ public:
 private:
   DList data_ls;
 };
+
+}//closing namespace cxxadt 
 #endif

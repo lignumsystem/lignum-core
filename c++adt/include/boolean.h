@@ -1,6 +1,9 @@
 
 #ifndef BOOLEAN_H
 #define BOOLEAN_H
+
+namespace cxxadt{
+
 #ifdef FALSE
 #undef FALSE
 #endif
@@ -9,5 +12,7 @@
 #endif
 
 enum BOOLEAN {FALSE,TRUE};
+
+}//closing namespace cxxadt
 
 #endif

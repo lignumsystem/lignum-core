@@ -3,6 +3,8 @@
 #include <stream.h>
 #include <vector>
 
+namespace cxxadt{
+
 using namespace std;
 
 #ifdef __SUNPRO_CC
@@ -46,6 +48,9 @@ private:
   int n_of_cols;
 };
 
+}//closing namespace cxxadt
+
+#include <TMatrixI.h>
 
 #endif
 

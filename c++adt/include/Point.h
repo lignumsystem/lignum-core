@@ -11,6 +11,7 @@
 ** as well as "add and assign" and "subtract and assign" points
 */ 
 
+namespace cxxadt{
 
 template <class T = double>
 class Point{
@@ -58,6 +59,10 @@ bool operator == (const Point<T>& p1, const Point<T>& p2)
          (p1.y == p2.y) &&
          (p1.z == p2.z);
 }
+
+} //closing namspace cxxadt
+
+#include <PointI.h>
 
 #endif
 

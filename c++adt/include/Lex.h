@@ -3,6 +3,8 @@
 #include <DList.h>
 #include <CString.h>
 
+namespace cxxadt{
+
 #define MAXSTRING 255
 enum TOKEN_TYPE {COLON,DOT,FLOAT,ENDFILE,HYPHEN,ID,INT,SLASH};
 
@@ -35,4 +37,7 @@ private:
   ifstream ifile;
   DList token_ls;
 };
+
+}//close namespace cxxadt
+
 #endif

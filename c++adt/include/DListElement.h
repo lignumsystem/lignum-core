@@ -2,6 +2,8 @@
 #ifndef DLIST_ELEMENT_H
 #define DLIST_ELEMENT_H
 
+namespace cxxadt{
+
 class DListElement{
 public:
   DListElement(void *data);
@@ -17,6 +19,7 @@ private:
   DListElement *previousElmt;
 };
 
+}//closing cxxadt
 
 #endif
 

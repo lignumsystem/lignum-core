@@ -4,6 +4,8 @@
 #include <math.h>
 #include <mathsym.h>
 
+namespace cxxadt{
+
 class Ellipsis{
 public:
   Ellipsis(double a, double b);
@@ -19,4 +21,5 @@ private:
   double b;  //Semiminor axis
 };
 
+}//closing cxxadt
 #endif
