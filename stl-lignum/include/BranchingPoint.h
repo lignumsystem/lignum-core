@@ -43,7 +43,7 @@ public:
   BranchingPoint(const Point& p, const PositionVector& d, Tree<TS,BUD>* t);
   virtual ~BranchingPoint();
 private:
-	std::list<Axis<TS,BUD>*> axis_ls;
+  list<Axis<TS,BUD>*> axis_ls;
 };
 
 
