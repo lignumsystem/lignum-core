@@ -8,11 +8,5 @@ TreeSegmentAttributes::TreeSegmentAttributes()
 {
 }
 
-TreeSegmentAttributesForGrogra::TreeSegmentAttributesForGrogra()
-  :nr(0),order(0)
-{
-}
-
-
 }
 

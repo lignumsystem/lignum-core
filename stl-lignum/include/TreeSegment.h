@@ -35,15 +35,6 @@ public:
 };
 
 
-// Some extra values are needed for converting Data to Grogra
-
-class TreeSegmentAttributesForGrogra{
-public:
-  TreeSegmentAttributesForGrogra();
-  int nr;     // Just a number
-  int order;  // The order of a Treesegment
-};
-
 template <class TS,class BUD=DefaultBud<TS> >
 class TreeSegment: public TreeCompartment<TS,BUD>{ 
   friend list<METER> GetAnnualRings(const TreeSegment<TS,BUD>& ts);
@@ -57,11 +48,9 @@ public:
   virtual ~TreeSegment();
   LGMdouble GetTranspiration(LGMdouble time);
   TreeSegmentAttributes& getTsa(){return tsa;}
-  TreeSegmentAttributesForGrogra& getTsag(){return tsag;}
 
 private:
   TreeSegmentAttributes tsa;
-  TreeSegmentAttributesForGrogra tsag;
 };
 
 
