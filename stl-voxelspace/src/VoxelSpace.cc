@@ -907,7 +907,7 @@ void VoxelSpace::draw(bool blackBG)
     vector<VisualCube> cubes;
     vector<VisualCube> ordered_cubes;
 
-    cout << "koko " << Xn << " " << Yn << " " << Zn << endl;
+    //cout << "koko " << Xn << " " << Yn << " " << Zn << endl;
     for(int i1=0; i1<Xn; i1++)
       for(int i2=0; i2<Yn; i2++)
 	for(int i3=0; i3<Zn; i3++)
@@ -944,7 +944,7 @@ void VoxelSpace::draw(bool blackBG)
 		half_edgeY = half_edgeX;
 		half_edgeZ = half_edgeX;
 	      
-		cout << cube.areaden << endl;
+		//cout << cube.areaden << endl;
 
 		GLfloat mat_amb[] = { 0.1, 1, 0.1, 1.0 }; 
 		GLfloat mat_dif[] = { 0.1, 1, 0.1, 1.0 }; 
