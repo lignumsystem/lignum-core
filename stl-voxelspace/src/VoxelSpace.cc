@@ -700,7 +700,7 @@ namespace Lignum {
 
 
 
-  /*
+ 
 
   //
   //	Visualizes the VoxelSpace
@@ -900,7 +900,7 @@ namespace Lignum {
     glPopMatrix();
     // glEndList();
     //#endif
-    }*/
+    }
 
 
   //Write voxel boxes  to file. If 'all' is true  write all boxes else
@@ -1020,7 +1020,7 @@ namespace Lignum {
   }
 
 
-  /*  
+ 
   void VoxelSpace::draw(bool blackBG)
   {
     glEnable(GL_LIGHTING);
@@ -1153,7 +1153,7 @@ namespace Lignum {
 	  }
   }
 
-  */
+
 
 
 
