@@ -533,3 +533,17 @@ void InitDefault()
 	}
 }
 
+
+void GenerateOpenNamespace(const char* id)
+{
+  fputs("namespace ", fOut);
+  fputs(id, fOut);
+  fputs("{ \n", fOut);
+}
+
+extern bool close;
+void GenerateCloseNamespace()
+{
+  if (close)
+    fputs("} //closing namespace\n", fOut);
+}

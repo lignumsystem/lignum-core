@@ -39,7 +39,7 @@ void SetCurLine(const char* bf)
 %}
 
 
-%s NRMLSRC MODULE PRODPROTO PRODUCTION CONIGN STRING CHARACTER EXPRESSION
+%s NRMLSRC NAMESPACE MODULE PRODPROTO PRODUCTION CONIGN STRING CHARACTER EXPRESSION
 
 %%
 
@@ -52,7 +52,8 @@ void SetCurLine(const char* bf)
 	}
 %}
 
-
+<NRMLSRC>"open" { BEGIN NAMESPACE; return tOPEN; }
+<NRMLSRC>"close" { BEGIN NAMESPACE; return tCLOSE; }
 <NRMLSRC>"derivation length:" { BEGIN EXPRESSION; return tDERIVLENGTH; }
 <NRMLSRC>"module" { BEGIN MODULE; return tMODULE; }
 <NRMLSRC>"consider:" { BEGIN CONIGN; return tCONSIDER; }
@@ -91,6 +92,18 @@ void SetCurLine(const char* bf)
 	}
 <CONIGN>";" { BEGIN NRMLSRC; return tSEMICOLON; }
 
+ 
+<NAMESPACE>[a-zA-Z_][0-9a-zA-Z_]* {
+         if (moduleTable.IsModuleIdent(ltext)){
+            return tERROR;
+         }
+         else{
+           strncpy(llval.Ident, ltext, eMaxIdentifierLength);
+           llval.Ident[eMaxIdentifierLength] = 0;
+           return tIDENT;
+         }
+        }
+<NAMESPACE>";" { BEGIN NRMLSRC; return tSEMICOLON; }
 
 <MODULE>"(" { return tLPAREN; }
 <MODULE>")" { return tRPAREN; }

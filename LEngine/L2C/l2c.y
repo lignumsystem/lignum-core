@@ -8,8 +8,8 @@
 
 #include <lglobal.h>
 
-#include "module.h"
-#include "production.h"
+#include <module.h>
+#include <production.h>
 
 extern int llex(void);
 extern void lerror(const char*, ...);
@@ -33,6 +33,10 @@ extern void AppendConIgnModule(const char*);
 extern void StartDerivLength();
 extern void EndDerivLength();
 extern void SwitchToInterpretation();
+
+extern void GenerateOpenNamespace(const char*);
+extern void GenerateCloseNamespace();
+
 extern ProductionType ProductionMode();
 
 
@@ -41,6 +45,7 @@ extern ProductionTable productionTable;
 extern ProductionTable interpretationTable;
 
 static int counter = eFirstModuleId;
+bool close = false;
 
 %}
 
@@ -52,8 +57,8 @@ static int counter = eFirstModuleId;
   FormalModuleDt* pFormalModuleData;
   FormalModuleDtList* pFormalModuleDataList;
 };
-
-%token tMODULE tPRODUCE tSTART tSTARTEACH tENDEACH tEND 
+ 
+%token tOPEN tCLOSE tMODULE tPRODUCE tSTART tSTARTEACH tENDEACH tEND 
 %token tCONSIDER tIGNORE tDERIVLENGTH tINTERPRETATION
 %token tLPAREN tRPAREN tSEMICOLON tCOMMA tLESSTHAN tGREATERTHAN tENDPRODPROTO
 %token <Ident> tIDENT tMODULEIDENT
@@ -66,11 +71,13 @@ static int counter = eFirstModuleId;
 
 %%
 
-Translate: Translate TranslationUnit
-	|
+Translate:  Translate TranslationUnit
+        |
 	;
 
-TranslationUnit: ModuleDeclaration
+TranslationUnit:
+        OpenNamespace
+        |ModuleDeclaration
 	| ConsiderStatement
 	| IgnoreStatement
 	| ProductionPrototype
@@ -85,9 +92,20 @@ TranslationUnit: ModuleDeclaration
 	| tEND
 	{ ExpandEnd(); }
 	| tINTERPRETATION
-	{ SwitchToInterpretation(); }
+          { SwitchToInterpretation(); }
+        | CloseNamespace
 	;
 
+OpenNamespace: tOPEN tIDENT tSEMICOLON
+        {
+          GenerateOpenNamespace($2);
+        }
+        ;
+CloseNamespace: tCLOSE tIDENT tSEMICOLON
+        {
+          close = true;
+        }
+        ;
 ModuleDeclaration: tMODULE tIDENT tLPAREN Parameters tRPAREN tSEMICOLON
 	{ 
 		ModuleDeclaration mdecl($2, &($4), counter++);

@@ -25,7 +25,7 @@ void BuildProdProtos();
 void BuildIProdProtos();
 void BuildModuleSize();
 void GenerateFixed();
-
+void GenerateCloseNamespace();
 
 /*
 #ifdef WIN32
@@ -83,6 +83,7 @@ int main(int argc, char** argv)
 		BuildIProdProtos();
 		BuildModuleSize();
 		GenerateFixed();
+                GenerateCloseNamespace();
 		fOut = NULL;
 		fprintf(stderr, "%s parsed. OK\n", argv[1]);
 	}

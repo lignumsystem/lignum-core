@@ -14,7 +14,7 @@ SUPPRESS =
 CCC = CC -64 -LANG:std
 CCCFLAGS = -c   
 
-INCLUDE = -I. -I../Common -I../Globals -I../Generate 
+INCLUDE = -I. -I../Common -I../include 
 
 FLEX=flex
 FLEXOPT=-Pl
