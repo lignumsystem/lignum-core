@@ -290,13 +290,13 @@ void DrawTree()
   
   if (TEXTURES_ON)
     {
-      cout << "piirretään puu tekstuureilla" << endl;
+      //cout << "piirretään puu tekstuureilla" << endl;
       stemtexture.use();
       glDisable(GL_LIGHTING);
     }
   else
     {
-      cout << "puu ilman tekstuureita " << endl;
+      //cout << "puu ilman tekstuureita " << endl;
       glEnable(GL_LIGHTING);
     }
 
@@ -335,7 +335,7 @@ void DrawTree()
 void DrawNeedles()
 {
   glBindTexture(GL_TEXTURE_2D, texIds[0]);
-  cout << "neulastekstuurin numero:" <<  texIds[0] << endl;
+  //cout << "neulastekstuurin numero:" <<  texIds[0] << endl;
 
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -354,7 +354,7 @@ void DrawNeedles()
   glDisable(GL_CULL_FACE);
   glPopMatrix();
 
-  cout << "visualisoitiin neulaset" << endl;
+  //cout << "visualisoitiin neulaset" << endl;
 }
 
 

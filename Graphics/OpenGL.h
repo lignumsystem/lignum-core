@@ -6,7 +6,7 @@
 //#include "ScotsPineVisual.h"
 #include <Tree.h>
 #include "OpenGLSymbols.h"
-
+#include "OpenGLinterface.h"
 #define TABLESIZE 100
 #define MY_EDGES 36
 #define MY_EDGES_BIG 100
@@ -93,7 +93,7 @@ void MakeLeave(float x, float y, float rad);
 
 void MakeLeaveTable();
 
-void make_bud();
+void make_bud(DRAW_TYPE type);
 
 METER GetMeter(int n, std::vector<METER> l);
 

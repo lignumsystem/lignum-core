@@ -21,7 +21,8 @@
 #include "stdafx.h"
 #include "tga.h"
 #include <math.h>
-
+#include <iostream>
+using namespace std;
 tga_t::tga_t()
 {
    lastError = 0;
@@ -183,12 +184,23 @@ byte *tga_t::GetRGBA(FILE *strm, int size)
       return 0;
    }
 
+
    for (i = 0; i < size * 4; i += 4 )
    {
-      temp = rgba[i];
-      rgba[i] = rgba[i + 2];
-   rgba[i + 2] = temp;
+     temp = rgba[i];
+     rgba[i] = rgba[i + 2];
+     rgba[i + 2] = temp;
    }
+
+#ifndef _MSC_VER  
+   //swapping green (i+1) and blue (i+2) 
+   for (i = 0; i < size * 4; i += 4 )
+   {
+     temp = rgba[i+1];
+     rgba[i+1] = rgba[i + 2];
+     rgba[i + 2] = temp;
+   }
+#endif
 
    format = GL_RGBA;
    
@@ -217,8 +229,9 @@ byte *tga_t::GetRGB(FILE *strm, int size)
 
    for (i = 0; i < size * 3; i += 3)
    {
-      temp = rgb[i];
-      rgb[i] = rgb[i + 2];
+     
+     temp = rgb[i];
+     rgb[i] = rgb[i + 2];
       rgb[i + 2] = temp;
    }
 

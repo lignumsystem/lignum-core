@@ -1011,7 +1011,7 @@ void CTexture::use()
 {
   glEnable(GL_TEXTURE_2D);
   glBindTexture(GL_TEXTURE_2D, texturenum);
-  cout << "vaihdetaan runkotekstuuriksi, jonka nro on " << texturenum << endl;
+  //cout << "vaihdetaan runkotekstuuriksi, jonka nro on " << texturenum << endl;
  
 }
 

@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "OpenGL.h"
+#include <OpenGLinterface.h>
 
 #include <math.h>
 #include <GL/gl.h>
@@ -349,8 +350,6 @@ void outPut(float x, float y, char *string)
 
 void MakeCylinder(float radius, float rad_top, float length, float rad_limit, float xx, float yy)
 {
- 
-
  const float PI = (float)3.14159265;
   int edges = 16;
  edges = (int)(radius / 0.0001);
@@ -718,15 +717,15 @@ void MakeWireModel(float radius, float length)
 
 
 
-void make_bud()
+void make_bud(DRAW_TYPE mode)
 {
   
 
   float radius=0.0;
   float radius2;
-  float rad_gro = BUD_SIZE_MAX_RADIUS/3;
-  float rad_minus = rad_gro*2/10;
-  float dist=BUD_SIZE_LENGTH/10;
+  float rad_gro = BUD_SIZE_MAX_RADIUS/3.0;
+  float rad_minus = rad_gro*2/10.0;
+  float dist=BUD_SIZE_LENGTH/10.0;
   float xy_angle;
   float sine,cosine;
   float z_coord;

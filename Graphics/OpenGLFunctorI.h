@@ -16,8 +16,10 @@ namespace Lignum{
     {
       if (Bud<TS,BUD>* mybud = dynamic_cast<Bud<TS, BUD>*>(tc))
 	{
-	  //cout << "Budi!" << endl;
-	  drawBud(mybud, mode);
+	  if (GetValue(*mybud,state) == ALIVE && mode == buds_alive)
+	    drawBud(mybud, mode);
+	  if (GetValue(*mybud,state) == DEAD && mode == buds_dead)
+	    drawBud(mybud, mode);
 	} 
 
       return tc;
@@ -254,7 +256,7 @@ TreeCompartment<TS,BUD>* DrawNeedlesFunctor<TS,BUD>::operator()(TreeCompartment<
       radius = GetValue(*cfts, R);
 
       //  cout << "neulasmassa " << GetValue(*cfts, Wf) << endl;
-      SetValue(*cfts, Wf, 40);
+      //SetValue(*cfts, Wf, 40);
 
       if (GetValue(*cfts, Wf) > 0)
 	{               
