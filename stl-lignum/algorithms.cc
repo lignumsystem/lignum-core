@@ -4,6 +4,8 @@
 #include <algorithm>
 #include <list>
 #include <MyTreeSegment.h>
+#include <HwTreeSegment.h>
+#include <CfTreeSegment.h>
 #include <TreeFunctor.h>
 #include <Algorithms.h>
 
@@ -31,40 +33,41 @@ CString ParseCommandLine(int argc, char *argv[],const CString& flag)
 
 int main(int argc, char *argv[])
 {
-  Tree<MyTreeSegment> tree(Point<METER>(0,0,0),PositionVector(0,0,1.0));
+  Tree<MyHwTreeSegment> hw_tree(Point<METER>(0,0,0),PositionVector(0,0,1.0));
+  Tree<MyCfTreeSegment> cf_tree(Point<METER>(0,0,0),PositionVector(0,0,1.0));
   CString clarg,empty;
 
   clarg = ParseCommandLine(argc,argv,"-file");
   if (clarg != empty)
-    InitializeTree(tree,clarg);
+    InitializeTree(hw_tree,clarg);
 
   //create a tree with a structure [TS,[[B],[B]],B]
   //i.e, [TS,BP,B] which expands to [TS,[A,A],B] and to [TS,[[B],[B]],B]
   //A= Axis, BP = BranchingPoint, TS = TreeSegment and B = Bud 
-  Axis<MyTreeSegment>& axis = GetAxis(tree);
+  Axis<MyHwTreeSegment>& axis = GetAxis(hw_tree);
   //create the first tree segment
-  TreeSegment<MyTreeSegment> *ts = 
-    new TreeSegment<MyTreeSegment>(Point<METER>(0,0,0),PositionVector(0,0,1.0),
-				   0,1,0.5,0.2,&tree);
+  TreeSegment<MyHwTreeSegment> *ts = 
+    new TreeSegment<MyHwTreeSegment>(Point<METER>(0,0,0),PositionVector(0,0,1.0),
+				   0,1,0.5,0.2,&hw_tree);
   //create the branching point
-  BranchingPoint<MyTreeSegment> *bp = 
-    new BranchingPoint<MyTreeSegment>(Point<METER>(0,0,0),
-				      PositionVector(0,0,1.0),&tree);
+  BranchingPoint<MyHwTreeSegment> *bp = 
+    new BranchingPoint<MyHwTreeSegment>(Point<METER>(0,0,0),
+				      PositionVector(0,0,1.0),&hw_tree);
   //create the terminating bud
-  Bud<MyTreeSegment> *bud = new  Bud<MyTreeSegment>(Point<METER>(0,0,0),
+  Bud<MyHwTreeSegment> *bud = new  Bud<MyHwTreeSegment>(Point<METER>(0,0,0),
 						    PositionVector(0,0,1.0),
 						    0,
-						    &tree);
+						    &hw_tree);
   //create a branch with one bud (Axis containing one Bud) into the branching point
-  InsertTerminatingBud(*bp,new Bud<MyTreeSegment>(Point<METER>(0,0,0),
+  InsertTerminatingBud(*bp,new Bud<MyHwTreeSegment>(Point<METER>(0,0,0),
 						  PositionVector(0,0,1.0),
 						  0,
-						  &tree));
+						  &hw_tree));
   //create another branch with one bud (Axis containing one Bud) into the branching point
-  InsertTerminatingBud(*bp,new Bud<MyTreeSegment>(Point<METER>(0,0,0),
+  InsertTerminatingBud(*bp,new Bud<MyHwTreeSegment>(Point<METER>(0,0,0),
 						  PositionVector(0,0,1.0),
 						  0,
-						  &tree));
+						  &hw_tree));
 
 
   //The tree will now look as  [TS,[[B],[B]],B]
@@ -75,14 +78,14 @@ int main(int argc, char *argv[])
   //traverse the tree and print out  the datatypes of tree compartments
   //using the ForEach algorithm
   cout << "Testing ForEach algorithm with DisplayType2" << endl;
-  ForEach(tree,DisplayType2<MyTreeSegment>());
+  ForEach(hw_tree,DisplayType2<MyHwTreeSegment>());
 
   cout << endl;
   int i = 0;
 
   //traverse the tree, echo  and count the number of tree compartments
   cout << "Testing Accumulate algorithm with CountCompartments" << endl;
-  int cc = Accumulate(tree,i,CountCompartments<MyTreeSegment>());
+  int cc = Accumulate(hw_tree,i,CountCompartments<MyHwTreeSegment>());
   cout << "Number of Compartments: " << endl;
   cout << "Return value: " << cc << " Modified identity: " << i << endl;
 
@@ -92,7 +95,7 @@ int main(int argc, char *argv[])
   //traverse the tree, echo  and count the number of tree compartments
   cout << "Testing AccumulateDown algorithm with "
        << "CountCompartmentsReverse" << endl; 
-  cc = AccumulateDown(tree,i,CountCompartmentsReverse<MyTreeSegment>());
+  cc = AccumulateDown(hw_tree,i,CountCompartmentsReverse<MyHwTreeSegment>());
   cout << "Number of Compartments: " << endl;
   cout << "Return value: " << cc << " Modified identity: " << i << endl;
   cout << endl;
@@ -101,7 +104,7 @@ int main(int argc, char *argv[])
   cc= 0;
   //traverse the tree, echo  and count the number of tree compartments
   cout << "Testing AccumulateDown algorithm with CountCompartments" << endl;
-  cc = AccumulateDown(tree,i,CountCompartments<MyTreeSegment>());
+  cc = AccumulateDown(hw_tree,i,CountCompartments<MyHwTreeSegment>());
   cout << "Number of Compartments: " << endl;
   cout << "Return value: " << cc << " Modified identity: " << i << endl;
   cout << endl;
@@ -109,7 +112,7 @@ int main(int argc, char *argv[])
   i = 0;
   //traverse the tree, echo  and count the number branches
   cout << "Testing PropagateUp algorithm with MyExampleSignal" << endl;
-  PropagateUp(tree,i,MyExampleSignal<MyTreeSegment>());
+  PropagateUp(hw_tree,i,MyExampleSignal<MyHwTreeSegment>());
 }
 
 

@@ -87,8 +87,10 @@ main.o: ../c++adt/include/Point.h /usr/include/math.h
 main.o: include/TreeCompartment.h include/LGMdecl.h include/LGMUnits.h
 main.o: ../c++adt/include/PositionVector.h ../c++adt/include/mathsym.h
 main.o: ../c++adt/include/RMatrix.h ../c++adt/include/TMatrix.h
-main.o: include/BranchingPoint.h include/Axis.h include/TreeFunctor.h
-main.o: include/Algorithms.h /usr/include/CC/functional
+main.o: include/BranchingPoint.h include/Axis.h
+main.o: ../c++adt/include/ConnectionMatrix.h include/HwTreeSegment.h
+main.o: include/CfTreeSegment.h include/TreeFunctor.h include/Algorithms.h
+main.o: /usr/include/CC/functional
 algorithms.o: /usr/include/stdlib.h /usr/include/standards.h
 algorithms.o: /usr/include/sgidefs.h /usr/include/CC/iostream.h
 algorithms.o: /usr/include/memory.h /usr/include/stddef.h
@@ -122,5 +124,7 @@ algorithms.o: /usr/include/math.h include/TreeCompartment.h include/LGMdecl.h
 algorithms.o: include/LGMUnits.h ../c++adt/include/PositionVector.h
 algorithms.o: ../c++adt/include/mathsym.h ../c++adt/include/RMatrix.h
 algorithms.o: ../c++adt/include/TMatrix.h include/BranchingPoint.h
-algorithms.o: include/Axis.h include/TreeFunctor.h include/Algorithms.h
+algorithms.o: include/Axis.h ../c++adt/include/ConnectionMatrix.h
+algorithms.o: include/HwTreeSegment.h include/CfTreeSegment.h
+algorithms.o: include/TreeFunctor.h include/Algorithms.h
 algorithms.o: /usr/include/CC/functional
