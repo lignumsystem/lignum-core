@@ -3,16 +3,14 @@
 The  L-system  formalism  is   the  foundation  on  which  programming
 languages  for  plant modeling  tools  have  been  built. Though  they
 usually include constructs  from general purpose programming languages
-the key  concept of  these tools  is rewriting. The  language L  is no
-exception.
+the key concept of these tools is the rewriting of modules or symbols.
+The language L is no exception.
 
-The counterpart  of a symbol in  L-system formalism is  the concept of
-module in the language L. A module  has a name and can take any number
-of arguments  of any  type (in C++).   A syntactically  correct module
-definition consists of a predecessor defining one module possible with
-its  context ending  with colon  and a  production  defining successor
-string embraced  within curly braces.   For example the third  rule in
-Eq. \ref{eq:ca110} is written in L as:
+A module in L  has a name and can take any  number of arguments of any
+type in C++.   A syntactically correct rule consists  of a predecessor
+possibly with its context ending  with colon and a production defining
+successor string embraced within  curly braces.  For example the third
+rule in Eq.  \ref{eq:ca110} is written in L as:
 \begin{equation}\label{eq:r3}
  O() < X() > O(): \{\mathrm{produce}\ X();\}
 \end{equation}
@@ -27,7 +25,7 @@ define module $F(s)$ to move the turtle forward along its heading step
 of  length  $s$  and  three modules  $Turn(\alpha)$,  $Pitch(\alpha)$,
 $Roll(\alpha)$ to  rotate orientation of  the turtle around  $\vec U$,
 $\vec  L$  and $\vec  H$  by  $\alpha$.   One special  module  $Start$
-corresponds the axiom.
+corresponds to the axiom.
 
 To model tree structures with L as in LIGNUM let the module $F$ denote
 tree segment and designate module  $B$ for bud.  Given the modules for
@@ -46,19 +44,20 @@ necessary in rewriting.
 \section{Scots pine: integrating L and LIGNUM}\label{sec:pine}
 To present algorithm that translates  strings of L to structural units
 of LIGNUM  the first  example mimics the  growth of young  Scots pine.
-First,  introduce  module $B(O,L)$  representing  a  bud.  The  module
+First,  introduce  module $B(A,L)$  representing  a  bud.  The  module
 definition implements development for  the main stem and the branching
-evolution.  In each  iteration the apical bud ($O  = 0$) moves forward
-of length $L$  and forks off four new side  branches.  The first order
-branches ($O  = 1$) are  similar but only  two more side  branches are
-created.  Branching stops after third order ($O > 3$).  The definition
-for this pine growth in L is in Appendix \ref{sec:L1}. The development
-starts from  one bud  and the  string after two  iterations is  in Eq.
-\ref{eq:pine2}  (we  postpone  the   explanation  of  open  and  close
-statements). Symbol [ denotes $SB()$ and ] denotes $EB()$, modules for
-turtle rotations are not shown:
+evolution.  In each  iteration the apical bud ($A  = 1$) moves forward
+of length $L$ and forks off  four new side branches.  The branches ($A
+> 1  $) are  similar  but only  two  more side  branches are  created.
+Branching stops after third order  ($A > 3$).  The definition for this
+pine growth in L is  in Appendix \ref{sec:L1} (The explanation of open
+and  close   statements  is  in   Section  \ref{sec:namespace}).   The
+development starts from main axis consisting of one segment, branching
+point  and   bud.   The  string   after  two  iterations  is   in  Eq.
+\ref{eq:pine2} . Symbol [ denotes $SB()$ and ] denotes $EB()$, modules
+for turtle rotations are not shown:
 \begin{equation}\label{eq:pine2}
-F\;[F[B][B]B]\:[F[B][B]B]\:[F[B][B]B]\:[F[B][B]B]\; F \;[B][B][B][B]\; B
+F\;[] F [F[B][B]B]\:[F[B][B]B]\:[F[B][B]B]\:[F[B][B]B]\; F \;[B][B][B][B]\; B
 \end{equation}
 
 We can now outline straightforward  algorithm to convert the string of
@@ -67,18 +66,19 @@ a particular example.   To start with, interpret the  symbol $F(s)$ as
 tree segment  of length $s$.  The  symbol B corresponds  to bud.  Each
 consecutive  set of $n$  branches between  two $F$  symbols will  be a
 branching  point with  $n$ axes.   The string  in  Eq.  \ref{eq:pine2}
-becomes first  the main axis  with two segments, two  branching points
-and the terminating bud:
+becomes  first the  main  axis with  three  segments, three  branching
+points and the terminating bud:
 \begin{equation}
-[TS, BP, TS, BP, B]
+[TS, BP, TS, BP, TS, BP, B]
 \end{equation}
-The two branching points contains four axes each:
+The  two last  branching  points  contains four  axes  each the  first
+branching point being empty:
 \begin{equation}
-[TS, [A,A,A,A], TS, [A,A,A,A], B]
+[TS, [], TS, [A,A,A,A], TS, [A,A,A,A], B]
 \end{equation}
 Finally, recursively constructing the axes we get:
 \begin{equation}
-[TS, [TS,[[B],[B]],B],\ldots, [TS,[[B],[B]],B]], TS, [[B],[B],[B],[B]], B]
+[TS, [] TS,[TS,[[B],[B]],B],\ldots, [TS,[[B],[B]],B]], TS, [[B],[B],[B],[B]], B]
 \end{equation}
 Current status of  the turtle updated according to  turtle commands in
 the  string   defines  the  position  and  orientation   of  the  tree
@@ -94,14 +94,24 @@ it is possible to match  the existing string and LIGNUM representation
 and  insert the  new structural  units in  the axis  lists  before the
 terminating buds whose positions and orientations will be updated.
 
-The development of three pines after nine development steps (years) is
-in  Fig.  \ref{fig:pine}.   The leftmost  pine  is the  result of  the
-L-system (Appendix  \ref{sec:L1}) rewriting only; the  two other pines
-incorporate   our    previous   work   on    Scots   pine   metabolism
-\citep{perttunen:96,perttunen:98} to that  L-system.  Just by changing
-single    parameter   value   for    branching   order    effect   $q$
-\citep[see][]{perttunen:98}  shows drastic effects  on the  outlook of
-plants despite the same underlying L-system. The taller tree has clear
-layered branch whorls while the shorter one has a bushier structure.
+The development  of three pines after eight  development steps (years)
+is in  Fig.  \ref{fig:pine}.  The leftmost  pine is the  result of the
+L-system (Appendix \ref{sec:L1}) rewriting only.  The two pines in the
+middle and  in the right incorporate  our previous work  on Scots pine
+metabolism  to  that  L-system  \citep{perttunen:98}.   Most  notably,
+recall the pairwise comparison of segments to compute the intercept of
+solar radiation and the  iterative allocation of net photosynthates to
+growth  after  respiration  costs.   The  parameter  values  are  from
+\citet[Table  1]{perttunen:98}.  We  omit the  function for  number of
+secondary  buds \citep[][Fig.  2]{perttunen:98}  and let  the L-system
+determine branching.
+
+The  simulations show the  effect of  two different  foliage mortality
+models. The foliage in the  pine in the middle of Fig.  \ref{fig:pine}
+remain five years \citep[][Fig.   2]{perttunen:98}. The foliage in the
+pine  in  the  right   remains  one  year  only  (admittedly  slightly
+unrealistic scenario).  The simulation  shows much shorter and slimmer
+stem due  to less need  for diameter growth  for the pine of  one year
+foliage.
 
 

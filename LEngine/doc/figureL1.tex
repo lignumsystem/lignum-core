@@ -1,9 +1,10 @@
 \section{L-system mimicking pine growth}\label{sec:L1}
 The L-system  mimicking pine  growth starts with  one segment  and one
-bud.   Main axis, (A  = 1),  creates one  segment and  four branches
-forking off.   These side  branches (A =  2) create one  segment and
-four additional  branches (A = 3).  Ramification  stops after fourth
-order branches. Branching shortens the segment length (d1-d4).
+bud.   Main axis, ($A  = 1$),  creates one  segment and  four branches
+forking off.  From then on side  branches ($A > 1$) create one segment
+and  two additional  branches.  Ramification  stops after  third order
+branches. Bending  of the branches  is modeled by pitching  the second
+order branches ($A = 2$) down in the module Bend.
 
 %\begin{figure}[p]
 %% \begin{picture}(1,1)
@@ -11,14 +12,7 @@ order branches. Branching shortens the segment length (d1-d4).
 %% \end{picture}
 \begin{verbatim}
 open Pine;
-const double d1 = 0.9;
-const double d2 = 0.6;
-const double d3 = 0.4;
-const double d4 = 0.3;
 const double PI = 3.1415926535897932384;
-const double angle = PI/4.0;
-const double bend = 2.0;
-
 module F(double);
 module B(int,double);
 module Pitch(double);
@@ -31,29 +25,26 @@ Start:{produce F(0.30)SB()EB()B(1,1.0);}
 B(A,l):
 {
    if (A==1)
-   produce F(l) SB() Pitch(PI/4.0)  B(A+1,l*d2) EB() 
-                SB() Roll(PI/2.0) Pitch(PI/4.0) B(A+1,l*d2) EB()
-                SB() Roll(PI) Pitch(PI/4.0)  B(A+1,l*d2) EB() 
-                SB() Roll(3.0*PI/2.0) Pitch(PI/4.0)  B(A+1,l*d2) EB()
-           B(A,l*d1);
+   produce F(l) SB() Pitch(PI/4.0)  B(A+1,l*0.6) EB() 
+                SB() Roll(PI/2.0) Pitch(PI/4.0) B(A+1,l*0.6) EB()
+                SB() Roll(PI) Pitch(PI/4.0)  B(A+1,l*0.6) EB() 
+                SB() Roll(3.0*PI/2.0) Pitch(PI/4.0)  B(A+1,l*0.6) EB()
+           B(A,l*0.9);
   else if (A==2)
-  produce  Bend(0.2) F(l) SB() Turn(PI/4.0)  B(A+1,l*d3) EB() 
-                SB() Turn(-PI/4.0) B(A+1,l*d3) EB()
-                SB() Pitch(PI/4.0) B(A+1,l*d3) EB()
-                SB() Pitch(-PI/4.0) B(A+1,l*d3) EB()
-           Bend(-0.1)B(A,l*d2);
+  produce  Bend(0.3) F(l) SB() Turn(PI/4.0)  B(A+1,l*0.4) EB() 
+                          SB() Turn(-PI/4.0) B(A+1,l*0.4) EB()
+           Bend(-0.2)B(A,l*0.6);
   else if (A==3)
-  produce F(l) SB() Turn(PI/4.0)  B(A+1,l*d4) EB() 
-                  SB() Turn(-PI/4.0) B(A+1,l*d4) EB()
-           B(A,l*d3);
-  else if (A==4)
-  produce F(l) SB() B(A+1,l)  EB() B(A,l);
+  produce F(l) SB() Turn(PI/4.0)  B(A+1,l*0.3) EB() 
+               SB() Turn(-PI/4.0) B(A+1,l*0.3) EB()
+          B(A,l*0.4);
   else
-  produce B(A,l);          
+  produce F(l) SB() EB() B(A,l);
 }
+
 Bend(s):
 {
-   produce Pitch(s*bend);
+   produce Pitch(bend);
 }
 close Pine;
 

@@ -14,17 +14,17 @@ and  branching  architecture of  bearberry  growing  in South  Western
 Finland in  varying pollution, nutrient  and light levels.   They have
 designed an L-system model  to study qualitative features of branching
 patterns of bearberry by simulation.   Here we enhance their model for
-forest  grown clones  with  algorithm  to detect  if  a clonal  branch
-blockades the  growth space of an  active bud. This also  serves as an
-example of  a stochastic L-system  \citep{pp:96} and how  to implement
-global sensitivity \citep{kurth:94} in LIGNUM.
+clone  growing on  sandpit with  an algorithm  to detect  if  a clonal
+branch blockades the  growth space of an active  bud. This also serves
+as  an example  of  a  stochastic L-system  \citep{pp:90}  and how  to
+implement global sensitivity \citep{kurth:94} in LIGNUM.
 
 In  their L-system  model for  bearberry \citep{salemaa:02}  the plant
 grows horizontally and consists of annual growth units holding lateral
 buds  and one apical  bud.  The  buds are  divided into  dominant (D),
-subdominant (SD) and nondominant (ND)  types.  A living bud produces a
-shoot  of its  own type.  Axillary buds  have time  delay  before they
-release and produce a shoot.
+subdominant  (SD) and nondominant  (ND) types  \citep{remphrey:83}.  A
+living bud produces a shoot of  its own type.  Axillary buds have time
+delay before they release and produce a shoot.
 
 For the implementation in L define module $B(T,S,C)$ where $T$ denotes
 the bud type,  $S$ its status, i.e.  time left  before release and $C$
@@ -32,9 +32,10 @@ collision.  Interpret  module $F(s)$  as a shoot  of length  $s$.  The
 module  definition  for  $B$  determines  the lengths  of  the  shoots
 produced, branching angles for  lateral shoots forking off alternately
 to the left or to the  right and the number of axillary buds produced.
-In general D shoots are longer than SD and ND shoots and in the forest
-ND shoots  have wider branhing angle.   Outline of the  L-system is in
-Appendix \ref{sec:L2}.  For details see \citet{salemaa:02}.
+In  general D  shoots are  longer than  SD and  ND shoots  and  in the
+sandpit the colonizing plant  shows intensive lateral branching due to
+favorable light  conditions.  Outline of  the L-system is  in Appendix
+\ref{sec:L2}.  For details see \citet{salemaa:02}.
 
 The collition detection algorithm  simply examines given opening angle
 symmetric to both sides of the growth direction of a bud and checks if
@@ -58,6 +59,8 @@ LIGNUM the  conversion algorithm can  update the attribute value  of a
 corresponding bud using the  appropriate parameter value in module $B$
 or  vice  versa  if  the  results  of  computations  (e.g.   collision
 detection) in  LIGNUM must be passed  to L-system. The  results of the
-development  of the bearberry  model after  ten iterations  with three
-different collision models are in Fig. \ref{fig:a-uva-ursi}.
+development  of the  bearberry model  after 15  iterations  with three
+different collision models are  in Fig.  \ref{fig:a-uva-ursi}.  As one
+can  expect the  bearberry  models show  less  lateral branching  with
+increasing opening angle for collision detection.
  
