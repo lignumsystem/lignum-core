@@ -134,12 +134,5 @@ int main(int argc, char** argv)
   AccumulateDown(pine5,fm,SubtractFoliage<KGC>(0.3),
 		 SampleFoliageMass<MyCfTreeSegment,MyCfBud>(1.00));
   //Visualize LIGNUM
-  Forest f;
-  InsertCfTree(f,pine1);
-  InsertCfTree(f,pine2);
-  InsertCfTree(f,pine3);
-  InsertCfTree(f,pine4);
-  InsertCfTree(f,pine5);
-  Initialize3DForest<Tree<MyCfTreeSegment, MyCfBud> >(f);
-  VisualizeForest<Tree<MyHwTreeSegment, MyHwBud> >(f);
+  VisualizeCfTree(pine5);
 }

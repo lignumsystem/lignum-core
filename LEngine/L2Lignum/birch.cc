@@ -37,10 +37,9 @@ int main(int argc, char** argv)
     vector<PositionVector> pv;
     AccumulateDown(birch,pv,
     		   AppendSequence<vector<PositionVector> >(),
-    		   CreateLeaves<MyHwTreeSegment,MyHwBud>(0.5,0.2,0.1));
+    		   CreateLeaves<MyHwTreeSegment,MyHwBud>(0.5,0.5,0.5));
   }
   birchL.end();  
-  DisplayStructure(birch);
   cout << endl;
   //Visualize LIGNUM - Graphics project needs to be fixed
   VisualizeHwTree(birch);

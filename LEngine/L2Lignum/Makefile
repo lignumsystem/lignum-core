@@ -20,6 +20,25 @@ PINEOBJ = ${PINESRC:.cc=.o}
 FORESTSRC = forest.cc
 FORESTOBJ = ${FORESTSRC:.cc=.o}
 
+CA110SRC = ca110.cc
+CA110OBJ = ${CA110SRC:.cc=.o}
+
+CA30SRC = ca30.cc
+CA30OBJ = ${CA30SRC:.cc=.o}
+
+CA90SRC = ca90.cc
+CA90OBJ = ${CA90SRC:.cc=.o}
+
+BEARBERRYSRC = bearberry.cc
+BEARBERRYOBJ = ${BEARBERRYSRC:.cc=.o}
+
+LSYS =   bearberry.L pine9bp.L cs-plantA.L cs-plantB.L  cs-plantC.L \
+         cs-plantD.L cs-plant.L 
+#LSYS = ca110.L
+#LSYS  = ca30.L
+#LSYS = ca90.L
+LSYS = pine9bp.L birch.L
+
 CCC = CC -64 -LANG:std
 
 #OPTIMIZE = -Ofast=ip28 -IPA
@@ -62,8 +81,7 @@ LIBOGL =  -lglut -lGL -lGLU -lX11 -lXext -lXmu
 LIBS     =  $(LIBVISUAL) $(LIBLSYS) $(LIBL) $(LIBLGM) $(LIBSKY) $(LIBADT) $(LIBOGL) \
             $(LIBMATH)
 
-LSYS =   bearberry.L pine9bp.L cs-plantA.L cs-plantB.L  cs-plantC.L \
-         cs-plantD.L cs-plant.L 
+
 
 PROGFILES = program-files.html
 
@@ -100,6 +118,35 @@ forest: l2c $(FORESTOBJ) $(LIB1) $(LIB2) $(LIB3)  $(LIB4) $(LIB5) $(LIB6)
 gnuforest:
 	make "CCC=g++" "CCCFLAGS=-c" "OPTIMIZE=-g" \
              "AR=ar"  "ARFLAGS=rv" "LIBD=lib32" "LSYS=pine9bp.L birch.L" forest
+
+ca110: l2c $(CA110OBJ) $(LIB1) $(LIB2) $(LIB3)  $(LIB4) $(LIB5) $(LIB6)  
+	$(CCC)  -o $@ $(INCLUDE) $(OPTIMIZE) $(CA110OBJ) $(LIBFLAGS) $(LIBS)
+
+gnuca110:
+	make "CCC=g++" "CCCFLAGS=-c" "OPTIMIZE=-g" \
+             "AR=ar"  "ARFLAGS=rv" "LIBD=lib32" "LSYS=ca110.L" ca110
+
+ca30: l2c $(CA30OBJ) $(LIB1) $(LIB2) $(LIB3)  $(LIB4) $(LIB5) $(LIB6)  
+	$(CCC)  -o $@ $(INCLUDE) $(OPTIMIZE) $(CA30OBJ) $(LIBFLAGS) $(LIBS)
+
+gnuca30: 
+	make "CCC=g++" "CCCFLAGS=-c" "OPTIMIZE=-g" \
+              "AR=ar"  "ARFLAGS=rv" "LIBD=lib32" "LSYS=ca30.L" ca30
+
+ca90: l2c $(CA90OBJ) $(LIB1) $(LIB2) $(LIB3)  $(LIB4) $(LIB5) $(LIB6)  
+	$(CCC)  -o $@ $(INCLUDE) $(OPTIMIZE) $(CA90OBJ) $(LIBFLAGS) $(LIBS)
+
+gnuca90:
+	make "CCC=g++" "CCCFLAGS=-c" "OPTIMIZE=-g" \
+             "AR=ar"  "ARFLAGS=rv" "LIBD=lib32" "LSYS=ca90.L" gnuca90
+
+bearberry: l2c $(BEARBERRYOBJ) $(LIB1) $(LIB2) $(LIB3)  $(LIB4) $(LIB5) $(LIB6)  
+	$(CCC)  -o $@ $(INCLUDE) $(OPTIMIZE) $(BEARBERRYOBJ) $(LIBFLAGS) $(LIBS)
+
+gnubearberry:
+	make "CCC=g++" "CCCFLAGS=-c" "OPTIMIZE=-g" \
+             "AR=ar"  "ARFLAGS=rv" "LIBD=lib32" "LSYS=bearberry.L" bearberry
+
 l2c:	
 	(cd ../L2C; make "CCC=$(CCC)" "CCCFLAGS=$(CCCFLAGS)" "OPTIMIZE=$(OPTIMIZE)" \
                           "AR=ar" "ARFLAGS=rv" $@)

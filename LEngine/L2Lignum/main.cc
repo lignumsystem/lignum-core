@@ -157,5 +157,9 @@ int main(int argc, char** argv)
   //Update LIGNUM
   csla.lstringToLignum(csplant);  
   //Visualize LIGNUM
+  Forest f;
+  InsertCfTree(f,pine2);
+  Initialize3DForest<Tree<MyCfTreeSegment, MyCfBud> >(f);
+  VisualizeForest<Tree<MyHwTreeSegment, MyHwBud> >(f);
   VisualizeLGMTree(pine2);
 }
