@@ -58,6 +58,13 @@ namespace Lignum
     InitDrawing();
   }
 
+ void LGMVisualization::ResetCameraPosition(float height)
+ { 
+     settings.cam_x = height*2;
+     settings.cam_y = 0;
+     settings.cam_z = height/2;   
+ }
+
   void LGMVisualization::StartVisualization()
   {
     if (mode == SOLID)
@@ -149,6 +156,9 @@ namespace Lignum
     //hx = 0;
     //hy = 0;
     //hz = 0.6;
+
+    cout << "camera position      " << settings.cam_x << " " <<  settings.cam_y << " "<< settings.cam_z << endl;
+    cout << "camera is pointed to " << hx << " " << hy << " " << hz-settings.cam_z << endl;
 
     settings.cam_x = (settings.cam_x - hx) * 0.001 * settings.y_move; 
     settings.cam_y = (settings.cam_y - hy) * 0.001 * settings.y_move; 

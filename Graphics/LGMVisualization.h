@@ -88,9 +88,11 @@ class LGMVisualization
   void Menu(int value);
   void StartVisualization();
   void OrderFoliage(bool v) {  order_foliage = v; }
+  void ResetCameraPosition(float height);
 
   int GetTgaTexNumber(string filename);
   int GetBmpTexNumber(string filename);
+
 
 
   void drawTrees(); /*{for_each(trees.begin(),trees.end(),DrawTrees());}*/
