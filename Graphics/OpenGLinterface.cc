@@ -36,9 +36,9 @@ GLfloat shadowLight[4];
 
 CAMERA_MODE c_mode;
 
-GLfloat cam_x;  //camera position
-GLfloat cam_y;
-GLfloat cam_z;
+GLfloat cam_x = - 1.8;  //camera position
+GLfloat cam_y = 0;
+GLfloat cam_z = 0.3;
 double height;
 
 GLfloat lookat_x;  // look at
@@ -62,14 +62,15 @@ CString stem_texture;
 //float rad_limit;
 
 
-GLenum shade_model = GL_FLAT;
+GLenum shade_model = GL_SMOOTH;
 
 extern std::vector<NEEDLE_PLANE> nplanes;
 
 
 void InitOpenGL()
 {
-	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+  
+  glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
 	glLightfv(GL_LIGHT0, GL_POSITION, light.LightPosition);
@@ -78,7 +79,7 @@ void InitOpenGL()
 	glEnable(GL_DEPTH_TEST);
 
 
-	InitDrawing();
+	//InitDrawing();
 	m_xRotate = 0;
 	m_yRotate = 0;
 
@@ -110,9 +111,9 @@ void InitOpenGL()
 	light.diffuse.value[2] = 1.0f;
 	light.diffuse.value[3] = 1.0f;
 
-	cam_x = 1.5;
+	cam_x = 4.5;
 	cam_y = 0;
-	cam_z = height/2; 
+	cam_z = 0.4;//height/2; 
 
 	lookat_x = 0; 
 	lookat_y = 0;
@@ -124,7 +125,9 @@ void InitOpenGL()
 
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_FASTEST);
 	SetShadeModel();
-	SetLight();
+	//SetLightPosition();
+	//SetLight();
+  
 }
 
 
@@ -211,36 +214,45 @@ void DrawAllFoliage(CLignumWBDoc *doc)
 void DrawTree()
 {	
 	///***************
-	#ifdef _MSC_VER
-		glCallList(TREE);
-	
-	#else
-	GLfloat mat_amb[] = { 1, 1, 1, 1.0 }; 
-	GLfloat mat_dif[] = { 1, 1, 1, 1.0 }; 
+#ifdef _MSC_VER
+  glCallList(TREE);
+  
+#else
+  GLfloat mat_amb[] = { 0.5, 0.3, 0, 1.0 }; 
+  GLfloat mat_dif[] = { 0.8, 0.4, 0, 1.0 }; 
+  
+  glMaterialfv(GL_FRONT, GL_AMBIENT, mat_amb); 
+  glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_dif);
+  
+  // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+  //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  //glDisable(GL_TEXTURE_2D);
+  
+  //glBindTexture(GL_TEXTURE_2D, texture[0]);
+  //  glCullFace(GL_FRONT);
+  //glEnable(GL_CULL_FACE);
+  
+  // glColor3f(.5,.3,0);
 
-    glMaterialfv(GL_FRONT, GL_AMBIENT, mat_amb); 
-    glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_dif);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-
-	glBindTexture(GL_TEXTURE_2D, texture[0]);
-	glCullFace(GL_FRONT);
-	glEnable(GL_CULL_FACE);
-
-	glPushMatrix();
-	glCallList(TREE_BIG);
-	glPopMatrix();
-
-	glBindTexture(GL_TEXTURE_2D, texture[1]);
-	glPushMatrix();
-	glCallList(TREE_SMALL);
-	glPopMatrix();
-
-	glCullFace(GL_BACK);
-	glDisable(GL_CULL_FACE);
-	#endif
+  //MakeCylinder(0.3, 0.2, 1, 0.1);
+  //glEnable(GL_LIGHTING);
+  glPushMatrix();
+  if (glIsList(TREE_BIG)==false)
+    cout << "Virhe:puuta ei maaritelty " << endl;
+  glCallList(TREE_BIG);
+  glPopMatrix();
+  
+  //glBindTexture(GL_TEXTURE_2D, texture[1]);
+  glPushMatrix();
+  if (glIsList(TREE_SMALL) == false)
+    cout << "Virhe:puuta ei määritelty " << endl;
+  glCallList(TREE_SMALL);
+  glPopMatrix();
+	  
+ 
+  //glCullFace(GL_BACK);
+  //glDisable(GL_CULL_FACE);
+#endif
 }
 
 void DrawOrderedFoliage()
@@ -326,26 +338,26 @@ void DrawBuds()
 void DrawCross()
 {
 
-	glDisable(GL_LIGHTING);
-	glPushMatrix();
-	glColor3f(0,0,0);
-	glCallList(CROSS);
-	glPopMatrix();
-	glEnable(GL_LIGHTING);
-
-	UseTextures();
-	GLfloat mat_amb[] = { 1, 1, 1, 1.0 }; 
-	GLfloat mat_dif[] = { 1, 1, 1, 1.0 }; 
-
-    glMaterialfv(GL_FRONT, GL_AMBIENT, mat_amb); 
-    glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_dif);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-	glPushMatrix();
-	glCallList(STEM_CROSS);
-	glPopMatrix();
+  glDisable(GL_LIGHTING);
+  glPushMatrix();
+  //glColor3f(0,0,0);
+  glCallList(CROSS);
+  glPopMatrix();
+  glEnable(GL_LIGHTING);
+  
+  UseTextures();
+  GLfloat mat_amb[] = { 1, 1, 1, 1.0 }; 
+  GLfloat mat_dif[] = { 1, 1, 1, 1.0 }; 
+  
+  glMaterialfv(GL_FRONT, GL_AMBIENT, mat_amb); 
+  glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_dif);
+  
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  
+  glPushMatrix();
+  glCallList(STEM_CROSS);
+  glPopMatrix();
 }
 
 
@@ -481,147 +493,6 @@ void SetLightPosition()
 
 
 
-
-/*
-float MakeTreeLists(CLignumWBDoc *doc)
-{
-	if (glIsList(TREE_BIG))
-		glDeleteLists(TREE_BIG, 1);
-	if (glIsList(TREE_SMALL))
-		glDeleteLists(TREE_SMALL, 1);
-	
-	float height;
-	glPushMatrix();
-	glNewList(TREE_BIG, GL_COMPILE);
-	
-	DrawStemFunctor<WhiteBirch, DefaultBud<WhiteBirch> > WBstemfunctor;
-	
-	switch(doc->tree_type) 
-	{
-		case tt_betula :
-			height = TraverseAxis(GetAxis(doc->GetBetula()), stem, doc, rad_limit);								
-			break;
-		case tt_whitebirch :
-			WBstemfunctor.min_rad = rad_limit;
-			WBstemfunctor.max_rad = 999;
-			ForEach(doc->GetWhiteBirch(), WBstemfunctor);
-			//height = TraverseAxis(GetAxis(doc->GetWhiteBirch()), stem, doc, rad_limit);								
-			break;
-
-		case tt_sugarmaple :
-			height = TraverseAxis(GetAxis(doc->GetBetula()), stem, doc, rad_limit);								
-			break;
-		case tt_digitree:
-			height = TraverseAxis(GetAxis(doc->GetDigiTree()), stem, doc, rad_limit);								
-			break;
-										
-		case tt_scotspine :															
-			height = TraverseAxis(GetAxis(doc->GetScotsPine()), stem, doc, rad_limit);																		
-			break;
-		case tt_gliricidia :															
-			height = TraverseAxis(GetAxis(doc->GetGliricidia()), stem, doc, rad_limit);																		
-			break;
-	}
-	glEndList();
-	glPopMatrix();
-
-	glPushMatrix();
-	glNewList(TREE_SMALL, GL_COMPILE);		
-	switch(doc->tree_type) 
-	{
-		case tt_betula :
-			height = TraverseAxis(GetAxis(doc->GetBetula()), stem, doc, -rad_limit);								
-			break;
-		case tt_whitebirch :
-			WBstemfunctor.max_rad = rad_limit;
-			WBstemfunctor.min_rad = 0;
-			ForEach(doc->GetWhiteBirch(), WBstemfunctor);
-			//height = TraverseAxis(GetAxis(doc->GetWhiteBirch()), stem, doc, -rad_limit);								
-			break;
-
-		case tt_sugarmaple :
-			height = TraverseAxis(GetAxis(doc->GetBetula()), stem, doc, -rad_limit);								
-			break;
-
-		case tt_digitree:
-			height = TraverseAxis(GetAxis(doc->GetDigiTree()), stem, doc, -rad_limit);								
-			break;
-										
-		case tt_scotspine :															
-			height = TraverseAxis(GetAxis(doc->GetScotsPine()), stem, doc, -rad_limit);																		
-			break;
-		case tt_gliricidia :															
-			height = TraverseAxis(GetAxis(doc->GetGliricidia()), stem, doc, -rad_limit);																		
-			break;
-	}
-	glEndList();
-	glPopMatrix();
-
-
-	glNewList(TREE, GL_COMPILE);
-	GLfloat mat_amb[] = { 1, 1, 1, 1.0 }; 
-	GLfloat mat_dif[] = { 1, 1, 1, 1.0 }; 
-
-    glMaterialfv(GL_FRONT, GL_AMBIENT, mat_amb); 
-    glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_dif);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-
-	glBindTexture(GL_TEXTURE_2D, texture[0]);
-	glCullFace(GL_FRONT);
-	glEnable(GL_CULL_FACE);
-
-	glPushMatrix();
-	glCallList(TREE_BIG);
-	glPopMatrix();
-
-	glBindTexture(GL_TEXTURE_2D, texture[1]);
-	glPushMatrix();
-	glCallList(TREE_SMALL);
-	glPopMatrix();
-
-	glCullFace(GL_BACK);
-	glDisable(GL_CULL_FACE);
-	glEndList();
-
-	return height;
-}
-
-
-void MakeLeaveList(CLignumWBDoc *doc)
-{
-	MakeLeaveTable();
-
-	if (glIsList(FOLIAGE))
-		glDeleteLists(FOLIAGE, 1);
-
-	num_lea = 0;
-	glPushMatrix();
-	glNewList(FOLIAGE, GL_COMPILE);	
-	UseTextures();
-
-	DrawLeavesFunctor<WhiteBirch, DefaultBud<WhiteBirch> > WBleavesfunctor(9,9);
-	Axis<BetulaTortuosa>& axis2 = GetAxis(doc->GetBetula());
-	Axis<WhiteBirch>& axis1 = GetAxis(doc->GetWhiteBirch());
-	switch(doc->tree_type) 
-	{
-		case tt_whitebirch :
-				ForEach(doc->GetWhiteBirch(), WBleavesfunctor);
-				break;
-		case tt_betula :
-				TraverseAxis(axis2, betula_leaves, doc, 0);
-				break;
-
-		case tt_sugarmaple :
-				TraverseAxis(axis2, betula_leaves, doc, 0);
-				break;
-	}
-	glEndList();
-	glPopMatrix();
-}
-*/
 
 
 void DrawOrderedNeedles()

@@ -17,12 +17,14 @@ namespace Lignum{
 template <class TS, class BUD>
 TreeCompartment<TS,BUD>* DrawStemFunctor<TS,BUD>::operator()(TreeCompartment<TS,BUD>* tc)const
 {
+	
 	if (TreeSegment<TS, BUD>* ts = dynamic_cast<TreeSegment<TS, BUD>*>(tc))
 	{  			
 		LGMdouble radius = GetValue(*ts, R);
-
+		
 		if (radius > min_rad && radius<=max_rad)	
 		{
+		  
 			float length;
 			float radius_top;
 			float rot_x;
@@ -33,6 +35,7 @@ TreeCompartment<TS,BUD>* DrawStemFunctor<TS,BUD>::operator()(TreeCompartment<TS,
 			PositionVector direction = GetDirection(*ts);
 
 			length = GetValue(*ts, L); 
+			
 			radius_top = GetValue(*ts, RTop);
 			position = GetPoint(*ts);
 		

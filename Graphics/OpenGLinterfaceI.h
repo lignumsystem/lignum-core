@@ -45,12 +45,14 @@ void MakeLeaveList(Tree<TS,BUD> &tree, int xsize, int ysize)
 template <class TS,class BUD>
 void MakeTreeList(Tree<TS,BUD> &tree, LGMdouble limit)
 {
-	
+  
 	if (glIsList(TREE_BIG))
 		glDeleteLists(TREE_BIG, 1);
 	if (glIsList(TREE_SMALL))
 		glDeleteLists(TREE_SMALL, 1);
-	
+  
+	cout << "MakeTreeList:tehdaan puu" << endl;
+
 	glPushMatrix();
 	glNewList(TREE_BIG, GL_COMPILE);
 	DrawStemFunctor<TS,BUD> stemfunctor;

@@ -269,7 +269,7 @@ void MakeCone(float length, float radius, float max_radius)
 
   
   glPushAttrib(GL_COLOR_BUFFER_BIT);
-  glColor3f(0.4,0.4,0.4);
+  //glColor3f(0.4,0.4,0.4);
   glBegin(GL_QUAD_STRIP); 
   for (int i = 0; i < edges ; i++)
     {
@@ -311,7 +311,7 @@ void MakeCone(float length, float radius, float max_radius)
 	glDisable(GL_TEXTURE_2D);
   	glDisable(GL_LIGHTING);
 	glBegin(GL_POLYGON);
-	glColor3f(0.5, 0.5, 0.0);
+	//glColor3f(0.5, 0.5, 0.0);
 	
 	for (int i = 0; i < edges ; i++)
 	{    
@@ -337,7 +337,7 @@ void outPut(float x, float y, char *string)
 {
 
   int len, i;
-  glColor3f (1.0, 0.4, 0.4);
+  //glColor3f (1.0, 0.4, 0.4);
   glRasterPos2f(x, y);
   len = (int) strlen(string);
   
@@ -352,19 +352,20 @@ void MakeCylinder(float radius, float rad_top, float length, float rad_limit, fl
 {
   const float PI = (float)3.14159265;
   int edges = 16;
-
-  edges = (int)(radius / 0.0001);
+ edges = (int)(radius / 0.0001);
+ 
 
   if (edges>60)
 	edges = 100;
   else if (edges<30)
 	  edges=16;
-  edges = 36;
+  else edges = 36;
 
+  edges = 16;
   if (rad_top == 0 || rad_top > radius)
 	  rad_top = radius;
 
- 
+ cout << "särmiä " << edges << endl;
 
   GLfloat cosine,sine, x=0, y=last_texY, cos_top, sin_top;
   GLfloat tex_x= texX_odd*(float)(radius * 3.14 / edges);  
@@ -397,6 +398,7 @@ void MakeCylinder(float radius, float rad_top, float length, float rad_limit, fl
   
   float *position1 = new float[255];
   float *position2 = new float[255];
+  float *normals = new float[255];
   float *tex1 = new float[255];
   float *tex2 = new float[255];
   
@@ -425,10 +427,11 @@ void MakeCylinder(float radius, float rad_top, float length, float rad_limit, fl
       
       
       //Set the normal    
-      glNormal3f(cosine, sine,0);
+      //glNormal3f(cosine, sine,0);
       cos_top = cosine * rad_top;
       sin_top = sine * rad_top;
       
+      cout << "normal " << cosine << " " << sine << endl;
       cosine *= radius;
       sine *= radius; 
       
@@ -440,6 +443,10 @@ void MakeCylinder(float radius, float rad_top, float length, float rad_limit, fl
       position2[1+i*3] = sin_top+yy;
       position2[2+i*3] = length;
       
+      normals[i*3+0] = cosine;
+      normals[i*3+1] = sine;
+      normals[i*3+2] = 0;
+
       tex1[0+i*2] = x;
       tex1[1+i*2] = y;
       tex2[0+i*2] = x;
@@ -452,7 +459,7 @@ void MakeCylinder(float radius, float rad_top, float length, float rad_limit, fl
   cosine=my_cosine[0]; //cos(0);
   sine=my_sine[0]; //sin(0); 
   len = sqrt(cosine*cosine+sine*sine);  //Set the normal
-  glNormal3f(cosine/len, sine/len,0); 
+  // glNormal3f(cosine/len, sine/len,0); 
   cos_top = cosine * rad_top;
   sin_top = sine * rad_top;
   cosine *= radius;
@@ -466,6 +473,10 @@ void MakeCylinder(float radius, float rad_top, float length, float rad_limit, fl
   position2[1+i*3] = sin_top+yy;
   position2[2+i*3] = length;
   
+  normals[i*3+0] = cosine;
+  normals[i*3+1] = sine;
+  normals[i*3+2] = 0;
+
   tex1[0+i*2] = x;
   tex1[1+i*2] = y;
   tex2[0+i*2] = x;
@@ -474,9 +485,10 @@ void MakeCylinder(float radius, float rad_top, float length, float rad_limit, fl
   glBegin(GL_QUAD_STRIP); 
   for (i = 0; i < edges+1 ; i++)
     {
+      glNormal3fv(&normals[i*3]);
       glTexCoord2fv(&tex1[i*2]);		glVertex3fv(&position1[i*3]);
       glTexCoord2fv(&tex2[i*2]);		glVertex3fv(&position2[i*3]);
-      
+      glNormal3fv(&position1[i*3]);
     }
   glEnd();
   
@@ -745,8 +757,9 @@ void MakeCylinderWithTop(float radius, float rad_top, float length, float rad_li
 	edges = 100;
   else if (edges<10)
 	  edges=16;
-  edges = 36;
+  else edges = 36;
 
+  cout << "särmiä " << edges << endl;
   if (rad_top == 0)
 	  rad_top = radius;
 
@@ -834,7 +847,7 @@ void MakeCylinderWithTop(float radius, float rad_top, float length, float rad_li
   
   glDisable(GL_LIGHTING);	 
   glDisable(GL_TEXTURE_2D);
-  glColor4f(0.8f, 0.8f,0.0f,0.7f);                 
+  //glColor4f(0.8f, 0.8f,0.0f,0.7f);                 
   glBlendFunc(GL_SRC_ALPHA,GL_SRC_COLOR); 
   glEnable(GL_BLEND);             
 
@@ -857,9 +870,9 @@ void MakeCylinderWithTop(float radius, float rad_top, float length, float rad_li
   //glDisable(GL_BLEND);
   glEnable(GL_LINE_SMOOTH);
   
-  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
-  glShadeModel(GL_FLAT);
+  glShadeModel(GL_SMOOTH);
 
   //float d_rad = radius / (age+1);
   
@@ -870,7 +883,7 @@ void MakeCylinderWithTop(float radius, float rad_top, float length, float rad_li
 		float rad = GetMeter(i+1 , an_rings) / 2 - d_rad;
 		if (rad > 0 && rad<0.3)
 		{
-			glColor3f(0.2, 0.2, 0.0);
+		  //glColor3f(0.2, 0.2, 0.0);
 			glBegin(GL_LINE_STRIP); //_LOOP);
 			for (int ii = 0; ii < MY_EDGES_BIG ; ii++)
 			{
@@ -901,7 +914,7 @@ void MakeYearLines(float radius, float rad_top, float length, std::vector<METER>
 {
 	glPushMatrix();
 	glBegin(GL_QUADS);
-	glColor3f(1,1,0);
+	//glColor3f(1,1,0);
 
 	glVertex2f(-radius, 0);
 	glVertex2f(-rad_top, length/height_odd);
@@ -921,7 +934,7 @@ void MakeYearLines(std::vector<year_point> l)
     std::list<year_point>::iterator last = l.end();
 */
 
-	glColor3f(1,1,1);
+  //glColor3f(1,1,1);
 	int size = l.size();
 
 	for(int n=1; n<68; n++)

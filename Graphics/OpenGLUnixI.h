@@ -17,14 +17,20 @@ using namespace Lignum;
 
 namespace Lignum{
 template <class TS,class BUD>
-int Visualize(Tree<TS,BUD> &tree)
+int VisualizeLGMTree(Tree<TS,BUD> &tree)
 { 
-  
-
-  init_window();    
+  // init_window();
+  cout << "InitDrawing" << endl;
+  InitDrawing();
+  InitOpenGL();
+      
+  init_window();
+  //setLight();
   //initTextures(); 
  
   //  TreeHeight<TS,BUD> th;
+
+  cout << "rakennetaan puu.." << endl;
   MakeTreeList(tree, 0.05);
   //ForEach(tree, th);
   

@@ -256,7 +256,7 @@ int main(int argc, char *argv[])
    cout << endl << "hw_tree Respiration (): "
 	<< GetValue(cf_tree, M) << endl;
 
-   Visualize(cf_tree);
+   VisualizeLGMTree(cf_tree);
 }
 
 

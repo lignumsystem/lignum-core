@@ -149,7 +149,7 @@ GLboolean       blackBackGround = TRUE;
 
 extern CTexture        text;
 
-GLfloat lightx=1, lighty=8, lightz=3, lightw=0;
+GLfloat lightx=1, lighty=3, lightz=2, lightw=0;
 GLfloat lightZeroPosition[] = {lightx, lighty, lightz, lightw};
 GLfloat lightPosition[] = {0,0,0,0};
 
@@ -182,7 +182,7 @@ double mouse_y=WINDOW_SIZE_Y/2;
 //float dist=3, height=1.2, height_old=0; 
 float xAngle=1, zAngle=20;
 
-float x_move = 0;
+float x_move = 1;
 float y_move = 0;
 float z_move = 0;
 
@@ -282,7 +282,7 @@ void redrawAll()
 // This function draws the picture
 void redraw(void)
 {
-  float hx,hy, hz;  
+  float hx=0,hy=0, hz=0;  
 
   
   glutSetWindow(window1);
@@ -308,29 +308,27 @@ void redraw(void)
   hy = sin(x_move*0.1*2*PI_VALUE/360) * 8;
   hz = hz + z_move * 0.01;
 
+  //hx = 0;
+  //hy = 0;
+  //hz = 0.6;
+
   cam_x = (cam_x - hx) * 0.001 * y_move; // * cos(y_move*2*PI/360) * 0.01;
   cam_y = (cam_y - hy) * 0.001 * y_move; //cam_y + y_move * sin(y_move*2*PI/360) * 0.01;
   //cam_z = 1;
 
   
+
   gluLookAt (cam_x, cam_y, cam_z,      // camera x,y,z  
-	     hx, hy, hz-cam_z,               // look at x,y,z    
+	     hx, hy, hz-cam_z,          // look at x,y,z    
 	     0.0, 0.0, 1.0);           // which way up    
 
-  
+  cout << "1:" << cam_x << "  " << cam_y << "  " << cam_z << endl;
+  cout << "2:" << hx << "  " << hy << "  " << hz-cam_z << endl << endl;
  
-  if(!LIGHTING_ON)
-    glDisable(GL_LIGHTING);
-  else 
-    {
-      //GLfloat mat_amb1[] = { 0.5, 0.3, 0.1, 1.0 };
-      //GLfloat mat_amb0[] = { 0.35, 0.3, 0.1, 1.0 };     
-      //glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, mat_amb1);
-   }
+ setLight();
 
   DrawTree();
- 
- // if (LEAVES_ON)
+  
     
 
   glPopMatrix();   
@@ -671,15 +669,16 @@ void init_window () //int argc, char** argv)
 // This function inits the lightning
 void setLight(void)
 {     
-  GLfloat mat_amb[] = {.2,.2,.2,1};
+  GLfloat mat_amb[] = {.4,.4,.2,1};
   
   GLfloat lightPosition[] = {lightx, lighty, lightz, lightw};
 
+  cout << "valo " << lightx <<lighty << lightz <<  lightw << endl;
   glLightfv (GL_LIGHT0, GL_POSITION, lightPosition);
-  glLightfv (GL_LIGHT0, GL_AMBIENT, mat_amb); 
-  
-  glEnable (GL_LIGHTING);
+  // glLightfv (GL_LIGHT0, GL_AMBIENT, mat_amb); 
   glEnable (GL_LIGHT0);
+  glEnable (GL_LIGHTING);
+  
 }
 
 

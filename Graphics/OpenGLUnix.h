@@ -9,7 +9,7 @@ namespace Lignum{
 
 
   template <class TS,class BUD>
-  int Visualize(Tree<TS,BUD> &tree);
+  int VisualizeLGMTree(Tree<TS,BUD> &tree);
 }
 
 #include <OpenGLUnixI.h>
