@@ -1,0 +1,38 @@
+\begin{figure}[p]
+\begin{picture}(1,1)
+\put(0,0){\line(1,0){370}}
+\end{picture}
+\begin{verbatim}
+open Pine;
+const double PI = 3.14159; 
+module B(int,double);
+Start:{produce B(0,1.0);}
+B(O,L):
+{
+  if (O==0)
+  produce F(L) SB() Pitch(PI/4.0)  B(O+1,L*0.6) EB() 
+               SB() Roll(PI/2.0) Pitch(PI/4.0) B(O+1,L*0.6) EB()
+               SB() Roll(PI) Pitch(PI/4.0) B(O+1,L*0.6) EB() 
+               SB() Roll(3.0*PI/2.0) Pitch(PI/4.0) B(O+1,L*0.6) EB()
+          B(O,L*0.8);
+  else if (O==1)
+  produce F(L) SB() Turn(PI/4.0)  B(O+1,L*0.5) EB() 
+               SB() Turn(-PI/4.0) B(O+1,L*0.5) EB()
+          Pitch(-0.1)B(O,L*0.6);
+  else if (O==2)
+  produce F(L) SB() Turn(PI/4.0)  B(O+1,L*0.4) EB() 
+               SB() Turn(-PI/4.0) B(O+1,L*0.4) EB()
+           B(O,L*0.5);
+  else if (O==3)
+  produce F(L) SB() B(O+1,L)  EB() B(O,L);
+  else
+  produce B(O,L);          
+}
+close Pine;
+\end{verbatim}
+\begin{picture}(1,1)
+\put(0,0){\line(1,0){370}}
+\end{picture}
+%\hline
+\caption{L-system mimicking pine growth}\label{fig:L1}
+\end{figure}

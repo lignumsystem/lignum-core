@@ -1,0 +1,98 @@
+\begin{figure}[p]
+\begin{picture}(1,1)
+\put(0,0){\line(1,0){370}}
+\end{picture}
+\begin{verbatim}
+
+open Bearberry;
+
+#include <lsys.h>
+
+
+const int D    = 1.0; //dominant    apical
+const int S    = 2.0; //subdominant apical
+const int T    = 3.0; //subdominant lateral
+const int N    = 4.0; //nondominant apical
+const int O    = 5.0; //nondominat  lateral
+
+const double DL = 1;    
+const double SL = 0.58;  
+const double NL = 0.40;  
+const double DA = 30*2.0*PI_VALUE/360.0;
+const double SA = 31*2.0*PI_VALUE/360.0;
+const double NA = 52*2.0*PI_VALUE/360.0;
+const double CU = -5.0*2.0*PI_VALUE/360.0;
+const double CT = 0.5*2.0*PI_VALUE/360.0;
+
+module B(double,double,double); 
+
+derivation length: 10;
+int seed
+
+Start:
+{
+  int init = -1;
+  int seed = 137591;
+  ran3(&init);
+  produce F(0.1*DL) SB() EB() B(D,0.0,0.0);
+}
+
+B(T,S,C):
+{
+  double g = 0.0;
+  double r1 = ran3(&seed);
+  double r2 = ran3(&seed);
+  
+  if (r1 < CT)
+     g = CU;
+  else 
+     g = -CU;
+
+  if (C == 1.0){
+    produce B(T,S,C);
+  }
+  else if (T == D && S == 0.0){
+    if (r2 < 0.0875)
+      produce Turn(g) F(0.70*DL) SB() Turn(NA)  B(N,2,C) EB() 
+              Turn(g) F(0.15*DL) SB() Turn(-DA) B(D,0,C) EB()
+              Turn(g) F(0.15*DL) SB() EB() B(D,0,C);
+    ............................................................
+    else if (r2 <= 1.0)
+      produce Turn(g) F(0.50*DL) SB() Turn(-NA) B(N,2,C) EB() 
+              Turn(g) F(0.10*DL) SB() Turn(NA)  B(N,1,C) EB()
+              Turn(g) F(0.10*DL) SB() Turn(-SA) B(S,1,C) EB()
+              Turn(g) F(0.10*DL) SB() Turn(SA)  B(S,0,C) EB()
+              Turn(g) F(0.20*DL) SB() EB() B(T,0,C);
+  } 
+  else if (T == S && S == 0.0){
+    if (r2 < 0.257)
+     produce Turn(g) F(0.65*SL) SB() Turn(NA)  B(N,2,C) EB()
+             Turn(g) F(0.15*DL) SB() Turn(-SA) B(S,1,C) EB()
+             Turn(g) F(0.20)    SB() EB() B(S,0,C);
+    ............................................................
+    else if (r2 <= 1.0)
+     produce Turn(g) F(0.65*SL) SB() Turn(-NA)  B(N,2,C) EB()
+             Turn(g) F(0.15*DL) SB() Turn(SA) B(S,1,C) EB()
+             Turn(g) F(0.20)    SB() EB() B(T,0,C);   
+  }  
+  else if (T == N && S == 0.0){
+    if (r2 < 0.630)
+     produce Turn(g) F(NL) SB() EB() B(N,0,C);
+    ............................................................
+    else if (r2 <= 1.0)
+     produce Turn(g) F(0.75*NL) SB() Turn(-NA) B(N,1,C) EB()
+             Turn(g) F(0.25)    SB() EB() B(T,0,C);
+  }
+  else{
+   double s = maximum(S-1.0,0.0);
+   produce B(T,s,C);
+  }
+
+}
+\end{verbatim}
+\begin{picture}(1,1)
+\put(0,0){\line(1,0){370}}
+\end{picture}
+%\hline
+\caption{L-system for bearberry growth [Salemaa and Sievänen 02]}\label{fig:L2}
+\end{figure}

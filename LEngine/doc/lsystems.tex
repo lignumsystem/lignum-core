@@ -1,7 +1,8 @@
-\documentclass[12pt,a4paper,english]{article}
+\documentclass[a4paper,english]{article}
 %Scandinavian alphabet
 \usepackage{babel}
-\usepackage{t1enc,epsfig,textcomp,supertabular}
+\usepackage[latin1]{inputenc}
+\usepackage{epsfig,textcomp,supertabular}
 
 %Citation style 
 \usepackage[round,authoryear]{natbib}
@@ -42,35 +43,17 @@
 
 \maketitle
 \pagebreak
-\abstract{
 
-LIGNUM is  a functional-structural tree  model that represents  a tree
-with  four modelling units  closely resembling  the real  structure of
-trees.  These are  tree segments, the tree axes,  branching points and
-buds.  Metabolic  processes are  explicitly related to  the structural
-units  in  which they  are  taking  place.   Here we  enhance  earlier
-versions  of  LIGNUM  for  conifers  and broadleaved  trees  with  the
-possibility to  formally describe  the architectural development  of a
-tree with Lindenmayer systems.
-
-This  modified version  of  LIGNUM  is then  used  to demonstrate  its
-potential capabilities  to model  not only single  trees but  also the
-development   of   forest    stands.    The   current   implementation
-methodologically mixes the term  rewriting of Lindenmayer systems with
-the LIGNUM model  to represent a tree as an  abstract datatype and the
-functioning of  a tree with  generic programming. Using  some examples
-(from  the  previous and  future  work  with  LIGNUM) we  discuss  our
-approach  identifying from our  point of  view some  important missing
-pieces  in L-systems  to  present  them as  an  overture for  L-system
-community for possible theoretical and practical assessment.
-
-\bf Key words\rm: LIGNUM, Lindenmayer systems, functional-structural tree model.  
-}
-
-\section{Introduction}
-\section{The Language L in LIGNUM}
-\section{Examples}
-\section{Discussion}
+\input{abstract}
+\input{introduction}
+\input{structural-units}
+\input{basic-of-l}
+\input{language-l-lignum}
+\input{a-uva-ursi}
+\input{vigour-index}
+\input{namespace}
+\input{discussion}
+\input{figures}
 %References 
 %\bibliography{references/text-books,references/misc,references/em98,references/sugar-maple,references/aob96}
 %Annals of Botany bibliographic style

@@ -1,0 +1,86 @@
+\section{Language L with LIGNUM}
+
+The  L-system  formalism  is   the  foundation  on  which  programming
+languages  for  plant modeling  tools  have  been  built. Though  they
+usually include constructs  from general purpose programming languages
+the key  concept of  these tools  is rewriting. The  language L  is no
+exception.
+
+\subsection{Module vs. symbol}
+The counterpart  of a symbol in  L-system formalism is  the concept of
+module in the language L. A module  has a name and can take any number
+of arguments  of any  type (in C++).   A syntactically  correct module
+definition consists of a predecessor defining one module possible with
+its  context ending  with colon  and a  production  defining successor
+string embraced  within curly braces.   For example the third  rule in
+Eq. \ref{eq:ca110} is written in L as:
+\begin{equation}
+ O() < X() > O(): \{\mathrm{produce}\ X();\}
+\end{equation}
+
+For branching structures of plants L predefines two modules $SB()$ and
+$EB()$ denoting begin and end  of branch respectively.  To control the
+movements of the  turtle (the drawing engine) let  us first define its
+orientation  in space by  three unit  vectors $\vec  H$, $\vec  L$ and
+$\vec U$ perpendicular to each other such that $\vec U = \vec H \times
+\vec L$ denoting turtle's heading,  direction to the left and up. Then
+define module $F(s)$ to move the turtle forward along its heading step
+of  length  $s$  and  three modules  $Turn(\alpha)$,  $Pitch(\alpha)$,
+$Roll(\alpha)$ to  rotate orientation of  the turtle around  $\vec U$,
+$\vec  L$  and $\vec  H$  by  $\alpha$.   One special  module  $Start$
+corresponds the axiom.
+
+\subsection{L and LIGNUM}\label{sec:pine}
+The  first example  mimics the  growth  of young  Scots pine.   First,
+introduce module  $B(O,L)$ representing a bud.   The module definition
+implements development for the  main stem and the branching evolution.
+In each iteration the apical bud ($O = 0$) moves forward of length $L$
+and forks off four new side  branches.  The first order branches ($O =
+1$)  are  similar  but  only  two  more  side  branches  are  created.
+Branching stops after third order  ($O > 3$).  The definition for this
+pine growth in L is in Fig.  \ref{fig:L1}. The development starts from
+one bud and  the string after two iterations  is in Eq. \ref{eq:pine2}
+(we postpone the  explanation of open and close  statements). Symbol [
+denotes $SB()$ and ] denotes  $EB()$, modules for turtle rotations are
+not shown:
+\begin{equation}\label{eq:pine2}
+F\;[F[B][B]B]\:[F[B][B]B]\:[F[B][B]B]\:[F[B][B]B]\; F \;[B][B][B][B]\; B
+\end{equation}
+
+We can now outline straightforward  algorithm to convert the string of
+symbols in L to structural units in LIGNUM using Eq. \ref{eq:pine2} as
+a particular example.   To start with, interpret the  symbol $F(s)$ as
+tree segment  of length $s$.  The  symbol B corresponds  to bud.  Each
+consecutive  set of $n$  branches between  two $F$  symbols will  be a
+branching  point with  $n$ axes.   The string  in  Eq.  \ref{eq:pine2}
+becomes first  the main axis  with two segments, two  branching points
+and the terminating bud:
+\begin{equation}
+[TS, BP, TS, BP, B]
+\end{equation}
+The two branching points contains four axes each:
+\begin{equation}
+[TS, [A,A,A,A], TS, [A,A,A,A], B]
+\end{equation}
+Finally, recursively constructing the axes we get:
+\begin{equation}
+[TS, [TS,[[B],[B]],B],\ldots, [TS,[[B],[B]],B]], TS, [[B],[B],[B],[B]], B]
+\end{equation}
+Current status of  the turtle updated according to  turtle commands in
+the  string   defines  the  position  and  orientation   of  the  tree
+compartments in LIGNUM.
+
+The structural development of the tree described in L does not require
+the generation  of LIGNUM representation  of trees from  scratch after
+each derivation.   In our case we  can assume that  an L-system indeed
+generates alternating sequence of  tree segments, branching points and
+terminating buds  and the terminal  buds only generate  new structural
+units.   Thus  after each  derivation  it  is  possible to  match  the
+existing  string   and  LIGNUM  representation  and   insert  the  new
+structural units in  the axis lists before the  terminating buds whose
+positions and  orientations will be  updated.  The development  of the
+pine  after  one,  four  and   eight  development  steps  is  in  Fig.
+\ref{fig:pine}.
+
+
+

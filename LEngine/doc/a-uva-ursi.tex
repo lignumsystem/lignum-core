@@ -1,0 +1,63 @@
+\section{Bearberry}\label{sec:bearberry}
+
+The   evergreen   horizontally    spreading   shrub   bearberry   (\it
+Arctostaphylos  uva-ursi \rm  (L.))  grows  in variety  of  habitats in
+Northern Europe and Northern North America.  It is a pioneering species
+growing best in high light conditions colonizing gravelly soils, sandy
+dunes, heathlands  etc.  but  appears also in  the understory  of open
+pine  forests [Salemaa  99].  It  is adapted  for growth  with limited
+water  and  nutrient  supply.  Bearberry  is  a  clonal  species,  its
+reproduction is mainly vegetative.
+
+[Salemaa  and Sievänen 02]  have studied  growth habits,  axillary bud
+activation and  branching architecture  of bearberry growing  in South
+Western Finland in varying  pollution, nutrient and light levels. They
+have  designed an  L-system  model to  study  qualitative features  of
+branching patterns of bearberry  by simulation.  Here we enhance their
+model for  forest grown  clones with algorithm  to detect if  a clonal
+branch blockades the  growth space of an active  bud. This also serves
+as an example  of a stochastic L-system [Prusinkiewicz  96] and how to
+implement global sensitivity [Kurth ??]  in LIGNUM.
+
+In their  L-system model for  bearberry [Salemaa and Sievänen  02] the
+plant grows  horizontally and consists of annual  growth units holding
+lateral buds and  one apical bud.  The buds  are divided into dominant
+(D),  subdominant  (SD) and  nondominant  (ND)  types.   A living  bud
+produces a shoot of its own type. Axillary buds have time delay before
+they release and produce a shoot.
+
+For the implementation in L define module $B(T,S,C)$ where $T$ denotes
+the bud type,  $S$ its status, i.e.  time left  before release and $C$
+collision.  Interpret  module $F(s)$  as a shoot  of length  $s$.  The
+module  definition  for  $B$  determines  the lengths  of  the  shoots
+produced, branching angles for  lateral shoots forking off alternately
+to the left or to the  right and the number of axillary buds produced.
+In general D shoots are longer than SD and ND shoots and in the forest
+ND shoots  have wider branhing angle.   Outline of the  L-system is in
+Fig. \ref{fig:L2}.  For details see [Salemaa and Sievänen 02].
+
+The collition detection algorithm  simply examines given opening angle
+symmetric to both sides of the growth direction of a bud and checks if
+its  free  of other  shoots  and  buds  within given  distance.   More
+precisly, define $\vec {P_1}$ as the  position of the bud and $\vec D$
+as  its growth  direction. Define  $\vec  {P_2}$ the  position of  the
+potential obstacle. Then $\vec {P_3} = \vec {P_2} - \vec {P_1}$ is the
+direction  from the  bud  to  the obstacle.  Given  the opening  angle
+$\alpha$ and the  distance $l$ the obstacle hinders  the growth of the
+bud  if $\cos(\alpha/2) =  \frac{{\vec D}  \cdot {\vec  {P_3}}} {|\vec
+  D||\vec {P_3}|}$ and $|\vec {P_3}| < l$.
+
+If a bud collides another plant compartment is implemented as pairwise
+comparison  of  structural units  in  LIGNUM,  i.e. \textsl{not}  with
+rewriting rules  in L-system.  Thus the  conversion algorithm (Section
+\ref{sec:pine}) must include a way of communication between LIGNUM and
+L-string. The  algorithm allows to enumerate the  parameters of module
+$B$  that will be  used in  communication.  Given  type of  the module
+parameter for $B$, its assignment  statement and its name (meaning) in
+LIGNUM the  conversion algorithm can  update the attribute value  of a
+corresponding bud using the  appropriate parameter value in module $B$
+or  vice  versa  if  the  results  of  computations  (e.g.   collision
+detection) in  LIGNUM must be passed  to L-system. The  results of the
+development  of the bearberry  model after  ten iterations  with three
+different collision models are in Fig. \ref{fig:a-uva-ursi}.
+ 

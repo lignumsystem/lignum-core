@@ -1,0 +1,130 @@
+\section{Discussion}
+
+Trees  are  complex modular  systems  [Smith  00].   Their growth  and
+development  has  been studied  intensively  during  the last  century
+mainly experimentally.   This has resulted statistical  models and the
+emphasis has been  on the details of measurements,  the arrangement of
+experiments and  the use and development of  statistical methods [Hari
+99]. LIGNUM  is an attempt to  link a detailed  tree architecture with
+the  knowledge in tree  physiology based  on measurable  functions and
+activities in a tree. The attraction  with such approach is that it is
+possible to  make ontological arguments  (i.e. reasoning based  on the
+being itself and its existence) of the development of trees [Perttunen
+01].  For  example a modeling framework for  different formulations of
+flushing of  buds or number of  leaves and their  orientation based on
+light regime or resource allocation is readily available in LIGNUM.
+
+This study presents a formal way to model architectural development of
+trees in LIGNUM using L-systems  with the language L.  Essentially the
+use of L is based on the similarity how bracketed L-systems and LIGNUM
+represent the  branching structure of  trees (Section \ref{sec:pine}).
+Similar conversions  between modeling  frameworks and tools  have been
+reported for example by [Ferraro et al 02] and [Dzierzon et al 03]. In
+fact already  [Kurth 94] has reported convergence  between tree models
+produced in  AMAP, CIRAD and  the same models expressed  in L-systems.
+Also, a large body of  mathematical forms known as fractals describing
+plant structures  have been described  with L-systems [Kurth  99]. The
+Eq. \ref{eq:ca110} is an  example of one dimensional cellular automata
+(CA)  system, the rule  110 in  Wolfram's [Wolfram  02] classification
+(the  first eight rules  implement the  CA system  and the  ninth rule
+expands  the string).   Interestingly, according  to [Wolfram  02] the
+rule 110 is capable of universal computation.
+
+L-systems provide good scientific abstraction needed in plant modeling
+(c.f.   [Regev and Shapiro  03]).  An  L-system captures  the relevant
+properties of  the phenomena in  its set of symbols  highlighting only
+essential characteristics  of the model.  It  is computable supporting
+qualitative and quantitative reasoning of the model properties.  It is
+extensible, new  symbols can capture additional features  of the model
+if required  and it is  understandable, the formal notation  allows to
+share, compare  and correct scientific knowledge. For  example part of
+an  L-system model  in itself  can appear  in a  publication  as model
+description  unlike   models  implemented  with   general  programming
+languages.
+
+The  theoretical  advancements later  implemented  in  tools based  on
+L-systems formalism  has been motivated  by the curiosity to  find out
+what  phenomena  in  plant  modeling  can be  formally  described  and
+simulated.   The range  of circumstances  where L-system  formalism is
+applicable  is quite  extensive [Prusinkiewicz  99].  In  fact,  it is
+possible  to  implement  many  physiological  models  in  LIGNUM  with
+L-systems. Section  \ref{sec:vi} gives an  example of the  vigor index
+with the language L and it is trivial to implement also current models
+for  photosynthesis and  respiration.  With  a little  effort  one can
+surely  outline  a  rule  set  for the  iterative  allocation  of  net
+photosynthates  to  growth  [Perttunen  et  al 96,  98  and  01].  The
+simulation of  plant communities has  been reported by [Kurth  00] and
+with  multiset L-systems  developed  by [Lane  and Prusinkiewicz  02].
+Inevitably  one  has  to  ask  why not  reimplement  LIGNUM  and  make
+L-systems the basis of its future development?
+
+Plants are not closed systems  but interaction with environment has an
+important function  in their  development.  Such modeling  include for
+example computation of light regime in plant community and competition
+for growth  space in clonal  plant. Section \ref{sec:bearberry}  is an
+example  of the latter  using algorithm  for collision  detection.  To
+express such  phenomena, [M\^ech 97]  and [Mech and  Prusinkiewicz 96]
+have extended  L-system formalism with communication  symbols that can
+pass  parameter values  between  the  plant model  in  L-system and  a
+separate  program simulating for  example relevant  characteristics of
+its  environment.  [Kurth  94]  has implemented  a  set of  predefined
+functions  to  return environmental  information  to  the L-system  in
+GROGRA simulation  program.  Once implemented  these separate programs
+or predefined functions  are easily used and reused  but note the time
+spent  to implement  these  environmental models,  also called  global
+sensitivity [Kurth ??],  is the time spent outside  the formalism with
+some general purpose programming language.
+
+Section \ref{sec:vi}  for vigor index  presents how elegantly  one can
+express  computations in L-systems.   But there  are two  things worth
+noting.  First,  recall the parallel semantics in  rewriting.  Given a
+single processor machine  it takes $n$ scans of  the string length $n$
+to pass  the symbol $V$ from  the base of the  tree to the  tip of the
+branches. Again,  use of global  functions may reduce  the algorithmic
+complexity from  $O(n^2)$ to linear  time $O(n)$.  In general  one can
+avoid these computational pitfalls  by assuming left to right scanning
+of  the string  and arranging  computations using  for  example global
+variables. In this  case this might be difficult  because each segment
+may have its own unique value for vigor index.  Second, each branching
+pattern requires own  rule to match the context.   The example in Fig.
+\ref{fig:vi} is for two segments for  forking off but one must be able
+to capture one, two, three or any number of branches required.
+
+An essential feature of the  original L-systems theory is its discrete
+character.   Symbols are  created, rewritten  and deleted  in distinct
+events  captured  by  the  rules.   This limitation  was  assessed  in
+differential  L-systems  [Hammel  96]  where modules  or  symbols  are
+created and disappear in discrete time steps but develop in continuous
+fashion described  by differential equations. But there  is still much
+discreteness that remains.
+
+An  important   class  of  chemical   reactions  can  be   modeled  as
+reaction-diffusion equations. Suppose a  sequence of tree segments and
+two  nutrients $A$  and $B$  present  in the  segments denoting  their
+concentrations with $a$  and $b$.  Assume that the  amount of nutrient
+$A$ depends  on the quantities of  $A$ and $B$ already  in the segment
+and similarly for $B$.  This is  the reaction part of the system. Then
+assume  the  two nutrients  can  dissolve  between adjacent  segments.
+Typically if in a segment the concentration of the nutrients is higher
+than  its neighbors  then the  segments' concentration  will  even out
+because of  flow of  the nutrients away  from the  peak concentration.
+This  is the  diffusion part  of the  system.  Formally  one typically
+writes  $\frac{\partial a}{\partial  t} =  F(a,b) +  C_a\nabla^2a$ for
+$A$'s changes  in time and  $\frac{\partial b}{\partial t} =  G(a,b) +
+C_b\nabla^2b$ for  $B$.  The Laplacians $\nabla^2 a$  and $\nabla^2 b$
+(divergence of  the gradient of the twice  differentiable function) in
+diffusion terms are the measure of the concentrations in one location.
+Thus one can imagine a continuous  flow of nutrients in every point in
+segments  in a  continuous  time expressed  with partial  differential
+equations and perhaps design L-system formalism around it but how does
+one write  rules having  no explicit time  steps?  In  general partial
+differential  equations  are considered  difficult  to  solve and  the
+knowledge  of the problem  domain is  needed for  efficient solutions.
+Reaction-diffusion model  in the context of  branching structures (and
+LIGNUM) is in [Palovaara 03]. Herranjestas että kynnet lipsuu.
+
+It is still an open question for us if the modeling effort with LIGNUM
+will switch to L-systems or shall  we use our 'mixed approach. In any
+case it would be an  interesting exercise in itself to study carefully
+the convergence of LIGNUM and L-systems.
+

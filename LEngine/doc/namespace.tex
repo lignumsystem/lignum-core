@@ -1,0 +1,20 @@
+\section{Namespace}
+LIGNUM is designed as a  single tree model for hardwood and coniferous
+species.  To  allow modeling the  development of mixed  species forest
+stands (in the future) we  have augmented the original definition of L
+with  the   concept  of  namespace  denoted   with  \texttt{open}  and
+\texttt{close}   statements   (see    Fig.   \ref{fig:L1}   and   Fig.
+\ref{fig:L2}).
+ 
+Technically, each L  file is compiled to C++, hence  it is possible to
+embed C++ statements in the productions. The result of the compilation
+is  a C++  class providing  application programming  interface  to the
+L-system  defined. This  includes derivation  of the  string  to model
+structural   development  and   the   conversion  algorithm   (Section
+\ref{sec:pine}).  Implementing namespace each L system definition will
+be  enclosed into its  own unique  namespace. Thus  it is  possible to
+design, implement and assign a specific L-system to an individual tree
+model realized in LIGNUM enabling the modeling of several tree species
+and multiple individual trees  in a single application. This completes
+our study.
+

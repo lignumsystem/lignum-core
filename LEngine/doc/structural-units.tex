@@ -1,0 +1,64 @@
+\section{Structural units of LIGNUM}
+LIGNUM is intended as a generic modelling tool for both coniferous and
+hardwood trees.  Different tree  species can be simulated by assessing
+descriptions of  metabolism, structural dynamics of  birth, growth and
+senescence,  and by  implementing  branching rules  for distinct  tree
+architectures.  The  general framework  of LIGNUM for  both coniferous
+and hardwood  species has been presented  in [Perttunen et  al 96] and
+[Perttunen et al 2001] respectively.  Here we present shortly the main
+model features to understand how LIGNUM is adapted to use L-systems.
+
+LIGNUM represents the three-dimensional  above ground part of the tree
+with  four  structural  units  called  tree  segment  (TS),  bud  (B),
+branching point (BP) and axis (A). The most important functioning unit
+is the cylindrical tree segment, section of woody material between two
+branching points.   For conifers  needles are modelled  as cylindrical
+layers of  foliage surrounding  tree segments.  For  deciduous species
+leaves attached  to tree segments are  modelled explicitly. Branching
+point connects one or more tree  segments and an axis is a sequence of
+tree segments and branching points terminating in a bud.
+
+An axis  is implemented as  a list. For  example the main axis  of the
+model  tree for  deciduous species  consists of  four  tree segments,
+three branching points and the terminating bud:
+
+\begin{equation}
+[TS_0,BP_1,TS_2,BP_3,TS_4,BP_5,B_6]
+\end{equation}
+
+A branching point is implemented as list  of axes. In the model tree the
+first branching  point contains one axis  with one bud  and the second
+and the third two axes each. Thus the main axis can be written:
+
+\begin{equation}
+[TS_0,[[B]],TS_2,[A,A],TS_4,[A,A],B_6]
+\end{equation}
+
+Finally, the structure of the whole model tree is expressed as:
+
+\begin{equation}
+[TS_0,[[B]],TS_2,[[TS,[],B],[TS,[],B]],TS_4,[[B],[B]],B_6]
+\end{equation}
+
+The two empty  lists ([]) for branching points  denote no axes forking
+off maintaining the structural integrity of the model.
+
+So  far the  root system  in LIGNUM  has been  modelled with  a single
+parameter denoting  its mass.  [Sievänen et al  00] discuss components
+of the functional-structural tree  models, both above ground and below
+ground part of the tree.  The proposed idealized elementary unit (IEU)
+for root  system is  a internode between  two branching  events having
+descriptions for  the three-dimensional (woody)  structure, metabolism
+and transport  processes.  
+
+We  implement these  ideas  slightly modified  by defining  structural
+elements and the branching structure for roots in LIGNUM very much the
+same  compared with  above ground  part of  the tree.   The structural
+elements are  root segment (RS),  root tip (RT), root  branching point
+(RBP) and root axis (RA) corresponding to tree segment, bud, branching
+point and axis respectively.   The root segment consists of heartwood,
+sapwood and bark  and can have a cylindrical layer  of fine roots.  In
+this  manner we  believe  the  structural units  are  small enough  to
+capture realistic  three dimensional structure of the  root system but
+large enough to keep the number of units computationally tolerable.
+
