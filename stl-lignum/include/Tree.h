@@ -172,7 +172,7 @@ namespace Lignum{
       TreeInitializationFiles tif;
       FirmamentWithMask f;
       Axis<TS,BUD> axis;
-      RootSystem rs;
+      RootAxis root_axis;
     };
 
   //Tree with Firmament (FRMNT)
