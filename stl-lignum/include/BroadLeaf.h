@@ -50,26 +50,38 @@ template <class SHAPE = Ellipsis>
 class BroadLeaf{
   template <class S>
   friend LGMdouble GetValue(const BroadLeaf<S>& bl, const LGMAD name);
+
   template <class S>
-  friend LGMdouble SetValue(BroadLeaf<S>& bl, const LGMAD name, const LGMdouble value);
+  friend LGMdouble SetValue(BroadLeaf<S>& bl, const LGMAD name, 
+			    const LGMdouble value);
+
   template <class S>
   friend Point GetCenterPoint(const BroadLeaf<S>& bl);
+
   template <class S>
   friend void SetCenterPoint(BroadLeaf<S>& bl, const Point& p);
+
   template <class S>
   friend PositionVector GetLeafNormal(const BroadLeaf<S>& bl);
+
   template <class S>
-  friend PositionVector SetLeafNormal(BroadLeaf<S>& bl, const PositionVector& n);
+  friend PositionVector SetLeafNormal(BroadLeaf<S>& bl, 
+				      const PositionVector& n);
   template <class S>
   friend Petiole& GetPetiole(BroadLeaf<S>& bl);
+
   template <class S>
   friend S& GetShape(BroadLeaf<S>& bl);
+
   template <class S>
   friend vector<double> GetRadiationVector(BroadLeaf<S>& bl);
+
   template <class S>
   friend void SetRadiationVector(BroadLeaf<S>& bl, const vector<LGMdouble>& v);
+
   template <class S>
   friend void TranslateLeaf(BroadLeaf<S>& bl, const PositionVector& t);
+
   template <class S>
   friend void SetLeafPosition(BroadLeaf& bl, const Point& p);
 public:
