@@ -10,7 +10,7 @@ namespace Lignum {
   VoxelBox::VoxelBox(VoxelSpace *s):
     needleArea(0.0), leafArea(0.0), Q_in(0.0), Q_abs(0.0), star(0.0),
     starSum(0.0), needleMass(0.0), leafMass(0.0), number_of_segments(0),
-    number_of_leaves(0), interceptedRadiation(0.0)
+    number_of_leaves(0), interceptedRadiation(0.0),weight(0.0)
   { 
     space = s;
   }
@@ -22,7 +22,7 @@ namespace Lignum {
   VoxelBox::VoxelBox(): 
     needleArea(0.0), leafArea(0.0), Q_in(0.0), Q_abs(0.0), star(0.0),
     starSum(0.0), needleMass(0.0), leafMass(0.0), number_of_segments(0),
-    number_of_leaves(0), interceptedRadiation(0.0)
+    number_of_leaves(0), interceptedRadiation(0.0),weight(0.0)
   { 
     space = NULL; 
   }
@@ -40,6 +40,7 @@ void VoxelBox::init()
 	number_of_segments = 0;
 	number_of_leaves = 0;
 	interceptedRadiation = 0.0;
+	weight = 0.0;
 }
 
 
@@ -60,7 +61,6 @@ void VoxelBox::setVoxelSpace(VoxelSpace *s, Point c)
 //	Updates  the values after  every tree  segment being  added to
 //	this VoxelBox. 
 //
-//NOTE: k_b is hard coded  to 0.5, STAR to 0.14 and val_b to 0.14!!!!!!!!
 void VoxelBox::updateValues()
 {
 	LGMassert(space->Xbox>0);
@@ -68,13 +68,20 @@ void VoxelBox::updateValues()
 	LGMassert(space->Zbox>0);
 
 	star = 0.0;
-	if (number_of_segments > 0)
-		star = starSum / number_of_segments;
+	//Check DumpScotsPineSegment (or any DumpCfSegment) that there
+	//the star mean is weighted  with foliage area of the segment:
+	//e.g. b.addStarSum(GetValue(ts,LGAstarm)*farea);
+	if (getNumSegments() > 0.0){
+	  if (getWeight() > 0.0)
+	    //weighted star mean
+	    star = getStarSum() / getWeight();
+	  else
+	    //the arithmetic mean of starSum
+	    star = getStarSum() / getNumSegments();
+	}
 
-	k_b = 0.5;
-	star = 0.14; //FOR NEEDLES
-	//DO NOT FORGET TO RESET!!!
-	
+	LGMdouble k_b = GetValue(*space,LGAkb);
+	//star  for needles
 	val_c = star * (needleArea / (space->Xbox * space->Ybox *
 				      space->Zbox));
 	val_b = k_b * (leafArea / (space->Xbox * space->Ybox * space->Zbox));

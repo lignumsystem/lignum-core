@@ -57,21 +57,17 @@ namespace Lignum {
   //	Calculates the Qabs value to the CfTreeSegment
   //
   template <class TS,class BUD>
-    void SetSegmentQabs(VoxelBox &b, CfTreeSegment<TS,BUD>& ts, int num_parts)
+    void SetSegmentQabs(VoxelBox &b, CfTreeSegment<TS,BUD>& ts, double num_parts)
     {
-      //LGMdouble r_f = GetValue(ts, Rf);
-      //LGMdouble lenght = GetValue(ts, L);
 	
       LGMdouble S_f = GetValue(GetTree(ts), LGPsf);
       LGMdouble farea = S_f * GetValue(ts, LGAWf) / num_parts;
       LGMdouble qabs = 0.0;
 
       //Qabs computetd based on Qin, mean star and foliage area.
-      qabs = b.getQin()*0.14*(GetValue(GetTree(ts), LGPsf)*
-			      GetValue(ts, LGAWf));
+      qabs = b.getQin()*GetValue(ts,LGAstarm)*(GetValue(GetTree(ts), LGPsf)*GetValue(ts, LGAWf));
 
       SetValue(ts, LGAQabs, GetValue(ts, LGAQabs)+qabs);
-
       SetValue(ts, LGAQin, GetValue(ts, LGAQin)+b.getQin()/num_parts);
     }
 
