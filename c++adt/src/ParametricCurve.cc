@@ -57,17 +57,27 @@ ParametricCurve& ParametricCurve::read_xy_file(const char *file_name)
 {
   double value = 0.0;
   fstream in_file(file_name,ios::in);
+  char buffer[100];
   
   if (in_file.fail() || strcmp(file_name,"") == 0){
     cout << "ParametricCurve::read_xy_file: error in opening file: " 
          << file_name <<endl;
     return *this;
   }
-  //clear the previous function
+ 
+  //Skip the comments. A line beginning with '#' is a comment 
+  in_file >> ws;//Skip white space
+  while (in_file.peek() == '#'){
+    cout << "PEEK: " << in_file.peek() << endl;    
+    in_file.getline(buffer,100);
+    in_file >> ws; //skip white space
+  }
+ 
+  //clear the previous function 
   v.clear();
 
   file = string(file_name);
-
+  
   in_file.setf(ios::fixed,ios::floatfield);
 
   while (in_file >> value){
@@ -79,6 +89,7 @@ ParametricCurve& ParametricCurve::read_xy_file(const char *file_name)
   v.insert(v.end(),FLT_MAX);
   num_of_elements = v.size();
 
+  cout << "EVAL: " << eval(0.0) << " " <<  eval(0.5) << " " << eval(1.1) << endl;
   return *this;
 }
 
