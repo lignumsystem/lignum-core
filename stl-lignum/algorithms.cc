@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include <Lignum.h>
 #include <MyTreeSegment.h>
 #include <MyBud.h>
@@ -8,6 +9,8 @@
 using namespace std;
 using namespace Lignum;
 using namespace sky;
+
+#ifndef _MSC_VER
 
 string ParseCommandLine(int argc, char *argv[],const string& flag)
 {
@@ -310,5 +313,5 @@ int main(int argc, char *argv[])
    return 0;
    
 }
-
+#endif
 
