@@ -34,7 +34,7 @@ LIBS     = $(LIBLGM) $(LIBADT) $(LIBMATH)
 lignum: $(OBJ) $(LIB1)  $(LIB2)  
 	$(CCC)  -o $@ $(INLUDE) $(OBJ) $(LIBFLAGS) $(LIBS) 
 algorithms: $(ALGOBJ) $(LIB1)  $(LIB2)
-	$(CCC)  -o $@ $(INLUDE) $(OPTIMIZE) $(ALGOBJ) $(LIBFLAGS) $(LIBS)
+	$(CCC) -ptv  -o $@ $(INLUDE) $(OPTIMIZE) $(ALGOBJ) $(LIBFLAGS) $(LIBS)
 
 $(LIB1):
 	(cd ../c++adt/lib; make "CCC=$(CCC)" "CCCFLAGS=$(CCCFLAGS)" "OPTIMIZE=$(OPTIMIZE)" $@)
@@ -88,10 +88,14 @@ main.o: ../c++adt/include/Point.h /usr/include/math.h
 main.o: include/TreeCompartment.h include/LGMdecl.h include/LGMUnits.h
 main.o: ../c++adt/include/PositionVector.h ../c++adt/include/mathsym.h
 main.o: ../c++adt/include/RMatrix.h ../c++adt/include/TMatrix.h
-main.o: include/DefaultBud.h include/BranchingPoint.h include/Axis.h
-main.o: ../c++adt/include/ConnectionMatrix.h include/HwTreeSegment.h
-main.o: include/CfTreeSegment.h include/MyBud.h include/TreeFunctor.h
-main.o: include/Algorithms.h /usr/include/CC/functional
+main.o: include/TreeCompartmentI.h include/DefaultBud.h
+main.o: include/TreeSegmentI.h include/BudI.h include/BranchingPoint.h
+main.o: /usr/include/CC/numeric /usr/include/CC/stl_numeric.h
+main.o: include/TreeFunctor.h include/Algorithms.h /usr/include/CC/functional
+main.o: include/AlgorithmsI.h include/TreeFunctorI.h include/Axis.h
+main.o: include/AxisI.h include/BranchingPointI.h
+main.o: ../c++adt/include/ConnectionMatrix.h include/TreeI.h
+main.o: include/HwTreeSegment.h include/CfTreeSegment.h include/MyBud.h
 algorithms.o: /usr/include/stdlib.h /usr/include/standards.h
 algorithms.o: /usr/include/sgidefs.h /usr/include/CC/iostream.h
 algorithms.o: /usr/include/memory.h /usr/include/stddef.h
@@ -124,8 +128,12 @@ algorithms.o: include/Bud.h include/TreeSegment.h ../c++adt/include/Point.h
 algorithms.o: /usr/include/math.h include/TreeCompartment.h include/LGMdecl.h
 algorithms.o: include/LGMUnits.h ../c++adt/include/PositionVector.h
 algorithms.o: ../c++adt/include/mathsym.h ../c++adt/include/RMatrix.h
-algorithms.o: ../c++adt/include/TMatrix.h include/DefaultBud.h
-algorithms.o: include/BranchingPoint.h include/Axis.h
-algorithms.o: ../c++adt/include/ConnectionMatrix.h include/HwTreeSegment.h
-algorithms.o: include/CfTreeSegment.h include/MyBud.h include/TreeFunctor.h
+algorithms.o: ../c++adt/include/TMatrix.h include/TreeCompartmentI.h
+algorithms.o: include/DefaultBud.h include/TreeSegmentI.h include/BudI.h
+algorithms.o: include/BranchingPoint.h /usr/include/CC/numeric
+algorithms.o: /usr/include/CC/stl_numeric.h include/TreeFunctor.h
 algorithms.o: include/Algorithms.h /usr/include/CC/functional
+algorithms.o: include/AlgorithmsI.h include/TreeFunctorI.h include/Axis.h
+algorithms.o: include/AxisI.h include/BranchingPointI.h
+algorithms.o: ../c++adt/include/ConnectionMatrix.h include/TreeI.h
+algorithms.o: include/HwTreeSegment.h include/CfTreeSegment.h include/MyBud.h

@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
 
   if (t == 'x')
     {
-      SetTSAttributeValue(*ts, Wm, GetTSAttributeValue(*ts, Wm)*0.5);
+      SetAttributeValue(*ts, Wm, GetAttributeValue(*ts, Wm)*0.5);
     }
   //create the branching point
   BranchingPoint<MyTreeSegment> *bp = 
@@ -86,7 +86,7 @@ int main(int argc, char *argv[])
 				   0, 0.3, 0.3, 0.2,&tree);
   if (t == 'x')
     {
-      SetTSAttributeValue(*ts2, Wm, GetTSAttributeValue(*ts2, Wm)*1.5);
+      SetAttributeValue(*ts2, Wm, GetAttributeValue(*ts2, Wm)*1.5);
     }
   InsertTreeCompartment(axis,ts2);
 
