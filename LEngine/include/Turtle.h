@@ -14,8 +14,10 @@ class Turtle{
   friend ostream& operator << (ostream& os, const Turtle& t);
   friend const PositionVector& GetHeading(const Turtle& t);
   friend const Point& GetPoint(const Turtle& t);
+  friend void SetPoint(Turtle& t, const Point& p);
  public:
-  Turtle();       //Initial turtle heading up at point (0,0,0) 
+  Turtle();       //Initial turtle heading up at point (0,0,0)
+  Turtle(const Point& p);
   Turtle(const Turtle& t);
   Turtle& turn(const RADIAN a);
   Turtle& pitch(const RADIAN a);

@@ -511,7 +511,7 @@ template <class TS, class BUD, class N, class F>
 int LSystem<TS,BUD,N,F>::lstring2Lignum(Tree<TS,BUD>& t, vector<N>& vav)
 {
 
-  Turtle turtle;
+  Turtle turtle(GetPoint(t));
   stack<Turtle> turtle_stack;
   LstringIterator ltr(mainstring);
   Axis<TS,BUD>& axis = GetAxis(t);
