@@ -14,6 +14,7 @@ using namespace std;
 
 using namespace cxxadt;
 
+#include <VTree.h>
 #include <LGMdecl.h>
 #include <LGMSymbols.h>
 #include <Algorithms.h>
@@ -112,7 +113,7 @@ namespace Lignum{
   };
 
   template <class TS,class BUD = DefaultBud<TS> >
-    class Tree: public TreeCompartment<TS,BUD>{
+    class Tree: public TreeCompartment<TS,BUD>,public VTree{
       template <class TS1,class BUD1>
       friend class InitializeTree;
 
