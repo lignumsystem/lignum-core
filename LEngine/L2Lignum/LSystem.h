@@ -66,7 +66,7 @@ inline void LSystem::end()
   End();
 }
 
-inline int derivationLength()
+inline int LSystem::derivationLength()
 {
   return DerivationLength();
 }
