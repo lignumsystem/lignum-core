@@ -29,7 +29,7 @@ l2c:
 	(cd ../L2C; make "CCC=$(CCC)" "CCCFLAGS=$(CCCFLAGS)" \
          "OPTIMIZE=$(OPTIMIZE)" "AR=ar" "ARFLAGS=rvs" $@)
 clean:
-	rm -rf *.o *.cpp  ii_files
+	rm -rf *.a *.o *.cpp  ii_files
 distclean: clean
 	rm -rf  $(ARFILE) Makedepend *.c 
 depend:	l2c $(SRC)
