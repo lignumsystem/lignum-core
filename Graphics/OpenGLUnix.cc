@@ -336,7 +336,7 @@ void DrawVoxelCubes()
 {
   int num = cubes.size();
   
-  //cout << "kuutiota " << num << endl;
+  cout << "kuutiota " << num << endl;
   vector<SmallCube> ordered_cubes;
 
   for (int i=0; i<num; i++)
@@ -346,7 +346,7 @@ void DrawVoxelCubes()
       LGMdouble yy = cube.y_coord;
       LGMdouble zz = cube.z_coord;
       cube.dist = pow(cam_x-xx, 2) + pow(cam_y-yy, 2) + pow(cam_z-zz, 2); 
-      
+      cube.ready = false;
      
     }
 
@@ -360,14 +360,22 @@ void DrawVoxelCubes()
       for (int ii=0; ii<a; ii++)
 	{
 	  SmallCube c = cubes[ii];
+	  
 	  if (c.ready == false)
 	    {
+	      
 	      if (c.dist > max_dist)
-		mem_num = ii;
+		{
+		  mem_num = ii;
+		  
+		  
+		}
 	    }
 	}
+     
       if (mem_num > -1)
 	{
+	  
 	  SmallCube &c = cubes[mem_num];
 	  c.ready = true;
 	  ordered_cubes.push_back(c);
@@ -391,6 +399,7 @@ void DrawVoxelCubes()
   glLineWidth(1);
   
   int s = ordered_cubes.size();
+  // cout << "toinen koko " << s << endl;
   for (int i = 0; i< s; i++)
     {
       SmallCube cube = ordered_cubes[i];
@@ -399,12 +408,18 @@ void DrawVoxelCubes()
       glColor3f(0.2,0.2,1);
       
       //puolikas sivusta
-      float hedge = 0.5 * cube.edge;
+      float hedge = cube.edge;
+
+      // cout << "sivu " << hedge << endl;
 
       //pikkukuution keskipiste: 
       float xx = cube.x_coord;
       float yy = cube.y_coord;
       float zz = cube.z_coord;
+
+
+
+      //  cout << xx << " " << yy << " " << zz << " " << hedge << endl;
       
       glBegin(GL_LINE_LOOP);
       glVertex3f(xx+hedge, yy-hedge, zz+hedge);

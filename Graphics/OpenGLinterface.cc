@@ -388,13 +388,13 @@ void DrawBuds()
   if(glIsList(BUDS_ALIVE))
     glCallList(BUDS_ALIVE);
   else 
-    cout << "ei määritelty ALIVE " << endl;
+    cout << "ei määritelty BUDS ALIVE " << endl;
   
   glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, mat_amb2);
   if(glIsList(BUDS_DEAD))
     glCallList(BUDS_DEAD);
   else 
-    cout << "ei määritelty DEAD " << endl;
+    cout << "ei määritelty BUDS DEAD " << endl;
 }
 
 
