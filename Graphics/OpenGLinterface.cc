@@ -13,6 +13,7 @@
 #include "OpenGLfunctions.h"
 #include "OpenGLFunctor.h"
 #include "OpenGL.h"
+#include "OpenGLinterface.h"
 #include "CTexture.h"
 
 
@@ -54,6 +55,8 @@ bool foliage_on;
 bool textures_on;
 bool lighting;
 bool fog_on;
+
+extern bool TEXTURES_ON;
 
 int texIds[6];
 GLuint texture[3];
@@ -217,8 +220,40 @@ void DrawAllFoliage(CLignumWBDoc *doc)
 
 void DrawTree()
 {	
+  if (glIsList(FOREST_LIST))
+    {
+      GLfloat mat_amb[] = { 0.5, 0.3, 0, 1.0 }; 
+      GLfloat mat_dif[] = { 0.8, 0.4, 0, 1.0 }; 
+      
+      glMaterialfv(GL_FRONT, GL_AMBIENT, mat_amb); 
+      glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_dif);
+      
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+      
+      
+      if (TEXTURES_ON)
+	{
+	  stemtexture.use();
+	  glDisable(GL_LIGHTING);
+	}
+      else
+	{
+	  glEnable(GL_LIGHTING);
+	}
+      
+      
+      glPushMatrix();
+      
+      if (glIsList(FOREST_LIST)==false)
+	cout << "Virhe:puulistaa ei maaritelty " << endl;
+      glCallList(FOREST_LIST);
+      glPopMatrix();
+      return;
+    }
   
-	///***************
+  ///***************
+  cout << "ei" << endl;
 #ifdef _MSC_VER
   glCallList(TREE);
   
@@ -254,7 +289,7 @@ void DrawTree()
   glPushMatrix();
 
   if (glIsList(TREE_BIG)==false)
-    cout << "Virhe:puuta ei maaritelty " << endl;
+    cout << "Virhe1:puuta ei maaritelty " << endl;
   glCallList(TREE_BIG);
   glPopMatrix();
 
@@ -262,7 +297,7 @@ void DrawTree()
   
   glPushMatrix();
   if (glIsList(TREE_SMALL) == false)
-    cout << "Virhe:puuta ei määritelty " << endl;
+    cout << "Virhe2:puuta ei määritelty " << endl;
   glCallList(TREE_SMALL);
   glPopMatrix();
 	  
@@ -395,7 +430,7 @@ void DrawWireModel()
 {
 	glDisable(GL_LIGHTING);
 	glPushMatrix();
-	glCallList(WIREMODEL);	
+	glCallList(GRP_WIREMODEL);	
 	glPopMatrix();
 	glEnable(GL_LIGHTING);
 }

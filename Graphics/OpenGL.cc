@@ -15,7 +15,6 @@ bool random_leave_angles = true;
 
 const float leave_length=0.157;  // gliricidian lehtia varten
 
-double diam_hana = 1.0;  //!!!!!!!!!!!!!!!!
 
 float texX_odd = 86;  //kerroin tekstuurin mappaykseen
 float texY_odd = 22;

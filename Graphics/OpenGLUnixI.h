@@ -14,12 +14,60 @@
 #include <GL/glx.h>
 #include <GL/glut.h>
 
+#include <vector>
+
 using namespace Lignum;
 
 
 extern CTexture stemtexture;
 
 namespace Lignum{
+
+template <class TS,class BUD>
+  int VisualizeLGMTreesWithVoxelSpace(vector<Tree<TS,BUD> *> trees, 
+				      vector<SmallCube> cubes)
+  {
+    InitDrawing();
+    InitOpenGL();
+    init_window();
+
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    
+    glTexEnvf(GL_TEXTURE_2D, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
+    
+    stemtexture.Load("Manty.bmp", 512, 512);
+    
+    
+    cout << "tekstuurit kaytossa**************************** " << endl;
+
+    
+    int text_num;
+    glNewList(FOREST_LIST, GL_COMPILE);
+    glBindTexture(GL_TEXTURE_2D, text_num);
+    for (int i=0; i<trees.size(); i++)
+      {
+	LGMdouble ini = 0.0;
+	Tree<TS, BUD>* tree = trees[i];
+
+	
+	DrawStemFunctor<TS,BUD> stemfunctor;
+        stemfunctor.min_rad = -99;
+        stemfunctor.max_rad = 999;
+        ForEach(*tree, stemfunctor);
+	
+	cout << "lisätään puu visualisointiin " << endl;
+       
+      }
+    glEndList();
+    
+    glutMainLoop ();
+
+    return 1;
+  }
 
 
 template <class TS,class BUD>

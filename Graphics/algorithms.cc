@@ -45,9 +45,10 @@ int main(int argc, char *argv[])
   string clarg,empty;
 
   clarg = ParseCommandLine(argc,argv,"-file");
-  if (clarg != empty)
+  /*  
+if (clarg != empty)
     InitializeTree(hw_tree,clarg);
- 
+  */
  
    
   //Example 1.

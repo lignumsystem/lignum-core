@@ -22,13 +22,7 @@ using namespace Lignum;
 #include <GL/glx.h>
 #include <GL/glut.h>
 
-/*
-#include <RTree.h>
-#include <FileReader.h>
-#include <BetulaWithFlow.h>
-#include <VisualFunctor.h>
-#include <ConnectionMatrix.h>
-*/
+
 
 #include "OpenGL.h"
 #include "OpenGLinterface.h"
