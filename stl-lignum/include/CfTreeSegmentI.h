@@ -8,25 +8,28 @@ CfTreeSegment<TS,BUD>::CfTreeSegment(const Point& p, const PositionVector& d, co
 			     const METER l, const METER r, const METER rn, Tree<TS,BUD>* t)
   :TreeSegment<TS,BUD>(p,d,go,l,r,rn,t)
   {
+    //Set radius according to length radius ratio:
+    //As we multiply lr should be [0:1]
+    double r_new = GetValue(*t,lr)*GetValue(*this,L);
+    SetValue(*this,R,r_new);
     //compute the radius to foliage limit (Rf)
     //the given parameters are needle length (nl) and the
     //needle angle (na)
     //Rf = hf + tsa.R, where hf is height of the foliage (hf = nl * sin(na))
-    LGMdouble needle_length = GetValue(*t,nl);
-    LGMdouble needle_angle = GetValue(*t,na);
-    SetValue(*this,Rf,needle_length * sin(needle_angle) + GetValue(*this,R));
-
+    SetValue(*this,Hf,GetValue(*t,nl)*sin(GetValue(*t,na)));
+    SetValue(*this,Rf,GetValue(*this,R)+GetValue(*this,Hf));
     //Set the initial heartwood radius 
     SetValue(*this,Rh,sqrt((GetValue(*t,xi)*GetValue(*this,A))/PI_VALUE));
     //compute the initial mass of the foliage
-    //1. compute the surface area (sa) of the cylinder representing foliage
-    LGMdouble sa =  2.0 * PI_VALUE * GetValue(*this,Rf) * GetValue(*this,L);
-    //2. the mass of the foliage (Wf = sa * af) 
-    LGMdouble wf =  sa * GetValue(*t,af);
+    //1. compute the surface area (Sa) of the segment cylinder
+    //2. initial mass of the foliage is then af*Sa ((kg/m2)*m2)
+    LGMdouble wf =  GetValue(*t,af)*GetValue(*this,Sa);
     SetValue(*this,Wf,wf);
-    SetValue(*this,As0,0.0);
     //Remember original sapwood area As0
     SetValue(*this,As0,GetValue(*this,As));
+    //incoming radiation
+    SetValue(*this,Qin,0.0);
+    
   }
 
 
@@ -35,8 +38,16 @@ LGMdouble GetValue(const CfTreeSegment<TS,BUD>& ts, const LGMAD name)
 {
   //  LGMdouble unknown_value = 0.0;
 
-  if (name == As0)
+  if (name == Af){
+    //Given Wf use sf to compute foliage area: sf*Wf ((m2/kg)*kg) 
+    //see also parameter af
+    return GetValue(GetTree(ts),sf)*GetValue(ts,Wf);
+  }
+  else if (name == As0)
     return ts.cftsa.As0;
+
+  else if (name == Hf)
+    return ts.cftsa.Hf;
 
   else if (name == P)
     return ts.cftsa.P;
@@ -48,13 +59,17 @@ LGMdouble GetValue(const CfTreeSegment<TS,BUD>& ts, const LGMAD name)
     return ts.cftsa.Qabs;
 
   else if (name == Rf)
-    return ts.cftsa.Rf;
+    //Who remebers to update radius to foliage limit after diameter growth
+    //Return segment cylinder radius + foliage height.
+    return GetValue(ts,R) + GetValue(ts,Hf);
 
+  else if (name == Sa)
+    //Wrap out the segment cylinder
+    return 2.0*PI_VALUE*GetValue(ts,R)*GetValue(ts,L);
+
+  //Return simply foliage mass
   else if (name == Wf)
     return ts.cftsa.Wf;
-
-  else if (name == Af)
-    return GetValue(GetTree(ts),sf) * GetValue(ts,Wf);
 
   else
     return GetValue(dynamic_cast<const TreeSegment<TS,BUD>&>(ts), name);
@@ -67,6 +82,9 @@ LGMdouble SetValue(CfTreeSegment<TS,BUD>& ts, const LGMAD name, const LGMdouble 
   LGMdouble old_value = GetValue(ts,name);
   if (name == As0)
     ts.cftsa.As0 = value;
+
+  else if (name == Hf)
+    ts.cftsa.Hf = value;
   
   else if (name == P)
     ts.cftsa.P = value;
