@@ -54,8 +54,8 @@ namespace Lignum{
   template <class T>
     T& AppendSequence<T>::operator()(T& s1, T& s2)const
     {
-      T::iterator first = s1.begin();
-      T::iterator last = s1.end();
+      typename T::iterator first = s1.begin();
+      typename T::iterator last = s1.end();
       back_insert_iterator<T> back(s2);
 
       while (first != last)
