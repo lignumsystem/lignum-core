@@ -90,9 +90,6 @@ LGMdouble GetValue(const TreeSegment<TS,BUD>& ts, const LGMAD name)
   if (name == A)
     return PI_VALUE*pow(ts.tsa.R,2.0);
 
-  else if (name == age)
-    return ts.tsa.age;
-
   else if (name == fin)
     return ts.tsa.fin;
   
@@ -159,10 +156,7 @@ LGMdouble SetValue(TreeSegment<TS,BUD>& ts, const LGMAD name, const LGMdouble va
 {
   LGMdouble old_value = GetValue(ts,name);
   
-  if (name == age)
-    ts.tsa.age = value;
-
-  else if (name == L)
+  if (name == L)
     ts.tsa.L = value;
   
   else if (name == fin)

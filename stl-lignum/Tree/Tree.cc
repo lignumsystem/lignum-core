@@ -10,7 +10,7 @@ TreeParameters::TreeParameters()
 
 TreeAttributes::TreeAttributes()
 {
-  age = 0; lb = 0.0;
+  lb = 0.0;
   P = M = Wr = 0.0;
 }
 

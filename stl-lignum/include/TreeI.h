@@ -310,10 +310,7 @@ LGMdouble SetValue(Tree<TS,BUD>& tree, const LGMTD name, const LGMdouble value)
 template <class TS,class BUD>
 LGMdouble GetValue(const Tree<TS,BUD>& tree, const LGMAD name)
 { 
-  if (name == age)
-    return tree.ta.age;
-
-  else if (name == lb)
+  if (name == lb)
     return tree.ta.lb;
 
   else if (name == P)
@@ -338,10 +335,7 @@ LGMdouble SetValue(Tree<TS,BUD>& tree, const LGMAD name, const LGMdouble value)
 {
   LGMdouble old_value = GetValue(tree,name);
 
-  if (name == age)
-    tree.ta.age = value;
-
-  else if (name == lb)
+  if (name == lb)
     tree.ta.lb = value;
 
   else if (name == P)

@@ -19,6 +19,7 @@ TreeCompartment<TS,BUD>::TreeCompartment(const Point<METER>& p, const PositionVe
   direction.normalize();
 
   tree = t;
+  age = 0.0;
 }
 
 template <class TS,class BUD>
@@ -43,6 +44,47 @@ Tree<TS,BUD>& GetTree(const TreeCompartment<TS,BUD>& tc)
 {
   return *(tc.tree);
 }
+
+
+
+template <class TS,class BUD>
+LGMdouble GetValue(const TreeCompartment<TS,BUD>& tc, const LGMAD name)
+{
+  LGMdouble unknown_value = 0.0;
+
+  if (name == age)
+    return tc.age;
+
+  else
+    cout << "Unknown attribute returning" << unknown_value << endl;
+
+  return unknown_value;
+}
+
+
+template <class TS,class BUD>
+LGMdouble SetValue(TreeCompartment<TS,BUD>& tc, const LGMAD name, const LGMdouble value)
+{
+  LGMdouble old_value = GetValue(ts,name);
+  
+  if (name == age)
+    tc.age = value;
+
+  else
+    cerr << "TreeSegment: Unknown attribute " << name << endl;
+
+  return old_value;
+}
+
+
+
+
+
+
+
+
+
+
 
 
 }//closing namespace Lignum

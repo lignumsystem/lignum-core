@@ -14,6 +14,9 @@ namespace Lignum{
       friend Point<METER> GetPoint(const TreeCompartment<TS,BUD>& tc);
       friend PositionVector GetDirection(const TreeCompartment<TS,BUD>& tc);
       friend Tree<TS,BUD>& GetTree(const TreeCompartment<TS,BUD>& tc);
+      friend LGMdouble GetValue(const TreeCompartment<TS,BUD>& tc, const LGMAD name);
+      friend LGMdouble SetValue(TreeCompartment<TS,BUD>& tc, const LGMAD name,
+				const LGMdouble value);
     public:
       TreeCompartment();
       TreeCompartment(const Point<METER>& p, const PositionVector& d, Tree<TS,BUD>* t);
@@ -22,6 +25,7 @@ namespace Lignum{
     protected:
       Point<METER> point;
       PositionVector direction;
+      LGMdouble age;
       Tree<TS,BUD>* tree;
     };
 }//closing namespace Lignum

@@ -55,7 +55,6 @@ public:
 class TreeAttributes{
 public:
   TreeAttributes();
-  LGMdouble age;            //Age of the tree
   METER lb;              //Longest branch (as vertical projection from the main stem)
   KGC P;                 //Photosynthesis of the tree during the time step
   KGC M;                 //Respiration of the tree during the time step
