@@ -1,5 +1,4 @@
 SRC = ../Axis/AxisFriend.cc  \
-      ../BetulaWithFlow/BetulaWithFlow.cc \
       ../BranchingPoint/BranchingPointFriend.cc \
       ../Bud/BudFriend.cc \
       ../Bud/Bud.cc \
@@ -15,7 +14,6 @@ SRC = ../Axis/AxisFriend.cc  \
       ../TreeSegment/CfTreeSegment.cc
 
 OBJ = ../Axis/AxisFriend.o \
-      ../BetulaWithFlow/BetulaWithFlow.o \
       ../BranchingPoint/BranchingPointFriend.o \
       ../Bud/BudFriend.o \
       ../Bud/Bud.o \
