@@ -581,6 +581,83 @@ MJ Firmament::diffuseForestRegionRadiationSum(int n, float z, float x, float la,
   return shading * Qunshaded;
 }
 
+
+//The diffuseForestRegionRadiationSum as  above but the density.fun is
+//a ParametricCurve that contains the  forest density as a function of
+//tree age, given  as the last parameter. If  no density.fun found the
+//forest density is 2500 trees/ha.
+MJ Firmament::diffuseForestRegionRadiationSum(int n, float z, float x, float la,
+					      float ke, float H, float Hc,
+					      vector<double>& direction,int tree_age)
+
+
+{
+// When  this method  is called  first  time it  reads density  (dens,
+// trees/ha) from  the file density.fun.  If this file does  not exist
+// default density 2500 tree/ha is used.
+
+  static bool first_time = true;
+  static ParametricCurve fdens(2500.0);
+
+  if(first_time) {
+    first_time = false;
+    ifstream densfun("density.fun");
+    if(densfun) {
+      fdens.install("density.fun");
+    }
+  }
+  double dens = fdens(tree_age);
+  //Check for suitable segment number
+
+  if(n < 0 || n > numOfSectors - 1) return (MJ) -1.0;
+
+  // Get first unshaded radiation coming from the sector
+
+  float Qunshaded = diffuseRegionRadiationSum(n, direction);
+
+  // Inclination angle of the direction (from horizon),
+  // length of direction = 1, hence z coordinate = sin(alpha)
+
+  float sin_alpha = (float) direction[2];
+  float tan_alpha;
+  if(maximum(1.0-sin_alpha,sin_alpha-1.0) < R_EPSILON)
+    return Qunshaded;
+  else
+    tan_alpha = tan(asin(sin_alpha));
+    
+
+  // Area (m2) occupied by one tree = 10000/dens => radius of the opening that is
+  // occupied by one tree
+
+  float r_tree = (float) sqrt((double) ((10000.0/dens) / (float)PI_VALUE));
+
+  // The beam hits the mantle of the cylinder that is occupied by the tree at height Hh,
+  // the distance of the point from the stem is considered too,
+  // as mean for different directions, see explanation at the beginning
+  // Obs the segment cannot be outside the cylinder
+
+  float xcheck = minimum(x, r_tree);
+  float avdist = r_tree * (1.0 - 0.35 * (float)pow((double)(xcheck/r_tree), 2.5));
+  float Hh = z + tan_alpha * avdist;
+
+  // If Hh < Hc the beam goes through the whole canopy, otherwise not
+
+  if(Hh < Hc)  Hh = Hc;
+
+  float leaf_dens = dens * la / 10000.0 / (H - Hc);
+
+  float distance, shading;
+
+  if(Hh < H)
+    distance = (H - Hh) / sin_alpha;
+  else
+    distance = 0.0;
+
+  shading = (float) exp((double)(-ke * distance * leaf_dens));
+
+  return shading * Qunshaded;
+}
+
 void Firmament:: setDiffuseRadiation(const double rad)
 
 // Input: Diffuse radiation falling on a horizontal plane

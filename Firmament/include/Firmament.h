@@ -7,6 +7,7 @@
 #include <mathsym.h>
 #include <vector>
 #include <TMatrix.h>
+#include <ParametricCurve.h>
 #include <LGMUnits.h>
 
 namespace sky{
@@ -176,8 +177,11 @@ public:
   MJ diffusePlaneSensor(void) { return diffuseRadPlane; }
   MJ diffuseBallSensor(void) { return diffuseRadBall; }
   MJ diffuseForestRegionRadiationSum(int n, float z, float x,  float la, float ke,
-                                                       float H, float Hc,
-                                               vector<double>& direction);
+				     float H, float Hc,
+				     vector<double>& direction);
+  MJ diffuseForestRegionRadiationSum(int n, float z, float x,  float la, float ke,
+				     float H, float Hc,
+				     vector<double>& direction,int tree_age);
   void outDiff() {
     cout << diffuseRad << endl;
   }
