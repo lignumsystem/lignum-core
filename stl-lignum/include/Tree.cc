@@ -207,19 +207,12 @@ TP GetTreeParameterValue(const Tree<TS>& tree, const TPD name)
   if (name == af)
     return tree.tp.af;
 
-
   else if (name == ar)
      return tree.tp.ar;
 
-  else if (name == fin)
-    return tree.tp.ar;
-  
-  else if (name == fout)
-    return tree.tp.ar;
-
   else if (name == lr)
     return tree.tp.lr;
-
+  
   else if (name == mf)
     return tree.tp.mf;
 
@@ -274,7 +267,7 @@ TP SetTreeParameterValue(Tree<TS>& tree, const TPD name, const TP value)
 
   else if (name == lr)
     tree.tp.lr = value;
-
+  
   else if (name == mf)
     tree.tp.mf = value;
 
@@ -306,7 +299,7 @@ TP SetTreeParameterValue(Tree<TS>& tree, const TPD name, const TP value)
     tree.tp.rho = value;
 
   else if (name == xi)
-    tree.tp.rho = value;
+    tree.tp.xi = value;
 
   else{
     cerr << "SetParameterValue unknown parameter: " << name << " returning 0.0" 
