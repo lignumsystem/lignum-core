@@ -155,12 +155,16 @@ void SetCenterPoint(BroadLeaf& bl, const Point<>& p)
   bl.bla.center = p;
 }
 
-void SetRadiationVector(BroadLeaf& bl, vector<LGMdouble>& v)
+void SetRadiationVector(BroadLeaf& bl, const vector<LGMdouble>& v)
 {
   for(int i = 0; i < bl.bla.sv.size(); i++)
     bl.bla.sv[i] = v[i];
 }
-      
+     
+vector<double> GetRadiationVector(BroadLeaf& bl)
+{
+  return bl.bla.sv;
+}
 
 
 }//closing namespace Lignum
