@@ -8,9 +8,6 @@
 void init_window (); //int argc, char** argv);
 
 namespace Lignum{
-  template <class TREE>
-    int Initialize3DForest(Forest &f);
-
   
   
   template <class TS,class BUD>
