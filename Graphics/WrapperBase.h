@@ -9,9 +9,11 @@ namespace Lignum{
 class WrapperBase
 {
 public:
- virtual void VisualizeTree();
- virtual void VisualizeStem(int &active_texture);
- virtual void VisualizeFoliage(int &active_texture); 
+  WrapperBase(): intStemTexture(0),intFoliageTexture(0),intDisplaylistStem(0),
+		 intDisplaylistFoliage(0){}
+  virtual void VisualizeTree()=0;
+  virtual void VisualizeStem(int &active_texture)=0;
+  virtual void VisualizeFoliage(int &active_texture)=0; 
 
  int intStemTexture;    //texture number of stem
  int intFoliageTexture; //texture number of foliage
@@ -26,7 +28,7 @@ class CfWrapper: public WrapperBase
 {
 public:
   
-  CfWrapper(const Tree<TS,BUD>& t):tree(t){}
+  CfWrapper(const Tree<TS,BUD>& t):WrapperBase(),tree(t){}
 
   void VisualizeTree();
   void VisualizeStem(int &active_texture);
@@ -40,7 +42,7 @@ template <class TS, class BUD>
 class HwWrapper: public WrapperBase 
 {
 public:
-  HwWrapper(Tree<TS,BUD>& t):tree(t){}
+  HwWrapper(Tree<TS,BUD>& t):WrapperBase(),tree(t){}
 
   void VisualizeTree();
   void VisualizeStem(int &active_texture);
