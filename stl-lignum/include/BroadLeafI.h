@@ -38,7 +38,7 @@ LGMdouble GetValue(const BroadLeaf<SHAPE>& bl, const LGMAD name)
   if (name == LGAA)
     return  bl.bla.degree_of_filling*bl.bla.shape.getArea(); //true area of the leaf
 
-  else if (name == dof)
+  else if (name == LGAdof)
     return  bl.bla.degree_of_filling;
 
   else if (name == sf)
@@ -75,7 +75,7 @@ LGMdouble SetValue(BroadLeaf<SHAPE>& bl, const LGMAD name, const LGMdouble value
   if (name == LGAA)
     bl.bla.shape.setArea(value/bl.bla.degree_of_filling);  //value=true area of the leaf
 
-  else if (name == dof)
+  else if (name == LGAdof)
     bl.bla.degree_of_filling = value;
 
   else if (name == sf)

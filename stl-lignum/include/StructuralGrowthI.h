@@ -204,7 +204,7 @@ TreeCompartment<GCSegment, GCBud>* StructuralGrowth::operator()
 		      up,
 		      Ellipsis(GetValue(tree,leaf_a),GetValue(tree,leaf_b)));
       LGMdouble ellipsis_a = GetValue(tree,phif_p)*PI_VALUE*
-	(pow(r_new,2.0)-pow(rh_new,2.0))/GetValue(*leaf,dof);
+	(pow(r_new,2.0)-pow(rh_new,2.0))/GetValue(*leaf,LGAdof);
       SetValue(*leaf, A, ellipsis_a);
       InsertLeaf(*ts, leaf);
       SetValue(*ts,Wf,GetValue(tree,dof_p)*ellipsis_a/GetValue(*leaf,sf));

@@ -95,7 +95,7 @@ namespace Lignum{
   LGMdouble GetValue(const RootTip<TREE>& rt, LGMAD name)
   {
     switch (name){
-    case LGMcollision:
+    case LGAcollision:
        return rt.rta.collision;
     case LGMstatus:
        return rt.rta.status;
@@ -112,7 +112,7 @@ namespace Lignum{
   {
     LGMdouble old_value = GetValue(rt,name);
     switch (name){
-    case LGMcollision:
+    case LGAcollision:
       rt.rta.collision = value;
       break;
     case LGMstatus:

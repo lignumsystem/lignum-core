@@ -55,7 +55,7 @@ BranchingPoint<TS,BUD>& Bud<TS,BUD>::createBranchingPoint()const
 template <class TS,class BUD>   
 LGMdouble GetValue(const Bud<TS,BUD>& bud, const LGMAD name)
 {
-  if (name == LGMcollision){
+  if (name == LGAcollision){
     return bud.ba.collision;
   }
   else if (name == omega)
@@ -81,7 +81,7 @@ LGMdouble SetValue(Bud<TS,BUD>& bud, const LGMAD name, const LGMdouble value)
 
   LGMdouble old_value = GetValue(bud,name);
 
-  if (name == LGMcollision){    
+  if (name == LGAcollision){    
     bud.ba.collision = value;
   }
   else if (name == omega)

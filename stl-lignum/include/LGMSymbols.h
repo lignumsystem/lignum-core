@@ -13,7 +13,8 @@ namespace Lignum{
   // LGMPD = LIGNUM Parameter Double
 
   // Wr           dry weight of the roots
-  enum LGMAD {LGAA,LGAAf,LGAAh, LGAAhair,LGAAs,LGAAs0,LGAage,api, LGMcollision,Dbase,Dbh,dof, dR, H,Hf,Hm,ip,
+  enum LGMAD {LGAA,LGAAf,LGAAh, LGAAhair,LGAAs,LGAAs0,LGAage,api, LGAcollision,
+              LGADbase,LGADbh,LGAdof, dR, H,Hf,Hm,ip,
               lb,LM,LP,LWf,L,lw,M, MaxD,omega,P,
 	      Qin,Qabs,R,Rf,Rh,Rhair,RTop,Sa,LGMstatus,sw,tauL,LGMtype,V,Vh,Vhair,Vs,vi,
               Wf, LGAWr, LGAWs, LGAWh, LGAWhair};
@@ -26,9 +27,10 @@ namespace Lignum{
   //  LGAAs0    Original sapwood area
   //  LGAage    age of object
   //  api    ???  
-  //  Dbase  diameter at base
-  //  Dbh    diameter at breast height
-  //  dof    degree of filling?
+  //  LGAcollision a bud can examine its growth sector if it collides with an obstacle
+  //  LGADbase  diameter at base
+  //  LGADbh    diameter at breast height
+  //  LGAdof    degree of filling?
   //  H      height of tree
   //  Hf     height (thickness) of cylindrical layer of foliage in a segment 
   //  Hm     ???
@@ -53,17 +55,17 @@ namespace Lignum{
   //  Sa     Surface area of the segment cylinder: 2*PI*R*L 
   //  sw     ????
   //  tauL   transmission coefficient of leaf (in direction of the ray of light)
+  //  vi     vigour index
+  //  V      Segment volume based on R
+  //  Vh     Heartwood volume
+  //  Vhair  Root hair volume
+  //  Vs     Sapwood volume
   //  Wf     foliage mass (kg C)
   //  LGAWr     root mass (kg C)
   //  LGAWs     mass of sapwood (kg C)
   //  LGAWh     mass of heartwood (kg C)
   //  LGAWhair  mass of root hair (kg C)
 
-  //  vi     vigour index
-  //  V      Segment volume based on R
-  //  Vh     Heartwood volume
-  //  Vhair  Root hair volume
-  //  Vs     Sapwood volume
 
 
   enum LGMFLOW { fin, fout, Pr, Wm };

@@ -91,7 +91,7 @@ void EvaluateRadiationForHwTreeSegment<TS,BUD,S>::operator()
       a_dot_b = fabs(tmp_adotb);  
       help = radiation*result[i];
       SetValue(**Il, Qin, help+GetValue(**Il, Qin));
-      help *= GetValue(**Il, dof)*(GetShape(**Il).getArea())*a_dot_b;
+      help *= GetValue(**Il, LGAdof)*(GetShape(**Il).getArea())*a_dot_b;
       SetValue(**Il, Qabs, help+GetValue(**Il, Qabs));
     }
   }
@@ -149,7 +149,7 @@ vector<LGMdouble>& ShadingEffectOfLeaf<TS,BUD,S>::operator()(vector<LGMdouble>& 
 			     radiation_direction[2]);
 	result = EllipseBeamShading(mp, tmp, **Ishding);
 	if (result == HIT_THE_FOLIAGE){
-	  Vp = 1.0-GetValue(**Ishding,dof)+GetValue(**Ishding,dof)*
+	  Vp = 1.0-GetValue(**Ishding,LGAdof)+GetValue(**Ishding,LGAdof)*
 	    GetValue(**Ishding,tauL);
 	  v[i] *= Vp;
 	}

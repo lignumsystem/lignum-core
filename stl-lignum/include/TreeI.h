@@ -397,7 +397,7 @@ LGMdouble GetValue(const Tree<TS,BUD>& tree, const LGMAD name)
     BUD* bud = dynamic_cast<BUD*>(ls.back());
     return GetPoint(*bud).getZ();
   }
-  else if (name == Dbase){
+  else if (name == LGADbase){
     Axis<TS,BUD>& axis = GetAxis(const_cast<Tree<TS,BUD>&>(tree));
     list<TreeCompartment<TS,BUD>*>& ls = GetTreeCompartmentList(axis);
     if (ls.size()> 1){
@@ -407,7 +407,7 @@ LGMdouble GetValue(const Tree<TS,BUD>& tree, const LGMAD name)
     else
       return 0.0;
   }
-  else if (name == Dbh){
+  else if (name == LGADbh){
     Axis<TS,BUD>& axis = GetAxis(const_cast<Tree<TS,BUD>&>(tree));
     list<TreeCompartment<TS,BUD>*>& ls = GetTreeCompartmentList(axis);
     DiameterBreastHeight<TS,BUD> dbh;
