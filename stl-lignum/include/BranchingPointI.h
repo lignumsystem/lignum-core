@@ -45,10 +45,10 @@ BranchingPoint<TS,BUD>::BranchingPoint(const Point& p, const PositionVector& d,
 template <class TS,class BUD>
 BranchingPoint<TS,BUD>::~BranchingPoint()
 {
-  typename std::list<Axis<TS,BUD>*>::iterator first = axis_ls.begin();
-  typename std::list<Axis<TS,BUD>*>::iterator last = axis_ls.end();
-
-  while (first != last){
+ 
+  typename list<Axis<TS,BUD>*>::iterator first = axis_ls.begin();
+  //Delete axes, the list will be destroyed automatically.
+  while (first != axis_ls.end()){
     delete *first++;
   }
 }
