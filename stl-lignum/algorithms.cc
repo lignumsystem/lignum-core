@@ -44,12 +44,16 @@ int main(int argc, char *argv[])
 						PositionVector(0,0,1.0));
   string clarg,empty;
 
-  clarg = ParseCommandLine(argc,argv,"-file");
-  if (clarg != empty)
-    InitializeTree(hw_tree,clarg);
- 
- 
-   
+  clarg = ParseCommandLine(argc,argv,"-configure");
+  if (clarg != empty){
+    InitializeTree<MyHwTreeSegment,MyBud> init_hw(clarg,VERBOSE);
+    InitializeTree<MyCfTreeSegment,MyBud> init_cf(clarg,VERBOSE);
+    init_hw.initialize(hw_tree);
+    init_cf.initialize(cf_tree); 
+  }
+  //This is how to access functions, note the ParametricCurve is
+  //returned as const
+  const ParametricCurve& pc = GetFunction(hw_tree,FOLIAGEMORTALITY);
   //Example 1.
   //create a tree with a structure [TS,[[B],[B]],B]
   //i.e, [TS,BP,B] which expands to [TS,[A,A],B] and to [TS,[[B],[B]],B]

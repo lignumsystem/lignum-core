@@ -5,6 +5,5 @@ Parameters:
     Firmament: Firmament.txt
 Functions:
     FoliageMortality:FoliageMortality.fn
-    Buds: Buds.fn
-    DoI: DoI.fn
-    
+    NumberOfBuds: Buds.fn
+    DegreeOfInteraction: DoI.fn
