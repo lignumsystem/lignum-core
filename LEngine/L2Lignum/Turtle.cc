@@ -10,15 +10,14 @@ Turtle::Turtle()
 Turtle::Turtle(const Turtle& t)
   :h(t.h),l(t.l),u(t.u),p(t.p)
 {
-  normalize();
 }
 
 //Rotation round Up axis
 Turtle& Turtle::turn(const RADIAN angle)
 {
-  h.rotate(p,u,angle);
-  l.rotate(p,u,angle);
-  normalize();
+  Point o(0,0,0);
+  h.rotate(o,u,angle);
+  l.rotate(o,u,angle);
   
   return *this;
 }
@@ -26,9 +25,9 @@ Turtle& Turtle::turn(const RADIAN angle)
 //Rotation round Left axis
 Turtle& Turtle::pitch(const RADIAN angle)
 {
-  u.rotate(p,l,angle);
-  h.rotate(p,l,angle);
-  normalize();
+  Point o(0,0,0);
+  u.rotate(o,l,angle);
+  h.rotate(o,l,angle);
   
   return *this;
 }
@@ -36,9 +35,9 @@ Turtle& Turtle::pitch(const RADIAN angle)
 //Rotation round Heading axis
 Turtle& Turtle::roll(const RADIAN angle)
 {
-   u.rotate(p,h,angle);
-   l.rotate(p,h,angle);
-   normalize();
+  Point o(0,0,0);
+  u.rotate(o,h,angle);
+  l.rotate(o,h,angle);
    
    return *this;
 }
@@ -102,7 +101,7 @@ int main()
   t.pitch(PI_VALUE/2.0);
   cout <<  "After pitch PI/2 : " << t << endl;
   
-  t.roll(PI_VALUE/2.0);
+  t.roll(I_VALUE/2.0);
   cout <<  "After roll PI/2 : " << t << endl;
 
   t.forward(1.0);
