@@ -51,4 +51,9 @@ GetLowerSegment<TS,BUD>::operator()(GLS<TS,BUD>& gls,
 }
   
 
-#define
+#endif
+
+
+
+
+

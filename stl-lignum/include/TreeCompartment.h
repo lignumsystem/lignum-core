@@ -7,8 +7,9 @@
 #include <Point.h>
 #include <PositionVector.h>
 
+template <class TS> class DefaultBud;
 
-template <class TS,class BUD> 
+template <class TS,class BUD=DefaultBud<TS> > 
 class TreeCompartment{
   friend Point<METER> GetPoint(const TreeCompartment<TS,BUD>& tc);
   friend PositionVector GetDirection(const TreeCompartment<TS,BUD>& tc);
