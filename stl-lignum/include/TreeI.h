@@ -346,9 +346,6 @@ FirmamentWithMask& GetFirmament(Tree<TS,BUD>& tree) {
 }
 
 
-
-
-
 template <class TS,class BUD>
 LGMdouble GetValue(const Tree<TS,BUD>& tree, const LGMAD name)
 {
@@ -383,19 +380,21 @@ LGMdouble GetValue(const Tree<TS,BUD>& tree, const LGMAD name)
     Axis<TS,BUD>& axis = GetAxis(const_cast<Tree<TS,BUD>&>(tree));
     list<TreeCompartment<TS,BUD>*>& ls = GetTreeCompartmentList(axis);
     DiameterBreastHeight<TS,BUD> dbh;
+    pair<double,double> d13(0.0,0.0);
     //traverse the axis in reverse order, the last segment having
     //dbh >= 1.3 will assign its diameter to Dbh.
-    for_each(ls.rbegin(),ls.rend(),dbh);
-    return dbh.dbh();
+    d13 = accumulate(ls.rbegin(),ls.rend(),d13,dbh);
+    return d13.first;
   }
   else if (name == LGADbhHw){
     Axis<TS,BUD>& axis = GetAxis(const_cast<Tree<TS,BUD>&>(tree));
     list<TreeCompartment<TS,BUD>*>& ls = GetTreeCompartmentList(axis);
     DiameterBreastHeight<TS,BUD> dbh;
+    pair<double,double> d13(0.0,0.0);
     //traverse the axis in reverse order, the last segment having
     //dbh >= 1.3 will assign its diameter to Dbh and Hw diam at BH
-    for_each(ls.rbegin(),ls.rend(),dbh);
-    return dbh.dbhhw();
+    d13 =  accumulate(ls.rbegin(),ls.rend(),d13,dbh);
+    return d13.second;
   }
   else
     cout << "Tree GetValue unknown parameter: " << name << endl;
