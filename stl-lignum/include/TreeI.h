@@ -334,9 +334,9 @@ LGMdouble SetValue(Tree<TS,BUD>& tree, const LGMAD name, const LGMdouble value)
   LGMdouble old_value = GetValue(tree,name);
 
   if (name == age)
-    return tree.ta.lb = value;
+    tree.ta.age = value;
 
-  if (name == lb)
+  else if (name == lb)
     tree.ta.lb = value;
 
   else if (name == P)
