@@ -1,0 +1,13 @@
+To include references for the document type
+
+    cvs checkout references
+
+in this directory. To create latex document type
+
+    latex lignum
+    bibtex lignum
+    latex lignum
+
+Repeat the commands until no warnings about undefined references occure.
+See manuals for xdvi and dvips to view and generating PostScript file
+respectively.
