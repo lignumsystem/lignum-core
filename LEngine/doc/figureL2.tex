@@ -3,96 +3,56 @@
 \put(0,0){\line(1,0){370}}
 \end{picture}
 \begin{verbatim}
-
-open Bearberry;
-
-#include <lsys.h>
-
-
-const int D    = 1.0; //dominant    apical
-const int S    = 2.0; //subdominant apical
-const int T    = 3.0; //subdominant lateral
-const int N    = 4.0; //nondominant apical
-const int O    = 5.0; //nondominat  lateral
-
-const double DL = 1;    
-const double SL = 0.58;  
-const double NL = 0.40;  
-const double DA = 30*2.0*PI_VALUE/360.0;
-const double SA = 31*2.0*PI_VALUE/360.0;
-const double NA = 52*2.0*PI_VALUE/360.0;
-const double CU = -5.0*2.0*PI_VALUE/360.0;
-const double CT = 0.5*2.0*PI_VALUE/360.0;
-
-module B(double,double,double); 
-
-derivation length: 10;
-int seed
-
-Start:
-{
-  int init = -1;
-  int seed = 137591;
-  ran3(&init);
-  produce F(0.1*DL) SB() EB() B(D,0.0,0.0);
-}
-
-B(T,S,C):
-{
-  double g = 0.0;
-  double r1 = ran3(&seed);
-  double r2 = ran3(&seed);
-  
-  if (r1 < CT)
-     g = CU;
-  else 
-     g = -CU;
-
-  if (C == 1.0){
-    produce B(T,S,C);
-  }
-  else if (T == D && S == 0.0){
-    if (r2 < 0.0875)
-      produce Turn(g) F(0.70*DL) SB() Turn(NA)  B(N,2,C) EB() 
-              Turn(g) F(0.15*DL) SB() Turn(-DA) B(D,0,C) EB()
-              Turn(g) F(0.15*DL) SB() EB() B(D,0,C);
-    ............................................................
-    else if (r2 <= 1.0)
-      produce Turn(g) F(0.50*DL) SB() Turn(-NA) B(N,2,C) EB() 
-              Turn(g) F(0.10*DL) SB() Turn(NA)  B(N,1,C) EB()
-              Turn(g) F(0.10*DL) SB() Turn(-SA) B(S,1,C) EB()
-              Turn(g) F(0.10*DL) SB() Turn(SA)  B(S,0,C) EB()
-              Turn(g) F(0.20*DL) SB() EB() B(T,0,C);
-  } 
-  else if (T == S && S == 0.0){
-    if (r2 < 0.257)
-     produce Turn(g) F(0.65*SL) SB() Turn(NA)  B(N,2,C) EB()
-             Turn(g) F(0.15*DL) SB() Turn(-SA) B(S,1,C) EB()
-             Turn(g) F(0.20)    SB() EB() B(S,0,C);
-    ............................................................
-    else if (r2 <= 1.0)
-     produce Turn(g) F(0.65*SL) SB() Turn(-NA)  B(N,2,C) EB()
-             Turn(g) F(0.15*DL) SB() Turn(SA) B(S,1,C) EB()
-             Turn(g) F(0.20)    SB() EB() B(T,0,C);   
-  }  
-  else if (T == N && S == 0.0){
-    if (r2 < 0.630)
-     produce Turn(g) F(NL) SB() EB() B(N,0,C);
-    ............................................................
-    else if (r2 <= 1.0)
-     produce Turn(g) F(0.75*NL) SB() Turn(-NA) B(N,1,C) EB()
-             Turn(g) F(0.25)    SB() EB() B(T,0,C);
-  }
-  else{
-   double s = maximum(S-1.0,0.0);
-   produce B(T,s,C);
-  }
-
-}
+ 1.open Bearberry;
+ 2.module B(double type,double status,double collision); 
+ 3.derivation length: 10;
+ 4.Start:{produce F(0.1) SB() EB() B(D,0.0,0.0);}
+ 5.B(T,s,C):
+ 6.{
+ 7.  double g = 0.0;
+ 8.  double r1 = ran();
+ 9.  double r2 = ran();
+10.  if (r1 < 0.5) 
+11.     g = -5;
+12.  else 
+13.     g = 5;
+14.  if (C == 1.0){
+15.    produce B(T,s,C);
+16.  }
+17.  else if (T == D && S == 0.0){
+18.    if (r2 < 0.0875)
+19.      produce Turn(g) F(0.70) SB() Turn(52)  B(N,2,C) EB() 
+20.              Turn(g) F(0.15) SB() Turn(-30) B(D,0,C) EB()
+21.              Turn(g) F(0.15) SB() EB() B(D,0,C);
+22.    ......................................................
+23.    else if (r2 <= 1.0)
+24.      produce Turn(g) F(0.50) SB() Turn(-52) B(N,2,C) EB() 
+25.              Turn(g) F(0.10) SB() Turn(52)  B(N,1,C) EB()
+26.              Turn(g) F(0.10) SB() Turn(-31) B(S,1,C) EB()
+27.              Turn(g) F(0.10) SB() Turn(31)  B(S,0,C) EB()
+28.              Turn(g) F(0.20) SB() EB() B(T,0,C);
+29.  } 
+30.  else if (T == S && S == 0.0){
+31.    ......................................................
+32.  }
+33.  else{
+34.   double s = maximum(s-1.0,0.0);
+35.   produce B(T,s,C);
+36.  }
+37.}
 \end{verbatim}
 \begin{picture}(1,1)
 \put(0,0){\line(1,0){370}}
 \end{picture}
-%\hline
-\caption{L-system for bearberry growth [Salemaa and Sievänen 02]}\label{fig:L2}
+\caption{Fragmentary  L-system for bearberry growth. Module Start creates 
+  the initial  plant. In the module B  line 14 check  for collision, lines
+  17--32 determine  branching and growth. The  pattern of ramification
+  is  based  on field  data  and  implemented  in the  uniform  random
+  variables  $r1~\mathrm{and}~r2  \in  [0,1]$.   $r1$  intializes  the
+  branching to  the left  or right.  Growth  depends on bud  type, its
+  status and  the value  of $r2$.  The  counter on line  34 eventually
+  activate dormant  buds ($s > 0$).  For  bud types D =  dominant, \mbox{N =
+  nondominant} and S = subdominant.  See \citet{salemaa:02} for details
+  .}\label{fig:L2}
 \end{figure}
+

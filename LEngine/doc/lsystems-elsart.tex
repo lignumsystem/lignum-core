@@ -1,0 +1,101 @@
+% Template article for preprint document class `elsart'
+% with harvard style bibliographic references
+% SP 2001/01/05
+
+\documentclass{elsart}
+%Scandinavian alphabet%\usepackage[finnish]{babel}
+%\usepackage[latin1]{inputenc}%\usepackage[T1]{fontenc}
+% Use the option doublespacing or reviewcopy to obtain double line spacing
+% \documentclass[doublespacing]{elsart}
+
+% the natbib package allows both number and author-year (Harvard)
+% style referencing;
+\usepackage{natbib}
+
+% if you use PostScript figures in your article
+% use the graphics package for simple commands
+% \usepackage{graphics}
+% or use the graphicx package for more complicated commands
+\usepackage{graphicx}
+% or use the epsfig package if you prefer to use the old commands
+\usepackage{epsfig}
+
+% The amssymb package provides various useful mathematical symbols
+%\usepackage{amssymb}
+
+\begin{document}
+
+\begin{frontmatter}
+
+% Title, authors and addresses
+
+% use the thanksref command within \title, \author or \address for footnotes;
+% use the corauthref command within \author for corresponding author footnotes;
+% use the ead command for the email address,
+% and the form \ead[url] for the home page:
+\title{Combining Lindenmayer systems with model LIGNUM}
+\author[Metla]{Jari Perttunen\corauthref{cor1}}
+\corauth[cor1]{Corresponding author}
+\ead{jari.perttunen@metla.fi}
+\author[Calgary]{Radek Karwowski}
+\author[Calgary]{Przemyslaw Prusinkiewicz}
+\author[Metla]{Risto Siev\"anen}
+
+\address[Metla]{Finnish Forest Research Insititute. Vantaa Research Station. 
+                              Jokiniemenkuja 1. PL 18. 01301 Vantaa. Finland.}
+\address[Calgary]{University of Calgary}
+
+% use optional labels to link authors explicitly to addresses:
+% \author[label1,label2]{}
+% \address[label1]{}
+% \address[label2]{}
+
+%\author{}
+
+%\address{}
+
+\begin{abstract}
+  LIGNUM  is  a   functional-structural  tree  model  that  represents  coniferous and broad-leaved trees  with four modelling units closely  resembling  the  real  structure  of  trees.   The  units  are  tree  segments,  the  tree axes,  branching  points  and buds.   Metabolic  processes are  explicitly related to  the structural units  in which  they are  taking place.  Here we  enhance the model  LIGNUM with the  possibility to formally describe  the architectural development of a  tree with Lindenmayer systems.    We give sample applications of  the system to model single trees and  forest stand.  Finally we discuss our approach  and its consequences  for the future development of the model.
+\end{abstract}
+
+\begin{keyword}
+
+ Lindenmayer systems, functional-structural tree model
+% keywords here, in the form: keyword \sep keyword
+
+% PACS codes here, in the form: \PACS code \sep code
+
+\end{keyword}
+
+\end{frontmatter}
+% main text\input{introduction}\input{structural-units}\input{basic-of-l}\input{language-l-lignum}\input{a-uva-ursi}\input{vigour-index}\input{namespace}\input{discussion}
+
+% The Appendices part is started with the command \appendix;
+% appendix sections are then done as normal sections
+% \appendix
+
+% \section{}
+% \label{}
+
+% Bibliographic references with the natbib package:
+%References \bibliography{references/references}%Annals of Botany bibliographic style\bibliographystyle{elsart-harv}%Tables and figures.\input{figures}
+
+
+% Parenthetical: \citep{Bai92} produces (Bailyn 1992).
+% Textual: \citet{Bai95} produces Bailyn et al. (1995).
+% An affix and part of a reference:
+%   \citep[e.g.][Ch. 2]{Bar76}
+%   produces (e.g. Barnes et al. 1976, Ch. 2).
+
+%\begin{thebibliography}{}
+
+% \bibitem[Names(Year)]{label} or \bibitem[Names(Year)Long names]{label}.
+% (\harvarditem{Name}{Year}{label} is also supported.)
+% Text of bibliographic item
+
+%\bibitem[]{}
+
+%\end{thebibliography}
+
+\end{document}
+

@@ -1,12 +1,18 @@
-\section{Language L with LIGNUM}
+\section{Introduction to language L}
 
 The  L-system  formalism  is   the  foundation  on  which  programming
 languages  for  plant modeling  tools  have  been  built. Though  they
 usually include constructs  from general purpose programming languages
 the key  concept of  these tools  is rewriting. The  language L  is no
-exception.
+exception. Given the  parser of L [Karwowski and  Prusinkiewicz ??] to
+use the language with LIGNUM we must first implement an algorithm that
+translates the bracketed string of symbols to LIGNUM representation of
+trees (Section \ref{sec:pine}.   Second, we must provide communication
+mechanism    between     the    L-string    and     LIGNUM    (Section
+\ref{sec:bearberry}. Finally, our implementation must be able simulate
+forest  stands,  i.e. several  tree  species,  in  one model  (Section
+\ref{sec:namespace}).
 
-\subsection{Module vs. symbol}
 The counterpart  of a symbol in  L-system formalism is  the concept of
 module in the language L. A module  has a name and can take any number
 of arguments  of any  type (in C++).   A syntactically  correct module
@@ -30,7 +36,7 @@ $Roll(\alpha)$ to  rotate orientation of  the turtle around  $\vec U$,
 $\vec  L$  and $\vec  H$  by  $\alpha$.   One special  module  $Start$
 corresponds the axiom.
 
-\subsection{L and LIGNUM}\label{sec:pine}
+\section{Scots pine: integrating L and LIGNUM}\label{sec:pine}
 The  first example  mimics the  growth  of young  Scots pine.   First,
 introduce module  $B(O,L)$ representing a bud.   The module definition
 implements development for the  main stem and the branching evolution.

@@ -1,7 +1,7 @@
 \section{Bearberry}\label{sec:bearberry}
 
 The   evergreen   horizontally    spreading   shrub   bearberry   (\it
-Arctostaphylos  uva-ursi \rm  (L.))  grows  in variety  of  habitats in
+Arctostaphylos  uva-ursi \rm  L.)  grows  in variety  of  habitats in
 Northern Europe and Northern North America.  It is a pioneering species
 growing best in high light conditions colonizing gravelly soils, sandy
 dunes, heathlands  etc.  but  appears also in  the understory  of open
@@ -9,22 +9,22 @@ pine  forests [Salemaa  99].  It  is adapted  for growth  with limited
 water  and  nutrient  supply.  Bearberry  is  a  clonal  species,  its
 reproduction is mainly vegetative.
 
-[Salemaa  and Sievänen 02]  have studied  growth habits,  axillary bud
-activation and  branching architecture  of bearberry growing  in South
-Western Finland in varying  pollution, nutrient and light levels. They
-have  designed an  L-system  model to  study  qualitative features  of
-branching patterns of bearberry  by simulation.  Here we enhance their
-model for  forest grown  clones with algorithm  to detect if  a clonal
-branch blockades the  growth space of an active  bud. This also serves
-as an example  of a stochastic L-system [Prusinkiewicz  96] and how to
-implement global sensitivity [Kurth ??]  in LIGNUM.
+\citet{salemaa:02} have studied growth habits, axillary bud activation
+and  branching  architecture of  bearberry  growing  in South  Western
+Finland in  varying pollution, nutrient  and light levels.   They have
+designed an L-system model  to study qualitative features of branching
+patterns of bearberry by simulation.   Here we enhance their model for
+forest  grown clones  with  algorithm  to detect  if  a clonal  branch
+blockades the  growth space of an  active bud. This also  serves as an
+example of  a stochastic L-system  \citep{pp:96} and how  to implement
+global sensitivity \citep{kurth:94} in LIGNUM.
 
-In their  L-system model for  bearberry [Salemaa and Sievänen  02] the
-plant grows  horizontally and consists of annual  growth units holding
-lateral buds and  one apical bud.  The buds  are divided into dominant
-(D),  subdominant  (SD) and  nondominant  (ND)  types.   A living  bud
-produces a shoot of its own type. Axillary buds have time delay before
-they release and produce a shoot.
+In  their L-system  model for  bearberry \citep{salemaa:02}  the plant
+grows horizontally and consists of annual growth units holding lateral
+buds  and one apical  bud.  The  buds are  divided into  dominant (D),
+subdominant (SD) and nondominant (ND)  types.  A living bud produces a
+shoot  of its  own type.  Axillary buds  have time  delay  before they
+release and produce a shoot.
 
 For the implementation in L define module $B(T,S,C)$ where $T$ denotes
 the bud type,  $S$ its status, i.e.  time left  before release and $C$
@@ -34,7 +34,7 @@ produced, branching angles for  lateral shoots forking off alternately
 to the left or to the  right and the number of axillary buds produced.
 In general D shoots are longer than SD and ND shoots and in the forest
 ND shoots  have wider branhing angle.   Outline of the  L-system is in
-Fig. \ref{fig:L2}.  For details see [Salemaa and Sievänen 02].
+Fig. \ref{fig:L2}.  For details see \citet{salemaa:02}.
 
 The collition detection algorithm  simply examines given opening angle
 symmetric to both sides of the growth direction of a bud and checks if
