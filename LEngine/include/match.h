@@ -194,7 +194,9 @@ inline bool MatchRightContext(LstringIterator& pos,
     //if ] in the _context_ then the sequence of symbols matched
     //in a branch, skip the rest of the branch in string
     if (*front == EB_id){
-      pos.FindEOB();
+      //Check for empty branch
+      if (pos.GetModuleId()!= EB_id)
+	pos.FindEOB();
     }
     //compare modules and [ literally
     //cout << "Right Context Comparing: "  << string(pos.GetCurrentModuleName()) << " " 
@@ -227,7 +229,6 @@ inline bool MatchRightContext(LstringIterator& pos,
     if (!pos.AtEnd())
       pos++;
   }
-
   //no match if context not exhausted but the string is
   if (pos.AtEnd() && !(fm_ls.empty()))
     has_right_context = false;
@@ -267,8 +268,6 @@ inline bool MatchLeftContext(LstringIterator& pos,
   
   //insert the left context to a list
   //we have to scan it in reverse order
-  //head =  left_cntxt->GetHead();
-
   int i = 0;
   while (i < left_cntxt.count){
     fm_ls.push_front(left_cntxt.arr[i]);
