@@ -248,16 +248,23 @@ namespace Lignum{
 
 
   //This functor runs (Accumulate) through tree and finds the bounding
-  //box for it
+  //box for it.  Conifers and deciduous TreeSegments (i.e. Trees)
+  //separately, since deciduoous are dealt with leaf by leaf and
+  //conifers by segments.
 
   template <class TS,class BUD>
-    class FindBoundingBox{
+    class FindCfBoundingBox{
     public:
     BoundingBox& operator ()(BoundingBox& b_box,
 			     TreeCompartment<TS,BUD>* tc)const;
   };
 
-
+  template<class TS, class BUD, class SHAPE>
+    class FindHwBoundingBox{
+    public:
+    BoundingBox& operator ()(BoundingBox& b_box,
+			     TreeCompartment<TS,BUD>* tc)const;
+  };
 
 
   template <class TS,class BUD>
@@ -403,6 +410,7 @@ namespace Lignum{
   public:
     TreeCompartment<TS,BUD>* operator ()(TreeCompartment<TS,BUD>* tc)const;
   };
+
 
 }//closing namespace Lignum
 #include <TreeFunctorI.h>

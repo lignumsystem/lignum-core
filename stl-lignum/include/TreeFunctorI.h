@@ -355,14 +355,14 @@ namespace Lignum{
 
   template <class TS,class BUD>
     BoundingBox&
-    FindBoundingBox<TS,BUD>::operator ()(BoundingBox& b_box,
-					 TreeCompartment<TS,BUD>* tc)const
+    FindCfBoundingBox<TS,BUD>::operator ()(BoundingBox& b_box,
+					   TreeCompartment<TS,BUD>* tc)const
     {
       if(TS* ts = dynamic_cast<TS*>(tc)){
 	if(GetValue(*ts,LGAWf) > R_EPSILON) {
 	  Point base = GetPoint(*ts);
 	  Point top = GetEndPoint(*ts);
-    
+	  
 	  if(b_box.getMin().getX() > base.getX()) b_box.setMinX(base.getX());
 	  if(b_box.getMin().getY() > base.getY()) b_box.setMinY(base.getY());
 	  if(b_box.getMin().getZ() > base.getZ()) b_box.setMinZ(base.getZ());
@@ -381,6 +381,34 @@ namespace Lignum{
       return b_box;
       
     }
+
+  template <class TS,class BUD,class SHAPE>
+    BoundingBox&
+    FindHwBoundingBox<TS,BUD,SHAPE>::operator ()(BoundingBox& b_box,
+					 TreeCompartment<TS,BUD>* tc)const
+    {
+      if(HwTreeSegment<TS,BUD,SHAPE>* ts = 
+	 dynamic_cast<HwTreeSegment<TS,BUD,SHAPE>*>(tc)){
+	if(GetValue(*ts,LGAWf) > R_EPSILON) {
+	  list<BroadLeaf<SHAPE>*>& leaf_list = GetLeafList(*ts);
+	  typename list<BroadLeaf<SHAPE>*>::iterator I;
+	  for(I = leaf_list.begin(); I != leaf_list.end(); I++) {
+	    Point p = GetCenterPoint(**I);
+	    
+	    if(b_box.getMin().getX() > p.getX()) b_box.setMinX(p.getX());
+	    if(b_box.getMin().getY() > p.getY()) b_box.setMinY(p.getY());
+	    if(b_box.getMin().getZ() > p.getZ()) b_box.setMinZ(p.getZ());
+	    if(b_box.getMax().getX() < p.getX()) b_box.setMaxX(p.getX());
+	    if(b_box.getMax().getY() < p.getY()) b_box.setMaxY(p.getY());
+	    if(b_box.getMax().getZ() < p.getZ()) b_box.setMaxZ(p.getZ());
+	  }
+	}
+      }
+
+      return b_box;
+      
+    }
+
 
   //PrintTreeInformation collects and prints out information about the
   //tree. It uses functor TreeData to collect the information with
