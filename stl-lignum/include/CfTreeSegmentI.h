@@ -4,9 +4,10 @@
 namespace Lignum{
 
 template <class TS,class BUD>
-CfTreeSegment<TS,BUD>::CfTreeSegment(const Point& p, const PositionVector& d, const LGMdouble go,
-			     const METER l, const METER r, const METER rn, Tree<TS,BUD>* t)
-  :TreeSegment<TS,BUD>(p,d,go,l,r,rn,t)
+CfTreeSegment<TS,BUD>::CfTreeSegment(const Point& p, const PositionVector& d, 
+				     const LGMdouble go, const METER l, const METER r, 
+				     const METER rh, Tree<TS,BUD>* t)
+  :TreeSegment<TS,BUD>(p,d,go,l,r,rh,t)
   {
     //Set radius according to length radius ratio:
     //As we multiply lr should be [0:1]
