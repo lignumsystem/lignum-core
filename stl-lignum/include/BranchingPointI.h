@@ -59,6 +59,9 @@ double GetValue(BranchingPoint<TS,BUD>& bp, LGMAD name)
   if (name == LGAMaxD){
     return bp.maxd;
   }
+  else if (name == LGAage){
+    return bp.tc_age;
+  }
   else{
     cout << "GetValue in BP, unknown name: " << name << endl;
     return 0.0;
@@ -71,6 +74,9 @@ double SetValue(BranchingPoint<TS,BUD>& bp, LGMAD name, LGMdouble value)
   LGMdouble old_value = GetValue(bp,name);
   if (name == LGAMaxD){    
     bp.maxd = value;
+  }
+  else if (name == LGAage){
+    bp.tc_age = value;
   }
   return old_value;
 }
