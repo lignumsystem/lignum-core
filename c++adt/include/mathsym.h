@@ -12,6 +12,11 @@ namespace cxxadt{
 #define R_EPSILON 1.0e-20
 #define R_HUGE 1.0e+20
 
+//Light year is about this many meters
+#define LIGHT_YEAR 9.461e+15 
+//Distance to Alpha Centauri in meters
+#define ALPHA_CENTAURI 4.11554e+16
+
 template <class T>
 inline T maximum(T A, T B)
 {
