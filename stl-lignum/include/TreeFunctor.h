@@ -267,7 +267,10 @@ namespace Lignum{
   template <class TS,class BUD=DefaultBud<TS> >
     class MoveTree:  public AdaptableTCFunction<TS,BUD>{
       public:
-      MoveTree(const Point& point) {move_to = point;} 
+      MoveTree(const MoveTree& move, Tree<TS,BUD>& t)
+      :move_to(move.move_to){SetPoint(t,GetPoint(t)+move_to);}
+      MoveTree(const MoveTree& move):move_to(move.move_to){}
+      MoveTree(const Point& point):move_to(point) {} 
       Point& setPoint(const Point& new_point) {
 	Point tmp = move_to;
 	move_to = new_point;
@@ -276,12 +279,11 @@ namespace Lignum{
       TreeCompartment<TS,BUD>* operator()(TreeCompartment<TS,BUD>* tc)const
       {
 	SetPoint(*tc, GetPoint(*tc)+move_to);
-
 	return tc;
       }
   
       private:
-      Point move_to;
+      const Point& move_to;
     };
 
 
