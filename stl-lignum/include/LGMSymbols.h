@@ -85,8 +85,6 @@ namespace Lignum{
   // TreeQinMax  Max Qin of all segments in a tree
 
 
-<<<<<<< LGMSymbols.h
-
   //LIGNUM  Parameter Double
   //Keep the LGMPD enumeration in sync with MapLGMPD table constructor
   //in TreeFriend.cc. MapLGMPD maps the names of  the parameters found
