@@ -51,6 +51,9 @@ LGMdouble GetValue(const CfTreeSegment<TS,BUD>& ts, const LGMAD name)
     //Wrap out the segment cylinder
     return 2.0*PI_VALUE*GetValue(ts,LGAR)*GetValue(ts,LGAL);
 
+  else if (name == LGAstarm)
+    return ts.cftsa.starm;
+
   //Return simply foliage mass
   else if (name == LGAWf)
     return ts.cftsa.Wf;
@@ -78,6 +81,9 @@ LGMdouble SetValue(CfTreeSegment<TS,BUD>& ts, const LGMAD name, const LGMdouble 
 
   else if (name == LGARf)
     ts.cftsa.Rf = value;
+
+  else if (name == LGAstarm)
+    ts.cftsa.starm = value;
 
   else if (name == LGAWf)
     ts.cftsa.Wf = value;

@@ -16,12 +16,13 @@ namespace Lignum{
   class CfTreeSegmentAttributes{
   public:
     CfTreeSegmentAttributes():
-      Hf(0.0),P(0.0),Qin(0.0),Qabs(0.0),Rf(0.0),Wf(0.0){}
+      Hf(0.0),P(0.0),Qin(0.0),Qabs(0.0),Rf(0.0),starm(0.0),Wf(0.0){}
     METER Hf;       //Foliage height
     LGMdouble P;    //Amount of photosynthesis (kg C) during time step
     LGMdouble Qin;  //Irradiance of incoming radiation (MJ/m2)
     LGMdouble Qabs; //Amount of absorbed radiation (MJ) (during time step)
     METER Rf;       //Radius to foliage limit
+    LGMdouble starm;//Star mean for the coniferous segment
     KGC Wf;         //Foliage mass of the tree segment
 
   };
