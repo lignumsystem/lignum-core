@@ -705,7 +705,7 @@ namespace Lignum {
   //
 
   
-  /*
+  
   void VoxelSpace::draw()
   {
     //#ifdef _MSC_VER
@@ -899,7 +899,6 @@ namespace Lignum {
     // glEndList();
     //#endif
   }
-  */
   //Write voxel boxes  to file. If 'all' is true  write all boxes else
   //write  only boxes  with foliage.  By  default 'all'  is true  (old
   //beaviour)
@@ -1017,7 +1016,7 @@ namespace Lignum {
   }
 
 
-  /* 
+  
   void VoxelSpace::draw(bool blackBG)
   {
     glEnable(GL_LIGHTING);
@@ -1150,7 +1149,6 @@ namespace Lignum {
 	  }
   }
 
-  */
 
 
 
