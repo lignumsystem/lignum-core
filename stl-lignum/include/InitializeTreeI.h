@@ -99,14 +99,6 @@ namespace Lignum{
 	tree.tf.ip.install(file);
       }
       //4.
-      file = tmfp.getFunctionFile("LGMNLEAVES");
-      if (file != ""){
-	if (verbose){
-	  cout << "Reading LGMNLEAVES from: " << file << endl;
-	}
-	tree.tf.nleaves.install(file);
-      }
-      //5.
       file = tmfp.getFunctionFile("LGMLONB");
       if (file != ""){
 	if (verbose){
@@ -114,7 +106,7 @@ namespace Lignum{
 	}
 	tree.tf.LightOnNumBuds.install(file);
       }
-      //6.
+      //5.
       file = tmfp.getFunctionFile("LGMNB");
       if (file != ""){
 	if (verbose){
@@ -122,7 +114,7 @@ namespace Lignum{
 	}
 	tree.tf.nb.install(file);
       }
-      //7.
+      //6.
       file = tmfp.getFunctionFile("LGMVI");
       if (file != ""){
 	if (verbose){
@@ -130,7 +122,7 @@ namespace Lignum{
 	}
 	tree.tf.vi.install(file);
       }
-      //8.
+      //7.
       file = tmfp.getFunctionFile("LGMVIONB");
       if (file != ""){
 	if (verbose){
