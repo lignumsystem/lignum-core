@@ -37,6 +37,8 @@ void FirmamentWithMask::readMaskFile(const string& file)
   }
 }
 
+//sets a mask for one inclination by reducing incoming radiation
+//by argument percentage
 void FirmamentWithMask::setMask(int incl_index,double percentage)
 {
   int j = 0;
@@ -44,18 +46,15 @@ void FirmamentWithMask::setMask(int incl_index,double percentage)
     diffuseRad[incl_index][j] = diffuseRad[incl_index][j]*((100.0-percentage)/100.0);
   }
 
-  cout << "BEFORE: " <<diffuseRadBall << endl;
-
-  diffuseRadBall = 0.0;
+  diffuseRadBall = diffuseRadZenith;
 
   vector<double> radiation_direction(3);
   for (j = 0; j < numberOfRegions(); j++){
     diffuseRadBall += diffuseRegionRadiationSum(j,radiation_direction);
   }
-  cout << "AFTER: " << diffuseRadBall << endl;
 }
 
-} //clsoing namespace sky
+} //closing namespace sky
 
 #ifdef FWM
 #include <iostream.h>
