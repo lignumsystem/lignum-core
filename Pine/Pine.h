@@ -196,26 +196,29 @@ public:
   {
      if (TS* ts = dynamic_cast<TS*>(tc)){
        if (GetValue(*ts,LGAage) == 0.0){
-	 Firmament& f = GetFirmament(GetTree(*ts));
-	 double B = f.diffuseBallSensor();
 	 const ParametricCurve& fip = GetFunction(GetTree(*ts),LGMIP);
-	 //Omega starts from 1 
-	 //TreeQinMax should work also for open trees: TreeQinMax should then equal to 
-	 //Ball sensor reading
-	 //Open grown branching effect
-	 //double Lq = 1.0-(GetValue(*ts,omega)-1.0)*GetValue(GetTree(*ts),q);
+	 //TreeQinMax  should  work also  for  open trees:  TreeQinMax
+	 //should  then  equal  to  Ball  sensor  reading  Open  grown
+	 //branching         effect        double         Lvi        =
+	 //1.0-(GetValue(*ts,omega)-1.0)*GetValue(GetTree(*ts),q);
 	 //Vigour index
-	 double Lq = GetValue(*ts,LGAvi);
+	 double Lvi = GetValue(*ts,LGAvi);
 	 //In Tree Physiology for side branches fp is for example as follows:
 	 //fp = (1-a)f(vi) = (1-0.2)(0.15+0.85vi) = 0.8(0.15+0.85vi)
-	 Lq = apical*(0.15+0.85*Lq);
-	 //experimental forest grown
-	 //double Lq = pow(1.0 - GetValue(GetTree(*ts),q),GetValue(*ts,omega)-1);
-	 //relative light, if TreeQinMax is ball sensor reading, it is as for open grown pine
-	 B = GetValue(GetTree(*ts),TreeQinMax);
-	 //0.8 describes the effect of branching  
-	 double L_new = l*Lq*fip(GetValue(*ts,LGAQin)/B);
+	 Lvi = apical*(Lvi);
+	 //experimental   forest   grown  double   Lq   =  pow(1.0   -
+	 //GetValue(GetTree(*ts),q),GetValue(*ts,omega)-1);    relative
+	 //light, if TreeQinMax  is ball sensor reading, it  is as for
+	 //open grown pine
+	 double B = GetValue(GetTree(*ts),TreeQinMax);
+	 double L_new = l*Lvi*fip(GetValue(*ts,LGAQin)/B);
+         //Eero's idea distance from ground
+         double z = GetPoint(*ts).getZ();
+         L_new = L_new*(sqrt((40.0-z)/40.0));
 	 L_new = max(L_new,0.0);
+	 //don't allow segments shorter than 1cm
+	 if (L_new <= 0.005)
+	   L_new = 0.0;
 	 SetValue(*ts,LGAL,L_new);
 	 //Initial radius
 	 SetValue(*ts,LGAR,GetValue(GetTree(*ts),LGPlr)*L_new);
@@ -233,7 +236,7 @@ public:
 	 list<TreeCompartment<TS,BUD>*> & ls = GetTreeCompartmentList(*axis);
 	 //new brancing [TS,BP,B]
 	 if (ls.size() == 3)
-	   apical = 0.8;
+	   apical = 0.9;
 	 //old branch
 	 else
 	   apical = 1.0;
