@@ -42,7 +42,9 @@ class BearberrySegment: public HwTreeSegment<BearberrySegment,BearberryBud>
 	//Bearberry leaves are on the ground
 	PositionVector leaf_normal(0,1,0);
 	leaf_normal.normalize();
-	BroadLeaf* leaf = new BroadLeaf(shape,petiole,leaf_normal);
+	BroadLeaf<Ellipsis>* leaf = new BroadLeaf<Ellipsis>(shape,
+							    petiole,
+							    leaf_normal);
 	leaf_ls.push_back(leaf);
       }
       //clear the vector; don't create leaves twice
