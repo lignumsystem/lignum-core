@@ -1,4 +1,3 @@
-
 SRCDIR1 = ../src
 SRCDIR2 = ../include
 
@@ -7,7 +6,7 @@ SRC = $(SRCDIR1)/CString.cc  $(SRCDIR1)/DList.cc $(SRCDIR1)/DListElement.cc \
       $(SRCDIR1)/ParametricCurve.cc $(SRCDIR1)/Polygon.cc \
       $(SRCDIR1)/PositionVector.cc $(SRCDIR1)/RMatrix.cc \
       $(SRCDIR1)/Triangle.cc $(SRCDIR1)/HRMatrix.cc \
-      $(SRCDIR1)/Gauss.cc $(SRCDIR1)/Uniform.cc $(SRCDIR1)/rand3.cc  $(SRCDIR1)/normal.cc $(SRCDIR1)/Bernoulli.cc
+      $(SRCDIR1)/Gauss.cc $(SRCDIR1)/Uniform.cc $(SRCDIR1)/rand3.cc  $(SRCDIR1)/normal.cc $(SRCDIR1)/Bernoulli.cc  $(SRCDIR1)/berncreator.cc 
 
 OBJ = ${SRC:.cc=.o} 
 
