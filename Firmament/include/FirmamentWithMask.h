@@ -32,9 +32,14 @@ public:
   FirmamentWithMask(int no_incl = NUM_OF_INCL/*9*/, int no_azim = NUM_OF_AZIM /*24*/);
   void configure(const string& file);
   void readMaskFile(const string& file);
+  LGMdouble getBallChange() {return  ballChange; }
+  LGMdouble getPlaneChange() {return  planeChange; }
 protected:
   void readMask(Lex& file);
   void setMask(int incl_index,double percentage);
+ private:
+  LGMdouble ballChange;    //Change to diffuseRadBall caused by SetMask
+  LGMdouble planeChange;   //Change to diffuseRadPlane  caused by SetMask
 };
 
 }//closing namespace sky

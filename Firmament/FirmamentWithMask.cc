@@ -28,6 +28,21 @@ namespace sky{
     resize(incl,azim,drp);
     //optional mask
     readMask(lex);
+
+    //Update sensor readings diffuseRadBall and diffuseRadPlne
+
+    LGMdouble sumB = 0.0,sumP = 0.0;
+    vector<double> radiation_direction(3);
+    for (int j = 0; j < numberOfRegions(); j++){
+      sumB += diffuseRegionRadiationSum(j,radiation_direction);
+      LGMdouble sinIn = radiation_direction[2];
+      sumP += diffuseRegionRadiationSum(j,radiation_direction) * sinIn;
+    }
+
+    ballChange = sumB/diffuseRadBall;
+    diffuseRadBall = sumB;
+    planeChange = sumP/diffuseRadPlane;
+    diffuseRadPlane = sumP;
   }
     
   void FirmamentWithMask::readMask(Lex& lex)
@@ -90,12 +105,7 @@ namespace sky{
       diffuseRad[incl_index][j] = diffuseRad[incl_index][j]*((100.0-percentage)/100.0);
     }
 
-    diffuseRadBall = diffuseRadZenith;
 
-    vector<double> radiation_direction(3);
-    for (j = 0; j < numberOfRegions(); j++){
-      diffuseRadBall += diffuseRegionRadiationSum(j,radiation_direction);
-    }
   }
 
 } //closing namespace sky
