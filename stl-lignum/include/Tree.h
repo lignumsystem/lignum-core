@@ -1,36 +1,21 @@
 #ifndef TREE_H
 #define TREE_H
 
-class Axis;
-class Bud;
-class BranchingPoint;
-class Bud;
-class Tree;
-class TreeCompartment;
-class TreeSegment;
-
 #include <list>
-
 #include <stdlib.h>
 #include <iostream.h>
-
 #include <CString.h>
 #include <ParametricCurve.h>
-#include <Point.h>
-
-#include <LGMSymbols.h>
-#include <LGMUnits.h>
-
 #include <TreeMetaFileParser.h>
-
-#include <TreeCompartment.h>
-#include <Axis.h>
-#include <BranchingPoint.h>
-#include <Bud.h>
-#include <TreeSegment.h>
 #include <RootSystem.h>
+#include <Bud.h>
+#include <BranchingPoint.h>
+#include <TreeSegment.h>
+#include <Axis.h>
 
-TP GetProduction(const Tree& t);
+template <class TS>
+TP GetProduction(const Tree<TS>& t);
+
 
 class TreeParameters{
 public:
@@ -74,32 +59,30 @@ public:
   TP lambda;        //Variable to balance carbon balance equation
 };
 
-class Tree: public TreeCompartment{
-friend TP GetProduction(const Tree& t);
-friend void InitializeTree(Tree& tree, const CString& meta_file);
-friend TP GetAttributeValue(const Tree& tree, const TAD name);
-friend YEAR GetAttributeValue(const Tree& tree, const TAI name);
-template <class T1,class T2>
-friend T2 SetAttributeValue(Tree& tree, const T1 name, const T2 value);
-friend TP GetParameterValue(const Tree& tree, const TPD name);
-friend TP SetParameterValue(Tree& tree, const TPD  name, const TP value);
-friend TP GetTransitVariableValue(const Tree& tree, const TTD name);
-friend TP SetTransitVariableValue(Tree& tree, const TTD name, const TP value);
+template <class TS>
+class Tree: public TreeCompartment<TS>{
+  friend TP GetProduction(const Tree<TS>& t);
+  friend void InitializeTree(Tree<TS>& tree, const CString& meta_file);
+  friend TP GetTreeAttributeValue(const Tree<TS>& tree, const TAD name);
+  friend YEAR GetTreeAttributeValue(const Tree<TS>& tree, const TAI name);
+  template <class T1,class T2>
+  friend T2 SetTreeAttributeValue(Tree<TS>& tree, const T1 name, const T2 value);
+  friend TP GetTreeParameterValue(const Tree<TS>& tree, const TPD name);
+  friend TP SetTreeParameterValue(Tree<TS>& tree, const TPD  name, const TP value);
+  friend TP GetTreeTransitVariableValue(const Tree<TS>& tree, const TTD name);
+  friend TP SetTreeTransitVariableValue(Tree<TS>& tree, const TTD name, const TP value);
 public:
   Tree();
   Tree(const Point<METER>& p, const PositionVector& d);
-  virtual void Production(){axis.Production();}
-  virtual TP GetProduction(){return axis.GetProduction();}
 private:
   TreeAttributes ta;
   TreeFunctions tf;
   TreeParameters tp;
   TreeTransitVariables ttp;
-  Axis axis;
+  Axis<TS> axis;
   RootSystem rs;
 };
-
-
 #endif
+
 
 

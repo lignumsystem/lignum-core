@@ -2,13 +2,11 @@
 #define TREESEGMENT_H
 
 #include <list>
-#include <LGMSymbols.h>
-#include <LGMUnits.h>
 #include <Point.h>
 #include <TreeCompartment.h>
 
-class TreeSegment;
-TP SetAttributeValue(TreeSegment& ts, const TAD name, const TP value);
+template<class TS>
+TP GetTreeParameterValue(const Tree<TS>& tree, const TPD name);
 
 class TreeSegmentAttributes{
 public:
@@ -28,23 +26,27 @@ public:
   list<METER> annual_rings; //Annual rings of the tree segment
 };
 
-class TreeSegment: public TreeCompartment{ 
-  friend list<METER> GetAnnualRings(const TreeSegment& ts);
-  friend KGC GetSapwoodMass(const TreeSegment& ts);
-  friend TP GetAttributeValue(const TreeSegment& ts, const TAD name);
-  friend YEAR GetAttributeValue(const TreeSegment& ts, const TAI name);
-  template <class T1,class T2>
-  friend T2 SetAttributeValue(TreeSegment& ts, const T1 name, const T2 value);
+template <class TS>
+class TreeSegment: public TreeCompartment<TS>{ 
+  friend list<METER> GetAnnualRings(const TreeSegment<TS>& ts);
+  friend KGC GetSapwoodMass(const TreeSegment<TS>& ts);
+  friend TP GetTSAttributeValue(const TreeSegment<TS>& ts, const TAD name);
+  friend YEAR GetTSAttributeValue(const TreeSegment<TS>& ts, const TAI name);
+  friend TP SetTSAttributeValue(TreeSegment<TS>& ts, const TAD name, const TP value);
+  friend YEAR SetTSAttributeValue(TreeSegment<TS>& ts, const TAI name, 
+				  const YEAR  value);
 public:
   TreeSegment();
   TreeSegment(const Point<METER>& p, const PositionVector& d, const TP go,
-	      const METER l, const METER r, const METER rn, Tree* t);
+	      const METER l, const METER r, const METER rn, Tree<TS>* t);
   virtual ~TreeSegment();
-  virtual void Production();
-  virtual TP GetProduction();
 private:
   TreeSegmentAttributes tsa;
 };
 
+
 #endif
+
+
+
 

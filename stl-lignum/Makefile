@@ -1,13 +1,13 @@
-MAIN = main.cc
-OBJ  = main.o
+MAIN = main.cc 
+OBJ  = main.o 
 
-CCC = CC -64  -ptv -prelink 
+CCC = CC -64 -ptv -prelink 
 
 SUPPRESS = #-w 1155 -w 1183
 
 CCCFLAGS = -c #-fullwarn 
 
-INCLUDE = -Iinclude -I../c++adt/include
+INCLUDE = -Iinclude -I../c++adt/include 
 
 STL     = -I/usr/include/CC
 
@@ -26,8 +26,8 @@ OPTIMIZE   = -g
 
 .SUFFIXES: .o .cc
 
-lignum: $(LIB1)  $(LIB2) $(OBJ)
-	$(CCC) -o $@ $(OBJ) $(LIBFLAGS) $(LIBS) 
+lignum: $(OBJ) $(LIB1)  $(LIB2)  
+	$(CCC)  -o $@ $(INLUDE) $(OBJ) $(LIBFLAGS) $(LIBS) 
 
 $(LIB1):
 	(cd ../c++adt/lib; make "CCC=$(CCC)" "CCCFLAGS=$(CCCFLAGS)" "OPTIMIZE=$(OPTIMIZE)" $@)
@@ -36,7 +36,7 @@ $(LIB2):
 	(cd lib; make "CCC=$(CCC)" "CCCFLAGS=$(CCCFLAGS)" "OPTIMIZE=$(OPTIMIZE)" $@)
 
 .cc.o: 
-	$(CCC) $(OPTIMIZE) $(SUPPRESS) $(CCCFLAGS) $(INCLUDE) $(STL) $(OPTIMIZE) $< -o $@
+	$(CCC) -ptused $(OPTIMIZE) $(SUPPRESS) $(CCCFLAGS) $(INCLUDE) $(STL) $(OPTIMIZE) $< -o $@
 clean:
 	(cd ../c++adt/lib; make clean)
 	(cd lib; make clean)
@@ -61,21 +61,22 @@ main.o: /usr/include/CC/stl_iterator_base.h /usr/include/CC/stl_iterator.h
 main.o: /usr/include/CC/stl_alloc.h /usr/include/stdio.h
 main.o: /usr/include/assert.h /usr/include/CC/stl_construct.h
 main.o: /usr/include/CC/stl_uninitialized.h /usr/include/CC/stl_list.h
-main.o: include/Tree.h ../c++adt/include/CString.h /usr/include/ctype.h
-main.o: /usr/include/locale_attr.h /usr/include/CC/stream.h
-main.o: /usr/include/CC/iomanip.h /usr/include/CC/generic.h
-main.o: /usr/include/CC/stdiostream.h /usr/include/CC/fstream.h
-main.o: ../c++adt/include/ParametricCurve.h /usr/include/CC/vector
-main.o: /usr/include/CC/stl_range_errors.h /usr/include/CC/stl_vector.h
-main.o: /usr/include/CC/stl_bvector.h /usr/include/float.h
-main.o: ../c++adt/include/Point.h /usr/include/math.h include/LGMSymbols.h
+main.o: include/MyTreeSegment.h include/Tree.h ../c++adt/include/CString.h
+main.o: /usr/include/ctype.h /usr/include/locale_attr.h
+main.o: /usr/include/CC/stream.h /usr/include/CC/iomanip.h
+main.o: /usr/include/CC/generic.h /usr/include/CC/stdiostream.h
+main.o: /usr/include/CC/fstream.h ../c++adt/include/ParametricCurve.h
+main.o: /usr/include/CC/vector /usr/include/CC/stl_range_errors.h
+main.o: /usr/include/CC/stl_vector.h /usr/include/CC/stl_bvector.h
+main.o: /usr/include/float.h include/TreeMetaFileParser.h
+main.o: ../c++adt/include/Table.h ../c++adt/include/DList.h
+main.o: ../c++adt/include/DListElement.h ../c++adt/include/boolean.h
+main.o: ../c++adt/include/Lex.h include/RootSystem.h include/LGMSymbols.h
 main.o: /usr/include/CC/map /usr/include/CC/stl_tree.h
 main.o: /usr/include/CC/stl_function.h /usr/include/CC/stl_map.h
-main.o: /usr/include/CC/stl_multimap.h include/LGMUnits.h
-main.o: include/TreeMetaFileParser.h ../c++adt/include/Table.h
-main.o: ../c++adt/include/DList.h ../c++adt/include/DListElement.h
-main.o: ../c++adt/include/boolean.h ../c++adt/include/Lex.h
-main.o: include/TreeCompartment.h ../c++adt/include/PositionVector.h
-main.o: ../c++adt/include/mathsym.h ../c++adt/include/RMatrix.h
-main.o: ../c++adt/include/TMatrix.h include/Axis.h include/Bud.h
-main.o: include/TreeSegment.h include/BranchingPoint.h include/RootSystem.h
+main.o: /usr/include/CC/stl_multimap.h include/Bud.h include/TreeSegment.h
+main.o: ../c++adt/include/Point.h /usr/include/math.h
+main.o: include/TreeCompartment.h include/LGMdecl.h include/LGMUnits.h
+main.o: ../c++adt/include/PositionVector.h ../c++adt/include/mathsym.h
+main.o: ../c++adt/include/RMatrix.h ../c++adt/include/TMatrix.h
+main.o: include/BranchingPoint.h include/Axis.h

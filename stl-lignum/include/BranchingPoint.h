@@ -5,18 +5,17 @@
 #include <TreeCompartment.h>
 #include <Axis.h>
 
-class BranchingPoint: public TreeCompartment{
-  friend Axis* GetFirstAxis();
-  friend Axis* GetNextAxis();
-  friend void InsertTerminatingBud(BranchingPoint& bp, Bud* bud);
+template <class TS>
+class BranchingPoint: public TreeCompartment<TS>{
+  friend Axis<TS>* GetFirstAxis();
+  friend Axis<TS>* GetNextAxis();
+  friend void InsertTerminatingBud(BranchingPoint<TS>& bp, Bud<TS>* bud);
 public:
   BranchingPoint();
-  BranchingPoint(const Point<METER>& p, const PositionVector& d, Tree* t);
+  BranchingPoint(const Point<METER>& p, const PositionVector& d, Tree<TS>* t);
   virtual ~BranchingPoint();
-  virtual void Production();
-  virtual TP GetProduction();
 private:
-  list<Axis*> axis_ls;
+  list<Axis<TS>*> axis_ls;
 };
 
 #endif
