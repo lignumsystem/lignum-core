@@ -196,7 +196,7 @@ namespace cxxadt{
    Point X=center+semimajoraxis*cos(angleBCXu)
                 +semiminoraxis*sin( angleBCXu);
 
-   PositionVector CX=X-center;
+   PositionVector CX(X-center);
    PositionVector OX=OC+CX;
   
    if ( (OC.length()*OX.length()) !=0 )
