@@ -6,12 +6,12 @@
 namespace Lignum{
   //Please orginize headers or rewrite "<<" operator
   //to remove this declation; 
-  template <class TS,class BUD> class HwTreeSegment;
-template <class TS, class BUD>
-TreeCompartment<TS,BUD>* DropAllLeaves<TS,BUD>::operator ()(TreeCompartment<TS,BUD>* tc)const
+  template <class TS,class BUD,class S> class HwTreeSegment;
+template <class TS, class BUD,class S>
+TreeCompartment<TS,BUD>* DropAllLeaves<TS,BUD,S>::operator ()(TreeCompartment<TS,BUD>* tc)const
 {
 
-        if (HwTreeSegment<TS,BUD>* hwts = dynamic_cast<HwTreeSegment<TS,BUD>*>(tc))
+        if (HwTreeSegment<TS,BUD,S>* hwts = dynamic_cast<HwTreeSegment<TS,BUD>*>(tc))
         {
 	  DropLeaves(*hwts);
         }

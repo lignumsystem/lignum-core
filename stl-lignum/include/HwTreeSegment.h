@@ -13,7 +13,7 @@ namespace Lignum{
 
 
 
-template <class TS, class BUD=DefaultBud<TS> >
+template <class TS, class BUD=DefaultBud<TS>,class SHAPE=Ellipsis >
 class HwTreeSegment:public TreeSegment<TS,BUD>
 {
 #ifdef _MSC_VER   
@@ -28,32 +28,32 @@ class HwTreeSegment:public TreeSegment<TS,BUD>
   friend void DropLeaves(HwTreeSegment<TS,BUD>& ts);
 
 #else
-  template <class TS1,class BUD1>
-  friend std::list<BroadLeaf*>& GetLeafList(HwTreeSegment<TS1,BUD1>& ts);
+  template <class TS1,class BUD1, class S>
+  friend std::list<BroadLeaf<S>*>& GetLeafList(HwTreeSegment<TS1,BUD1,S>& ts);
 
-  template <class TS1,class BUD1>
-  friend void InsertLeaf(HwTreeSegment<TS1,BUD1>& ts, BroadLeaf* l);
+  template <class TS1,class BUD1, class S>
+  friend void InsertLeaf(HwTreeSegment<TS1,BUD1,S>& ts, BroadLeaf<S>* l);
 
-  template <class TS1,class BUD1>
-  friend void InitializeForRadiation(HwTreeSegment<TS1,BUD1>& ts);
+  template <class TS1,class BUD1,class S>
+  friend void InitializeForRadiation(HwTreeSegment<TS1,BUD1,S>& ts);
 
-  template <class TS1,class BUD1>
-  friend int GetNumberOfLeaves(const HwTreeSegment<TS1,BUD1>& ts);
+  template <class TS1,class BUD1,class S>
+  friend int GetNumberOfLeaves(const HwTreeSegment<TS1,BUD1,S>& ts);
 
-  template <class TS1,class BUD1>
-  friend LGMdouble GetLeafArea(const HwTreeSegment<TS1,BUD1>& ts);
+  template <class TS1,class BUD1,class S>
+  friend LGMdouble GetLeafArea(const HwTreeSegment<TS1,BUD1,S>& ts);
 
-  template <class TS1,class BUD1>
-  friend LGMdouble SetLeafArea(HwTreeSegment<TS1,BUD1>& ts, const LGMdouble value);
+  template <class TS1,class BUD1,class S>
+  friend LGMdouble SetLeafArea(HwTreeSegment<TS1,BUD1,S>& ts, const LGMdouble value);
 
-  template <class TS1,class BUD1>
-  friend LGMdouble SetValue(const HwTreeSegment<TS1,BUD1>& ts, const LGMAD name, const LGMdouble value);
+  template <class TS1,class BUD1,class S>
+  friend LGMdouble SetValue(const HwTreeSegment<TS1,BUD1,S>& ts, const LGMAD name, const LGMdouble value);
 
-  template <class TS1,class BUD1>
-  friend LGMdouble GetValue(const HwTreeSegment<TS1,BUD1>& ts, const LGMAD name);
+  template <class TS1,class BUD1,class S>
+  friend LGMdouble GetValue(const HwTreeSegment<TS1,BUD1,S>& ts, const LGMAD name);
 
-  template <class TS1,class BUD1>
-  friend void DropLeaves(HwTreeSegment<TS1,BUD1>& ts);
+  template <class TS1,class BUD1,class S>
+  friend void DropLeaves(HwTreeSegment<TS1,BUD1,S>& ts);
 
 #endif
 public:
@@ -66,7 +66,7 @@ public:
   virtual void createLeaves(vector<PositionVector>& petiole_directions,
 			    METER pl,METER a,METER b);
 protected:
-  list<BroadLeaf*> leaf_ls;
+  list<BroadLeaf<SHAPE>*> leaf_ls;
 };
 
 

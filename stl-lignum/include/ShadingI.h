@@ -12,7 +12,7 @@ using namespace sky;
 #define HIT_THE_WOOD -1
 
 int ellipsisBeamShading(Point& p0, PositionVector& v,
-		BroadLeaf& leaf);
+			BroadLeaf<Ellipsis>& leaf);
 int cylinderBeamShading(const Point& r0, const PositionVector& b, 
 		       const Point& rs, const PositionVector& a,
 		       double Rs, double Rw, double L, 
@@ -33,22 +33,22 @@ int cylinderBeamShading(const Point& r0, const PositionVector& b,
 //nothing' method defined makes sure that programs compiles even if
 //constructor of SGetFIWrapRadiationEvaluations<F,TS,BUD> is invoked with
 //string argumend for hardwoods.
-template <class TS,class BUD>
-void EvaluateRadiationForHwTreeSegment<TS,BUD>::setExtinction(ParametricCurve& K_in)
+template <class TS,class BUD,class S>
+void EvaluateRadiationForHwTreeSegment<TS,BUD,S>::setExtinction(ParametricCurve& K_in)
 {
   ;
 }
 
 
 
-template <class TS,class BUD>
-void EvaluateRadiationForHwTreeSegment<TS,BUD>::operator()
+template <class TS,class BUD,class S>
+void EvaluateRadiationForHwTreeSegment<TS,BUD,S>::operator()
   (TreeSegment<TS,BUD>* ts)const
 {
-  HwTreeSegment<TS,BUD>* hwts = dynamic_cast<HwTreeSegment<TS,BUD>*>(ts);
+  HwTreeSegment<TS,BUD,S>* hwts = dynamic_cast<HwTreeSegment<TS,BUD,S>*>(ts);
 
   // Radiation conditions are not evaluated if the segment has no leaves
-  list<BroadLeaf*> leaves = GetLeafList(*hwts);
+  list<BroadLeaf<S>*> leaves = GetLeafList(*hwts);
   if (leaves.empty()) return;
 
   Tree<TS,BUD>& tt = GetTree(*ts);
@@ -102,23 +102,23 @@ void EvaluateRadiationForHwTreeSegment<TS,BUD>::operator()
 //hardwood segment (shaded_s). 
 
 
-template <class TS, class BUD> 
-ShadingEffectOfLeaf<TS,BUD>::
-  ShadingEffectOfLeaf(HwTreeSegment<TS,BUD>* ts, BroadLeaf* lf)
+template <class TS, class BUD,class S> 
+ShadingEffectOfLeaf<TS,BUD,S>::
+  ShadingEffectOfLeaf(HwTreeSegment<TS,BUD,S>* ts, BroadLeaf<S>* lf)
 {
   shaded_s = ts;
   shaded_l = lf;
 }
 
 
-template <class TS,class BUD>
-vector<LGMdouble>& ShadingEffectOfLeaf<TS,BUD>::operator()(vector<LGMdouble>& v,
+template <class TS,class BUD,class S>
+vector<LGMdouble>& ShadingEffectOfLeaf<TS,BUD,S>::operator()(vector<LGMdouble>& v,
 		       TreeCompartment<TS,BUD>* tc)const
 {
   //  int beamShading(Point& p0, PositionVector& v,
   //	BroadLeaf& leaf);
 
-  if (HwTreeSegment<TS,BUD>* ts = dynamic_cast<HwTreeSegment<TS,BUD>*>(tc)) {
+  if (HwTreeSegment<TS,BUD,S>* ts = dynamic_cast<HwTreeSegment<TS,BUD,S>*>(tc)) {
     if (ts == shaded_s)
       return v;
 
@@ -134,8 +134,8 @@ vector<LGMdouble>& ShadingEffectOfLeaf<TS,BUD>::operator()(vector<LGMdouble>& v,
     //compare each leaf in shaded tree segment to each leaf in shading tree segment
     //to each sector
 
-    list<BroadLeaf*>& llshding = GetLeafList(*ts);
-    list<BroadLeaf*>::iterator Ishding;
+    list<BroadLeaf<S>*>& llshding = GetLeafList(*ts);
+    list<BroadLeaf<S>*>::iterator Ishding;
     PositionVector tmp;
     mp = GetCenterPoint(*shaded_l);
 

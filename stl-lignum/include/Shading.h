@@ -11,7 +11,7 @@ namespace Lignum {
 //segment. This functor uses functor ShadingEffectOfLeaf<TS,BUD> to
 //go through all leaves and to check the shading.
 
-template <class TS, class BUD>
+template <class TS, class BUD,class S= Ellipsis>
 class EvaluateRadiationForHwTreeSegment {
 public:
   void operator()(TreeSegment<TS,BUD>* ts)const;
@@ -25,14 +25,14 @@ public:
 //by all leaves of a hardwood segment on a leaf (shaded_l) of a
 //hardwood segment (shaded_s). 
 
-template <class TS,class BUD>
+template <class TS,class BUD,class S=Ellipsis>
 class ShadingEffectOfLeaf{
 public:
-  ShadingEffectOfLeaf(HwTreeSegment<TS,BUD>* ts, BroadLeaf* lf);
+  ShadingEffectOfLeaf(HwTreeSegment<TS,BUD,S>* ts, BroadLeaf<S>* lf);
   vector<LGMdouble>& operator()(vector<LGMdouble>& v,TreeCompartment<TS,BUD>* tc)const;
 
-  HwTreeSegment<TS,BUD>* shaded_s;
-  BroadLeaf* shaded_l;
+  HwTreeSegment<TS,BUD,S>* shaded_s;
+  BroadLeaf<S>* shaded_l;
 };
 
 

@@ -3,7 +3,7 @@
 #define CFTREEFUNCTOR_H
 
 
-
+#include <Ellipsis.h>
 #include <TreeCompartment.h>
 #include <Algorithms.h>
 
@@ -12,7 +12,7 @@ namespace Lignum{
 
 
 
-template <class TS,class BUD>
+template <class TS,class BUD,class S=Ellipsis>
 class DropAllLeaves
 {
 public:

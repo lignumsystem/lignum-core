@@ -5,7 +5,7 @@
 namespace Lignum{
   //Please orginize headers or rewrite "<<" operator
   //to remove this declation; 
-  template <class TS,class BUD> class HwTreeSegment;
+  template <class TS,class BUD,class S> class HwTreeSegment;
 
 template <class TS,class BUD>
 TreeSegment<TS, BUD>* GetLastTreeSegment(Axis<TS,BUD>& axis)

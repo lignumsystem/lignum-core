@@ -13,11 +13,11 @@ namespace Lignum{
    *normal  is must  be  defined. createLeaves  sets  the leaf  normal*
    *upward random.                                                    *
    ********************************************************************/
-  template <class TS, class BUD >
+  template <class TS, class BUD, class S>
     //The   bud  directions   are  collected   into  vetor   pd  using
     //AccumulateDown(tree,vector<PositionVector>(),AppendLeaves(),CreateLeaves())
-    void HwTreeSegment<TS,BUD>::createLeaves(vector<PositionVector>& pd,
-					     METER pl, METER a, METER b)
+    void HwTreeSegment<TS,BUD,S>::createLeaves(vector<PositionVector>& pd,
+					       METER pl, METER a, METER b)
     {
       Point origo(0,0,0);
       Point point = GetEndPoint(*this);
@@ -42,34 +42,34 @@ namespace Lignum{
 	double ran = (-90.0 +180.0*u(seed))*2.0*PI_VALUE/360; //(radians)
 	PositionVector leaf_normal(0,0,1);
 	leaf_normal.rotate(origo,plane,ran);
-	BroadLeaf* leaf = new BroadLeaf(shape,petiole,leaf_normal);
+	BroadLeaf<S>* leaf = new BroadLeaf<S>(shape,petiole,leaf_normal);
 	leaf_ls.push_back(leaf);
       }
       //clear the vector; don't create leaves twice
       pd.clear();
     }
 
-  template<class TS, class BUD >
-    list<BroadLeaf*>& GetLeafList(HwTreeSegment<TS,BUD>& ts)
+  template<class TS, class BUD, class S>
+    list<BroadLeaf<S>*>& GetLeafList(HwTreeSegment<TS,BUD,S>& ts)
     {
       return ts.leaf_ls;
     }
 
-  template<class TS, class BUD >
-    void InsertLeaf(HwTreeSegment<TS,BUD>& ts, BroadLeaf* l)
+  template<class TS, class BUD,class S>
+    void InsertLeaf(HwTreeSegment<TS,BUD,S>& ts, BroadLeaf<S>* l)
     {
       ts.leaf_ls.push_back(l);
     }
 
-  template<class TS, class BUD >
-    void InitializeForRadiation(HwTreeSegment<TS,BUD>& ts)
+  template<class TS, class BUD, class S>
+    void InitializeForRadiation(HwTreeSegment<TS,BUD,S>& ts)
     {
       Tree<TS,BUD>& tt = dynamic_cast<Tree<TS,BUD>&>(GetTree(*ts));
       Firmament& f = GetFirmament(tt);
       int nr =  f.numberOfRegions();
       vector<LGMdouble> one(nr, 1.0);
-      list<BroadLeaf*>& ll = GetLeafList(const_cast<HwTreeSegment<TS,BUD>&>(ts));
-      for(list<BroadLeaf*>::iterator i = ll.begin();
+      list<BroadLeaf<S>*>& ll = GetLeafList(const_cast<HwTreeSegment<TS,BUD,S>&>(ts));
+      for(list<BroadLeaf<S>*>::iterator i = ll.begin();
 	  i != ll.end(); i++) {
 	SetValue(*i, Qabs, 0.0);
 	SetValue(*i, Qin, 0.0);
@@ -79,10 +79,10 @@ namespace Lignum{
     }
 
 
-  template<class TS, class BUD >
-    int GetNumberOfLeaves(const HwTreeSegment<TS,BUD>& ts)
+  template<class TS, class BUD, class S>
+    int GetNumberOfLeaves(const HwTreeSegment<TS,BUD,S>& ts)
     {
-      std::list<BroadLeaf*>& leaf_list = GetLeafList(const_cast<HwTreeSegment<TS,BUD>&>(ts));
+      std::list<BroadLeaf<S>*>& leaf_list = GetLeafList(const_cast<HwTreeSegment<TS,BUD,S>&>(ts));
       if(leaf_list.empty()) {
 	return 0;
       }
@@ -92,21 +92,12 @@ namespace Lignum{
     }
 
 
-  template<class TS, class BUD >
-    void DropLeaves(HwTreeSegment<TS,BUD>& ts)
+  template<class TS, class BUD, class S>
+    void DropLeaves(HwTreeSegment<TS,BUD,S>& ts)
     {
-      std::list<BroadLeaf*>& leaf_list = GetLeafList(const_cast<HwTreeSegment<TS,BUD>&>(ts));
+      std::list<BroadLeaf<S>*>& leaf_list = GetLeafList(const_cast<HwTreeSegment<TS,BUD,S>&>(ts));
       leaf_list.clear();
-      /*
-	for(I = leaf_list.begin(); I != leaf_list.end(); I++)
-	{
-		
-	}
-      */
     }
-
-
-
 
 
   //Sets the area of the all leaf ellipses, when the (true) area of the
@@ -114,16 +105,16 @@ namespace Lignum{
   //that is equal to input/# of leaves.  Area of the ellipse
   //= leaf area / degree_of_filling. Return old (true) leaf area, return
   //0.0, and do nothing if no leaves
-  template<class TS, class BUD >
-    LGMdouble SetLeafArea(HwTreeSegment<TS,BUD>& ts, const LGMdouble value)
+  template<class TS, class BUD, class S>
+    LGMdouble SetLeafArea(HwTreeSegment<TS,BUD,S>& ts, const LGMdouble value)
     {
       int no_leaves = GetNumberOfLeaves(ts);
       if(no_leaves == 0)
 	return 0.0;
 
       LGMdouble old_area = 0.0;
-      std::list<BroadLeaf*>& leaf_list = GetLeafList(ts);
-      std::list<BroadLeaf*>::iterator I;
+      std::list<BroadLeaf<S>*>& leaf_list = GetLeafList(ts);
+      std::list<BroadLeaf<S>*>::iterator I;
       LGMdouble LA = value / (double)no_leaves;
       for(I = leaf_list.begin(); I != leaf_list.end(); I++) {
 	old_area += GetValue(**I, A);   //BroadLeaf returns true area of the leaf
@@ -133,13 +124,13 @@ namespace Lignum{
     }
 
   //Returns total leaf area of the segment, return 0.0 if no leaves.
-  template<class TS, class BUD >
-    LGMdouble GetLeafArea(const HwTreeSegment<TS,BUD>& ts)
+  template<class TS, class BUD, class S>
+    LGMdouble GetLeafArea(const HwTreeSegment<TS,BUD,S>& ts)
     {
 
       LGMdouble area = 0.0;
-      std::list<BroadLeaf*>& leaf_list = GetLeafList(const_cast<HwTreeSegment<TS,BUD>&>(ts));
-      std::list<BroadLeaf*>::iterator I;
+      std::list<BroadLeaf<S>*>& leaf_list = GetLeafList(const_cast<HwTreeSegment<TS,BUD,S>&>(ts));
+      std::list<BroadLeaf<S>*>::iterator I;
       for(I = leaf_list.begin(); I != leaf_list.end(); I++) {
 	area += GetValue(**I, A);   //BroadLeaf returns true area of the leaf
       }
@@ -147,22 +138,22 @@ namespace Lignum{
       return area;
     }
 
-  template<class TS, class BUD >
-    LGMdouble SetValue(HwTreeSegment<TS,BUD>& ts, const LGMAD name,  
+  template<class TS, class BUD, class S>
+    LGMdouble SetValue(HwTreeSegment<TS,BUD,S>& ts, const LGMAD name,  
 		       const LGMdouble value)
     {
       return SetValue(dynamic_cast<TreeSegment<TS,BUD>&>(ts), name, value);
     }
 
-  template<class TS, class BUD >
-    LGMdouble GetValue(const HwTreeSegment<TS,BUD>& ts, const LGMAD name)
+  template<class TS, class BUD, class S>
+    LGMdouble GetValue(const HwTreeSegment<TS,BUD,S>& ts, const LGMAD name)
     {
 
       LGMdouble value = 0.0;
 
       if (name == Wf) {
-	std::list<BroadLeaf*>& leaf_list = GetLeafList(const_cast<HwTreeSegment<TS,BUD>&>(ts));
-	std::list<BroadLeaf*>::iterator I;
+	std::list<BroadLeaf<S>*>& leaf_list = GetLeafList(const_cast<HwTreeSegment<TS,BUD,S>&>(ts));
+	std::list<BroadLeaf<S>*>::iterator I;
 	for(I = leaf_list.begin(); I != leaf_list.end(); I++)
 	  value += GetValue(**I, Wf);
     
@@ -170,24 +161,24 @@ namespace Lignum{
       }
       else if (name == P) 
 	{
-	  std::list<BroadLeaf*>& leaf_list = GetLeafList(const_cast<HwTreeSegment<TS,BUD>&>(ts));
-	  std::list<BroadLeaf*>::iterator I;
+	  std::list<BroadLeaf<S>*>& leaf_list = GetLeafList(const_cast<HwTreeSegment<TS,BUD,S>&>(ts));
+	  std::list<BroadLeaf<S>*>::iterator I;
 	  for(I = leaf_list.begin(); I != leaf_list.end(); I++)
 	    value += GetValue(**I, P);
     
 	  return value;
 	}
       else if (name == Qin) {
-	std::list<BroadLeaf*>& leaf_list = GetLeafList(const_cast<HwTreeSegment<TS,BUD>&>(ts));
-	std::list<BroadLeaf*>::iterator I;
+	std::list<BroadLeaf<S>*>& leaf_list = GetLeafList(const_cast<HwTreeSegment<TS,BUD,S>&>(ts));
+	std::list<BroadLeaf<S>*>::iterator I;
 	for(I = leaf_list.begin(); I != leaf_list.end(); I++)
 	  value += GetValue(**I, Qin);
     
 	return value;
       }
       else if (name == Qabs) {
-	std::list<BroadLeaf*>& leaf_list = GetLeafList(const_cast<HwTreeSegment<TS,BUD>&>(ts));
-	std::list<BroadLeaf*>::iterator I;
+	std::list<BroadLeaf<S>*>& leaf_list = GetLeafList(const_cast<HwTreeSegment<TS,BUD,S>&>(ts));
+	std::list<BroadLeaf<S>*>::iterator I;
 	for(I = leaf_list.begin(); I != leaf_list.end(); I++)
 	  value += GetValue(**I, Qabs);
     
