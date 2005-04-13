@@ -30,7 +30,8 @@ class LSystem{
  void start();
  void derive();
  int derivationLength();
- void end();
+  void end();
+  void endEach();
  void print(bool arg=false);
  int lignumToLstring(Tree<TS,BUD>& t,int argnum = 0,...);
  int lstringToLignum(Tree<TS,BUD>& t,int argnum = 0,...);
@@ -124,6 +125,13 @@ inline void LSystem<TS,BUD,N,F>::end()
 {
   End();
 }
+
+template <class TS, class BUD, class N, class F>
+inline void LSystem<TS,BUD,N,F>::endEach()
+{
+  EndEach();
+}
+
 
 template <class TS, class BUD, class N, class F>
 inline int LSystem<TS,BUD,N,F>::derivationLength()
