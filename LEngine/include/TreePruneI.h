@@ -8,7 +8,7 @@ int LSystem<TS,BUD,T,F>::prune(list<Axis<TS,BUD>*>& ls,
 
   //Lstring must not end in a branching point 
   if (ltr.AtEnd()){
-    cerr << "BP error end of string" << endl;
+    cerr << "BP error in prune  end of string" << endl;
     return -1; //exit
   }
   
@@ -17,7 +17,7 @@ int LSystem<TS,BUD,T,F>::prune(list<Axis<TS,BUD>*>& ls,
   //Branching point sees "SB" --> axis
   if (strcmp(name,"SB") == 0){
     if (current == ls.end()){
-      cerr << "BP error 1 structures should match" << endl;
+      cerr << "BP error in prune  1 structures should match" << endl;
     }
     else if (Axis<TS,BUD>* axis = dynamic_cast<Axis<TS,BUD>*> (*current)){
       ltr++;
@@ -50,7 +50,7 @@ int LSystem<TS,BUD,T,F>::prune(list<Axis<TS,BUD>*>& ls,
       current++;
     }
     else{
-      cerr << "BP error 2 current not axis" << endl;
+      cerr << "BP error in prune  2 current not axis" << endl;
       //If control reaches here we are seriously wrong,
       //there can only be axes in an axis list
     }
@@ -106,18 +106,18 @@ int LSystem<TS,BUD,T,F>::prune(list<TreeCompartment<TS,BUD>*>& ls,
     }
     //Current tree compartment is bud but the symbol is "SB" --> new branching point
     else if (Bud<TS,BUD>* bud = dynamic_cast<Bud<TS,BUD>*> (*current)){
-      cerr << "Axis error 1 current is Bud  with branching order: " 
+      cerr << "Axis error in prune  1 current is Bud  with branching order: " 
 	   << GetValue(*bud,LGAomega)  << " structures should match " << endl; 
     }
     else{
       //We don't have other choices
-      cerr << "Axis error 2 L file does not generate Lignum structure" << endl;
+      cerr << "Axis error in prune  2 L file does not generate Lignum structure" << endl;
     }
   } 
   //The symbol F means a tree segment
   else if (strcmp(name,"F") == 0){
     if (ls.empty()){
-      cerr << "Axis error 3 list empty structres should match" << endl;
+      cerr << "Axis error in prune  3 list empty structres should match" << endl;
     }
     //If the current tree compartment is a tree segment,
     //udate iterators
@@ -134,11 +134,11 @@ int LSystem<TS,BUD,T,F>::prune(list<TreeCompartment<TS,BUD>*>& ls,
     }
     //Current tree compartment is bud but the symbol is "F" --> new tree segment
     else if (Bud<TS,BUD>* bud = dynamic_cast<Bud<TS,BUD>*> (*current)){
-      cerr << "Axis error 4 current is Bud with omega: " 
+      cerr << "Axis error in prune  4 current is Bud with omega: " 
 	   << GetValue(*bud,LGAomega) << " structures should match" << endl;
     }
     else{
-      cerr << "Axis error 5  L file does not generate Lignum " << endl;
+      cerr << "Axis error in prune  5  L file does not generate Lignum " << endl;
       //If control comes here it is an error
     }
   }
@@ -146,7 +146,7 @@ int LSystem<TS,BUD,T,F>::prune(list<TreeCompartment<TS,BUD>*>& ls,
   else if (strcmp(name,"B") == 0){
     //if the axis is empty --> new bud 
     if (ls.empty()){
-      cerr << "Axis error 6 structures should match" << endl;
+      cerr << "Axis error in prune  6 structures should match" << endl;
     }
     //If the current tree compartment is also bud
     //move the Lstring iterator forward
@@ -165,7 +165,7 @@ int LSystem<TS,BUD,T,F>::prune(list<TreeCompartment<TS,BUD>*>& ls,
       ltr++;
     }
     else{
-      cerr << "Axis error 7 L file does not generate Lignum structure" << endl;
+      cerr << "Axis error in prune  7 L file does not generate Lignum structure" << endl;
       //If control reaches here it is an error
     }
   }
