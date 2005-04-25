@@ -1,8 +1,9 @@
 #ifndef LGMDECL_H
 #define LGMDECL_H
 
-#include <assert.h>
-
+#include <cassert>
+#include <iostream>
+using namespace std;
 #include <LGMSymbols.h>
 #include <LGMUnits.h>
 
@@ -27,8 +28,8 @@ namespace Lignum{
   template <class TREE> class RootTip;
  
   //Assert  and Message as  message boxes  for Windows,  otherwise use
-  //standard assert and cout respectively. The argument 'expr' must be
-  //a string.
+  //standard assert,  cout and cerr respectively.  The argument 'expr'
+  //must be a string.
 #ifdef _MSC_VER
   //Windows assert for GUI 
 #define LGMassert(expr) ASSERT(expr)
@@ -43,6 +44,14 @@ namespace Lignum{
 #else
   //Output to cout
 #define  LGMMessage(expr) cout << expr << endl
+#endif
+
+#ifdef _MSC_VER
+  //Windows message box
+#define LGMError(expr) MessageBox(NULL,expr, NULL, NULL)
+#else
+  //Output to cerr
+#define  LGMError(expr) cerr << expr << endl
 #endif
 
 }//closing namepace Lignum
