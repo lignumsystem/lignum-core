@@ -23,6 +23,17 @@ namespace Lignum {
   //for broadleaf
   enum VAD {LGAkb}; 
 
+  //Exception thrown  (instead of assert) in getVoxelBox  if the point
+  //is not in the VoxelSpace
+  class OutOfVoxelSpaceException{
+  public:
+    OutOfVoxelSpaceException(double Xi, double Yi, double Zi)
+      :p(Xi,Yi,Zi){}
+    Point getPoint()const{return p;}
+  private:
+    Point p;//The point of the segment causing the excepetion
+  };
+
   class VoxelSpace
   {
     //VoxelBox::update Value  accesses private data  members--> friend
