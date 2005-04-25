@@ -424,14 +424,10 @@ namespace Lignum {
     int Yi = static_cast<int>(localP.getY()/Ybox);
     int Zi = static_cast<int>(localP.getZ()/Zbox);
 
-    LGMassert(Xi>-1);
-    LGMassert(Yi>-1);
-    LGMassert(Zi>-1);
-
-    LGMassert(Xi<Xn);
-    LGMassert(Yi<Yn);
-    LGMassert(Zi<Zn);
-
+    //Check if the point is in voxel space
+    if (Xi < 0 || Yi < 0 || Zi < 0 || Xi >= Xn || Yi >= Yn || Zi >= Zn){
+      throw OutOfVoxelSpaceException(Xi,Yi,Zi);
+    }
     return voxboxes[Xi][Yi][Zi]; 
   }
 
