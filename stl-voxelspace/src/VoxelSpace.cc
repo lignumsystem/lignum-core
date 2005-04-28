@@ -426,7 +426,7 @@ namespace Lignum {
 
     //Check if the point is in voxel space
     if (Xi < 0 || Yi < 0 || Zi < 0 || Xi >= Xn || Yi >= Yn || Zi >= Zn){
-      throw OutOfVoxelSpaceException(Xi,Yi,Zi);
+      throw OutOfVoxelSpaceException(Point(Xi,Yi,Zi),p);
     }
     return voxboxes[Xi][Yi][Zi]; 
   }

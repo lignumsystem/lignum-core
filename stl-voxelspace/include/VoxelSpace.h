@@ -27,11 +27,13 @@ namespace Lignum {
   //is not in the VoxelSpace
   class OutOfVoxelSpaceException{
   public:
-    OutOfVoxelSpaceException(double Xi, double Yi, double Zi)
-      :p(Xi,Yi,Zi){}
+    OutOfVoxelSpaceException(const Point& p1, const Point p2)
+      :box(p1),p(p2){}
     Point getPoint()const{return p;}
+    Point getBox()const{return box;}
   private:
-    Point p;//The point of the segment causing the excepetion
+    Point box;//The voxel box indices where the segment would belong to 
+    Point p;//The global point of the segment causing the excepetion
   };
 
   class VoxelSpace
