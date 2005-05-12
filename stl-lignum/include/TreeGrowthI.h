@@ -24,7 +24,7 @@ bool Growth(Tree<TS,BUD>& tree, F& f)
 
 	if(!(P_avail > 0.0))
 	{
-		MessageBox(NULL, "  photosynthesis =< respiration " , NULL, NULL);
+		LGMMessage("  photosynthesis =< respiration ");
 		return false;
 	}
 	
@@ -242,7 +242,7 @@ void StructuralPineGrowth(Axis<TS,BUD> &ax, const ParametricCurve& bud_fun, Tree
 		{
 			tswf = GetValue(*cfts, LGAWf);
 		}
-		//MessageBox(NULL, "grammoja "+GetStr(tswf*1000, 3), NULL, NULL);
+		//LGMMessage("grammoja ");
 		
 
 		number_of_new_buds = (int)bud_fun(tswf); 
@@ -252,7 +252,7 @@ void StructuralPineGrowth(Axis<TS,BUD> &ax, const ParametricCurve& bud_fun, Tree
 
 		LGMdouble lda = GetValue(tree, Treelambda);
 
-		ASSERT(lda>0);
+		LGMassert(lda>0);
 
 		Firmament& f = GetFirmament(tree);
 		LGMdouble B = f.diffuseBallSensor();
@@ -296,10 +296,8 @@ void StructuralPineGrowth(Axis<TS,BUD> &ax, const ParametricCurve& bud_fun, Tree
 			LGMdouble foliage_mass =  a_f * 2 * PI_VALUE * radius * length;
 			LGMdouble R_h = sqrt(x_i) * radius;
 			
-			#ifdef _MSC_VER
-			ASSERT(R_h >= 0);
-			ASSERT(R_h <= radius);
-			#endif
+			LGMassert(R_h >= 0);
+			LGMassert(R_h <= radius);
 
 			LGMdouble R_f = radius + GetValue(tree, nl) * sin(GetValue(tree, na));
 
@@ -312,7 +310,7 @@ void StructuralPineGrowth(Axis<TS,BUD> &ax, const ParametricCurve& bud_fun, Tree
 			SetValue(*ts, LGARh, R_h);
 			
 
-			ASSERT(GetSapwoodArea(*ts) >= 0);
+			LGMassert(GetSapwoodArea(*ts) >= 0);
 
 			InsertTreeCompartmentSecondLast(ax, ts);
 			
@@ -536,7 +534,7 @@ MotherInfo& AddSugarMapleSegments<TS,BUD>::operator()(MotherInfo& mi, TreeCompar
 		Tree<TS,BUD> &tree = GetTree(*bud);
 		LGMdouble lda = GetValue(tree, Treelambda);
 
-		//ASSERT(lda>0);
+		//LGMassert(lda>0);
 
 		Firmament& f = GetFirmament(tree);
 		LGMdouble B = f.diffuseBallSensor();
@@ -544,7 +542,7 @@ MotherInfo& AddSugarMapleSegments<TS,BUD>::operator()(MotherInfo& mi, TreeCompar
 	
 		LGMdouble i_p = I / B;
 		
-		ASSERT(i_p>0);
+		LGMassert(i_p>0);
 
 		LGMdouble omeg = GetValue(*bud, LGAomega);
 

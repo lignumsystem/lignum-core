@@ -4,7 +4,6 @@
 #include <Bud.h>
 #include <MyTreeSegment.h>
 
-#ifndef _MSC_VER
 
 namespace Lignum{
   class MyTreeSegment;
@@ -32,7 +31,6 @@ namespace Lignum{
       :Bud<MyCfTreeSegment,MyCfBud>(p,d,omega,tree){}
   };
 }//closing namespace Lignum
-#endif
 
 #endif
 

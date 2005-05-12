@@ -14,15 +14,7 @@ namespace Lignum{
 
 template <class TS,class BUD=DefaultBud<TS> >
 class BranchingPoint: public TreeCompartment<TS,BUD>{
-#ifdef _MSC_VER   
-  friend void InsertTerminatingBud(BranchingPoint<TS,BUD>& bp, Bud<TS,BUD>* bud); 
-  friend void InsertAxis(BranchingPoint<TS,BUD>& bp, Axis<TS,BUD>* axis);
-  friend ostream &operator << (ostream& os, BranchingPoint<TS,BUD>& ts);
-  friend  std::list<Axis<TS,BUD>*>& GetAxisList(BranchingPoint<TS,BUD>& bp);
 
-  friend LGMdouble GetMaxRadius(BranchingPoint<TS,BUD>& bp);
-
-#else
   template <class TS1,class BUD1>
   friend void InsertTerminatingBud(BranchingPoint<TS1,BUD1>& bp, Bud<TS1,BUD1>* bud);
 
@@ -38,10 +30,9 @@ class BranchingPoint: public TreeCompartment<TS,BUD>{
   template <class TS1, class BUD1>
   friend LGMdouble GetMaxRadius(BranchingPoint<TS1,BUD1>& bp);
   
-
-#endif
   template <class TS1, class BUD1>
   friend LGMdouble GetValue(BranchingPoint<TS1,BUD1>& bp,LGMAD name);
+
   template <class TS1, class BUD1>
   friend LGMdouble SetValue(BranchingPoint<TS1,BUD1>& bp,LGMAD name, 
 			    LGMdouble value); 

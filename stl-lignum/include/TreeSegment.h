@@ -10,11 +10,6 @@
 #include <LGMSymbols.h>
 #include <TreeCompartment.h>
 
-#ifdef _MSC_VER
-extern int num_of_leaves;
-extern bool clean_save;
-#endif
-
 using namespace cxxadt;
 
 namespace Lignum{
@@ -39,25 +34,8 @@ public:
 
 template <class TS,class BUD=DefaultBud<TS> >
 class TreeSegment: public TreeCompartment<TS,BUD>{
-#ifdef _MSC_VER
-  friend std::vector<METER> GetAnnualRings(const TreeSegment<TS,BUD>& ts);  
-  friend KGC GetSapwoodMass(const TreeSegment<TS,BUD>& ts);
-  friend M2 GetSapwoodArea(const TreeSegment<TS,BUD>& ts);
-  friend M2 GetHeartwoodArea(const TreeSegment<TS,BUD>& ts);
-  friend METER GetInitialSapwoodArea(const TreeSegment<TS,BUD>& ts);
-  friend METER SetRadius(TreeSegment<TS,BUD>& ts);
-  friend METER SetLastRing(TreeSegment<TS,BUD>& ts);
-  friend METER GetLastAnnualIncrement(const TreeSegment<TS,BUD>& ts);
-  friend LGMdouble GetValue(const TreeSegment<TS,BUD>& ts, const LGMAD name);
-  friend LGMdouble SetValue(TreeSegment<TS,BUD>& ts, const LGMAD name, const LGMdouble value);
-  friend void AddNewRadiusToAnnualRings(TreeSegment<TS,BUD>& ts, LGMdouble radius);
-
-  friend ostream &operator << (ostream& os, TreeSegment<TS,BUD>& ts);
-  friend istream &operator >> (istream& os, TreeSegment<TS,BUD>& ts);
-
-#else
   template <class TS1,class BUD1>
-  friend std::vector<METER> GetAnnualRings(const TreeSegment<TS1,BUD1>& ts);
+  friend vector<METER> GetAnnualRings(const TreeSegment<TS1,BUD1>& ts);
    
   template <class TS1,class BUD1>
   friend LGMdouble GetValue(const TreeSegment<TS1,BUD1>& ts, const LGMAD name);
@@ -92,9 +70,9 @@ class TreeSegment: public TreeCompartment<TS,BUD>{
   template <class TS1,class BUD1>
   friend void AddNewRadiusToAnnualRings(TreeSegment<TS1,BUD1>& ts, LGMdouble radius);
 
-#endif
   template <class TS1,class BUD1>
   friend Point GetPoint(const TreeSegment<TS1,BUD1>& ts,double fraction);
+
   template <class TS1,class BUD1>
   friend Point GetEndPoint(const TreeSegment<TS1,BUD1>& ts);
   template <class TS1,class BUD1>

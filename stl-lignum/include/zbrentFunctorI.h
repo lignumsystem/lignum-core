@@ -65,10 +65,8 @@ LGMdouble& AdjustDiameterCfGrowth<TS,BUD>::operator()(LGMdouble& As, TreeCompart
 				r_h = sqrt(pow(GetValue(*cfsegment,LGARh), 2) + (dAs / PI_VALUE));
 				SetValue(*cfsegment, LGARh, r_h);
 
-				#ifdef _MSC_VER
-				ASSERT(Rnew >= r_h);
-				ASSERT(r_h >= 0);
-				#endif
+				LGMassert(Rnew >= r_h);
+				LGMassert(r_h >= 0);			
 
 				LGMdouble sapwood_area = PI_VALUE * (Rnew*Rnew - r_h*r_h) - dAs;
 			
@@ -81,9 +79,7 @@ LGMdouble& AdjustDiameterCfGrowth<TS,BUD>::operator()(LGMdouble& As, TreeCompart
 		  
 		  LGMdouble sapwood_area = GetSapwoodArea(*tts);
 		  
-		  #ifdef _MSC_VER
-		  ASSERT(sapwood_area >= 0);
-		  #endif
+		  LGMassert(sapwood_area >= 0);
 		  
 		  As = sapwood_area; 
 	  }
@@ -216,12 +212,12 @@ TreeCompartment<TS,BUD>* adjustSegmentSizeLambda<TS,BUD>::operator()
 		{
 			Tree<TS,BUD>& tree = dynamic_cast<Tree<TS,BUD>&>(GetTree(*cfts));
 			
-			//ASSERT(this->rel_lambda > 0);
+			//LGMassert(this->rel_lambda > 0);
 
 			LGMdouble lam = this->rel_lambda;
 			if (lam <= 0)
 			{
-				MessageBox(NULL, "lambda == 0", NULL, NULL);
+				LGMMessage("lambda == 0");
 			}
 
 			
@@ -240,19 +236,16 @@ TreeCompartment<TS,BUD>* adjustSegmentSizeLambda<TS,BUD>::operator()
 		//	R_h = sqrt(pow(R_h, 2) + (dAs / PI_VALUE));
 			
 
-			ASSERT(R_f >= radius);
+			LGMassert(R_f >= radius);
 				
 			SetValue(*cfts, L, length);
 			SetValue(*cfts, R, radius);
 			SetValue(*cfts, LGAWf, foliage_mass);	
 			SetValue(*cfts, LGARf, R_f);
 
-			#ifdef _MSC_VER
+			LGMassert(R_h >= 0);
+			LGMassert(radius >= R_h);
 			
-			ASSERT(R_h >= 0);
-			ASSERT(radius >= R_h);
-			
-			#endif
 			SetValue(*cfts, LGARh, R_h);
 
 		}  // CfTreeSegment
@@ -291,7 +284,7 @@ LGMdouble&  CollectDWAfterGrowth<TS,BUD>::operator()(LGMdouble& WSum, TreeCompar
 				LGMdouble new_rad = GetLastAnnualIncrement(*cfts) + old_rad; 
 
 				if (new_rad < old_rad)
-					MessageBox(NULL, "newrad<oldrad", NULL, NULL);
+					LGMMessage("newrad<oldrad");
 	
                 LGMdouble w_rho = GetValue(tt,LGPrhoW);
 				WSum += w_rho * (pow(new_rad,2) - pow(old_rad,2)) * PI_VALUE * GetValue(*cfts, L);
@@ -312,7 +305,7 @@ LGMdouble&  CollectDWAfterGrowth<TS,BUD>::operator()(LGMdouble& WSum, TreeCompar
 				LGMdouble new_rad = GetLastAnnualIncrement(*hwts) + old_rad; 
 
 				if (new_rad < old_rad)
-					MessageBox(NULL, "newrad<oldrad", NULL, NULL);
+				  LGMMessage("newrad<oldrad");
 	
                 LGMdouble w_rho = GetValue(tt,LGPrhoW);
 				WSum += w_rho * (pow(new_rad,2) - pow(old_rad,2)) * PI_VALUE * GetValue(*hwts, L);

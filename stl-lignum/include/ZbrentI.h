@@ -65,7 +65,7 @@ LGMdouble BracketFunction(LGMdouble& a, LGMdouble& b, LGMdouble& fa, LGMdouble& 
     a = b;
     fa = fb;
     b = b * 1.30 + 0.1;
-	ASSERT(b/a > 0);
+	LGMassert(b/a > 0);
 	adjustSizeL.rel_lambda = b / a;
 
 	
@@ -298,7 +298,7 @@ LGMdouble HwZbrent(LGMdouble x1,LGMdouble x2,LGMdouble fa, LGMdouble fb, LGMdoub
 		fb = deltaiW - WSum - rootGrowth;
 	}
 
-  MessageBox(NULL, "Maximum number of iterations", NULL, NULL);
+  LGMMessage("Maximum number of iterations");
   return GetValue(tree, Treelambda);	
   
 }
@@ -477,7 +477,7 @@ LGMdouble Zbrent(LGMdouble x1,LGMdouble x2,LGMdouble fa, LGMdouble fb, LGMdouble
 		
 	}
 
-  MessageBox(NULL, "Maximum number of iterations", NULL, NULL);
+  LGMMessage("Maximum number of iterations");
   return GetValue(tree, Treelambda);	
   
 }

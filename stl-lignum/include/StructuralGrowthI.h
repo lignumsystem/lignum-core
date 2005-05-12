@@ -90,9 +90,7 @@ TreeCompartment<TS,BUD>*  AdjustStructureAfterZbrent<TS,BUD>::operator()(Structu
 			LGMdouble dAs = GetValue(tree, ss) * GetSapwoodArea(*ts);		
 			LGMdouble r_h = sqrt(pow(GetValue(*ts, LGARh), 2) + (dAs / PI_VALUE));
 
-			#ifdef _MSC_VER
-			ASSERT(r_h >= 0);
-			#endif
+			LGMassert(r_h >= 0);
 
 			SetValue(*ts, LGARh, r_h);
 

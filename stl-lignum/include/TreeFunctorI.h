@@ -1127,18 +1127,10 @@ namespace Lignum{
     void SaveTree(Axis<TS,BUD> &ax, const string& file_name, 
 		  const string& treetype)
     {
-		/*
-#ifdef _MSC_VER
-		const CString st = treetype.c_str;
-	  const char *tmp = LPCTSTR(st);
-#else
-	  const char *tmp = LPCTSTR(treetype);
-#endif
-	 */
+      
+      string tmp = file_name;		  
 
-	 string tmp = file_name;		  
-
-	 ofstream file(tmp.c_str());
+      ofstream file(tmp.c_str());
       file << treetype << endl;
       SaveAxis(ax, file, false);
       file << "Lehtia puussa " << num_of_leaves << '\n';
