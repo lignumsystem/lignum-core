@@ -370,7 +370,7 @@ LGMdouble SetValue(const Tree<TS,BUD>& tree, const LGMAD name,
       SetValue(*ls.front(),LGAage,value);
     }
     else{
-      LGMError("Empty tree");
+      LGMError("Tree SetValue LGAage Empty tree");
     }
   }
   else{
