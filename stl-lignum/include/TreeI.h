@@ -357,7 +357,28 @@ FirmamentWithMask& GetFirmament(Tree<TS,BUD>& tree) {
   return tree.f;
 }
 
+template <class TS,class BUD>
+LGMdouble SetValue(const Tree<TS,BUD>& tree, const LGMAD name,
+		   const LGMdouble value)
+{
+  LGMdouble old_value= GetValue(tree,name);
 
+  if (name == LGAage){
+    Axis<TS,BUD>& axis = GetAxis(const_cast<Tree<TS,BUD>&>(tree));
+    list<TreeCompartment<TS,BUD>*>& ls = GetTreeCompartmentList(axis);
+    if (ls.size()>= 1){//one bud or the first segment
+      SetValue(*ls.front(),LGAage,value);
+    }
+    else{
+      LGMError("Empty tree");
+    }
+  }
+  else{
+     LGMError("Cannot set other than LGAage for tree");
+  }
+  return old_value;
+}
+      
 template <class TS,class BUD>
 LGMdouble GetValue(const Tree<TS,BUD>& tree, const LGMAD name)
 {

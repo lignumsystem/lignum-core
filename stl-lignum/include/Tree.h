@@ -125,9 +125,13 @@ namespace Lignum{
 
       friend class InitializeTree;
     
-	  template <class TS1,class BUD1>
-     friend LGMdouble GetValue(const Tree<TS1,BUD1>& tree, const LGMAD name);
+      template <class TS1,class BUD1>
+      friend LGMdouble GetValue(const Tree<TS1,BUD1>& tree, const LGMAD name);
 
+      template <class TS1,class BUD1>
+      friend LGMdouble SetValue(const Tree<TS1,BUD1>& tree, const LGMAD name,
+				const LGMdouble value);
+      
       template <class TS1,class BUD1>
       friend Axis<TS1,BUD1>& GetAxis(Tree<TS1,BUD1>& t);
 
