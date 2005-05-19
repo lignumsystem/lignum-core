@@ -67,7 +67,7 @@ void InitDrawing();
 
 void outPut(float x, float y, char *string);
 
-void MakeCylinder(float radius, float rad_top, float length, float rad_limit, float xx=0, float yy=0);
+void MakeCylinder(float radius, float rad_top, float length, float rad_limit, float xx, float yy);
 
 void MakeCylinderWithTop(float radius, float rad_top, float length, float rad_limit, std::vector<METER> &an_rings, int age, float odd);
 
