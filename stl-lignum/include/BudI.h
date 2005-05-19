@@ -8,16 +8,11 @@ namespace Lignum{
 template <class TS,class BUD>
 ostream &operator << (ostream& os, Bud<TS,BUD>& bud)
 {	
-  os << GetDirection(bud) << " " << GetPoint(bud) << " " << GetValue(bud , omega);
+  os << GetDirection(bud) << " " << GetPoint(bud) << " " << GetValue(bud , LGAomega);
   return os;
 }
 
-//default constructor
-template <class TS,class BUD>
-Bud<TS,BUD>::Bud()
-{
-  tree = NULL;
-}
+
 
 //Define position and direction in 3D space.
 //Define gravelius order 
@@ -31,12 +26,6 @@ Bud<TS,BUD>::Bud(const Point& p, const PositionVector& d, const LGMdouble go,
   SetValue(*this,LGAomega,go);
 }
 
-template <class TS,class BUD>
-TS& Bud<TS,BUD>::createTreeSegment()const
-{
-  TS* ts = new TS();
-  return (TS&) *ts;
-}
 
 template <class TS,class BUD>
 Bud<TS,BUD>& Bud<TS,BUD>::createBud()const

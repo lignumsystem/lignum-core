@@ -2,6 +2,7 @@
 #ifndef HWTREESEGMENTI_H
 #define HWTREESEGMENTI_H
 
+
 namespace Lignum{
 
   /********************************************************************
@@ -34,7 +35,7 @@ namespace Lignum{
     void InitializeForRadiation(HwTreeSegment<TS,BUD,S>& ts)
     {
       Tree<TS,BUD>& tt = dynamic_cast<Tree<TS,BUD>&>(GetTree(*ts));
-      Firmament& f = GetFirmament(tt);
+      sky::Firmament& f = GetFirmament(tt);
       int nr =  f.numberOfRegions();
       vector<LGMdouble> one(nr, 1.0);
       list<BroadLeaf<S>*>& ll = 
@@ -81,7 +82,7 @@ namespace Lignum{
       typename std::list<BroadLeaf<S>*>::iterator I;
       LGMdouble LA = value / (double)no_leaves;
       for(I = leaf_list.begin(); I != leaf_list.end(); I++){
-	old_area += GetValue(**I, A);   //BroadLeaf returns true area of the leaf
+	old_area += GetValue(**I, LGAA);   //BroadLeaf returns true area of the leaf
 	SetValue(**I, LGAA, LA);
       }
       return old_area;

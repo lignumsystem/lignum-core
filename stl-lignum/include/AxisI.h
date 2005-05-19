@@ -57,7 +57,7 @@ namespace Lignum{
     Axis<TS,BUD>::Axis()
     :aa(ALIVE)
     {
-      tree = NULL;
+      this->tree = NULL;
     }
   
   //Constructor, define position and direction in 3D space

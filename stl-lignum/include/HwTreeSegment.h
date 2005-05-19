@@ -1,5 +1,6 @@
 #ifndef HWTREESEGMENT_HPP
 #define HWTREESEGMENT_HPP
+
 #include <list>
 
 #include <BroadLeaf.h>
@@ -7,13 +8,11 @@
 #include <LGMdecl.h>
 #include <LGMUnits.h>
 #include <LGMSymbols.h>
-
+#include <Firmament.h>
 
 namespace Lignum{
 
-
-
-template <class TS, class BUD=DefaultBud<TS>, class SHAPE=cxxadt::Ellipse>
+template <class TS, class BUD=DefaultBud<TS>, class SHAPE=Ellipse>
 class HwTreeSegment:public TreeSegment<TS,BUD>
 {
  

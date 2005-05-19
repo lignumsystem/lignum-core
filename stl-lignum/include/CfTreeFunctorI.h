@@ -58,12 +58,12 @@ LGMdouble SetVigours(Axis<TS,BUD>& axis, LGMdouble vig_val, LGMdouble max_area)
 		}
 	      
 	      vig_val = vig_val * (area/max_area);
-	      SetValue(*hwts, vi, vig_val);
+	      SetValue(*hwts, LGAvi, vig_val);
 	      lastbp = NULL;
 	    }
 	  else
 	    {
-	      SetValue(*hwts, vi, vig_val);
+	      SetValue(*hwts, LGAvi, vig_val);
 	    }
 	  
 	}

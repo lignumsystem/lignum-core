@@ -91,18 +91,18 @@ namespace Lignum{
     DiameterGrowthData data;
     
     //1.Elongate or shorten segment lengths
-    ForEach(tree,F1(l));
+    ForEach(this->tree,F1(l));
     
     //2. Simulate  diameter  growth  and  collect  sapwood  and  foliage
     //masses.
-    data = AccumulateDown(tree,data,F2());   
+    data = AccumulateDown(this->tree,data,F2());   
       
     //3. return P-M-G where G = iWs(l) + iWfnew(l) + iWrnew(l)
     //iWs = sapwood mass: new segments + thickening
     //iWfnew = new foliage
     //iWrnew = new roots = ar*iWfnew
-    return (P - M - GetValue(data,DGWs) - GetValue(data,DGWfnew) 
-	    - GetValue(tree,LGPar)* GetValue(data,DGWfnew));
+    return (this->P - this->M - GetValue(data,DGWs) - GetValue(data,DGWfnew) 
+	    - GetValue(this->tree,LGPar)* GetValue(data,DGWfnew));
   }
 
   //As for TreeGrowthAllocator the functor is called by some iterative
@@ -115,18 +115,18 @@ namespace Lignum{
     //Reinitialize the data to passed up in the tree
     T up_new = up;
     //1.Elongate or shorten segment lengths
-    PropagateUp(tree,up_new,F1(l));
+    PropagateUp(this->tree,up_new,F1(l));
     
     //2. Simulate  diameter  growth  and  collect  sapwood  and  foliage
     //masses.
-    data = AccumulateDown(tree,data,F2());   
+    data = AccumulateDown(this->tree,data,F2());   
       
     //3. return P-M-G where G = iWs(l) + iWfnew(l) + iWrnew(l)
     //iWs = sapwood mass: new segments + thickening
     //iWfnew = new foliage
     //iWrnew = new roots = ar*iWfnew
-    return (P - M - GetValue(data,DGWs) - GetValue(data,DGWfnew) 
-	    - GetValue(tree,LGPar)* GetValue(data,DGWfnew));
+    return (this->P - this->M - GetValue(data,DGWs) - GetValue(data,DGWfnew) 
+	    - GetValue(this->tree,LGPar)* GetValue(data,DGWfnew));
   }
   
 }//namespace Lignum

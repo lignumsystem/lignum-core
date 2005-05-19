@@ -25,16 +25,6 @@ ostream &operator << (ostream& os, BranchingPoint<TS,BUD>& ts)
   return os;
 }
 
-
-
-
-template <class TS,class BUD>
-BranchingPoint<TS,BUD>::BranchingPoint():maxd(0.0)
-{
-  tree = NULL;
-  SetValue(*this, LGAage, 0);
-}
-
 template <class TS,class BUD>
 BranchingPoint<TS,BUD>::BranchingPoint(const Point& p, const PositionVector& d,
 				       Tree<TS,BUD>* t)

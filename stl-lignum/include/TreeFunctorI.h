@@ -483,7 +483,7 @@ namespace Lignum{
 	    {  
 	      Point pp = GetPoint(*myts);     
 	      PositionVector dir = GetDirection(*myts);
-	      LGMdouble l = GetValue(*myts, L);
+	      LGMdouble l = GetValue(*myts, LGAL);
 			
 	      pp = pp + Point(dir.getX()*l, dir.getY()*l, dir.getZ()*l);
 	  
@@ -1094,8 +1094,8 @@ namespace Lignum{
 		
 		for (I = leaves.begin(); I != leaves.end(); I++) 
 		  {
-		    file << "Wf:" << GetValue(**I, Wf) 
-			 << "  Area:" << GetValue(**I, A) << "   Qin:" 
+		    file << "Wf:" << GetValue(**I, LGAWf) 
+			 << "  Area:" << GetValue(**I, LGAA) << "   Qin:" 
 			 << GetValue(**I, LGAQin) << "   Qabs:" 
 			 << GetValue(**I, LGAQabs) << endl;
 		  } 
@@ -1133,7 +1133,6 @@ namespace Lignum{
       ofstream file(tmp.c_str());
       file << treetype << endl;
       SaveAxis(ax, file, false);
-      file << "Lehtia puussa " << num_of_leaves << '\n';
       file.close();
     }
 
@@ -1368,9 +1367,9 @@ namespace Lignum{
       if (TS* ts = dynamic_cast<TS*>(tc))
 	{
 	  Point p = GetPoint(*ts);
-	  LGMdouble length = GetValue(*ts, L);
+	  LGMdouble length = GetValue(*ts, LGAL);
 	  PositionVector dir = GetDirection(*ts);
-	  dir.normalize;
+	  dir.normalize();
 
 	  LGMdouble h = p.getZ() + dir.getZ()*length;
 	  if (h> max_height)

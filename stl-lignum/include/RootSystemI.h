@@ -150,7 +150,7 @@ namespace Lignum{
   template <class TREE>
     void InsertAxis(RootBranchingPoint<TREE>& rbp,
 		    const RootAxis<TREE>* ra){
-    rpb.ra_ls.push_back(ra);
+    rbp.ra_ls.push_back(ra);
   }
 
   //Deleting cleanly RootAxis: delete RootCompartments in the list

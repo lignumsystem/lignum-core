@@ -147,13 +147,13 @@ namespace Lignum{
 	int num_br_d;               //number of branches dead
 	LGMdouble sum_br_len;       //total length of branches, living
 	LGMdouble sum_br_len_d;     //total length of branches, dead
-	std::vector<LGMdouble> taper_rad;
-	std::vector<LGMdouble> taper_hei;
-	std::vector<LGMdouble> taper_radhw;
-	std::vector<LGMdouble> mean_brl;
-	std::vector<LGMdouble> mean_br_h;
-	
-	std::vector<LGMdouble> taper_radh;
+	vector<LGMdouble> taper_rad;
+	vector<LGMdouble> taper_hei;
+	vector<LGMdouble> taper_radhw;
+	vector<LGMdouble> mean_brl;
+	vector<LGMdouble> mean_br_h;
+	vector<LGMdouble> taper_radh;
+	double height;
       };
   
   

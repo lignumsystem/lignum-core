@@ -57,15 +57,6 @@ istream &operator >> (istream& os, TreeSegment<TS,BUD>& ts)
 
 
 
-
-template <class TS,class BUD>
-TreeSegment<TS,BUD>::TreeSegment()
-{
-  tree = NULL;
-}
-
-
-
 template <class TS,class BUD>
 TreeSegment<TS,BUD>::TreeSegment(const Point& p, const PositionVector& d, const LGMdouble go,
 			     const METER l, const METER r, const METER rh, Tree<TS,BUD>* t)

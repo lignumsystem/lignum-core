@@ -12,7 +12,7 @@ template <class TS,class BUD>
 Tree<TS,BUD>::Tree()
   :root_axis(Point(0,0,0),PositionVector(0,0,-1),*this)
 {
-  tree = NULL;
+  this->tree = NULL;
 }
 
 //Construct a tree at a certain position to a certain direction
@@ -64,7 +64,7 @@ Tree<TS,BUD>::Tree(const Point& p, const PositionVector& d, LGMdouble len, LGMdo
   
   Bud<TS,BUD> *bud1 = new Bud<TS,BUD>(end_point, d, 1, this);
   SetValue(*bud1, LGAage, 1);
-  SetValue(*bud1, state, ALIVE);
+  SetValue(*bud1, LGAstate, ALIVE);
 
   Axis<TS,BUD> &axis = GetAxis(*this);
   InsertTreeCompartment(axis, ts);      
@@ -84,7 +84,7 @@ Tree<TS,BUD>::Tree(const Point& p, const PositionVector& d, LGMdouble len, LGMdo
       Bud<TS,BUD> *new_bud = 
 	new Bud<TS,BUD>(GetPoint(*bud1), v2, 2, this);
       SetValue(*new_bud,LGAage, 1);
-      SetValue(*new_bud,state, ALIVE);
+      SetValue(*new_bud,LGAstate, ALIVE);
       
       InsertTreeCompartment(*new_axes[index], new_bud);
       index++;
