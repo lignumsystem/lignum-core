@@ -6,7 +6,9 @@
 #include <LGMUnits.h>
 #include "OpenGL.h"
 #include "OpenGLSymbols.h"
-
+			
+void MakeCylinder(float radius, float rad_top, float length, 
+		  float rad_limit, float xx, float yy);
 namespace Lignum{
 
 
@@ -61,9 +63,7 @@ namespace Lignum{
 	      }
 	      glRotatef( rot_angle, rot_x, rot_y, 0);
 	      float rad_limit = 0.05;
-	      MakeCylinder(radius, radius, length, rad_limit); 
-
-	 
+              MakeCylinder(radius, radius, length, rad_limit,0.0,0.0); 
 	      glPopMatrix();
 			
 	    }
@@ -103,7 +103,7 @@ namespace Lignum{
 	  }
 	  glRotatef( rot_angle, rot_x, rot_y, 0);
 	  float rad_limit = 0.05;
-	  MakeCylinder(radius, radius, length, rad_limit);
+	  MakeCylinder(radius, radius, length, rad_limit,0.0,0.0);
 	  glPopMatrix();
 			
 	    
