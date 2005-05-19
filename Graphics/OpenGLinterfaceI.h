@@ -27,11 +27,14 @@ extern GLfloat cam_z;
 extern GLfloat lookat_x;  // look at
 extern GLfloat lookat_y;
 extern GLfloat lookat_z;
+void MakeLeaveTable();
+void MakeWireModel(float radius,float lngth);
 
 template <class TS, class BUD, class S>
 void MakeLeaveList(Tree<TS,BUD> &tree, int xsize, int ysize)
 {
-	MakeLeaveTable();
+        MakeLeaveTable();
+
 
 	if (glIsList(FOLIAGE))
 		glDeleteLists(FOLIAGE, 1);
@@ -220,8 +223,7 @@ template <class TS, class BUD>
 	      glRotatef( rot_angle, rot_x, rot_y, 0);
 	      float rad_limit = 0.05;
 	      //   MakeWireModel(0.05, 0.1); 
-	        MakeWireModel(radius, length); 
-
+              MakeWireModel(radius,length);
 	      //     cout << "makin a cylinder. Radius:" << radius << "Height "<< length << ".  Position "<< position << endl; 
 	      glPopMatrix();
 			
