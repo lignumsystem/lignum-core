@@ -3,7 +3,6 @@
 
 #include <fstream>
 #include <Lignum.h>
-#include <VoxelSpace.h>
 
 struct VisualCube
 {

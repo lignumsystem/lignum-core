@@ -1,9 +1,7 @@
 #ifndef VOXELSPACEI_H
 #define VOXELSPACEI_H
 
-
 namespace Lignum {
-
     inline 
     LGMdouble GetValue(const VoxelSpace& s,VAD LGAkb){
       return s.k_b;

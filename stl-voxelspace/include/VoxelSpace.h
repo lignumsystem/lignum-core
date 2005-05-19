@@ -38,11 +38,9 @@ namespace Lignum {
 
   class VoxelSpace
   {
-    //VoxelBox::update Value  accesses private data  members--> friend
+    //VoxelBox::update Value  accesses private data  members--> friend 
     //declaration needed due to lack of access methods/functions
-
     friend class VoxelBox;
-
     template <class TS,class BUD>
     friend void DumpCfTree(VoxelSpace &s, Tree<TS, BUD> &ts,int num_parts);
 
