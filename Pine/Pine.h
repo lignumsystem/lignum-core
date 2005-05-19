@@ -24,13 +24,35 @@
 
 template <class TS,class BUD> class PineBud;
 
+enum LGMSPAD {LGAplength};
+// 0  LGAplength  Path length  from the base of the  tree to a segment
+
+
 template <class TS, class BUD>
 class PineSegment: public CfTreeSegment<TS,BUD>{
- public:
+  friend LGMdouble GetValue(const PineSegment& ts,LGMSPAD name){
+    if (name == LGAplength)
+      return ts.plength;
+    else{
+      LGMError("GetValue PineSegment has only LGAplength");
+      return 0.0;
+    }
+  }
+  friend LGMdouble SetValue(PineSegment& ts,LGMSPAD name,LGMdouble l){
+    LGMdouble old_length = GetValue(ts,name);
+    if (name == LGAplength)
+      ts.plength = l;
+    else{
+      LGMError("SetValue PineSegment has only LGAplength");
+    }
+    return old_length;
+  }
+
+public:
   PineSegment(const Point& p,const PositionVector& d,
 	      const LGMdouble go,const METER l,
 	      const METER r,const METER rh,Tree<TS,BUD>* tree)
-    :CfTreeSegment<TS,BUD>(p,d,go,l,r,rh,tree)
+    :plength(0.0),CfTreeSegment<TS,BUD>(p,d,go,l,r,rh,tree)
     {
       //Set radius according to length radius ratio:
       //As we multiply lr should be in [0,1]
@@ -55,7 +77,9 @@ class PineSegment: public CfTreeSegment<TS,BUD>{
       SetValue(*this,LGAAs0,GetValue(*this,LGAAs));
       //incoming radiation
       SetValue(*this,LGAQin,0.0);
-    }    
+    } 
+private:
+  LGMdouble plength;  
 };
 
 //PineBudData  is  intented  to  be  the data  structure  that  passes
@@ -143,7 +167,7 @@ class CheckQinQabsPRWsWfAsAh{
       if (TS* ts = dynamic_cast<TS*>(tc)){
 	if (GetValue(*ts,LGAQabs) != 0.0){
 	  cout << GetValue(*ts,LGAQin) << " " << GetValue(*ts,LGAQabs) << " "
-	       << GetValue(*ts,P) << " " << GetValue(*ts,LGAM) << " "
+	       << GetValue(*ts,LGAP) << " " << GetValue(*ts,LGAM) << " "
 	       << GetValue(*ts,LGAWs) << " "
 	       << GetValue(*ts,LGAWf) << " " << GetValue(*ts,LGAAs) << " "
 	       << GetValue(*ts,LGAAh) << " " << flush;
@@ -545,4 +569,20 @@ public:
   }
 };
 
+//Calculate     path    length     for     each    segment.     Usage:
+//PropagateUp(t,0,PathLength())
+template <class TS,class BUD>
+class PathLength{
+public:
+  LGMdouble operator()(LGMdouble& l, 
+		       TreeCompartment<TS,BUD>* tc)const{
+    if (TS* ts = dynamic_cast<TS*>(tc)){
+      //This works for new segments (age  == 0) too, l is just ignored
+      //in buds
+      SetValue(*ts,LGAplength,l);
+      l = l + GetValue(*ts,LGAL);
+    }
+    return l;
+  }
+};
 #endif
