@@ -19,15 +19,16 @@ namespace cxxadt{
   template <class T>
     TMatrix2D<T>& TMatrix2D<T>::init(const T& t)
     {
-      fill(begin(),end(),vector<T>(y,t));
+      fill(vector<vector<T> >::begin(),vector<vector<T> >::end(),
+	   vector<T>(yd,t));
       return *this;
     }
   
   template <class T>
     TMatrix2D<T>& TMatrix2D<T>::resize(int x, int y)
     {
-      clear();
-      resize(x,vector<T>(y));
+      vector<vector<T> >::clear();
+      vector<vector<T> >::resize(x,vector<T>(y));
       xd = x;
       yd = y;
       return *this;
@@ -48,14 +49,15 @@ namespace cxxadt{
   template <class T>
     TMatrix3D<T>& TMatrix3D<T>::init(const T& t)
     {
-      fill(begin(),end(),TMatrix2D<T>(yd,zd,t));
+      fill(vector<TMatrix2D<T> >::begin(),vector<TMatrix2D<T> >::end(),
+	   TMatrix2D<T>(yd,zd,t));
       return *this;
     }
 
   template <class T>
     TMatrix3D<T>& TMatrix3D<T>::resize(int x, int y, int z)
     {
-      clear();
+      vector<TMatrix2D<T> >::clear();
       vector<TMatrix2D<T> >::resize(x,TMatrix2D<T>(y,z));
       xd = x;
       yd = y;
