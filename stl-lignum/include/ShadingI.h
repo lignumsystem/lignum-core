@@ -15,7 +15,7 @@ using namespace sky;
 
 int EllipseBeamShading(Point& p0, PositionVector& v,
 			BroadLeaf<cxxadt::Ellipse>& leaf);
-int cylinderBeamShading(const Point& r0, const PositionVector& b, 
+int CylinderBeamShading(const Point& r0, const PositionVector& b, 
 			const Point& rs, const PositionVector& a,
 			double Rs, double Rw, double L, 
 			double& distance );
@@ -298,7 +298,7 @@ TreeCompartment<TS,BUD>* ShadingEffectOfCfTreeSegment<TS,BUD>::operator()(TreeCo
       Point r_0 =  GetPoint(*shaded_s)+0.5*GetValue(*shaded_s,LGAL)*
 	(Point)GetDirection(*shaded_s);        //Midpoint of shaded seg
 
-      result = cylinderBeamShading(r_0,
+      result = CylinderBeamShading(r_0,
 				   radiation_direction,
 				   GetPoint(*ts),
 				   GetDirection(*ts),

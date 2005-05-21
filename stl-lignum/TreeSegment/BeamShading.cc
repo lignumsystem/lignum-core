@@ -120,10 +120,10 @@ int EllipseBeamShading(Point& p0,
 //
 //	NOTE:  It is assumed that |a| = 1 & |b| = 1 !!
 
-int cylinderBeamShading(const Point& r0_1, const PositionVector& b, 
-		       const Point& rs_1, const PositionVector& a,
-		       double Rs, double Rw, double L, 
-		       double& distance )
+int CylinderBeamShading(const Point& r0_1, const PositionVector& b, 
+			const Point& rs_1, const PositionVector& a,
+			double Rs, double Rw, double L, 
+			double& distance )
 {
   distance = 0.0; //No suprises!!
 
