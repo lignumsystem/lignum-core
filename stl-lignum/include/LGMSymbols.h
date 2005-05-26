@@ -11,6 +11,7 @@
 //LGMF   = Functions known in a tree
 //FILE_MODE = For reading in different types of input
 //LGMVERBOSE = Verbose or scanty output
+//LGMINITSTYLE = Old or new style, new style has a sequencs of mask files.
 //LGMFLOW = Flow symbols
 
 //USAGE: The main functionality of these enumerations is to allow
@@ -216,7 +217,7 @@ namespace Lignum{
   //If needed you may design verbose output for example
   //when initializing trees 
   enum LGMVERBOSE {QUIET,VERBOSE};
-
+  enum LGMINITSTYLE {OLD_INIT,NEW_INIT};
 
   //Goes with TreeSegmentWithFlow - will eventually be removed from
   //stl-lignum
