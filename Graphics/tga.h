@@ -35,7 +35,7 @@ typedef unsigned char byte;
 #endif
 
 //And the vendors just can't agree where the headers are...
-#if defined(__APPLE__) || defined(MACOSX)
+#if defined(__APPLE__) || defined(__MACOSX__)
 #include <OpenGL/gl.h>
 #else
 #include <GL/gl.h>
