@@ -26,7 +26,7 @@ namespace Lignum{
 	//where the actual parameters/configuration are
 	tmfp.parse();
       }
-      void initialize(Tree<TS,BUD>& t);
+      void initialize(Tree<TS,BUD>& t, LGMINITSTYLE style = OLD_INIT);
       private:
       TreeMetaFileParser tmfp; //tree configuration file parser
       MapParameterType<LGMPD> maplgmpd; //map parameter name to LGMPD

@@ -4,7 +4,7 @@
 
 namespace Lignum{
   template <class TS, class BUD>
-    void  InitializeTree<TS,BUD>::initialize(Tree<TS,BUD>& tree)
+  void  InitializeTree<TS,BUD>::initialize(Tree<TS,BUD>& tree, LGMINITSTYLE style)
     {
       Lex lex;
       map<string,LGMPD,Cmpstring>::iterator itpd =  maplgmpd.begin();
@@ -49,9 +49,19 @@ namespace Lignum{
       if (verbose){
 	cout << "Reading Configuration for Firmament from: " << file.c_str() << endl;
       }
-
-      GetFirmament(tree).configure(file);
-
+   
+      //OLD_INIT can only have one mask
+      if (style == OLD_INIT){
+	cout << "Old init" <<endl;
+	GetFirmament(tree).configure(file);
+      }
+      //NEW_INIT can  have a many mask files
+      else{
+	//Read and remember all mask files
+	GetFirmament(tree).readAllMasks(file);
+	//Initialize the first of them
+	GetFirmament(tree).configure(0,false);
+      }
       if (verbose){
 	cout << "Azimuths: "  << GetFirmament(tree). getNoOfAzimuths() 
 	     << " Inclinations: " 
