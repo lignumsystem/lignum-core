@@ -6,7 +6,7 @@
 namespace sky{
 
   FirmamentWithMask::FirmamentWithMask(int no_incl,int no_azim)
-    :Firmament(no_incl,no_azim)
+    :drp_orig(0.0),Firmament(no_incl,no_azim)
   {
     /*empty*/
   }
@@ -45,7 +45,110 @@ namespace sky{
     planeChange = sumP/diffuseRadPlane;
     diffuseRadPlane = sumP;
   }
-    
+
+  //This method  configures the sky from  the file with  a sequence of
+  //mask  files.  The  file format  is:  
+  //INCL  #e.g.  9 
+  //AZIM  #e.g.  9
+  //RAD_PLANE #e.g.  1200 
+  //ITER1 MaskFile1.fun #e.g. 5   Mask1.fun 
+  //ITER2 MaskFile2.fun #e.g. 10  Mask2.fun 
+  //ITERN MaskFileN.fun #e.g. 100 Mask3.fun  
+
+  //After  giving the  size and  radiant intensity,  N mask  files may
+  //follow.   In  the example  above  the  iterations  [0:5] will  use
+  //Mask1.fun,   the   iterations   [6:10]   Mask2.fun   and   [11:100]
+  //Mask3.fun. I decided to separate this from the configure() method,
+  //because otherwise  configure() would become difficult  to read and
+  //understand, and it  is easier to read a file  when the file format
+  //is unambiguosly  known.  Note  that no mask  is installed  at this
+  //point. It is up to the  user of the class to call 
+  //        configure(int i, bool verbose)
+  //in the growth loop to reconfigure the sky.
+  void FirmamentWithMask::readAllMasks(const string& file)
+  {
+    Lex lex;
+    lex.scan(file);
+
+    Token t = lex.getToken();
+    int incl = atoi(t.getValue().c_str());
+    t = lex.getToken();
+    int azim = atoi(t.getValue().c_str());
+    t = lex.getToken();
+    double drp = atof(t.getValue().c_str());
+    //size and radiation intensity
+    resize(incl,azim,drp);
+    //read the mask files
+    t = lex.getToken(); //iterations
+    while (t.getType() != VC_ENDFILE){
+      Token t2 = lex.getToken(); //the mask file
+      int iteration = atoi(t.getValue().c_str());
+      string file = t2.getValue();
+      pair<int,string> p(iteration,file);
+      gap_ls.push_back(p);//The mask files are  in the list where they
+			  //can be found
+      t = lex.getToken();
+    }
+    drp_orig = drp;//remeber the original radiation to plane
+  }
+
+  //Use this in the growth loop to install mask file for the 'i:th' iteration.
+  void FirmamentWithMask::configure(int i, bool verbose)
+  {
+    //Find the mask matching the i:th iteration 
+    list<pair<int,string> >::iterator it = find_if(gap_ls.begin(),
+						   gap_ls.end(),
+						   FindNextMask(i));
+    if (it != gap_ls.end()){
+      //Reset the sky
+      resize(getNoOfInclinations(),getNoOfAzimuths(),drp_orig);
+      ParametricCurve fgap((*it).second);
+      int nincl = getNoOfInclinations();
+      //The inclinations  are expressed in  degrees, the horizon  is 0
+      //and  the zenith  is 90.  The  mask value  is [0:100]  (0 =  no
+      //mask,100 = full mask).
+      for (int i=0; i < nincl; i++){
+	//Now we need to match [0:90) with [0:nincl], e.g. 45 degrees is nincl/2.
+	double x = 90.0*i/nincl;
+	double val = fgap(x);
+	setMask(i,val);
+      }
+      //The zenith
+      double val = fgap(90.0);
+      diffuseRadZenith = diffuseRadZenith*((100.0-val)/100.0);
+      //Update sensor readings diffuseRadBall and diffuseRadPlne
+      LGMdouble sumB = 0.0,sumP = 0.0;
+      vector<double> radiation_direction(3);
+      for (int j = 0; j < numberOfRegions(); j++){
+	sumB += diffuseRegionRadiationSum(j,radiation_direction);
+	LGMdouble sinIn = radiation_direction[2];
+	sumP += diffuseRegionRadiationSum(j,radiation_direction) * sinIn;
+      }
+      ballChange = sumB/diffuseRadBall;
+      diffuseRadBall = sumB;
+      planeChange = sumP/diffuseRadPlane;
+      diffuseRadPlane = sumP;
+      if (verbose){
+	cout << "Azimuths: "  << getNoOfAzimuths() 
+	     << " Inclinations: " 
+	     << getNoOfInclinations() << endl;
+	cout << "Radiation (Ball sensor): " 
+	     << diffuseBallSensor()
+	     << " Radiation (Plane sensor): " 
+	     << diffusePlaneSensor()
+	     << endl;
+	cout << "Change of radiation due this mask, Planesensor: " <<
+		 getPlaneChange() << "  Ballsensor:  " <<
+		 getBallChange() << endl;
+      }
+      return;
+    }
+    else if (verbose){
+      cout << "Iterator out of maximum value, no new mask available" <<endl;
+    }
+    return;
+  }
+
   void FirmamentWithMask::readMask(Lex& lex)
   {
     //get the first inclinatation

@@ -1,12 +1,28 @@
 #ifndef FIRMAMENT_WITH_MASK
 #define FIRMAMENT_WITH_MASK
 
+#include <list>
+using namespace std;
 #include <Firmament.h>
 #include <string>
 #include <Lex.h>
+
 using namespace cxxadt;
 namespace sky{
 
+  class FindNextMask{
+  public:
+    FindNextMask(int i):iter(i){}
+    bool operator()(const pair<int,string>& p)const{
+      if (iter <= p.first)
+	return true;
+      else
+	return false;
+
+    }
+  private:
+    int iter;
+  };
 //This class tries to model a gap in a forest.
 //The gaps are often (?) analyzed by foresters
 //by taking photograhs  with fish-eye lenses.
@@ -31,6 +47,8 @@ class FirmamentWithMask:public Firmament{
 public: 
   FirmamentWithMask(int no_incl = NUM_OF_INCL/*9*/, int no_azim = NUM_OF_AZIM /*24*/);
   void configure(const string& file);
+  void configure(int iter, bool verbose = false);
+  void readAllMasks(const string& file);
   void readMaskFile(const string& file);
   LGMdouble getBallChange() {return  ballChange; }
   LGMdouble getPlaneChange() {return  planeChange; }
@@ -40,6 +58,8 @@ protected:
  private:
   LGMdouble ballChange;    //Change to diffuseRadBall caused by SetMask
   LGMdouble planeChange;   //Change to diffuseRadPlane  caused by SetMask
+  LGMdouble drp_orig; //The original plane sensor radiation of the sky 
+  list<pair<int,string> > gap_ls; //List of gap files 
 };
 
 }//closing namespace sky
