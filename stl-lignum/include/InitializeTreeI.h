@@ -52,7 +52,6 @@ namespace Lignum{
    
       //OLD_INIT can only have one mask
       if (style == OLD_INIT){
-	cout << "Old init" <<endl;
 	GetFirmament(tree).configure(file);
       }
       //NEW_INIT can  have a many mask files
