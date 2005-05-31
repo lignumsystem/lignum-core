@@ -89,8 +89,8 @@ namespace Lignum{
   //            branching point. Needed to calculate LGAvi 
   //  21 LGAomega  Gravelius order
   //  22 LGAP      Photosynthetic rate (= amount of p. during time step)
-  //  23 LGAQabs    Incoming radiant flux
-  //  24 LGAQin   Amount of absorbed radiation
+  //  23 LGAQabs   Amount of absorbed radiation
+  //  24 LGAQin    Incoming radiant flux
   //  25 LGAR      Radius of segment (wood)
   //  26 LGARf     Radius of segment cylinder including also foliage (conifers)
   //  27 LGARh     Radius of heartwood
@@ -210,9 +210,6 @@ namespace Lignum{
   //LGMVI    = Function of vigour index
   //LGMVIONB = The effect of vigour index to the number of the buds. 
   //           If no effect the value is always 1 of this function
-
-  
-
  
   //If needed you may design verbose output for example
   //when initializing trees 
