@@ -41,7 +41,7 @@
 ^Lig-Crobas Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  mika.lehtonen@metla.fi  ahkrc@mizzou.edu
 ^Pine -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  mika.lehtonen@metla.fi ahkrc@mizzou.edu
 ^ctree Mail -s %s jari.perttunen@metla.fi theikura@cc.hut.fi
-^SugarMaple Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi eero.nikinmaa@helsinki.fi mln52@mizzou.edu
+^SugarMaple Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi eero.nikinmaa@helsinki.fi delagrange.sylvain@courrier.uqam.ca
 ^YellowBirch Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi eero.nikinmaa@helsinki.fi  mln52@mizzou.edu
 ^Gliricidia Mail -s %s risto.sievanen@metla.fi jari.perttunen@metla.fi
 ^decay Mail -s %s theikura@cc.hut.fi jari.perttunen@metla.fi
