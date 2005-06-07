@@ -75,7 +75,7 @@ class LGMVisualization
   void AddCfTree(Tree<TS, BUD>& t, string stemTex, string folTex);
 
   LGMVisualization();
-  void InitVisualization();
+  void InitVisualization(int argc=0,char* argv[] = NULL);
   void SetAntialising(bool antialisingOn);
   void SetMode(STEMMODE m) { mode = m; }
   void NewWindowSize(GLsizei new_x, GLsizei new_y);

@@ -34,8 +34,9 @@ namespace Lignum
   }
 
 
-  void LGMVisualization::InitVisualization()
+  void LGMVisualization::InitVisualization(int argc,char* argv[])
   {
+    glutInit(&argc,argv);
     InitCallBacks(); 
     SetLight();   
     glClearColor(0.9f, 0.9f, 0.9f, 0.9f);
