@@ -35,18 +35,13 @@ namespace Lignum
 
   void LGMVisualization::InitVisualization(int argc,char* argv[])
   {
-    cout << "Start InitVisualization" << endl;
     glutInit(&argc,argv);
-    cout << "glutInit done" <<endl;
     glutInitWindowSize(settings.WINDOW_SIZE_X,settings.WINDOW_SIZE_Y);
     glutInitDisplayMode(GLUT_RGB|GLUT_DOUBLE);
     settings.window1 = glutCreateWindow("Window");
     InitCallBacks(); 
-    cout << "InitCallBacks done" << endl;
     SetLight();   
-    cout << "SetLight done" << endl;
     glClearColor(0.9f, 0.9f, 0.9f, 0.9f);
-    cout << "glClearColor done" << endl;
     glLightfv(GL_LIGHT0, GL_POSITION, settings.light.LightPosition);
     glEnable(GL_LIGHT0);
     glEnable(GL_DEPTH_TEST);
@@ -380,15 +375,14 @@ namespace Lignum
 
   void LGMVisualization::InitCallBacks() 
   {
-  
     glutReshapeFunc(StaticNewWindowSize);          // Call this function if the size is changed  
-    glutKeyboardFunc(StaticKeyPress);                // Call this funktion when a key is pressed 
-    glutMouseFunc (StaticChangeMouseButton);                      // Mouse events
+    glutKeyboardFunc(StaticKeyPress);              // Call this funktion when a key is pressed 
+    glutMouseFunc (StaticChangeMouseButton);       // Mouse events
     glutMotionFunc(StaticMouseMotion);
-    glutIdleFunc (StaticLoop);                        // This is called when nothing happens
+    glutIdleFunc (StaticLoop);                     // This is called when nothing happens
     glutSpecialFunc(StaticArrows);
-    glutDisplayFunc(StaticReDraw);                    // The draw-function
-    glutCreateMenu(StaticMenu);                          // Make the menu
+    glutDisplayFunc(StaticReDraw);                 // The draw-function
+    glutCreateMenu(StaticMenu);                    // Make the menu
  
     glutAddMenuEntry("Leaves on/off__________________", 14);
     glutAddMenuEntry("Textures on/off_________________", 15);
