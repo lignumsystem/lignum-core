@@ -13,7 +13,6 @@ using namespace Lignum;
 #else
 #include <GL/gl.h>
 #include <GL/glu.h>
-#include <GL/glx.h>
 #include <GL/glut.h>
 #endif
 
