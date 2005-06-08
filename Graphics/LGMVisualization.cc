@@ -15,7 +15,6 @@ LGMVisualization* LGMVisualization::active_visualization = NULL;
 #else
 #include <GL/gl.h>
 #include <GL/glu.h>
-#include <GL/glx.h>
 #include <GL/glut.h>
 #endif
 
@@ -36,11 +35,18 @@ namespace Lignum
 
   void LGMVisualization::InitVisualization(int argc,char* argv[])
   {
+    cout << "Start InitVisualization" << endl;
     glutInit(&argc,argv);
+    cout << "glutInit done" <<endl;
+    glutInitWindowSize(settings.WINDOW_SIZE_X,settings.WINDOW_SIZE_Y);
+    glutInitDisplayMode(GLUT_RGB|GLUT_DOUBLE);
+    settings.window1 = glutCreateWindow("Window");
     InitCallBacks(); 
+    cout << "InitCallBacks done" << endl;
     SetLight();   
+    cout << "SetLight done" << endl;
     glClearColor(0.9f, 0.9f, 0.9f, 0.9f);
-
+    cout << "glClearColor done" << endl;
     glLightfv(GL_LIGHT0, GL_POSITION, settings.light.LightPosition);
     glEnable(GL_LIGHT0);
     glEnable(GL_DEPTH_TEST);
@@ -375,15 +381,6 @@ namespace Lignum
   void LGMVisualization::InitCallBacks() 
   {
   
-    glutInitDisplayMode (GLUT_DOUBLE |          // Double buffering        
-			 GLUT_RGB |             // RGBA- color mode
-			 GLUT_DEPTH);           // Depth buffering
-
- 
-
-    glutInitWindowPosition (400, 20);          // Window size and place
-    glutInitWindowSize(settings.WINDOW_SIZE_X, settings.WINDOW_SIZE_Y);    
-    settings.window1 = glutCreateWindow ("Window"); //argv[0]);                 // Open a window    
     glutReshapeFunc(StaticNewWindowSize);          // Call this function if the size is changed  
     glutKeyboardFunc(StaticKeyPress);                // Call this funktion when a key is pressed 
     glutMouseFunc (StaticChangeMouseButton);                      // Mouse events
