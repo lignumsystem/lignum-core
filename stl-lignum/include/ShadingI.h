@@ -280,9 +280,9 @@ TreeCompartment<TS,BUD>* ShadingEffectOfCfTreeSegment<TS,BUD>::operator()(TreeCo
     
     number_of_sectors = firmament.numberOfRegions();
 
-    //Foliage density: Mass divided by  volume. Perhaps a good idea to
+    //Foliage density: Foliage area divided by  volume. Perhaps a good idea to
     //implement it as GetValue?
-    LGMdouble fol_dens = GetValue(*ts,LGAWf)/
+    LGMdouble fol_dens = GetValue(*ts,LGAAf)/
       (PI_VALUE*(pow(GetValue(*ts,LGARf),2.0)-pow(GetValue(*ts,LGAR),2.0))
        *GetValue(*ts,LGAL));
 
