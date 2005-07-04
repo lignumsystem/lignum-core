@@ -410,8 +410,11 @@ void MakeCylinder(float radius, float rad_top, float length, float rad_limit, fl
   while(y > 1)
     y--;
   
+   tex_x = tex_x * 0.04;
+  tex_y = tex_y * 0.04;
+
   
-  
+
   float *position1 = new float[255];
   float *position2 = new float[255];
   float *normals = new float[255];

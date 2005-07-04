@@ -19,6 +19,7 @@ public:
   virtual void MakeDisplayLists(bool orderfoliage)=0;
   virtual void MakeWireModelLists()=0;
   virtual void DrawTree(float x, float y, float z)=0;
+  virtual void GetTreeMetrics(Point &pos, LGMdouble &h)=0;
   virtual void hello()=0;
 
   // CTexture stem_texture;
@@ -47,6 +48,7 @@ public:
   void VisualizeWireModel();
   virtual void VisualizeStem(int &active_texture);
 
+ virtual void GetTreeMetrics(Point &pos, LGMdouble &h);
  virtual void hello(){cout << "CfWrapper hello" << endl;}
 
 
@@ -67,6 +69,7 @@ public:
   void VisualizeFoliage(int &active_texture);
   virtual void DrawTree(float x, float y, float z);
   void VisualizeWireModel();
+ virtual void GetTreeMetrics(Point &pos, LGMdouble &h);
   virtual void VisualizeStem(int &active_texture);
   
   virtual void hello(){cout << "HwWrapper hello" << endl;;}

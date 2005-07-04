@@ -30,6 +30,8 @@ namespace Lignum
     active_visualization = this;
     mode = SOLID;
     order_foliage = false;
+
+    ShowTree = -1;
   }
 
 
@@ -141,9 +143,6 @@ namespace Lignum
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   
-
- 
- 
     glPushMatrix();
     glLoadIdentity(); 
     // SetLight();
@@ -158,17 +157,11 @@ namespace Lignum
     
     settings.cam_x = settings.cam_x + (settings.cam_x - hx) * 0.001 * settings.y_move; 
     settings.cam_y = settings.cam_y + (settings.cam_y - hy) * 0.001 * settings.y_move; 
-    //settings.cam_z = 1;
-
-   
+    //settings.cam_z = 1;   
   
     gluLookAt(settings.cam_x, settings.cam_y, settings.cam_z,// settings.camera x,y,z  
 	      hx, hy, hz-settings.cam_z, // look at x,y,z    
 	      0.0, 0.0, 1.0);	// which way up    
-
-  
- 
-
    
     drawTrees();
     
@@ -213,10 +206,105 @@ namespace Lignum
   }
 
 
+ void LGMVisualization::GoNextTree()
+ {
+     if (ShowTree == -1) 
+     {
+	 if (trees.size()>0)
+	     ShowTree=1;    
+     }
+     else
+     {
+	 ShowTree = ShowTree + 1;
+	 if (ShowTree > trees.size())
+	 {
+	     ShowTree=1;
+	 }
+     }
+ }
+ 
+
+    void LGMVisualization::StartAnimation()
+    {
+	for (int ii=0; ii<60; ii++)
+	{
+	    RedrawMovement(ii/60.0);
+	    cout << ii << endl;
+	    //   sleep(30);
+	}
+    }
+
+    void LGMVisualization::RedrawMovement(double odd)
+    {
+	double x1,y1,z1,x2,y2,z2;
+	GetCameraPos(x1,y1,z1,x2,y2,z2, odd);
+
+	 glutSetWindow(settings.window1);
+  
+	 if (settings.blackBackGround)
+	     glClearColor(0.0, 0.0, 0.0, 1.0);
+	 else 
+	     glClearColor(1.0, 1.0, 1.0, 1.0);
+
+	 glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	 
+	 glPushMatrix();
+	 glLoadIdentity(); 
+	 CheckValues(); 
+  
+  
+  
+	 gluLookAt(x1,y1,z1, // settings.camera x,y,z  
+		   x2,y2,z2, // look at x,y,z    
+		   0.0, 0.0, 1.0);	// which way up    
+   
+	 drawTrees();
+	 
+	 glPopMatrix();   
+	 glutSwapBuffers();        // Swap buffers  
+	 glutPostRedisplay ();
+    }
+
+
+    void LGMVisualization::GetCameraPos(double &x1, double &y1, double &z1,
+					double &x2, double &y2, double &z2,
+					double odd)
+    {
+	if (ShowTree<1) 
+	    return;
+
+	WrapperBase *tree = trees[ShowTree-1];
+	Point p;
+	LGMdouble h;
+	tree->GetTreeMetrics(p,h);
+
+	z1 = h / 2.0;
+	z2 = h/2.0;
+
+	float dx = sin(2*PI_VALUE*odd/1.0)*3.0*h;
+	float dy = cos(2*PI_VALUE*odd/1.0)*3.0*h;
+
+	x1 = p.getX() + dx;
+	y1 = p.getY() + dy;
+
+	x2 = p.getX();
+	y2 = p.getY();
+/*
+	float l = sqrt(x2*x2+y2*y2);
+	x2 = x2 / l;
+	y2 = y2 / l;*/
+    }
+
+
+
+    
+
 
   // This function is called when a key is pressed
   void LGMVisualization::Keypress(unsigned char key, int x, int y)
   {
+      
+
     switch(key) {
   
     case 'q': Quit();             // q to quit  
@@ -256,6 +344,13 @@ namespace Lignum
       ReDraw();
       break;
 
+    case 'n':
+	GoNextTree();
+	break;
+
+    case 'm':
+	StartAnimation();
+	break;
     default:printf("%c",key);fflush(NULL);
     }
   }

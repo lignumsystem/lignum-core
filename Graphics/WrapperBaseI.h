@@ -1,10 +1,24 @@
 #ifndef WRAPPERBASEI_H
 #define WRAPPERBASEI_H
 
-
+#include <Lignum.h>
+#include <Point.h>
+#include <LGMUnits.h>
 
 namespace Lignum
 {
+
+template <class TS, class BUD>
+void CfWrapper<TS,BUD>::GetTreeMetrics(Point &pos, LGMdouble &h)
+    {
+	Point p = GetPoint(tree);
+    }
+
+
+template <class TS, class BUD, class SHAPE>
+void HwWrapper<TS,BUD,SHAPE>::GetTreeMetrics(Point &pos, LGMdouble &h)
+    {
+    }
 
 // Number of active is given as a parameter
 template <class TS, class BUD>

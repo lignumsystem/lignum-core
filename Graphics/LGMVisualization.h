@@ -93,7 +93,9 @@ class LGMVisualization
   int GetTgaTexNumber(string filename);
   int GetBmpTexNumber(string filename);
 
-
+ void GetCameraPos(double &x1, double &y1, double &z1,
+					double &x2, double &y2, double &z2,
+				     double odd);
 
   void drawTrees(); /*{for_each(trees.begin(),trees.end(),DrawTrees());}*/
   void hello(){for_each(trees.begin(),trees.end(),Hello());}
@@ -106,9 +108,15 @@ private:
   GLSettings settings;
   STEMMODE mode;
 
-  void InitCallBacks();
+  int ShowTree; 
+
+  void StartAnimation();
+  void RedrawMovement(double odd);
+
+ void InitCallBacks();
   void ReDrawWindow(void);
   void ReDraw();
+  void GoNextTree();
  
   void CountCamera(void);
   void SetLight(void);
