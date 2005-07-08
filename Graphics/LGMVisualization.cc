@@ -208,7 +208,8 @@ namespace Lignum
 
  void LGMVisualization::GoNextTree()
  {
-     if (ShowTree == -1) 
+ cout << "gonext"<<endl;    
+ if (ShowTree == -1) 
      {
 	 if (trees.size()>0)
 	     ShowTree=1;    
@@ -221,15 +222,18 @@ namespace Lignum
 	     ShowTree=1;
 	 }
      }
+     RedrawMovement(0.5);
+     RedrawMovement(0.5); 
+     cout << "gonext"<<endl;
  }
  
 
     void LGMVisualization::StartAnimation()
     {
-	for (int ii=0; ii<60; ii++)
+	for (int ii=0; ii<20; ii++)
 	{
-	    RedrawMovement(ii/60.0);
-	    cout << ii << endl;
+	    RedrawMovement(ii/20.0);
+	    // cout << ii << endl;
 	    //   sleep(30);
 	}
     }
@@ -340,15 +344,15 @@ namespace Lignum
       ReDraw();
       break;
     case '5': settings.cam_z =  1; //Reset values
-      settings.head_xy = 0;
+	    settings.head_xy = 0;
       ReDraw();
       break;
 
-    case 'n':
-	GoNextTree();
-	break;
+   case 'n':	
+       GoNextTree();
+       break;
 
-    case 'm':
+    case 'm': 
 	StartAnimation();
 	break;
     default:printf("%c",key);fflush(NULL);
