@@ -381,6 +381,10 @@ namespace Lignum{
       MoveTree(const MoveTree& move, Tree<TS,BUD>& t)
       :move_to(move.move_to){SetPoint(t,GetPoint(t)+move_to);}
       MoveTree(const MoveTree& move):move_to(move.move_to){}
+      //This   constructor  ensures   that  also   the   tree  itself,
+      //i.e. GetPoint(tree), is moved.
+      MoveTree(const Point& point,Tree<TS,BUD>& t)
+	:move_to(point){SetPoint(t,GetPoint(t)+move_to);} 
       MoveTree(const Point& point):move_to(point) {} 
       Point& setPoint(const Point& new_point) {
 	Point tmp = move_to;
