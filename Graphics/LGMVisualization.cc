@@ -25,342 +25,362 @@ namespace Lignum
 
   
 
-  LGMVisualization::LGMVisualization()
-  {
+LGMVisualization::LGMVisualization()
+{
     active_visualization = this;
     mode = SOLID;
     order_foliage = false;
-
+    
     ShowTree = -1;
-  }
-
-
-  void LGMVisualization::InitVisualization(int argc,char* argv[])
-  {
-    glutInit(&argc,argv);
-    glutInitWindowSize(settings.WINDOW_SIZE_X,settings.WINDOW_SIZE_Y);
-    glutInitDisplayMode(GLUT_RGB|GLUT_DOUBLE);
-    settings.window1 = glutCreateWindow("Window");
-    InitCallBacks(); 
-    SetLight();   
-    glClearColor(0.9f, 0.9f, 0.9f, 0.9f);
-    glLightfv(GL_LIGHT0, GL_POSITION, settings.light.LightPosition);
-    glEnable(GL_LIGHT0);
-    glEnable(GL_DEPTH_TEST);
-
-    glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_FASTEST);
-    glShadeModel(GL_SMOOTH);
-
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
-    glEnable(GL_TEXTURE_2D);
-
+}
     
-    InitDrawing();
-  }
-
- void LGMVisualization::ResetCameraPosition(float height)
- { 
-     settings.cam_x = -height*4;
-     settings.cam_y = 0;
-     settings.cam_z = height/2;   
- }
-
-  void LGMVisualization::StartVisualization()
-  {
-    if (mode == SOLID)
+    
+    void LGMVisualization::InitVisualization(int argc,char* argv[])
     {
-      for_each(trees.begin(),trees.end(),MakeDisplayLists(order_foliage));
-    }
-    else
-    {
-      for_each(trees.begin(),trees.end(), MakeWireModelLists());
-    }
-   
-
-    glutMainLoop ();
-  }
-
-
-
-   
-  void LGMVisualization::SetAntialising(bool antialisingOn)
-  {
+	glutInit(&argc,argv);
+	glutInitWindowSize(settings.WINDOW_SIZE_X,settings.WINDOW_SIZE_Y);
+	glutInitDisplayMode(GLUT_RGB|GLUT_DOUBLE);
+	settings.window1 = glutCreateWindow("Window");
+	InitCallBacks(); 
+	SetLight();   
+	glClearColor(0.9f, 0.9f, 0.9f, 0.9f);
+	glLightfv(GL_LIGHT0, GL_POSITION, settings.light.LightPosition);
+	glEnable(GL_LIGHT0);
+	glEnable(GL_DEPTH_TEST);
 	
-  }
+	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_FASTEST);
+	glShadeModel(GL_SMOOTH);
 
-
-
-  //Draw-funktions
-  void LGMVisualization::CountCamera(void)
-  {
-    //OpenGLinterface
-  }
-
-
-  void LGMVisualization::SetLight(void)
-  {
-    GLfloat mat_amb[] = {.4,.4,.2,1};
-  
-    GLfloat lightPosition[] = {settings.lightx, settings.lighty, 
-			       settings.lightz, settings.lightw};
-    glLightfv (GL_LIGHT0, GL_POSITION, lightPosition);
-    glEnable (GL_LIGHT0);
-    glEnable (GL_LIGHTING);
-  }
-
-
-  void LGMVisualization::SetValues(void)
-  {
-    //OpenGLinterface
-  }
-
-  void LGMVisualization::CheckValues(void)
-  {
-    //Arvojen tarkastus jos haluaa rajoituksia
-  }
-
-  void LGMVisualization::ReDraw(void)
-  {
-    ReDrawWindow();
-  }
-
-
-  void LGMVisualization::ReDrawWindow(void)
-  {
-    float hx=0,hy=0, hz=0;  
-
- 
-    glutSetWindow(settings.window1);
-  
-    if (settings.blackBackGround)
-      glClearColor(0.0, 0.0, 0.0, 1.0);
-    else 
-      glClearColor(1.0, 1.0, 1.0, 1.0);
-
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  
-    glPushMatrix();
-    glLoadIdentity(); 
-    // SetLight();
-    CheckValues(); 
-  
-  
-    // Check the settings.camera coordinates 
-    hx = cos(settings.x_move*0.1*2*PI_VALUE/360) * 8;
-    hy = sin(settings.x_move*0.1*2*PI_VALUE/360) * 8;
-    hz = hz + settings.z_move * 0.01;
-
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
+	glEnable(GL_TEXTURE_2D);
+	
+	
+	InitDrawing();
+    }
     
-    settings.cam_x = settings.cam_x + (settings.cam_x - hx) * 0.001 * settings.y_move; 
-    settings.cam_y = settings.cam_y + (settings.cam_y - hy) * 0.001 * settings.y_move; 
-    //settings.cam_z = 1;   
-  
-    gluLookAt(settings.cam_x, settings.cam_y, settings.cam_z,// settings.camera x,y,z  
-	      hx, hy, hz-settings.cam_z, // look at x,y,z    
-	      0.0, 0.0, 1.0);	// which way up    
-   
-    drawTrees();
+    void LGMVisualization::ResetCameraPosition(float height)
+    { 
+	settings.cam_x = -height*4;
+	settings.cam_y = 0;
+	settings.cam_z = height/2;   
+    }
     
-    glPopMatrix();   
-    glutSwapBuffers();        // Swap buffers  
-    glutPostRedisplay ();
-  }
+    void LGMVisualization::StartVisualization()
+    {
+	if (mode == SOLID)
+	{
+	    for_each(trees.begin(),trees.end(),MakeDisplayLists(order_foliage));
+	}
+	else
+	{
+	    for_each(trees.begin(),trees.end(), MakeWireModelLists());
+	}
+	
+	GoNextTree();
+	glutMainLoop ();
+    }
+    
+    
+    
+    
+    void LGMVisualization::SetAntialising(bool antialisingOn)
+    {
+	
+    }
+    
+    
+    
+    //Draw-funktions
+    void LGMVisualization::CountCamera(void)
+    {
+	//OpenGLinterface
+    }
+    
+    
+    void LGMVisualization::SetLight(void)
+    {
+	GLfloat mat_amb[] = {.4,.4,.2,1};
+	
+	GLfloat lightPosition[] = {settings.lightx, settings.lighty, 
+				   settings.lightz, settings.lightw};
+	glLightfv (GL_LIGHT0, GL_POSITION, lightPosition);
+	glEnable (GL_LIGHT0);
+	glEnable (GL_LIGHTING);
+    }
+    
+    
+    void LGMVisualization::SetValues(void)
+    {
+	//OpenGLinterface
+    }
+    
+    void LGMVisualization::CheckValues(void)
+    {
+	//Arvojen tarkastus jos haluaa rajoituksia
+    }
+    
+    void LGMVisualization::ReDraw(void)
+    {
+	ReDrawWindow();
+    }
+    
+    
+    void LGMVisualization::ReDrawWindow(void)
+    {
+	float hx=0,hy=0, hz=0;  
+	
+	
+	glutSetWindow(settings.window1);
+	
+	if (settings.blackBackGround)
+	    glClearColor(0.0, 0.0, 0.0, 1.0);
+	else 
+	    glClearColor(1.0, 1.0, 1.0, 1.0);
+	
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	
+	glPushMatrix();
+	glLoadIdentity(); 
+	// SetLight();
+	CheckValues(); 
+	
+	
+	// Check the settings.camera coordinates 
+	hx = cos(settings.x_move*0.1*2*PI_VALUE/360) * 8;
+	hy = sin(settings.x_move*0.1*2*PI_VALUE/360) * 8;
+	hz = hz + settings.z_move * 0.01;
+	
+	
+	settings.cam_x = settings.cam_x + (settings.cam_x - hx) * 0.001 * settings.y_move; 
+	settings.cam_y = settings.cam_y + (settings.cam_y - hy) * 0.001 * settings.y_move; 
+	//settings.cam_z = 1;   
 
 
-
-  void LGMVisualization::NewWindowSize(GLsizei new_x, GLsizei new_y)
-  {
-    glutSetWindow(settings.window1);
-
-    glViewport (0, 0, new_x, new_y);
-    settings.WINDOW_SIZE_X = new_x;
-    settings.WINDOW_SIZE_Y = new_y;
-  
-    glMatrixMode (GL_PROJECTION);    // change to the projection matrix
-    glLoadIdentity ();               // Start from a clear table
-  
-    gluPerspective (25.0,            // Width of field of view 
-		    new_x/new_y,     // Shape of new view 
-		    .1,              // Shortest visible distance 
-		    52);             // Longest visible distance 
-  
-		  
-    glMatrixMode (GL_MODELVIEW);     // change to the modelview matrix	
-  }
-
-
-  // This function quits the program
+	
+	gluLookAt(settings.cam_x, settings.cam_y, settings.cam_z,// settings.camera x,y,z  
+		  settings.lookat_x, settings.lookat_y, settings.lookat_z, // look at x,y,z    
+		  0.0, 0.0, 1.0);	// which way up    
+	
+	drawTrees();
+	
+	glPopMatrix();   
+	glutSwapBuffers();        // Swap buffers  
+	glutPostRedisplay ();
+    }
+    
+    
+    
+    void LGMVisualization::NewWindowSize(GLsizei new_x, GLsizei new_y)
+    {
+	glutSetWindow(settings.window1);
+	
+	glViewport (0, 0, new_x, new_y);
+	settings.WINDOW_SIZE_X = new_x;
+	settings.WINDOW_SIZE_Y = new_y;
+	
+	glMatrixMode (GL_PROJECTION);    // change to the projection matrix
+	glLoadIdentity ();               // Start from a clear table
+	
+	gluPerspective (25.0,            // Width of field of view 
+			new_x/new_y,     // Shape of new view 
+			.1,              // Shortest visible distance 
+			52);             // Longest visible distance 
+	
+	
+	glMatrixMode (GL_MODELVIEW);     // change to the modelview matrix	
+    }
+    
+    
+    // This function quits the program
   void LGMVisualization::Quit (void)
   {
-    exit (0);
+      exit (0);
   }
+    
+    
+    //Näppäin kutsut
+    void LGMVisualization::Arrows(int key, int x, int y)
+    {
+    }
+    
+    
+    void LGMVisualization::GoNextTree()
+    {
+       	
+	if (ShowTree == -1) 
+	{
+	    if (trees.size()>0)
+		ShowTree=1;    
+	}
+	else
+	{
+	    ShowTree = ShowTree + 1;
+	    if (ShowTree > trees.size())
+	    {
+		ShowTree=1;
+	    }
+	}
+	 
+
+	Point p;
+	LGMdouble h;
+	WrapperBase *tree = trees[ShowTree-1];
+	tree->GetTreeMetrics(p, h);
 
 
-  //Näppäin kutsut
-  void LGMVisualization::Arrows(int key, int x, int y)
-  {
-  }
 
+	settings.cam_x = p.getX()+h*1.3;
+	settings.cam_y = p.getY()+h/2;
+	settings.cam_z = h/2.0;
 
- void LGMVisualization::GoNextTree()
- {
- cout << "gonext"<<endl;    
- if (ShowTree == -1) 
-     {
-	 if (trees.size()>0)
-	     ShowTree=1;    
-     }
-     else
-     {
-	 ShowTree = ShowTree + 1;
-	 if (ShowTree > trees.size())
-	 {
-	     ShowTree=1;
-	 }
-     }
-     RedrawMovement(0.5);
-     RedrawMovement(0.5); 
-     cout << "gonext"<<endl;
- }
- 
+	settings.lookat_x = p.getX();
+	settings.lookat_y = p.getY();
+	settings.lookat_z = h/2.0;
 
+	cout << settings.cam_x << "  " << settings.cam_y << "  " << settings.cam_z << "   :   "<< settings.lookat_x << "  " << settings.lookat_y << "  " << settings.lookat_z << endl;
+	ReDraw();
+    }
+    
+    
     void LGMVisualization::StartAnimation()
     {
 	for (int ii=0; ii<20; ii++)
 	{
 	    RedrawMovement(ii/20.0);
-	    // cout << ii << endl;
-	    //   sleep(30);
 	}
     }
 
+
+    
     void LGMVisualization::RedrawMovement(double odd)
     {
 	double x1,y1,z1,x2,y2,z2;
 	GetCameraPos(x1,y1,z1,x2,y2,z2, odd);
-
-	 glutSetWindow(settings.window1);
-  
-	 if (settings.blackBackGround)
-	     glClearColor(0.0, 0.0, 0.0, 1.0);
-	 else 
-	     glClearColor(1.0, 1.0, 1.0, 1.0);
-
-	 glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	 
-	 glPushMatrix();
-	 glLoadIdentity(); 
-	 CheckValues(); 
-  
-  
-  
-	 gluLookAt(x1,y1,z1, // settings.camera x,y,z  
-		   x2,y2,z2, // look at x,y,z    
-		   0.0, 0.0, 1.0);	// which way up    
-   
-	 drawTrees();
-	 
-	 glPopMatrix();   
-	 glutSwapBuffers();        // Swap buffers  
-	 glutPostRedisplay ();
+	
+	glutSetWindow(settings.window1);
+	
+	if (settings.blackBackGround)
+	    glClearColor(0.0, 0.0, 0.0, 1.0);
+	else 
+	    glClearColor(1.0, 1.0, 1.0, 1.0);
+	
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	
+	glPushMatrix();
+	glLoadIdentity(); 
+	CheckValues(); 
+	
+	
+	
+	gluLookAt(x1,y1,z1, // settings.camera x,y,z  
+		  x2,y2,z2, // look at x,y,z    
+		  0.0, 0.0, 1.0);	// which way up    
+	
+	drawTrees();
+	
+	glPopMatrix();   
+	glutSwapBuffers();        // Swap buffers  
+	glutPostRedisplay ();
     }
-
-
+    
+    
     void LGMVisualization::GetCameraPos(double &x1, double &y1, double &z1,
 					double &x2, double &y2, double &z2,
 					double odd)
     {
 	if (ShowTree<1) 
 	    return;
-
+	
 	WrapperBase *tree = trees[ShowTree-1];
 	Point p;
 	LGMdouble h;
 	tree->GetTreeMetrics(p,h);
-
+	
 	z1 = h / 2.0;
 	z2 = h/2.0;
-
+	
 	float dx = sin(2*PI_VALUE*odd/1.0)*3.0*h;
 	float dy = cos(2*PI_VALUE*odd/1.0)*3.0*h;
-
+	
 	x1 = p.getX() + dx;
 	y1 = p.getY() + dy;
-
+	
 	x2 = p.getX();
 	y2 = p.getY();
 /*
-	float l = sqrt(x2*x2+y2*y2);
-	x2 = x2 / l;
-	y2 = y2 / l;*/
+  float l = sqrt(x2*x2+y2*y2);
+  x2 = x2 / l;
+  y2 = y2 / l;*/
     }
-
-
-
     
-
-
-  // This function is called when a key is pressed
-  void LGMVisualization::Keypress(unsigned char key, int x, int y)
-  {
-      
-
-    switch(key) {
-  
-    case 'q': Quit();             // q to quit  
-      break; 
-    case 'a': settings.lightx++;           // Move the light source 
-      ReDraw();
-      break;    
-    case 'z': settings.lightx--;
-      ReDraw();
-      break;    
-    case 's': settings.lighty++;   
-      ReDraw();
-      break;       
-    case 'x': settings.lighty--;   
-      ReDraw();
-      break;    
-    case 'd': settings.lightz++;   
-      ReDraw();
-      break;
-    case 'c': settings.lightz--;  
-      ReDraw();
-      break;
-    case '4': settings.head_xy--;          // Turn head
-      ReDraw();
-      break;    
-    case '6': settings.head_xy++;
-      ReDraw();
-      break;
-    case '2': settings.cam_z = settings.cam_z - .5;
-      ReDraw();
-      break;    
-    case '8': settings.cam_z = settings.cam_z + .5;//
-      ReDraw();
-      break;
-    case '5': settings.cam_z =  1; //Reset values
-	    settings.head_xy = 0;
-      ReDraw();
-      break;
-
-   case 'n':	
-       GoNextTree();
-       break;
-
-    case 'm': 
-	StartAnimation();
-	break;
-    default:printf("%c",key);fflush(NULL);
+    
+    
+    
+    
+    
+    // This function is called when a key is pressed
+    void LGMVisualization::Keypress(unsigned char key, int x, int y)
+    {
+	
+	
+	switch(key) 
+	{
+	    
+	    case 'q': Quit();             // q to quit  
+		break; 
+	    case 'a': settings.lightx++;           // Move the light source 
+		ReDraw();
+		break;    
+	    case 'z': settings.lightx--;
+		ReDraw();
+		break;    
+	    case 's': settings.lighty++;   
+		ReDraw();
+		break;       
+	    case 'x': settings.lighty--;   
+		ReDraw();
+		break;    
+	    case 'd': settings.lightz++;   
+		ReDraw();
+		break;
+	    case 'c': settings.lightz--;  
+		ReDraw();
+		break;
+	  
+	    case '4': settings.head_xy--;          // Turn head
+		ReDraw();
+		break;    
+	    case '6': settings.head_xy++;
+		ReDraw();
+		break;
+	    case '2': settings.cam_z = settings.cam_z - .5;
+		ReDraw();
+		break;    
+	    case '8': settings.cam_z = settings.cam_z + .5;//
+		ReDraw();
+		break;
+	    case '5': settings.cam_z =  1; //Reset values
+		settings.head_xy = 0;
+		ReDraw();
+		break;
+		
+	    case 'n':	
+		GoNextTree();
+		break;
+		
+	    case 'm': 
+		StartAnimation();
+		break;
+	    default:printf("%c",key);fflush(NULL);
+	}
     }
-  }
-
-
-
+    
+    
+    
   // This function is called when a mouse value is changed
   void LGMVisualization::ChangeMouseButton(int button, int state, int x, int y)
   {
@@ -584,11 +604,15 @@ namespace Lignum
 
 void LGMVisualization:: drawTrees()
 {
-  
-
     for_each(trees.begin(),trees.end(),DrawTrees(settings.cam_x,settings.cam_y,
-settings.cam_z));
+						 settings.cam_z));
 }
+
+
+
+
+
+
  
 }
 

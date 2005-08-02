@@ -74,6 +74,10 @@ class LGMVisualization
   template <class TS, class BUD>
   void AddCfTree(Tree<TS, BUD>& t, string stemTex, string folTex);
 
+
+  
+
+
   LGMVisualization();
   void InitVisualization(int argc=0,char* argv[] = NULL);
   void SetAntialising(bool antialisingOn);
