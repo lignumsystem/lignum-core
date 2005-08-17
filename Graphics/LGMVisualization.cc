@@ -248,9 +248,21 @@ LGMVisualization::LGMVisualization()
     
     void LGMVisualization::StartAnimation()
     {
-	for (int ii=0; ii<20; ii++)
+	double dx = settings.lookat_x - settings.cam_x;
+	double dy = settings.lookat_y - settings.cam_y;
+	double dz = settings.lookat_z - settings.cam_z;
+
+	double dist = sqrt(dx*dx+dy*dy);
+
+	for (float ii=0; ii<36; ii++)
 	{
-	    RedrawMovement(ii/20.0);
+	    
+	    settings.cam_z = settings.lookat_z;
+
+	    settings.cam_y = settings.lookat_y + sin(ii/36.0*2*PI_VALUE)*dist;
+	    settings.cam_x = settings.lookat_x + cos(ii/36.0*2*PI_VALUE)*dist;
+	  
+	    ReDraw();
 	}
     }
 
