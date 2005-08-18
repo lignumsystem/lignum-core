@@ -32,8 +32,14 @@ LGMVisualization::LGMVisualization()
     order_foliage = false;
     
     ShowTree = -1;
+    ldistance = 100;
 }
-    
+  
+
+    void LGMVisualization::SetVisibleDistance(double l)
+    {
+	ldistance = l;
+    }  
     
     void LGMVisualization::InitVisualization(int argc,char* argv[])
     {
@@ -188,7 +194,7 @@ LGMVisualization::LGMVisualization()
 	gluPerspective (25.0,            // Width of field of view 
 			new_x/new_y,     // Shape of new view 
 			.1,              // Shortest visible distance 
-			52);             // Longest visible distance 
+			ldistance);             // Longest visible distance 
 	
 	
 	glMatrixMode (GL_MODELVIEW);     // change to the modelview matrix	
@@ -459,7 +465,9 @@ LGMVisualization::LGMVisualization()
     if (settings.MOVEMENT == true) // If movement has just stopped the picture is drawn once
       { 
 	settings.MOVEMENT = false;
-	ReDraw();          
+	ReDraw(); 
+	drawed = true;
+       
 	return;
       }
   }
@@ -532,7 +540,8 @@ LGMVisualization::LGMVisualization()
 
   void LGMVisualization::StaticMouseMotion(int x, int y)
   {
-    active_visualization->MouseMotion(x, y);  
+      //  cout << "hiiri liikkuu " << endl;
+      active_visualization->MouseMotion(x, y);  
   }
 
 

@@ -35,6 +35,7 @@ void CfWrapper<TS,BUD>::VisualizeStem(int &active_texture)
 template <class TS, class BUD>
 void CfWrapper<TS,BUD>::VisualizeFoliage(int &active_texture)
 {
+    // cout << "lehti tekstuuri " << intFoliageTexture << endl;
     glEnable(GL_BLEND);
     glEnable(GL_TEXTURE_2D);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -313,6 +314,7 @@ void CfWrapper<TS,BUD>::MakeDisplayLists(bool orderfoliage)
     glEndList();
     glPopMatrix();
 
+//    cout << "tehdään lehti-lista..." << endl;
     intDisplaylistFoliage = glGenLists(1);
     glPushMatrix();
     glNewList(intDisplaylistFoliage, GL_COMPILE);
@@ -346,6 +348,7 @@ void CfWrapper<TS,BUD>::DrawTree(float x, float y, float z)
     glCallList(intDisplaylistStem);
     
     
+    // cout << "lehdet.." << endl;
     // Lehdet
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);

@@ -75,10 +75,11 @@ class LGMVisualization
   void AddCfTree(Tree<TS, BUD>& t, string stemTex, string folTex);
 
 
-  
+  double ldistance;
 
 
   LGMVisualization();
+  void SetVisibleDistance(double l);
   void InitVisualization(int argc=0,char* argv[] = NULL);
   void SetAntialising(bool antialisingOn);
   void SetMode(STEMMODE m) { mode = m; }
