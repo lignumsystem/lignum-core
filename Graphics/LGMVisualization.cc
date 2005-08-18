@@ -238,8 +238,11 @@ LGMVisualization::LGMVisualization()
 	tree->GetTreeMetrics(p, h);
 
 
-
-	settings.cam_x = p.getX()+h*1.3;
+	//This will set the camera, so that it always look towards the
+	//tree of  point p  and height h.   Especially cam_x  sets the
+	//distance from  the tree. By experimenting a  bit h*2.3 seems
+	//to show the whole tree in the window. But consult also Mika. 
+	settings.cam_x = p.getX()+h*2.3;
 	settings.cam_y = p.getY()+h/2;
 	settings.cam_z = h/2.0;
 
