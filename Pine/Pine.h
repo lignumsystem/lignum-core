@@ -451,15 +451,6 @@ public:
 };
 
 
-template <class T>
-class Max{
-public:
-  const T& operator()(const T& a, const T& b)const
-  {
-    return max(a,b);
-  }
-};
-
 //This  can be  used  to  set foliage  afterwards,  say, for  measured
 //architectural  model trees.  ForEach(t,SetFoliage) will  traverse the
 //tree and apply the functor to each segment.
