@@ -19,6 +19,18 @@ namespace cxxadt{
 //Distance to Alpha Centauri in meters
 #define ALPHA_CENTAURI 4.11554e+16
 
+//Try to use standard STL max function if possible, Max is a functor
+//that   can  be   used   with  algorithms   designed  for   Lignum,
+//e.g. AccumulateDown.
+template <class T>
+class Max{
+public:
+  const T& operator()(const T& a, const T& b)const
+  {
+    return (a > b) ? a : b;
+  }
+};
+
 template <class T>
 inline T maximum(T A, T B)
 {
