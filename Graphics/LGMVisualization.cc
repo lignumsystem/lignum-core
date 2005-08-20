@@ -250,7 +250,7 @@ LGMVisualization::LGMVisualization()
 	settings.lookat_y = p.getY();
 	settings.lookat_z = h/2.0;
 
-	cout << settings.cam_x << "  " << settings.cam_y << "  " << settings.cam_z << "   :   "<< settings.lookat_x << "  " << settings.lookat_y << "  " << settings.lookat_z << endl;
+	//cout << settings.cam_x << "  " << settings.cam_y << "  " << settings.cam_z << "   :   "<< settings.lookat_x << "  " << settings.lookat_y << "  " << settings.lookat_z << endl;
 	ReDraw();
     }
     
