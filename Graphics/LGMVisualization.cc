@@ -77,17 +77,24 @@ LGMVisualization::LGMVisualization()
     
     void LGMVisualization::StartVisualization()
     {
-	if (mode == SOLID)
+      //If there are no  trees, return. Otherwise the subsequent calls
+      //to  for_each  will  cause  segmentation faults.   Both  assume
+      //(implicitely) that 'trees' has at least one element (a wrapper
+      //pointer capturing a tree).
+      if (trees.size() == 0)
+	return;
+
+      if (mode == SOLID)
 	{
-	    for_each(trees.begin(),trees.end(),MakeDisplayLists(order_foliage));
+	  for_each(trees.begin(),trees.end(),MakeDisplayLists(order_foliage));
 	}
-	else
+      else
 	{
 	    for_each(trees.begin(),trees.end(), MakeWireModelLists());
 	}
 	
-	GoNextTree();
-	glutMainLoop ();
+      GoNextTree();
+      glutMainLoop ();
     }
     
     
