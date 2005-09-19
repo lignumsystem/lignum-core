@@ -132,6 +132,7 @@ LGMVisualization::LGMVisualization()
     void LGMVisualization::ReDraw(void)
     {
 	ReDrawWindow();
+
     }
     
     
@@ -176,6 +177,7 @@ LGMVisualization::LGMVisualization()
 	glPopMatrix();   
 	glutSwapBuffers();        // Swap buffers  
 	glutPostRedisplay ();
+	glFlush();
     }
     
     
@@ -407,14 +409,27 @@ LGMVisualization::LGMVisualization()
   {
     settings.MIDDLEBUTTON=UP;
     settings.RIGHTBUTTON=UP;
-    settings.LEFTBUTTON=UP; 
+    
 
+  
     switch(button) {
     case GLUT_LEFT_BUTTON:    // Left button is pressed
       settings.mouse_x=0;
       settings.mouse_y=0;   
-      settings.LEFTBUTTON=DOWN;
-      settings.MOVEMENT=true;
+      if (settings.LEFTBUTTON == DOWN)
+      {
+	  settings.LEFTBUTTON=UP;
+	  settings.MOVEMENT=false;
+      }
+      else
+      {
+	  settings.LEFTBUTTON=DOWN;
+	  settings.MOVEMENT=true;
+      }
+      
+     
+
+     
       break;
 
     case GLUT_MIDDLE_BUTTON:  // Middle button is pressed
@@ -433,7 +448,8 @@ LGMVisualization::LGMVisualization()
 
   void LGMVisualization::MouseMotion(int x, int y)
   {
-    settings.MOVEMENT=true;
+      cout << "mouse motion " << endl;
+      settings.MOVEMENT=true;
        
       
     if (settings.mouse_x != 0 || settings.mouse_y != 0) // If movement has just begun, write the
@@ -443,12 +459,13 @@ LGMVisualization::LGMVisualization()
 	    settings.z_move = settings.z_move + (settings.mouse_y-y);
 	    drawed = false;
 	  }
-     
-	if (settings.MIDDLEBUTTON == DOWN && settings.mouse_x != x)        // Middle button is pressed 
+	else if (settings.MIDDLEBUTTON == DOWN && settings.mouse_x != x)        // Middle button is pressed 
 	  {                               
 	    settings.cam_z += (settings.mouse_x - x)/100.0;
 	    drawed = false;
 	  }
+
+	
 
 	// Left button is pressed
 	if (settings.LEFTBUTTON == DOWN && (settings.mouse_x != x || settings.mouse_y != y))  
@@ -456,7 +473,8 @@ LGMVisualization::LGMVisualization()
 	    settings.x_move = settings.x_move + (settings.mouse_x-x);
 	    settings.y_move = settings.y_move - (settings.mouse_y-y);
 	    drawed = false;
-	  }        
+	  } 
+
       }    
     settings.mouse_x=x;
     settings.mouse_y=y;
@@ -467,10 +485,11 @@ LGMVisualization::LGMVisualization()
   { 
     if (settings.MOVEMENT == true) // If movement has just stopped the picture is drawn once
       { 
+	  {
 	settings.MOVEMENT = false;
 	ReDraw(); 
 	drawed = true;
-       
+	  }
 	return;
       }
   }
@@ -562,7 +581,7 @@ LGMVisualization::LGMVisualization()
 
   void LGMVisualization::StaticReDraw(void)
   {
-    active_visualization->ReDraw();  
+      //  active_visualization->ReDraw();  
   }
 
 
