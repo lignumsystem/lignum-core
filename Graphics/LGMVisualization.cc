@@ -25,21 +25,18 @@ namespace Lignum
 
   
 
-LGMVisualization::LGMVisualization()
-{
+  LGMVisualization::LGMVisualization()
+    :mode(SOLID),order_foliage(false),
+     ShowTree(-1),ldistance(100),max_height(0.0)
+  {
     active_visualization = this;
-    mode = SOLID;
-    order_foliage = false;
-    
-    ShowTree = -1;
-    ldistance = 100;
-}
+  }
   
 
-    void LGMVisualization::SetVisibleDistance(double l)
-    {
-	ldistance = l;
-    }  
+  void LGMVisualization::SetVisibleDistance(double l)
+  {
+    ldistance = l;
+  }  
     
     void LGMVisualization::InitVisualization(int argc,char* argv[])
     {
@@ -247,17 +244,32 @@ LGMVisualization::LGMVisualization()
 	tree->GetTreeMetrics(p, h);
 
 
-	//This will set the camera, so that it always look towards the
-	//tree of  point p  and height h.   Especially cam_x  sets the
-	//distance from  the tree. By experimenting a  bit h*2.3 seems
-	//to show the whole tree in the window. But consult also Mika. 
+	//This  will set  the camera  position.  Especially  cam_x and
+	//cam_y set the distance from the tree. By experimenting a bit
+	//h*2.3  seems to  show  the  whole tree  in  the window.  But
+	//consult also Mika.
 	settings.cam_x = p.getX()+h*2.3;
 	settings.cam_y = p.getY()+h/2;
 	settings.cam_z = h/2.0;
 
-	settings.lookat_x = p.getX();
-	settings.lookat_y = p.getY();
-	settings.lookat_z = h/2.0;
+	//This sets the camera to  look at Point(x,y,h/2), where x and
+	//y is  the position of  the middle tree and  'max_height' is
+	//height of the tallest tree
+	if (ShowTree == 1 && trees.size() > 1){
+	  WrapperBase *middle_tree = trees[static_cast<int>(floor(trees.size()/2.0))];
+	  Point p1;
+	  LGMdouble h1;
+	  middle_tree->GetTreeMetrics(p1,h1);
+	  settings.lookat_x = p1.getX();
+	  settings.lookat_y = p1.getY();
+	  settings.lookat_z = h/2.0;
+	}
+	//This sets the camera to look at the current tree
+	else{
+	  settings.lookat_x = p.getX();
+	  settings.lookat_y = p.getY();
+	  settings.lookat_z = h/2.0;
+	}
 
 	//cout << settings.cam_x << "  " << settings.cam_y << "  " << settings.cam_z << "   :   "<< settings.lookat_x << "  " << settings.lookat_y << "  " << settings.lookat_z << endl;
 	ReDraw();
