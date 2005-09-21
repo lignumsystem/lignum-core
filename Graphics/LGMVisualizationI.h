@@ -14,7 +14,8 @@ namespace Lignum{
  void LGMVisualization::AddHwTree(Tree<TS,BUD>& t, string stemTex, string folTex)
 {
   HwWrapper<TS,BUD,SHAPE> *wb = new HwWrapper<TS,BUD,SHAPE>(t);
-
+  //Keep track of the tallest tree.
+  max_height = max(max_height,GetValue(t,LGAH));
 
    
     CTexture stem_texture;
@@ -54,7 +55,8 @@ namespace Lignum{
 
 {	
 	CfWrapper<TS,BUD> *wb = new CfWrapper<TS,BUD>(t);
-	
+	//Keep track of the tallest tree.
+	max_height = max(max_height,GetValue(t,LGAH));	
 	// Neulasten tekstuuri
 	wb->intFoliageTexture = GetTgaTexNumber(folTex);
 	//Rungon tekstuuri
