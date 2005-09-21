@@ -118,7 +118,7 @@ private:
   void StartAnimation();
   void RedrawMovement(double odd);
 
- void InitCallBacks();
+  void InitCallBacks();
   void ReDrawWindow(void);
   void ReDraw();
   void GoNextTree();
@@ -141,6 +141,8 @@ private:
   static void StaticChangeMouseButton(int button, int state, int x, int y);
   static void StaticKeyPress(unsigned char key, int x, int y);
   static void StaticNewWindowSize(int new_x, int new_y);
+private:
+  double max_height;//The tree with the maximum height to be visualized
 };
 
 
