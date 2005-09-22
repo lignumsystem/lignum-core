@@ -27,7 +27,7 @@ namespace Lignum
 
   LGMVisualization::LGMVisualization()
     :mode(SOLID),order_foliage(false),
-     ShowTree(-1),ldistance(100),max_height(0.0)
+     ShowTree(-1),ldistance(100),max_height(0.0),camera_distance(0.0)
   {
     active_visualization = this;
   }
@@ -43,7 +43,7 @@ namespace Lignum
 	glutInit(&argc,argv);
 	glutInitWindowSize(settings.WINDOW_SIZE_X,settings.WINDOW_SIZE_Y);
 	glutInitDisplayMode(GLUT_RGB|GLUT_DOUBLE);
-	settings.window1 = glutCreateWindow("Window");
+	settings.window1 = glutCreateWindow("Lignum");
 	InitCallBacks(); 
 	SetLight();   
 	glClearColor(0.9f, 0.9f, 0.9f, 0.9f);
@@ -222,57 +222,67 @@ namespace Lignum
     
     void LGMVisualization::GoNextTree()
     {
-       	
-	if (ShowTree == -1) 
-	{
-	    if (trees.size()>0)
-		ShowTree=1;    
+      Point p;
+      LGMdouble h=0.0;
+      //Initially  this sets  the  camera to  look at  Point(x,y,h/2),
+      //where x and  y is the position of the middle  tree in the list
+      //of trees and  'max_height' is height of the  tallest tree. (If
+      //there is  one tree,  the indexing returns  0). This  lines the
+      //trees from the left part of  the window to the right aiming to
+      //achieve overall centering appearance.
+      if (ShowTree == -1){
+	double transfer = 0.0;
+	if (camera_distance > R_EPSILON){
+	  //camera distance is given
+	  transfer = camera_distance;
 	}
-	else
-	{
-	    ShowTree = ShowTree + 1;
-	    if (ShowTree > trees.size())
-	    {
-		ShowTree=1;
-	    }
+	else{
+	  //This should show the largest tree
+	  transfer = max_height*2.3;
 	}
-	 
-
-	Point p;
-	LGMdouble h;
-	WrapperBase *tree = trees[ShowTree-1];
+	WrapperBase *middle_tree = trees[static_cast<int>(floor(trees.size()/2.0))];
+	middle_tree->GetTreeMetrics(p,h);
+	//This  will set  the camera  position.  Especially  cam_x and
+        //cam_y set the distance from the tree. cam_z is the camera height
+        settings.cam_x = p.getX()+transfer; //move away from the tree
+        settings.cam_y = 0.0;//set y to 0,  this however is ideal only
+			     //when  the trees are  lined up  e.g.  as
+			     //(0,y1,0),  (0,y2,0),...,  (0,yN,0).  If
+			     //there  is  a  forest  with  practically
+			     //random tree  positions, one should move
+			     //outside the forest, or go in the forest
+			     //and let the camera turn 360.
+        settings.cam_z = max_height/2.0;
+	//Look at the middle tree 
+	settings.lookat_x = p.getX();
+	settings.lookat_y = p.getY();
+	settings.lookat_z = max_height/2.0;
+      }
+      //Otherwise set one  tree at a time to the  center of the window
+      //and go  so close  to it  that the tree  is visible  its height
+      //matching the height of the window
+      else{
+	WrapperBase *tree = trees[ShowTree];
 	tree->GetTreeMetrics(p, h);
-
-
 	//This  will set  the camera  position.  Especially  cam_x and
 	//cam_y set the distance from the tree. By experimenting a bit
-	//h*2.3  seems to  show  the  whole tree  in  the window.  But
-	//consult also Mika.
+	//h*2.3 and h/2.0 seems to  show the whole tree (of all sizes)
+	//in the window.  But consult also Mika.
 	settings.cam_x = p.getX()+h*2.3;
-	settings.cam_y = p.getY()+h/2;
+	settings.cam_y = p.getY()+h/2.0; 
 	settings.cam_z = h/2.0;
-
-	//This sets the camera to  look at Point(x,y,h/2), where x and
-	//y is  the position of  the middle tree and  'max_height' is
-	//height of the tallest tree
-	if (ShowTree == 1 && trees.size() > 1){
-	  WrapperBase *middle_tree = trees[static_cast<int>(floor(trees.size()/2.0))];
-	  Point p1;
-	  LGMdouble h1;
-	  middle_tree->GetTreeMetrics(p1,h1);
-	  settings.lookat_x = p1.getX();
-	  settings.lookat_y = p1.getY();
-	  settings.lookat_z = h/2.0;
-	}
-	//This sets the camera to look at the current tree
-	else{
-	  settings.lookat_x = p.getX();
-	  settings.lookat_y = p.getY();
-	  settings.lookat_z = h/2.0;
-	}
-
-	//cout << settings.cam_x << "  " << settings.cam_y << "  " << settings.cam_z << "   :   "<< settings.lookat_x << "  " << settings.lookat_y << "  " << settings.lookat_z << endl;
-	ReDraw();
+	//Look at the current tree 
+	settings.lookat_x = p.getX();
+	settings.lookat_y = p.getY();
+	settings.lookat_z = h/2.0;
+      }
+      ReDraw();
+      //Reset to intial view
+      if (ShowTree == trees.size() - 1)
+	ShowTree = -1;
+      //ShowTree modulo trees.size() rotates the current tree
+      else
+	ShowTree = (ShowTree+1) % trees.size();
     }
     
     
@@ -334,10 +344,10 @@ namespace Lignum
 					double &x2, double &y2, double &z2,
 					double odd)
     {
-	if (ShowTree<1) 
+	if (ShowTree == -1) 
 	    return;
 	
-	WrapperBase *tree = trees[ShowTree-1];
+	WrapperBase *tree = trees[ShowTree];
 	Point p;
 	LGMdouble h;
 	tree->GetTreeMetrics(p,h);
