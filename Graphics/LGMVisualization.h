@@ -80,6 +80,7 @@ class LGMVisualization
 
   LGMVisualization();
   void SetVisibleDistance(double l);
+  void SetCameraDistance(double d){camera_distance = d;}
   void InitVisualization(int argc=0,char* argv[] = NULL);
   void SetAntialising(bool antialisingOn);
   void SetMode(STEMMODE m) { mode = m; }
@@ -99,9 +100,8 @@ class LGMVisualization
   int GetBmpTexNumber(string filename);
 
  void GetCameraPos(double &x1, double &y1, double &z1,
-					double &x2, double &y2, double &z2,
-				     double odd);
-
+		   double &x2, double &y2, double &z2,
+		   double odd);
   void drawTrees(); /*{for_each(trees.begin(),trees.end(),DrawTrees());}*/
   void hello(){for_each(trees.begin(),trees.end(),Hello());}
   void makeDisplayLists(){for_each(trees.begin(),trees.end(),MakeDisplayLists(order_foliage));}
@@ -143,6 +143,8 @@ private:
   static void StaticNewWindowSize(int new_x, int new_y);
 private:
   double max_height;//The tree with the maximum height to be visualized
+  double camera_distance;//Explicitely set the  distance of the camera
+			 //from the current tree (ShowTree)
 };
 
 
