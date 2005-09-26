@@ -374,62 +374,63 @@ namespace Lignum
     
     
     
-    // This function is called when a key is pressed
-    void LGMVisualization::Keypress(unsigned char key, int x, int y)
-    {
-	
-	
-	switch(key) 
-	{
-	    
-	    case 'q': Quit();             // q to quit  
-		break; 
-	    case 'a': settings.lightx++;           // Move the light source 
-		ReDraw();
-		break;    
-	    case 'z': settings.lightx--;
-		ReDraw();
-		break;    
-	    case 's': settings.lighty++;   
-		ReDraw();
-		break;       
-	    case 'x': settings.lighty--;   
-		ReDraw();
-		break;    
-	    case 'd': settings.lightz++;   
-		ReDraw();
-		break;
-	    case 'c': settings.lightz--;  
-		ReDraw();
-		break;
-	  
-	    case '4': settings.head_xy--;          // Turn head
-		ReDraw();
-		break;    
-	    case '6': settings.head_xy++;
-		ReDraw();
-		break;
-	    case '2': settings.cam_z = settings.cam_z - .5;
-		ReDraw();
-		break;    
-	    case '8': settings.cam_z = settings.cam_z + .5;//
-		ReDraw();
-		break;
-	    case '5': settings.cam_z =  1; //Reset values
-		settings.head_xy = 0;
-		ReDraw();
-		break;
-		
-	    case 'n':	
-		GoNextTree();
-		break;
-		
-	    case 'm': 
-		StartAnimation();
-		break;
-	    default:printf("%c",key);fflush(NULL);
-	}
-    }
+  // This function is called when a key is pressed
+  void LGMVisualization::Keypress(unsigned char key, int x, int y)
+  {
+    switch(key) 
+      {	    
+      case 'q': Quit();             // q to quit  
+	break; 
+      case 'a': settings.lightx++;           // Move the light source 
+	ReDraw();
+	break;    
+      case 'z': settings.lightx--;
+	ReDraw();
+	break;    
+      case 's': settings.lighty++;   
+	ReDraw();
+	break;       
+      case 'x': settings.lighty--;   
+	ReDraw();
+	break;    
+      case 'd': settings.lightz++;   
+	ReDraw();
+	break;
+      case 'c': settings.lightz--;  
+	ReDraw();
+	break;	  
+      case '4': settings.head_xy--;          // Turn head
+	ReDraw();
+	break;    
+      case '6': settings.head_xy++;
+	ReDraw();
+	break;
+      case '2': settings.cam_z = settings.cam_z - .5;
+	ReDraw();
+	break;    
+      case '8': settings.cam_z = settings.cam_z + .5;//
+	ReDraw();
+	break;
+      case '5': settings.cam_z =  1; //Reset values
+	settings.head_xy = 0;
+	ReDraw();
+	break;		
+      case 'n':	//next tree, current tree view
+	GoNextTree();
+	break;		
+      case 'm': 
+	StartAnimation();
+	break;
+      case 'r'://reset to the initial, all trees view
+	ShowTree = -1;
+	GoNextTree();
+	break;
+      default:
+	string s;
+	s.push_back(key);
+	LGMMessage("Unknown command: "+s);
+      }
+  }
     
     
     
