@@ -1,7 +1,7 @@
 
 #ifndef LGMVISUALIZATION
 #define LGMVIZUALIZATION
-
+#include <vector>
 
 #include "OpenGLSymbols.h"
 #include "OpenGLfunctions.h"
@@ -9,7 +9,7 @@
 #include "OpenGL.h"
 #include <GLSettings.h>
 #include <WrapperBase.h>
-#include <vector>
+
 
 #include <Lignum.h>
 
@@ -25,14 +25,6 @@ struct LoadedTexture
 
 namespace Lignum{
 enum STEMMODE { SOLID, WIREMODEL };
-  class Hello{
-  public:
-    void operator()(WrapperBase* wb){
-      wb->hello();
-    }
-  };
-
-
 
  class MakeWireModelLists{
   public:
@@ -55,13 +47,17 @@ enum STEMMODE { SOLID, WIREMODEL };
  class DrawTrees{
   public:
      DrawTrees(float sx, float sy, float sz){ x=sx; y=sy; z=sz; }
-     void operator()(WrapperBase* wb){ wb->DrawTree(x,y,z);     }
+   void operator()(WrapperBase* wb){ wb->DrawTree(x,y,z);}
      float x;
      float y;
      float z;
    
   };
 
+  class DrawTreeMetrics{
+  public:
+    void operator()(WrapperBase* wb){ wb->DrawTreeMetrics();}
+  };
 
 class LGMVisualization
 {
@@ -103,7 +99,6 @@ class LGMVisualization
 		   double &x2, double &y2, double &z2,
 		   double odd);
   void drawTrees(); /*{for_each(trees.begin(),trees.end(),DrawTrees());}*/
-  void hello(){for_each(trees.begin(),trees.end(),Hello());}
   void makeDisplayLists(){for_each(trees.begin(),trees.end(),MakeDisplayLists(order_foliage));}
  void makeWireModelLists(){for_each(trees.begin(),trees.end(),MakeWireModelLists());}
 private:
@@ -145,6 +140,7 @@ private:
   double max_height;//The tree with the maximum height to be visualized
   double camera_distance;//Explicitely set the  distance of the camera
 			 //from the current tree (ShowTree)
+  int show_tree_metrics;//Show H and Dbh or not
 };
 
 
