@@ -15,9 +15,6 @@ void CfWrapper<TS,BUD>::GetTreeMetrics(Point &pos, LGMdouble &h)
 	h = GetValue(tree, LGAH);
     }
 
-
-
-
 template <class TS, class BUD, class SHAPE>
 void HwWrapper<TS,BUD,SHAPE>::GetTreeMetrics(Point &pos, LGMdouble &h)
     {
@@ -285,18 +282,6 @@ void HwWrapper<TS,BUD,SHAPE>::DrawOrderedLeaves(float x, float y, float z)
    }     
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
 template <class TS, class BUD>
 void CfWrapper<TS,BUD>::MakeDisplayLists(bool orderfoliage)
 {
@@ -356,6 +341,21 @@ void CfWrapper<TS,BUD>::DrawTree(float x, float y, float z)
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
     glCallList(intDisplaylistFoliage);
     
+}
+
+template <class TS, class BUD>
+void CfWrapper<TS,BUD>::DrawTreeMetrics()
+{
+  Point p = GetPoint(tree);
+  double h = GetValue(tree,LGAH);
+  double dbh = GetValue(tree,LGADbh)*100.0;
+  ostringstream os1;
+  ostringstream os2;
+  os1 << setprecision(3) << "H="<<h;
+  os2 << setprecision(2) << "D=" << dbh;
+  LGMTextOutput(p.getX(),p.getY()+0.2,h,const_cast<char*>(os1.str().c_str()));
+  if (dbh > 0.0)
+    LGMTextOutput(p.getX(),p.getY()+0.2,1.3,const_cast<char*>(os2.str().c_str()));
 }
 
 template <class TS, class BUD,class SHAPE>
