@@ -1,12 +1,15 @@
 
-#ifndef WRAPPERBASE
-#define WRAPPERBASE
+#ifndef WRAPPERBASE_H
+#define WRAPPERBASE_H
+#include <sstream>
+
 
 #include <Lignum.h>
-//#include <CTexture.h>
+
+
 
 namespace Lignum{
-
+  void LGMTextOutput(double x, double y, double z,char *string);
 class WrapperBase
 {
 public:
@@ -20,15 +23,14 @@ public:
   virtual void MakeWireModelLists()=0;
   virtual void DrawTree(float x, float y, float z)=0;
   virtual void GetTreeMetrics(Point &pos, LGMdouble &h)=0;
-  virtual void hello()=0;
-
+  virtual void DrawTreeMetrics()=0;
   // CTexture stem_texture;
- int intStemTexture;    //texture number of stem
- int intFoliageTexture; //texture number of foliage
- int intDisplaylistStem; //displaylists
- int intDisplaylistFoliage;
- bool ordfoliage;
- bool bmpImage;
+  int intStemTexture;    //texture number of stem
+  int intFoliageTexture; //texture number of foliage
+  int intDisplaylistStem; //displaylists
+  int intDisplaylistFoliage;
+  bool ordfoliage;
+  bool bmpImage;
 };
 
 
@@ -47,12 +49,8 @@ public:
   virtual void DrawTree(float x, float y, float z);
   void VisualizeWireModel();
   virtual void VisualizeStem(int &active_texture);
- 
-
- virtual void GetTreeMetrics(Point &pos, LGMdouble &h);
- virtual void hello(){cout << "CfWrapper hello" << endl;}
-
-
+  virtual void GetTreeMetrics(Point &pos, LGMdouble &h);
+  virtual void DrawTreeMetrics();
   Tree<TS,BUD>& tree;
 };
 
@@ -71,11 +69,9 @@ public:
   void VisualizeFoliage(int &active_texture);
   virtual void DrawTree(float x, float y, float z);
   void VisualizeWireModel();
- virtual void GetTreeMetrics(Point &pos, LGMdouble &h);
+  virtual void GetTreeMetrics(Point &pos, LGMdouble &h);
+  virtual void DrawTreeMetrics(){LGMMessage("HwWrapper::DrawTreeMetrics Not Implemented");}
   virtual void VisualizeStem(int &active_texture);
-  
-  virtual void hello(){cout << "HwWrapper hello" << endl;;}
- 
   void DrawOrderedLeaves(float x, float y, float z);
   
   Tree<TS,BUD>& tree;
@@ -85,6 +81,5 @@ public:
 
 }
 
-#include <WrapperBaseI.h>
-
 #endif
+#include <WrapperBaseI.h>
