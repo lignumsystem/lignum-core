@@ -1,8 +1,6 @@
 #include <stdafx.h>
 
 #include <LGMVisualization.h>
-#include <WrapperBase.h>
-
 
 using namespace Lignum;
 
@@ -19,15 +17,24 @@ LGMVisualization* LGMVisualization::active_visualization = NULL;
 #endif
 
 
-
 namespace Lignum
 {
 
+  void LGMTextOutput(double x, double y, double z,char *string){
+    int len, i;
   
+    glRasterPos3f(static_cast<float>(x), static_cast<float>(y),
+		  static_cast<float>(z));
+    len = (int) strlen(string);
+    for (i = 0; i < len; i++) {
+      glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, string[i]);
+    }
+  }
 
   LGMVisualization::LGMVisualization()
     :mode(SOLID),order_foliage(false),
-     ShowTree(-1),ldistance(100),max_height(0.0),camera_distance(0.0)
+     ShowTree(-1),ldistance(100),max_height(0.0),camera_distance(0.0),
+     show_tree_metrics(0)
   {
     active_visualization = this;
   }
@@ -89,7 +96,6 @@ namespace Lignum
 	{
 	    for_each(trees.begin(),trees.end(), MakeWireModelLists());
 	}
-	
       GoNextTree();
       glutMainLoop ();
     }
@@ -177,8 +183,9 @@ namespace Lignum
 		  0.0, 0.0, 1.0);	// which way up    
 	
 	drawTrees();
-	
-	glPopMatrix();   
+	if (show_tree_metrics)
+	  for_each(trees.begin(),trees.end(),DrawTreeMetrics());
+	glPopMatrix(); 
 	glutSwapBuffers();        // Swap buffers  
 	glutPostRedisplay ();
 	glFlush();
@@ -278,11 +285,13 @@ namespace Lignum
       }
       ReDraw();
       //Reset to intial view
-      if (ShowTree == trees.size() - 1)
+      if (ShowTree == trees.size() - 1){
 	ShowTree = -1;
+      }
       //ShowTree modulo trees.size() rotates the current tree
-      else
+      else{
 	ShowTree = (ShowTree+1) % trees.size();
+      }
     }
     
     
@@ -414,7 +423,11 @@ namespace Lignum
       case '5': settings.cam_z =  1; //Reset values
 	settings.head_xy = 0;
 	ReDraw();
-	break;		
+	break;	
+      case 'b':
+	show_tree_metrics = (show_tree_metrics+1)%2;
+	ReDraw();
+	break;
       case 'n':	//next tree, current tree view
 	GoNextTree();
 	break;		
