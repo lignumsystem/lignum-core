@@ -140,7 +140,11 @@ private:
   double max_height;//The tree with the maximum height to be visualized
   double camera_distance;//Explicitely set the  distance of the camera
 			 //from the current tree (ShowTree)
-  int show_tree_metrics;//Show H and Dbh or not
+  int show_tree_metrics;//Toggle display of H and Dbh
+  int show_help;//Toggle help display
+  string help_str;//Current help string (fi or en)
+  string help_fi;//Finnish help
+  string help_en;//English help
 };
 
 
