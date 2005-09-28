@@ -587,16 +587,16 @@ namespace Lignum
     glutDisplayFunc(StaticReDraw);                 // The draw-function
     //glutCreateMenu(StaticMenu);                    // Make the menu
  
-    glutAddMenuEntry("Leaves on/off__________________", 14);
-    glutAddMenuEntry("Textures on/off_________________", 15);
-    glutAddMenuEntry("VoxelSpace on/off_______________", 1);
-    glutAddMenuEntry("VoxelSpace with lines on/off____", 2);
+//     glutAddMenuEntry("Leaves on/off__________________", 14);
+//     glutAddMenuEntry("Textures on/off_________________", 15);
+//     glutAddMenuEntry("VoxelSpace on/off_______________", 1);
+//     glutAddMenuEntry("VoxelSpace with lines on/off____", 2);
  
 
-    glutAddMenuEntry("Change background color______________", 16);
-    glutAddMenuEntry("Write image", 13);
+//     glutAddMenuEntry("Change background color______________", 16);
+//     glutAddMenuEntry("Write image", 13);
   
-    glutAttachMenu(GLUT_RIGHT_BUTTON);  
+//     glutAttachMenu(GLUT_RIGHT_BUTTON);  
     glEnable (GL_DEPTH_TEST); 
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);  // Clear the screen 
   }
