@@ -1,10 +1,6 @@
 #ifndef WRAPPERBASEI_H
 #define WRAPPERBASEI_H
 
-#include <Lignum.h>
-#include <Point.h>
-#include <LGMUnits.h>
-
 namespace Lignum
 {
 
@@ -353,9 +349,11 @@ void CfWrapper<TS,BUD>::DrawTreeMetrics()
   ostringstream os2;
   os1 << setprecision(3) << "H="<<h;
   os2 << setprecision(2) << "D=" << dbh;
-  LGMTextOutput(p.getX(),p.getY()+0.2,h,const_cast<char*>(os1.str().c_str()));
+  LGMTextOutput(p.getX(),p.getY()+0.2,h,GLUT_BITMAP_HELVETICA_10,
+		os1.str());
   if (dbh > 0.0)
-    LGMTextOutput(p.getX(),p.getY()+0.2,1.3,const_cast<char*>(os2.str().c_str()));
+    LGMTextOutput(p.getX(),p.getY()+0.2,1.3,GLUT_BITMAP_HELVETICA_10,
+		  os2.str());
 }
 
 template <class TS, class BUD,class SHAPE>

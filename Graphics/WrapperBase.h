@@ -1,6 +1,16 @@
-
 #ifndef WRAPPERBASE_H
 #define WRAPPERBASE_H
+
+#if defined(__APPLE__) || defined(__MACOSX__)
+#include <OpenGL/gl.h>
+#include <OpenGL/glu.h>
+#include <GLUT/glut.h>
+#else
+#include <GL/gl.h>
+#include <GL/glu.h>
+#include <GL/glut.h>
+#endif
+
 #include <sstream>
 
 
@@ -9,7 +19,7 @@
 
 
 namespace Lignum{
-  void LGMTextOutput(double x, double y, double z,char *string);
+  void LGMTextOutput(double x,double y,double z,void* font,const string &str);
 class WrapperBase
 {
 public:
