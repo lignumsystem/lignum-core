@@ -20,22 +20,24 @@ LGMVisualization* LGMVisualization::active_visualization = NULL;
 namespace Lignum
 {
 
-  void LGMTextOutput(double x, double y, double z,char *string){
+  void LGMTextOutput(double x, double y, double z,void* font,const string& str){
     int len, i;
   
     glRasterPos3f(static_cast<float>(x), static_cast<float>(y),
 		  static_cast<float>(z));
-    len = (int) strlen(string);
+    len = static_cast<int>(str.size());
     for (i = 0; i < len; i++) {
-      glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, string[i]);
+      glutBitmapCharacter(font, str[i]);
     }
   }
 
   LGMVisualization::LGMVisualization()
     :mode(SOLID),order_foliage(false),
      ShowTree(-1),ldistance(100),max_height(0.0),camera_distance(0.0),
-     show_tree_metrics(0)
+     show_tree_metrics(0),show_help(1),help_str("a=Apua/h=Help")
   {
+    help_fi="n=Seuraava/m=Kierros/b=Mitat/r=Alku/q=Lopeta/a=Apua/h=Help";
+    help_en="n=Next/m=Rotate/b=Metrics/r=Reset/q=Quit/a=Apua/h=Help";
     active_visualization = this;
   }
   
@@ -185,6 +187,18 @@ namespace Lignum
 	drawTrees();
 	if (show_tree_metrics)
 	  for_each(trees.begin(),trees.end(),DrawTreeMetrics());
+	if (show_help){
+	  //Try to set the help_str in front of the camera
+	  Point p1(settings.cam_x, settings.cam_y, settings.cam_z);
+	  Point p2(settings.lookat_x,settings.lookat_y,settings.lookat_z);
+	  PositionVector d1(p2-p1);
+	  d1.normalize();
+	  //10 units away from camera
+	  Point p3 = p1+10.0*(Point)d1;
+	  //Move a bit to the left
+	  LGMTextOutput(p3.getX(),p3.getY()-1.5,p3.getZ(),
+			GLUT_BITMAP_HELVETICA_18,help_str);
+	}
 	glPopMatrix(); 
 	glutSwapBuffers();        // Swap buffers  
 	glutPostRedisplay ();
@@ -388,60 +402,45 @@ namespace Lignum
   {
     switch(key) 
       {	    
-      case 'q': Quit();             // q to quit  
+      case 'q': Quit();  
 	break; 
-      case 'a': settings.lightx++;           // Move the light source 
-	ReDraw();
-	break;    
-      case 'z': settings.lightx--;
-	ReDraw();
-	break;    
-      case 's': settings.lighty++;   
-	ReDraw();
-	break;       
-      case 'x': settings.lighty--;   
-	ReDraw();
-	break;    
-      case 'd': settings.lightz++;   
+      case 'a': //Toggle help in Finnish
+	if (help_str == help_fi){
+	  show_help = (show_help+1)%2;
+	}
+	else{//Switch to Finnish
+	  help_str = help_fi;
+	  show_help = 1;
+	}
 	ReDraw();
 	break;
-      case 'c': settings.lightz--;  
-	ReDraw();
-	break;	  
-      case '4': settings.head_xy--;          // Turn head
-	ReDraw();
-	break;    
-      case '6': settings.head_xy++;
-	ReDraw();
-	break;
-      case '2': settings.cam_z = settings.cam_z - .5;
-	ReDraw();
-	break;    
-      case '8': settings.cam_z = settings.cam_z + .5;//
-	ReDraw();
-	break;
-      case '5': settings.cam_z =  1; //Reset values
-	settings.head_xy = 0;
-	ReDraw();
-	break;	
-      case 'b':
+      case 'b'://Show H and Dbh
 	show_tree_metrics = (show_tree_metrics+1)%2;
 	ReDraw();
 	break;
-      case 'n':	//next tree, current tree view
+      case 'h'://Toggle help in English
+	if (help_str == help_en){
+	  show_help = (show_help+1)%2;
+	}
+	else{//Switch to English
+	  help_str = help_en;
+	  show_help = 1;
+	}
+	ReDraw();
+	break;
+      case 'n':	//Next tree, current tree view
 	GoNextTree();
 	break;		
-      case 'm': 
+      case 'm': //Rotate 360 around current ShowTree tree
 	StartAnimation();
 	break;
-      case 'r'://reset to the initial, all trees view
+      case 'r'://Reset to the initial, all trees view
 	ShowTree = -1;
 	GoNextTree();
 	break;
-      default:
-	string s;
-	s.push_back(key);
-	LGMMessage("Unknown command: "+s);
+      default://Toggle help
+	show_help = (show_help+1)%2;
+	ReDraw();
       }
   }
     
@@ -581,12 +580,12 @@ namespace Lignum
   {
     glutReshapeFunc(StaticNewWindowSize);          // Call this function if the size is changed  
     glutKeyboardFunc(StaticKeyPress);              // Call this funktion when a key is pressed 
-    glutMouseFunc (StaticChangeMouseButton);       // Mouse events
-    glutMotionFunc(StaticMouseMotion);
+    //glutMouseFunc (StaticChangeMouseButton);       // Mouse events
+    //glutMotionFunc(StaticMouseMotion);
     glutIdleFunc (StaticLoop);                     // This is called when nothing happens
-    glutSpecialFunc(StaticArrows);
+    //glutSpecialFunc(StaticArrows);
     glutDisplayFunc(StaticReDraw);                 // The draw-function
-    glutCreateMenu(StaticMenu);                    // Make the menu
+    //glutCreateMenu(StaticMenu);                    // Make the menu
  
     glutAddMenuEntry("Leaves on/off__________________", 14);
     glutAddMenuEntry("Textures on/off_________________", 15);
