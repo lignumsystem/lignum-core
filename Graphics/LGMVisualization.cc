@@ -188,15 +188,18 @@ namespace Lignum
 	if (show_tree_metrics)
 	  for_each(trees.begin(),trees.end(),DrawTreeMetrics());
 	if (show_help){
-	  //Try to set the help_str in front of the camera
+	  //Set the help_str in front of the camera
 	  Point p1(settings.cam_x, settings.cam_y, settings.cam_z);
 	  Point p2(settings.lookat_x,settings.lookat_y,settings.lookat_z);
+	  //Direction from camera to point of focus
 	  PositionVector d1(p2-p1);
 	  d1.normalize();
-	  //10 units away from camera
+	  //10 units away from camera towards the point of focus
 	  Point p3 = p1+10.0*(Point)d1;
-	  //Move a bit to the left
-	  LGMTextOutput(p3.getX(),p3.getY()-1.5,p3.getZ(),
+	  PositionVector d2(p3);
+	  //Move help_str a bit to the left
+	  d2.rotate(p1,PositionVector(0,0,1),0.15);
+	  LGMTextOutput(d2.getX(),d2.getY(),d2.getZ(),
 			GLUT_BITMAP_HELVETICA_18,help_str);
 	}
 	glPopMatrix(); 
