@@ -360,7 +360,7 @@ namespace Lignum
       tree = trees[trees.size()-1];
     else if (ShowTree == 0)//One tree case and/or coming from reset in
 			   //several  trees case.  Look at  the middle
-			   //tree
+			   //tree as in the beginning.
       tree = trees[static_cast<int>(floor(trees.size()/2.0))];
     else
       tree = trees[ShowTree-1];
