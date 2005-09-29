@@ -36,8 +36,8 @@ namespace Lignum
      ShowTree(-1),ldistance(100),max_height(0.0),camera_distance(0.0),
      show_tree_metrics(0),show_help(1),help_str("a=Apua/h=Help")
   {
-    help_fi="n=Seuraava/m=Kierros/b=Mitat/r=Alku/q=Lopeta/a=Apua/h=Help";
-    help_en="n=Next/m=Rotate/b=Metrics/r=Reset/q=Quit/a=Apua/h=Help";
+    help_fi="n=Seuraava, m=Kierros, b=Mitat, z=Eteen, x=Taakse, c=Ylos, v=Alas, s=Vasen, d=Oikea, r=Alku, q=Lopeta, a=Apua, h=Help";
+    help_en="n=Next, m=Rotate, b=Metrics, z=Forward, x=Backwards, c=Up, v=Down, s=Left, d=Right, r=Reset, q=Quit, a=Apua, h=Help";
     active_visualization = this;
   }
   
@@ -198,9 +198,10 @@ namespace Lignum
 	  Point p3 = p1+10.0*(Point)d1;
 	  PositionVector d2(p3);
 	  //Move help_str a bit to the left
-	  d2.rotate(p1,PositionVector(0,0,1),0.15);
-	  LGMTextOutput(d2.getX(),d2.getY(),d2.getZ(),
-			GLUT_BITMAP_HELVETICA_18,help_str);
+	  d2.rotate(p1,PositionVector(0,0,1),0.19);
+	  //and down
+	  LGMTextOutput(d2.getX(),d2.getY(),d2.getZ()-2.0,
+			GLUT_BITMAP_HELVETICA_12,help_str);
 	}
 	glPopMatrix(); 
 	glutSwapBuffers();        // Swap buffers  
@@ -277,7 +278,7 @@ namespace Lignum
 			     //outside the forest, or go in the forest
 			     //and let the camera turn 360.
         settings.cam_z = max_height/2.0;
-	//Look at the middle tree 
+	//Look at the first tree
 	settings.lookat_x = p.getX();
 	settings.lookat_y = p.getY();
 	settings.lookat_z = max_height/2.0;
@@ -311,26 +312,81 @@ namespace Lignum
       }
     }
     
-    
-    void LGMVisualization::StartAnimation()
-    {
-	double dx = settings.lookat_x - settings.cam_x;
-	double dy = settings.lookat_y - settings.cam_y;
-	double dz = settings.lookat_z - settings.cam_z;
+  //Zoom in (dir=1) and out (dir=-1)
+  void LGMVisualization::Zoom(int dir)
+  {
+    Point p1(settings.cam_x,settings.cam_y,settings.cam_z);
+    Point p2(settings.lookat_x,settings.lookat_y,settings.lookat_z);
+    PositionVector d1(p2-p1);
+    d1.normalize();
+    Point p3 = p1+3.0*dir*(Point)d1;
+    Point p4 = p2+3.0*dir*(Point)d1;
+    settings.cam_x = p3.getX();
+    settings.cam_y = p3.getY();
+    settings.cam_z = p3.getZ();
+    settings.lookat_x = p4.getX();
+    settings.lookat_y = p4.getY();
+    settings.lookat_z = p4.getZ();
+  }
+  //Up/down and left/right camera movement and the point of focus
+  void LGMVisualization::Translate(PositionVector& d1)
+  {
+    Point p1(settings.cam_x,settings.cam_y,settings.cam_z);
+    Point p2(settings.lookat_x,settings.lookat_y,settings.lookat_z);
+    d1.normalize();
+    Point p3 = p1+3.0*(Point)d1;
+    Point p4 = p2+3.0*(Point)d1;
+    settings.cam_x = p3.getX();
+    settings.cam_y = p3.getY();
+    settings.cam_z = p3.getZ();
+    settings.lookat_x = p4.getX();
+    settings.lookat_y = p4.getY();
+    settings.lookat_z = p4.getZ();
+  }
 
-	double dist = sqrt(dx*dx+dy*dy);
+  void LGMVisualization::StartAnimation()
+  {
+    Point p;
+    double h;
+    //Now that we have all the translations, it is quite possible that
+    //the  point of focus  is no  longer the  ShowTree tree.   Make it
+    //so. The logic  here is to assume that the  user has selected the
+    //tree of  interest with  'n' and has  moved closer. Now  the user
+    //wants to  rotate round the  tree.  In GoNextTree()  ShowTree has
+    //already  increased ShowTree  so  it is  ShowTree-1  the user  is
+    //looking at.
+    WrapperBase *tree = NULL;
+    if (ShowTree == -1)
+      tree = trees[trees.size()-1];
+    else if (ShowTree == 0)//One tree case and/or coming from reset in
+			   //several  trees case.  Look at  the middle
+			   //tree
+      tree = trees[static_cast<int>(floor(trees.size()/2.0))];
+    else
+      tree = trees[ShowTree-1];
+    tree->GetTreeMetrics(p, h);
 
-	for (float ii=0; ii<36; ii++)
-	{
+    //Look at the current tree 
+    settings.lookat_x = p.getX();
+    settings.lookat_y = p.getY();
+
+    double dx = settings.lookat_x - settings.cam_x;
+    double dy = settings.lookat_y - settings.cam_y;
+    double dz = settings.lookat_z - settings.cam_z;
+
+    double dist = sqrt(dx*dx+dy*dy);
+
+    for (float ii=0; ii<36; ii++)
+      {
 	    
-	    settings.cam_z = settings.lookat_z;
+	settings.cam_z = settings.lookat_z;
 
-	    settings.cam_y = settings.lookat_y + sin(ii/36.0*2*PI_VALUE)*dist;
-	    settings.cam_x = settings.lookat_x + cos(ii/36.0*2*PI_VALUE)*dist;
+	settings.cam_y = settings.lookat_y + sin(ii/36.0*2*PI_VALUE)*dist;
+	settings.cam_x = settings.lookat_x + cos(ii/36.0*2*PI_VALUE)*dist;
 	  
-	    ReDraw();
-	}
-    }
+	ReDraw();
+      }
+  }
 
 
     
@@ -421,6 +477,18 @@ namespace Lignum
 	show_tree_metrics = (show_tree_metrics+1)%2;
 	ReDraw();
 	break;
+      case 'c'://Translate Up the camera and the point of focus
+	{PositionVector d(0,0,-1);
+	  Translate(d);
+	  ReDraw();
+	}
+	break;
+      case 'd'://Translate Right the camera and the point of focus
+	{PositionVector d(0,-1,0);
+	  Translate(d);
+	  ReDraw();
+	}
+	break;
       case 'h'://Toggle help in English
 	if (help_str == help_en){
 	  show_help = (show_help+1)%2;
@@ -431,15 +499,37 @@ namespace Lignum
 	}
 	ReDraw();
 	break;
-      case 'n':	//Next tree, current tree view
-	GoNextTree();
-	break;		
       case 'm': //Rotate 360 around current ShowTree tree
 	StartAnimation();
 	break;
+      case 'n':	//Next tree, current tree view
+	GoNextTree();
+	break;		
       case 'r'://Reset to the initial, all trees view
 	ShowTree = -1;
 	GoNextTree();
+	break;
+      case 's':
+	//Translate Left the camera and the point of focus
+	{PositionVector d(0,1,0);
+	  Translate(d);
+	  ReDraw();
+	}
+	break;
+      case 'v':
+	//Translate Down the camera and the point of focus
+	{PositionVector d(0,0,1);
+	  Translate(d);
+	  ReDraw();
+	}
+	break;
+      case 'x':
+	Zoom(-1);
+	ReDraw();
+	break;
+      case 'z':
+	Zoom(1);
+	ReDraw();
 	break;
       default://Toggle help
 	show_help = (show_help+1)%2;
