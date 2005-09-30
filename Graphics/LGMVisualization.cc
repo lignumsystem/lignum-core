@@ -52,7 +52,7 @@ namespace Lignum
 	glutInit(&argc,argv);
 	glutInitWindowSize(settings.WINDOW_SIZE_X,settings.WINDOW_SIZE_Y);
 	glutInitDisplayMode(GLUT_RGB|GLUT_DOUBLE);
-	settings.window1 = glutCreateWindow("Lignum");
+	settings.window1 = glutCreateWindow(argv[0]);
 	InitCallBacks(); 
 	SetLight();   
 	glClearColor(0.9f, 0.9f, 0.9f, 0.9f);
