@@ -334,8 +334,8 @@ namespace Lignum
     Point p1(settings.cam_x,settings.cam_y,settings.cam_z);
     Point p2(settings.lookat_x,settings.lookat_y,settings.lookat_z);
     d1.normalize();
-    Point p3 = p1+3.0*(Point)d1;
-    Point p4 = p2+3.0*(Point)d1;
+    Point p3 = p1+1.0*(Point)d1;
+    Point p4 = p2+1.0*(Point)d1;
     settings.cam_x = p3.getX();
     settings.cam_y = p3.getY();
     settings.cam_z = p3.getZ();
