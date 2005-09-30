@@ -52,7 +52,20 @@ namespace Lignum
 	glutInit(&argc,argv);
 	glutInitWindowSize(settings.WINDOW_SIZE_X,settings.WINDOW_SIZE_Y);
 	glutInitDisplayMode(GLUT_RGB|GLUT_DOUBLE);
-	settings.window1 = glutCreateWindow(argv[0]);
+	
+	//A nice  title with the  program name only: the  program name
+	//can contain A-Z,a-z,0-9, also '-' and '_' are accepted. Stop
+	//when  e.g. '/' is  seen as  denoting the  previous directory
+	//level.
+	string s(argv[0]);
+	string n;
+	int i = s.size()-1;
+	while (i && (isalnum(s[i]) || s[i] == '-' || s[i] == '_')){
+	  n.insert(n.begin(),s[i]);
+	  i--;
+	}
+	settings.window1 = glutCreateWindow(n.c_str());
+	
 	InitCallBacks(); 
 	SetLight();   
 	glClearColor(0.9f, 0.9f, 0.9f, 0.9f);
