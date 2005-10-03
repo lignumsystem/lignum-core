@@ -15,8 +15,6 @@
 
 enum DRAWMODE { STEM_MODE, FOLIAGE_MODE };
 
-//enum STEMMODE { SOLID, WIREMODEL };
-
 struct LoadedTexture
 {
     string fname;
@@ -77,7 +75,7 @@ class LGMVisualization
   LGMVisualization();
   void SetVisibleDistance(double l);
   void SetCameraDistance(double d){camera_distance = d;}
-  void InitVisualization(int argc=0,char* argv[] = NULL);
+  void InitVisualization(int arg,char* argv[]);
   void SetAntialising(bool antialisingOn);
   void SetMode(STEMMODE m) { mode = m; }
   void NewWindowSize(GLsizei new_x, GLsizei new_y);
@@ -98,9 +96,7 @@ class LGMVisualization
  void GetCameraPos(double &x1, double &y1, double &z1,
 		   double &x2, double &y2, double &z2,
 		   double odd);
-  void drawTrees(); /*{for_each(trees.begin(),trees.end(),DrawTrees());}*/
-  void makeDisplayLists(){for_each(trees.begin(),trees.end(),MakeDisplayLists(order_foliage));}
- void makeWireModelLists(){for_each(trees.begin(),trees.end(),MakeWireModelLists());}
+  void drawTrees(); 
 private:
   bool drawed;
   bool order_foliage;
