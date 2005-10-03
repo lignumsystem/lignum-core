@@ -69,7 +69,7 @@ public:
   virtual void DrawTree(float x, float y, float z);
   void VisualizeWireModel();
   virtual void GetTreeMetrics(Point &pos, LGMdouble &h);
-  virtual void DrawTreeMetrics(){LGMMessage("HwWrapper::DrawTreeMetrics Not Implemented");}
+  virtual void DrawTreeMetrics();
   virtual void VisualizeStem(int &active_texture);
   void DrawOrderedLeaves(float x, float y, float z);
   

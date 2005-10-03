@@ -356,6 +356,24 @@ void CfWrapper<TS,BUD>::DrawTreeMetrics()
 		  os2.str());
 }
 
+
+template <class TS, class BUD>
+void HwWrapper<TS,BUD>::DrawTreeMetrics()
+{
+  Point p = GetPoint(tree);
+  double h = GetValue(tree,LGAH);
+  double dbh = GetValue(tree,LGADbh)*100.0;
+  ostringstream os1;
+  ostringstream os2;
+  os1 << setprecision(3) << "H="<<h;
+  os2 << setprecision(2) << "D=" << dbh;
+  LGMTextOutput(p.getX(),p.getY()+0.2,h,GLUT_BITMAP_HELVETICA_10,
+		os1.str());
+  if (dbh > 0.0)
+    LGMTextOutput(p.getX(),p.getY()+0.2,1.3,GLUT_BITMAP_HELVETICA_10,
+		  os2.str());
+}
+
 template <class TS, class BUD,class SHAPE>
 void HwWrapper<TS,BUD,SHAPE>::DrawTree(float x, float y, float z)
 {
