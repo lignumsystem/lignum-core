@@ -180,7 +180,8 @@ namespace Lignum
 	// SetLight();
 	CheckValues(); 
 	
-	
+	/******************************************************
+        //Consult Mika why this checking seems to be unnecessary
 	// Check the settings.camera coordinates 
 	hx = cos(settings.x_move*0.1*2*PI_VALUE/360) * 8;
 	hy = sin(settings.x_move*0.1*2*PI_VALUE/360) * 8;
@@ -192,9 +193,10 @@ namespace Lignum
 	//settings.cam_z = 1;   
 
 
-	
-	gluLookAt(settings.cam_x, settings.cam_y, settings.cam_z,// settings.camera x,y,z  
-		  settings.lookat_x, settings.lookat_y, settings.lookat_z, // look at x,y,z    
+	********************************************************/
+	// settings.camera x,y,z  and look at x,y,z    
+	gluLookAt(settings.cam_x, settings.cam_y, settings.cam_z,
+		  settings.lookat_x, settings.lookat_y, settings.lookat_z, 
 		  0.0, 0.0, 1.0);	// which way up    
 	
 	drawTrees();
@@ -210,9 +212,14 @@ namespace Lignum
 	  //10 units away from camera towards the point of focus
 	  Point p3 = p1+10.0*(Point)d1;
 	  PositionVector d2(p3);
-	  //Move help_str a bit to the left
+	  //Move the help_str a bit to the left
 	  d2.rotate(p1,PositionVector(0,0,1),0.19);
-	  //and down
+	  //Move the help_str a bit down.  The -2.0 units down and the
+	  //10.0 units forward above  are "connected": If 1 instead of
+	  //10  were used  above, the  -2.0 down  here would  move the
+	  //help_str out of focus  (string close to camera). Note also
+	  //that the distance from the camera does not affect the size
+	  //of the 2D string.
 	  LGMTextOutput(d2.getX(),d2.getY(),d2.getZ()-2.0,
 			GLUT_BITMAP_HELVETICA_12,help_str);
 	}
@@ -789,7 +796,7 @@ namespace Lignum
 
  
 
-void LGMVisualization:: drawTrees()
+void LGMVisualization::drawTrees()
 {
     for_each(trees.begin(),trees.end(),DrawTrees(settings.cam_x,settings.cam_y,
 						 settings.cam_z));
