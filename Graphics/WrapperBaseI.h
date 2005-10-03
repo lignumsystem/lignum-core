@@ -357,8 +357,8 @@ void CfWrapper<TS,BUD>::DrawTreeMetrics()
 }
 
 
-template <class TS, class BUD>
-void HwWrapper<TS,BUD>::DrawTreeMetrics()
+  template <class TS, class BUD, class SHAPE>
+  void HwWrapper<TS,BUD,SHAPE>::DrawTreeMetrics()
 {
   Point p = GetPoint(tree);
   double h = GetValue(tree,LGAH);
