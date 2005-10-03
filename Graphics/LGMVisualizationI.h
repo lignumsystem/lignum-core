@@ -53,18 +53,32 @@ namespace Lignum{
  template <class TS, class BUD>
  void LGMVisualization::AddCfTree(Tree<TS,BUD>& t, string stemTex, string folTex)
 
-{	
-	CfWrapper<TS,BUD> *wb = new CfWrapper<TS,BUD>(t);
-	//Keep track of the tallest tree.
-	max_height = max(max_height,GetValue(t,LGAH));	
-	// Neulasten tekstuuri
-	wb->intFoliageTexture = GetTgaTexNumber(folTex);
-	//Rungon tekstuuri
-	CTexture stem_texture;
-	stem_texture.Load(stemTex.c_str(), 512, 512);
-	stem_texture.use();
-	wb->intStemTexture = stem_texture.texturenum;
-	trees.push_back(wb);
+{
+  
+  CfWrapper<TS,BUD> *wb = new CfWrapper<TS,BUD>(t);
+  //Keep track of the tallest tree.
+  max_height = max(max_height,GetValue(t,LGAH));
+
+  //Check if the texture files exist
+  ifstream f1(stemTex.c_str());
+  if (!f1){
+    LGMMessage("Stem texture file missing");
+  }
+  ifstream f2(folTex.c_str());
+  if (!f2){
+    LGMMessage("Foliage texture file missing");
+  }
+  //Load textures
+  if (f1){
+    CTexture stem_texture;
+    stem_texture.Load(stemTex.c_str(), 512, 512);
+    stem_texture.use();
+    wb->intStemTexture = stem_texture.texturenum;
+  }
+  if (f2){
+    wb->intFoliageTexture = GetTgaTexNumber(folTex);
+  }
+  trees.push_back(wb);
 }
 
 
