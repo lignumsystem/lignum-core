@@ -1,6 +1,6 @@
 #ifndef OPENGLUNIX_H
 #define OPENGLUNIX_H
-
+#include <OpenGLHFiles.h>
 #include <Lignum.h>
 #include "OpenGLinterface.h"
 

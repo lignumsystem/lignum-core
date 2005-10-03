@@ -1,20 +1,14 @@
 #ifndef TREEVAR_HPP
 #define TREEVAR_HPP
 
+#include <OpenGLHFiles.h>
+
 #define LEAVE_VERT 33
 #define LEAVE_SIZE 50
 #define LEAVE_LINES 8
 #define PETIOLE_SIZE 1
 #define TEXT_ODD 600
 
-//And the vendors just can't agree where the headers are...
-#if defined(__APPLE__) || defined(__MACOSX__)
-#include <OpenGL/gl.h>
-#include <OpenGL/glu.h>
-#else
-#include <GL/gl.h>
-#include <GL/glu.h>
-#endif
 
 
 static GLfloat leave[LEAVE_VERT][2] = { 

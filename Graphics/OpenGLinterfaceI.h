@@ -1,22 +1,10 @@
 #ifndef OPENGLINTERFACEI_H
 #define OPENGLINTERFACEI_H
 
-
-
-
 #include "OpenGLSymbols.h"
 #include "OpenGLfunctions.h"
 #include "OpenGLFunctor.h"
 #include "OpenGL.h"
-
-//And the vendors just can't agree where the headers are...
-#if defined(__APPLE__) || defined(__MACOSX__)
-#include <OpenGL/gl.h>
-#include <OpenGL/glu.h>
-#else
-#include <GL/gl.h>
-#include <GL/glu.h>
-#endif
 
 #include <Triangle.h>
 

@@ -1,23 +1,8 @@
 #ifndef OPENGLINTERFACE_H
 #define OPENGLINTERFACE_H
 
-
+#include <OpenGLHFiles.h>
 #include <Lignum.h>
-
-//And the vendors just can't agree where the headers are...
-#if defined(__APPLE__) || defined(__MACOSX__)
-#include <OpenGL/gl.h>
-#include <OpenGL/glu.h>
-#else
-#include <GL/gl.h>
-#include <GL/glu.h>
-#endif
-
-//#include <GL/glaux.h>
-
-
-
-
 
 class CLignumWBDoc;
 
@@ -48,7 +33,6 @@ void SetLight();
 void SetLightPosition();
 
 void DrawNeedles();
-
 
 
 template <class TS,class BUD>

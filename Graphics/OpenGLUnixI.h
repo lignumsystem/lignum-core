@@ -8,16 +8,6 @@
 #include "OpenGLSymbols.h"
 
 #include "CTexture.h"
-//And the vendors just can't agree where the headers are...
-#if defined(__APPLE__) || defined(__MACOSX__)
-#include <OpenGL/gl.h>
-#include <OpenGL/glu.h>
-#include <GLUT/glut.h>
-#else
-#include <GL/gl.h>
-#include <GL/glu.h>
-#include <GL/glut.h>
-#endif
 
 #include <vector>
 

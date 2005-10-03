@@ -1,17 +1,10 @@
 #ifndef OPENGLFUNCTIONS_H
 #define OPENGLFUNCTIONS_H
 
-
+#include <OpenGLHFiles.h>
 #include <string>
 
-//And the vendors just can't agree where the headers are...
-#if defined(__APPLE__) || defined(MACOSX)
-#include <OpenGL/gl.h>
-#include <OpenGL/glu.h>
-#else
-#include <GL/gl.h>
-#include <GL/glu.h>
-#endif
+
 
 //#include <GL/glaux.h>
 

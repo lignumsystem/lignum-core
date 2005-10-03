@@ -1,19 +1,8 @@
 #ifndef WRAPPERBASE_H
 #define WRAPPERBASE_H
 
-#if defined(__APPLE__) || defined(__MACOSX__)
-#include <OpenGL/gl.h>
-#include <OpenGL/glu.h>
-#include <GLUT/glut.h>
-#else
-#include <GL/gl.h>
-#include <GL/glu.h>
-#include <GL/glut.h>
-#endif
-
+#include <OpenGLHFiles.h>
 #include <sstream>
-
-
 #include <Lignum.h>
 
 
