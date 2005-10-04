@@ -332,15 +332,18 @@ namespace Lignum
       }
     }
     
-  //Zoom in (dir=1) and out (dir=-1)
+  //Zoom in (dir=1) and out  (dir=-1). This moves camera and its point
+  //of focus forwards or backwards.   Direction of the movement is the
+  //direction from the camera to the point of focus, or vice versa.
   void LGMVisualization::Zoom(int dir)
   {
     Point p1(settings.cam_x,settings.cam_y,settings.cam_z);
     Point p2(settings.lookat_x,settings.lookat_y,settings.lookat_z);
     PositionVector d1(p2-p1);
+    double distance = d1.length();
     d1.normalize();
-    Point p3 = p1+3.0*dir*(Point)d1;
-    Point p4 = p2+3.0*dir*(Point)d1;
+    Point p3 = p1+log(distance)*dir*(Point)d1;
+    Point p4 = p2+log(distance)*dir*(Point)d1;
     settings.cam_x = p3.getX();
     settings.cam_y = p3.getY();
     settings.cam_z = p3.getZ();
@@ -348,14 +351,21 @@ namespace Lignum
     settings.lookat_y = p4.getY();
     settings.lookat_z = p4.getZ();
   }
-  //Up/down and left/right camera movement and the point of focus
-  void LGMVisualization::Translate(PositionVector& d1)
+  //Up/down and left/right camera movement  and the point of focus. Up
+  //and Down, Z-axis, is always clear  (as long as camera is up), also
+  //the  impression of  left and  right  movement seems  to be  easily
+  //achieved simply by  moving along Y-axis.  But the  depth is not so
+  //easy,  simply   by  moving  along  X-axis   might  (will)  provide
+  //surprises. Depth movement is implemented in Zoom.
+  void LGMVisualization::Translate(PositionVector& d)
   {
     Point p1(settings.cam_x,settings.cam_y,settings.cam_z);
     Point p2(settings.lookat_x,settings.lookat_y,settings.lookat_z);
-    d1.normalize();
-    Point p3 = p1+1.0*(Point)d1;
-    Point p4 = p2+1.0*(Point)d1;
+    PositionVector d1(p2-p1);
+    double distance = d1.length();    
+    d.normalize();
+    Point p3 = p1+log(distance)*(Point)d;
+    Point p4 = p2+log(distance)*(Point)d;
     settings.cam_x = p3.getX();
     settings.cam_y = p3.getY();
     settings.cam_z = p3.getZ();
@@ -544,10 +554,13 @@ namespace Lignum
 	}
 	break;
       case 'x':
-	Zoom(-1);
-	ReDraw();
+	//Zoom out
+	{ Zoom(-1);
+	  ReDraw();
+	}
 	break;
       case 'z':
+	//Zoom in
 	Zoom(1);
 	ReDraw();
 	break;
