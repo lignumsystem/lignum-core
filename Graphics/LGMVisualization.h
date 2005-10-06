@@ -113,6 +113,7 @@ private:
   void ReDrawWindow(void);
   void ReDraw();
   void GoNextTree();
+  void Around(double radian);//Around the ShowTree tree radian angle
   void Zoom(int dir);//Zooming: dir=1 forward, dir=-1 backwards
   void Translate(PositionVector& d);//move  camera  up/down,left/right
 				    //as well as the point of focus
