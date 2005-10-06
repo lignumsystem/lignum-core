@@ -22,7 +22,6 @@ namespace Lignum
 
   void LGMTextOutput(double x, double y, double z,void* font,const string& str){
     int len, i;
-  
     glRasterPos3f(static_cast<float>(x), static_cast<float>(y),
 		  static_cast<float>(z));
     len = static_cast<int>(str.size());
@@ -36,8 +35,8 @@ namespace Lignum
      ShowTree(-1),ldistance(100),max_height(0.0),camera_distance(0.0),
      show_tree_metrics(0),show_help(1),help_str("a=Apua/h=Help")
   {
-    help_fi="n=Seuraava, m=Kierros, b=Mitat, z=Eteen, x=Taakse, c=Ylos, v=Alas, s=Vasen, d=Oikea, r=Alku, q=Lopeta, a=Apua, h=Help";
-    help_en="n=Next, m=Rotate, b=Metrics, z=Forward, x=Backwards, c=Up, v=Down, s=Left, d=Right, r=Reset, q=Quit, a=Apua, h=Help";
+    help_fi="n=Seuraava, m=Kierros, j=90, b=Mitat, z=Eteen, x=Taakse, c=Ylos, v=Alas, s=Vasen, d=Oikea, r=Alku, q=Lopeta, a=Apua, h=Help";
+    help_en="n=Next, m=Rotate, j=90, b=Metrics, z=Forward, x=Backwards, c=Up, v=Down, s=Left, d=Right, r=Reset, q=Quit, a=Apua, h=Help";
     active_visualization = this;
   }
   
@@ -180,28 +179,16 @@ namespace Lignum
 	// SetLight();
 	CheckValues(); 
 	
-	/******************************************************
-        //Consult Mika why this checking seems to be unnecessary
-	// Check the settings.camera coordinates 
-	hx = cos(settings.x_move*0.1*2*PI_VALUE/360) * 8;
-	hy = sin(settings.x_move*0.1*2*PI_VALUE/360) * 8;
-	hz = hz + settings.z_move * 0.01;
-	
-	
-	settings.cam_x = settings.cam_x + (settings.cam_x - hx) * 0.001 * settings.y_move; 
-	settings.cam_y = settings.cam_y + (settings.cam_y - hy) * 0.001 * settings.y_move; 
-	//settings.cam_z = 1;   
 
-
-	********************************************************/
 	// settings.camera x,y,z  and look at x,y,z    
 	gluLookAt(settings.cam_x, settings.cam_y, settings.cam_z,
 		  settings.lookat_x, settings.lookat_y, settings.lookat_z, 
 		  0.0, 0.0, 1.0);	// which way up    
-	
-	drawTrees();
-	if (show_tree_metrics)
+
+	drawTrees(); 
+	if (show_tree_metrics){
 	  for_each(trees.begin(),trees.end(),DrawTreeMetrics());
+	}
 	if (show_help){
 	  //Set the help_str in front of the camera
 	  Point p1(settings.cam_x, settings.cam_y, settings.cam_z);
@@ -214,12 +201,12 @@ namespace Lignum
 	  PositionVector d2(p3);
 	  //Move the help_str a bit to the left
 	  d2.rotate(p1,PositionVector(0,0,1),0.19);
-	  //Move the help_str a bit down.  The -2.0 units down and the
-	  //10.0 units forward above  are "connected": If 1 instead of
-	  //10  were used  above, the  -2.0 down  here would  move the
-	  //help_str out of focus  (string close to camera). Note also
-	  //that the distance from the camera does not affect the size
-	  //of the 2D string.
+	  //Move the help_str  a bit down.  The -2.0  units down, 0.19
+	  //units  to  the  left   and  the  10.0  units  forward  are
+	  //"connected": If 1 instead of  10 were used above, the -2.0
+	  //down  here would move  the help_str  out of  focus (string
+	  //close  to camera). Note  also that  the distance  from the
+	  //camera does not affect the size of the 2D string.
 	  LGMTextOutput(d2.getX(),d2.getY(),d2.getZ()-2.0,
 			GLUT_BITMAP_HELVETICA_12,help_str);
 	}
@@ -353,9 +340,10 @@ namespace Lignum
   }
   //Up/down and left/right camera movement  and the point of focus. Up
   //and Down, Z-axis, is always clear  (as long as camera is up), also
-  //the  impression of  left and  right  movement seems  to be  easily
-  //achieved simply by  moving along Y-axis.  But the  depth is not so
-  //easy,  simply   by  moving  along  X-axis   might  (will)  provide
+  //the  impression of  Left and  Right  movement seems  to be  easily
+  //achieved  simply (as  long as  we  are at  the right  side of  the
+  //forest) by  moving along  Y-axis.  But the  depth is not  so easy,
+  //simply   by    moving   along   X-axis    might   (will)   provide
   //surprises. Depth movement is implemented in Zoom.
   void LGMVisualization::Translate(PositionVector& d)
   {
@@ -374,6 +362,46 @@ namespace Lignum
     settings.lookat_z = p4.getZ();
   }
 
+  //Around moves the camera around the ShowTree tree radian angle
+  void LGMVisualization::Around(double radian)
+  {
+    Point p0;
+    double h;
+    //Now that we have all the translations, it is quite possible that
+    //the  point of focus  is no  longer the  ShowTree tree.   Make it
+    //so. The logic  here is to assume that the  user has selected the
+    //tree of  interest with  'n' and has  moved closer. Now  the user
+    //wants to  rotate round  the tree 'radian'  angle at a  time.  In
+    //GoNextTree() ShowTree  has already  increased ShowTree so  it is
+    //ShowTree-1 the user is looking at. C.f. StartAnimation
+    WrapperBase *tree = NULL;
+    if (ShowTree == -1)//Last tree case
+      tree = trees[trees.size()-1];
+    else if (ShowTree == 0)//One tree case and/or coming from reset in
+			   //several  trees case.  Look at  the middle
+			   //tree as in the beginning.
+      tree = trees[static_cast<int>(floor(trees.size()/2.0))];
+    else
+      tree = trees[ShowTree-1];
+    tree->GetTreeMetrics(p0, h);
+    //Look at the current tree 
+    settings.lookat_x = p0.getX();
+    settings.lookat_y = p0.getY();
+
+    Point p1(settings.cam_x,settings.cam_y,settings.cam_z);
+    Point p2(settings.lookat_x,settings.lookat_y,settings.lookat_z);
+    //Vector from look_at (i.e. the tree) to camera
+    PositionVector d(p1-p2);
+    PositionVector up(0,0,1);
+    for (double i=0; i<radian; i=i+radian/36.0){
+      d.rotate(p2,up,radian/36.0);//The animation, 36 redrawings
+      settings.cam_z = settings.lookat_z;
+      settings.cam_y = d.getY();
+      settings.cam_x = d.getX();
+      ReDraw();
+    }
+  }
+
   void LGMVisualization::StartAnimation()
   {
     Point p;
@@ -386,7 +414,7 @@ namespace Lignum
     //already  increased ShowTree  so  it is  ShowTree-1  the user  is
     //looking at.
     WrapperBase *tree = NULL;
-    if (ShowTree == -1)
+    if (ShowTree == -1)//Last tree case
       tree = trees[trees.size()-1];
     else if (ShowTree == 0)//One tree case and/or coming from reset in
 			   //several  trees case.  Look at  the middle
@@ -475,10 +503,6 @@ namespace Lignum
 	
 	x2 = p.getX();
 	y2 = p.getY();
-/*
-  float l = sqrt(x2*x2+y2*y2);
-  x2 = x2 / l;
-  y2 = y2 / l;*/
     }
     
     
@@ -528,6 +552,9 @@ namespace Lignum
 	  show_help = 1;
 	}
 	ReDraw();
+	break;
+      case 'j'://Around the ShowTree tree 90 degrees
+	Around(PI_VALUE/2.0);
 	break;
       case 'm': //Rotate 360 around current ShowTree tree
 	StartAnimation();
