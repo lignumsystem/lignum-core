@@ -170,24 +170,41 @@ namespace Lignum{
 		      if (p.getX() > maxx) maxx = p.getX();
 		      if (p.getY() < miny) miny = p.getY();
 		      if (p.getY() > maxy) maxy = p.getY();
+
 		  }
-		  
+
+		  glBegin(GL_LINES);
+		  glPushMatrix();
+		  glColor3f(0,1,0);
+		  Point p1 = GetStartPoint(GetPetiole(**I));
+		  Point p2 = GetEndPoint(GetPetiole(**I));
+		  glVertex3f(p1.getX(), p1.getY(), p1.getZ());
+		  glVertex3f(p2.getX(), p2.getY(), p2.getZ());
+		  glColor3f(1,1,1);
+	
+		  glPopMatrix();
+		  glEnd();
+
+
 		  glBegin(GL_POLYGON);
 		  glPushMatrix();
 		  glNormal3f(0,0,1);
 		 
+		
+		 
+		
 
-		  
 		  for (int bb =0; bb<aa; bb++)
 		  {
 		      Point p = points[bb];
 
 		      float texx = (p.getX()-minx) / (maxx-minx);
 		      float texy = (p.getY()-miny) / (maxy-miny);
-		      glTexCoord2f(texx, texy);		
-		      glVertex3f(p.getX(), p.getY(), p.getZ());
 
-		      
+		      glTexCoord2f(0.5+0.5*sin(2*PI_VALUE*bb/aa), 0.5+0.5*cos(2*PI_VALUE*bb/aa));
+		   
+		      //  glTexCoord2f(texx, texy);		
+		      glVertex3f(p.getX(), p.getY(), p.getZ());
 		  }
 		  glPopMatrix();
 		  glEnd();
