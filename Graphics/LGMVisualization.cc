@@ -6,17 +6,6 @@ using namespace Lignum;
 
 LGMVisualization* LGMVisualization::active_visualization = NULL;
 
-#if defined(__APPLE__) || defined(__MACOSX__)
-#include <OpenGL/gl.h>
-#include <OpenGL/glu.h>
-#include <GLUT/glut.h>
-#else
-#include <GL/gl.h>
-#include <GL/glu.h>
-#include <GL/glut.h>
-#endif
-
-
 namespace Lignum
 {
 
@@ -35,8 +24,8 @@ namespace Lignum
      ShowTree(-1),ldistance(100),max_height(0.0),camera_distance(0.0),
      show_tree_metrics(0),show_help(1),help_str("a=Apua/h=Help")
   {
-    help_fi="n=Seuraava, m=Kierros, j=90, b=Mitat, z=Eteen, x=Taakse, c=Ylos, v=Alas, s=Vasen, d=Oikea, r=Alku, q=Lopeta, a=Apua, h=Help";
-    help_en="n=Next, m=Rotate, j=90, b=Metrics, z=Forward, x=Backwards, c=Up, v=Down, s=Left, d=Right, r=Reset, q=Quit, a=Apua, h=Help";
+    help_fi="n=Seuraava, m/j=360/45, k=Kallista, b=Mitat, z=Eteen, x=Taakse, c=Ylos, v=Alas, s=Vasen, d=Oikea, r=Alku, q=Lopeta, h=Help";
+    help_en="n=Next, m/j=360/45, k=Tilt, b=Metrics, z=Forward, x=Backwards, c=Up, v=Down, s=Left, d=Right, r=Reset, q=Quit, a=Apua";
     active_visualization = this;
   }
   
@@ -185,31 +174,63 @@ namespace Lignum
 		  settings.lookat_x, settings.lookat_y, settings.lookat_z, 
 		  0.0, 0.0, 1.0);	// which way up    
 
-	drawTrees(); 
+	drawTrees();
+	//Disable texture  before writing text  (the current texture
+	//will otherwise interfere with the output)
+	glDisable(GL_TEXTURE_2D);
+	glColor3f(0.0f,0.0f,0.0f);
 	if (show_tree_metrics){
 	  for_each(trees.begin(),trees.end(),DrawTreeMetrics());
 	}
 	if (show_help){
 	  //Set the help_str in front of the camera
+	  //Point at the camera height at above/below point of focus
+	  Point p0(settings.lookat_x,settings.lookat_y,settings.cam_z);
+	  //Camera
 	  Point p1(settings.cam_x, settings.cam_y, settings.cam_z);
+	  //point of focus
 	  Point p2(settings.lookat_x,settings.lookat_y,settings.lookat_z);
 	  //Direction from camera to point of focus
 	  PositionVector d1(p2-p1);
+	  //Direction from camera height to point of focus
+	  PositionVector d2(p2-p0);
+	  double l1 = d1.length();
+	  double l2 = d2.length();
+	  //Assuming   camera  position   and  the   point   of  focus
+	  //differ. alpha  is the angle  between camera level  and the
+	  //point of focus
+	  double alpha = 0.0;
+	  if (l1 > R_EPSILON){
+	    alpha = asin(l2/l1);
+	  }
+	  else
+	    alpha = 0.0;
+	  //Up  should  become  camera  up,  when  rotated  -alpha
+	  //around some horizontal axis
+	  PositionVector camup(PositionVector(0,0,1));
+	  PositionVector r1(Cross(camup,d1));
+	  if (r1.length() > R_EPSILON){
+	    //Camera up
+	    camup.rotate(Point(0,0,0),r1,-alpha);
+	  }
+	  //Now start setting the string position
 	  d1.normalize();
+	  //The problem  is the camera rotation  along horizontal axis
+	  //round  the tree (the  keyboard 'k'  key). When  the camera
+	  //passes  the top  of the  tree,  it turns  around and  this
+	  //rotation along 'camera up' is no longer to left but right.
+	  //The consequence  is that the help string  starts moving to
+	  //right and then back to left.
+	  d1.rotate(Point(0,0,0),camup,0.20);
+	  //Move the string downeards to the bottom of the window 
+	  d1.rotate(Point(0,0,0),r1,0.20);
 	  //10 units away from camera towards the point of focus
 	  Point p3 = p1+10.0*(Point)d1;
-	  PositionVector d2(p3);
-	  //Move the help_str a bit to the left
-	  d2.rotate(p1,PositionVector(0,0,1),0.19);
-	  //Move the help_str  a bit down.  The -2.0  units down, 0.19
-	  //units  to  the  left   and  the  10.0  units  forward  are
-	  //"connected": If 1 instead of  10 were used above, the -2.0
-	  //down  here would move  the help_str  out of  focus (string
-	  //close  to camera). Note  also that  the distance  from the
-	  //camera does not affect the size of the 2D string.
-	  LGMTextOutput(d2.getX(),d2.getY(),d2.getZ()-2.0,
+	  LGMTextOutput(p3.getX(),p3.getY(),p3.getZ(),
 			GLUT_BITMAP_HELVETICA_12,help_str);
 	}
+	glColor3f(1.0f,1.0f,1.0f);
+	glEnable(GL_TEXTURE_2D);
 	glPopMatrix(); 
 	glutSwapBuffers();        // Swap buffers  
 	glutPostRedisplay ();
@@ -363,7 +384,7 @@ namespace Lignum
   }
 
   //Around moves the camera around the ShowTree tree radian angle
-  void LGMVisualization::Around(double radian)
+  void LGMVisualization::Around(const PositionVector& r,double radian)
   {
     Point p0;
     double h;
@@ -392,12 +413,14 @@ namespace Lignum
     Point p2(settings.lookat_x,settings.lookat_y,settings.lookat_z);
     //Vector from look_at (i.e. the tree) to camera
     PositionVector d(p1-p2);
-    PositionVector up(0,0,1);
+    double length = d.length();
+    d.normalize();
     for (double i=0; i<radian; i=i+radian/36.0){
-      d.rotate(p2,up,radian/36.0);//The animation, 36 redrawings
-      settings.cam_z = settings.lookat_z;
-      settings.cam_y = d.getY();
-      settings.cam_x = d.getX();
+      d.rotate(Point(0,0,0),r,radian/36.0);//The animation, 36 redrawings
+      Point p3 = p2 + length*(Point)d;
+      settings.cam_x = p3.getX();
+      settings.cam_y = p3.getY();
+      settings.cam_z = p3.getZ();
       ReDraw();
     }
   }
@@ -553,11 +576,28 @@ namespace Lignum
 	}
 	ReDraw();
 	break;
-      case 'j'://Around the ShowTree tree 90 degrees
-	Around(PI_VALUE/2.0);
+      case 'j'://Around the ShowTree tree 45 degrees
+	{
+	  Around(PositionVector(0,0,1),PI_VALUE/4.0);
+	}
+	break;
+      case 'k':
+	{
+	  PositionVector c(settings.cam_x,settings.cam_y,settings.cam_z);
+	  PositionVector l(settings.lookat_x,settings.lookat_y,
+			   settings.lookat_z);
+	  PositionVector d(c-l);
+	  PositionVector up(0,0,1);
+	  PositionVector r;
+	  if (d.getX() > 0.0)
+	    r = PositionVector(Cross(up,d));
+	  else
+	    r = PositionVector(Cross(d,up));
+	  Around(r,PI_VALUE/4.0);
+	}
 	break;
       case 'm': //Rotate 360 around current ShowTree tree
-	StartAnimation();
+	Around(PositionVector(0,0,1),2.0*PI_VALUE);
 	break;
       case 'n':	//Next tree, current tree view
 	GoNextTree();
@@ -734,7 +774,7 @@ namespace Lignum
     glutReshapeFunc(StaticNewWindowSize);          // Call this function if the size is changed  
     glutKeyboardFunc(StaticKeyPress);              // Call this funktion when a key is pressed 
     glutMouseFunc (StaticChangeMouseButton);       // Mouse events
-    glutMotionFunc(StaticMouseMotion);
+    //    glutMotionFunc(StaticMouseMotion);
     glutIdleFunc (StaticLoop);                     // This is called when nothing happens
     glutSpecialFunc(StaticArrows);
     glutDisplayFunc(StaticReDraw);                 // The draw-function
