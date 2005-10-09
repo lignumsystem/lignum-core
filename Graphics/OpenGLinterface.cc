@@ -1,18 +1,6 @@
 #include "stdafx.h"
 #include "OpenGLinterface.h"
 
-//And the vendors just can't agree where the headers are...
-#if defined(__APPLE__) || defined(__MACOSX_)
-#include <OpenGL/gl.h>
-#include <OpenGL/glu.h>
-#else
-#include <GL/gl.h>
-#include <GL/glu.h>
-#endif
-
-
- 
-
 #include "TreeVariables.h"
 
 #include "OpenGLSymbols.h"

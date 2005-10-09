@@ -2,21 +2,8 @@
 #include "OpenGL.h"
 #include <OpenGLinterface.h>
 
-#include <math.h>
-
-//And the vendors just can't agree where the headers are...
-#if defined(__APPLE__) || defined(__MACOSX__)
-#include <OpenGL/gl.h>
-#include <OpenGL/glu.h>
-#else
-#include <GL/gl.h>
-#include <GL/glu.h>
-#endif
-
+#include <cmath>
 #include <vector>
-
-
-
 int max_leave_angle = 30;
 int min_leave_angle = -30;
 bool random_leave_angles = true;
