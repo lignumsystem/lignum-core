@@ -20,6 +20,11 @@ namespace cxxadt{
     Ellipse(const PositionVector& petiole0,
 	    const PositionVector& normal, 
 	    const double& semimajoraxis,  const double& semiminoraxis);
+    Ellipse(const PositionVector& pd,
+	    const PositionVector& n,
+	    const PositionVector& x1u, 
+	    const double& semimajoraxis0,  
+	    const double& semiminoraxis0);
     Ellipse(const Ellipse& e);
     Ellipse& operator=(const Ellipse& e);
     const Point&  getCenterPoint() const { return center;};
@@ -38,8 +43,8 @@ namespace cxxadt{
     double getArea()const{return semimajoraxis*semiminoraxis*PI_VALUE;}; 
 
 
-                                 //getting the ellipse points 
-    vector<Point>&  getVertexVector(vector<Point>& points)const;
+                                 //getting the ellipse as 'n' points 
+    vector<Point>&  getVertexVector(vector<Point>& points, int n=50)const;
 
                                    //it defines a new ellipse from
                                    // the old one
@@ -62,7 +67,7 @@ namespace cxxadt{
  		   const PositionVector& beam)const;
     
 					   				       
-    PositionVector x1u()const;      //unit vector x-axis in the ellipse plane
+    PositionVector x1u()const; //unit vector x-axis in the ellipse plane
 
     PositionVector y1u()const;     //unit vector y-axis in the ellipse plane
 
@@ -71,6 +76,8 @@ namespace cxxadt{
   private:
     Point center;
     PositionVector normal;
+    PositionVector xdir;
+    PositionVector ydir;
     double semimajoraxis;
     double semiminoraxis;
   };

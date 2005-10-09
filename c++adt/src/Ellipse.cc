@@ -1,6 +1,7 @@
 //Ellipse.cc
 //----------
 #include <Ellipse.h>
+#include <Polygon.h>
 #include <cmath>
 namespace cxxadt{
 
@@ -21,20 +22,44 @@ namespace cxxadt{
     :normal(normal0),semimajoraxis(semimajoraxis0),
      semiminoraxis(semiminoraxis0)
   {
-    //x1u is (should be) in fact call to x1u()!
-    PositionVector x1u(normal0.getZ(),0,-normal0.getX());
-    x1u=x1u.normalize();
+    PositionVector x1(normal.getZ(),0,-normal.getX());
+    x1.normalize();
  
-    PositionVector petiolecenter(x1u*semimajoraxis0);
+    PositionVector y1(Cross(normal,x1));
+    y1.normalize();
+
+    PositionVector petiolecenter(y1u()*semiminoraxis0);
     PositionVector center0=petiole0+petiolecenter;
     center=Point(center0);
 
+    xdir = x1;
+    ydir = y1;
   }
-
-
+  
+  Ellipse::Ellipse(const PositionVector& p,
+		   const PositionVector& n,
+		   const PositionVector& x1, 
+		   const double& semimajoraxis0,  
+		   const double& semiminoraxis0)
+    :normal(n),semimajoraxis(semimajoraxis0),
+     semiminoraxis(semiminoraxis0)
+  {
+    xdir = x1;
+    xdir.normalize();
+    ydir = Cross(xdir,normal);
+    ydir.normalize();
+    PositionVector petiolecenter(xdir*semimajoraxis);
+    PositionVector center0=p+petiolecenter;
+    center=Point(center0);
+    vector<Point> v;
+    getVertexVector(v,100);
+    Point c = PolygonCentroid(v);
+  }
+    
+    
   Ellipse::Ellipse(const Ellipse& e)
     :center(e.center),normal(e.normal),semimajoraxis(e.semimajoraxis),
-     semiminoraxis(e.semiminoraxis)
+     semiminoraxis(e.semiminoraxis),xdir(e.xdir),ydir(e.ydir)
   {
   }
 
@@ -44,22 +69,25 @@ namespace cxxadt{
     normal = e.normal;
     semimajoraxis = e.semimajoraxis;
     semiminoraxis = e.semiminoraxis;
+    xdir = e.xdir;
+    ydir = e.ydir;
     return *this;
   }
 
   PositionVector Ellipse::x1u()const{
 
-    PositionVector x1(normal.getZ(),0,-normal.getX());
-    x1=x1.normalize();
+    //PositionVector x1(normal.getZ(),0,-normal.getX());
+    //x1.normalize();
+    //xdir = x1;
     //cout<<"x1u() x1u="<<x1<<endl;
-    return x1; 
+    return xdir; 
   }
 
   PositionVector Ellipse:: y1u()const{
 
-    PositionVector y1(Cross(normal,x1u()));
-    y1=y1.normalize();
-    return y1;
+    //PositionVector y1(Cross(normal,x1u()));
+    //y1.normalize();
+    return ydir;
   }
 
 
@@ -79,29 +107,21 @@ namespace cxxadt{
 //getting the ellipse points using the ellipse equation
 //X=Center + a*cos(t)*X1u +b*sin(t)*Y1u
 //where t:[0,2pi] and the step=[2*pi/n];
-//now the n parameter is defined as 50.
+//The npoints parameter is defaulted as 50.
     
-vector<Point>& Ellipse::getVertexVector(vector<Point>& points)const
+  vector<Point>& Ellipse::getVertexVector(vector<Point>& points,int npoints)const
 {
-  int i,n;
-  double t;
   Point x;
 
-  n=50;
+  double step= 2.0*PI_VALUE/static_cast<double>(npoints);
 
-  double step=(double)(2.0*PI_VALUE/n);
-
-
-    
-  for(i=0; i<n; i++){
-    t=(double)(i*step);
+  for(int i=0; i<npoints; i++){
+    double t=(double)(i*step);
     x=getCenterPoint()+Point((getSemimajorAxis()*cos(t))*x1u())
                       +Point((getSemiminorAxis()*sin(t))*y1u());
     points.push_back(x);
   }
-
   return points;
-
 }
 
 
