@@ -37,12 +37,11 @@ namespace Lignum{
 	  LGMdouble radius = GetValue(*ts, LGAR);
 	  if (radius > min_rad && radius<=max_rad)	
 	    {
-
-	      float length;
-	      float radius_top;
-	      float rot_x;
-	      float rot_y;
-	      float rot_angle;
+	      double length;
+	      double radius_top;
+	      double rot_x;
+	      double rot_y;
+	      double rot_angle;
 
 	      Point position;
 	      PositionVector direction = GetDirection(*ts);
@@ -81,11 +80,11 @@ namespace Lignum{
 	{  			
 	  LGMdouble radius = GetValue(*rs, LGAR);
 	 
-	  float length;
-	  float radius_top;
-	  float rot_x;
-	  float rot_y;
-	  float rot_angle;
+	  double length;
+	  double radius_top;
+	  double rot_x;
+	  double rot_y;
+	  double rot_angle;
 	      
 	  Point position;
 	  PositionVector direction = GetDirection(*rs);
@@ -116,136 +115,94 @@ namespace Lignum{
 
 
   template <class TS, class BUD,class S>
-    TreeCompartment<TS,BUD>* DrawLeavesFunctor<TS,BUD,S>::operator()(TreeCompartment<TS,BUD>* tc)const
-    {
-      if (TS* ts = dynamic_cast<TS*>(tc))
-	{ 
- 			
-	    {
-		//	cout << "hwts:::::::::" << endl;		
-	      float length;
-	      float radius_top;
-	      float rot_x;
-	      float rot_y;
-	      float rot_angle;
+  TreeCompartment<TS,BUD>* DrawLeavesFunctor<TS,BUD,S>::operator()(TreeCompartment<TS,BUD>* tc)const
+  {
+    if (TS* ts = dynamic_cast<TS*>(tc)){ 
+      double length;
+      double radius_top;
+      double rot_x;
+      double rot_y;
+      double rot_angle;
 
-	      Point position;
-	      PositionVector direction = GetDirection(*ts);
+      Point position;
+      PositionVector direction = GetDirection(*ts);
 
-	      LGMdouble radius = GetValue(*ts, LGAR);
-	      length = GetValue(*ts,  LGAL); 
-	      radius_top = GetValue(*ts, LGARTop);
-	      position = GetPoint(*ts);
+      LGMdouble radius = GetValue(*ts, LGAR);
+      length = GetValue(*ts,  LGAL); 
+      radius_top = GetValue(*ts, LGARTop);
+      position = GetPoint(*ts);
 			
-	      rot_x = -1*direction.getVector()[1];
-	      rot_y =    direction.getVector()[0];
-	      rot_angle = (360/(2*PI_VALUE))*acos((double)direction.getVector()[2]);
+      rot_x = -1*direction.getVector()[1];
+      rot_y =    direction.getVector()[0];
+      rot_angle = (360/(2*PI_VALUE))*acos((double)direction.getVector()[2]);
 			
-	      float xx = direction.getX() * length;
-	      float yy = direction.getY() * length;
-	      float zz = direction.getZ() * length;
+      double xx = direction.getX() * length;
+      double yy = direction.getY() * length;
+      double zz = direction.getZ() * length;
 
-	      Point np(position.getX()+xx, position.getY()+yy, position.getZ()+zz);		
+      Point np(position.getX()+xx, position.getY()+yy, position.getZ()+zz);		
 
-	      std::list<BroadLeaf<S>*>& leaf_list = GetLeafList(*ts);
-	      typename std::list<BroadLeaf<S>*>::iterator I;
-	      for(I = leaf_list.begin(); I != leaf_list.end(); I++) 
-		{
-		  LGMdouble area = GetValue(**I, LGAA);   //BroadLeaf returns true area of the leaf
+      std::list<BroadLeaf<S>*>& leaf_list = GetLeafList(*ts);
+      typename std::list<BroadLeaf<S>*>::iterator I;
+
+      for(I = leaf_list.begin(); I != leaf_list.end(); I++) {
+	LGMdouble area = GetValue(**I, LGAA);   //BroadLeaf returns true area of the leaf
 		
-		  std::vector<Point> points;
-		  GetShape(**I).getVertexVector(points);
+	std::vector<Point> points;
+	GetShape(**I).getVertexVector(points);
 
-		  int aa = points.size();
-
+	int aa = points.size();
 		
-		  float minx = 9999;
-		  float miny = 9999;
-		  float maxx = -9999;
-		  float maxy = -9999;
-		  for (int bb =0; bb<aa; bb++)
-		  {
-		      Point p = points[bb];
-		      if (p.getX() < minx) minx = p.getX();
-		      if (p.getX() > maxx) maxx = p.getX();
-		      if (p.getY() < miny) miny = p.getY();
-		      if (p.getY() > maxy) maxy = p.getY();
+	double minx = 9999;
+	double miny = 9999;
+	double maxx = -9999;
+	double maxy = -9999;
+	for (int bb =0; bb<aa; bb++){
+	  Point p = points[bb];
+	  if (p.getX() < minx) minx = p.getX();
+	  if (p.getX() > maxx) maxx = p.getX();
+	  if (p.getY() < miny) miny = p.getY();
+	  if (p.getY() > maxy) maxy = p.getY();
 
-		  }
-
-		  glBegin(GL_LINES);
-		  glPushMatrix();
-		  glColor3f(0,1,0);
-		  Point p1 = GetStartPoint(GetPetiole(**I));
-		  Point p2 = GetEndPoint(GetPetiole(**I));
-		  glVertex3f(p1.getX(), p1.getY(), p1.getZ());
-		  glVertex3f(p2.getX(), p2.getY(), p2.getZ());
-		  glColor3f(1,1,1);
+	}
+		  
+	Point p1 = GetStartPoint(GetPetiole(**I));
+	Point p2 = GetEndPoint(GetPetiole(**I));
+	//Drawing  the  petiole.    Note  we  must  disable  textures,
+	//otherwise the  subsequent leaves with  texture would prevent
+	//them appearing
+	glDisable(GL_TEXTURE_2D);
+	glColor3f(0.0f,1.0f,0.0f);		
+	glPushMatrix();  
+	glLineWidth(1);
+	glBegin(GL_LINES);
+	glVertex3f(p1.getX(), p1.getY(), p1.getZ());
+	glVertex3f(p2.getX(), p2.getY(), p2.getZ());
+	glEnd();
+	glPopMatrix();
+	glColor3f(1.0f,1.0f,1.0f);
+	glEnable(GL_TEXTURE_2D);
 	
-		  glPopMatrix();
-		  glEnd();
+	glBegin(GL_POLYGON);
+	glPushMatrix();
+	glNormal3f(0,0,1);
+	for (int bb =0; bb<aa; bb++){
+	  Point p = points[bb];
 
-
-		  glBegin(GL_POLYGON);
-		  glPushMatrix();
-		  glNormal3f(0,0,1);
-		 
-		
-		 
-		
-
-		  for (int bb =0; bb<aa; bb++)
-		  {
-		      Point p = points[bb];
-
-		      float texx = (p.getX()-minx) / (maxx-minx);
-		      float texy = (p.getY()-miny) / (maxy-miny);
-
-		      glTexCoord2f(0.5+0.5*sin(2*PI_VALUE*bb/aa), 0.5+0.5*cos(2*PI_VALUE*bb/aa));
-		   
-		      //  glTexCoord2f(texx, texy);		
-		      glVertex3f(p.getX(), p.getY(), p.getZ());
-		  }
-		  glPopMatrix();
-		  glEnd();
-
-		  /*
-		  Petiole pet = GetPetiole(**I);
-
-		  LGMdouble rx = sqrt(area / 3.14);
-		  LGMdouble ry = sqrt(area / 3.14);
-
-		  PositionVector pv(GetEndPoint(pet)-GetStartPoint(pet));
-		  pv.getVector()[2] = 0.0;
-		  pv.normalize();
-
-		  LGMdouble ang = (360.0/(2.0*PI_VALUE))*asin((double)pv.getVector()[0]);
-
-		  glPushMatrix();  
-		  glTranslatef(np.getX(), np.getY(), np.getZ());          
-		  glRotatef( ang, 0, 0, 1); 			
-							
-		  // sivuttaiskallistus
-		  glRotatef( rand()%30-15, 0, 1, 0);
-		  Make3DLeave( rx*leave_size_x, ry*leave_size_y, radius+0.01); 
-		 
-		  glPopMatrix();  
-		  */  	
-		}
-	    }
-	} 
-      return tc;
+	  double texx = (p.getX()-minx) / (maxx-minx);
+	  double texy = (p.getY()-miny) / (maxy-miny);
+	  //Scaling the texture
+	  glTexCoord2f(0.5+0.5*sin(2*PI_VALUE*bb/aa), 
+		       0.5+0.5*cos(2*PI_VALUE*bb/aa));
+	  //  glTexCoord2f(texx, texy);		
+	  glVertex3f(p.getX(), p.getY(), p.getZ());
+	}
+	glPopMatrix();
+	glEnd();
+      }
     }
-
-
-}
-
-
-
-
-
-
-
+    return tc;
+  }
 
 // Uusi funktori joka piirtää lehdet pyytämällä pistejoukon
 template <class TS, class BUD,class S>
@@ -289,22 +246,17 @@ TreeCompartment<TS,BUD>* DrawLignumLeavesFunctor<TS,BUD,S>::operator()(TreeCompa
 }
 
 
-
-
-
-
-
 template <class TS, class BUD>
 TreeCompartment<TS,BUD>* DrawNeedlesFunctor<TS,BUD>::operator()(TreeCompartment<TS,BUD>* tc)const
 {
   if (TS* cfts = dynamic_cast<TS* >(tc))
     {
-      float length;
-      float radius_top;
-      float radius;
-      float rot_x;
-      float rot_y;
-      float rot_angle;
+      double length;
+      double radius_top;
+      double radius;
+      double rot_x;
+      double rot_y;
+      double rot_angle;
 	  
       Point position;
       PositionVector direction = GetDirection(*cfts);
@@ -343,8 +295,7 @@ TreeCompartment<TS,BUD>* DrawNeedlesFunctor<TS,BUD>::operator()(TreeCompartment<
   return tc;
 }
 
-
-
+}
 
 
 
