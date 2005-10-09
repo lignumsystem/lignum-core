@@ -390,15 +390,21 @@ void HwWrapper<TS,BUD,SHAPE>::DrawTree(float x, float y, float z)
     Point p = GetPoint(tree);
     double h = GetValue(tree,LGAH);
     double dbh = GetValue(tree,LGADbh)*100.0;
+    double dbase  = GetValue(tree,LGADbase);
     ostringstream os1;
     ostringstream os2;
     os1 << setprecision(3) << "H="<<h;
     os2 << setprecision(2) << "D=" << dbh;
-    LGMTextOutput(p.getX(),p.getY()+0.2,h,GLUT_BITMAP_HELVETICA_10,
+    //Try some simple  heuristics to place the string.  This moves the
+    //string to the right at most 0.02 units
+    LGMTextOutput(p.getX(),p.getY()+0.002/(0.1+exp(-dbase)),h,
+		  GLUT_BITMAP_HELVETICA_10,
 		  os1.str());
-    if (dbh > 0.0)
-      LGMTextOutput(p.getX(),p.getY()+0.2,1.3,GLUT_BITMAP_HELVETICA_10,
+    if (dbh > 0.0){
+      LGMTextOutput(p.getX(),p.getY()+0.002/(0.1+exp(-dbase)),1.3,
+		    GLUT_BITMAP_HELVETICA_10,
 		    os2.str());
+    }
   }
 
 
@@ -408,15 +414,21 @@ void HwWrapper<TS,BUD,SHAPE>::DrawTree(float x, float y, float z)
     Point p = GetPoint(tree);
     double h = GetValue(tree,LGAH);
     double dbh = GetValue(tree,LGADbh)*100.0;
+    double dbase  = GetValue(tree,LGADbase)*100.0;
     ostringstream os1;
     ostringstream os2;
     os1 << setprecision(3) << "H="<<h;
     os2 << setprecision(2) << "D=" << dbh;
-    LGMTextOutput(p.getX(),p.getY()+0.2,h,GLUT_BITMAP_HELVETICA_10,
+    //Try some simple  heuristics to place the string.  This moves the
+    //string to the right at most 0.02 units
+    LGMTextOutput(p.getX(),p.getY()+0.002/(0.1+exp(-dbase)),h,
+		  GLUT_BITMAP_HELVETICA_10,
 		  os1.str());
-    if (dbh > 0.0)
-      LGMTextOutput(p.getX(),p.getY()+0.2,1.3,GLUT_BITMAP_HELVETICA_10,
+    if (dbh > 0.0){
+      LGMTextOutput(p.getX(),p.getY()+0.002/(0.1+exp(-dbase)),1.3,
+		    GLUT_BITMAP_HELVETICA_10,
 		    os2.str());
+    }
   }
 
 
