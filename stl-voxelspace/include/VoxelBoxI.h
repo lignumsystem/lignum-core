@@ -44,12 +44,12 @@ namespace Lignum {
    template <class S>
     void DumpLeaf(VoxelBox &b, BroadLeaf<S> &leaf)
     {
-
       LGMdouble xx = GetValue(leaf, LGAA);   //LGAA is defined in LGMSymbols.h
       b.addLeafArea(xx);
       b.addOneLeaf(); //increase the number of leaves by one
       xx = GetValue(leaf, LGAWf);
       b.addLeafMass(xx);
+
     }
   
 

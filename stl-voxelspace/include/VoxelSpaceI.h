@@ -85,7 +85,7 @@ namespace Lignum {
 
   template <class TS,class BUD>
     void DumpHwTree(VoxelSpace &s, Tree<TS, BUD> &tree)
-    {
+  {
       DumpHwTreeFunctor<TS,BUD> f;
       f.space = &s;
       ForEach(tree, f);
@@ -94,7 +94,7 @@ namespace Lignum {
   template <class TS, class BUD>
     TreeCompartment<TS,BUD>* DumpHwTreeFunctor<TS,BUD>::
     operator ()(TreeCompartment<TS,BUD>* tc)const
-    {
+    { 
       if (TS* hwts = dynamic_cast<TS*>(tc))
 	{
 	  DumpHwTreeSegment(*space, *hwts);
@@ -113,7 +113,7 @@ namespace Lignum {
       std::list<BroadLeaf<SH>*>& leaf_list = 
 	GetLeafList(const_cast<HwTreeSegment<TS,BUD,SH>&>(ts));
       typename std::list<BroadLeaf<SH>*>::iterator I;
-      for(I = leaf_list.begin(); I != leaf_list.end(); I++) {
+      for(I = leaf_list.begin(); I != leaf_list.end(); I++) {        
 	p = GetCenterPoint(**I);
 	DumpLeaf(s.getVoxelBox(p), **I);
       }

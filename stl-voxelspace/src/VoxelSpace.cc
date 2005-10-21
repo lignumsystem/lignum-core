@@ -423,23 +423,27 @@ namespace Lignum {
     int Xi = static_cast<int>(localP.getX()/Xbox);
     int Yi = static_cast<int>(localP.getY()/Ybox);
     int Zi = static_cast<int>(localP.getZ()/Zbox);
-
+    cout<<"inside getVoxelBox. "<<endl;
     //Check if the point is in voxel space
     if (Xi < 0 || Yi < 0 || Zi < 0 || Xi >= Xn || Yi >= Yn || Zi >= Zn){
+      cout<<"the point is out of voxel space."<<endl;
       throw OutOfVoxelSpaceException(Point(Xi,Yi,Zi),p);
     }
+    cout<<"the point is in the voxel space."<<endl;
     return voxboxes[Xi][Yi][Zi]; 
   }
 
 
-  //
+ 
+ //
   //	for Poplar: The function calculates the Qin and Qabs-values to
   //	every VoxelBox.
   //
   LGMdouble VoxelSpace::calculatePoplarLight()
   {
     //ofstream file("calculateVoxelSpace.txt");
-    cout << " VoxelSpace::calculatePoplarLight Begin for poplar: " << endl;
+    // cout << " VoxelSpace::calculatePoplarLight Begin for poplar: " << endl;
+    // cout<<"Xn: "<<Xn<<"Yn: "<<Yn<<"Zn: "<<Zn<<endl;
     updateStar();
     srand(time(NULL));
 
@@ -448,109 +452,145 @@ namespace Lignum {
 	for(int i3=0; i3<Zn; i3++)
 	  {
 	    int num_dirs = sky->numberOfRegions();
-	    //This might  make the voxel  space slow in  execution: if
-	    //there  is something  is voxboxes  the following  loop is
-	    //executed.
+
 	    if (voxboxes[i1][i2][i3].isEmpty() == false)
-	      {				
+	      {//	 cout<<"voxelbox not empty. "<<num_dirs<<endl;
+	         double totaliop=0;
 		voxboxes[i1][i2][i3].updateValues();
 		for(int i = 0; i < num_dirs; i++)
 		  {	
 		    vector<double> rad_direction(3);
 		    LGMdouble iop = 
 		      sky->diffuseRegionRadiationSum(i,rad_direction);
+		    
 		    PositionVector 
 		      radiation_direction(rad_direction[0], rad_direction[1], 
-					  rad_direction[2]);
-		    
+					  rad_direction[2]);		    
 		    radiation_direction.normalize();
-		    //cout <<  iop << endl;
+		    // cout <<"iop for diffuse: "<< iop << endl;
+                    totaliop+= iop;
 		    vector<VoxelMovement> vec;		
 		    getRoute(vec, i1, i2, i3, radiation_direction);
 		    int size = vec.size();
-
-		    long int seed = -rand();
-		      if (size>1)
-		      {
-                      int a=1;
-		      bool flag=0;
-		      // long int seed= time(0);
+		    long int seed; // = -rand();
+		    int a=-1;
+		    int flag=0;
+		    if (size>1)
+		      {			
+                      a=size-2;
+		      flag=0;
+		      // long int seed= time(NULL);
                       double result;
                       Bernoulli ber(seed);
-                      
-                      while (a<size && flag==0)
-			{
-			  
-			  VoxelMovement v1 = vec[a-1];
-			  //  VoxelMovement v2 = vec[a];
-					
-                          LGMdouble starsum=voxboxes[v1.x][v1.y][v1.y].getStarSum();			
-			 
-                          LGMdouble p=min(starsum, 1.0);     //need to work on my
-			  //field data to get the p value
-			  // cout<<starsum<<" ";
-                          result=ber(0.3, 1);
-			  // cout<<result<<" ________________show result____________"<<endl; 
-  			  if (result>0.5)
-			    flag=1;
-                          else 
-                            a++;
-			}
-		      //   cout<<endl;
-                      if (a==size-1)
-                      {
-                           voxboxes[i1][i2][i3].addRadiation(iop);
-			   //  cout<<a<<"________-the hit voxelbox:"<<size<<endl;
-		      }
-		
-		      }	
-		  }
-		//calculate the light for direct beam
 
+                      while (a>=0 && flag<2)
+			{	
+			  	  
+			  VoxelMovement v1 = vec[a];
+			 
+			  LGMdouble leafArea=voxboxes[v1.x][v1.y][v1.z].getLeafArea();		      
+			  // cout<<"leafArea in previous voxel: "<<leafArea<<endl;
+                          double p=min(leafArea/(0.3*0.3), 1.0);     //0.3 is the size of voxelbox in Bounding box
+			  seed=-rand();
+			   result=ber(p, seed);
+			
+  			  if (result>0.5)
+			    flag+=1;  
+                          a--;
+			} //while vec
+		      }// if size>1
+		   
+		      if (a==-1 && flag<2)
+			{double result;
+                          Bernoulli ber(seed);
+			  LGMdouble leafArea=voxboxes[i1][i2][i3].getLeafArea();
+			  // cout<<"leafArea in current voxel: "<<leafArea<<endl;
+                          double p=min(leafArea/(0.3*0.3), 1.0); //0.3 is the size of voxelbox in Bounding box   
+			  seed=-rand();
+			   result=ber(p, seed);		  
+  			  if (result>0.5)
+			     flag+=1;			                          
+                          double persent;
+			  // cout<<"flag value: "<<flag<<endl;
+			  if (flag==1)
+			    persent=0.9;
+			  else if (flag==2)
+			    persent=0.1;
+                          else
+                            persent=0;			  
+                          voxboxes[i1][i2][i3].addRadiation(persent*iop*1200.0/2055.35);	
+			  //cout<<"diffuse radiation added into voxboxes: "<<iop<<endl; 
+		        }
+			     		     
+		  }//num_dirs for diffuse
+	        // cout <<"total iop for diffuse: "<< totaliop << endl;
+    
+		//calculate the light for direct beam
 		vector<double> direct_direction(3);
-		LGMdouble iop= sky->directRadiation(direct_direction);
+		LGMdouble iop= sky->directRadiation(direct_direction); 
+		//cout <<"iop for direct: "<< iop << endl;
                  vector<VoxelMovement> vec;
 		  getRoute(vec, i1, i2, i3, direct_direction);
 	          int size = vec.size();
-		      if (size>1)
-		      {
-                      int a=1;
-		      bool flag=0;
-		      // long int seed= time(0);
-		      long int seed = -rand();
+		    long int seed; // = -rand();
+		    int a=-1;
+		    int flag=0;
+		    if (size>1)
+		      {			
+                      a=size-2;
+		      flag=0;
+		      // long int seed= time(NULL);
                       double result;
                       Bernoulli ber(seed);
-                      
-                      while (a<size && flag==0)
-			{
-			  
-			  VoxelMovement v1 = vec[a-1];
-			  //  VoxelMovement v2 = vec[a];
-					
-                          LGMdouble starsum=voxboxes[v1.x][v1.y][v1.y].getStarSum();			
-			 
-                          LGMdouble p=min(starsum, 1.0);     //need to work on my field data to get the p value
-			  // cout<<starsum<<" ";
-                          result=ber(0.3, 1);
-			  // cout<<result<<" ________________show result____________"<<endl; 
-  			  if (result>0.5)
-			    flag=1;
-                          else 
-                            a++;
-			}
 
-                      if (a==size-1)
-                      {
-                           voxboxes[i1][i2][i3].addRadiation(iop);
-			   //  cout<<a<<"________-the hit voxelbox:"<<size<<endl;
+                      while (a>=0 && flag<2)
+			{	
+			  	  
+			  VoxelMovement v1 = vec[a];
+			 
+			  LGMdouble leafArea=0;		      
+			  leafArea=voxboxes[v1.x][v1.y][v1.z].getLeafArea(); 	                           
+			  
+                          double p=min(leafArea/(0.3*0.3), 0.7);  //0.3 is the voxelbox size
+			  seed=-rand();
+			  result=ber(p, seed);
+						 
+  			  if (result>0.5)
+			    flag+=1;
+			  
+                          a--;
+			}
 		      }
-		      }
-		      //calculate the light for direct beam done 
+		   
+		      if (a==-1 && flag<2)
+			{double result;
+                          Bernoulli ber(seed);
+			  LGMdouble leafArea=voxboxes[i1][i2][i3].getLeafArea();
+                          double p=min(leafArea/(0.3*0.3), 0.7);    
+			  seed=-rand();
+			  result=ber(p, seed);			  
+  			  if (result>0.5)
+			     flag+=1;
+			                          
+                          double persent;
+			  if (flag==1)
+			    persent=0.9;
+			  else if (flag==2)
+			    persent=0.1;
+                          else
+                            persent=0;
+			  
+                           voxboxes[i1][i2][i3].addRadiation(persent*iop);
+			   // cout<<"direct radiation added into voxboxes: "<<persent*iop<<endl; 
+		        }
+
               }             	      
 	  }   
     // file.close();
     return 0;
   }
+
+ 
 
 
 
