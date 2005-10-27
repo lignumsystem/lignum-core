@@ -188,14 +188,6 @@ namespace Lignum{
       RootAxis<Tree<TS,BUD> > root_axis;
     };
 
-  //Tree with Firmament (FRMNT)
-  template <class FRMNT, class TS, class BUD = DefaultBud<TS> > 
-    class FTree: public Tree<TS,BUD>{
-      public:
-      FTree(const Point& p, const PositionVector& pv):Tree<TS,BUD>(p,pv){}
-      private:
-      FRMNT frmnt;
-    };
 
 }//closing namespace Lignum
 
