@@ -34,6 +34,13 @@ namespace Lignum{
     void init();
     double getP()const{return P;}
     double getM()const{return M;}
+    //setP updates  photosynthesis. This is done e.g.  if something is
+    //taken to carbon pool before allocation
+    double setP(double p){
+      double old_p=P;
+      P=p;
+      return old_p;
+    }
   protected:
     Tree<TS,BUD>& tree;
     double P;//Production of the tree
