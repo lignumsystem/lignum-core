@@ -96,7 +96,7 @@ namespace Lignum {
     operator ()(TreeCompartment<TS,BUD>* tc)const
     { 
       if (TS* hwts = dynamic_cast<TS*>(tc))
-	{
+	{ 
 	  DumpHwTreeSegment(*space, *hwts);
 	} 
       return tc;
@@ -113,7 +113,7 @@ namespace Lignum {
       std::list<BroadLeaf<SH>*>& leaf_list = 
 	GetLeafList(const_cast<HwTreeSegment<TS,BUD,SH>&>(ts));
       typename std::list<BroadLeaf<SH>*>::iterator I;
-      for(I = leaf_list.begin(); I != leaf_list.end(); I++) {        
+      for(I = leaf_list.begin(); I != leaf_list.end(); I++) {  
 	p = GetCenterPoint(**I);
 	DumpLeaf(s.getVoxelBox(p), **I);
       }
@@ -164,6 +164,7 @@ namespace Lignum {
 	bQin = box.getQin();
 	la = GetValue(**I,  LGAA);
 	lQabs = GetValue(space,LGAkb) * bQin * la;
+	//	cout<<"Qin: "<<bQin<<" Qabs: "<<lQabs<<endl;
 	SetValue(**I, LGAQabs, lQabs);
 	SetValue(**I, LGAQin, bQin);
       }

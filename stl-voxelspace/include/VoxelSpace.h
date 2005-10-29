@@ -79,6 +79,7 @@ namespace Lignum {
 	       Firmament& f, LGMdouble k_b=0.50);
     
     void reset();
+    void resetQinQabs();
     void resize(int nX, int nY, int nZ); //change number of VoxelBoxes
 					 //in x, y, and
 					 //z-directions. The extent
@@ -119,7 +120,8 @@ namespace Lignum {
     Point getLocalPoint(const Point& p)const;
     void updateStar();
     LGMdouble calculateTurbidLight(bool self_shading = true);
-    LGMdouble calculatePoplarLight();
+    //diffuse is to calcluate the real diffuse from standard 1200, structureFlag is used to indicate if it is the first time light calculation after structure update
+    LGMdouble calculatePoplarLight(LGMdouble diffuse, LGMdouble structureFlag);
     void setLightValues();
     void setLight();
  

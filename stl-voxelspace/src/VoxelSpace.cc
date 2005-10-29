@@ -155,7 +155,7 @@ namespace Lignum {
 
     void VoxelSpace::resize(LGMdouble lX, LGMdouble lY, LGMdouble lZ,
 			    int nX, int nY, int nZ )
-    {
+    {cout<<"nX: "<<nX<<" "<<nY<<" "<<nZ<<endl;
     if(nX < 1) nX = 1;
     if(nY < 1) nY = 1;
     if(nZ < 1) nZ = 1;
@@ -419,17 +419,13 @@ namespace Lignum {
   VoxelBox& VoxelSpace::getVoxelBox(Point p)
   {
     Point localP = p - corner1;
-
     int Xi = static_cast<int>(localP.getX()/Xbox);
     int Yi = static_cast<int>(localP.getY()/Ybox);
     int Zi = static_cast<int>(localP.getZ()/Zbox);
-    cout<<"inside getVoxelBox. "<<endl;
-    //Check if the point is in voxel space
+    
     if (Xi < 0 || Yi < 0 || Zi < 0 || Xi >= Xn || Yi >= Yn || Zi >= Zn){
-      cout<<"the point is out of voxel space."<<endl;
       throw OutOfVoxelSpaceException(Point(Xi,Yi,Zi),p);
-    }
-    cout<<"the point is in the voxel space."<<endl;
+    } 
     return voxboxes[Xi][Yi][Zi]; 
   }
 
@@ -439,7 +435,7 @@ namespace Lignum {
   //	for Poplar: The function calculates the Qin and Qabs-values to
   //	every VoxelBox.
   //
-  LGMdouble VoxelSpace::calculatePoplarLight()
+  LGMdouble VoxelSpace::calculatePoplarLight(LGMdouble diffuse, LGMdouble structureFlag)
   {
     //ofstream file("calculateVoxelSpace.txt");
     // cout << " VoxelSpace::calculatePoplarLight Begin for poplar: " << endl;
@@ -451,10 +447,13 @@ namespace Lignum {
       for(int i2=0; i2<Yn; i2++)
 	for(int i3=0; i3<Zn; i3++)
 	  {
-	    int num_dirs = sky->numberOfRegions();
+	    // cout<<"diffuse: "<<diffuse<<" lastdiffuse: "<<lastdiffuse<<endl;
 
+	    int num_dirs = sky->numberOfRegions();
 	    if (voxboxes[i1][i2][i3].isEmpty() == false)
 	      {//	 cout<<"voxelbox not empty. "<<num_dirs<<endl;
+  	      if(structureFlag<=0)
+	       {
 	         double totaliop=0;
 		voxboxes[i1][i2][i3].updateValues();
 		for(int i = 0; i < num_dirs; i++)
@@ -499,7 +498,7 @@ namespace Lignum {
                           a--;
 			} //while vec
 		      }// if size>1
-		   
+		    // cout<<"a: "<<a<<endl;
 		      if (a==-1 && flag<2)
 			{double result;
                           Bernoulli ber(seed);
@@ -507,7 +506,8 @@ namespace Lignum {
 			  // cout<<"leafArea in current voxel: "<<leafArea<<endl;
                           double p=min(leafArea/(0.3*0.3), 1.0); //0.3 is the size of voxelbox in Bounding box   
 			  seed=-rand();
-			   result=ber(p, seed);		  
+			  //  result=ber(p, seed);
+			  result=1.0;		  
   			  if (result>0.5)
 			     flag+=1;			                          
                           double persent;
@@ -518,12 +518,20 @@ namespace Lignum {
 			    persent=0.1;
                           else
                             persent=0;			  
-                          voxboxes[i1][i2][i3].addRadiation(persent*iop*1200.0/2055.35);	
-			  //cout<<"diffuse radiation added into voxboxes: "<<iop<<endl; 
+                          voxboxes[i1][i2][i3].addRadiation(persent*iop*1200/2055.35);//diffuse/1200 *1200/2055.35	
+			  //  cout<<"diffuse radiation added into voxboxes: "<<iop<<endl; 
 		        }
 			     		     
 		  }//num_dirs for diffuse
+		voxboxes[i1][i2][i3].setQ_inStdDiff(voxboxes[i1][i2][i3].getQin());
 	        // cout <<"total iop for diffuse: "<< totaliop << endl;
+	      }
+	   
+		LGMdouble Qin=voxboxes[i1][i2][i3].getQ_inStdDiff()*diffuse/1200;
+		voxboxes[i1][i2][i3].addRadiation(Qin);
+		//cout<<diffuse<<" Qin in light cal: "<<voxboxes[i1][i2][i3].getQin()<<endl;
+	     
+
     
 		//calculate the light for direct beam
 		vector<double> direct_direction(3);
@@ -568,7 +576,8 @@ namespace Lignum {
 			  LGMdouble leafArea=voxboxes[i1][i2][i3].getLeafArea();
                           double p=min(leafArea/(0.3*0.3), 0.7);    
 			  seed=-rand();
-			  result=ber(p, seed);			  
+			  //result=ber(p, seed);
+			  result=1.0;			  
   			  if (result>0.5)
 			     flag+=1;
 			                          
@@ -581,7 +590,7 @@ namespace Lignum {
                             persent=0;
 			  
                            voxboxes[i1][i2][i3].addRadiation(persent*iop);
-			   // cout<<"direct radiation added into voxboxes: "<<persent*iop<<endl; 
+			   //  cout<<"direct radiation added into voxboxes: "<<persent*iop<<endl; 
 		        }
 
               }             	      
@@ -685,6 +694,17 @@ namespace Lignum {
       for(int i2=0; i2<Yn; i2++){
 	for(int i3=0; i3<Zn; i3++){
 	    voxboxes[i1][i2][i3].reset(); 
+	}
+      }
+    }
+  } 
+
+  void VoxelSpace::resetQinQabs()
+  {
+    for(int i1=0; i1<Xn; i1++){
+      for(int i2=0; i2<Yn; i2++){
+	for(int i3=0; i3<Zn; i3++){
+	    voxboxes[i1][i2][i3].resetQinQabs(); 
 	}
       }
     }
