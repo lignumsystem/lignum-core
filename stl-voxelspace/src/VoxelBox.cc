@@ -10,7 +10,8 @@ namespace Lignum {
   VoxelBox::VoxelBox(VoxelSpace *s):
     needleArea(0.0), leafArea(0.0), Q_in(0.0), Q_abs(0.0), star(0.0),
     starSum(0.0), needleMass(0.0), leafMass(0.0), number_of_segments(0),
-    number_of_leaves(0), interceptedRadiation(0.0),weight(0.0)
+    number_of_leaves(0), interceptedRadiation(0.0),weight(0.0),
+    big_leaf_normal(0,0,0)
   { 
     space = s;
   }
@@ -22,7 +23,8 @@ namespace Lignum {
   VoxelBox::VoxelBox(): 
     needleArea(0.0), leafArea(0.0), Q_in(0.0), Q_abs(0.0), star(0.0),
     starSum(0.0), needleMass(0.0), leafMass(0.0), number_of_segments(0),
-    number_of_leaves(0), interceptedRadiation(0.0),weight(0.0)
+    number_of_leaves(0), interceptedRadiation(0.0),weight(0.0),
+    big_leaf_normal(0,0,0)
   { 
     space = NULL; 
   }
@@ -41,6 +43,8 @@ void VoxelBox::init()
 	number_of_leaves = 0;
 	interceptedRadiation = 0.0;
 	weight = 0.0;
+
+	big_leaf_normal = PositionVector(0,0,0);
 }
 
 
