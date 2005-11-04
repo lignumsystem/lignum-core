@@ -59,6 +59,7 @@ namespace Lignum {
     LGMdouble getLeafMass()const{return leafMass;}
     LGMdouble getLeafArea()const{return leafArea;}
     LGMdouble getFoliageMass()const{return needleMass + leafMass;}
+    PositionVector getBigLeafNormal(){return big_leaf_normal.normalize();}
     LGMdouble getWeight()const{return weight;}
     LGMdouble getQ_inStdDiff()const{ return Q_inStdDiffuse; }
 
@@ -86,6 +87,7 @@ namespace Lignum {
     void resetHwData(){
       leafArea = 0.0;leafMass = 0.0;number_of_leaves = 0;
       val_b = 0.0; Q_inStdDiffuse = 0;
+      big_leaf_normal = PositionVector(0,0,0);
     }
     LGMdouble SAc(LGMdouble phi, LGMdouble r, LGMdouble l);
     LGMdouble K(LGMdouble phi);
@@ -104,6 +106,8 @@ namespace Lignum {
     LGMdouble leafMass;
     int number_of_segments;
     int number_of_leaves;
+    PositionVector big_leaf_normal;//Weighted  sum  of  directions  of
+				   //leaves in a box
   private:
     void init();	
     Point corner1;
