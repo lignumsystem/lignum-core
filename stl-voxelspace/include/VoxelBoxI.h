@@ -42,7 +42,7 @@ namespace Lignum {
    //coniferous segments (CfTreeSegment)
 
    template <class S>
-    void DumpLeaf(VoxelBox &b, BroadLeaf<S> &leaf)
+    void DumpLeaf(VoxelBox &b, const BroadLeaf<S> &leaf)
    { 
       LGMdouble xx = GetValue(leaf, LGAA);   //LGAA is defined in LGMSymbols.h
       b.addLeafArea(xx);
@@ -50,6 +50,11 @@ namespace Lignum {
       xx = GetValue(leaf, LGAWf);
       b.addLeafMass(xx);
 
+      //The weighted sum of the  leaf normals. Bigger leaf has more to
+      //say to  the direction  of the "big  leaf" normal  than smaller
+      //leaf
+      b.big_leaf_normal=b.big_leaf_normal+GetLeafNormal(leaf)*GetValue(leaf, 
+								       LGAA);
     }
   
 
