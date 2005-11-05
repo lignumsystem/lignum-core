@@ -459,6 +459,7 @@ namespace Lignum {
 		for(int i = 0; i < num_dirs; i++)
 		  {	
 		    vector<double> rad_direction(3);
+		    PositionVector big_leaf_normal=voxboxes[i1][i2][i3].getBigLeafNormal();
 		    LGMdouble iop = 
 		      sky->diffuseRegionRadiationSum(i,rad_direction);
 		    
@@ -466,6 +467,7 @@ namespace Lignum {
 		      radiation_direction(rad_direction[0], rad_direction[1], 
 					  rad_direction[2]);		    
 		    radiation_direction.normalize();
+		    LGMdouble maximum_box_project_area= abs(Xbox*Ybox*radiation_direction.getZ())+abs(Xbox*Zbox*radiation_direction.getY()) + abs(Zbox*Ybox*radiation_direction.getX());
 		    // cout <<"iop for diffuse: "<< iop << endl;
                     totaliop+= iop;
 		    vector<VoxelMovement> vec;		
@@ -487,12 +489,24 @@ namespace Lignum {
 			  	  
 			  VoxelMovement v1 = vec[a];
 			 
-			  LGMdouble leafArea=voxboxes[v1.x][v1.y][v1.z].getLeafArea();		      
+			  LGMdouble leaf_area=voxboxes[v1.x][v1.y][v1.z].getLeafArea();	
+			  LGMdouble projected_leaf_area=leaf_area*abs(
+				   big_leaf_normal.getX()*radiation_direction.getX()
+				   + big_leaf_normal.getY()*radiation_direction.getY()
+				   + big_leaf_normal.getZ()*radiation_direction.getZ());
+			  projected_leaf_area /= maximum_box_project_area;
+			  if(projected_leaf_area>0.5 && projected_leaf_area<=0.8)
+			    projected_leaf_area = 0.69*projected_leaf_area +0.155;
+			  else if(projected_leaf_area>0.8)
+			    projected_leaf_area = projected_leaf_area/
+			      (projected_leaf_area+exp(1-2.63*projected_leaf_area));
+
+
 			  // cout<<"leafArea in previous voxel: "<<leafArea<<endl;
-                          double p=min(leafArea/(0.3*0.3), 1.0);     //0.3 is the size of voxelbox in Bounding box
+                          double p=min(projected_leaf_area, 1.0);     //0.3 is the size of voxelbox in Bounding box
 			  seed=-rand();
 			   result=ber(p, seed);
-			
+			   //cout<<leaf_area<<" "<<projected_leaf_area<<" p: "<<p<<endl;
   			  if (result>0.5)
 			    flag+=1;  
                           a--;
@@ -502,20 +516,19 @@ namespace Lignum {
 		      if (a==-1 && flag<2)
 			{double result;
                           Bernoulli ber(seed);
-			  LGMdouble leafArea=voxboxes[i1][i2][i3].getLeafArea();
+			  /*  LGMdouble leaf_area=voxboxes[i1][i2][i3].getLeafArea();
 			  // cout<<"leafArea in current voxel: "<<leafArea<<endl;
-                          double p=min(leafArea/(0.3*0.3), 1.0); //0.3 is the size of voxelbox in Bounding box   
-			  seed=-rand();
-			  //  result=ber(p, seed);
-			  result=1.0;		  
+                          double p=min(leaf_area/(0.3*0.3), 1.0); //0.3 is the size of voxelbox in Bounding box   
+			  seed=-rand();*/
+			  result=1.0;   //  result=ber(p, seed);	  
   			  if (result>0.5)
 			     flag+=1;			                          
                           double persent;
 			  // cout<<"flag value: "<<flag<<endl;
 			  if (flag==1)
-			    persent=0.9;
+			    persent=0.8;
 			  else if (flag==2)
-			    persent=0.1;
+			    persent=0.08;
                           else
                             persent=0;			  
                           voxboxes[i1][i2][i3].addRadiation(persent*iop*1200/2055.35);//diffuse/1200 *1200/2055.35	
