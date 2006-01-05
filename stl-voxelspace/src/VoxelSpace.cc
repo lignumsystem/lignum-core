@@ -302,9 +302,9 @@ namespace Lignum {
     if (dir.getZ() != 0)
       zmove = fabs(Zbox / dir.getZ());
 
-    LGMdouble next_x = xmove / 2;
-    LGMdouble next_y = ymove / 2;
-    LGMdouble next_z = zmove / 2;
+    LGMdouble next_x = xmove / 2.0;
+    LGMdouble next_y = ymove / 2.0;
+    LGMdouble next_z = zmove / 2.0;
 
     LGMdouble dist = 0;
 
