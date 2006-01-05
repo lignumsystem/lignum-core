@@ -293,13 +293,13 @@ namespace Lignum {
     LGMdouble ymove=9999;
     LGMdouble zmove=9999;
 
-    if (dir.getX() != 0)
+    if (dir.getX() != R_EPSILON)
       xmove = fabs(Xbox / dir.getX());
 
-    if (dir.getY() != 0)
+    if (dir.getY() != R_EPSILON)
       ymove = fabs(Ybox / dir.getY());
 	
-    if (dir.getZ() != 0)
+    if (dir.getZ() != R_EPSILON)
       zmove = fabs(Zbox / dir.getZ());
 
     LGMdouble next_x = xmove / 2.0;
