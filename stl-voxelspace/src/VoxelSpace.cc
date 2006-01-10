@@ -233,7 +233,7 @@ namespace Lignum {
   // Returns indicates the x-index of the VoxBox including
   // then x-coordinate given as parameter
   //
-  int VoxelSpace::getXindex(LGMdouble local_xcoord)
+  int VoxelSpace::getXindex(LGMdouble local_xcoord)const
   {
     return (int)(local_xcoord/Xbox);
   }
@@ -243,7 +243,7 @@ namespace Lignum {
   // Returns indicates the y-index of the VoxBox including
   // then y-coordinate given as parameter
   //
-  int VoxelSpace::getYindex(LGMdouble local_ycoord)
+  int VoxelSpace::getYindex(LGMdouble local_ycoord)const
   {
     return (int)(local_ycoord/Ybox);
   }
@@ -253,7 +253,7 @@ namespace Lignum {
   // Returns indicates the z-index of the VoxBox including
   // then z-coordinate given as parameter
   //
-  int VoxelSpace::getZindex(LGMdouble local_zcoord)
+  int VoxelSpace::getZindex(LGMdouble local_zcoord)const
   {
     return (int)(local_zcoord/Zbox);
   }
@@ -272,6 +272,7 @@ namespace Lignum {
   // dir	  : direction
   // returns : the route stored in a vector
   //
+  //This getRoute assumes that the initial point is at the center of the box. 
   std::vector<VoxelMovement>& VoxelSpace::getRoute(std::vector<VoxelMovement> &vec, int startx, 
 						   int starty, int startz, PositionVector dir)const
   {
@@ -354,6 +355,251 @@ namespace Lignum {
   }
 
 
+
+  //
+  // The function  calculates the route  through the voxel  space from
+  // the start point  to the direction given as  parameter.  The route
+  // is stored into a vector
+  //
+  // Parametres:
+  // vec	:	the vector where the route is stored
+  // p0:      the start position of the ray (e.g. segment midpoint)
+  // dir	  : direction of the light beam
+  // returns : the route stored in a vector
+  //
+  //This getRoute is  as getRoute above but uses  user defined 'p0' as
+  //the ray starting point.
+  vector<VoxelMovement>& VoxelSpace::getRoute(vector<VoxelMovement> &vec, 
+					      const Point& p0,
+					      PositionVector& dir)const
+  {
+    dir.normalize();	
+    PositionVector d0(p0);
+    
+    int x_jump = +1;
+    int y_jump = +1;
+    int z_jump = +1;
+	
+    //The x,y,z indices of the box the point belongs to 
+    int startx = getXindex(p0.getX());
+    int starty = getYindex(p0.getY());
+    int startz = getZindex(p0.getZ());
+
+    if (dir.getX()<0)
+      x_jump = -1;
+    if (dir.getY()<0)
+      y_jump = -1;
+    if (dir.getZ()<0)
+      z_jump = -1;
+
+    PositionVector n1(1,0,0);//normal of the front face of the box
+    PositionVector n2(0,1,0);//normal of the left face of the box
+    PositionVector n3(0,0,1);//normal of the bottom face of the box
+    PositionVector n4(-1,0,0);//normal of the back face of the box
+    PositionVector n5(0,-1,0);//normal of the right face of the box
+    PositionVector n6(0,0,-1);//normal of the top face of the box
+    LGMdouble boxx0 = startx*Xbox;//corner coordinates (not indices) of the box 
+    LGMdouble boxy0 = starty*Ybox;//global   coordinates:
+                                  //e.g. (3.7 div 2)*2 =1*2  =  2, 
+                                  //(3.7  div 0.5)*0.5=7*0.5=3.5
+    LGMdouble boxz0 = startz*Zbox;
+    //origo of the box in global (segment) coordinates, i.e. the point
+    //on the front, left and bottom faces of the box
+    Point p1(boxx0,boxy0,boxz0);
+    //opposite point  to origo  in global (segment)  coordinates, i.e.
+    //the point on the back, right and top faces of the box
+    Point p2(boxx0+Xbox,boxy0+Ybox,boxz0+Zbox);
+
+    LGMdouble xmove=FLT_MAX;
+    LGMdouble ymove=FLT_MAX;
+    LGMdouble zmove=FLT_MAX;
+
+    //Calculate  the distances  one has  to  move to  cross voxel  box
+    //boundaries in x,y and z directions
+    if (dir.getX() != R_EPSILON)
+      xmove = fabs(Xbox / dir.getX());
+    if (dir.getY() != R_EPSILON)
+      ymove = fabs(Ybox / dir.getY());
+    if (dir.getZ() != R_EPSILON)
+      zmove = fabs(Zbox / dir.getZ());
+
+    //Initialize: calculate the distances light beam can travel before
+    //crossing the box in x,y and z directions. This is the problem of
+    //deciding  if  a  ray  intersects  with  a  plane.   The  ray  is
+    //represented as r0+t*r1, where r0 is the starting point and r1 is
+    //the direction (unit  vector) of the ray. 't'  is the distance to
+    //the plane. The plane is  represented as Ax+By+Cz+D=0, where A, B
+    //and C  is the  normal to the  plane (unit  vector) and D  is the
+    //(shortest)  distance of  the plane  to  origo. At  the point  of
+    //intersection   the    ray   satisfies   the    plane   equation:
+    //A*(r0.x+t*r1.x)+B*(r0.y+t*r1.y)+C*(r0.z+t*r1.z)+D=0   Solve  the
+    //equation for t:
+    //t=-(A*r0.x+B*r0.y+C*r0.z+D)/(A*r1.x+B*r1.y+C*r1.z) Note the sign
+    //of  D; it is  a positive  number in  Ax+By+Cz=D and  negative in
+    //Ax+By+Cz+D=0. Note also that the  normals are simple and we know
+    //the D, so the equation for t simplifies quite a lot.
+    double t1,t2,t3,t4,t5,t6;
+    t1=t2=t3=t4=t5=t6=-1.0;//initialize to negative (i.e. no  intersection)
+    if (fabs(dir.getX()) > R_EPSILON){
+      t1 = -(d0.getX() + (-p1.getX()))/(dir.getX());//front face
+      t4 = -(d0.getX() + (-p2.getX()))/(dir.getX());//back face
+    }
+    if (fabs(dir.getY()) > R_EPSILON){
+      t2 = -(d0.getY() + (-p1.getY()))/(dir.getY());//left face
+      t5 = -(d0.getY() + (-p2.getY()))/(dir.getY());//right face
+    }
+    if  (fabs(dir.getZ()) > R_EPSILON){
+      t3 = -(d0.getZ() + (-p1.getZ()))/(dir.getZ());//bottom face
+      t6 = -(d0.getZ() + (-p2.getZ()))/(dir.getZ());//top face
+    }
+    //For  each t>=0  check in  which direction  (x, y  or z)  the box
+    //boundary was crossed.   (If t < 0 the plane  was in the opposite
+    //direction). Set  it as  the value of  next_[x,y,z]. That  is the
+    //distance the ray can travel  before crossing the box boundary in
+    //x,y and z direction.  The "Fast voxel space traversal algorithm"
+    //then in its incremental  phase calculates the total distance the
+    //ray traverses in the boxes.
+    double next_x,next_y,next_z;
+    next_x=next_y=next_z=FLT_MAX;
+    if (t1 >=0.0){
+      //If the  direction component is  positive, the ray  crosses the
+      //box   boundary   in   index*box_size+box_size,  if   direction
+      //component  is negative  the ray  crosses the  box  boundary in
+      //index*box_size.
+      if (fabs(d0.getX()+t1*dir.getX() - p1.getX()) <= R_EPSILON || 
+	  fabs(d0.getX()+t1*dir.getX() - p2.getX()) <= R_EPSILON){
+	next_x = t1;
+      }
+      if (fabs(d0.getY()+t1*dir.getY() - p1.getY()) <= R_EPSILON || 
+	  fabs(d0.getY()+t1*dir.getY() - p2.getY()) <= R_EPSILON){
+	next_y = t1;
+      }
+      if (fabs(d0.getZ()+t1*dir.getZ() - p1.getZ()) <= R_EPSILON || 
+	  fabs(d0.getZ()+t1*dir.getZ() - p2.getZ()) <= R_EPSILON){
+	next_z = t1;
+      }
+    }
+    if (t2 >=0.0){
+      //If the  direction component is  positive, the ray  crosses the
+      //box boundary in index*box_size+box_size, if it is negative the
+      //ray crosses the box boundary in index*box_size.
+      if (fabs(d0.getX()+t2*dir.getX() - p1.getX()) <= R_EPSILON || 
+	  fabs(d0.getX()+t2*dir.getX() - p2.getX()) <= R_EPSILON){
+	next_x = t2;
+      }
+      if (fabs(d0.getY()+t2*dir.getY() - p1.getY()) <= R_EPSILON || 
+	  fabs(d0.getY()+t2*dir.getY() - p2.getY()) <= R_EPSILON){
+	next_y = t2;
+      }
+      if (fabs(d0.getZ()+t2*dir.getZ() - p1.getZ()) <= R_EPSILON || 
+	  fabs(d0.getZ()+t2*dir.getZ() - p2.getZ()) <= R_EPSILON){
+	next_z = t2;
+      }
+    }
+    if (t3 >=0.0){
+      if (fabs(d0.getX()+t3*dir.getX() - p1.getX()) <= R_EPSILON || 
+	  fabs(d0.getX()+t3*dir.getX() - p2.getX()) < R_EPSILON){
+	next_x = t3;
+      }
+      if (fabs(d0.getY()+t3*dir.getY() - p1.getY()) <= R_EPSILON || 
+	  fabs(d0.getY()+t3*dir.getY() - p2.getY()) <= R_EPSILON){
+	next_y = t3;
+      }
+      if (fabs(d0.getZ()+t3*dir.getZ() - p1.getZ()) <= R_EPSILON || 
+	  fabs(d0.getZ()+t3*dir.getZ() - p2.getZ()) <= R_EPSILON){
+	next_z = t3;
+      }
+    }
+    if (t4 >=0.0){
+      if (fabs(d0.getX()+t4*dir.getX() - p1.getX()) <= R_EPSILON || 
+	  fabs(d0.getX()+t4*dir.getX() - p2.getX()) <= R_EPSILON){
+	next_x = t4;
+      }
+      if (fabs(d0.getY()+t4*dir.getY() - p1.getY()) <= R_EPSILON || 
+	  fabs(d0.getY()+t4*dir.getY() - p2.getY()) <= R_EPSILON){
+	next_y = t4;
+      }
+      if (fabs(d0.getZ()+t4*dir.getZ() - p1.getZ()) <= R_EPSILON || 
+	  fabs(d0.getZ()+t4*dir.getZ() - p2.getZ()) <= R_EPSILON){
+	next_z = t4;
+      }
+    }
+    if (t5 >=0.0){
+      if (fabs(d0.getX()+t5*dir.getX() - p1.getX()) <= R_EPSILON || 
+	  fabs(d0.getX()+t5*dir.getX() - p2.getX()) <= R_EPSILON){
+	next_x = t5;
+      }
+      if (fabs(d0.getY()+t5*dir.getY() - p1.getY()) <= R_EPSILON || 
+	  fabs(d0.getY()+t5*dir.getY() - p2.getY()) <= R_EPSILON){
+	next_y = t5;
+      }
+      if (fabs(d0.getZ()+t5*dir.getZ() - p1.getZ()) <= R_EPSILON || 
+	  fabs(d0.getZ()+t5*dir.getZ() - p2.getZ()) <= R_EPSILON){
+	next_z = t5;
+      }
+    }
+    if (t6 >=0.0){
+      if (fabs(d0.getX()+t6*dir.getX() - p1.getX()) <= R_EPSILON || 
+	  fabs(d0.getX()+t6*dir.getX() - p2.getX()) <= R_EPSILON){
+	next_x = t6;
+      }
+      if (fabs(d0.getY()+t6*dir.getY() - p1.getY()) <= R_EPSILON || 
+	  fabs(d0.getY()+t6*dir.getY() - p2.getY()) <= R_EPSILON){
+	next_y = t6;
+      }
+      if (fabs(d0.getZ()+t6*dir.getZ() - p1.getZ()) <= R_EPSILON || 
+	  fabs(d0.getZ()+t6*dir.getZ() - p2.getZ()) <= R_EPSILON){
+	next_z = t6;
+      }
+    }
+
+    //At this point  we should have exactly 3  crossings, one for each
+    //x,y and z  plane. One of next_x, next_y  and next_z contains the
+    //minimum t that the ray can travel in the box
+
+    LGMdouble dist = 0;
+
+    while(startx>=0 && starty>=0 && startz>=0 && startx<Xn &&
+	  starty<Yn && startz<Zn)
+      {
+	VoxelMovement vm;
+	vm.x = startx;
+	vm.y = starty;
+	vm.z = startz;
+	if (next_x <= next_y && next_x<= next_z)
+	  {
+	    startx = startx + x_jump;
+	    vm.l = next_x - dist;
+	    dist = next_x;
+	    next_x = next_x + xmove;
+	  }
+	else if (next_y <= next_x && next_y<= next_z)
+	  {
+	    starty = starty + y_jump;
+	    vm.l = next_y - dist;
+	    dist = next_y;
+	    next_y = next_y + ymove;
+			
+	  }
+	else if (next_z <= next_y && next_z<= next_x)
+	  {
+	    startz = startz + z_jump;
+	    vm.l = next_z - dist;
+	    dist = next_z;
+	    next_z = next_z + zmove;
+	  }
+		
+	if (startx>=-1 && starty>=-1 && startz>=-1 && startx<Xn+1 &&
+	    starty<Yn+1 && startz<Zn+1)
+	  {
+	    vec.push_back(vm);
+	  }
+      }
+
+
+
+    return vec;
+  }
 
 
   //
@@ -646,14 +892,21 @@ namespace Lignum {
 		    getRoute(vec, i1, i2, i3, radiation_direction);
 		    int size = vec.size();
 		    //other boxes
-		    if (size>1)
+		    if (size>1){
+		      if (i == 4){
+			cout << "Rdir " <<  radiation_direction << endl;
+		      }
 		      for (int a=1; a<size; a++)
 			{
 			  VoxelMovement v1 = vec[a-1];
 			  VoxelMovement v2 = vec[a];			  
 			  LGMdouble ext = voxboxes[v1.x][v1.y][v1.z].extinction(v2.l); 
+			  if (i==4){
+			    cout << v1.x << " " << v1.y << " " << v1.z << " " << v1.l <<endl;
+			  }
 			  iop = iop * ext;
 			}
+		    }
 		    //the self shading 
 		    if (size>0 && self_shading)
 		      {
