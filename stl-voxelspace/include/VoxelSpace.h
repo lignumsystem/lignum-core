@@ -115,6 +115,11 @@ namespace Lignum {
     VoxelBox& getVoxelBox(Point p);
     vector<VoxelMovement>& getRoute(vector<VoxelMovement> &vec, int startx, 
 				    int starty, int startz, PositionVector dir)const;
+    //The method  calculates the route through the  voxel space from
+    //start point to the direction given.
+    vector<VoxelMovement>& VoxelSpace::getRoute(vector<VoxelMovement> &vec,//The route
+						const Point& p0,//start point (global point)
+						PositionVector& dir)const;//direction
     //Given a point 'p' in global coordinate system, return a point in
     //VoxelSpace coordinate system
     Point getLocalPoint(const Point& p)const;
@@ -164,9 +169,9 @@ namespace Lignum {
     Point corner1;  //origo
     Point corner2;  //diagonallly opposite corner(??)
 	
-    int getXindex(LGMdouble xcoord);
-    int getYindex(LGMdouble ycoord);
-    int getZindex(LGMdouble zcoord);
+    int getXindex(LGMdouble xcoord)const;
+    int getYindex(LGMdouble ycoord)const;
+    int getZindex(LGMdouble zcoord)const;
 
     Firmament* sky;
 
