@@ -566,6 +566,8 @@ namespace Lignum {
 	vm.x = startx;
 	vm.y = starty;
 	vm.z = startz;
+	//Set foliage area,  needle area + leaf area
+	vm.af = voxboxes[vm.x][vm.y][vm.z].getFoliageArea(); 
 	if (next_x <= next_y && next_x<= next_z)
 	  {
 	    startx = startx + x_jump;
