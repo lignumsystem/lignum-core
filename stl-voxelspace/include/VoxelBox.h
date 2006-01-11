@@ -59,6 +59,7 @@ namespace Lignum {
     LGMdouble getLeafMass()const{return leafMass;}
     LGMdouble getLeafArea()const{return leafArea;}
     LGMdouble getFoliageMass()const{return needleMass + leafMass;}
+    LGMdouble getFoliageArea()const{return needleArea+leafArea;}
     PositionVector getBigLeafNormal(){return big_leaf_normal.normalize();}
     LGMdouble getWeight()const{return weight;}
     LGMdouble getQ_inStdDiff()const{ return Q_inStdDiffuse; }
