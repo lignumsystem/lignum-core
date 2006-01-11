@@ -13,10 +13,12 @@ namespace Lignum {
 
   struct VoxelMovement
   {
-    int x;
+    VoxelMovement():x(0),y(0),z(0),l(0.0),af(0.0){}
+    int x;//box indices
     int y;
     int z;
-    LGMdouble l;
+    LGMdouble l;//Path length in the box
+    LGMdouble af;//Foliage area in the box
   };
 
   //The value for 'kb'  (angle of incidence, c.f.star mean for coniferous)
