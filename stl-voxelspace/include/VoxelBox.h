@@ -3,7 +3,7 @@
 
 #include <fstream>
 #include <Lignum.h>
-
+#include <VoxelObject.h>
 struct VisualCube
 {
   LGMdouble x,y,z;
@@ -38,7 +38,12 @@ namespace Lignum {
     LGMdouble extinction(LGMdouble l)const;
 
     //reset the box to 0
-    void reset(){resetQinQabs(); resetCfData();resetHwData();}
+    void reset(){
+      resetQinQabs(); 
+      resetCfData();
+      resetHwData();
+      objectv.clear();
+    }
     //Reset Qin, Qabs and  intercepedRadiation to 0, this is necessary
     //in  short time  steps, where  structural update  is  slower than
     //changing light environment.
@@ -116,6 +121,8 @@ namespace Lignum {
     LGMdouble val_c; //val_c * l is coniferous extinction
     LGMdouble val_b; //val_b * l is broadleaf  extinction
     VoxelSpace *space;
+    vector<VoxelObject> objectv;//vector of photosynthesising elements
+				//in the box
   };
 
 } //namespace Lignum
