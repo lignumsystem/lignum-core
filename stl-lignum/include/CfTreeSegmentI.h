@@ -56,6 +56,14 @@ LGMdouble GetValue(const CfTreeSegment<TS,BUD>& ts, const LGMAD name)
   else if (name == LGAstarm)
     return ts.cftsa.starm;
 
+  //Volume occupied by foliage
+  else if (name == LGAVf){
+    if (GetValue(ts,LGAWf) > R_EPSILON)
+      return PI_VALUE*pow(GetValue(ts,LGARf),2.0)*GetValue(ts,LGAL)
+	     -GetValue(ts,LGAV);
+    else
+      return 0.0;
+  }
   //Return simply foliage mass
   else if (name == LGAWf)
     return ts.cftsa.Wf;

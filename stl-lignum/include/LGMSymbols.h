@@ -58,7 +58,7 @@ namespace Lignum{
 	      LGAH,LGAHf,LGAHTop,LGAip,
               LGAL,LGAM, LGAMaxD,LGAomega,LGAP,LGAQabs,LGAQin,LGAR,LGARf,
               LGARh, LGARhair,LGARTop,LGASa,LGAsf,LGAstarm,LGAstatus, 
-              LGAstate,LGAtauL, LGAtype,LGAV,LGAVh,LGAVhair,LGAvi,LGAVs,
+              LGAstate,LGAtauL, LGAtype,LGAV,LGAVf,LGAVh,LGAVhair,LGAvi,LGAVs,
               LGAWf, LGAWf0, LGAWs, LGAWh,LGAWhair, LGAT};
 
 
@@ -107,15 +107,16 @@ namespace Lignum{
   //               lateral etc. The numerical values and their symbols of
   //               different types given in LGMUnits.h
   //  37 LGAV      Segment volume based on R and L
-  //  38 LGAVh     Heartwood volume
-  //  39 LGAVhair  Root hair volume
-  //  40 LGAvi     Vigour index
-  //  41 LGAVs     Sapwood volume
-  //  42 LGAWf     Foliage mass (kg C)
-  //  43 LGAWf0    Initial foliage mass (kg C)
-  //  44 LGAWs     Mass of sapwood (kg C)
-  //  45 LGAWh     Mass of heartwood (kg C)
-  //  46 LGAWhair  Mass of root hair (kg C)
+  //  38 LGAVf     Volume occupied by the foliage in CfSegment 
+  //  39 LGAVh     Heartwood volume
+  //  40 LGAVhair  Root hair volume
+  //  41 LGAvi     Vigour index
+  //  42 LGAVs     Sapwood volume
+  //  43 LGAWf     Foliage mass (kg C)
+  //  44 LGAWf0    Initial foliage mass (kg C)
+  //  45 LGAWs     Mass of sapwood (kg C)
+  //  46 LGAWh     Mass of heartwood (kg C)
+  //  47 LGAWhair  Mass of root hair (kg C)
 
   // LGMAD = LIGNUM Attribute Double
 
