@@ -364,16 +364,17 @@ namespace Lignum {
   // Parametres:
   // vec	:	the vector where the route is stored
   // p0:      the start position of the ray (e.g. segment midpoint)
-  // dir	  : direction of the light beam
-  // returns : the route stored in a vector
+  // dir	  : direction of the light beam, NOTE: |dir| == 1 (!!!!)
+  // returns : the route stored in a vector, 
+  //           extinction of the objects in the voxels 
   //
   //This getRoute is  as getRoute above but uses  user defined 'p0' as
   //the ray starting point.
   vector<VoxelMovement>& VoxelSpace::getRoute(vector<VoxelMovement> &vec, 
 					      const Point& p0,
-					      PositionVector& dir)const
-  {
-    dir.normalize();	
+					      const PositionVector& dir,
+					      const ParametricCurve& K)const
+  { 
     PositionVector d0(p0);
     
     int x_jump = +1;
@@ -568,6 +569,8 @@ namespace Lignum {
 	vm.z = startz;
 	//Set foliage area,  needle area + leaf area
 	vm.af = voxboxes[vm.x][vm.y][vm.z].getFoliageArea(); 
+	//Get extinction caused by objects in the box
+	vm.tau =  voxboxes[vm.x][vm.y][vm.z].getExtinction(p0,dir,K);
 	if (next_x <= next_y && next_x<= next_z)
 	  {
 	    startx = startx + x_jump;
@@ -965,6 +968,11 @@ namespace Lignum {
 	}
       }
     }
+    //debug 
+    sgmntfol = 0;
+    hitw = 0;
+    hitfol = 0;
+    nohit = 0;
   } 
 
   void VoxelSpace::resetQinQabs()
