@@ -35,8 +35,13 @@ namespace Lignum {
 
       b.number_of_segments++;
     }
-
-
+  template <class TS>
+  void InsertSegment(VoxelBox &b, const TS& ts)
+  {
+    CfObject<TS> *cfobj = new CfObject<TS>(ts);
+    b.objects.push_back(cfobj);
+  }
+  
 
    //Dump one leaf of a deciduous tree - corresponds to DumpSegment of
    //coniferous segments (CfTreeSegment)
@@ -76,7 +81,21 @@ namespace Lignum {
       SetValue(ts, LGAQin, GetValue(ts, LGAQin)+b.getQin()/num_parts);
     }
 
-
+  //Accumulate (multiply) the extinctions of the objects in the voxel
+  class AccumulateObjectExtinction{
+  public:
+    AccumulateObjectExtinction(const Point& point,const PositionVector& direction,
+			       const ParametricCurve& Kfun)
+      :p0(point),dir(direction),K(Kfun){}
+    LGMdouble operator()(LGMdouble tau, VoxelObject* object){
+      tau = tau*(object->getExtinction(p0,dir,K));
+      return tau;
+    }
+  private:
+    const Point& p0;//Start of the light beam
+    const PositionVector& dir;//Direction of th light beam
+    const ParametricCurve& K;//The extinction function 
+  };
 
 } //namespace Lignum
 

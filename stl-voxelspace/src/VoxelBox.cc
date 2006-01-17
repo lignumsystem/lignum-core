@@ -29,6 +29,19 @@ namespace Lignum {
     space = NULL; 
   }
 
+  void VoxelBox::reset()
+  {
+    resetQinQabs(); 
+    resetCfData();
+    resetHwData();
+    //clear the vector elements, i.e objects wrappers
+    vector<VoxelObject*>::iterator it;
+    for (it = objects.begin(); it != objects.end(); it++){
+      delete *it;//delete wrapper
+    }
+    objects.clear();
+  }
+  
 void VoxelBox::init()
 { 
 	needleArea = 0.0;
@@ -174,6 +187,30 @@ LGMdouble VoxelBox::getAreaDensity()
 	return star + val_b;
 }
 
+  //Return the  extinction of the objects  in the voxel. p0  and d are
+  //the start and  the direction of the light  beam respectively. Kfun
+  //is the extinction function (as an inclination of the light beam)
+  LGMdouble VoxelBox::getExtinction(const Point& p0, const PositionVector& d, 
+				    const ParametricCurve& Kfun)const
+  {
+    //accumulate through the vector of objects in the box
+    //AccumulateObjectExtinction extinction(p0,d,Kfun);
+    //double tau = accumulate(objects.begin(),objects.end(),1.0,
+    //		    extinction);
+    double tau2 = 1.0;
+    vector<VoxelObject*>::const_iterator it;
+    for (it=objects.begin(); it != objects.end(); it++){
+      double tmp_tau = (*it)->getExtinction(p0,d,Kfun);
+      if (tmp_tau == 0)//wood
+	space->hitw = space->hitw + 1;
+      else if (tmp_tau == 1)//no hit
+	space->nohit = space->nohit + 1;
+      else
+	space->hitfol = space->hitfol + 1; 
+      tau2 = tau2*tmp_tau;
+    }
+    return tau2;
+  }
 //
 //
 LGMdouble VoxelBox::SAc(LGMdouble phi, LGMdouble r, LGMdouble l)

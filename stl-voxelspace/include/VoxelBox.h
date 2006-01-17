@@ -20,14 +20,18 @@ namespace Lignum {
   {
 	
     template <class TS,class BUD>
-      friend void DumpSegment(VoxelBox &b, const CfTreeSegment<TS,BUD>& ts, 
-			      int num_parts);
+    friend void DumpSegment(VoxelBox &b, const CfTreeSegment<TS,BUD>& ts, 
+			    int num_parts);
+    //Insert a segment to a vector of objects in the voxel
+    template <class TS>
+    friend void InsertSegment(VoxelBox &b,const TS& ts);
+
     template <class SH>
-      friend void DumpLeaf(VoxelBox &b, const BroadLeaf<SH>& leaf);
+    friend void DumpLeaf(VoxelBox &b, const BroadLeaf<SH>& leaf);
 
     template <class TS,class BUD>
-      friend void SetSegmentQabs(VoxelBox &b, CfTreeSegment<TS,BUD>& ts, 
-				 double num_parts);
+    friend void SetSegmentQabs(VoxelBox &b, CfTreeSegment<TS,BUD>& ts, 
+			       double num_parts);
     friend ostream &operator << (ostream& os, VoxelBox &b);
   public:
     VoxelBox(VoxelSpace *s); 
@@ -37,13 +41,10 @@ namespace Lignum {
     void updateValues();
     LGMdouble extinction(LGMdouble l)const;
 
-    //reset the box to 0
-    void reset(){
-      resetQinQabs(); 
-      resetCfData();
-      resetHwData();
-      objectv.clear();
-    }
+    //reset  the  box to  0,  clear  the  vector of  photosynthesising
+    //objects (not the objects though!!!)
+    void reset();
+     
     //Reset Qin, Qabs and  intercepedRadiation to 0, this is necessary
     //in  short time  steps, where  structural update  is  slower than
     //changing light environment.
@@ -68,6 +69,9 @@ namespace Lignum {
     PositionVector getBigLeafNormal(){return big_leaf_normal.normalize();}
     LGMdouble getWeight()const{return weight;}
     LGMdouble getQ_inStdDiff()const{ return Q_inStdDiffuse; }
+    //Return the extinction of the objects in the box
+    LGMdouble getExtinction(const Point& p1, const PositionVector& d, 
+			    const ParametricCurve& K)const;
 
     void setArea( M2 needleA, M2 leafA);
     void setVoxelSpace(VoxelSpace *s, Point c);
@@ -121,7 +125,7 @@ namespace Lignum {
     LGMdouble val_c; //val_c * l is coniferous extinction
     LGMdouble val_b; //val_b * l is broadleaf  extinction
     VoxelSpace *space;
-    vector<VoxelObject> objectv;//vector of photosynthesising elements
+    vector<VoxelObject*> objects;//vector of photosynthesising elements
 				//in the box
   };
 
