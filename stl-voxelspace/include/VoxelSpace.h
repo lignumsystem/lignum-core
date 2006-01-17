@@ -13,12 +13,14 @@ namespace Lignum {
 
   struct VoxelMovement
   {
-    VoxelMovement():x(0),y(0),z(0),l(0.0),af(0.0){}
+    VoxelMovement():x(0),y(0),z(0),l(0.0),af(0.0),tau(0.0){}
     int x;//box indices
     int y;
     int z;
     LGMdouble l;//Path length in the box
     LGMdouble af;//Foliage area in the box
+    LGMdouble tau;//the  extinction  caused  by  objects  in  the  box
+		  //(pairwise comparison)
   };
 
   //The value for 'kb'  (angle of incidence, c.f.star mean for coniferous)
@@ -48,6 +50,9 @@ namespace Lignum {
 
     template <class TS,class BUD>
     friend void DumpCfTreeSegment(VoxelSpace &s, CfTreeSegment<TS, BUD> &ts,double num_parts);
+
+    template <class TS>
+    friend void InsertSegment(VoxelSpace& s, const TS& ts);
 
     template <class TS,class BUD>
     friend void SetCfTreeQabs(VoxelSpace &s, Tree<TS, BUD> &tree,int num_parts);
@@ -121,7 +126,8 @@ namespace Lignum {
     //start point to the direction given.
     vector<VoxelMovement>& VoxelSpace::getRoute(vector<VoxelMovement> &vec,//The route
 						const Point& p0,//start point (global point)
-						PositionVector& dir)const;//direction
+						const PositionVector& dir, //direction. |dir|==1
+						const ParametricCurve& K)const;//extinction = f(incl)
     //Given a point 'p' in global coordinate system, return a point in
     //VoxelSpace coordinate system
     Point getLocalPoint(const Point& p)const;
@@ -163,6 +169,11 @@ namespace Lignum {
     LGMdouble Xbox, Ybox, Zbox;
     int Xn, Yn, Zn;
     TMatrix3D<VoxelBox> voxboxes;
+    //debug
+    int sgmntfol;//segments with foliage (to compare with)
+    int hitw;//wood hits;
+    int hitfol;//foliage hits
+    int nohit;//no hits
   private:
   
 
@@ -222,8 +233,6 @@ namespace Lignum {
   
 } // namespace Lignum
 
-#include "VoxelSpaceI.h"
-
 #endif
-
+#include "VoxelSpaceI.h"
 

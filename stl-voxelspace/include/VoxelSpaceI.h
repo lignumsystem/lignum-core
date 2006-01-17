@@ -81,6 +81,37 @@ namespace Lignum {
       return tc;    
     }
 
+  //Insert Segment to  boxes it belongs to based on  base, mid and end
+  //points
+  template <class TS>
+  void InsertSegment(VoxelSpace& s, const TS& ts)
+  {
+    Point p1 = GetPoint(ts);
+    Point p2 = GetPoint(ts,0.5);
+    Point p3 = GetPoint(ts,1.0);
+    int x1=s.getXindex(p1.getX());
+    int y1=s.getYindex(p1.getY());
+    int z1=s.getZindex(p1.getZ());
+
+    int x2=s.getXindex(p2.getX());
+    int y2=s.getYindex(p2.getY());
+    int z2=s.getZindex(p2.getZ());
+
+    int x3=s.getXindex(p3.getX());
+    int y3=s.getYindex(p3.getY());
+    int z3=s.getZindex(p3.getZ());
+    //start from the base
+    InsertSegment(s.voxboxes[x1][y1][z1],ts);
+     //check that the box has changed
+    if (x1!=x2 || y1!=y2 || z1!=z2){
+       InsertSegment(s.voxboxes[x2][y2][z2],ts);
+    }
+    //check again that the box has changed
+    if (x2!=x3 || y2!=y3 || z2!=z3){
+       InsertSegment(s.voxboxes[x3][y3][z3],ts);
+    }
+    s.sgmntfol = s.sgmntfol + 1;
+  }
   //Then HwTree & HwTreeSegment ==========================
 
   template <class TS,class BUD>
