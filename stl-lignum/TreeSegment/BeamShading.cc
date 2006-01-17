@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include <Ellipsis.h>
+#include <Ellipse.h>
 #include <Shading.h>
 using namespace Lignum;
 
