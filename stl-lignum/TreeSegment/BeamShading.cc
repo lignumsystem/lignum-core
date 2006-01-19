@@ -127,8 +127,8 @@ int CylinderBeamShading(const Point& r0_1, const PositionVector& b,
 {
   distance = 0.0; //No suprises!!
 
-  static PositionVector rs = PositionVector(rs_1.getX(),rs_1.getY(),rs_1.getZ());
-  static PositionVector r0 = PositionVector(r0_1.getX(),r0_1.getY(),r0_1.getZ());
+  PositionVector rs = PositionVector(rs_1.getX(),rs_1.getY(),rs_1.getZ());
+  PositionVector r0 = PositionVector(r0_1.getX(),r0_1.getY(),r0_1.getZ());
   
   //	1.	Rough testing
 
@@ -151,15 +151,15 @@ int CylinderBeamShading(const Point& r0_1, const PositionVector& b,
   //	Intermediate dot products and calculations
 
   // Dot products
-  static PositionVector rdiff;
+  PositionVector rdiff;
   double ab = 0.0, rdiffa = 0.0, rdiffb = 0.0;
   double rdiff2 = 0.0;
   double p1, p2;
-  static PositionVector rHit;
-  static PositionVector rd;
-  static PositionVector rd1;
-  static PositionVector rd2;
-  static PositionVector rs1;
+  PositionVector rHit;
+  PositionVector rd;
+  PositionVector rd1;
+  PositionVector rd2;
+  PositionVector rs1;
   double any;
 
   rdiff = rs - r0;
@@ -196,8 +196,8 @@ int CylinderBeamShading(const Point& r0_1, const PositionVector& b,
   // 3. Does the beam hit the the cylinder with radius Rs?
 
   double c2Over2, c1, c3, discriminantOver4;
-  static PositionVector r1;
-  static PositionVector r2;
+  PositionVector r1;
+  PositionVector r2;
   bool firstHits = false, secondHits = false;
 	
   c2Over2 = rdiffa * ab - rdiffb;
@@ -214,8 +214,8 @@ int CylinderBeamShading(const Point& r0_1, const PositionVector& b,
   //	After this point checks concerning the wood cylinder not necessary,
   //	except for end disks. 
 
-  static PositionVector rw1;
-  static PositionVector rw2;
+   PositionVector rw1;
+   PositionVector rw2;
   double c3w, discriminantOver4w;
 
   c3w = rdiff2 - pow(rdiffa, 2) - pow(Rw, 2);
@@ -267,8 +267,8 @@ int CylinderBeamShading(const Point& r0_1, const PositionVector& b,
   //	6. One member of Cartesian product 
   //	{mantle, end disk} x {mantle, end disk} or no hit possible 
 
-  static PositionVector rHit1;
-  static PositionVector rHit2;
+   PositionVector rHit1;
+   PositionVector rHit2;
 
   if(firstHits)	
     if(secondHits)	{
