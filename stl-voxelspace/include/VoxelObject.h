@@ -12,31 +12,46 @@ public:
 				  const ParametricCurve& K)const=0;
 };
 
-//The conifer element is the segment itself 
-template <class TS>
-class CfObject:public VoxelObject{
+
+//Cylindrical coniferous shading element
+class CfCylinder:public VoxelObject{
 public:
-  CfObject(const CfObject& cfo):ts(cfo.ts){}
-  CfObject(const TS& segment):ts(segment){}
+  CfCylinder(const CfCylinder& cfobj)
+    :p0(cfobj.p0),d(cfobj.d),l(cfobj.l),rw(cfobj.rw),rf(cfobj.rf),
+     af(cfobj.af),vf(cfobj.vf),sp(cfobj.sp){}
+  CfCylinder(const Point&p, const PositionVector& dir,double length, double rwood, 
+	     double rfol, double folarea, double folvol, double beam_start)
+    :p0(p),d(dir),l(length),rw(rwood),rf(rfol),af(folarea),vf(folvol),sp(beam_start){}
   virtual int getRoute(const Point& p, const PositionVector& dir,
-		       double& length)const{
-    LGMdouble rfol = GetValue(ts,LGARf);
-    LGMdouble rwood = GetValue(ts,LGAR);
-    LGMdouble l = GetValue(ts,LGAL);
-    Point p2 = GetPoint(ts);
-    PositionVector dir2 = GetDirection(ts);
-    return CylinderBeamShading(p,dir,p2,dir2,rfol,rwood,l,length);
+		       double& length)const
+  {
+    Point p2 = p0+sp*l*Point(d);//Check the midpoint
+    if (fabs(p||p2) < R_EPSILON){
+      //The light beam starts from the shading segment 
+      return 0;
+    }
+    return CylinderBeamShading(p,dir,p0,d,rf,rw,l,length);
   }
 
   virtual LGMdouble getExtinction(const Point& p,const PositionVector& dir,
 				  const ParametricCurve& K)const{
-    LGMdouble af = GetValue(ts,LGAAf);
-    LGMdouble vf = GetValue(ts,LGAVf);
-    LGMdouble a_dot_b = Dot(GetDirection(ts),dir);
-    LGMdouble l = 0.0;
+    LGMdouble length = 0.0;//path length 
+    LGMdouble tau = 1.0;//clear sky
+    
     //Return the path length light beam travels in the shading segment
-    int result = this->getRoute(p,dir,l);
+    int result = this->getRoute(p,dir,length);
+    //Check the two extreme cases
+    if (result == 0){ //Not hit
+      tau = 1.0;//clear sky so far
+      return tau;
+    }
+    else if (result == -1){//Wood hit
+      tau = 0.0;//sector blocked
+      return tau;
+    }
+
     //The angle between the light beam and the segment
+    LGMdouble a_dot_b = Dot(d,dir);
     LGMdouble phi = 0.0;
     //Recall the K function has domain [0:pi/2]. We must use the acute
     //angle
@@ -44,22 +59,23 @@ public:
       phi = PI_VALUE - acos(a_dot_b);
     else
       phi = acos(a_dot_b);
- 
-    double tau = 1.0;//clear sky
-    if (result == 0) //Not hit
-      tau = 1.0;//clear sky so far
-    else if (result == -1)//Wood
-      tau = 0.0;//sector blocked
-    else{//The equation from EcoMod 98
-      if (vf > R_EPSILON)
-	tau = exp(-K(phi)*l*af/vf);
-      else
-	cerr << "Vf < R_EPSILON " << vf << " Af: " << af << endl;
-    }
+    
+    if (vf > R_EPSILON)
+      tau = exp(-K(phi)*length*af/vf);
+    else
+      cerr << "Vf < R_EPSILON " << vf << " Af: " << af << endl;
     return tau;
   }
-  
 private:
-  const TS& ts;
+  Point p0;//Start point of the cylinder
+  PositionVector d;//direction of the cylinder
+  double l;//Length of the cylinder
+  double rw;//Wood radius
+  double rf;//Foliage radius
+  double af;//Foliage area
+  double vf;//Foliage volume
+  double sp;//start point [0:1] of the light beam (e.g. 0.5 is the mid
+	    //point of the segment)
 };
+
 #endif
