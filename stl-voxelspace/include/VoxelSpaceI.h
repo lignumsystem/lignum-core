@@ -81,39 +81,61 @@ namespace Lignum {
       return tc;    
     }
 
-  //Insert Segment to  boxes it belongs to based on  base, mid and end
-  //points
+  //When 'copying'  the tree to voxel  space, we cannot  in the single
+  //tree case use the segments  themselves; they are pointers and each
+  //time  we change the  segment location  previous insertion  will be
+  //lost. Instead  we need a  CfCylinder VoxelObject that has  all the
+  //information  of the  segment to  calculate the  shading  (i.e. the
+  //attenuation of light)
+  //'d': the direction to the new location
+  //'t': the distance to the new location
+  //'beam_start': position  on the segment [0:1] where  the light beam
+  //              starts (needed to avoid comparison of a segment with 
+  //              itself)
+  //parts: number of parts the segment will be divived  
   template <class TS>
-  void InsertSegment(VoxelSpace& s, const TS& ts)
+  void InsertVoxelObject(VoxelSpace& s, const TS& ts, 
+			 const PositionVector& d, 
+			 double t, double beam_start, int parts)
   {
-    Point p1 = GetPoint(ts);
-    Point p2 = GetPoint(ts,0.5);
-    Point p3 = GetPoint(ts,1.0);
-    int x1=s.getXindex(p1.getX());
-    int y1=s.getYindex(p1.getY());
-    int z1=s.getZindex(p1.getZ());
+    //If the  user wants 1  part, we take  the base of the  segment. 2
+    //parts means the base and the  end point. 3 parts means base, end
+    //and the  point in the middle.  4 parts means base,  end, 1/3 and
+    //2/3 etc.
+    parts = parts-1;
+    double length = GetValue(ts,LGAL);
+    double next_pos = 0.0;
+    int x1,y1,z1,x2,y2,z2;
+    x1=y1=z1=0;
+    x2=y2=z2=-INT_MAX;//at least the base point will be inserted
 
-    int x2=s.getXindex(p2.getX());
-    int y2=s.getYindex(p2.getY());
-    int z2=s.getZindex(p2.getZ());
+    if (parts > 0)
+       next_pos = 1.0/parts;
 
-    int x3=s.getXindex(p3.getX());
-    int y3=s.getYindex(p3.getY());
-    int z3=s.getZindex(p3.getZ());
-    //start from the base
-    InsertSegment(s.voxboxes[x1][y1][z1],ts);
-     //check that the box has changed
-    if (x1!=x2 || y1!=y2 || z1!=z2){
-       InsertSegment(s.voxboxes[x2][y2][z2],ts);
-    }
-    //check again that the box has changed
-    if (x2!=x3 || y2!=y3 || z2!=z3){
-       InsertSegment(s.voxboxes[x3][y3][z3],ts);
+    for (int i=0; i <= parts; i++){
+      //Calculate the new location based  on the direction 'd' and the
+      //distance 't'  to the location  from the segment  point. Assume
+      //|dir| = 1
+      PositionVector d1 = PositionVector(GetPoint(ts,i*next_pos))+t*d;
+      x1=s.getXindex(d1.getX());
+      y1=s.getYindex(d1.getY());
+      z1=s.getZindex(d1.getZ());
+      //check that the box has changed
+      if (!(x1==x2 && y1==y2 && z1==z2)){
+	CfCylinder* cfo = new CfCylinder(Point(d1),GetDirection(ts),
+					 GetValue(ts,LGAL),GetValue(ts,LGAR),
+					 GetValue(ts,LGARf),GetValue(ts,LGAAf),
+					 GetValue(ts,LGAVf),beam_start);
+	InsertVoxelObject(s.voxboxes[x1][y1][z1],cfo);
+      }
+      x2=x1;
+      y2=y1;
+      z2=z1;
     }
     s.sgmntfol = s.sgmntfol + 1;
   }
-  //Then HwTree & HwTreeSegment ==========================
 
+    
   template <class TS,class BUD>
     void DumpHwTree(VoxelSpace &s, Tree<TS, BUD> &tree)
   {

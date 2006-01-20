@@ -52,7 +52,10 @@ namespace Lignum {
     friend void DumpCfTreeSegment(VoxelSpace &s, CfTreeSegment<TS, BUD> &ts,double num_parts);
 
     template <class TS>
-    friend void InsertSegment(VoxelSpace& s, const TS& ts);
+    friend void InsertVoxelObject(VoxelSpace& s, const TS& ts, 
+				  const PositionVector& dir, 
+				  double t,double beam_start,
+				  int segment_parts);
 
     template <class TS,class BUD>
     friend void SetCfTreeQabs(VoxelSpace &s, Tree<TS, BUD> &tree,int num_parts);
@@ -170,6 +173,7 @@ namespace Lignum {
     int Xn, Yn, Zn;
     TMatrix3D<VoxelBox> voxboxes;
     //debug
+    vector<VoxelObject*> shaded_objects;
     int sgmntfol;//segments with foliage (to compare with)
     int hitw;//wood hits;
     int hitfol;//foliage hits

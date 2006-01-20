@@ -362,9 +362,10 @@ namespace Lignum {
   // is stored into a vector
   //
   // Parametres:
-  // vec	:	the vector where the route is stored
+  // vec:     the vector where the route is stored
   // p0:      the start position of the ray (e.g. segment midpoint)
-  // dir	  : direction of the light beam, NOTE: |dir| == 1 (!!!!)
+  // dir:     direction of the light beam, NOTE: |dir| == 1 (!!!!)
+  // K:       extinction 
   // returns : the route stored in a vector, 
   //           extinction of the objects in the voxels 
   //
@@ -374,6 +375,7 @@ namespace Lignum {
 					      const Point& p0,
 					      const PositionVector& dir,
 					      const ParametricCurve& K)const
+					
   { 
     PositionVector d0(p0);
     
@@ -969,6 +971,11 @@ namespace Lignum {
       }
     }
     //debug 
+    vector<VoxelObject*>::iterator it;
+    for (it = shaded_objects.begin(); it != shaded_objects.end(); it++){
+      delete *it;//delete wrapper
+    }
+    shaded_objects.clear();
     sgmntfol = 0;
     hitw = 0;
     hitfol = 0;
