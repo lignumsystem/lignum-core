@@ -34,7 +34,7 @@ namespace Lignum {
     resetQinQabs(); 
     resetCfData();
     resetHwData();
-    //clear the vector elements, i.e objects wrappers
+    //clear the vector elements, i.e object wrappers
     vector<VoxelObject*>::iterator it;
     for (it = objects.begin(); it != objects.end(); it++){
       delete *it;//delete wrapper
@@ -56,7 +56,7 @@ void VoxelBox::init()
 	number_of_leaves = 0;
 	interceptedRadiation = 0.0;
 	weight = 0.0;
-
+	objects.clear();
 	big_leaf_normal = PositionVector(0,0,0);
 }
 
@@ -201,6 +201,7 @@ LGMdouble VoxelBox::getAreaDensity()
     vector<VoxelObject*>::const_iterator it;
     for (it=objects.begin(); it != objects.end(); it++){
       double tmp_tau = (*it)->getExtinction(p0,d,Kfun);
+      //cout << "VoxelBox::getExtinction loop " << tmp_tau << endl;
       if (tmp_tau == 0)//wood
 	space->hitw = space->hitw + 1;
       else if (tmp_tau == 1)//no hit

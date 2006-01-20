@@ -22,9 +22,9 @@ namespace Lignum {
     template <class TS,class BUD>
     friend void DumpSegment(VoxelBox &b, const CfTreeSegment<TS,BUD>& ts, 
 			    int num_parts);
-    //Insert a segment to a vector of objects in the voxel
-    template <class TS>
-    friend void InsertSegment(VoxelBox &b,const TS& ts);
+ 
+    template <class OBJ>
+    friend void InsertVoxelObject(VoxelBox& b, OBJ* obj);
 
     template <class SH>
     friend void DumpLeaf(VoxelBox &b, const BroadLeaf<SH>& leaf);
@@ -89,6 +89,7 @@ namespace Lignum {
     void addOneLeaf() {number_of_leaves++;}
     LGMdouble S(LGMdouble phi, LGMdouble sf, LGMdouble Wf,
 		LGMdouble r, LGMdouble l);
+ 
   protected:
     void resetCfData(){
       star = 0; starSum = 0.0; needleArea = 0.0;needleMass = 0.0;
@@ -118,6 +119,7 @@ namespace Lignum {
     int number_of_leaves;
     PositionVector big_leaf_normal;//Weighted  sum  of  directions  of
 				   //leaves in a box
+
   private:
     void init();	
     Point corner1;
@@ -125,8 +127,8 @@ namespace Lignum {
     LGMdouble val_c; //val_c * l is coniferous extinction
     LGMdouble val_b; //val_b * l is broadleaf  extinction
     VoxelSpace *space;
-    vector<VoxelObject*> objects;//vector of photosynthesising elements
-				//in the box
+    vector<VoxelObject*> objects;//vector     of     photosynthesising
+				 //elements in the box
   };
 
 } //namespace Lignum

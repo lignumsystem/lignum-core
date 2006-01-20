@@ -35,13 +35,12 @@ namespace Lignum {
 
       b.number_of_segments++;
     }
-  template <class TS>
-  void InsertSegment(VoxelBox &b, const TS& ts)
-  {
-    CfObject<TS> *cfobj = new CfObject<TS>(ts);
-    b.objects.push_back(cfobj);
-  }
   
+  template <class OBJ>
+  void InsertVoxelObject(VoxelBox& b, OBJ* obj)
+  {
+    b.objects.push_back(obj);
+  }
 
    //Dump one leaf of a deciduous tree - corresponds to DumpSegment of
    //coniferous segments (CfTreeSegment)
