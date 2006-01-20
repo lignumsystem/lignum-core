@@ -407,6 +407,51 @@ void HwWrapper<TS,BUD,SHAPE>::DrawTree(float x, float y, float z)
     }
   }
 
+  template<class TS, class BUD>
+  class DisplaySegmentMetrics{
+  public:
+    DisplaySegmentMetrics(int t):type(t){}
+    void operator()(TreeCompartment<TS,BUD>* tc)const{
+      if (TS* ts = dynamic_cast<TS*>(tc)){
+	double wf = GetValue(*ts,LGAWf);
+	Point p = GetPoint(*ts,0.5);
+	ostringstream os1;
+	if (type==1){
+	  os1 << setprecision(4) << "Age="<<GetValue(*ts,LGAage);
+	}
+	if (type == 2 && wf > R_EPSILON){
+	  os1 << setprecision(4) << "Qin="<<GetValue(*ts,LGAQin);
+	}
+	else if (type==3  && wf > R_EPSILON){
+	  os1 << setprecision(4) << "Qabs="<<GetValue(*ts,LGAQabs);
+	}
+	else if (type==4){
+	  os1 << setprecision(4) << "L="<<GetValue(*ts,LGAL);
+	}
+
+	else if (type==5){
+	  os1 << setprecision(4) << "R="<< GetValue(*ts,LGAR);
+	}
+	else if (type==6  && wf > R_EPSILON){
+	  os1 << setprecision(4) << "Rf="<< GetValue(*ts,LGARf);
+	}
+	else if (type==7){
+	  os1 << setprecision(4) << "As="<< GetValue(*ts,LGAAs);
+	}
+	LGMTextOutput(p.getX(),p.getY(),p.getZ(),
+		      GLUT_BITMAP_HELVETICA_10,os1.str());
+      }
+      return;
+    }
+  private:
+    int type;//Qin=1,Qabs=2
+  };
+
+  template <class TS, class BUD>
+  void CfWrapper<TS,BUD>::DrawSegmentMetrics(int type)
+  {
+    ForEach(tree,DisplaySegmentMetrics<TS,BUD>(type));
+  }
 
   template <class TS, class BUD, class SHAPE>
   void HwWrapper<TS,BUD,SHAPE>::DrawTreeMetrics()

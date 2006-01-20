@@ -58,7 +58,14 @@ enum STEMMODE { SOLID, WIREMODEL };
   public:
     void operator()(WrapperBase* wb){ wb->DrawTreeMetrics();}
   };
-
+  
+  class DrawSegmentMetrics{
+  public:
+    DrawSegmentMetrics(int t):type(t){}
+    void operator()(WrapperBase* wb){ wb->DrawSegmentMetrics(type);}
+  private:
+    int type;//Age, Qin, Qabs etc.
+  };
 class LGMVisualization
 {
   static LGMVisualization* active_visualization;
@@ -143,6 +150,7 @@ private:
   double camera_distance;//Explicitely set the  distance of the camera
 			 //from the current tree (ShowTree)
   int show_tree_metrics;//Toggle display of H and Dbh
+  int show_segment;//Show segment data 
   int show_help;//Toggle help display
   string help_str;//Current help string (fi or en)
   string help_fi;//Finnish help

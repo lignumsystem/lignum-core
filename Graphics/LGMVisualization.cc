@@ -22,10 +22,10 @@ namespace Lignum
   LGMVisualization::LGMVisualization()
     :mode(SOLID),order_foliage(false),
      ShowTree(-1),ldistance(100),max_height(0.0),camera_distance(0.0),
-     show_tree_metrics(0),show_help(1),help_str("a=Apua/h=Help")
+     show_tree_metrics(0),show_segment(0),show_help(1),help_str("a=Apua/h=Help")
   {
-    help_fi="n=Seuraava, m/j=360/45, k=Kallista, b=Mitat, z=Eteen, x=Taakse, c=Ylos, v=Alas, s=Vasen, d=Oikea, r=Alku, q=Lopeta, h=Help";
-    help_en="n=Next, m/j=360/45, k=Tilt, b=Metrics, z=Forward, x=Backwards, c=Up, v=Down, s=Left, d=Right, r=Reset, q=Quit, a=Apua";
+    help_fi="n=Seuraava, m/j=360/45, k=Kallista, b=Mitat, z=Eteen, x=Taakse, c=Ylos, v=Alas, s=Vasen, d=Oikea, r=Alku, w=sgmnt, q=Lopeta, h=Help";
+    help_en="n=Next, m/j=360/45, k=Tilt, b=Metrics, z=Forward, x=Backwards, c=Up, v=Down, s=Left, d=Right, r=Reset, w=sgmnt, q=Quit, a=Apua";
     active_visualization = this;
   }
   
@@ -182,6 +182,8 @@ namespace Lignum
 	if (show_tree_metrics){
 	  for_each(trees.begin(),trees.end(),DrawTreeMetrics());
 	}
+	if (show_segment)
+	  for_each(trees.begin(),trees.end(),DrawSegmentMetrics(show_segment));
 	if (show_help){
 	  //Set the help_str in front of the camera
 	  //Point at the camera height at above/below point of focus
@@ -619,6 +621,10 @@ namespace Lignum
 	  Translate(d);
 	  ReDraw();
 	}
+	break;
+      case 'w'://Age=1,Qin=2,Qabs=3,L=4,R=5,Rf=6,As=7
+	show_segment = (show_segment+1)%8;
+	ReDraw();
 	break;
       case 'x':
 	//Zoom out

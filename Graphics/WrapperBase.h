@@ -23,6 +23,7 @@ public:
   virtual void DrawTree(float x, float y, float z)=0;
   virtual void GetTreeMetrics(Point &pos, LGMdouble &h)=0;
   virtual void DrawTreeMetrics()=0;
+  virtual void DrawSegmentMetrics(int type)=0;
   // CTexture stem_texture;
   int intStemTexture;    //texture number of stem
   int intFoliageTexture; //texture number of foliage
@@ -50,6 +51,7 @@ public:
   virtual void VisualizeStem(int &active_texture);
   virtual void GetTreeMetrics(Point &pos, LGMdouble &h);
   virtual void DrawTreeMetrics();
+  virtual void DrawSegmentMetrics(int type);
   Tree<TS,BUD>& tree;
 };
 
@@ -71,6 +73,9 @@ public:
   virtual void GetTreeMetrics(Point &pos, LGMdouble &h);
   virtual void DrawTreeMetrics();
   virtual void VisualizeStem(int &active_texture);
+  virtual void DrawSegmentMetrics(int type){
+    cout << "Hw DrawSegmentMetrics Not Implemented" <<endl;
+  }
   void DrawOrderedLeaves(float x, float y, float z);
   
   Tree<TS,BUD>& tree;
