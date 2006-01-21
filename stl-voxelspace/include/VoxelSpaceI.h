@@ -87,7 +87,7 @@ namespace Lignum {
   //lost. Instead  we need a  CfCylinder VoxelObject that has  all the
   //information  of the  segment to  calculate the  shading  (i.e. the
   //attenuation of light)
-  //'d': the direction to the new location
+  //'d': the direction to the new location, NOTE it is assumed |d|=1 
   //'t': the distance to the new location
   //'beam_start': position  on the segment [0:1] where  the light beam
   //              starts (needed to avoid comparison of a segment with 
@@ -98,25 +98,20 @@ namespace Lignum {
 			 const PositionVector& d, 
 			 double t, double beam_start, int parts)
   {
-    //If the  user wants 1  part, we take  the base of the  segment. 2
-    //parts means the base and the  end point. 3 parts means base, end
-    //and the  point in the middle.  4 parts means base,  end, 1/3 and
-    //2/3 etc.
-    parts = parts-1;
+    //If the  user wants 1  part, we take  the mid point of the  segment. 
+    //2 parts means 1/3 and 2/3. 3 parts meaans 1/4, 2/4 and 3/4 etc.
+    parts = parts+1;
     double length = GetValue(ts,LGAL);
     double next_pos = 0.0;
     int x1,y1,z1,x2,y2,z2;
     x1=y1=z1=0;
-    x2=y2=z2=-INT_MAX;//at least the base point will be inserted
+    x2=y2=z2=-INT_MAX;//at least one point will be inserted
 
-    if (parts > 0)
-       next_pos = 1.0/parts;
-
-    for (int i=0; i <= parts; i++){
+    for (int i=1; i < parts; i++){
       //Calculate the new location based  on the direction 'd' and the
       //distance 't'  to the location  from the segment  point. Assume
       //|dir| = 1
-      PositionVector d1 = PositionVector(GetPoint(ts,i*next_pos))+t*d;
+      PositionVector d1 = PositionVector(GetPoint(ts,i/parts))+t*d;
       x1=s.getXindex(d1.getX());
       y1=s.getYindex(d1.getY());
       z1=s.getZindex(d1.getZ());
