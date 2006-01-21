@@ -96,7 +96,8 @@ void VoxelBox::updateValues()
 	    //the arithmetic mean of starSum
 	    star = getStarSum() / getNumSegments();
 	}
-
+        //It might be good enough to use star 0.14
+        //star = 0.14;
 	LGMdouble k_b = GetValue(*space,LGAkb);
 	//star  for needles
 	val_c = star * (needleArea / (space->Xbox * space->Ybox *
@@ -202,8 +203,11 @@ LGMdouble VoxelBox::getAreaDensity()
     for (it=objects.begin(); it != objects.end(); it++){
       double tmp_tau = (*it)->getExtinction(p0,d,Kfun);
       //cout << "VoxelBox::getExtinction loop " << tmp_tau << endl;
-      if (tmp_tau == 0)//wood
+      if (tmp_tau == 0){//wood
+        tau2 = 0.0;
 	space->hitw = space->hitw + 1;
+        break;
+      }
       else if (tmp_tau == 1)//no hit
 	space->nohit = space->nohit + 1;
       else
