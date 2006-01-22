@@ -622,8 +622,8 @@ namespace Lignum
 	  ReDraw();
 	}
 	break;
-      case 'w'://Age=1,Qin=2,Qabs=3,L=4,R=5,Rf=6,As=7
-	show_segment = (show_segment+1)%8;
+      case 'w'://Age=1,Qin=2,Qabs=3,L=4,R=5,Rf=6,As=7,Wf=8,Vf=9
+	show_segment = (show_segment+1)%10;
 	ReDraw();
 	break;
       case 'x':
