@@ -44,11 +44,14 @@ LGMdouble GetValue(const CfTreeSegment<TS,BUD>& ts, const LGMAD name)
   else if (name == LGAQabs)
     return ts.cftsa.Qabs;
 
-  else if (name == LGARf)
+  else if (name == LGARf){
+    if (GetValue(ts,LGAWf) > R_EPSILON)
+      return GetValue(ts,LGAR) + GetValue(ts,LGAHf);
     //Who remebers to update radius to foliage limit after diameter growth
     //Return segment cylinder radius + foliage height.
-    return GetValue(ts,LGAR) + GetValue(ts,LGAHf);
-
+    else
+      return GetValue(ts,LGAR);
+  }
   else if (name == LGASa)
     //Wrap out the segment cylinder
     return 2.0*PI_VALUE*GetValue(ts,LGAR)*GetValue(ts,LGAL);
