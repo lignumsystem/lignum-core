@@ -203,6 +203,8 @@ LGMdouble VoxelBox::getAreaDensity()
     for (it=objects.begin(); it != objects.end(); it++){
       double tmp_tau = (*it)->getExtinction(p0,d,Kfun);
       //cout << "VoxelBox::getExtinction loop " << tmp_tau << endl;
+      if ((*it)->hit_self == true)
+        space->hitself = space->hitself + 1; 
       if (tmp_tau == 0){//wood
         tau2 = 0.0;
 	space->hitw = space->hitw + 1;
