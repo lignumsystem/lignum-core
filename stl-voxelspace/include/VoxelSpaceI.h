@@ -99,25 +99,28 @@ namespace Lignum {
 			 double t, double beam_start, int parts)
   {
     //If the  user wants 1  part, we take  the mid point of the  segment. 
-    //2 parts means 1/3 and 2/3. 3 parts meaans 1/4, 2/4 and 3/4 etc.
+    //2 parts means 1/3 and 2/3. 3 parts means 1/4, 2/4 and 3/4 etc.
+    double points = static_cast<double>(parts+1);
     parts = parts+1;
     double length = GetValue(ts,LGAL);
     double next_pos = 0.0;
     int x1,y1,z1,x2,y2,z2;
     x1=y1=z1=0;
     x2=y2=z2=-INT_MAX;//at least one point will be inserted
-
+    //Start point of the virtual segment
+    PositionVector d0 = PositionVector(GetPoint(ts))+t*d;
     for (int i=1; i < parts; i++){
       //Calculate the new location based  on the direction 'd' and the
       //distance 't'  to the location  from the segment  point. Assume
       //|dir| = 1
-      PositionVector d1 = PositionVector(GetPoint(ts,i/parts))+t*d;
+      PositionVector d1 = PositionVector(GetPoint(ts,i/points))+t*d;
       x1=s.getXindex(d1.getX());
       y1=s.getYindex(d1.getY());
       z1=s.getZindex(d1.getZ());
       //check that the box has changed
       if (!(x1==x2 && y1==y2 && z1==z2)){
-	CfCylinder* cfo = new CfCylinder(Point(d1),GetDirection(ts),
+	//Virtual segment point as the start point 
+	CfCylinder* cfo = new CfCylinder(Point(d0),GetDirection(ts),
 					 GetValue(ts,LGAL),GetValue(ts,LGAR),
 					 GetValue(ts,LGARf),GetValue(ts,LGAAf),
 					 GetValue(ts,LGAVf),beam_start);
@@ -127,7 +130,7 @@ namespace Lignum {
       y2=y1;
       z2=z1;
     }
-    s.sgmntfol = s.sgmntfol + 1;
+    s.sgmnt = s.sgmnt + 1;
   }
 
     

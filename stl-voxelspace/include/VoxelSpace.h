@@ -174,10 +174,11 @@ namespace Lignum {
     TMatrix3D<VoxelBox> voxboxes;
     //debug
     vector<VoxelObject*> shaded_objects;
-    int sgmntfol;//segments with foliage (to compare with)
+    int sgmnt;//segments inserted (to compare with)
     int hitw;//wood hits;
     int hitfol;//foliage hits
     int nohit;//no hits
+    int hitself; //Self comparison
   private:
   
 
