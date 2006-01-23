@@ -112,11 +112,16 @@ namespace Lignum {
     for (int i=1; i < parts; i++){
       //Calculate the new location based  on the direction 'd' and the
       //distance 't'  to the location  from the segment  point. Assume
-      //|dir| = 1
+      //|d| = 1
       PositionVector d1 = PositionVector(GetPoint(ts,i/points))+t*d;
       x1=s.getXindex(d1.getX());
       y1=s.getYindex(d1.getY());
       z1=s.getZindex(d1.getZ());
+      //cout << GetPoint(ts);
+      //cout << Point(d0);
+      //cout << GetPoint(ts,i/points) << i << " " << points << " " 
+      //   << i/points << endl;      
+      //cout << x1 << " " << y1 << " " << z1 <<endl <<endl;
       //check that the box has changed
       if (!(x1==x2 && y1==y2 && z1==z2)){
 	//Virtual segment point as the start point 
