@@ -50,7 +50,7 @@ namespace Lignum {
     //changing light environment.
     void resetQinQabs(){Q_in = 0.0; Q_abs = 0.0;interceptedRadiation = 0.0;}
     bool isEmpty()const;
-
+    const vector<VoxelObject*>& getObjects()const{return objects;}
     Point getCenterPoint()const;
     Point getCornerPoint()const;
     int getNumSegments()const{ return number_of_segments; }
