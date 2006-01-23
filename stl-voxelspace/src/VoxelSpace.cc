@@ -572,7 +572,10 @@ namespace Lignum {
 	//Set foliage area,  needle area + leaf area
 	vm.af = voxboxes[vm.x][vm.y][vm.z].getFoliageArea(); 
 	//Get extinction caused by objects in the box
-	vm.tau =  voxboxes[vm.x][vm.y][vm.z].getExtinction(p0,dir,K);
+        if (dist != 0)
+	   vm.tau =  voxboxes[vm.x][vm.y][vm.z].getExtinction(p0,dir,K);
+        else
+           vm.tau = 1;
 	if (next_x <= next_y && next_x<= next_z)
 	  {
 	    startx = startx + x_jump;
@@ -976,10 +979,11 @@ namespace Lignum {
       delete *it;//delete wrapper
     }
     shaded_objects.clear();
-    sgmntfol = 0;
+    sgmnt = 0;
     hitw = 0;
     hitfol = 0;
     nohit = 0;
+    hitself = 0;
   } 
 
   void VoxelSpace::resetQinQabs()
