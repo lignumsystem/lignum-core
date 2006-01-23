@@ -413,17 +413,17 @@ namespace Lignum {
     //the point on the back, right and top faces of the box
     Point p2(boxx0+Xbox,boxy0+Ybox,boxz0+Zbox);
 
-    LGMdouble xmove=FLT_MAX;
-    LGMdouble ymove=FLT_MAX;
-    LGMdouble zmove=FLT_MAX;
+    LGMdouble xmove=R_HUGE;
+    LGMdouble ymove=R_HUGE;
+    LGMdouble zmove=R_HUGE;
 
     //Calculate  the distances  one has  to  move to  cross voxel  box
     //boundaries in x,y and z directions
-    if (dir.getX() != R_EPSILON)
+    if (dir.getX() > R_EPSILON)
       xmove = fabs(Xbox / dir.getX());
-    if (dir.getY() != R_EPSILON)
+    if (dir.getY() > R_EPSILON)
       ymove = fabs(Ybox / dir.getY());
-    if (dir.getZ() != R_EPSILON)
+    if (dir.getZ() > R_EPSILON)
       zmove = fabs(Zbox / dir.getZ());
 
     //Initialize: calculate the distances light beam can travel before
@@ -463,7 +463,7 @@ namespace Lignum {
     //then in its incremental  phase calculates the total distance the
     //ray traverses in the boxes.
     double next_x,next_y,next_z;
-    next_x=next_y=next_z=FLT_MAX;
+    next_x=next_y=next_z=R_HUGE;
     if (t1 >=0.0){
       //If the  direction component is  positive, the ray  crosses the
       //box   boundary   in   index*box_size+box_size,  if   direction
@@ -471,97 +471,122 @@ namespace Lignum {
       //index*box_size.
       if (fabs(d0.getX()+t1*dir.getX() - p1.getX()) <= R_EPSILON || 
 	  fabs(d0.getX()+t1*dir.getX() - p2.getX()) <= R_EPSILON){
-	next_x = t1;
+	//Check the special case: X does have a direction
+	if (fabs(dir.getX()) > R_EPSILON)
+	  next_x = t1;
       }
       if (fabs(d0.getY()+t1*dir.getY() - p1.getY()) <= R_EPSILON || 
 	  fabs(d0.getY()+t1*dir.getY() - p2.getY()) <= R_EPSILON){
-	next_y = t1;
+	//Check the special case: Y does have a direction
+	if (fabs(dir.getY()) > R_EPSILON)
+	  next_y = t1;
       }
       if (fabs(d0.getZ()+t1*dir.getZ() - p1.getZ()) <= R_EPSILON || 
 	  fabs(d0.getZ()+t1*dir.getZ() - p2.getZ()) <= R_EPSILON){
-	next_z = t1;
+	//Check the special case: Z does have a direction
+	if (fabs(dir.getZ()) > R_EPSILON)
+	  next_z = t1;
       }
     }
+    //The same for t2-->t6
     if (t2 >=0.0){
-      //If the  direction component is  positive, the ray  crosses the
-      //box boundary in index*box_size+box_size, if it is negative the
-      //ray crosses the box boundary in index*box_size.
       if (fabs(d0.getX()+t2*dir.getX() - p1.getX()) <= R_EPSILON || 
 	  fabs(d0.getX()+t2*dir.getX() - p2.getX()) <= R_EPSILON){
-	next_x = t2;
+	if (fabs(dir.getX()) > R_EPSILON)
+	  next_x = t2;
       }
       if (fabs(d0.getY()+t2*dir.getY() - p1.getY()) <= R_EPSILON || 
 	  fabs(d0.getY()+t2*dir.getY() - p2.getY()) <= R_EPSILON){
-	next_y = t2;
+	if (fabs(dir.getY()) > R_EPSILON)
+	  next_y = t2;
       }
       if (fabs(d0.getZ()+t2*dir.getZ() - p1.getZ()) <= R_EPSILON || 
 	  fabs(d0.getZ()+t2*dir.getZ() - p2.getZ()) <= R_EPSILON){
-	next_z = t2;
+	if (fabs(dir.getZ()) > R_EPSILON)
+	  next_z = t2;
       }
     }
     if (t3 >=0.0){
       if (fabs(d0.getX()+t3*dir.getX() - p1.getX()) <= R_EPSILON || 
 	  fabs(d0.getX()+t3*dir.getX() - p2.getX()) < R_EPSILON){
-	next_x = t3;
+	if (fabs(dir.getX()) > R_EPSILON)
+	  next_x = t3;
       }
       if (fabs(d0.getY()+t3*dir.getY() - p1.getY()) <= R_EPSILON || 
 	  fabs(d0.getY()+t3*dir.getY() - p2.getY()) <= R_EPSILON){
-	next_y = t3;
+	if (fabs(dir.getY()) > R_EPSILON)
+	  next_y = t3;
       }
       if (fabs(d0.getZ()+t3*dir.getZ() - p1.getZ()) <= R_EPSILON || 
 	  fabs(d0.getZ()+t3*dir.getZ() - p2.getZ()) <= R_EPSILON){
-	next_z = t3;
+	if (fabs(dir.getZ()) > R_EPSILON)
+	  next_z = t3;
       }
     }
     if (t4 >=0.0){
       if (fabs(d0.getX()+t4*dir.getX() - p1.getX()) <= R_EPSILON || 
 	  fabs(d0.getX()+t4*dir.getX() - p2.getX()) <= R_EPSILON){
-	next_x = t4;
+	if (fabs(dir.getX()) > R_EPSILON)
+	  next_x = t4;
       }
       if (fabs(d0.getY()+t4*dir.getY() - p1.getY()) <= R_EPSILON || 
 	  fabs(d0.getY()+t4*dir.getY() - p2.getY()) <= R_EPSILON){
-	next_y = t4;
+	if (fabs(dir.getY()) > R_EPSILON)
+	  next_y = t4;
       }
       if (fabs(d0.getZ()+t4*dir.getZ() - p1.getZ()) <= R_EPSILON || 
 	  fabs(d0.getZ()+t4*dir.getZ() - p2.getZ()) <= R_EPSILON){
-	next_z = t4;
+	if (fabs(dir.getZ()) > R_EPSILON)
+	  next_z = t4;
       }
     }
     if (t5 >=0.0){
       if (fabs(d0.getX()+t5*dir.getX() - p1.getX()) <= R_EPSILON || 
 	  fabs(d0.getX()+t5*dir.getX() - p2.getX()) <= R_EPSILON){
-	next_x = t5;
+	if (fabs(dir.getX()) > R_EPSILON)
+	  next_x = t5;
       }
       if (fabs(d0.getY()+t5*dir.getY() - p1.getY()) <= R_EPSILON || 
 	  fabs(d0.getY()+t5*dir.getY() - p2.getY()) <= R_EPSILON){
-	next_y = t5;
+	if (fabs(dir.getY()) > R_EPSILON)
+	  next_y = t5;
       }
       if (fabs(d0.getZ()+t5*dir.getZ() - p1.getZ()) <= R_EPSILON || 
 	  fabs(d0.getZ()+t5*dir.getZ() - p2.getZ()) <= R_EPSILON){
-	next_z = t5;
+	if (fabs(dir.getZ()) > R_EPSILON)
+	  next_z = t5;
       }
     }
     if (t6 >=0.0){
       if (fabs(d0.getX()+t6*dir.getX() - p1.getX()) <= R_EPSILON || 
 	  fabs(d0.getX()+t6*dir.getX() - p2.getX()) <= R_EPSILON){
-	next_x = t6;
+	if (fabs(dir.getX()) > R_EPSILON)
+	  next_x = t6;
       }
       if (fabs(d0.getY()+t6*dir.getY() - p1.getY()) <= R_EPSILON || 
 	  fabs(d0.getY()+t6*dir.getY() - p2.getY()) <= R_EPSILON){
-	next_y = t6;
+	if (fabs(dir.getY()) > R_EPSILON)
+	  next_y = t6;
       }
       if (fabs(d0.getZ()+t6*dir.getZ() - p1.getZ()) <= R_EPSILON || 
 	  fabs(d0.getZ()+t6*dir.getZ() - p2.getZ()) <= R_EPSILON){
-	next_z = t6;
+	if (fabs(dir.getZ()) > R_EPSILON)
+	  next_z = t6;
       }
     }
 
     //At this point  we should have exactly 3  crossings, one for each
-    //x,y and z  plane. One of next_x, next_y  and next_z contains the
-    //minimum t that the ray can travel in the box
-
-    LGMdouble dist = 0;
-
+    //x,y and  z plane. The  special cases are  when some of x,y  or z
+    //directions are 0.  But these  special cases should be taken care
+    //above before the next_[x,y,z] are initialized. If some direction
+    //is  not possible,  next_[x,y,z]  is FLT_MAX.   Otherwise one  of
+    //next_x, next_y  and next_z contains  the minimum t that  the ray
+    //can travel in the box 
+    
+    //cout << t1 << " "  << t2 << " " << t3 << " " <<  t4 << " " << t5
+    //<< " " << t6 <<endl;
+    LGMdouble dist = 0.0;
+    //cout << "P: " << p0 << dir <<endl;
     while(startx>=0 && starty>=0 && startz>=0 && startx<Xn &&
 	  starty<Yn && startz<Zn)
       {
@@ -572,10 +597,16 @@ namespace Lignum {
 	//Set foliage area,  needle area + leaf area
 	vm.af = voxboxes[vm.x][vm.y][vm.z].getFoliageArea(); 
 	//Get extinction caused by objects in the box
-        if (dist != 0)
+	//Avoid the box where the shaded segment is
+	//cout << vm.x << " " << vm.y << " " << vm.z << " "  <<endl
+	//   << next_x << " " << next_y << " " << next_z << " " 
+	//   << dist << endl; 
+        if (dist != 0.0){
 	   vm.tau =  voxboxes[vm.x][vm.y][vm.z].getExtinction(p0,dir,K);
-        else
+	}
+        else{
            vm.tau = 1;
+	}
 	if (next_x <= next_y && next_x<= next_z)
 	  {
 	    startx = startx + x_jump;
@@ -588,8 +619,7 @@ namespace Lignum {
 	    starty = starty + y_jump;
 	    vm.l = next_y - dist;
 	    dist = next_y;
-	    next_y = next_y + ymove;
-			
+	    next_y = next_y + ymove;			
 	  }
 	else if (next_z <= next_y && next_z<= next_x)
 	  {
@@ -604,10 +634,10 @@ namespace Lignum {
 	  {
 	    vec.push_back(vm);
 	  }
+	//break the voxel traversal if wood hit
+	if (vm.tau == 0.0)
+	  return vec;
       }
-
-
-
     return vec;
   }
 
