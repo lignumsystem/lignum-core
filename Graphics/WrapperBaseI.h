@@ -431,15 +431,18 @@ void HwWrapper<TS,BUD,SHAPE>::DrawTree(float x, float y, float z)
 	  os1 << setprecision(4) << "R="<< GetValue(*ts,LGAR);
 	}
 	else if (type==6){
-	  os1 << setprecision(4) << "Rf="<< GetValue(*ts,LGARf);
+	  os1 << setprecision(4) << "V="<< GetValue(*ts,LGAV);
 	}
 	else if (type==7){
 	  os1 << setprecision(4) << "As="<< GetValue(*ts,LGAAs);
 	}
-	else if (type == 8){
-	  os1 << setprecision(4) << "Wf="<< GetValue(*ts,LGAWf);
+	else if (type==8){
+	  os1 << setprecision(4) << "Rf="<< GetValue(*ts,LGARf);
 	}
 	else if (type == 9){
+	  os1 << setprecision(4) << "Wf="<< GetValue(*ts,LGAWf);
+	}
+	else if (type == 10){
 	  os1 << setprecision(4) << "Vf="<< GetValue(*ts,LGAVf);
 	}
 	LGMTextOutput(p.getX(),p.getY(),p.getZ(),
