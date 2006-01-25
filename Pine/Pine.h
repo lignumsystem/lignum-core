@@ -227,16 +227,16 @@ public:
 	 //should  then  equal  to  Ball  sensor  reading  Open  grown
 	 //branching         effect
 	 double GravOrder = GetValue(*ts,LGAomega); ////////////////
-	 //double Lvi   =1.0-(GravOrder-1.0)*GetValue(GetTree(*ts),LGPq); ////////////////
-	 //if(Lvi < 0.0)
-	 //Lvi = 0.0;
+	 double Lvi   =1.0-(GravOrder-1.0)*GetValue(GetTree(*ts),LGPq); ////////////////
+	 if (Lvi < 0.0)
+	   Lvi = 0.0;
 	 //Vigour index
 	 double vi = GetValue(*ts,LGAvi);
 	 //In Tree Physiology for side branches fp is for example as follows:
 	 //fp = (1-a)f(vi) = (1-0.2)(0.15+0.85vi) = 0.8(0.15+0.85vi)
 	 const ParametricCurve& fvi = GetFunction(GetTree(*ts),LGMVI);
 	 //Lvi = apical*(0.05+0.95*Lvi);
-	 double Lvi = apical*fvi(vi); /////////////////////////
+	 Lvi = apical*fvi(vi)*Lvi; /////////////////////////
 	 //experimental   forest   grown  double   Lq   =  pow(1.0   -
 	 //GetValue(GetTree(*ts),q),GetValue(*ts,omega)-1);    relative
 	 //light, if TreeQinMax  is ball sensor reading, it  is as for
@@ -246,7 +246,7 @@ public:
          //Eero's idea distance from ground
          //double z = GetPoint(*ts).getZ();
 	 //Path length
-	 double plength = GetValue(*ts,LGAplength);
+	 //double plength = GetValue(*ts,LGAplength);
 	 //         L_new = L_new*(sqrt((30.0-plength)/30.0)); ///////////////////
 	 L_new = max(L_new,0.0);
 	 //don't allow segments shorter than LGPmin
