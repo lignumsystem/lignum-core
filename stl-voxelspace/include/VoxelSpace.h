@@ -75,6 +75,8 @@ namespace Lignum {
 		     HwTreeSegment<TS,BUD,SHAPE>& ts);
 
     friend LGMdouble GetValue(const VoxelSpace& s,VAD LGAkb);
+    friend void PrintVoxelObjectLocations(const VoxelSpace& s,const 
+					  string& fname);
   public:
 
     VoxelSpace(); 

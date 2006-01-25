@@ -80,7 +80,20 @@ namespace Lignum {
     sky = &f;
   }
 
-
+  void PrintVoxelObjectLocations(const VoxelSpace& s, const string& fname)
+  {
+    cout << "PrintVoxelObjectLocations" <<endl;
+    ofstream f(fname.c_str());
+    for (int i = 0; i < s.Xn; i++){
+      for (int j = 0; j < s.Yn; j++){
+	for (int k = 0; k < s.Zn; k++){
+	  int size = s.voxboxes[i][j][k].getObjects().size();
+	  if (size > 0)
+	    f << i << " " << j << " " << k << " " << size <<endl;
+	}
+      }
+    }
+  }
  //Change number (=input) of VoxelBoxes in x, y, and z-directions. The whole
  //VoxelSpace, that is, the big box from corner1 to corner2 retains
  //its size => size of VoxelBox changes.
@@ -1302,7 +1315,7 @@ namespace Lignum {
       return 0.0;
   }
 
-
+  
 
 }  // closing namespace Lignum
 
