@@ -614,12 +614,8 @@ namespace Lignum {
 	//cout << vm.x << " " << vm.y << " " << vm.z << " "  <<endl
 	//   << next_x << " " << next_y << " " << next_z << " " 
 	//   << dist << endl; 
-        if (dist != 0.0){
-	   vm.tau =  voxboxes[vm.x][vm.y][vm.z].getExtinction(p0,dir,K);
-	}
-        else{
-           vm.tau = 1;
-	}
+	vm.tau =  voxboxes[vm.x][vm.y][vm.z].getExtinction(p0,dir,K);
+
 	if (next_x <= next_y && next_x<= next_z)
 	  {
 	    startx = startx + x_jump;
