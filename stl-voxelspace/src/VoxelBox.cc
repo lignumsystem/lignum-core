@@ -190,33 +190,42 @@ LGMdouble VoxelBox::getAreaDensity()
 
   //Return the  extinction of the objects  in the voxel. p0  and d are
   //the start and  the direction of the light  beam respectively. Kfun
-  //is the extinction function (as an inclination of the light beam)
+  //is  the  extinction  function  (as  an inclination  of  the  light
+  //beam). Checking the  voxel object tag. If the tag  is set to true,
+  //this means  the beam  has hit the  foliage and  we do not  have to
+  //(must not!) compute the extinction.
   LGMdouble VoxelBox::getExtinction(const Point& p0, const PositionVector& d, 
 				    const ParametricCurve& Kfun)const
   {
-    //accumulate through the vector of objects in the box
-    //AccumulateObjectExtinction extinction(p0,d,Kfun);
-    //double tau = accumulate(objects.begin(),objects.end(),1.0,
-    //		    extinction);
-    double tau2 = 1.0;
+    // I could  use accumulate, but I  want to collect  data and break
+    // the computation if wood hit
+    double tau = 1.0;
     vector<VoxelObject*>::const_iterator it;
     for (it=objects.begin(); it != objects.end(); it++){
-      double tmp_tau = (*it)->getExtinction(p0,d,Kfun);
-      //cout << "VoxelBox::getExtinction loop " << tmp_tau << endl;
-      if ((*it)->hit_self == true)
-        space->hitself = space->hitself + 1; 
-      if (tmp_tau == 0){//wood
-        tau2 = 0.0;
-	space->hitw = space->hitw + 1;
-        break;
-      }
-      else if (tmp_tau == 1)//no hit
-	space->nohit = space->nohit + 1;
-      else
-	space->hitfol = space->hitfol + 1; 
-      tau2 = tau2*tmp_tau;
+      long_size tag = (*it)->getTag();
+      bool ray_hit = (space->getBookKeeper()).rayHit(tag);
+      if (ray_hit == false){//no ray hit to foliage
+	//If  no ray hit yet --> compute
+	double tmp_tau = (*it)->getExtinction(p0,d,Kfun);
+	//cout << "VoxelBox::getExtinction loop " << tmp_tau << endl;
+	if ((*it)->hit_self == true)
+	  space->hitself = space->hitself + 1; 
+	if (tmp_tau == 0.0){//wood
+	  tau = 0.0;
+	  space->hitw = space->hitw + 1;
+	  break;
+	}
+	else if (tmp_tau == 1.0)//no hit
+	  space->nohit = space->nohit + 1;
+	else{//Foliage hit
+	  //Mark the segment computed
+	  (space->getBookKeeper()).setRayHit(tag);
+	  space->hitfol = space->hitfol + 1; 
+	  tau = tau*tmp_tau;
+	}
+      }//if (tag == false)
     }
-    return tau2;
+    return tau;
   }
 //
 //
