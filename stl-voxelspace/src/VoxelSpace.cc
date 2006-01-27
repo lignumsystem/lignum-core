@@ -1016,12 +1016,8 @@ namespace Lignum {
 	}
       }
     }
-    //debug 
-    vector<VoxelObject*>::iterator it;
-    for (it = shaded_objects.begin(); it != shaded_objects.end(); it++){
-      delete *it;//delete wrapper
-    }
-    shaded_objects.clear();
+    //Reset the book keeping of tags for voxel objects
+    book_keeper.reset();
     sgmnt = 0;
     hitw = 0;
     hitfol = 0;
