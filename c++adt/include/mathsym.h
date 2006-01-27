@@ -43,7 +43,8 @@ inline T minimum(T A, T B)
   return (A < B) ? A : B;
 }
 
-typedef double RADIAN;
+  typedef double RADIAN;
+  typedef unsigned long int long_size;
 
 //constant functions used in RMatrix and in HRMatrix
 //for the rotations in 3D space.
