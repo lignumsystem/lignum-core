@@ -1,17 +1,23 @@
 #ifndef VOXELOBJEXT_H
 #define VOXELOBJECT_H
+#include <vector>
 #include <Point.h>
 #include <PositionVector.h>
 #include <Shading.h>
 //Wrapper class for different photosynthesising elements a voxel box
 class VoxelObject{
 public: 
-  VoxelObject():hit_self(false){}
+  VoxelObject(const VoxelObject& vo):tag(vo.tag){}
+  VoxelObject(int t):hit_self(false),tag(t){}
   virtual int getRoute(const Point& p, const PositionVector& dir,
 		       LGMdouble& length)const=0;
   virtual LGMdouble getExtinction(const Point& p, const PositionVector& dir,
 				  const ParametricCurve& K)const=0;
+  virtual long_size getTag()const{return tag;}
   mutable bool hit_self;//debug: true if segment compares itself 
+private:
+  long_size tag;//A  tag for object.  If two  objects denote  the same
+		//segment, they have the same tag
 };
 
 
@@ -19,11 +25,13 @@ public:
 class CfCylinder:public VoxelObject{
 public:
   CfCylinder(const CfCylinder& cfobj)
-    :p0(cfobj.p0),p2(cfobj.p2),d(cfobj.d),l(cfobj.l),rw(cfobj.rw),rf(cfobj.rf),
+    :VoxelObject(cfobj.getTag()),p0(cfobj.p0),p2(cfobj.p2),
+     d(cfobj.d),l(cfobj.l),rw(cfobj.rw),rf(cfobj.rf),
      af(cfobj.af),vf(cfobj.vf),sp(cfobj.sp){}
   CfCylinder(const Point&p, const PositionVector& dir,double length, double rwood, 
-	     double rfol, double folarea, double folvol, double beam_start)
-    :p0(p),d(dir),l(length),rw(rwood),rf(rfol),af(folarea),vf(folvol),sp(beam_start)
+	     double rfol, double folarea, double folvol, double beam_start,int tag)
+    :VoxelObject(tag),p0(p),d(dir),l(length),rw(rwood),rf(rfol),
+     af(folarea),vf(folvol),sp(beam_start)
   {
     PositionVector tmp = PositionVector(p0)+sp*l*d;//Possibly the start point of the light beam    
     p2 = Point(tmp);
