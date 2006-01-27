@@ -1,8 +1,10 @@
 SRCDIR1 = ../src
 SRCDIR2 = ../include
 HEADERS = ../include/VoxelSpace.h ../include/VoxelBox.h  \
-          ../include/VoxelSpaceI.h ../include/VoxelBoxI.h
-SRC = $(SRCDIR1)/VoxelBox.cc  $(SRCDIR1)/VoxelSpace.cc  
+          ../include/VoxelSpaceI.h ../include/VoxelBoxI.h \
+          ../include/VOBookKeeper.h
+SRC = $(SRCDIR1)/VoxelBox.cc  $(SRCDIR1)/VoxelSpace.cc   \
+      $(SRCDIR1)/VOBookKeeper.cc 
 
 OBJ = ${SRC:.cc=.o} 
 
