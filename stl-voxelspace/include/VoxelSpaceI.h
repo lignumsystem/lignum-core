@@ -123,6 +123,11 @@ namespace Lignum {
       //   << i/points << endl;      
       //cout << x1 << " " << y1 << " " << z1 <<endl <<endl;
       //check that the box has changed
+      if (x1 >= s.Xn || y1 >= s.Yn || z1 >= s.Zn){
+	cerr << "Ignoring element " << d1 << " " 
+	     << x1 << " " << y1 << " " << z1 <<endl;
+	return;
+      }
       if (!(x1==x2 && y1==y2 && z1==z2)){
 	//Virtual segment point as the start point 
 	CfCylinder* cfo = new CfCylinder(Point(d0),GetDirection(ts),
@@ -133,8 +138,8 @@ namespace Lignum {
       }
       x2=x1;
       y2=y1;
-      z2=z1;
-    }
+      z2=z1;}
+      
     s.sgmnt = s.sgmnt + 1;
   }
 
