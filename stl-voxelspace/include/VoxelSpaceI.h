@@ -109,6 +109,8 @@ namespace Lignum {
     x2=y2=z2=-INT_MAX;//at least one point will be inserted
     //Start point of the virtual segment
     PositionVector d0 = PositionVector(GetPoint(ts))+t*d;
+    //New common tag for objects denoting this segment 
+    long_size tag = s.book_keeper.newTag();
     for (int i=1; i < parts; i++){
       //Calculate the new location based  on the direction 'd' and the
       //distance 't'  to the location  from the segment  point. Assume
@@ -133,7 +135,7 @@ namespace Lignum {
 	CfCylinder* cfo = new CfCylinder(Point(d0),GetDirection(ts),
 					 GetValue(ts,LGAL),GetValue(ts,LGAR),
 					 GetValue(ts,LGARf),GetValue(ts,LGAAf),
-					 GetValue(ts,LGAVf),beam_start);
+					 GetValue(ts,LGAVf),beam_start,tag);
 	InsertVoxelObject(s.voxboxes[x1][y1][z1],cfo);
       }
       x2=x1;
