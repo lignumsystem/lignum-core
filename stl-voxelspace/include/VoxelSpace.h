@@ -7,6 +7,7 @@
 #include <Lignum.h>
 #include <TMatrix3D.h>
 #include <VoxelBox.h>
+#include <VOBookKeeper.h>
 #include <Firmament.h>
   
 namespace Lignum {
@@ -114,7 +115,7 @@ namespace Lignum {
     void move(const Point corner1); //Move Voxelspace so that its
 				    //lower left corner is set at
 				    //corner1
-
+    VOBookKeeper& getBookKeeper(){return book_keeper;}
     int getNumberOfBoxes()const{ return Xn*Yn*Zn; }
     int getNumberOfFilledBoxes()const;
     int getNumberOfTreeSegments()const;
@@ -175,7 +176,6 @@ namespace Lignum {
     int Xn, Yn, Zn;
     TMatrix3D<VoxelBox> voxboxes;
     //debug
-    vector<VoxelObject*> shaded_objects;
     int sgmnt;//segments inserted (to compare with)
     int hitw;//wood hits;
     int hitfol;//foliage hits
@@ -197,6 +197,8 @@ namespace Lignum {
 
     LGMdouble k_b; //impact angle of a broad  leaf (c.f. star mean for
 		   //coniferous)
+    VOBookKeeper book_keeper; //maintains   information  if   a  voxel
+			      //object has been hit by a light beam
   };
 
 
