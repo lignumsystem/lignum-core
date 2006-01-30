@@ -1014,6 +1014,8 @@ namespace Lignum {
     }
     //Reset the book keeping of tags for voxel objects
     book_keeper.reset();
+    //Reset the descriptive data for forest 
+    forest_descriptor.reset();
     sgmnt = 0;
     hitw = 0;
     hitfol = 0;
