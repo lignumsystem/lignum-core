@@ -8,6 +8,7 @@
 #include <TMatrix3D.h>
 #include <VoxelBox.h>
 #include <VOBookKeeper.h>
+#include <ForestDescriptor.h>
 #include <Firmament.h>
   
 namespace Lignum {
@@ -116,6 +117,8 @@ namespace Lignum {
 				    //lower left corner is set at
 				    //corner1
     VOBookKeeper& getBookKeeper(){return book_keeper;}
+    ForestDescriptor& getForestDescriptor(){return forest_descriptor;}
+    double getArea()const{return (Xn*Xbox)*(Yn*Ybox);}
     int getNumberOfBoxes()const{ return Xn*Yn*Zn; }
     int getNumberOfFilledBoxes()const;
     int getNumberOfTreeSegments()const;
@@ -199,6 +202,9 @@ namespace Lignum {
 		   //coniferous)
     VOBookKeeper book_keeper; //maintains   information  if   a  voxel
 			      //object has been hit by a light beam
+    ForestDescriptor forest_descriptor;//maintains         descripitive
+				       //statistics and indices of the
+				       //forest in the voxel space
   };
 
 
