@@ -140,8 +140,17 @@ namespace Lignum {
       }
       x2=x1;
       y2=y1;
-      z2=z1;}
-      
+      z2=z1;
+    }
+    //Voxel space book keeping.  Descriptive data for Leaf Area Index:
+    //add  needle  area.  Recall  after  last  insertion  to set  LAI:
+    //Aftot/Avs (foliage area divided by voxel space area)
+    if (GetValue(ts,LGAWf) > R_EPSILON){
+      SetValue(s.forest_descriptor,LGAAf,
+	       GetValue(s.forest_descriptor,LGAAf)+GetValue(ts,LGAAf));
+      //Crown limit update
+      SetValue(s.forest_descriptor,LGAcbase,GetPoint(ts).getZ());
+    }
     s.sgmnt = s.sgmnt + 1;
   }
 
