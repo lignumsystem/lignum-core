@@ -4,7 +4,7 @@ HEADERS = ../include/VoxelSpace.h ../include/VoxelBox.h  \
           ../include/VoxelSpaceI.h ../include/VoxelBoxI.h \
           ../include/VOBookKeeper.h
 SRC = $(SRCDIR1)/VoxelBox.cc  $(SRCDIR1)/VoxelSpace.cc   \
-      $(SRCDIR1)/VOBookKeeper.cc 
+      $(SRCDIR1)/VOBookKeeper.cc  $(SRCDIR1)/Nearby.cc
 
 OBJ = ${SRC:.cc=.o} 
 
