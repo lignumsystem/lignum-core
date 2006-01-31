@@ -10,7 +10,7 @@
 #include <VOBookKeeper.h>
 #include <ForestDescriptor.h>
 #include <Firmament.h>
-  
+#include <Nearby.h>
 namespace Lignum {
 
   struct VoxelMovement
@@ -132,11 +132,19 @@ namespace Lignum {
     vector<VoxelMovement>& getRoute(vector<VoxelMovement> &vec, int startx, 
 				    int starty, int startz, PositionVector dir)const;
     //The method  calculates the route through the  voxel space from
-    //start point to the direction given.
-    vector<VoxelMovement>& VoxelSpace::getRoute(vector<VoxelMovement> &vec,//The route
-						const Point& p0,//start point (global point)
-						const PositionVector& dir, //direction. |dir|==1
-						const ParametricCurve& K)const;//extinction = f(incl)
+    //start point to the direction given. 
+    //Input/Output: vec   the route, includes extincion in each voxel
+    //Input:        p0  start point (global)
+    //              dir direction, |dir| == 1 (!!!)
+    //              K   extinction
+    vector<VoxelMovement>& VoxelSpace::getRoute(vector<VoxelMovement> &vec,
+						const Point& p0,
+						const PositionVector& dir, 
+						const ParametricCurve& K)const;
+    //Return the extinction caused by the border stand
+    //Input: p0   start point of the light beam
+    //       dir  direction of the light beam, |dir| == 1 (!!!)
+    double getBorderStandExtinction(const Point& p0, const PositionVector& dir)const;
     //Given a point 'p' in global coordinate system, return a point in
     //VoxelSpace coordinate system
     Point getLocalPoint(const Point& p)const;
