@@ -146,10 +146,12 @@ namespace Lignum {
     //add  needle  area.  Recall  after  last  insertion  to set  LAI:
     //Aftot/Avs (foliage area divided by voxel space area)
     if (GetValue(ts,LGAWf) > R_EPSILON){
-      SetValue(s.forest_descriptor,LGAAf,
-	       GetValue(s.forest_descriptor,LGAAf)+GetValue(ts,LGAAf));
+      SetValue(s.forest_descriptor,LGAAfc,
+	       GetValue(s.forest_descriptor,LGAAfc)+GetValue(ts,LGAAf));
       //Crown limit update
       SetValue(s.forest_descriptor,LGAcbase,GetPoint(ts).getZ());
+      //Crown heigth update
+      SetValue(s.forest_descriptor,LGAH,GetPoint(ts,1.0).getZ());
     }
     s.sgmnt = s.sgmnt + 1;
   }
