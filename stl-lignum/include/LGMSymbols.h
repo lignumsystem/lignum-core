@@ -53,10 +53,11 @@ namespace Lignum{
 
   //If you add a new symbol be sure to document it carefully.
 
-  enum LGMAD {LGAA,LGAAf,LGAAh, LGAAhair,LGAAs,LGAAs0,LGAage,LGAcollision,
+  enum LGMAD {LGAA,LGAAf,LGAAfb,LGAAfc,LGAAh, LGAAhair,LGAAs,
+              LGAAs0,LGAage,LGAcbase,LGAcollision,
               LGADbase, LGADbaseHw, LGADbh,LGADbhHw,LGAdof, LGAdR,
-	      LGAH,LGAHf,LGAHTop,LGAip,
-              LGAL,LGAM, LGAMaxD,LGAomega,LGAP,LGAQabs,LGAQin,LGAR,LGARf,
+	      LGAH,LGAHf,LGAHTop,LGAip,LGAL,LGALAIb,LGALAIc,
+              LGAM, LGAMaxD,LGAomega,LGAP,LGAQabs,LGAQin,LGAR,LGARf,
               LGARh, LGARhair,LGARTop,LGASa,LGAsf,LGAstarm,LGAstatus, 
               LGAstate,LGAtauL, LGAtype,LGAV,LGAVf,LGAVh,LGAVhair,LGAvi,LGAVs,
               LGAWf, LGAWf0, LGAWs, LGAWh,LGAWhair, LGAT};
@@ -64,59 +65,64 @@ namespace Lignum{
 
   //  0 LGAA      Segment base area based on R 
   //  1 LGAAf     Area of foliage
-  //  2 LGAAh     Heartwood area
-  //  3 LGAAhair  Root hair area
-  //  4 LGAAs     Sapwood area
-  //  5 LGAAs0    Original sapwood area
-  //  6 LGAage    Age of an object
-  //  7 LGAcollision A bud can examine its growth sector if it collides 
+  //  2 LGAAfb    Foliage area, broad leaved (see ForestDescriptor in stl-voxelspace)
+  //  3 LGAAfc    Foliage area, conifers (see ForestDescriptor in stl-voxelspace)
+  //  4 LGAAh     Heartwood area
+  //  5 LGAAhair  Root hair area
+  //  6 LGAAs     Sapwood area
+  //  7 LGAAs0    Original sapwood area
+  //  8 LGAage    Age of an object
+  //  9 LGAcbase  Crown base of a forest (see ForestDescriptor in stl-voxelspace)
+  //  10 LGAcollision A bud can examine its growth sector if it collides 
   //               with an obstacle
-  //  8 LGADbase  Diameter at base (tree)
-  //  9 LGADbaseHw  Diameter of heart wood at base (tree)
-  //  10 LGADbh    Diameter at breast height (tree)
-  //  11 LGADbhHw    Diameter of heart wood at breast height (tree)
-  //  12 LGAdof    Degree of filling of leaf
-  //  13 LGAdR     Change in radius (=difference of two growth rings)
-  //  14 LGAH      Height of tree, also the Z coordinate at the segment base 
-  //  15 LGAHf     Height (thickness) of cylindrical layer of foliage 
-  //            in a segment, e.g. Hf = Lneedle*sin(needle_angle) 
-  //  16 LGAHTop   Max height from ground of the tree, segment, etc.
-  //  17 LGAip     Degree of interaction
-  //  18 LGAL      Length of segment
-  //  19 LGAM      Rate of respiration (= amount of r. during the time step)
-  //  20 LGAMaxD   Maximum diameter of the segments 
-  //            forking off and the segment above a 
-  //            branching point. Needed to calculate LGAvi 
-  //  21 LGAomega  Gravelius order
-  //  22 LGAP      Photosynthetic rate (= amount of p. during time step)
-  //  23 LGAQabs   Amount of absorbed radiation
-  //  24 LGAQin    Incoming radiant flux
-  //  25 LGAR      Radius of segment (wood)
-  //  26 LGARf     Radius of segment cylinder including also foliage (conifers)
-  //  27 LGARh     Radius of heartwood
-  //  28 LGARhair  Radius including root hair 
-  //  29 LGARTop   Radius of segment at upper end
-  //  30 LGASa     Surface area of the segment cylinder: 2*PI*R*L
-  //  31 LGAsf     Specific leaf area (=leaf area/ leaf weight)
-  //  32 LGAstarm  Star mean for a confiferous segment
-  //  33 LGAstatus General counter to control e.g. bud burst.  
-  //  34 LGAstate  Bud state can be dead, alive, dormant etc., see LGMUnits.h
-  //  35 LGAtauL   Transmission coefficient of leaf (in direction of
+  //  11 LGADbase  Diameter at base (tree)
+  //  12 LGADbaseHw  Diameter of heart wood at base (tree)
+  //  13 LGADbh    Diameter at breast height (tree)
+  //  14 LGADbhHw    Diameter of heart wood at breast height (tree)
+  //  15 LGAdof    Degree of filling of leaf
+  //  16 LGAdR     Change in radius (=difference of two growth rings)
+  //  17 LGAH      Height of tree, also the Z coordinate at the segment base 
+  //  18 LGAHf     Height (thickness) of cylindrical layer of foliage 
+  //               in a segment, e.g. Hf = Lneedle*sin(needle_angle) 
+  //  19 LGAHTop   Max height from ground of the tree, segment, etc.
+  //  20 LGAip     Degree of interaction
+  //  21 LGAL      Length of segment
+  //  22 LGALAIb   Leaf area index, broad leaved (see ForestDescriptor in stl-voxelspace)
+  //  23 LGALAIc   Leaf area index, conifers (see ForestDescriptor in stl-voxelspace)
+  //  24 LGAM      Rate of respiration (= amount of r. during the time step)
+  //  25 LGAMaxD   Maximum diameter of the segments 
+  //               forking off and the segment above a 
+  //               branching point. Needed to calculate LGAvi 
+  //  26 LGAomega  Gravelius order
+  //  27 LGAP      Photosynthetic rate (= amount of p. during time step)
+  //  28 LGAQabs   Amount of absorbed radiation
+  //  29 LGAQin    Incoming radiant flux
+  //  30 LGAR      Radius of segment (wood)
+  //  31 LGARf     Radius of segment cylinder including also foliage (conifers)
+  //  32 LGARh     Radius of heartwood
+  //  33 LGARhair  Radius including root hair 
+  //  34 LGARTop   Radius of segment at upper end
+  //  35 LGASa     Surface area of the segment cylinder: 2*PI*R*L
+  //  36 LGAsf     Specific leaf area (=leaf area/ leaf weight)
+  //  37 LGAstarm  Star mean for a confiferous segment
+  //  38 LGAstatus General counter to control e.g. bud burst.  
+  //  39 LGAstate  Bud state can be dead, alive, dormant etc., see LGMUnits.h
+  //  40 LGAtauL   Transmission coefficient of leaf (in direction of
   //               the ray of light) 
-  //  36 LGAtype   General type specifier, e.g. Bud:dominant, apical,
+  //  41 LGAtype   General type specifier, e.g. Bud:dominant, apical,
   //               lateral etc. The numerical values and their symbols of
   //               different types given in LGMUnits.h
-  //  37 LGAV      Segment volume based on R and L
-  //  38 LGAVf     Volume occupied by the foliage in CfSegment 
-  //  39 LGAVh     Heartwood volume
-  //  40 LGAVhair  Root hair volume
-  //  41 LGAvi     Vigour index
-  //  42 LGAVs     Sapwood volume
-  //  43 LGAWf     Foliage mass (kg C)
-  //  44 LGAWf0    Initial foliage mass (kg C)
-  //  45 LGAWs     Mass of sapwood (kg C)
-  //  46 LGAWh     Mass of heartwood (kg C)
-  //  47 LGAWhair  Mass of root hair (kg C)
+  //  42 LGAV      Segment volume based on R and L
+  //  43 LGAVf     Volume occupied by the foliage in CfSegment 
+  //  44 LGAVh     Heartwood volume
+  //  45 LGAVhair  Root hair volume
+  //  46 LGAvi     Vigour index
+  //  47 LGAVs     Sapwood volume
+  //  48 LGAWf     Foliage mass (kg C)
+  //  49 LGAWf0    Initial foliage mass (kg C)
+  //  50 LGAWs     Mass of sapwood (kg C)
+  //  51 LGAWh     Mass of heartwood (kg C)
+  //  52 LGAWhair  Mass of root hair (kg C)
 
   // LGMAD = LIGNUM Attribute Double
 
