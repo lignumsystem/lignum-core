@@ -47,6 +47,7 @@ using namespace std;
 //                      SortLeaves<SH> sorter(p);
 //                      ls.sort(sorter);
 //   CrownVolume
+//   MainAxisVolume: Usage MainAxisVolume vol; double v = vol(tree);
 
 //Functors-functions below used in LIGNUM WorkBench are not listed. 
 
@@ -642,7 +643,29 @@ namespace Lignum{
     double step;
   };
 
+  template <class TS,class BUD>
+  class AccumulateAxisVolume{
+    public:
+    double operator()(double v,TreeCompartment<TS,BUD>* tc)const
+    {
+      if (TS* ts = dynamic_cast<TS*>(tc)){
+	v = v + GetValue(*ts,LGAV);
+      }
+      return v;
+    }
+  };
 
+  template <class TS,class BUD>
+  class MainAxisVolume{
+  public:
+    double operator()(Tree<TS,BUD>& t)const
+    {
+      Axis<TS,BUD>& axis = GetAxis(t);
+      list<TreeCompartment<TS,BUD>*>& tc_ls = GetTreeCompartmentList(axis);
+      double vol = accumulate(tc_ls.begin(),tc_ls.end(),0.0,AccumulateAxisVolume<TS,BUD>());
+      return vol;
+    }
+  };
 
 }//closing namespace Lignum
 #include <TreeFunctorI.h>
