@@ -379,6 +379,9 @@ namespace Lignum {
   // p0:      the start position of the ray (e.g. segment midpoint)
   // dir:     direction of the light beam, NOTE: |dir| == 1 (!!!!)
   // K:       extinction 
+  // pairwise: if true calcuate the extinction using pairwise comparison 
+  //           to voxel objects, if false calculate only the path lengths 
+  //           in voxels  
   // returns : the route stored in a vector, 
   //           extinction of the objects in the voxels 
   //
@@ -387,7 +390,8 @@ namespace Lignum {
   vector<VoxelMovement>& VoxelSpace::getRoute(vector<VoxelMovement> &vec, 
 					      const Point& p0,
 					      const PositionVector& dir,
-					      const ParametricCurve& K)const
+					      const ParametricCurve& K,
+					      bool pairwise)const
 					
   { 
     PositionVector d0(p0);
@@ -611,13 +615,17 @@ namespace Lignum {
 	vm.z = startz;
 	//Set foliage area,  needle area + leaf area
 	vm.af = voxboxes[vm.x][vm.y][vm.z].getFoliageArea(); 
-	//Get extinction caused by objects in the box
-	//Avoid the box where the shaded segment is
-	//cout << vm.x << " " << vm.y << " " << vm.z << " "  <<endl
-	//   << next_x << " " << next_y << " " << next_z << " " 
-	//   << dist << endl; 
-	vm.tau =  voxboxes[vm.x][vm.y][vm.z].getExtinction(p0,dir,K);
+	//Get extinction  caused by objects  in the box Avoid  the box
+	//where the shaded segment is cout << vm.x << " " << vm.y << "
+	//" << vm.z << " " <<endl << next_x << " " << next_y << " " <<
+	//next_z  << "  "  << dist  <<  endl; If  the  user wants  the
 
+	//In pairwise comparison  we need to go through  the vector of
+	//voxel objects in each box. Otherwise the lengths of the beam
+	//paths in voxels is enough
+	if (pairwise == true){
+	  vm.tau =  voxboxes[vm.x][vm.y][vm.z].getExtinction(p0,dir,K);
+	}
 	if (next_x <= next_y && next_x<= next_z)
 	  {
 	    startx = startx + x_jump;
