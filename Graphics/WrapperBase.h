@@ -2,6 +2,7 @@
 #define WRAPPERBASE_H
 
 #include <OpenGLHFiles.h>
+#include <OpenGLFunctor.h>
 #include <sstream>
 #include <Lignum.h>
 
