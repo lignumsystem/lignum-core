@@ -208,15 +208,19 @@ LGMdouble VoxelBox::getAreaDensity()
 	//If  no ray hit yet --> compute
 	double tmp_tau = (*it)->getExtinction(p0,d,Kfun);
 	//cout << "VoxelBox::getExtinction loop " << tmp_tau << endl;
-	if ((*it)->hit_self == true)
+	if ((*it)->hit_self == true){
+          //Ray hits self, mark ray hit. A copy may be in another voxel.
+	  (space->getBookKeeper()).setRayHit(tag);
 	  space->hitself = space->hitself + 1; 
+        }
 	if (tmp_tau == 0.0){//wood
 	  tau = 0.0;
 	  space->hitw = space->hitw + 1;
 	  break;
 	}
-	else if (tmp_tau == 1.0)//no hit
+	else if (tmp_tau == 1.0){//no hit
 	  space->nohit = space->nohit + 1;
+        }
 	else{//Foliage hit
 	  //Mark the segment computed
 	  (space->getBookKeeper()).setRayHit(tag);
