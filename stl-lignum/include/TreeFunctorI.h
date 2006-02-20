@@ -1437,17 +1437,14 @@ namespace Lignum{
 
   int layers = (int)(dist/step) + 1;
 
-  LGMdouble heightOfTop = (double)layers*step - dist;
-
   TMatrix<double> radii(layers, 4);
 
   Axis<TS,BUD>& ax = GetAxis(tr);
   Point treeBase = GetPoint(*GetFirstTreeCompartment(ax));
 
   for(int i = 0; i < layers; i++) {
-    double minH = (double)i * step;
+    double minH = (double)i * step + Hc;
     double maxH = minH + step;
-    if(i == layers-1) maxH = H;
     double angle = PI_VALUE / 2.0;
     for(int j = 0; j < 4; j++) {
       double dir = (double)j * angle;
@@ -1459,10 +1456,9 @@ namespace Lignum{
   }
 
   double volume = 0.0;
+  double h = step;  
   for(int i = 0; i < layers; i++) {
-    double h = step;
-    if(i == layers-1) h = heightOfTop;
-    for(int j = 0; j < 4; j++) {
+      for(int j = 0; j < 4; j++) {
       volume += PI_VALUE*radii[i][j]*radii[i][j]*h/4.0;
     }
   }
@@ -1479,7 +1475,8 @@ namespace Lignum{
     Point base = GetPoint(*ts);
     Point top = GetEndPoint(*ts);
     Point midP(base + 0.5 *(top-base));
-    if(midP.getZ() > minH && midP.getZ() < maxH) {    
+    if(midP.getZ() > minH && midP.getZ() < maxH) {
+      //note that treeBase is a PositionVector that has only x- and y-components
       PositionVector r = PositionVector(midP.getX(),midP.getY(),0.0)
 	- treeBase;
       PositionVector middle(cos(dir+angle/2.0),sin(dir+angle/2.0),0.0);
