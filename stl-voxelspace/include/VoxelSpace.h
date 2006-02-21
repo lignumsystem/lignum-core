@@ -128,7 +128,7 @@ namespace Lignum {
     // returns the total foliage mass of the tree segments dumped into
     // the VoxelSpace
     LGMdouble getFoliageMass(void);
-    VoxelBox& getVoxelBox(Point p);
+    VoxelBox& getVoxelBox(const Point& p);
     vector<VoxelMovement>& getRoute(vector<VoxelMovement> &vec, int startx, 
 				    int starty, int startz, PositionVector dir)const;
     //The method  calculates the route through the  voxel space from

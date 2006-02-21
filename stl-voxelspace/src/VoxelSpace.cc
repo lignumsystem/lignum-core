@@ -807,7 +807,7 @@ namespace Lignum {
   //
   // Returns the VoxelBox where the global Point p belongs
   //
-  VoxelBox& VoxelSpace::getVoxelBox(Point p)
+  VoxelBox& VoxelSpace::getVoxelBox(const Point& p)
   {
     Point localP = p - corner1;
     int Xi = static_cast<int>(localP.getX()/Xbox);
