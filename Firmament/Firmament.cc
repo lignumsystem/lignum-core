@@ -380,7 +380,7 @@ MJ Firmament::diffuseRadiationSum(const vector<double>& direction)
 
 }
 
-MJ Firmament::diffuseRegionRadiationSum(int n, vector<double>& direction)
+MJ Firmament::diffuseRegionRadiationSum(int n, vector<double>& direction)const
 
 // Input: # of region
 // Return: Intensity of diffuse radiation from the region and
@@ -582,31 +582,12 @@ MJ Firmament::diffuseForestRegionRadiationSum(int n, float z, float x, float la,
 }
 
 
-//The diffuseForestRegionRadiationSum as  above but the density.fun is
-//a ParametricCurve that contains the  forest density as a function of
-//some 'arg', given  as the last parameter. If  no density.fun found the
-//forest density is 2500 trees/ha.
+//As diffuseForestRegionRadiationSum  above but the  forest density is
+//the last argument
 MJ Firmament::diffuseForestRegionRadiationSum(int n, float z, float x, float la,
 					      float ke, float H, float Hc,
-					      vector<double>& direction,double arg)
-
-
+					      vector<double>& direction,double dens)
 {
-// When  this method  is called  first  time it  reads density  (dens,
-// trees/ha) from  the file density.fun.  If this file does  not exist
-// default density 2500 tree/ha is used.
-
-  static bool first_time = true;
-  static ParametricCurve fdens(2500.0);
-
-  if(first_time) {
-    first_time = false;
-    ifstream densfun("fdensity.fun");
-    if(densfun) {
-      fdens.install("fdensity.fun");
-    }
-  }
-  double dens = fdens(arg);
   //Check for suitable segment number
 
   if(n < 0 || n > numOfSectors - 1) return (MJ) -1.0;

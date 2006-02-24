@@ -132,10 +132,8 @@ using namespace cxxadt;
 
 14.B. MJ diffuseForestRegionRadiationSum(int n, float z, float x,  float la, float ke,
                                          float H, float Hc,vector<double>& direction,
-                                         double arg)
-      Like above 14.A., but but the forest density  function 'f' must be  in the file
-      "fdensity.fun" and  the last  parameter 'arg' is  the argument  to the function (y =f(arg)), 
-      say e.g. forest age or D1.3.
+                                         double density)
+      Like above 14.A., but but the forest density  (trees/ha) is the last argument 'density'
  
 15.  void outDiff()
        Prints out ( cout << ) the diffuse radiation intensity sector by sector.
@@ -177,8 +175,8 @@ public:
   vector<double>  getSunPosition() { return sunPosition; }
   MJ directRadiation(vector<double>& direction);
   MJ diffuseRadiationSum( const vector<double>& v);
-  int numberOfRegions() { return numOfSectors; }
-  MJ diffuseRegionRadiationSum(int n, vector<double>& direction);
+  int numberOfRegions() const { return numOfSectors; }
+  MJ diffuseRegionRadiationSum(int n, vector<double>& direction)const;
   MJ diffuseHalfRegionRadiationSum(int n, vector<double>& direction);
   MJ directHalfRegionRadiationSum(vector<double>& direction);
   MJ diffusePlaneSensor(void) { return diffuseRadPlane; }
@@ -186,12 +184,10 @@ public:
   MJ diffuseForestRegionRadiationSum(int n, float z, float x,  float la, float ke,
 				     float H, float Hc,
 				     vector<double>& direction);
-  //Like above,  but the forest density  function must be  in the file
-  //"fdensity.fun" and  the last  parameter 'arg' is  the argument  (y =
-  //f(arg)), say e.g. forest age or D1.3. 
+  //Like above,  but the forest density (trees/ha) is the last argument 'density'
   MJ diffuseForestRegionRadiationSum(int n, float z, float x,  float la, float ke,
 				     float H, float Hc,
-				     vector<double>& direction,double arg);
+				     vector<double>& direction,double density);
   void outDiff() {
     cout << diffuseRad << endl;
   }
