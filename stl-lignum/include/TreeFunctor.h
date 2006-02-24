@@ -58,7 +58,7 @@ namespace Lignum{
      public:
      int& operator()(int& n,TreeCompartment<TS,BUD>* tc)const
        {
-	 if (TS* myts = dynamic_cast<TS*>(tc))
+	 if (dynamic_cast<TS*>(tc)!=NULL)
 	   n+=1;
 	 return n;
        }
