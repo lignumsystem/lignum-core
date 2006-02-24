@@ -26,7 +26,7 @@ int LSystem<TS,BUD,T,F>::prune(list<Axis<TS,BUD>*>& ls,
       //Do the pruning in the L-string  if the list is empty
       if (tc_ls.empty() && (ltr.GetModuleId() != EB_id)){
 	//The end branch is here or will be here
-	const char* start = ltr.Ptr();
+	ltr.Ptr();
 	//To find the end of branch
 	LstringIterator eb(ltr);
 	//The string is not pruned 
