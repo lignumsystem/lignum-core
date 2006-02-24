@@ -102,8 +102,6 @@ namespace Lignum {
     //2 parts means 1/3 and 2/3. 3 parts means 1/4, 2/4 and 3/4 etc.
     double points = static_cast<double>(parts+1);
     parts = parts+1;
-    double length = GetValue(ts,LGAL);
-    double next_pos = 0.0;
     int x1,y1,z1,x2,y2,z2;
     x1=y1=z1=0;
     x2=y2=z2=-INT_MAX;//at least one point will be inserted
