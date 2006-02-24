@@ -15,7 +15,7 @@ public:
     :afb(0.0),afc(0.0),laib(0.0),laic(0.0),h(-1.0),cbase(R_HUGE){}
   //Update LAI, A is the area of the voxel space in  meters
   //Call after  the last call to InsertVoxelObjects
-  double updateLAI(double A){laic = afc/A;laib = afb/A;}
+  void updateLAI(double A){laic = afc/A;laib = afb/A;}
   //Reset by VoxelSpace::reset()
   void reset(){
     afb=0.0;afc=0.0;laib=0.0;
