@@ -67,4 +67,5 @@ ShootModel                                    ShootModel
 ShootModelAll                                 &c++adt &stl-lignum &Firmament &stl-voxelspace &LEngine &Pine &Graphics &ShootModel
 Cowberry             -s JariP                 Cowberry
 CowberryAll                                   &c++adt &stl-lignum &Firmament &stl-voxelspace &LEngine &Graphics &Cowberry
-
+DigitalTree          -s JariP                 DigitalTree
+DigitalTreeAll                                &c++adt &stl-lignum &Firmament &stl-voxelspace &Graphics &DigitalTree
