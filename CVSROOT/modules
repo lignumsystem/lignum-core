@@ -63,5 +63,8 @@ maple                                         &c++adt &stl-lignum &Firmament &LE
 Lignum-Crobas                                 &c++adt &stl-lignum &Firmament &LEngine &Graphics &stl-voxelspace &Pine &ScotsPine &ScotsPineVisual &Lig-Crobas
 DataTree             -s JariP                 DataTree
 DataTreeAll                                   &c++adt &stl-lignum &Firmament &stl-voxelspace &Pine &Graphics &DataTree
+ShootModel                                    ShootModel  
+ShootModelAll                                 &c++adt &stl-lignum &Firmament &stl-voxelspace &LEngine &Pine &Graphics &ShootModel
 Cowberry             -s JariP                 Cowberry
 CowberryAll                                   &c++adt &stl-lignum &Firmament &stl-voxelspace &LEngine &Graphics &Cowberry
+
