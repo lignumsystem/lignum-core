@@ -332,6 +332,7 @@ namespace Lignum{
   template <class TS,class BUD> void DisplayStructure(Tree<TS,BUD>& t)
     {
       DisplayStructure(&GetAxis(t));
+      cout <<endl;
     }
 
   template <class TS,class BUD> void DisplayStructure(TreeCompartment<TS,
