@@ -38,6 +38,14 @@ PositionVector::PositionVector(const Point& p)
   v[0] = p.getX(); v[1] = p.getY(); v[2] = p.getZ();
 }
 
+PositionVector::PositionVector(const Point& start, const Point& end)
+  :v(3)
+{
+  v[0] = end.getX()-start.getX();
+  v[1] = end.getY()-start.getY();
+  v[2] = end.getZ()-start.getZ();
+}
+
 //The assignment
 PositionVector& PositionVector::operator = (const PositionVector& pv)
 {

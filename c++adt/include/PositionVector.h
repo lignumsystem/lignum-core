@@ -29,6 +29,8 @@ public:
   PositionVector(const PositionVector& pv);
   PositionVector(const vector<double>& v1):v(v1){}
   PositionVector(const Point& p);
+  //PositionVector d from two points, d = end - start.
+  PositionVector(const Point& start, const Point& end);
   PositionVector& rotate(ROTATION direction, RADIAN angle);
   PositionVector& rotate(const Point& p0, const PositionVector& dir,
 			 RADIAN angle);
