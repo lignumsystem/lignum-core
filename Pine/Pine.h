@@ -101,11 +101,14 @@ class PineBudData{
   }
 public:
   //A  couple of  constructors to  initialize members.  Recommended in
-  //general (read: required!!).
-  PineBudData():state(ALIVE),fm(0.0){}
-  PineBudData(double s, double fol):state(s),fm(fol){}
+  //general.
+  PineBudData():state(ALIVE),fm(0.0),ip(1.0){}
+  PineBudData(double s, double fol, double rl):state(s),fm(fol),ip(rl){}
+  PineBudData(const PineBudData& pbd)
+    :state(pbd.state),fm(pbd.fm),ip(pbd.ip),x(pbd.x),y(pbd.y),z(pbd.z){}
   double state; //ALIVE,DEAD, FLOWER, etc
   double fm;//foliage mass (of the mother segment)
+  double ip;//qin/TreeQinMax, i.e. relative light
   //Direction   is   PositionVector(x,y,z).    Note  you   can't   use
   //PositionVector  here, because  internally it  has  implemented the
   //(x,y,z)  as an  stl-vector.  During  passing the  information from
@@ -128,6 +131,7 @@ class PineBud: public Bud<TS,BUD>{
 			      PBNAME name,const PineBudData& data){
     PineBudData old_data = GetValue(b,name); 
     SetValue(b,LGAstate,data.state);
+    SetValue(b,LGAip,data.ip);
     b.fm_mother_segment = data.fm;
     //Do not update  the direction, it would override  the work of the
     //turtle in L-system
@@ -139,6 +143,7 @@ class PineBud: public Bud<TS,BUD>{
     if (name == PBDATA){
       pbdata.state = GetValue(b,LGAstate);
       pbdata.fm = b.fm_mother_segment;
+      pbdata.ip = GetValue(b,LGAip);
       //Pass the direction to  L-system, user can access the direction
       //easily by calling GetDirection.
       pbdata.x = GetDirection(b).getX();
