@@ -219,7 +219,7 @@ class SetSegmentLength{
 public:
   SetSegmentLength(double lamda):l(lamda),apical(1.0){}
   SetSegmentLength& operator=(const SetSegmentLength& sl){
-    l = sl.lamda;
+    l = sl.l;
     apical = sl.apical;
     return *this;
   }
@@ -376,11 +376,13 @@ public:
 //elongation/shortening of  segments, simulation of  diameter and root
 //growth.   The it  returns  P-M-G.   Use it  with  some root  finding
 //algorithm.  For  example Bisection. See function  operator that does
-//the job.
-template <class TS,class BUD>
+//the job.  L is  the functor  for elongation and  D for  the diameter
+//growth
+template <class TS,class BUD, class L, class D>
 class LPineGrowthFunction{
 public:
-  LPineGrowthFunction(Tree<TS,BUD>& tree):t(tree),P(-1.0),M(-1.0){}
+  LPineGrowthFunction(Tree<TS,BUD>& tree)
+    :t(tree),P(-1.0),M(-1.0){}
   double operator()(double l);
   void init();
   double getP()const{return P;}
@@ -393,8 +395,8 @@ private:
 
 
 //Collect photosynthates and respiration once per growth allocation.
-template <class TS,class BUD>
-void LPineGrowthFunction<TS,BUD>::init()
+template <class TS,class BUD,class L,class D>
+void LPineGrowthFunction<TS,BUD,L,D>::init()
 {
   P = GetValue(t,TreeP);
   M = GetValue(t,TreeM);
@@ -402,18 +404,18 @@ void LPineGrowthFunction<TS,BUD>::init()
   //cout << "P: " << P << " M: " << M << " P-M: " << P-M << endl;
 } 
 
-template <class TS,class BUD>
-double LPineGrowthFunction<TS,BUD>::operator()(double l)
+template <class TS,class BUD,class L,class D>
+double LPineGrowthFunction<TS,BUD,L,D>::operator()(double l)
 {
   DiameterGrowthData data;
   
 
   //1.Elongate or shorten segment lengths
-  ForEach(t,SetSegmentLength<TS,BUD>(l));
+  ForEach(t,L(l));
 
   //2. Simulate  diameter  growth  and  collect  sapwood  and  foliage
   //masses.
-  data = AccumulateDown(t,data,TryDiameterGrowth<TS,BUD>());   
+  data = AccumulateDown(t,data,D());   
   
 
   //3. return P-M-G where G = iWs(l) + iWfnew(l) + iWrnew(l)
