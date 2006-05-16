@@ -47,21 +47,24 @@ LGMdouble GetValue(const Bud<TS,BUD>& bud, const LGMAD name)
   if (name == LGAcollision){
     return bud.ba.collision;
   }
-  else if (name == LGAomega)
-    return bud.ba.omega;
-
-  else if (name == LGAip)
+  else if (name == LGAip){
     return bud.ba.ip;
-
-  else if (name == LGAstatus)
-    return bud.ba.status ;
-  
-  else if (name == LGAstate)
+  }
+  else if (name == LGAomega){
+    return bud.ba.omega;
+  }
+  else if (name == LGAQin){
+    return bud.ba.qin;
+  }
+  else if (name == LGAstatus){
+    return bud.ba.status;
+  }
+  else if (name == LGAstate){
     return bud.ba.state;
-
-  else if (name == LGAtype)
+  }
+  else if (name == LGAtype){
     return bud.ba.type;
-
+  }
   else{
     return GetValue(dynamic_cast<const TreeCompartment<TS,BUD>&>(bud), name);
   }
@@ -76,21 +79,24 @@ LGMdouble SetValue(Bud<TS,BUD>& bud, const LGMAD name, const LGMdouble value)
   if (name == LGAcollision){    
     bud.ba.collision = value;
   }
-  else if (name == LGAomega)
-    bud.ba.omega = value;
-
-  else if (name == LGAip)
+  else if (name == LGAip){
     bud.ba.ip = value;
-  
-  else if (name == LGAstatus)
+  }
+  else if (name == LGAomega){
+    bud.ba.omega = value;
+  }
+  else if (name == LGAQin){
+    bud.ba.qin = value;
+  }
+  else if (name == LGAstatus){
     bud.ba.status = value;
-
-  else if (name == LGAstate)
+  }
+  else if (name == LGAstate){
     bud.ba.state = value;
-
-  else if (name == LGAtype)
+  }
+  else if (name == LGAtype){
     bud.ba.type = value;
-
+  }
   else{
     old_value = SetValue(dynamic_cast<TreeCompartment<TS,BUD>&>(bud), name,value);
   }

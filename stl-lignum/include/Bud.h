@@ -17,6 +17,7 @@ namespace Lignum{
     LGMdouble collision;      //Collision detected or not
     LGMdouble ip;             //Photosynthetic light ratio (shadiness)
     LGMdouble omega;          //Gravelius order
+    LGMdouble qin;            //The incoming radiation
     LGMdouble type;           //dominant, apical, lateral etc.
     LGMdouble status;         //counter from N to 0;
     LGMdouble state;          //dead, alive, dormant etc. 
