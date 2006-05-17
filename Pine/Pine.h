@@ -52,7 +52,7 @@ public:
   PineSegment(const Point& p,const PositionVector& d,
 	      const LGMdouble go,const METER l,
 	      const METER r,const METER rh,Tree<TS,BUD>* tree)
-    :plength(0.0),CfTreeSegment<TS,BUD>(p,d,go,l,r,rh,tree)
+    :CfTreeSegment<TS,BUD>(p,d,go,l,r,rh,tree),plength(0.0)
     {
       //Set radius according to length radius ratio:
       //As we multiply lr should be in [0,1]
@@ -66,6 +66,10 @@ public:
       SetValue(*this,LGARf,GetValue(*this,LGAR)+GetValue(*this,LGAHf));
       //Set the initial heartwood radius 
       SetValue(*this,LGARh,sqrt((GetValue(*tree,LGPxi)*GetValue(*this,LGAA))/PI_VALUE));
+      //LGPxi defines the area of heartwood in relation to sapwood, i.e.
+      //Ah = LGPxi * As ; this results in the following equation for Rh
+      SetValue(*this,LGARh,sqrt(GetValue(*tree,LGPxi)/(1.0+GetValue(*tree,LGPxi)))
+	       *GetValue(*this,LGAR));
       //compute the initial mass of the foliage
       //1. compute the surface area (Sa) of the segment cylinder
       //2. initial mass of the foliage is then af*Sa ((kg/m2)*m2)
