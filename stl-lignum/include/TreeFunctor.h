@@ -377,7 +377,7 @@ namespace Lignum{
   //TreeCompartments) to a new location.
 
   template <class TS,class BUD=DefaultBud<TS> >
-    class MoveTree:  public AdaptableTCFunction<TS,BUD>{
+    class MoveTree{
       public:
       MoveTree(const MoveTree& move, Tree<TS,BUD>& t)
       :move_to(move.move_to){SetPoint(t,GetPoint(t)+move_to);}
