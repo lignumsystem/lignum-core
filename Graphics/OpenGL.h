@@ -14,7 +14,9 @@
 
 
 using namespace Lignum;
-
+//last_texY is a global variable used in MakeCylinderWithTop, in OpenGL.cc
+//This will generate warnings, because it cannot be declared as constant.
+//Could last_texY be declared and used in  MakeCylinderWithTop only? 
 static float last_texY = 0;
 
 
@@ -57,7 +59,10 @@ struct year_line
 
 float GetAngle(PositionVector p);
 
-
+//odd_table is a global variable used in InitDrawing, in OpenGL.cc
+//It will generate warnings, because it cannot be declared as constant.
+//It cannot be declared constant, because InitDrawing assigns values to it
+//Could it be declared and used in InitDrawing?
 static float odd_table[TABLESIZE];
 
 

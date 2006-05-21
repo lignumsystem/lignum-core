@@ -11,7 +11,7 @@
 
 
 
-static GLfloat leave[LEAVE_VERT][2] = { 
+const static GLfloat leave[LEAVE_VERT][2] = { 
                                 { 0.2, 1.0},
                                 { 0.7, 1.55},
 								{ 1.4, 1.6},

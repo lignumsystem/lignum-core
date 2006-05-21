@@ -814,8 +814,6 @@ void init_window () //int argc, char** argv)
 // This function inits the lightning
 void setLight(void)
 {     
-  GLfloat mat_amb[] = {.4,.4,.2,1};
-  
   GLfloat lightPosition[] = {lightx, lighty, lightz, lightw};
 
   //cout << "valo " << lightx <<lighty << lightz <<  lightw << endl;
@@ -1074,7 +1072,6 @@ void UseBmpTexture(char *filename)
 
 void UseTgaTexture(char *filename)
 {
-  char buff[15];
   tga_t image;
   
   glClearColor(0.0f, 0.0f, 0.0f, 0.0f);

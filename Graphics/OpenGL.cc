@@ -126,7 +126,7 @@ void MakeLeave(float x, float y, float rad)
 
 void MakeLeaveTable()
 {
-    float x,y;
+    float x;
     for (int i=0; i<6; i++)
     {
 	x = -0.5 + i*0.2;
@@ -252,7 +252,7 @@ void DrawCone(branch_in &bri)
 
 void MakeCone(float length, float radius, float max_radius)
 {
-  const float PI = (float)3.14159265;
+
   int edges = 16;
 
   GLfloat cosine,sine, x=0, y=last_texY;
@@ -349,7 +349,7 @@ void outPut(float x, float y, char *string)
 
 void MakeCylinder(float radius, float rad_top, float length, float rad_limit, float xx, float yy)
 {
- const float PI = (float)3.14159265;
+
   int edges = 16;
  edges = (int)(radius / 0.0001);
  
@@ -516,7 +516,7 @@ void CrossCylinder(float length, float radius, float rad_top, float ang, float a
 {
   const float PI = (float)3.14159265;
   int edges = 40;
-  GLfloat cosine,sine, x=0, y=last_texY, cos_top, sin_top;	
+  GLfloat cosine,sine;	
   
   float round = PI * (radius+rad_top); //ymparysmitta sateiden keskiarvosta;
   float yy = .4*length;	  
@@ -552,14 +552,8 @@ void CrossCylinder(float length, float radius, float rad_top, float ang, float a
 
 int make_texfoliage_planes_lists(Point position, float rot_angle, float rot_x, float rot_y, int number, float lenght, float radius, float fol_mas, int age)
 { 
-  float mult=sqrt(0.5); 
   float amount;
-  float random=1;
-
   
-  LGMdouble needle_plane_width = 0.035;
-  
-
   amount = 0.23 * fol_mas * 28.6 / NEEDLE_AREA;
   
   int amount2 = static_cast<int>(fol_mas / 0.0000035);
@@ -633,18 +627,13 @@ int make_texfoliage_planes_lists(Point position, float rot_angle, float rot_x, f
 
 void draw_texfoliage_planes(float lenght, float radius, float fol_mas, int age)
 { 
-  float mult=sqrt(0.5); 
   float amount;
-  float random=1;
+
   float directions=6;
 
   amount = 0.23 * fol_mas * 28.6 / NEEDLE_AREA;
-  
- 
-  float t = amount / directions / 10;
 
   float tt = lenght / 0.10f;	
-
 
   float r = 360/directions;
 
@@ -794,8 +783,6 @@ void MakeCylinderWithTop(float radius, float rad_top, float length, float rad_li
   float d_rad = radius - r;
   radius = r;
 
-  GLfloat len;
-
   if (length <= 0 || radius <= 0)
 	  return;
 
@@ -941,15 +928,6 @@ void MakeYearLines(float radius, float rad_top, float length, std::vector<METER>
 
 void MakeYearLines(std::vector<year_point> l)
 {	
-/*
-	std::list<year_point>::iterator I = l.begin();
-	std::list<year_point>::iterator start = l.begin();
-    std::list<year_point>::iterator last = l.end();
-*/
-
-  //glColor3f(1,1,1);
-	int size = l.size();
-
 	for(int n=1; n<68; n++)
 	{
 		

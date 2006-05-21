@@ -320,7 +320,6 @@ void CfWrapper<TS,BUD>::DrawTree(float x, float y, float z)
     GLfloat mat_amb[] = { 0.2, 0.3, 0.4, 1.0 }; 
     GLfloat mat_dif[] = { 0.2, 0.4, 0.4, 1.0 }; 
     
-    GLfloat mat_amb2[] = { 1.0, 0.5, 0.4, 1.0 }; 
     glMaterialfv(GL_FRONT, GL_AMBIENT, mat_amb); 
     glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_dif);
     

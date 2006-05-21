@@ -122,7 +122,7 @@ namespace Lignum
     
     void LGMVisualization::SetLight(void)
     {
-	GLfloat mat_amb[] = {.4,.4,.2,1};
+
 	
 	GLfloat lightPosition[] = {settings.lightx, settings.lighty, 
 				   settings.lightz, settings.lightw};
@@ -151,7 +151,7 @@ namespace Lignum
     
     void LGMVisualization::ReDrawWindow(void)
     {
-	float hx=0,hy=0, hz=0;  
+
 	
 	
 	glutSetWindow(settings.window1);
@@ -455,7 +455,7 @@ namespace Lignum
 
     double dx = settings.lookat_x - settings.cam_x;
     double dy = settings.lookat_y - settings.cam_y;
-    double dz = settings.lookat_z - settings.cam_z;
+    
 
     double dist = sqrt(dx*dx+dy*dy);
 

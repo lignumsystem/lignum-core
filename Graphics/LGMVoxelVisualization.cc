@@ -15,7 +15,7 @@ namespace Lignum
   void LGMVoxelVisualization::DrawVoxelSpace(VoxelSpace &space, bool blackBG)
   {
     glEnable(GL_LIGHTING);
-    int num = 0;
+
     vector<VisualCube> cubes;
     vector<VisualCube> ordered_cubes;
     

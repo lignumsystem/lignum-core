@@ -22,7 +22,6 @@ using namespace std;
 
 bool LoadTgaTexture(int &number, const string &filename)
 {
-	char buff[15];
 	tga_t image;
 	number = image.GenId();
 	image.Load(filename.c_str(), number);
@@ -102,8 +101,6 @@ AUX_RGBImageRec* LoadBMP(string filename)
 
 bool LoadGLTextures(char *name)
 {
-  
-  char buff[15];
   tga_t image;
   
   glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
@@ -136,8 +133,6 @@ texIds[1] = image.GenId();
 
 bool LoadGLTextures(char *name1, char *name2)
 {
-  
-  char buff[15];
   tga_t image, image2;
   
   glClearColor(0.0f, 0.0f, 0.0f, 0.0f);

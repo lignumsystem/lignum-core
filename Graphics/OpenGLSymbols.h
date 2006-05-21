@@ -58,8 +58,8 @@ const int HWLEAVES_LIST = 25;
 const int FOREST_LIST_STEMS = 26;
 const int FOREST_LIST_NEEDLES = 27;
 
-static float NEEDLE_AREA = 0.00015; 
-static float NEEDLE_LENGTH = 0.05;      // Needle length
+const static float NEEDLE_AREA = 0.00015; 
+const static float NEEDLE_LENGTH = 0.05;      // Needle length
 
 const int NEEDLE_ANGLE0 = 60;        // Needle angle for needles of different ages
 const int NEEDLE_ANGLE1 = 50;
