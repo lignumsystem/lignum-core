@@ -38,11 +38,19 @@ class BranchingPoint: public TreeCompartment<TS,BUD>{
 			    LGMdouble value); 
 public:
   BranchingPoint();
+  //Initiate omega and type to 0.0 and -1.0 respectively
   BranchingPoint(const Point& p, const PositionVector& d, Tree<TS,BUD>* t);
+  //Initiate type to -1.0
+  BranchingPoint(const Point& p, const PositionVector& d, LGMdouble go,Tree<TS,BUD>* t);
   virtual ~BranchingPoint();
 private:
   list<Axis<TS,BUD>*> axis_ls;
-  LGMdouble maxd;
+  LGMdouble maxd;//max diameter of the forking axes, see
+		 //TreePhysiologyVigourIndex
+  LGMdouble omega;//gravelius  order, if  not set  in lstringToLignum,
+		  //set to 0.0, i.e. a meaningless value
+  LGMdouble type;//type of  the bud  at the end  of axis,  initiate to
+		 //-1.0, i.e. meaningless value
 };
 
 

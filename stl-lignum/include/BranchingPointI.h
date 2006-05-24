@@ -28,7 +28,14 @@ ostream &operator << (ostream& os, BranchingPoint<TS,BUD>& ts)
 template <class TS,class BUD>
 BranchingPoint<TS,BUD>::BranchingPoint(const Point& p, const PositionVector& d,
 				       Tree<TS,BUD>* t)
-  :TreeCompartment<TS,BUD>(p,d,t),maxd(0.0)
+  :TreeCompartment<TS,BUD>(p,d,t),maxd(0.0),omega(0.0),type(-1.0)
+{
+}
+
+template <class TS,class BUD>
+BranchingPoint<TS,BUD>::BranchingPoint(const Point& p, const PositionVector& d, LGMdouble go,
+				       Tree<TS,BUD>* t)
+  :TreeCompartment<TS,BUD>(p,d,t),maxd(0.0),omega(go),type(-1.0)
 {
 }
 
@@ -46,11 +53,17 @@ BranchingPoint<TS,BUD>::~BranchingPoint()
 template <class TS,class BUD>
 double GetValue(BranchingPoint<TS,BUD>& bp, LGMAD name)
 {
-  if (name == LGAMaxD){
+  if (name == LGAMaxD){//max diameter of the forking axes
     return bp.maxd;
   }
   else if (name == LGAage){
     return bp.tc_age;
+  }
+  else if (name == LGAomega){//gravelius order
+    return bp.omega;
+  }
+  else if (name == LGAtype){//gravelius order
+    return bp.type;
   }
   else{
     cout << "GetValue in BP, unknown name: " << name << endl;
@@ -67,6 +80,12 @@ double SetValue(BranchingPoint<TS,BUD>& bp, LGMAD name, LGMdouble value)
   }
   else if (name == LGAage){
     bp.tc_age = value;
+  }
+  else if (name == LGAomega){
+    bp.omega = value;
+  }
+  else if (name == LGAtype){
+    bp.type = value;
   }
   return old_value;
 }
