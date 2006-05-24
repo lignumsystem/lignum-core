@@ -326,6 +326,7 @@ int LSystem<TS,BUD,T,F>::lstring2Lignum(list<TreeCompartment<TS,BUD>*>& ls,
     else if (dynamic_cast<BUD*> (*current)){
       BranchingPoint<TS,BUD>* bp = new BranchingPoint<TS,BUD>(GetPoint(turtle_stack.top()),
 							      GetHeading(turtle_stack.top()),
+							      turtle_stack.size(),
 							      &tree);
       ls.insert(current,bp);
       list<Axis<TS,BUD>*>& al= GetAxisList(*bp);
