@@ -56,13 +56,16 @@ double GetValue(BranchingPoint<TS,BUD>& bp, LGMAD name)
   if (name == LGAMaxD){//max diameter of the forking axes
     return bp.maxd;
   }
-  else if (name == LGAage){
+  else if (name == LGAage){//age
     return bp.tc_age;
   }
   else if (name == LGAomega){//gravelius order
     return bp.omega;
   }
-  else if (name == LGAtype){//gravelius order
+  else if (name == LGAstate){//dead, alive, dormant etc.
+    return bp.state;
+  }
+  else if (name == LGAtype){//dominant, nondominat etc.
     return bp.type;
   }
   else{
@@ -83,6 +86,9 @@ double SetValue(BranchingPoint<TS,BUD>& bp, LGMAD name, LGMdouble value)
   }
   else if (name == LGAomega){
     bp.omega = value;
+  }
+  else if (name == LGAstate){
+    bp.state = value;
   }
   else if (name == LGAtype){
     bp.type = value;
