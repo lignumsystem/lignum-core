@@ -51,6 +51,8 @@ private:
 		  //set to 0.0, i.e. a meaningless value
   LGMdouble type;//type of  the bud  at the end  of axis,  initiate to
 		 //-1.0, i.e. meaningless value
+  LGMdouble state;//state of the  bud at the end of  axis: dead, alive
+		  //dormant etc.
 };
 
 
