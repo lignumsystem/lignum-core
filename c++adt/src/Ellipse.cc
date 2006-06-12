@@ -22,16 +22,21 @@ namespace cxxadt{
     :normal(normal0),semimajoraxis(semimajoraxis0),
      semiminoraxis(semiminoraxis0)
   {
-    PositionVector x1(normal.getZ(),0,-normal.getX());
+    PositionVector v(1,0,0);
+    double dot = Dot(v,petiole0);
+    PositionVector x1;
+    if (dot >  0.0)
+      x1 = PositionVector(normal.getZ(),0.0,-normal.getX());
+    else 
+      x1 = PositionVector(normal.getZ(),0.0,normal.getX());
     x1.normalize();
  
     PositionVector y1(Cross(normal,x1));
     y1.normalize();
-
-    PositionVector petiolecenter(y1u()*semiminoraxis0);
+    PositionVector petiolecenter(x1*semimajoraxis0);
     PositionVector center0=petiole0+petiolecenter;
     center=Point(center0);
-
+ 
     xdir = x1;
     ydir = y1;
   }
