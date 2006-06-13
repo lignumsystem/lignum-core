@@ -17,8 +17,9 @@ namespace cxxadt{
   public:
     Ellipse(const Point& center, const PositionVector& normal, 
 	    const double& semimajoraxis,  const double& semiminoraxis);
-    Ellipse(const PositionVector& petiole0,
-	    const PositionVector& normal, 
+    Ellipse(const Point& petiole_end,
+	    const PositionVector& petiole_dir,
+	    const PositionVector& leaf_normal, 
 	    const double& semimajoraxis,  const double& semiminoraxis);
     Ellipse(const PositionVector& pd,
 	    const PositionVector& n,
