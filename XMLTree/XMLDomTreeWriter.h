@@ -2,13 +2,15 @@
 #define XMLDOMTREEWRITER_H
 
 #include <list>
-#include <QApplication>
+//#include <QApplication>
 #include <QDomDocument>
 #include <QStack>
 #include <Lignum.h>
-#include <sstream>
 #include <string>
+#include <QIODevice>
+#include <QFile>
 #include <XMLDomTreeBuilder.h>
+#include <XMLDomTreeReader.h>
 
 using namespace Lignum;
 using namespace cxxadt;

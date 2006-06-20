@@ -25,7 +25,7 @@ class XMLDomTreeBuilder
 {
 public:
   XMLDomTreeBuilder(QDomDocument& doc, QDomElement& root, Tree<TS,BUD>& tree)
-   : m_tree(tree), m_doc(doc), m_root(root), segmentTypeFound(false) {}
+   : m_tree(tree), m_doc(doc), m_root(root), segmentTypeFound(false){}
   QDomElement& operator() (QDomElement&, TreeCompartment<TS, BUD>*)const ;
   void addTreeCompartmentAttributeNode(QDomElement&, QDomDocument&, TreeCompartment<TS,BUD>*)const;
   void addTreeAttributeNode(QDomElement&, QDomDocument&, Tree<TS,BUD>*)const; 
@@ -62,17 +62,17 @@ QDomElement& XMLDomTreeBuilder<TS, BUD, S>::operator()(QDomElement& prev, TreeCo
   
   if(Axis<TS,BUD>* axis = dynamic_cast<Axis<TS,BUD>*>(tc)) {
     if(m_stack.isEmpty()) {
-      te = m_doc.createElement("Axis");
-      tmp = QString("NULL");
-
-      addAxisAttributeNode(te, m_doc, axis);
-
-      // Main axis always has a terminating bud.
-      m_stack.push(te);
+      if(GetTerminatingBud(*axis) != NULL) {
+	te = m_doc.createElement("Axis");
+	tmp = QString("NULL");
+	addAxisAttributeNode(te, m_doc, axis);
+	
+	// Main axis always has a terminating bud.
+	m_stack.push(te);
+      }
     }
     else {
       te = m_doc.createElement("Axis");
-
       tmp = QString("NULL");
 
       addAxisAttributeNode(te, m_doc, axis);      
@@ -80,12 +80,11 @@ QDomElement& XMLDomTreeBuilder<TS, BUD, S>::operator()(QDomElement& prev, TreeCo
       // Push the axis-elements to stacks 
       // if the axis has a terminating bud.
 
-      if(GetTerminatingBud(*axis) != NULL) {      
+      if((GetTerminatingBud(*axis) != NULL) && GetTreeCompartmentList(*axis).size() > 0){
 	m_stack.push(te);
 	m_segstack.push(prev);
       }
       else {
-	//m_stack.top().appendChild(te);
 	prev.appendChild(te);
       }
       
@@ -94,7 +93,6 @@ QDomElement& XMLDomTreeBuilder<TS, BUD, S>::operator()(QDomElement& prev, TreeCo
   else if (TS* ts = dynamic_cast<TS*>(tc)) {
     QDomElement treeSegment = m_doc.createElement("TreeSegment");
     tmp = QString("NULL");
-
     if(HwTreeSegment<TS,BUD>* hw = dynamic_cast<HwTreeSegment<TS,BUD,S>*>(ts)) {
       if(!segmentTypeFound) {
 	segmentTypeFound = true;
@@ -123,13 +121,12 @@ QDomElement& XMLDomTreeBuilder<TS, BUD, S>::operator()(QDomElement& prev, TreeCo
     // currently being processed.
     m_stack.top().appendChild(treeSegment);
 
-    prev = treeSegment;
+    //prev = treeSegment;
   
   }
   
   else if (BUD* bud = dynamic_cast<BUD*>(tc)) {
     te = m_doc.createElement("Bud");
-    
     addBudAttributeNode(te, m_doc, bud);
 
     m_stack.top().appendChild(te);
@@ -142,6 +139,7 @@ QDomElement& XMLDomTreeBuilder<TS, BUD, S>::operator()(QDomElement& prev, TreeCo
     if(m_stack.isEmpty() == false) {
       tt = m_segstack.pop();
       tt.appendChild(te);
+      prev = tt;
     }
     
     // If the m_stack is empty the end of
@@ -157,7 +155,6 @@ QDomElement& XMLDomTreeBuilder<TS, BUD, S>::operator()(QDomElement& prev, TreeCo
   
   else if (BranchingPoint<TS,BUD>* bpoint = dynamic_cast<BranchingPoint<TS,BUD>*>(tc)) {
     te = m_doc.createElement("BranchingPoint");
-    
     addBranchingPointAttributeNode(te, m_doc, bpoint);
     
     m_stack.top().appendChild(te);
@@ -613,10 +610,10 @@ void XMLDomTreeBuilder<TS,BUD,S>::addHwTreeSegmentAttributeNode(QDomElement& nod
   attrib.appendChild(m_doc.createTextNode(tmp));
   rootNode.appendChild(attrib);
 
-  /*attrib = m_doc.createElement("LGAR");
+  attrib = m_doc.createElement("LGAR");
   tmp = QString("%1").arg(GetValue(*ts, LGAR));
   attrib.appendChild(m_doc.createTextNode(tmp));
-  rootNode.appendChild(attrib);*/
+  rootNode.appendChild(attrib);
 
   attrib = m_doc.createElement("LGARh");
   tmp = QString("%1").arg(GetValue(*ts, LGARh));
@@ -691,10 +688,10 @@ void XMLDomTreeBuilder<TS,BUD,S>::addHwTreeSegmentAttributeNode(QDomElement& nod
   tmp = QString("%1").arg(n_leaves);
   attrib.appendChild(m_doc.createTextNode(tmp));
   rootNode.appendChild(attrib);*/
-
   for(typename list<BroadLeaf<S>*>::iterator i = ll.begin(); i != ll.end(); i++) {
+    const Shape& s = static_cast<const Shape&>(GetShape(**i));
     QDomElement leaf = m_doc.createElement("BroadLeaf");
-    if(dynamic_cast<Triangle&>(GetShape(**i)))
+    if(dynamic_cast<const Triangle*>(&s))
       leaf.setAttribute("Shape", "Triangle");
     //else if(dynamic_cast<Ellipse&>(GetShape(**i)))
     else
@@ -801,6 +798,12 @@ void XMLDomTreeBuilder<TS,BUD,S>::addBroadLeafAttributeNode(QDomElement& node, Q
   QDomElement attrib;
   QString tmp;
 
+
+  attrib = m_doc.createElement("LGAA");
+  tmp = QString("%1").arg(GetValue(*leaf, LGAA));
+  attrib.appendChild(m_doc.createTextNode(tmp));
+  rootNode.appendChild(attrib);
+
   attrib = m_doc.createElement("LGAdof");
   tmp = QString("%1").arg(GetValue(*leaf, LGAdof));
   attrib.appendChild(m_doc.createTextNode(tmp));
@@ -836,55 +839,12 @@ void XMLDomTreeBuilder<TS,BUD,S>::addBroadLeafAttributeNode(QDomElement& node, Q
   attrib.appendChild(m_doc.createTextNode(tmp));
   rootNode.appendChild(attrib);
 
-  attrib = m_doc.createElement("PetioleStart");
-  tmp = QString("%1 %2 %3").arg(GetStartPoint(GetPetiole(*leaf)).getX()).arg(GetStartPoint(GetPetiole(*leaf)).getY()).arg(GetStartPoint(GetPetiole(*leaf)).getZ());
+  attrib = m_doc.createElement("LGAWf");
+  tmp = QString("%1").arg(GetValue(*leaf, LGAWf));
   attrib.appendChild(m_doc.createTextNode(tmp));
   rootNode.appendChild(attrib);
-  
-  attrib = m_doc.createElement("PetioleEnd");
-  tmp = QString("%1 %2 %3").arg(GetEndPoint(GetPetiole(*leaf)).getX()).arg(GetEndPoint(GetPetiole(*leaf)).getY()).arg(GetEndPoint(GetPetiole(*leaf)).getZ());
-  attrib.appendChild(m_doc.createTextNode(tmp));
-  rootNode.appendChild(attrib);
-  
-  attrib = m_doc.createElement("LeafNormal");
-  tmp = QString("%1 %2 %3").arg(GetLeafNormal(*leaf).getX()).arg(GetLeafNormal(*leaf).getY()).arg(GetLeafNormal(*leaf).getZ());
-  attrib.appendChild(m_doc.createTextNode(tmp));
-  rootNode.appendChild(attrib);
-  
-  if(attribute("Shape") == "Triangle") {
-    Triangle& t = dynamic_cast<Triangle&>(GetShape(*leaf));
 
-    attrib = m_doc.createElement("TriangleLC");
-    tmp = QString("%1 %2 %3").arg(t.getLeftCorner.getX()).arg(t.getLeftCorner.getY()).arg(t.getLeftCorner.getZ());
-    attrib.appendChild(m_doc.createTextNode(tmp));
-    rootNode.appendChild(attrib);
-    
-    attrib = m_doc.createElement("TriangleRC");
-    tmp = QString("%1 %2 %3").arg(t.getRightCorner.getX()).arg(t.getRightCorner.getY()).arg(t.getRightCorner.getZ());
-    attrib.appendChild(m_doc.createTextNode(tmp));
-    rootNode.appendChild(attrib);
-
-    attrib = m_doc.createElement("TriangleAC");
-    tmp = QString("%1 %2 %3").arg(t.getApexCorner.getX()).arg(t.getApexCorner.getY()).arg(t.getApexCorner.getZ());
-    attrib.appendChild(m_doc.createTextNode(tmp));
-    rootNode.appendChild(attrib);
-  }
-  else if (attribute("Shape") == "Ellipse") {
-    Ellipse& e = dynamic_cast<Ellipse&>(GetShape(*leaf));
-
-    attrib = m_doc.createElement("TriangleLC");
-    tmp = QString("%1").arg();
-    attrib.appendChild(m_doc.createTextNode(tmp));
-    rootNode.appendChild(attrib);
-    
-    attrib = m_doc.createElement("TriangleRC");
-    tmp = QString("%1").arg();
-    attrib.appendChild(m_doc.createTextNode(tmp));
-    rootNode.appendChild(attrib);
-  }
-
-  vector<double>& rv = GetRadiatonVector(*leaf);
-														    
+  vector<double> rv = GetRadiationVector(*leaf);													    
   attrib = m_doc.createElement("SkySectors");
   tmp = QString("%1").arg(rv.size());
   attrib.appendChild(m_doc.createTextNode(tmp));
@@ -893,14 +853,64 @@ void XMLDomTreeBuilder<TS,BUD,S>::addBroadLeafAttributeNode(QDomElement& node, Q
   if(rv.size() >= 1) {
     tmp = QString("%1").arg(rv[0]);
     for(int i = 1; i < rv.size(); i++) {
-      tmp.append(" %1").arg(rv[i]);
+      tmp.append(QString(" %1").arg(rv[i]));
     }
     attrib = m_doc.createElement("RadiationVector");
     attrib.appendChild(m_doc.createTextNode(tmp));
     rootNode.appendChild(attrib);
   }
 
+  Petiole p = GetPetiole(*leaf);
+  Point sp = GetStartPoint(p);
+  Point ep = GetEndPoint(p);
+  attrib = m_doc.createElement("PetioleStart");
+  tmp = QString("%1 %2 %3").arg(sp.getX()).arg(sp.getY()).arg(sp.getZ());
+  attrib.appendChild(m_doc.createTextNode(tmp));
+  rootNode.appendChild(attrib);
   
+  attrib = m_doc.createElement("PetioleEnd");
+  tmp = QString("%1 %2 %3").arg(ep.getX()).arg(ep.getY()).arg(ep.getZ());
+  attrib.appendChild(m_doc.createTextNode(tmp));
+  rootNode.appendChild(attrib);
+  
+  PositionVector normal = GetLeafNormal(*leaf);
+  attrib = m_doc.createElement("LeafNormal");
+  tmp = QString("%1 %2 %3").arg(normal.getX()).arg(normal.getY()).arg(normal.getZ());
+  attrib.appendChild(m_doc.createTextNode(tmp));
+  rootNode.appendChild(attrib);
+  
+  const Shape& s = static_cast<const Shape&>(GetShape(*leaf));
+  if(node.attribute("Shape") == "Triangle") {
+    const Triangle& t = dynamic_cast<const Triangle&>(s);    
+    
+    attrib = m_doc.createElement("TriangleLC");
+    tmp = QString("%1 %2 %3").arg(t.getLeftCorner().getX()).arg(t.getLeftCorner().getY()).arg(t.getLeftCorner().getZ());
+    attrib.appendChild(m_doc.createTextNode(tmp));
+    rootNode.appendChild(attrib);
+    
+    attrib = m_doc.createElement("TriangleRC");
+    tmp = QString("%1 %2 %3").arg(t.getRightCorner().getX()).arg(t.getRightCorner().getY()).arg(t.getRightCorner().getZ());
+    attrib.appendChild(m_doc.createTextNode(tmp));
+    rootNode.appendChild(attrib);
+
+    attrib = m_doc.createElement("TriangleAC");
+    tmp = QString("%1 %2 %3").arg(t.getApexCorner().getX()).arg(t.getApexCorner().getY()).arg(t.getApexCorner().getZ());
+    attrib.appendChild(m_doc.createTextNode(tmp));
+    rootNode.appendChild(attrib);
+  }
+  else if (node.attribute("Shape") == "Ellipse") {
+    const Ellipse& e = dynamic_cast<const Ellipse&>(s);
+
+    attrib = m_doc.createElement("EllipseSMajorA");
+    tmp = QString("%1").arg(e.getSemimajorAxis());
+    attrib.appendChild(m_doc.createTextNode(tmp));
+    rootNode.appendChild(attrib);
+    
+    attrib = m_doc.createElement("EllipseSMinorA");
+    tmp = QString("%1").arg(e.getSemiminorAxis());
+    attrib.appendChild(m_doc.createTextNode(tmp));
+    rootNode.appendChild(attrib);
+  }
 
   node.appendChild(rootNode);
 }
