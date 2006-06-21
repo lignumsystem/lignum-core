@@ -1,13 +1,14 @@
 #ifndef XMLDOMTREEBUILDER_H
 #define XMLDOMTREEBUILDER_H
 
-#include <list>
-#include <QApplication>
+#include <XMLTree.h>
+
+//#include <list>
+//#include <QApplication>
 #include <QDomDocument>
 #include <QStack>
 #include <Lignum.h>
-#include <sstream>
-#include <string>
+//#include <string>
 
 using namespace Lignum;
 using namespace cxxadt;

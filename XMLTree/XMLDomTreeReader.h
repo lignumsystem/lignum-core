@@ -1,12 +1,13 @@
 #ifndef XMLDOMTREEREADER_H
 #define XMLDOMTREEREADER_H
 
+#include <XMLTree.h>
+
 #include <list>
-#include <QApplication>
+//#include <QApplication>
 #include <QDomDocument>
-#include <QStack>
+//#include <QStack>
 #include <Lignum.h>
-#include <sstream>
 #include <string>
 #include <QFile>
 #include <QTextStream>
@@ -21,7 +22,7 @@ using namespace cxxadt;
  * XMLDomTreeWriter class) for the reader to function.
  * 
  * Users must themselves create a empty Tree-object and pass
- * it to the constructor of this class. Tree is then written
+ * it to the  of this class. Tree is then written
  * by calling the readXMLToTree-function of the XMLDomTreeReader-object.
  */
 
@@ -29,16 +30,17 @@ template <class TS, class BUD, class S = Ellipse>
 class XMLDomTreeReader
 {
 public:
-  XMLDomTreeReader(Tree<TS,BUD>& t)
-  :tree(t){}
-  Tree<TS,BUD>& readXMLToTree(const string& fileName);
+  // XMLDomTreeReader(Tree<TS,BUD>& t)
+  //:tree(t){}
+  XMLDomTreeReader() {}
+  Tree<TS,BUD>& readXMLToTree(Tree<TS,BUD>& t, const string& fileName);
 private:
-  void parseTree(QDomNode&); 
-  void parseRootAxis(QDomNode&, Axis<TS,BUD>*);
-  Axis<TS,BUD>* parseAxis(QDomNode&);
-  TS* parseTreeSegment(QDomNode&);
-  BranchingPoint<TS,BUD>* parseBranchingPoint(QDomNode&);
-  BUD* parseBud(QDomNode&);
+  void parseTree(QDomNode&, Tree<TS,BUD>& t); 
+  void parseRootAxis(QDomNode&, Axis<TS,BUD>*, Tree<TS,BUD>& );
+  Axis<TS,BUD>* parseAxis(QDomNode&, Tree<TS,BUD>& );
+  TS* parseTreeSegment(QDomNode&, Tree<TS,BUD>& );
+  BranchingPoint<TS,BUD>* parseBranchingPoint(QDomNode&, Tree<TS,BUD>& );
+  BUD* parseBud(QDomNode&, Tree<TS,BUD>& );
   BroadLeaf<Triangle>* parseTriangleBroadLeaf(QDomNode&);
   BroadLeaf<Ellipse>* parseEllipseBroadLeaf(QDomNode&);
   void parseTreeParameters(QDomNode&, Tree<TS,BUD>&);
@@ -55,14 +57,14 @@ private:
 
   QDomDocument m_doc;			  
   QString segmentType;
-  Tree<TS, BUD>& tree;
+  //Tree<TS, BUD>& tree;
 };
 
 /**
  * Reads the XML-file to a Tree-object.
  */ 
 template <class TS, class BUD, class S>
-Tree<TS,BUD>& XMLDomTreeReader<TS,BUD,S>::readXMLToTree(const string& fileName) {
+Tree<TS,BUD>& XMLDomTreeReader<TS,BUD,S>::readXMLToTree(Tree<TS,BUD>& tree, const string& fileName) {
   QString fName(fileName.c_str());
  
   m_doc = QDomDocument("LMODEL");
@@ -80,7 +82,7 @@ Tree<TS,BUD>& XMLDomTreeReader<TS,BUD,S>::readXMLToTree(const string& fileName) 
 
   segmentType = root.toElement().attribute("SegmentType");
 
-  parseTree(root);
+  parseTree(root, tree);
   
   file.close();
   return tree;
@@ -90,7 +92,7 @@ Tree<TS,BUD>& XMLDomTreeReader<TS,BUD,S>::readXMLToTree(const string& fileName) 
  * Parses the root element of the XML-document
  */
 template <class TS, class BUD, class S>
-void XMLDomTreeReader<TS,BUD,S>::parseTree(QDomNode& root) {
+void XMLDomTreeReader<TS,BUD,S>::parseTree(QDomNode& root, Tree<TS,BUD>& tree) {
   QDomNode node = root.firstChild();
   QDomNode attrib, param, axisNode; 
     
@@ -113,7 +115,7 @@ void XMLDomTreeReader<TS,BUD,S>::parseTree(QDomNode& root) {
   
   // Parse the root axis of the tree containing
   // the rest of the components of the tree.
-  parseRootAxis(axisNode, &GetAxis(tree));
+  parseRootAxis(axisNode, &GetAxis(tree), tree);
   
   // Parse the attributes last as some of them need
   // information about the structure of the tree.
@@ -125,7 +127,7 @@ void XMLDomTreeReader<TS,BUD,S>::parseTree(QDomNode& root) {
  * Parses the root axis of the tree.
  */ 
 template <class TS, class BUD, class S>
-void XMLDomTreeReader<TS,BUD,S>::parseRootAxis(QDomNode& axisNode, Axis<TS, BUD>* axis) {
+void XMLDomTreeReader<TS,BUD,S>::parseRootAxis(QDomNode& axisNode, Axis<TS, BUD>* axis, Tree<TS,BUD>& tree) {
   QDomNode node = axisNode.firstChild();
   QDomNode child;
   QString tmp;
@@ -164,16 +166,16 @@ void XMLDomTreeReader<TS,BUD,S>::parseRootAxis(QDomNode& axisNode, Axis<TS, BUD>
       }
       // Insert a tree segment to the axis
       else if(node.nodeName() == "TreeSegment") {
-	InsertTreeCompartment(*axis, parseTreeSegment(node));
+	InsertTreeCompartment(*axis, parseTreeSegment(node, tree));
       }
       // Insert a branching point to the axis
       else if(node.nodeName() == "BranchingPoint") {
-	InsertTreeCompartment(*axis, parseBranchingPoint(node));
+	InsertTreeCompartment(*axis, parseBranchingPoint(node, tree));
       }
 
       // Insert a bud to the axis
       else if(node.nodeName() == "Bud") {
-	InsertTreeCompartment(*axis, parseBud(node));
+	InsertTreeCompartment(*axis, parseBud(node, tree));
       }
     }
     node = node.nextSibling();
@@ -184,7 +186,7 @@ void XMLDomTreeReader<TS,BUD,S>::parseRootAxis(QDomNode& axisNode, Axis<TS, BUD>
  * Parses a axis node to a Axis-object.
  */
 template <class TS, class BUD, class S>
-Axis<TS, BUD>* XMLDomTreeReader<TS,BUD,S>::parseAxis(QDomNode& axisNode) {
+Axis<TS, BUD>* XMLDomTreeReader<TS,BUD,S>::parseAxis(QDomNode& axisNode, Tree<TS,BUD>& tree) {
   QDomNode node = axisNode.firstChild();
   QDomNode child;
   Point p;
@@ -238,13 +240,13 @@ Axis<TS, BUD>* XMLDomTreeReader<TS,BUD,S>::parseAxis(QDomNode& axisNode) {
   while(!node.isNull()) {
     if(node.isElement()) {
       if(node.nodeName() == "TreeSegment") {
-	InsertTreeCompartment(*axis, parseTreeSegment(node));
+	InsertTreeCompartment(*axis, parseTreeSegment(node, tree));
       }
       if(node.nodeName() == "BranchingPoint") {
-	InsertTreeCompartment(*axis, parseBranchingPoint(node));
+	InsertTreeCompartment(*axis, parseBranchingPoint(node, tree));
       }
       else if(node.nodeName() == "Bud") {
-	InsertTreeCompartment(*axis, parseBud(node));
+	InsertTreeCompartment(*axis, parseBud(node, tree));
       }
     }
     node = node.nextSibling();
@@ -257,7 +259,7 @@ Axis<TS, BUD>* XMLDomTreeReader<TS,BUD,S>::parseAxis(QDomNode& axisNode) {
  * Parses a tree segment node to a TreeSegment-object.
  */
 template <class TS, class BUD, class S>
-TS* XMLDomTreeReader<TS,BUD,S>::parseTreeSegment(QDomNode& node) {
+TS* XMLDomTreeReader<TS,BUD,S>::parseTreeSegment(QDomNode& node, Tree<TS,BUD>& tree) {
   TS* ts;
   QDomNode node2 = node.firstChild();
   Point p;
@@ -326,7 +328,7 @@ TS* XMLDomTreeReader<TS,BUD,S>::parseTreeSegment(QDomNode& node) {
  * Parses branching point node to a BranchingPoint-object.
  */
 template <class TS, class BUD, class S>
-BranchingPoint<TS,BUD>* XMLDomTreeReader<TS,BUD,S>::parseBranchingPoint(QDomNode& bpNode) {
+BranchingPoint<TS,BUD>* XMLDomTreeReader<TS,BUD,S>::parseBranchingPoint(QDomNode& bpNode, Tree<TS,BUD>& tree) {
   QDomNode node = bpNode.firstChild();
   QDomNode child;
   Point p;
@@ -379,7 +381,7 @@ BranchingPoint<TS,BUD>* XMLDomTreeReader<TS,BUD,S>::parseBranchingPoint(QDomNode
   while(!node.isNull()) {
     if(node.isElement()) {
       if(node.nodeName() == "Axis") {
-	InsertAxis(*bpoint, parseAxis(node));
+	InsertAxis(*bpoint, parseAxis(node, tree));
       }
     }
     node = node.nextSibling();
@@ -392,7 +394,7 @@ BranchingPoint<TS,BUD>* XMLDomTreeReader<TS,BUD,S>::parseBranchingPoint(QDomNode
  * Parses a bud node to a Bud-object.
  */
 template <class TS, class BUD, class S>
-BUD* XMLDomTreeReader<TS,BUD,S>::parseBud(QDomNode& bNode) {
+BUD* XMLDomTreeReader<TS,BUD,S>::parseBud(QDomNode& bNode, Tree<TS,BUD>& tree) {
   QDomNode node = bNode.firstChild();
   QDomNode child;
   Point p;
