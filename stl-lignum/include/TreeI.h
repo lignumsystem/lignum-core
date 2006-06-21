@@ -337,6 +337,47 @@ const ParametricCurve& GetFunction(const Tree<TS,BUD>& tree, LGMF name)
   }
   throw ParametricCurve();
 }
+
+template<class TS, class BUD> 
+void SetFunction(const Tree<TS,BUD>& tree, const ParametricCurve& f, LGMF name)
+{  
+
+  if (name == LGMAL){
+    tree.tf.al = f;
+  }
+
+  else if (name == LGMFM){
+     tree.tf.fm = f;
+  }
+
+  else if (name == LGMIP){
+    tree.tf.ip = f;
+  }
+
+  else if (name == LGMNB){
+    return tree.tf.nb;
+  }
+
+  else if (name == LGMLONB){
+    tree.tf.LightOnNumBuds = f;
+  }
+
+  else if (name == LGMVI){
+    tree.tf.vi = f;
+  }
+
+  else if (name == LGMVIONB){
+    tree.tf.VigourOnNumBuds = f;
+  }
+
+  else{
+    cerr << "GetFunction unknown function: " << name << endl;
+    throw ParametricCurve();
+  }
+  return  
+}
+
+
   
 //At the moment returns the name of the only (ASCII) file that contains
 //the definition of the initial tree. Later - maybe - several such files.
