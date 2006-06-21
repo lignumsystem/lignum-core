@@ -165,7 +165,7 @@ namespace Lignum{
       friend const ParametricCurve& GetFunction(const Tree<TS1,BUD1>& tree, LGMF name);
 
     template <class TS1,class BUD1>
-    friend void SetFunction((const Tree<TS1,BUD1>& tree, const ParametricCurve& f,LGMF name);
+    friend void SetFunction(const Tree<TS1,BUD1>& tree, const ParametricCurve& f,LGMF name);
 
       template <class TS1, class BUD1, class F>
       friend void EvaluateRadiationForTree(Tree<TS1,BUD1>& tree, const F& f);
