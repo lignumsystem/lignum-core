@@ -371,7 +371,7 @@ void SetFunction(const Tree<TS,BUD>& tree, const ParametricCurve& f, LGMF name)
   }
 
   else{
-    cerr << "GetFunction unknown function: " << name << endl;
+    cerr << "SetFunction unknown function: " << name << endl;
     throw ParametricCurve();
   }
   return;
