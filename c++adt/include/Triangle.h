@@ -8,12 +8,13 @@
 #include <numeric>
 #include <Point.h>
 #include <PositionVector.h>
+#include <Shape.h>
 
 using namespace std;
 
 namespace cxxadt{
 
-  class Triangle{
+  class Triangle: public virtual Shape{
   public:
     Triangle(const Point& leftcorner, const Point& rightcorner, 
 	     const Point& apexcorner);

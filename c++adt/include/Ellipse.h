@@ -8,12 +8,13 @@
 #include <numeric>
 #include <Point.h>
 #include <PositionVector.h>
+#include <Shape.h>
 
 using namespace std;
 
 namespace cxxadt{
 
-  class Ellipse{
+  class Ellipse: public virtual Shape{
   public:
     Ellipse(const Point& center, const PositionVector& normal, 
 	    const double& semimajoraxis,  const double& semiminoraxis);
