@@ -2,7 +2,7 @@ TEMPLATE	= app
 CONFIG		+= qt warn_on debug
 QT              += xml opengl
 HEADERS		= 
-SOURCES		= pine.cc XMLDomTreeBuilder.h XMLDomTreeReader.h XMLDomTreeWriterI.h
+SOURCES		= pine.cc XMLDomTreeBuilder.h XMLDomTreeReader.h XMLDomTreeWriter.h
 INCLUDEPATH	+=  ../stl-lignum/include ../c++adt/include ../Firmament/include ../LEngine/include ../stl-voxelspace/include ../Graphics ../Pine ../Lig-Crobas/include 
 LIBS	+= -L../c++adt/lib -L../stl-lignum/lib -L../Firmament/lib -L../LEngine/lib -L../stl-voxelspace/lib -L../Graphics -lglut -L../Lig-Crobas -llsys -lVisual -lpine -lsky -lL -lvoxel -lLGM -lc++adt
 

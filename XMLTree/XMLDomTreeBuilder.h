@@ -31,6 +31,7 @@ public:
   void addTreeCompartmentAttributeNode(QDomElement&, QDomDocument&, TreeCompartment<TS,BUD>*)const;
   void addTreeAttributeNode(QDomElement&, QDomDocument&, Tree<TS,BUD>*)const; 
   void addTreeParameterNode(QDomElement&, QDomDocument&, Tree<TS,BUD>*)const;
+  void addTreeFunctionNode(QDomElement&, QDomDocument&, Tree<TS,BUD>*)const;
   void addAxisAttributeNode(QDomElement& node, QDomDocument& m_doc, Axis<TS,BUD>* axis)const;
   void addCfTreeSegmentAttributeNode(QDomElement&, QDomDocument&, CfTreeSegment<TS, BUD>*)const;
   void addHwTreeSegmentAttributeNode(QDomElement&, QDomDocument&, HwTreeSegment<TS, BUD, S>*)const;
@@ -149,6 +150,7 @@ QDomElement& XMLDomTreeBuilder<TS, BUD, S>::operator()(QDomElement& prev, TreeCo
     else {
       addTreeAttributeNode(m_root, m_doc, &m_tree);
       addTreeParameterNode(m_root, m_doc, &m_tree);
+      addTreeFunctionNode(m_root, m_doc, &m_tree);
       m_root.appendChild(te);
       m_doc.appendChild(m_root);
     }
@@ -364,6 +366,65 @@ void XMLDomTreeBuilder<TS,BUD,S>::addTreeParameterNode(QDomElement& node, QDomDo
 
 
   node.appendChild(rootNode);
+}
+
+template <class TS, class BUD, class S>
+void XMLDomTreeBuilder<TS,BUD,S>::addTreeFunctionNode(QDomElement& node, QDomDocument& m_doc, Tree<TS,BUD>* tree) const {
+  QDomElement rootNode = m_doc.createElement("TreeFunctions");
+  QDomElement attrib;
+  QString tmp;
+ 
+  tmp = QString(GetFunction(*tree, LGMAL).getFile().c_str());
+  if(tmp != "") {
+    attrib = m_doc.createElement("LGMAL");
+    attrib.appendChild(m_doc.createTextNode(tmp));
+    rootNode.appendChild(attrib);
+  }
+
+  tmp = QString(GetFunction(*tree, LGMFM).getFile().c_str());
+  if(tmp != "") {
+    attrib = m_doc.createElement("LGMFM");
+    attrib.appendChild(m_doc.createTextNode(tmp));
+    rootNode.appendChild(attrib);
+  }
+
+  tmp = QString(GetFunction(*tree, LGMIP).getFile().c_str());
+  if(tmp != "") {
+    attrib = m_doc.createElement("LGMIP");
+    attrib.appendChild(m_doc.createTextNode(tmp));
+    rootNode.appendChild(attrib);
+  }
+
+  tmp = QString(GetFunction(*tree, LGMNB).getFile().c_str());
+  if(tmp != "") {
+    attrib = m_doc.createElement("LGMNB");
+    attrib.appendChild(m_doc.createTextNode(tmp));
+    rootNode.appendChild(attrib);
+  }
+
+  tmp = QString(GetFunction(*tree, LGMLONB).getFile().c_str());
+  if(tmp != "") {
+    attrib = m_doc.createElement("LGMLONB");
+    attrib.appendChild(m_doc.createTextNode(tmp));
+    rootNode.appendChild(attrib);
+  }
+  
+  tmp = QString(GetFunction(*tree, LGMVI).getFile().c_str());
+  if(tmp != "") {
+    attrib = m_doc.createElement("LGMVI");
+    attrib.appendChild(m_doc.createTextNode(tmp));
+    rootNode.appendChild(attrib);
+  }
+
+  tmp = QString(GetFunction(*tree, LGMVIONB).getFile().c_str());
+  if(tmp != "") {
+    attrib = m_doc.createElement("LGMVIONB");
+    attrib.appendChild(m_doc.createTextNode(tmp));
+    rootNode.appendChild(attrib);
+  }
+
+  node.appendChild(rootNode);
+
 }
 
 /**

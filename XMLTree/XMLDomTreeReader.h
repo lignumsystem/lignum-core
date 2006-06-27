@@ -45,6 +45,7 @@ private:
   BroadLeaf<Ellipse>* parseEllipseBroadLeaf(QDomNode&);
   void parseTreeParameters(QDomNode&, Tree<TS,BUD>&);
   void parseTreeAttributes(QDomNode&, Tree<TS,BUD>&);
+  void parseTreeFunctions(QDomNode&, Tree<TS,BUD>&);
   void parseAxisAttributes(QDomNode&, Axis<TS,BUD>*);
   void parseCfTreeSegmentAttributes(QDomNode&, CfTreeSegment<TS,BUD>*);
   void parseHwTreeSegmentAttributes(QDomNode&, HwTreeSegment<TS,BUD,S>*);
@@ -94,7 +95,7 @@ Tree<TS,BUD>& XMLDomTreeReader<TS,BUD,S>::readXMLToTree(Tree<TS,BUD>& tree, cons
 template <class TS, class BUD, class S>
 void XMLDomTreeReader<TS,BUD,S>::parseTree(QDomNode& root, Tree<TS,BUD>& tree) {
   QDomNode node = root.firstChild();
-  QDomNode attrib, param, axisNode; 
+  QDomNode attrib, param, functions, axisNode; 
     
   // Find the nodes in the DOM-document
   while(!node.isNull()) {
@@ -106,6 +107,9 @@ void XMLDomTreeReader<TS,BUD,S>::parseTree(QDomNode& root, Tree<TS,BUD>& tree) {
 	param = node;
       else if(node.nodeName() == "Axis")
 	axisNode = node;
+      else if(node.nodeName() == "TreeFunctions")
+	functions = node;
+      
     }
     node = node.nextSibling();
   }
@@ -120,6 +124,8 @@ void XMLDomTreeReader<TS,BUD,S>::parseTree(QDomNode& root, Tree<TS,BUD>& tree) {
   // Parse the attributes last as some of them need
   // information about the structure of the tree.
   parseTreeAttributes(attrib, tree);
+
+  parseTreeFunctions(functions, tree);
 
 }
   
@@ -743,6 +749,53 @@ void XMLDomTreeReader<TS,BUD,S>::parseTreeAttributes(QDomNode& node, Tree<TS, BU
   }
 }
 
+template <class TS, class BUD, class S>
+void XMLDomTreeReader<TS,BUD,S>::parseTreeFunctions(QDomNode& node, Tree<TS, BUD>& tree) {
+  ParametricCurve function;
+  QDomNode child = node.firstChild();
+  while(!child.isNull()) {
+    if(child.isElement()) {
+      if(child.nodeName() == "LGMAL") {
+	//SetFunction(tree, ParametricCurve(child.toElement().text().toStdString()), LGMAL);
+	function = ParametricCurve(child.toElement().text().toStdString());
+	SetFunction(tree, function, LGMAL);
+      }
+      else if(child.nodeName() == "LGMFM") {
+	
+	//SetFunction(tree, ParametricCurve(child.toElement().text().toStdString()), LGMFM);
+	function = ParametricCurve(child.toElement().text().toStdString());
+	SetFunction(tree, function, LGMFM);
+      }
+      else if(child.nodeName() == "LGMIP") {
+	//SetFunction(tree, ParametricCurve(child.toElement().text().toStdString()), LGMIP);
+	function = ParametricCurve(child.toElement().text().toStdString());
+	SetFunction(tree, function, LGMIP);
+      }
+      else if(child.nodeName() == "LGMNB") {
+	//SetFunction(tree, ParametricCurve(child.toElement().text().toStdString()), LGMNB);
+	function = ParametricCurve(child.toElement().text().toStdString());
+	SetFunction(tree, function, LGMNB);
+      }
+      else if(child.nodeName() == "LGMLONB") {
+	//SetFunction(tree, ParametricCurve(child.toElement().text().toStdString()), LGMLONB);
+	function = ParametricCurve(child.toElement().text().toStdString());
+	SetFunction(tree, function, LGMLONB);
+      }
+      else if(child.nodeName() == "LGMVI") {
+	//SetFunction(tree, ParametricCurve(child.toElement().text().toStdString()), LGMVI);
+	function = ParametricCurve(child.toElement().text().toStdString());
+	SetFunction(tree, function, LGMVI);
+      }
+      else if(child.nodeName() == "LGMVIONB") {
+	//SetFunction(tree, ParametricCurve(child.toElement().text().toStdString()), LGMVIONB);
+	function = ParametricCurve(child.toElement().text().toStdString());
+	SetFunction(tree, function, LGMVIONB);
+      }
+
+    }
+    child = child.nextSibling();
+  }
+}
 /**
  * Parses a axis attribute node and sets the given Axis-object's attributes
  * accordingly.
