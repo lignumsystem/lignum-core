@@ -339,7 +339,7 @@ const ParametricCurve& GetFunction(const Tree<TS,BUD>& tree, LGMF name)
 }
 
 template<class TS, class BUD> 
-void SetFunction(const Tree<TS,BUD>& tree, const ParametricCurve& f, LGMF name)
+void SetFunction(Tree<TS,BUD>& tree, ParametricCurve& f, LGMF name)
 {  
 
   if (name == LGMAL){
@@ -355,7 +355,7 @@ void SetFunction(const Tree<TS,BUD>& tree, const ParametricCurve& f, LGMF name)
   }
 
   else if (name == LGMNB){
-    return tree.tf.nb;
+    tree.tf.nb;
   }
 
   else if (name == LGMLONB){
