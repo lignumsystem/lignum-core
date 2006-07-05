@@ -12,6 +12,7 @@ public:
   front(NULL), back(NULL){ }
   void buildBSPTree(BSPPolygonSet& polygons);
   void drawTree(Point& eye);
+  int countPolygons();
 
 private:
   BSPPolygon *divider;
