@@ -4,12 +4,13 @@
 
 TEMPLATE = app
 TARGET += 
+# Input
+HEADERS += LGMPolygonTree.h GLDrawer.h BSPPolygon.h BSPTree.h SceneObject.h BSPPolygonMaterial.h
+SOURCES += LGMPolygonTree.cpp GLDrawer.cpp main.cpp BSPPolygon.cpp BSPTree.cpp SceneObject.cpp BSPPolygonMaterial.cpp
+
 DEPENDPATH += .
-INCLUDEPATH += . ../stl-lignum/include ../c++adt/include ../Firmament/include ../LEngine/include ../stl-voxelspace/include ../Graphics ../Pine ../Lig-Crobas/include ..
+INCLUDEPATH += . ../stl-lignum/include ../c++adt/include ../Firmament/include ../LEngine/include ../stl-voxelspace/include ../Graphics ../Pine ../Lig-Crobas/include ../XMLTree ../ScotsPine/include .. 
 CONFIG += qt
-QT += opengl
+QT += opengl xml
 LIBS	+= -L/usr/freeware/lib32 -L../c++adt/lib -L../stl-lignum/lib -L../Firmament/lib -L../LEngine/lib -L../Lig-Crobas -L../stl-voxelspace/lib -L../Graphics -lVisual  -lglut -lXmu  -lsky -lpine -llsys -lL -lvoxel -lLGM  -lc++adt
 
-# Input
-HEADERS += GLDrawer.h BSPPolygon.h BSPTree.h SceneObject.h BSPPolygonMaterial.h
-SOURCES += GLDrawer.cpp main.cpp BSPPolygon.cpp BSPTree.cpp SceneObject.cpp BSPPolygonMaterial.cpp
