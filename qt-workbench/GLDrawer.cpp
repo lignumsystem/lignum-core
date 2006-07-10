@@ -6,20 +6,22 @@
 #include <iostream>
 #include "GLDrawer.h"
 #include <SceneObject.h>
-
+//#include <LGMPolygonTree.h>
+#include <XMLTree.h>
+#include <ScotsPine.h>
 
 using namespace std;
 
 GLDrawer::GLDrawer(QWidget* parent)
   : QGLWidget(parent) {
   resize(400, 300);
-  camera_x = 0;
-  camera_y = 0;
-  camera_z = 0;
+  camera_x = 5;
+  camera_y = 0.5;
+  camera_z = -4.8;
   cam_rot_x = 0;
   cam_rot_y = 0;
-  cam_mov_speed = 0.1;
-  cam_rot_speed = 2;
+  cam_mov_speed = 0.01;
+  cam_rot_speed = 1;
   cyl_x = 0;
   cyl_y = 0;
   cyl_z = -2;
@@ -40,9 +42,9 @@ GLDrawer::GLDrawer(QWidget* parent)
 }
 
 void GLDrawer::initMaterials() {
-  GLfloat color1[] = {0.2, 0.9, 0.2, 0.5,
-		      0.1, 0.9, 0.1, 0.5,
-		      0.1, 0.9, 0.1, 0.5,
+  GLfloat color1[] = {0.2, 0.9, 0.2, 1.0,
+		      0.1, 0.9, 0.1, 1.0,
+		      0.1, 0.9, 0.1, 1.0,
 		      50};
   GLfloat color2[] = {0.9, 0.2, 0.2, 0.8,
 		      0.9, 0.1, 0.1, 0.8,
@@ -76,11 +78,11 @@ void GLDrawer::initializeGL()
   //glEnable(GL_DEPTH_TEST);
   glDisable(GL_DEPTH_TEST);
   glFrontFace(GL_CW);
-  //glEnable(GL_CULL_FACE);
+  glEnable(GL_CULL_FACE);
   
   // Wireframe
   //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-  glLineWidth(2);
+  glLineWidth(1);
 
   initMaterials();
   initLights();
@@ -107,7 +109,17 @@ void GLDrawer::initializeGL()
   //cout << poly2->classifyPoint(p2) << endl;
   //cout << poly2->classifyPoint(p3) << endl;
  
+  Tree<ScotsPineSegment, ScotsPineBud> pine2(Point(0,0,0), PositionVector(0,1,0));
+  XMLDomTreeReader<ScotsPineSegment, ScotsPineBud> reader;
+  reader.readXMLToTree(pine2, "test.xml");
+
+  LGMPolygonTree<ScotsPineSegment, ScotsPineBud, Ellipse> constructor(this);
+
+  polygons.addPolygons(constructor.buildTree(pine2));
+  // constructor.foo();
+
  
+
   Point origo(0,0,0);
   Point pos1(0,-1,0);
   PositionVector up(0,1,0);
@@ -115,14 +127,14 @@ void GLDrawer::initializeGL()
   PositionVector d1(0.5, 0.5, -1);
   PositionVector d2(0, -1, 0);
   
-  BSPPolygonSet* cylinder2 = makeCylinder(0.1, 2, Point(0,-0.8,0) , d1, false, false, green, 60);
+  BSPPolygonSet* cylinder2 = makeCylinder(0.001, 0.1, Point(0,-0.8,0) , d1, false, false, green, 30);
   polygons.addPolygons(cylinder2);
   
-  BSPPolygonSet* cylinder = makeCylinder(0.5, 1, origo, d1, false, false, red, 60);
-  polygons.addPolygons(cylinder);
+  //BSPPolygonSet* cylinder = makeCylinder(0.5, 1, origo, d1, false, false, red, 60);
+  //polygons.addPolygons(cylinder);
   
-  BSPPolygonSet* cylinder3 = makeCylinder(0.2, 0.7, pos1, d2, false, false, red, 60);
-  polygons.addPolygons(cylinder3);
+  //BSPPolygonSet* cylinder3 = makeCylinder(0.2, 0.7, pos1, d2, false, false, red, 60);
+  //polygons.addPolygons(cylinder3);
 
   tree->buildBSPTree(polygons);
   cout << "polygons: " << tree->countPolygons() << endl;

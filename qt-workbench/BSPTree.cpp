@@ -15,6 +15,22 @@
   Without the better function for choosing the dividing polygon (now it
   chooses first polygon in the list) the amount of splitting can be huge.
  
+  6.7.2006
+
+  The heuristic function (BSPPolygon::chooseDivider()) for choosing
+  the choosing the best dividing polygon for non-convex polygon set
+  now works. I'll have to experiment with different parameter values
+  to get the BSP work efficiently. I'm also interested to see how
+  the function performs in Kauri. The worst case time complexity is
+  O(N^2*logN), which isn't that bad for a NP complete problem as
+  the usual case is O(N^2).
+
+  The visualization code (LGMPolygonTree) is also able to create
+  cylinder-objects from tree segments. Polygon count is still way too large
+  as the segments overlap causing useless polygon splitting. I'll have
+  to change the code somehow not to split overlapping opaque polygons.
+
+  
 
 */
 
@@ -26,11 +42,13 @@ void BSPTree::buildBSPTree(BSPPolygonSet& polys) {
     return;
   }
   BSPPolygon *root = polys.chooseDivider();
-  if(root == NULL) {
+  divider = root;
+  if(divider == NULL) {
+    //cout << "NULL" << endl;
     polygons.addPolygons(&polys);
     return;
   }
-  divider = root;
+
   polygons.addPolygon(root);
   BSPPolygonSet front_polygons, back_polygons;
   BSPPolygon *poly;
@@ -78,32 +96,35 @@ void BSPTree::buildBSPTree(BSPPolygonSet& polys) {
 }
 
 void BSPTree::drawTree(Point& eye) {
-  double result = divider->classifyPoint(eye);
-  //cout << "drawTree, result:" << result << endl;
-
-  if(result > 0) {
-    if(back != NULL) 
-      back->drawTree(eye);
+  if(divider == NULL) {
     polygons.drawPolygons();
-    if(front != NULL)
-      front->drawTree(eye);
   }
+  else { 
+    double result = divider->classifyPoint(eye);
 
-  else if(result < 0) {
-    if(front != NULL)
-      front->drawTree(eye);
-    polygons.drawPolygons();
-    if(back != NULL)
-      back->drawTree(eye);
+    if(result > 0) {
+      if(back != NULL) 
+	back->drawTree(eye);
+      polygons.drawPolygons();
+      if(front != NULL)
+	front->drawTree(eye);
+    }
+    
+    else if(result < 0) {
+      if(front != NULL)
+	front->drawTree(eye);
+      polygons.drawPolygons();
+      if(back != NULL)
+	back->drawTree(eye);
+    }
+    
+    else {
+      if(front != NULL)
+	front->drawTree(eye);
+      if(back != NULL)
+	back->drawTree(eye);
+    }
   }
-  
-  else {
-    if(front != NULL)
-      front->drawTree(eye);
-    if(back != NULL)
-      back->drawTree(eye);
-  }
-  //cout << "drawTreeEnd" << endl;
 }
 
 int BSPTree::countPolygons() {

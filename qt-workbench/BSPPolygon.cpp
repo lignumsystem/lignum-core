@@ -322,7 +322,7 @@ BSPPolygon* BSPPolygonSet::getPolygon() {
 
 BSPPolygon* BSPPolygonSet::chooseDivider() {
   // IMPLEMENT BETTER CHOOSING OF THE DIVIDING POLYGON
-  return getPolygon();
+  //   return getPolygon();
   
   if(isConvexSet())
     return NULL;
@@ -333,7 +333,7 @@ BSPPolygon* BSPPolygonSet::chooseDivider() {
   int loop = 0;
   while(bestPolygon == NULL) {
     loop++;
-    cout << "try " << loop << endl;
+    //  cout << "try " << loop << endl;
     for(list<BSPPolygon*>::iterator i = polygons.begin(); i != polygons.end();i++) {
       if(!(**i).hasBeenDivider()) {
 	int numPositive = 1;
@@ -361,8 +361,8 @@ BSPPolygon* BSPPolygonSet::chooseDivider() {
 	  relation = (double)numPositive / (double)numNegative;
 	else
 	  relation = (double)numNegative / (double)numPositive;
-		cout << "size: " << polygons.size() << endl;
-	cout << "relation: " << relation << endl;
+	//	cout << "size: " << polygons.size() << endl;
+	//cout << "relation: " << relation << endl;
 	//eeeeeee	cout << numPositive << " " << numNegative << " " << numCoinciding << " " << numSpanning << endl;
 	if(relation > minRelation && (numSpanning < leastSplits || 
 				      numSpanning == leastSplits && relation > bestRelation)) {
@@ -381,8 +381,8 @@ BSPPolygon* BSPPolygonSet::chooseDivider() {
     minRelation = minRelation / MINRELATIONSCALE;
   }
   
-  if(bestPolygon == NULL) 
-    cout << "NULL" << endl;
+  //  if(bestPolygon == NULL) 
+  //  cout << "NULL" << endl;
 
   if(bestPolygon != NULL) {
     bestPolygon->setDivider();
