@@ -80,7 +80,7 @@ private:
 
   static const int INFINITY = 1000000000;
   static const double MINIMUMRELATION = 0.3;
-  static const double MINRELATIONSCALE = 2.0;
+  static const double MINRELATIONSCALE = 2;
 };
   
 #endif

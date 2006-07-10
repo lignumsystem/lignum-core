@@ -5,6 +5,7 @@
 #include <BSPTree.h>
 #include <BSPPolygon.h>
 #include <BSPPolygonMaterial.h>
+#include <LGMPolygonTree.h>
 
 class GLDrawer : public QGLWidget
 {
@@ -13,7 +14,8 @@ class GLDrawer : public QGLWidget
 public: 
   GLDrawer(QWidget* parent = 0);
   BSPPolygonSet* makeCylinder(double radius, double height, Point point, PositionVector direction, bool drawBottom, bool drawTop, BSPPolygonMaterial* material, int detail = 20);
-
+  BSPPolygonMaterial* green;
+  BSPPolygonMaterial* red;
 protected:
 
   void initializeGL();
@@ -46,8 +48,6 @@ private:
   GLfloat DEGTORAD;
   static const GLfloat PI = 3.14159265;
   BSPTree *tree;
-  BSPPolygonMaterial* green;
-  BSPPolygonMaterial* red;
   bool wire;
 };
 

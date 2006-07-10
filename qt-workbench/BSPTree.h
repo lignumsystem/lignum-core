@@ -9,7 +9,7 @@ using namespace cxxadt;
 class BSPTree {
 public:
   BSPTree():
-  front(NULL), back(NULL){ }
+  divider(NULL), front(NULL), back(NULL){ }
   void buildBSPTree(BSPPolygonSet& polygons);
   void drawTree(Point& eye);
   int countPolygons();
