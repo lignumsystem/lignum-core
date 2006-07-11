@@ -9,11 +9,12 @@ using namespace cxxadt;
 class BSPTree {
 public:
   BSPTree():
-  divider(NULL), front(NULL), back(NULL){ }
+divider(NULL), front(NULL), back(NULL){ }
+  ~BSPTree();  
   void buildBSPTree(BSPPolygonSet& polygons);
   void drawTree(Point& eye);
   int countPolygons();
-
+  
 private:
   BSPPolygon *divider;
   BSPPolygonSet polygons;

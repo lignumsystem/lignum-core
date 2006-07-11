@@ -42,13 +42,30 @@ inline int BSPPolygonMaterial::getId() {
   return id;
 }*/
 
-BSPPolygon::BSPPolygon(Point p1, Point p2, Point p3, PositionVector *norm, SceneObject* obj):
-  beenDivider(false), p1(p1), p2(p2), p3(p3), normal(norm), object(obj) {
-  if(normal == NULL) {
+BSPPolygon::BSPPolygon(Point p1, Point p2, Point p3, SceneObject* obj):
+  beenDivider(false), p1(p1), p2(p2), p3(p3), object(obj) {
+  /*if(normal == NULL) {
     normal = new PositionVector(-1*Cross(PositionVector(p1-p2), PositionVector(p2-p3)));
     normal = &normal->normalize();
-  }
-  distance = -(p1.getX()*normal->getX() + p1.getY()*normal->getY() + p1.getZ()*normal->getZ());
+    }*/
+  normal = PositionVector(-1*Cross(PositionVector(p1-p2), PositionVector(p2-p3)));
+  normal = normal.normalize();
+  distance = -(p1.getX()*normal.getX() + p1.getY()*normal.getY() + p1.getZ()*normal.getZ());
+}
+
+BSPPolygon::BSPPolygon(Point p1, Point p2, Point p3, Point t_p1, Point t_p2, Point t_p3, SceneObject* obj):
+  beenDivider(false), p1(p1), p2(p2), p3(p3), object(obj), tp1(t_p1), tp2(t_p2), tp3(t_p3) {
+  /*if(normal == NULL) {
+    normal = new PositionVector(-1*Cross(PositionVector(p1-p2), PositionVector(p2-p3)));
+    normal = &normal->normalize();
+    }*/
+  normal = PositionVector(-1*Cross(PositionVector(p1-p2), PositionVector(p2-p3)));
+  normal = normal.normalize();
+  distance = -(p1.getX()*normal.getX() + p1.getY()*normal.getY() + p1.getZ()*normal.getZ());
+}
+
+BSPPolygon::~BSPPolygon() {
+  //  cout << "Polygon Deleted" << endl;
 }
 
 //int BSPPolygon::last_material = 0;
@@ -68,13 +85,21 @@ void BSPPolygon::split(BSPPolygon& divider, BSPPolygonSet *front, BSPPolygonSet 
     //cout << "1" << endl;
     PositionVector v1(p2 - p1);
     PositionVector v2(p3 - p1);
-    double sect1 = - sideA / Dot(*divider.normal, v1);
-    double sect2 = - sideA / Dot(*divider.normal, v2);
-    BSPPolygon *poly = new BSPPolygon(p1, p1 + Point(v1*sect1), p1 + Point(v2*sect2), normal, object);
+    PositionVector tv1(tp2 - tp1);
+    PositionVector tv2(tp3 - tp1);
+    double sect1 = - sideA / Dot(divider.normal, v1);
+    double sect2 = - sideA / Dot(divider.normal, v2);
+    BSPPolygon *poly = new BSPPolygon(p1, p1 + Point(v1*sect1), p1 + Point(v2*sect2),
+				      tp1, tp1 + Point(tv1*sect1), tp1 + Point(tv2*sect2), 
+				      object);
     back->addPolygon(poly);
-    poly = new BSPPolygon(p1 + Point(v1*sect1), p2, p1 + Point(v2*sect2), normal, object);
+    poly = new BSPPolygon(p1 + Point(v1*sect1), p2, p1 + Point(v2*sect2),
+			  tp1 + Point(tv1*sect1), tp2, tp1 + Point(tv2*sect2),
+			  object);
     front->addPolygon(poly);
-    poly = new BSPPolygon(p1 + Point(v2*sect2), p2, p3, normal, object);
+    poly = new BSPPolygon(p1 + Point(v2*sect2), p2, p3,
+			  tp1 + Point(tv2*sect2), tp2, tp3,
+			  object);
     front->addPolygon(poly);
   }
 
@@ -82,13 +107,21 @@ void BSPPolygon::split(BSPPolygon& divider, BSPPolygonSet *front, BSPPolygonSet 
     //cout << "2" << endl;
     PositionVector v1(p2 - p1);
     PositionVector v2(p3 - p1);
-    double sect1 = - sideA / Dot(*divider.normal, v1);
-    double sect2 = - sideA / Dot(*divider.normal, v2);
-    BSPPolygon *poly = new BSPPolygon(p1, p1 + Point(v1*sect1), p1 + Point(v2*sect2), normal, object);
+    PositionVector tv1(tp2 - tp1);
+    PositionVector tv2(tp3 - tp1);
+    double sect1 = - sideA / Dot(divider.normal, v1);
+    double sect2 = - sideA / Dot(divider.normal, v2);
+    BSPPolygon *poly = new BSPPolygon(p1, p1 + Point(v1*sect1), p1 + Point(v2*sect2),
+				      tp1, tp1 + Point(tv1*sect1), tp1 + Point(tv2*sect2), 
+				      object);
     front->addPolygon(poly);
-    poly = new BSPPolygon(p1 + Point(v1*sect1), p2, p1 + Point(v2*sect2), normal, object);
+    poly = new BSPPolygon(p1 + Point(v1*sect1), p2, p1 + Point(v2*sect2),
+			  tp1 + Point(tv1*sect1), tp2, tp1 + Point(tv2*sect2),
+			  object);
     back->addPolygon(poly);
-    poly = new BSPPolygon(p1 + Point(v2*sect2), p2, p3, normal, object);
+    poly = new BSPPolygon(p1 + Point(v2*sect2), p2, p3,
+			  tp1 + Point(tv2*sect2), tp2, tp3,
+			  object);
     back->addPolygon(poly);
   }
 
@@ -96,13 +129,21 @@ void BSPPolygon::split(BSPPolygon& divider, BSPPolygonSet *front, BSPPolygonSet 
     //cout << "3" << endl;
     PositionVector v1(p1 - p3);
     PositionVector v2(p2 - p3);
-    double sect1 = - sideC / Dot(*divider.normal, v1);
-    double sect2 = - sideC / Dot(*divider.normal, v2);
-    BSPPolygon *poly = new BSPPolygon(p3, p3 + Point(v1*sect1), p3 + Point(v2*sect2), normal, object);
+    PositionVector tv1(tp1 - tp3); 
+    PositionVector tv2(tp2 - tp3);
+    double sect1 = - sideC / Dot(divider.normal, v1);
+    double sect2 = - sideC / Dot(divider.normal, v2);
+    BSPPolygon *poly = new BSPPolygon(p3, p3 + Point(v1*sect1), p3 + Point(v2*sect2),
+				      tp3, tp3 + Point(tv1*sect1), tp3 + Point(tv2*sect2),
+				      object);
     back->addPolygon(poly);
-    poly = new BSPPolygon(p3 + Point(v1*sect1), p1, p3 + Point(v2*sect2), normal, object);
+    poly = new BSPPolygon(p3 + Point(v1*sect1), p1, p3 + Point(v2*sect2),
+			  tp3 + Point(tv1*sect1), tp1, tp3 + Point(tv2*sect2),
+			  object);
     front->addPolygon(poly);
-    poly = new BSPPolygon(p3 + Point(v2*sect2), p1, p2, normal, object);
+    poly = new BSPPolygon(p3 + Point(v2*sect2), p1, p2,
+			  tp3 + Point(tv2*sect2), tp1, tp2, 
+			  object);
     front->addPolygon(poly);
   }
 
@@ -110,13 +151,21 @@ void BSPPolygon::split(BSPPolygon& divider, BSPPolygonSet *front, BSPPolygonSet 
     //cout << "4" << endl;
     PositionVector v1(p1 - p3);
     PositionVector v2(p2 - p3);
-    double sect1 = - sideC / Dot(*divider.normal, v1);
-    double sect2 = - sideC / Dot(*divider.normal, v2);
-    BSPPolygon *poly = new BSPPolygon(p3, p3 + Point(v1*sect1), p3 + Point(v2*sect2), normal, object);
+    PositionVector tv1(tp1 - tp3); 
+    PositionVector tv2(tp2 - tp3);
+    double sect1 = - sideC / Dot(divider.normal, v1);
+    double sect2 = - sideC / Dot(divider.normal, v2);
+    BSPPolygon *poly = new BSPPolygon(p3, p3 + Point(v1*sect1), p3 + Point(v2*sect2),
+				      tp3, tp3 + Point(tv1*sect1), tp3 + Point(tv2*sect2),
+				      object);
     front->addPolygon(poly);
-    poly = new BSPPolygon(p3 + Point(v1*sect1), p1, p3 + Point(v2*sect2), normal, object);
+    poly = new BSPPolygon(p3 + Point(v1*sect1), p1, p3 + Point(v2*sect2),
+			  tp3 + Point(tv1*sect1), tp1, tp3 + Point(tv2*sect2),
+			  object);
     back->addPolygon(poly);
-    poly = new BSPPolygon(p3 + Point(v2*sect2), p1, p2, normal,object);
+    poly = new BSPPolygon(p3 + Point(v2*sect2), p1, p2,
+			  tp3 + Point(tv2*sect2), tp1, tp2,
+			  object);
     back->addPolygon(poly);
   }
 
@@ -124,13 +173,21 @@ void BSPPolygon::split(BSPPolygon& divider, BSPPolygonSet *front, BSPPolygonSet 
     //    cout << "5" << endl;
     PositionVector v1(p1 - p2);
     PositionVector v2(p3 - p2);
-    double sect1 = - sideB / Dot(*divider.normal, v1);
-    double sect2 = - sideB / Dot(*divider.normal, v2);
-    BSPPolygon *poly = new BSPPolygon(p2, p2 + Point(v2*sect2), p2 + Point(v1*sect1), normal, object);
+    PositionVector tv1(tp1 - tp2);
+    PositionVector tv2(tp3 - tp2);
+    double sect1 = - sideB / Dot(divider.normal, v1);
+    double sect2 = - sideB / Dot(divider.normal, v2);
+    BSPPolygon *poly = new BSPPolygon(p2, p2 + Point(v2*sect2), p2 + Point(v1*sect1),
+				      tp2, tp2 + Point(tv2*sect2), tp2 + Point(tv1*sect1),
+				      object);
     back->addPolygon(poly);
-    poly = new BSPPolygon(p2 + Point(v1*sect1), p2 + Point(v2*sect2), p3, normal, object);
+    poly = new BSPPolygon(p2 + Point(v1*sect1), p2 + Point(v2*sect2), p3,
+			  tp2 + Point(tv1*sect1), tp2 + Point(tv2*sect2), tp3,
+			  object);
     front->addPolygon(poly);
-    poly = new BSPPolygon(p2 + Point(v1*sect1), p3, p1, normal, object);
+    poly = new BSPPolygon(p2 + Point(v1*sect1), p3, p1,
+			  tp2 + Point(tv1*sect1), tp3, tp1,
+			  object);
     front->addPolygon(poly);
   }
 
@@ -138,13 +195,21 @@ void BSPPolygon::split(BSPPolygon& divider, BSPPolygonSet *front, BSPPolygonSet 
     //cout << "6" << endl;
     PositionVector v1(p1 - p2);
     PositionVector v2(p3 - p2);
-    double sect1 = - sideB / Dot(*divider.normal, v1);
-    double sect2 = - sideB / Dot(*divider.normal, v2);
-    BSPPolygon *poly = new BSPPolygon(p2, p2 + Point(v2*sect2), p2 + Point(v1*sect1), normal, object);
+    PositionVector tv1(tp1 - tp2);
+    PositionVector tv2(tp3 - tp2);
+    double sect1 = - sideB / Dot(divider.normal, v1);
+    double sect2 = - sideB / Dot(divider.normal, v2);
+    BSPPolygon *poly = new BSPPolygon(p2, p2 + Point(v2*sect2), p2 + Point(v1*sect1),
+				      tp2, tp2 + Point(tv2*sect2), tp2 + Point(tv1*sect1),
+				      object);
     front->addPolygon(poly);
-    poly = new BSPPolygon(p2 + Point(v1*sect1), p2 + Point(v2*sect2), p3, normal, object);
+    poly = new BSPPolygon(p2 + Point(v1*sect1), p2 + Point(v2*sect2), p3,
+			  tp2 + Point(tv1*sect1), tp2 + Point(tv2*sect2), tp3,
+			  object);
     back->addPolygon(poly);
-    poly = new BSPPolygon(p2 + Point(v1*sect1), p3, p1, normal, object);
+    poly = new BSPPolygon(p2 + Point(v1*sect1), p3, p1,
+			  tp2 + Point(tv1*sect1), tp3, tp1,
+			  object);
     back->addPolygon(poly);
   }
   //cout << "front:" << front->size() << endl;
@@ -154,9 +219,10 @@ void BSPPolygon::split(BSPPolygon& divider, BSPPolygonSet *front, BSPPolygonSet 
 
 double BSPPolygon::classifyPoint(Point& point) {
   //  cout << "normal: " << normal->getX() << " " << normal->getY() << " " << normal->getZ() << endl;
-  double sideValue = normal->getX() * point.getX() +
-    normal->getY() * point.getY() +
-    normal->getZ() * point.getZ();
+  double EPSILON = 0.0001;
+  double sideValue = normal.getX() * point.getX() +
+    normal.getY() * point.getY() +
+    normal.getZ() * point.getZ();
   if(abs(sideValue + distance) < EPSILON)
     return 0;
   else 
@@ -237,20 +303,10 @@ int BSPPolygon::calculateSide(BSPPolygon polygon) {
 }
 
 inline void BSPPolygon::drawPolygon() {
-  //glBegin(GL_TRIANGLES);
-  //  glColor3f(p1.getX()/2, p1.getY()/2, -p1.getZ()/2); 
-  //cout << p1.getX() << " " << p1.getY() << " " << p1.getZ() << endl;;
-  //cout << p2.getX() << " " << p2.getY() << " " << p2.getZ() << endl;;
-  //cout << p3.getX() << " " << p3.getY() << " " << p3.getZ() << endl;;
-  /*  if(last_material != material->getId()) {
-    material->setMaterial();
-    last_material = material->getId();
-    }*/
-  glNormal3f(normal->getX(), normal->getY(), normal->getZ());
-  glVertex3f(p1.getX(), p1.getY(), p1.getZ());
-  glVertex3f(p2.getX(), p2.getY(), p2.getZ());
-  glVertex3f(p3.getX(), p3.getY(), p3.getZ());
-  //glEnd();
+  glNormal3f(normal.getX(), normal.getY(), normal.getZ());
+  glTexCoord2f(tp1.getX(), tp1.getY());  glVertex3f(p1.getX(), p1.getY(), p1.getZ());
+  glTexCoord2f(tp2.getX(), tp2.getY());  glVertex3f(p2.getX(), p2.getY(), p2.getZ());
+  glTexCoord2f(tp3.getX(), tp3.getY());  glVertex3f(p3.getX(), p3.getY(), p3.getZ());
 }
 
 bool BSPPolygon::hasBeenDivider() {
@@ -279,6 +335,18 @@ inline bool operator < (const BSPPolygon& polygon1, const BSPPolygon& polygon2) 
 /*void BSPPolygon::setMaterial(BSPPolygonMaterial* mat) {
   material = mat;
   }*/
+
+BSPPolygonSet::~BSPPolygonSet() {
+  for(list<BSPPolygon*>::iterator i = polygons.begin(); i != polygons.end(); i++) {
+    delete *i;
+  }
+  for(list<SceneObjectComponent*>::iterator i = components.begin(); i != components.end(); i++) {
+    delete *i;
+  }
+  //  polygons.erase(polygons.begin(), polygons.end());
+  //components.erase(components.begin(), components.end());
+  //  cout << "polygon set deleted" << endl;
+}
 
 bool BSPPolygonSet::isConvexSet() {
   /*int count = polygons.size();
@@ -322,13 +390,15 @@ BSPPolygon* BSPPolygonSet::getPolygon() {
 
 BSPPolygon* BSPPolygonSet::chooseDivider() {
   // IMPLEMENT BETTER CHOOSING OF THE DIVIDING POLYGON
-  //   return getPolygon();
+  return getPolygon();
   
   if(isConvexSet())
     return NULL;
-  double minRelation = MINIMUMRELATION;
+  //double minRelation = MINIMUMRELATION;
+  double minRelation = 0.3;
   BSPPolygon* bestPolygon = NULL;
-  int leastSplits = INFINITY;
+  //  int leastSplits = infinity;
+  int leastSplits = 1000000000;
   double bestRelation = 0;
   int loop = 0;
   while(bestPolygon == NULL) {
@@ -378,7 +448,8 @@ BSPPolygon* BSPPolygonSet::chooseDivider() {
     }
 
     //    cout << "minRelation: " << minRelation << endl;
-    minRelation = minRelation / MINRELATIONSCALE;
+    //minRelation = minRelation / MINRELATIONSCALE;
+    minRelation = minRelation / 2;
   }
   
   //  if(bestPolygon == NULL) 
@@ -401,33 +472,6 @@ void BSPPolygonSet::sort() {
 }
 
 void BSPPolygonSet::drawPolygons() {
-  //  cout << "drawPolygons" << endl;
-  /*  if(!dlist_initialized) {
-    //    polygons.sort();
-    dlist=glGenLists(1);
-    if(dlist != 0) {
-      glNewList(dlist, GL_COMPILE);
-      glBegin(GL_TRIANGLES);
-      for(list<BSPPolygon*>::iterator i = polygons.begin(); i != polygons.end(); i++) {
-	(**i).drawPolygon();
-      }
-      glEnd();
-      glEndList();
-    }
-    dlist_initialized = true;
-  }
-  else {
-    glCallList(dlist);
-    }*/
-  
-  /*
-  glBegin(GL_TRIANGLES);
-  for(list<BSPPolygon*>::iterator i = polygons.begin(); i != polygons.end(); i++) {
-    (**i).drawPolygon();
-  }
-  glEnd();
-  */
-
   if(components.size() == 0 && polygons.size() > 0) {
     int dlist;
     SceneObject* object;

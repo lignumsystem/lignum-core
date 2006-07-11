@@ -33,7 +33,14 @@
   
 
 */
-
+BSPTree::~BSPTree() {
+  //  delete polygons;
+  //delete divider;
+  if(front != NULL)
+    delete front;
+  if(back != NULL)
+    delete back;
+}
 
 void BSPTree::buildBSPTree(BSPPolygonSet& polys) {
   if(polys.isEmpty()) {
@@ -68,20 +75,18 @@ void BSPTree::buildBSPTree(BSPPolygonSet& polys) {
 	front_polygons.addPolygon(poly);
 	break;
       case BSPPolygon::SPANNING:
-	//cout << "SPANS" << endl;
+	// NÄMÄ PITÄÄ POISTAA MUISTISTA
 	BSPPolygonSet *front_pieces = new BSPPolygonSet();
 	BSPPolygonSet *back_pieces = new BSPPolygonSet();
-	//cout << "SPLIT" << endl;
 	poly->split(*divider, front_pieces, back_pieces);
 	back_polygons.addPolygons(back_pieces);
 	front_polygons.addPolygons(front_pieces);
-	//cout << "SPAN ENDS" << endl;
-	//delete back_pieces;
-	//delete front_pieces;
+	delete back_pieces;
+	delete front_pieces;
 	break;
       }
   }
-  //  polygons.sort();
+
   if(!front_polygons.isEmpty()) {
     front = new BSPTree();
     front->buildBSPTree(front_polygons);

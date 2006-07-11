@@ -1,18 +1,25 @@
-/*#include <LGMPolygonTree.h>
+#include <LGMPolygonTree.h>
 #include <QtOpenGL>
 
-class BSPPolygonSet;
-template <class TS, class BUD, class S>
-BSPPolygonSet* PolygonTreeBuilder<TS,BUD,S>::operator() (BSPPolygonSet* polygons, TreeCompartment<TS,BUD>*tc) const {
-  
-  if(TreeSegment<TS,BUD>* ts = dynamic_cast<TreeSegment<TS,BUD>*>(tc)) {
-    double radius = GetValue(ts, LGAR);
-    double length = GetValue(ts, LGAL);
-    Point point = GetPoint(ts);
-    PositionVector direction = GetDirection(ts);
-    polygons.addPolygons(gldrawer->makeCylinder(radius, length, point, direction, false, false, gldrawer->green, 20));
-  }
 
+/*template <class TS, class BUD, class S>
+BSPPolygonSet* PolygonTreeBuilder<TS,BUD,S>::operator() (BSPPolygonSet* polygons, const TreeCompartment<TS,BUD>*tc) const {
+  
+  if(const TreeSegment<TS,BUD>* ts = dynamic_cast<const TreeSegment<TS,BUD>*>(tc)) {
+    double radius = GetValue(*ts, LGAR);
+    double length = GetValue(*ts, LGAL);
+    Point point = GetPoint(*ts);
+    PositionVector direction = GetDirection(*ts);
+    cout << "point:" << point.getX() << " " << point.getZ() << " " << -point.getY() << endl;
+    cout << "direction:" << direction.getX() << " " << direction.getZ() << " " << -direction.getY() << endl;
+    cout << "radius:" << radius << endl;
+    cout << "length:" << length << endl;
+    
+    polygons->addPolygons(drawer->makeCylinder(radius, length, Point(point.getX(), point.getZ(), -point.getY()),
+					       PositionVector(direction.getX(), direction.getZ(), -direction.getY()),
+							      true, true, drawer->green, 16));
+  }
+  return polygons;
 }
 
 template <class TS, class BUD, class S>
@@ -25,7 +32,6 @@ BSPPolygonSet* LGMPolygonTree<TS,BUD,S>::buildTree(Tree<TS,BUD>& tree) {
   return polygons;
 }
 
-template <class TS, class BUD, class S>
-void LGMPolygonTree<TS,BUD,S>::foo() {
-  cout << "foo" << endl;
-}*/
+*/
+
+
