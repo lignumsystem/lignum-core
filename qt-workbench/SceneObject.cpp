@@ -17,15 +17,15 @@ SceneObject::SceneObject(BSPPolygonMaterial* mat, int t_id)
   id = n_objects;
 }
 
-int SceneObject::getId() {
+int SceneObject::getId() const{
   return id;
 }
 
-int SceneObject::getMaterialId() {
+int SceneObject::getMaterialId() const{
   return material->getId();
 }
 
-void SceneObject::setMaterial() {
+void SceneObject::setMaterial() const{
   material->setMaterial();
   if(texture_id != 0) {
     //glEnable(GL_TEXTURE_2D);
@@ -36,7 +36,7 @@ void SceneObject::setMaterial() {
     }*/
 }
 
-int SceneObject::getComponentCount() {
+int SceneObject::getComponentCount() const{
   return component_count;
 }
 
@@ -52,6 +52,7 @@ int SceneObject::n_objects = 0;
 
 SceneObject::~SceneObject() {
   //delete material;
+  cout << "Object deleted" << endl;
 }
 
 SceneObjectComponent::~SceneObjectComponent() {
@@ -60,6 +61,8 @@ SceneObjectComponent::~SceneObjectComponent() {
     //    cout << "SceneObject deleted" << endl;
     delete object;
   }
+  glDeleteLists(draw_index, 1);
+  glDeleteLists(component_index, 1);
 }
 
 SceneObjectComponent::SceneObjectComponent(SceneObject* obj, int c_index)

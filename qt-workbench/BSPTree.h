@@ -3,6 +3,7 @@
 
 #include <BSPPolygon.h>
 #include <Point.h>
+#include <CylinderVolume.h>
 
 using namespace cxxadt;
 
@@ -13,8 +14,9 @@ divider(NULL), front(NULL), back(NULL){ }
   ~BSPTree();  
   void buildBSPTree(BSPPolygonSet& polygons);
   void drawTree(Point& eye);
-  int countPolygons();
-  
+  bool removeHiddenPolygons(list<CylinderVolume>* volumes);
+  int countPolygons() const;
+  int countComponents() const;
 private:
   BSPPolygon *divider;
   BSPPolygonSet polygons;

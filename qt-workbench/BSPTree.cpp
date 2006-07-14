@@ -1,5 +1,6 @@
 #include <BSPTree.h>
 #include <QtOpenGL>
+#include <stack>
 
 /*
   5.7.2006
@@ -33,16 +34,19 @@
   
 
 */
+
 BSPTree::~BSPTree() {
-  //  delete polygons;
-  //delete divider;
   if(front != NULL)
     delete front;
   if(back != NULL)
     delete back;
+
 }
 
 void BSPTree::buildBSPTree(BSPPolygonSet& polys) {
+  //polygons.addPolygons(&polys);
+  //return;
+  
   if(polys.isEmpty()) {
     // DEBUG
     cout << "Cannot create a empty bsp-tree."<< endl;
@@ -59,7 +63,7 @@ void BSPTree::buildBSPTree(BSPPolygonSet& polys) {
   polygons.addPolygon(root);
   BSPPolygonSet front_polygons, back_polygons;
   BSPPolygon *poly;
-  
+
   while(!polys.isEmpty()) {
     poly = polys.getPolygon();
     int result = divider->calculateSide(*poly);
@@ -75,10 +79,12 @@ void BSPTree::buildBSPTree(BSPPolygonSet& polys) {
 	front_polygons.addPolygon(poly);
 	break;
       case BSPPolygon::SPANNING:
-	// NÄMÄ PITÄÄ POISTAA MUISTISTA
 	BSPPolygonSet *front_pieces = new BSPPolygonSet();
 	BSPPolygonSet *back_pieces = new BSPPolygonSet();
+	//	cout << "split begins.." << endl;
 	poly->split(*divider, front_pieces, back_pieces);
+	//cout << "split done!" << endl;
+	delete poly;
 	back_polygons.addPolygons(back_pieces);
 	front_polygons.addPolygons(front_pieces);
 	delete back_pieces;
@@ -96,11 +102,59 @@ void BSPTree::buildBSPTree(BSPPolygonSet& polys) {
     back = new BSPTree();
     back->buildBSPTree(back_polygons);
   }
-
-  //cout << "here3" << endl;
 }
 
 void BSPTree::drawTree(Point& eye) {
+  BSPTree* tree = this;
+  stack<BSPTree*> trees;
+  while(true) {
+    if(tree->divider == NULL) {
+      tree->polygons.drawPolygons();
+    }
+    else {
+      double result = tree->divider->classifyPoint(eye);
+      if(result > 0) {
+	if(tree->front != NULL)
+	  trees.push(tree->front);
+	tree->polygons.drawPolygons();
+	if(tree->back != NULL)
+	  trees.push(tree->back);
+      }
+      else if(result < 0) {
+	if(tree->back != NULL)
+	  trees.push(tree->back);
+	tree->polygons.drawPolygons();
+	if(tree->front != NULL)
+	  trees.push(tree->front);
+      }
+      else {
+	if(tree->back != NULL)
+	  trees.push(tree->back);
+	if(tree->front != NULL)
+	  trees.push(tree->front);
+      }
+    }
+    if(!trees.empty()) {
+      tree = trees.top();
+      trees.pop();
+    }
+    else
+      break;
+  }
+}
+
+bool BSPTree::removeHiddenPolygons(list<CylinderVolume>* volumes) {
+  //list<BSPPolygon*> polys = polygons.getPolygons();
+  polygons.removeHiddenPolygons(volumes);
+
+  if(front != NULL)
+    front->removeHiddenPolygons(volumes);
+  if(back != NULL)
+    back->removeHiddenPolygons(volumes);
+
+}
+
+/*void BSPTree::drawTree(Point& eye) {
   if(divider == NULL) {
     polygons.drawPolygons();
   }
@@ -130,13 +184,22 @@ void BSPTree::drawTree(Point& eye) {
 	back->drawTree(eye);
     }
   }
-}
+  }*/
 
-int BSPTree::countPolygons() {
+int BSPTree::countPolygons() const {
   int polys = polygons.size();
   if(front != NULL)
     polys += front->countPolygons();
   if(back != NULL)
     polys += back->countPolygons();
   return polys;
+}
+
+int BSPTree::countComponents() const {
+  int comps = polygons.componentCount();
+  if(front != NULL)
+    comps += front->countComponents();
+  if(back != NULL)
+    comps += back->countComponents();
+  return comps;
 }

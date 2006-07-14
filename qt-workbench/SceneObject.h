@@ -10,10 +10,10 @@ public :
   SceneObject(BSPPolygonMaterial* material);
   SceneObject(BSPPolygonMaterial* material, int texture_id);
   ~SceneObject();
-  int getId();
-  int getMaterialId();
-  void setMaterial();
-  int getComponentCount();
+  int getId() const;
+  int getMaterialId() const;
+  void setMaterial() const;
+  int getComponentCount() const;
   void increaseComponentCount();
   void decreaseComponentCount();
   int id;
@@ -28,7 +28,7 @@ class SceneObjectComponent {
 public:
   SceneObjectComponent(SceneObject* object, int component_index);
   ~SceneObjectComponent();
-  void drawComponent();
+  void drawComponent() ;
 
 private:
   SceneObject* object;

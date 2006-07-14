@@ -34,6 +34,7 @@ public slots:
   void moveCameraBackward();
   void toggleWireModel();
   void toggleLights();
+  void toggleTexturing();
   void changeTree();
   //void moveCameraLeft();
   //void moveCameraRight();
@@ -41,6 +42,7 @@ public slots:
   //void moveCameraDown();
   
 private:
+  bool isExtensionSupported(char* szTargetExtension);
   void initMaterials();
   void initLights();
   void initTextureSettings();
@@ -57,6 +59,7 @@ private:
   BSPTree *tree;
   bool wire;
   bool lights_on;
+  bool use_textures;
   int tex1;
 };
 

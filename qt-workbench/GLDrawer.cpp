@@ -9,6 +9,7 @@
 //#include <LGMPolygonTree.h>
 #include <XMLTree.h>
 #include <ScotsPine.h>
+#include <vector>
 
 using namespace std;
 
@@ -32,6 +33,7 @@ GLDrawer::GLDrawer(QWidget* parent)
   DEGTORAD = 2*3.14159265/360.0;
   wire = false;
   lights_on = true;
+  use_textures = true;
   PI = 3.14159265;
   
   (void) new QShortcut(Qt::Key_W, this, SLOT(moveCameraForward()));
@@ -43,6 +45,7 @@ GLDrawer::GLDrawer(QWidget* parent)
   (void) new QShortcut(Qt::Key_I, this, SLOT(toggleWireModel()));
   (void) new QShortcut(Qt::Key_L, this, SLOT(toggleLights()));
   (void) new QShortcut(Qt::Key_J, this, SLOT(changeTree()));
+  (void) new QShortcut(Qt::Key_T, this, SLOT(toggleTexturing()));
 
 }
 
@@ -113,16 +116,16 @@ int GLDrawer::loadTexture(std::string fileName) {
 
 void GLDrawer::initializeGL()
 {  
-  //glClearColor(0.4, 0.4, 0.6, 0.4);
-  glClearColor(0, 0, 0, 0);
-  //glEnable(GL_DEPTH_TEST);
+  //glClearColor(0.9, 0.9, 0.9, 0.9);
+    glClearColor(0, 0, 0, 0);
+    //glEnable(GL_DEPTH_TEST);
   glDisable(GL_DEPTH_TEST);
   glFrontFace(GL_CW);
   glEnable(GL_CULL_FACE);
   
   // Wireframe
   //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-  glLineWidth(2);
+  glLineWidth(1);
 
   initMaterials();
   initLights();
@@ -138,9 +141,10 @@ void GLDrawer::initializeGL()
   reader.readXMLToTree(pine2, "test.xml");
 
   LGMPolygonTree<ScotsPineSegment, ScotsPineBud> constructor;
-  BSPPolygonSet* treePolygons = constructor.buildTree(pine2, tex1);
-  polygons.addPolygons(treePolygons);
-  delete treePolygons;
+  //BSPPolygonSet* treePolygons = constructor.buildTree(pine2, tex1);
+  //polygons.addPolygons(treePolygons);
+  //delete treePolygons;
+  //cout << "tree done!" << endl;
 
   Point origo(0,0,0);
   Point pos1(0,-1,0);
@@ -149,9 +153,10 @@ void GLDrawer::initializeGL()
   PositionVector d1(0.5, 0.5, -1);
   PositionVector d2(0, -1, 0);
   
-  BSPPolygonSet* ground = makeSquare(10, 10, Point(5,0,-5), up, blue, tex1, 10);
-  polygons.addPolygons(ground);
-  delete ground;
+  //BSPPolygonSet* ground = makeSquare(10, 10, Point(5,0,-5), up, blue, tex1, 10);
+  //polygons.addPolygons(ground);
+  //delete ground;
+  //cout << "ground done!" << endl;
 
   //BSPPolygonSet* square1 = makeSquare(1, 1, Point(5,0.75,-5), up, red, 5);
   //BSPPolygonSet* square2 = makeSquare(1, 1, Point(5,1,-5), left, red, 10);
@@ -163,14 +168,21 @@ void GLDrawer::initializeGL()
   /*BSPPolygonSet* cylinder2 = makeCylinder(0.001, 0.1, Point(5,-0.8,-5) , d1, false, false, green, 30);
     polygons.addPolygons(cylinder2);*/
   
-  //  BSPPolygonSet* cylinder = makeCylinder(0.5, 1, Point(5,0.5,-5), d1, false, false, blue, tex1, 60);
+  //BSPPolygonSet* cylinder = makeCylinder(0.5, 1, Point(5,0.5,-5), d1, false, false, blue, tex1, 60);
   //polygons.addPolygons(cylinder);
-  
+  //delete cylinder;
+  //cout << "cylinder1 done!" << endl;
+
   //BSPPolygonSet* cylinder3 = makeCylinder(0.7, 0.7, Point(5,1.0,-5), d2, false, false, blue, tex1, 60);
   //polygons.addPolygons(cylinder3);
+  //delete cylinder;
+  //cout << "cylinder2 done!" << endl;
 
-  tree->buildBSPTree(polygons);
-  cout << "polygons: " << tree->countPolygons() << endl;
+  //tree->buildBSPTree(polygons);
+  //cout << "polygons: " << tree->countPolygons() << endl;
+  //cout << "components: " << tree->countComponents() << endl;
+  if(isExtensionSupported("GL_ARB_vertex_buffer_object"))
+     cout << "VBOs are supported!" << endl;
 }
 
 void GLDrawer::resizeGL(int width, int height)
@@ -251,6 +263,18 @@ void GLDrawer::toggleLights() {
   updateGL();
 }
 
+void GLDrawer::toggleTexturing() {
+  if(use_textures) {
+    use_textures = false;
+    glDisable(GL_TEXTURE_2D);
+  }
+  else {
+    use_textures = true;
+    glEnable(GL_TEXTURE_2D);
+  }
+  updateGL();
+}
+
 void GLDrawer::changeTree() {
   delete tree;
 
@@ -259,7 +283,7 @@ void GLDrawer::changeTree() {
 
   Tree<ScotsPineSegment, ScotsPineBud> pine2(Point(0,0,0), PositionVector(0,1,0));
   XMLDomTreeReader<ScotsPineSegment, ScotsPineBud> reader;
-  reader.readXMLToTree(pine2, "test3.xml");
+  reader.readXMLToTree(pine2, "test.xml");
 
   LGMPolygonTree<ScotsPineSegment, ScotsPineBud> constructor;
   BSPPolygonSet* treePolygons = constructor.buildTree(pine2, tex1);
@@ -271,9 +295,21 @@ void GLDrawer::changeTree() {
   polygons.addPolygons(ground);
   delete ground;
 
-  tree->buildBSPTree(polygons);
-  cout << "polygons: " << tree->countPolygons() << endl;
 
+  list<CylinderVolume>* cylinders = constructor.getCylinders();
+  polygons.removeHiddenPolygons(cylinders);
+
+  tree->buildBSPTree(polygons);
+  int size = polygons.size();
+  tree->removeHiddenPolygons(constructor.getCylinders());
+  cout << "polygons removed: " << size - polygons.size() << endl;
+
+  cout << "polygons: " << tree->countPolygons() << endl;
+  cout << "components: " << tree->countComponents() << endl;
+  delete cylinders;
+  CylinderVolume cyl(0.5, 1, Point(0,0,0), PositionVector(1,1,0));
+  cout << "result: " << cyl.isPointInside(Point(0.1,0.1,0)) << endl;
+  
   updateGL();
 
 }
@@ -283,14 +319,11 @@ void GLDrawer::paintGL()  {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glLoadIdentity();
   
-  
   glRotatef(cam_rot_x, 1, 0, 0);
   glRotatef(cam_rot_y, 0, 1, 0);
-  
-  glTranslatef(-camera_x, -camera_y, -camera_z);
+  glTranslatef(-camera_x, -camera_y, -camera_z);    
 
   glLightfv(GL_LIGHT0, GL_POSITION, light0_position);
-  //glColor3f(1, 0, 0);
 
   Point eye(camera_x, camera_y, camera_z);
   tree->drawTree(eye);
@@ -310,6 +343,8 @@ BSPPolygonSet* GLDrawer::makeCylinder(double radius, double height, Point point,
     dir = PositionVector(1,0,0);
 
   Point origo(0,0,0);
+  vector<Point> vertices(3);
+  vector<Point> t_vertices(3);
   
   for(int i = 0; i < detail; i++) {
     sine = radius*sin(i*2.0*PI/detail);
@@ -326,13 +361,22 @@ BSPPolygonSet* GLDrawer::makeCylinder(double radius, double height, Point point,
     v2 = v2.rotate(origo, dir, PI);
     v3 = v3.rotate(origo, dir, PI);
     
-    polygons->addPolygon(new BSPPolygon(Point(v1)+point,
-					Point(v2)+point,
+    vertices[0] = Point(v1)+point;
+    vertices[1] = Point(v2)+point;
+    vertices[2] = Point(v3)+point;
+    t_vertices[0] = Point(i/(double)detail, 0, 0);
+    t_vertices[1] = Point(i/(double)detail, 1, 0);
+    t_vertices[2] = Point((i+1)/(double)detail, 0, 0);
+    polygons->addPolygon(new BSPPolygon(vertices, t_vertices, object));
+    
+
+    /*polygons->addPolygon(new BSPPolygon(Point(v1)+point,
+                                          Point(v2)+point,
 					Point(v3)+point,
 					Point(i/(double)detail, 0, 0),
 					Point(i/(double)detail, 1, 0),
 					Point((i+1)/(double)detail, 0, 0),
-					object));
+					object));*/
 
     v1 = PositionVector(sine_next, 0, cosine_next);
     v2 = PositionVector(sine, height, cosine);
@@ -340,15 +384,24 @@ BSPPolygonSet* GLDrawer::makeCylinder(double radius, double height, Point point,
     v1 = v1.rotate(origo, dir, PI);
     v2 = v2.rotate(origo, dir, PI);
     v3 = v3.rotate(origo, dir, PI);
+
+    vertices[0] = Point(v1)+point;
+    vertices[1] = Point(v2)+point;
+    vertices[2] = Point(v3)+point;
+    t_vertices[0] = Point((i+1)/(double)detail, 0, 0);
+    t_vertices[1] = Point(i/(double)detail, 1, 0);
+    t_vertices[2] = Point((i+1)/(double)detail, 1, 0);
+    polygons->addPolygon(new BSPPolygon(vertices, t_vertices, object));
     
-    polygons->addPolygon(new BSPPolygon(Point(v1)+point,
+    /*polygons->addPolygon(new BSPPolygon(Point(v1)+point,
 					Point(v2)+point,
 					Point(v3)+point,
 					Point((i+1)/(double)detail, 0, 0),
 					Point(i/(double)detail, 1, 0),
 					Point((i+1)/(double)detail, 1, 0),
-					object));
-    
+					object));*/
+
+
     if(drawTop) {
       v1 = PositionVector(sine, height, cosine);
       v2 = PositionVector(0, height, 0);
@@ -356,11 +409,18 @@ BSPPolygonSet* GLDrawer::makeCylinder(double radius, double height, Point point,
       v1 = v1.rotate(origo, dir, PI);
       v2 = v2.rotate(origo, dir, PI);
       v3 = v3.rotate(origo, dir, PI);
+
+      vertices[0] = Point(v1)+point;
+      vertices[1] = Point(v2)+point;
+      vertices[2] = Point(v3)+point;
+      polygons->addPolygon(new BSPPolygon(vertices, object));
       
-      polygons->addPolygon(new BSPPolygon(Point(v1)+point,
+      /*polygons->addPolygon(new BSPPolygon(Point(v1)+point,
 					  Point(v2)+point,
 					  Point(v3)+point,
-					  object));
+					  object));*/
+
+      
     }
     
     if(drawBottom) {
@@ -371,55 +431,21 @@ BSPPolygonSet* GLDrawer::makeCylinder(double radius, double height, Point point,
       v1 = v1.rotate(origo, dir, PI);
       v2 = v2.rotate(origo, dir, PI);
       v3 = v3.rotate(origo, dir, PI);
+
+      vertices[0] = Point(v1)+point;
+      vertices[1] = Point(v2)+point;
+      vertices[2] = Point(v3)+point;      
+      polygons->addPolygon(new BSPPolygon(vertices, object));
       
-      polygons->addPolygon(new BSPPolygon(Point(v1)+point,
+      /*polygons->addPolygon(new BSPPolygon(Point(v1)+point,
 					  Point(v2)+point,
 					  Point(v3)+point,
-					  object));
+					  object));*/
+      
+      
     }
-    /*
-
-    polygons->addPolygon(new BSPPolygon(Point(sine, 0, cosine),
-					Point(sine, height, cosine),
-					Point(sine_next, 0, cosine_next),
-					NULL, NULL));
-
-    polygons->addPolygon(new BSPPolygon(Point(sine_next, 0, cosine_next),
-					Point(sine, height, cosine),
-					Point(sine_next, height, cosine_next),
-					NULL, NULL));
-
-    polygons->addPolygon(new BSPPolygon(Point(sine, height, cosine),
-					Point(0, height, 0),
-					Point(sine_next, height, cosine_next),
-					NULL, NULL));
-    
-    polygons->addPolygon(new BSPPolygon(Point(sine, 0, cosine),
-					Point(0, 0, 0),
-					Point(sine_next, 0, cosine_next),
-					NULL, NULL));
-    */
-
-    /*glVertex3f(sine, 0, cosine);
-    glVertex3f(sine, height, cosine);
-    glVertex3f(sine_next, 0, cosine_next);
-    
-    glVertex3f(sine_next, 0, cosine_next);
-    glVertex3f(sine, height, cosine);
-    glVertex3f(sine_next, height, cosine_next);
-
-    glVertex3f(sine, height, cosine);
-    glVertex3f(0, height, 0);
-    glVertex3f(sine_next, height, cosine_next);
-
-    glVertex3f(sine, 0, cosine);
-    glVertex3f(0, 0, 0);
-    glVertex3f(sine_next, 0, cosine_next);
-    */
-
   }
   return polygons;
-  //  glEnd();
 }
 
 BSPPolygonSet* GLDrawer::makeSquare(double height, double width, Point point, PositionVector direction, BSPPolygonMaterial* material, int texture, int detail) {
@@ -436,7 +462,8 @@ BSPPolygonSet* GLDrawer::makeSquare(double height, double width, Point point, Po
     dir = PositionVector(1,0,0);
 
   Point origo(0,0,0);
-
+  vector<Point> vertices(3);
+  vector<Point> t_vertices(3);
 
   for(int i = 0; i < detail; i++) {
     z1 = height*(i     / (double)detail-0.5);
@@ -456,29 +483,75 @@ BSPPolygonSet* GLDrawer::makeSquare(double height, double width, Point point, Po
       v2 = v2.rotate(origo, dir, PI);
       v3 = v3.rotate(origo, dir, PI);
       
-      polygons->addPolygon(new BSPPolygon(Point(v1)+point,
+      vertices[0] = Point(v1)+point;
+      vertices[1] = Point(v3)+point;
+      vertices[2] = Point(v2)+point;
+      t_vertices[0] = Point(tx1, tz1, 0);
+      t_vertices[1] = Point(tx2, tz1, 0);
+      t_vertices[2] = Point(tx1, tz2, 0);
+      polygons->addPolygon(new BSPPolygon(vertices, t_vertices, object));
+
+      /*polygons->addPolygon(new BSPPolygon(Point(v1)+point,
 					  Point(v3)+point,
 					  Point(v2)+point,
 					  Point(tx1, tz1, 0),
 					  Point(tx2, tz1, 0),
 					  Point(tx1, tz2, 0),
-					  object));
+					  object));*/
+      
+      
       v1 = PositionVector(x2, 0, z1);
       v2 = PositionVector(x1, 0, z2);
       v3 = PositionVector(x2, 0, z2);
       v1 = v1.rotate(origo, dir, PI);
       v2 = v2.rotate(origo, dir, PI);
       v3 = v3.rotate(origo, dir, PI);
-      
-      polygons->addPolygon(new BSPPolygon(Point(v1)+point,
+
+      vertices[0] = Point(v1)+point;
+      vertices[1] = Point(v3)+point;
+      vertices[2] = Point(v2)+point;
+      t_vertices[0] = Point(tx2, tz1, 0);
+      t_vertices[1] = Point(tx2, tz2, 0);
+      t_vertices[2] = Point(tx1, tz2, 0);
+      polygons->addPolygon(new BSPPolygon(vertices, t_vertices, object));
+
+      /*polygons->addPolygon(new BSPPolygon(Point(v1)+point,
 					  Point(v3)+point,
 					  Point(v2)+point,
 					  Point(tx2, tz1, 0),
 					  Point(tx2, tz2, 0),
 					  Point(tx1, tz2, 0),
-					  object));
-
+					  object));*/
     }
   }
   return polygons;
+}
+
+bool GLDrawer::isExtensionSupported(char* szTargetExtension) {
+	const unsigned char *pszExtensions = NULL;
+	const unsigned char *pszStart;
+	unsigned char *pszWhere, *pszTerminator;
+
+	// Extension names should not have spaces
+	pszWhere = (unsigned char *) strchr( szTargetExtension, ' ' );
+	if( pszWhere || *szTargetExtension == '\0' )
+		return false;
+
+	// Get Extensions String
+	pszExtensions = glGetString( GL_EXTENSIONS );
+
+	// Search The Extensions String For An Exact Copy
+	pszStart = pszExtensions;
+	for(;;)
+	{
+		pszWhere = (unsigned char *) strstr( (const char *) pszStart, szTargetExtension );
+		if( !pszWhere )
+			break;
+		pszTerminator = pszWhere + strlen( szTargetExtension );
+		if( pszWhere == pszStart || *( pszWhere - 1 ) == ' ' )
+			if( *pszTerminator == ' ' || *pszTerminator == '\0' )
+				return true;
+		pszStart = pszTerminator;
+	}
+	return false;
 }

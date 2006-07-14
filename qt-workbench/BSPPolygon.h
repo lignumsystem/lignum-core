@@ -4,8 +4,10 @@
 #include <Point.h>
 #include <PositionVector.h> 
 #include <list>
+#include <vector>
 #include <QtOpenGL>
 #include <SceneObject.h>
+#include <CylinderVolume.h>
 
 using namespace std;
 using namespace cxxadt;
@@ -15,35 +17,52 @@ class SceneObjectComponent;
 
 class BSPPolygonSet;
 
-/*class BSPPolygonMaterial {
-public :
-  BSPPolygonMaterial(GLfloat* materials);
-  inline void setMaterial();
-  inline int getId();
-  static int n_materials;
-private : 
-  GLfloat diffuse[4];
-  GLfloat ambient[4];
-  GLfloat specular[4];
-  GLfloat shine[1];
-  int id;
-  };*/
-  
-  
+class BSPPolygon {
+  public :
+  BSPPolygon(vector<Point> points, SceneObject* object);
+  BSPPolygon(vector<Point> points, vector<Point> texturePoints, SceneObject* object);
+   ~BSPPolygon();
+  void          split(BSPPolygon& divider, BSPPolygonSet *front, BSPPolygonSet *back) ;
+  double        classifyPoint(const Point& point) const;
+  bool          infront(const BSPPolygon& polygon) const;
+  int           calculateSide(const BSPPolygon& polygon) const;
+  void          drawPolygon() const;
+  void          setDivider();
+  bool          hasBeenDivider() const;
+  int           getObjectId() const;
+  SceneObject*  getSceneObject() const;
+  vector<Point> getVertices()const;
+  inline friend bool operator < (const BSPPolygon& polygon1, const BSPPolygon& polygon2);
+
+  enum {COINCIDING, BEHIND, INFRONT, SPANNING};
+  //static const double EPSILON = 0.0001;
+  //  static int last_material;  
+private:
+  bool beenDivider;
+  vector<Point> vertices;
+  vector<Point> t_vertices;
+  PositionVector normal;
+  //BSPPolygonMaterial* material;
+  SceneObject* object;
+  double distance;
+
+};
+
+/*
 class BSPPolygon {
 public :
   BSPPolygon(Point p1, Point p2, Point p3, SceneObject* object);
   BSPPolygon(Point p1, Point p2, Point p3, Point tp1, Point tp2, Point tp3, SceneObject* object);
-  ~BSPPolygon();
-  void         split(BSPPolygon& divider, BSPPolygonSet *front, BSPPolygonSet *back);
-  double       classifyPoint(Point& point);
-  bool         infront(BSPPolygon polygon);
-  int          calculateSide(BSPPolygon polygon);
-  inline void  drawPolygon();
+   ~BSPPolygon();
+  void         split(BSPPolygon& divider, BSPPolygonSet *front, BSPPolygonSet *back) ;
+  double       classifyPoint(const Point& point) const;
+  bool         infront(const BSPPolygon& polygon) const;
+  int          calculateSide(const BSPPolygon& polygon) const;
+  inline void  drawPolygon() const;
   void         setDivider();
-  bool         hasBeenDivider();
-  int          getObjectId();
-  SceneObject* getSceneObject();
+  bool         hasBeenDivider() const;
+  int          getObjectId() const;
+  SceneObject* getSceneObject() const;
   
   inline friend bool operator < (const BSPPolygon& polygon1, const BSPPolygon& polygon2);
 
@@ -59,22 +78,27 @@ private:
   SceneObject* object;
   double distance;
 
-};
+  };*/
+
+
 
 class BSPPolygonSet {
 public:
   BSPPolygonSet() { }
   ~BSPPolygonSet();
-  bool isConvexSet();
+  bool isConvexSet() const;
   void addPolygon(BSPPolygon *polygon);
   void addPolygons(BSPPolygonSet *polys);
   BSPPolygon* getPolygon();
   BSPPolygon* chooseDivider();
-  bool isEmpty();
-  void drawPolygons();
+  bool isEmpty() const;
+  void drawPolygons() ;
   //  void applyMaterial(BSPPolygonMaterial* mat);
-  int size();
+  int size() const;
+  int componentCount() const;
   void sort();
+  list<BSPPolygon*>& getPolygons();
+  void removeHiddenPolygons(list<CylinderVolume>* cylinders);
   
   //static const int infinity = 1000000000;
   //static const double MINIMUMRELATION = 0.3;
