@@ -6,6 +6,7 @@
 #include <BSPPolygon.h>
 #include <BSPPolygonMaterial.h>
 #include <LGMPolygonTree.h>
+#include <VisualizationParameters.h>
 
 class GLDrawer : public QGLWidget
 {
@@ -25,7 +26,7 @@ public:
 
   BSPPolygonMaterial* green;
   BSPPolygonMaterial* red;
-  BSPPolygonMaterial* blue;
+  BSPPolygonMaterial* white;
 protected:
 
   void initializeGL();
@@ -55,25 +56,26 @@ private:
   void initLights();
   void initTextureSettings();
 
-  GLfloat* light0_position;
-  GLfloat* light0_direction;
-  GLfloat camera_x, camera_y, camera_z;
-  GLfloat cam_rot_x, cam_rot_y;
-  GLfloat cam_mov_speed, cam_rot_speed;
-  GLfloat cyl_x, cyl_y, cyl_z;
-  GLfloat cyl_rot_angle, cyl_rot_x, cyl_rot_y, cyl_rot_z;
-  GLfloat DEGTORAD;
+  GLfloat*  light0_position;
+  GLfloat*  light0_direction;
+  GLfloat   camera_x, camera_y, camera_z;
+  GLfloat   cam_rot_x, cam_rot_y;
+  GLfloat   cam_mov_speed, cam_rot_speed;
+  GLfloat   cyl_x, cyl_y, cyl_z;
+  GLfloat   cyl_rot_angle, cyl_rot_x, cyl_rot_y, cyl_rot_z;
+  GLfloat   DEGTORAD;
   //  static const GLfloat PI = 3.14159265;
-  GLfloat PI;
-  BSPTree *tree;
-  bool wire;
-  bool lights_on;
-  bool use_textures;
-  int tex1;
-  bool m_button_pressed[3];
-  QPoint m_last_pos;
-  double m_look_speed;
-  QString tree_file;
+  GLfloat   PI;
+  BSPTree   *tree;
+  bool      wire;
+  bool      lights_on;
+  bool      use_textures;
+  int       tex1;
+  QPoint    m_last_pos;
+  double    m_look_speed;
+  QString   tree_file;
+  VisualizationParameters parameters;
+  
 };
 
 #endif

@@ -16,40 +16,40 @@
 using namespace Lignum;
 using namespace cxxadt;
 
-//class GLDrawer;
+#include <VisualizationParameters.h>
 
 template <class TS, class BUD=DefaultBud<TS>, class S=Ellipse>
 class PolygonTreeBuilder {
   public:
-  //PolygonTreeBuilder(GLDrawer* gldrawer):
-  //drawer(gldrawer) { }
-  PolygonTreeBuilder(int tex, list<CylinderVolume>* cyls):
-  texture(tex), cylinders(cyls) { }
-  //  PolygonTreeBuilder() { }
+  PolygonTreeBuilder(VisualizationParameters params, list<CylinderVolume>* cyls):
+  parameters(params), cylinders(cyls) { }
+  
   BSPPolygonSet* operator() (BSPPolygonSet* polygons, const TreeCompartment<TS,BUD>* tc) const ;
-  //  list<CylinderVolume> getCylinders();
+  
   private:
   
-  // BSPPolygonSet* makeCylinder(double radius, double height, Point point, PositionVector direction, bool drawBottom, bool drawTop, BSPPolygonMaterial* material, int detail = 20) const;
-  BSPPolygonSet* makeCylinder(double radius, double height, Point point, PositionVector direction, bool drawBottom, bool drawTop, SceneObject* object, int r_detail, int y_detail) const;
-  //mutable GLDrawer* drawer;
+  BSPPolygonSet*  makeCylinder(double radius,
+			       double height,
+			       Point point,
+			       PositionVector direction,
+			       bool drawBottom,
+			       bool drawTop,
+			       SceneObject* object,
+			       int r_detail,
+			       int y_detail) const;
   mutable list<CylinderVolume>* cylinders;
-  int texture;
+  VisualizationParameters parameters;
 };
 
 
 template <class TS, class BUD=DefaultBud<TS>, class S=Ellipse>
   class LGMPolygonTree {
   public:
-  //  LGMPolygonTree(GLDrawer* gldrawer)
-  //:drawer(gldrawer) { }
   LGMPolygonTree() { }
-  //LGMPolygonTree() { }
-  BSPPolygonSet* buildTree(Tree<TS,BUD>& tree, int texture);
+  BSPPolygonSet* buildTree(Tree<TS,BUD>& tree, VisualizationParameters params);
   list<CylinderVolume>* getCylinders();
 
   private:
-  //    GLDrawer* drawer;
   list<CylinderVolume>* cylinders;
 };
 
@@ -62,28 +62,20 @@ template <class TS, class BUD, class S>
     double length = GetValue(*ts, LGAL);
     Point point = GetPoint(*ts);
     PositionVector direction = GetDirection(*ts);
-    //    cout << "point:" << point.getX() << " " << point.getZ() << " " << -point.getY() << endl;
-    //cout << "direction:" << direction.getX() << " " << direction.getZ() << " " << -direction.getY() << endl;
-    //cout << "radius:" << radius << endl;
-    //cout << "length:" << length << endl;
-    
-    /*GLfloat color1[] = {0.2, 0.9, 0.2, 1.0,
-			0.1, 0.9, 0.1, 1.0,
-			0.1, 0.9, 0.1, 1.0,
-			50};*/
-    GLfloat color1[] = {1.0, 1.0, 1.0, 1.0,
+    /*    GLfloat color1[] = {1.0, 1.0, 1.0, 1.0,
 			1.0, 1.0, 1.0, 1.0,
 			1.0, 1.0, 1.0, 1.0,
 			50};
-    BSPPolygonMaterial* green = new BSPPolygonMaterial(color1);
-    SceneObject* object = new SceneObject(green, texture, false);
-    int detail = 20;
+			BSPPolygonMaterial* green = new BSPPolygonMaterial(color1);*/
+    SceneObject* object = new SceneObject(parameters.getMaterial(), parameters.getCylinderTexture(), false);
+    //int detail = 20;
     polygons->addPolygons(makeCylinder(radius+0.01, length, Point(point.getX(), point.getZ(), -point.getY()),
 					       PositionVector(direction.getX(), direction.getZ(), -direction.getY()),
-				       false, true, object, detail, 1));
+				       false, true, object,
+				       parameters.getCylinderRDetail(), parameters.getCylinderHDetail()));
     CylinderVolume cylinder((radius+0.01), length, Point(point.getX(), point.getZ(), -point.getY()),
 			    PositionVector(direction.getX(), direction.getZ(), -direction.getY()),
-			    detail);
+			    parameters.getCylinderRDetail());
     cylinders->push_back(cylinder);
   }
   return polygons;
@@ -95,11 +87,11 @@ template <class TS, class BUD, class S>
   }*/
 
 template <class TS, class BUD, class S>
-  BSPPolygonSet* LGMPolygonTree<TS,BUD,S>::buildTree(Tree<TS,BUD>& tree, int texture) {
+  BSPPolygonSet* LGMPolygonTree<TS,BUD,S>::buildTree(Tree<TS,BUD>& tree, VisualizationParameters params) {
   BSPPolygonSet* polygons = new BSPPolygonSet();
 
   cylinders = new list<CylinderVolume>();
-  PolygonTreeBuilder<TS,BUD,S> builder(texture, cylinders);  
+  PolygonTreeBuilder<TS,BUD,S> builder(params, cylinders);  
   PropagateUp(tree, polygons, builder);
 
   return polygons;
@@ -110,7 +102,6 @@ template <class TS, class BUD, class S>
   return cylinders;
 }
 
-// MATERIAALI PITÄÄ VAIHTAA SCENEOBJEKTIIN
 template <class TS, class BUD, class S>
   BSPPolygonSet* PolygonTreeBuilder<TS,BUD,S>::makeCylinder(double radius, double height, Point point, PositionVector direction, bool drawBottom, bool drawTop, SceneObject* object, int r_detail, int y_detail) const  {
   double PI = 3.14159265;

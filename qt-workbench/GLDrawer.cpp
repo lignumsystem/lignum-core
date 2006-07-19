@@ -15,7 +15,7 @@
 using namespace std;
 
 GLDrawer::GLDrawer(QWidget* parent)
-  : QGLWidget(parent) {
+  : QGLWidget(parent)  {
   resize(400, 300);
   camera_x = 5;
   camera_y = 0.5;
@@ -36,9 +36,6 @@ GLDrawer::GLDrawer(QWidget* parent)
   lights_on = true;
   use_textures = true;
   PI = 3.14159265;
-  m_button_pressed[0] = false;
-  m_button_pressed[1] = false;
-  m_button_pressed[2] = false;
   m_look_speed = 0.3;
   setFocusPolicy(Qt::ClickFocus);
   
@@ -46,17 +43,8 @@ GLDrawer::GLDrawer(QWidget* parent)
   
   tree_file = QString("test.xml");
 
-  /*(void) new QShortcut(Qt::Key_W, this, SLOT(moveCameraForward()));
-  (void) new QShortcut(Qt::Key_S, this, SLOT(moveCameraBackward()));
-  (void) new QShortcut(Qt::Key_A, this, SLOT(rotateCameraLeft()));
-  (void) new QShortcut(Qt::Key_D, this, SLOT(rotateCameraRight()));
-  (void) new QShortcut(Qt::Key_Q, this, SLOT(rotateCameraUp()));
-  (void) new QShortcut(Qt::Key_E, this, SLOT(rotateCameraDown()));
-  (void) new QShortcut(Qt::Key_I, this, SLOT(toggleWireModel()));
-  (void) new QShortcut(Qt::Key_L, this, SLOT(toggleLights()));
-  (void) new QShortcut(Qt::Key_J, this, SLOT(changeTree()));
-  (void) new QShortcut(Qt::Key_T, this, SLOT(toggleTexturing()));*/
-
+  tree = new BSPTree();
+  
 }
 
 void GLDrawer::initMaterials() {
@@ -68,17 +56,15 @@ void GLDrawer::initMaterials() {
 		      0.9, 0.1, 0.1, 0.5,
 		      1.0, 0.1, 0.1, 0.5,
 		      50};
-  /*GLfloat color3[] = {0.2, 0.2, 1.0, 0.3,
-		      0.2, 0.2, 1.0, 0.3,
-		      0.2, 0.2, 1.0, 0.3,
-		      50};*/
-GLfloat color3[] = {1.0, 1.0, 1.0, 1.0,
-		    1.0, 1.0, 1.0, 1.0,
-		    1.0, 1.0, 1.0, 1.0,
-		    50};
+  GLfloat color3[] = {1.0, 1.0, 1.0, 1.0,
+		      1.0, 1.0, 1.0, 1.0,
+		      1.0, 1.0, 1.0, 1.0,
+		      50};
+  
   green = new BSPPolygonMaterial(color1);
   red = new BSPPolygonMaterial(color2);
-  blue = new BSPPolygonMaterial(color3);
+  white = new BSPPolygonMaterial(color3);
+  parameters.setMaterial(white);
 }
 
 void GLDrawer::initLights() {
@@ -154,55 +140,21 @@ void GLDrawer::initializeGL()
   initTextureSettings();
 
   tex1 = loadTexture(std::string("pine_texture.png"));
+  parameters.setCylinderTexture(tex1);
 
-  tree = new BSPTree();
-  BSPPolygonSet polygons;
+
+  /* BSPPolygonSet polygons;
 
   Tree<ScotsPineSegment, ScotsPineBud> pine2(Point(0,0,0), PositionVector(0,1,0));
   XMLDomTreeReader<ScotsPineSegment, ScotsPineBud> reader;
   reader.readXMLToTree(pine2, "test.xml");
 
-  LGMPolygonTree<ScotsPineSegment, ScotsPineBud> constructor;
+  LGMPolygonTree<ScotsPineSegment, ScotsPineBud> constructor;*/
   //BSPPolygonSet* treePolygons = constructor.buildTree(pine2, tex1);
   //polygons.addPolygons(treePolygons);
   //delete treePolygons;
   //cout << "tree done!" << endl;
 
-  Point origo(0,0,0);
-  Point pos1(0,-1,0);
-  PositionVector up(0,1,0);
-  PositionVector left(1,0,0);
-  PositionVector d1(0.5, 0.5, -1);
-  PositionVector d2(0, -1, 0);
-  
-  //BSPPolygonSet* ground = makeSquare(10, 10, Point(5,0,-5), up, blue, tex1, 10);
-  //polygons.addPolygons(ground);
-  //delete ground;
-  //cout << "ground done!" << endl;
-
-  //BSPPolygonSet* square1 = makeSquare(1, 1, Point(5,0.75,-5), up, red, 5);
-  //BSPPolygonSet* square2 = makeSquare(1, 1, Point(5,1,-5), left, red, 10);
-  //BSPPolygonSet* square3 = makeSquare(1, 1, Point(5,1,-5), d1, red, 10);
-
-  //polygons.addPolygons(square1);
-  //polygons.addPolygons(square2);
-  //polygons.addPolygons(square3);
-  /*BSPPolygonSet* cylinder2 = makeCylinder(0.001, 0.1, Point(5,-0.8,-5) , d1, false, false, green, 30);
-    polygons.addPolygons(cylinder2);*/
-  
-  //BSPPolygonSet* cylinder = makeCylinder(0.5, 1, Point(5,0.5,-5), d1, false, false, blue, tex1, 60);
-  //polygons.addPolygons(cylinder);
-  //delete cylinder;
-  //cout << "cylinder1 done!" << endl;
-
-  //BSPPolygonSet* cylinder3 = makeCylinder(0.7, 0.7, Point(5,1.0,-5), d2, false, false, blue, tex1, 60);
-  //polygons.addPolygons(cylinder3);
-  //delete cylinder;
-  //cout << "cylinder2 done!" << endl;
-
-  //tree->buildBSPTree(polygons, constructor.getCylinders());
-  //cout << "polygons: " << tree->countPolygons() << endl;
-  //cout << "components: " << tree->countComponents() << endl;
   if(isExtensionSupported("GL_ARB_vertex_buffer_object"))
      cout << "VBOs are supported!" << endl;
 }
@@ -308,7 +260,9 @@ void GLDrawer::changeTree() {
   reader.readXMLToTree(pine2, tree_file.toStdString());
 
   LGMPolygonTree<ScotsPineSegment, ScotsPineBud> constructor;
-  BSPPolygonSet* treePolygons = constructor.buildTree(pine2, tex1);
+  VisualizationParameters params(20, 1, tex1, white);
+
+  BSPPolygonSet* treePolygons = constructor.buildTree(pine2, parameters);
   polygons.addPolygons(treePolygons);
   delete treePolygons;
 
