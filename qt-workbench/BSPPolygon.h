@@ -17,7 +17,7 @@ class SceneObjectComponent;
 
 class BSPPolygonSet;
 
-class BSPPolygon {
+/*class BSPPolygon {
   public :
   BSPPolygon(vector<Point> points, SceneObject* object);
   BSPPolygon(vector<Point> points, vector<Point> texturePoints, SceneObject* object);
@@ -46,9 +46,9 @@ private:
   SceneObject* object;
   double distance;
 
-};
+  };*/
 
-/*
+
 class BSPPolygon {
 public :
   BSPPolygon(Point p1, Point p2, Point p3, SceneObject* object);
@@ -58,12 +58,13 @@ public :
   double       classifyPoint(const Point& point) const;
   bool         infront(const BSPPolygon& polygon) const;
   int          calculateSide(const BSPPolygon& polygon) const;
-  inline void  drawPolygon() const;
+  void         drawPolygon() const;
   void         setDivider();
   bool         hasBeenDivider() const;
   int          getObjectId() const;
   SceneObject* getSceneObject() const;
-  
+  vector<Point> getVertices() const;
+  bool         isTransparent() const;
   inline friend bool operator < (const BSPPolygon& polygon1, const BSPPolygon& polygon2);
 
   enum {COINCIDING, BEHIND, INFRONT, SPANNING};
@@ -78,7 +79,7 @@ private:
   SceneObject* object;
   double distance;
 
-  };*/
+};
 
 
 
@@ -86,26 +87,27 @@ class BSPPolygonSet {
 public:
   BSPPolygonSet() { }
   ~BSPPolygonSet();
-  bool isConvexSet() const;
-  void addPolygon(BSPPolygon *polygon);
-  void addPolygons(BSPPolygonSet *polys);
-  BSPPolygon* getPolygon();
-  BSPPolygon* chooseDivider();
-  bool isEmpty() const;
-  void drawPolygons() ;
+  bool               isConvexSet() const;
+  void               addPolygon(BSPPolygon *polygon);
+  void               addPolygons(BSPPolygonSet *polys);
+  BSPPolygon*        getPolygon();
+  BSPPolygon*        chooseDivider();
+  bool               isEmpty() const;
+  void               drawPolygons() ;
   //  void applyMaterial(BSPPolygonMaterial* mat);
-  int size() const;
-  int componentCount() const;
-  void sort();
+  int                size() const;
+  int                componentCount() const;
+  void               sort();
   list<BSPPolygon*>& getPolygons();
-  void removeHiddenPolygons(list<CylinderVolume>* cylinders);
+  void               removeHiddenPolygons(list<CylinderVolume>* cylinders);
+  void               getOpaquePolygons(BSPPolygonSet* polys);
   
   //static const int infinity = 1000000000;
   //static const double MINIMUMRELATION = 0.3;
   //static const double MINRELATIONSCALE = 2;
   
  private:
-  list<BSPPolygon*> polygons;
+  list<BSPPolygon*>  polygons;
   list<SceneObjectComponent*> components;
 
   static const int infinity = 1000000000;
