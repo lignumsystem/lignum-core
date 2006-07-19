@@ -76,12 +76,14 @@ template <class TS, class BUD, class S>
 			1.0, 1.0, 1.0, 1.0,
 			50};
     BSPPolygonMaterial* green = new BSPPolygonMaterial(color1);
-    SceneObject* object = new SceneObject(green, texture);
+    SceneObject* object = new SceneObject(green, texture, false);
+    int detail = 20;
     polygons->addPolygons(makeCylinder(radius+0.01, length, Point(point.getX(), point.getZ(), -point.getY()),
 					       PositionVector(direction.getX(), direction.getZ(), -direction.getY()),
-				       false, true, object, 20, 1));
-    CylinderVolume cylinder(radius+0.01, length, Point(point.getX(), point.getZ(), -point.getY()),
-			    PositionVector(direction.getX(), direction.getZ(), -direction.getY()));
+				       false, true, object, detail, 1));
+    CylinderVolume cylinder((radius+0.01), length, Point(point.getX(), point.getZ(), -point.getY()),
+			    PositionVector(direction.getX(), direction.getZ(), -direction.getY()),
+			    detail);
     cylinders->push_back(cylinder);
   }
   return polygons;
@@ -140,7 +142,7 @@ template <class TS, class BUD, class S>
       y = j / (double)y_detail * height;
       y_next = (j+1) / (double)y_detail * height;
       
-      v1 = PositionVector(sine, y, cosine);
+      /*v1 = PositionVector(sine, y, cosine);
       v2 = PositionVector(sine, y_next, cosine);
       v3 = PositionVector(sine_next, y_next, cosine_next);
       v4 = PositionVector(sine_next, y, cosine_next);
@@ -157,16 +159,16 @@ template <class TS, class BUD, class S>
       t_vertices2[1] = Point(i/(double)r_detail, y_next/height, 0);
       t_vertices2[2] = Point((i+1)/(double)r_detail, y_next/height, 0);
       t_vertices2[3] = Point((i+1)/(double)r_detail, y/height, 0);
-      polygons->addPolygon(new BSPPolygon(vertices2, t_vertices2, object));
+      polygons->addPolygon(new BSPPolygon(vertices2, t_vertices2, object));*/
       
-      /*    PositionVector v1(sine, y, cosine);
-	    PositionVector v2(sine, y_next, cosine);
-	    PositionVector v3(sine_next, y, cosine_next);
-	    v1 = v1.rotate(origo, dir, PI);
-	    v2 = v2.rotate(origo, dir, PI);
-	    v3 = v3.rotate(origo, dir, PI);
+      PositionVector v1(sine, y, cosine);
+      PositionVector v2(sine, y_next, cosine);
+      PositionVector v3(sine_next, y, cosine_next);
+      v1 = v1.rotate(origo, dir, PI);
+      v2 = v2.rotate(origo, dir, PI);
+      v3 = v3.rotate(origo, dir, PI);
 	    
-	    vertices[0] = Point(v1)+point;
+	    /*    vertices[0] = Point(v1)+point;
 	    vertices[1] = Point(v2)+point;
 	    vertices[2] = Point(v3)+point;
 	    t_vertices[0] = Point(i/(double)r_detail, y/height, 0);
@@ -174,23 +176,23 @@ template <class TS, class BUD, class S>
 	    t_vertices[2] = Point((i+1)/(double)r_detail, y/height, 0);
 	    polygons->addPolygon(new BSPPolygon(vertices, t_vertices, object));*/
       
-      /*polygons->addPolygon(new BSPPolygon(Point(v1)+point,
-	Point(v2)+point,
-	Point(v3)+point,
-	Point(i/(double)detail, y, 0),
-	Point(i/(double)detail, y/height, 0),
-	Point((i+1)/(double)detail, y, 0),
-	object));*/
+      polygons->addPolygon(new BSPPolygon(Point(v1)+point,
+					  Point(v2)+point,
+					  Point(v3)+point,
+					  Point(i/(double)r_detail, y/height, 0),
+					  Point(i/(double)r_detail, y_next/height, 0),
+					  Point((i+1)/(double)r_detail, y/height, 0),
+					  object));
       
       
-      /*    v1 = PositionVector(sine_next, y, cosine_next);
-	    v2 = PositionVector(sine, y_next, cosine);
-	    v3 = PositionVector(sine_next, y_next, cosine_next);
-	    v1 = v1.rotate(origo, dir, PI);
-	    v2 = v2.rotate(origo, dir, PI);
-	    v3 = v3.rotate(origo, dir, PI);
+      v1 = PositionVector(sine_next, y, cosine_next);
+      v2 = PositionVector(sine, y_next, cosine);
+      v3 = PositionVector(sine_next, y_next, cosine_next);
+      v1 = v1.rotate(origo, dir, PI);
+      v2 = v2.rotate(origo, dir, PI);
+      v3 = v3.rotate(origo, dir, PI);
 	    
-	    vertices[0] = Point(v1)+point;
+      /*vertices[0] = Point(v1)+point;
 	    vertices[1] = Point(v2)+point;
 	    vertices[2] = Point(v3)+point;
 	    t_vertices[0] = Point((i+1)/(double)r_detail, y, 0);
@@ -198,13 +200,13 @@ template <class TS, class BUD, class S>
 	    t_vertices[2] = Point((i+1)/(double)r_detail, y_next/height, 0);
 	    polygons->addPolygon(new BSPPolygon(vertices, t_vertices, object));*/
       
-      /*polygons->addPolygon(new BSPPolygon(Point(v1)+point,
-	Point(v2)+point,
-	Point(v3)+point,
-	Point((i+1)/(double)detail, y, 0),
-	Point(i/(double)detail, y_next/height, 0),
-	Point((i+1)/(double)detail, y_next/height, 0),
-	object));*/
+      polygons->addPolygon(new BSPPolygon(Point(v1)+point,
+					  Point(v2)+point,
+					  Point(v3)+point,
+					  Point((i+1)/(double)r_detail, y/height, 0),
+					  Point(i/(double)r_detail, y_next/height, 0),
+					  Point((i+1)/(double)r_detail, y_next/height, 0),
+					  object));
     }
   
     if(drawTop) {
@@ -216,15 +218,15 @@ template <class TS, class BUD, class S>
       v2 = v2.rotate(origo, dir, PI);
       v3 = v3.rotate(origo, dir, PI);
       
-      vertices[0] = Point(v1)+point;
+      /* vertices[0] = Point(v1)+point;
       vertices[1] = Point(v2)+point;
       vertices[2] = Point(v3)+point;
-      polygons->addPolygon(new BSPPolygon(vertices, object));
+      polygons->addPolygon(new BSPPolygon(vertices, object));*/
       
-      /*polygons->addPolygon(new BSPPolygon(Point(v1)+point,
-	Point(v2)+point,
-	Point(v3)+point,
-	object));*/
+      polygons->addPolygon(new BSPPolygon(Point(v1)+point,
+					  Point(v2)+point,
+					  Point(v3)+point,
+					  object));
     }
     
     if(drawBottom) {
@@ -236,15 +238,15 @@ template <class TS, class BUD, class S>
       v2 = v2.rotate(origo, dir, PI);
       v3 = v3.rotate(origo, dir, PI);
       
-      vertices[0] = Point(v1)+point;
+      /*vertices[0] = Point(v1)+point;
       vertices[1] = Point(v2)+point;
       vertices[2] = Point(v3)+point;
-      polygons->addPolygon(new BSPPolygon(vertices, object));
+      polygons->addPolygon(new BSPPolygon(vertices, object));*/
       
-      /*polygons->addPolygon(new BSPPolygon(Point(v1)+point,
+      polygons->addPolygon(new BSPPolygon(Point(v1)+point,
 					  Point(v2)+point,
 					  Point(v3)+point,
-					  object));*/
+					  object));
       
     }
 

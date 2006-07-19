@@ -5,14 +5,14 @@
 
 using namespace std;
 
-SceneObject::SceneObject(BSPPolygonMaterial* mat)
-  : component_count(0), material(mat), texture_id(0) {
+SceneObject::SceneObject(BSPPolygonMaterial* mat, bool transp)
+  : component_count(0), material(mat), texture_id(0), transparent(transp) {
   n_objects++;
   id = n_objects;
 }
 
-SceneObject::SceneObject(BSPPolygonMaterial* mat, int t_id) 
-  : component_count(0), material(mat), texture_id(t_id) {
+SceneObject::SceneObject(BSPPolygonMaterial* mat, int t_id, bool transp) 
+  : component_count(0), material(mat), texture_id(t_id), transparent(transp) {
   n_objects++;
   id = n_objects;
 }
@@ -28,12 +28,12 @@ int SceneObject::getMaterialId() const{
 void SceneObject::setMaterial() const{
   material->setMaterial();
   if(texture_id != 0) {
-    //glEnable(GL_TEXTURE_2D);
+    glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, texture_id);
   }
-  /*else {
+  else {
     glDisable(GL_TEXTURE_2D);
-    }*/
+  }
 }
 
 int SceneObject::getComponentCount() const{
@@ -48,11 +48,15 @@ void SceneObject::decreaseComponentCount() {
   component_count--;
 }
 
+bool SceneObject::isTransparent() const {
+  return transparent;
+}
+
 int SceneObject::n_objects = 0;
 
 SceneObject::~SceneObject() {
   //delete material;
-  cout << "Object deleted" << endl;
+  //cout << "Object deleted" << endl;
 }
 
 SceneObjectComponent::~SceneObjectComponent() {

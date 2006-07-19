@@ -1,5 +1,6 @@
 #include <QApplication>
 #include "GLDrawer.h"
+//#include "ui_qt_wb.h"
 
 #include <QFont>
 #include <QPushButton>
@@ -40,4 +41,16 @@ int main(int argc, char* argv[])
   widget.resize(400, 400);
   widget.show();
   return app.exec();
-}
+} 
+
+/*
+int main(int argc, char *argv[])
+{
+  QApplication app(argc, argv);
+  QDialog *window = new QDialog;
+  Ui:: ui;
+  ui.setupUi(window);
+  
+  window->show();
+  return app.exec();
+  }*/

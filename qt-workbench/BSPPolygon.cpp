@@ -7,7 +7,7 @@
 using namespace std;
 using namespace cxxadt;
 
-/*BSPPolygon::BSPPolygon(Point p1, Point p2, Point p3, SceneObject* obj):
+BSPPolygon::BSPPolygon(Point p1, Point p2, Point p3, SceneObject* obj):
   beenDivider(false), p1(p1), p2(p2), p3(p3), object(obj) {
   normal = PositionVector(-1*Cross(PositionVector(p1-p2), PositionVector(p2-p3)));
   normal = normal.normalize();
@@ -19,10 +19,10 @@ BSPPolygon::BSPPolygon(Point p1, Point p2, Point p3, Point t_p1, Point t_p2, Poi
   normal = PositionVector(-1*Cross(PositionVector(p1-p2), PositionVector(p2-p3)));
   normal = normal.normalize();
   distance = -(p1.getX()*normal.getX() + p1.getY()*normal.getY() + p1.getZ()*normal.getZ());
-}*/
+}
 
 
-BSPPolygon::BSPPolygon(vector<Point> points, SceneObject* obj):
+/*BSPPolygon::BSPPolygon(vector<Point> points, SceneObject* obj):
   beenDivider(false), vertices(points), object(obj) {
   if(points.size() < 3) {
     cout << "ERROR: Atleast three vertices are needed to create a BSPPolygon!" << endl;
@@ -52,7 +52,7 @@ BSPPolygon::BSPPolygon(vector<Point> points, vector<Point> texturePoints, SceneO
   distance = -(vertices[0].getX()*normal.getX() +
 	       vertices[0].getY()*normal.getY() +
 	       vertices[0].getZ()*normal.getZ());
-}
+	       }*/
 
 BSPPolygon::~BSPPolygon() {
   //  cout << "Polygon Deleted" << endl;
@@ -60,6 +60,7 @@ BSPPolygon::~BSPPolygon() {
 
 //int BSPPolygon::last_material = 0;
 
+/*
 void BSPPolygon::split(BSPPolygon& divider, BSPPolygonSet *front, BSPPolygonSet *back) {
   vector<Point> outpts, t_outpts;
   vector<Point> inpts, t_inpts;
@@ -118,10 +119,10 @@ void BSPPolygon::split(BSPPolygon& divider, BSPPolygonSet *front, BSPPolygonSet 
   //cout << "vertices: " << vertices.size() << endl;
   //cout << "front:    " << outpts.size() << endl;
   //cout << "back:     " << inpts.size() << endl;
-}
+  } */
 
 // Splits a triangle polygon to a three smaller polygons based on the dividing polygon.
-/*void BSPPolygon::split(BSPPolygon& divider, BSPPolygonSet *front, BSPPolygonSet *back)  {
+void BSPPolygon::split(BSPPolygon& divider, BSPPolygonSet *front, BSPPolygonSet *back)  {
   const double sideA = divider.classifyPoint(p1);
   const double sideB = divider.classifyPoint(p2);
   const double sideC = divider.classifyPoint(p3);
@@ -261,7 +262,6 @@ void BSPPolygon::split(BSPPolygon& divider, BSPPolygonSet *front, BSPPolygonSet 
   }
 
 }
-*/
 
 
 double BSPPolygon::classifyPoint(const Point& point) const {
@@ -282,7 +282,7 @@ bool BSPPolygon::infront(const BSPPolygon& polygon) const {
     return false;
 }
 
-/*int BSPPolygon::calculateSide(const BSPPolygon& polygon) const {
+int BSPPolygon::calculateSide(const BSPPolygon& polygon) const {
   int numPositive = 0;
   int numNegative = 0;
   
@@ -315,10 +315,10 @@ bool BSPPolygon::infront(const BSPPolygon& polygon) const {
     {
       return SPANNING;
     }
-    }*/
+}
 
 
-int BSPPolygon::calculateSide(const BSPPolygon& polygon) const {
+/*int BSPPolygon::calculateSide(const BSPPolygon& polygon) const {
   int numPositive = 0;
   int numNegative = 0;
 
@@ -338,17 +338,21 @@ int BSPPolygon::calculateSide(const BSPPolygon& polygon) const {
     return COINCIDING;
   else
     return SPANNING;
-}
+    }*/
 
-/*inline void BSPPolygon::drawPolygon() const {
+void BSPPolygon::drawPolygon() const {
   glNormal3f(normal.getX(), normal.getY(), normal.getZ());
   glTexCoord2f(tp1.getX(), tp1.getY());  glVertex3f(p1.getX(), p1.getY(), p1.getZ());
   glTexCoord2f(tp2.getX(), tp2.getY());  glVertex3f(p2.getX(), p2.getY(), p2.getZ());
   glTexCoord2f(tp3.getX(), tp3.getY());  glVertex3f(p3.getX(), p3.getY(), p3.getZ());
-  }*/
+}
+
+bool BSPPolygon::isTransparent() const {
+  return object->isTransparent();
+}
 
 
-void BSPPolygon::drawPolygon() const {
+/*void BSPPolygon::drawPolygon() const {
   if(vertices.size() == 3)
     glBegin(GL_TRIANGLES);
   else if(vertices.size() == 4)
@@ -362,7 +366,7 @@ void BSPPolygon::drawPolygon() const {
   }
   glEnd();
   //cout << "size:" << vertices.size() << endl;
-}
+  }*/
 	
 
 
@@ -389,7 +393,15 @@ inline bool operator < (const BSPPolygon& polygon1, const BSPPolygon& polygon2) 
     return false;
 }
 
+/*vector<Point> BSPPolygon::getVertices() const {
+  return vertices;
+  }*/
+
 vector<Point> BSPPolygon::getVertices() const {
+  vector<Point> vertices;
+  vertices.push_back(p1);
+  vertices.push_back(p2);
+  vertices.push_back(p3);
   return vertices;
 }
 
@@ -420,7 +432,7 @@ void BSPPolygonSet::addPolygon(BSPPolygon *polygon) {
 
 
 
-void BSPPolygonSet::addPolygons(BSPPolygonSet *polys) {
+void BSPPolygonSet::addPolygons(BSPPolygonSet* polys) {
   //cout << "size:" << polys->size() << endl;
   while(!polys->isEmpty()) {
     addPolygon(polys->getPolygon());
@@ -434,21 +446,40 @@ BSPPolygon* BSPPolygonSet::getPolygon() {
   return poly;
 }
 
+void BSPPolygonSet::getOpaquePolygons(BSPPolygonSet* polys) {
+  for(list<BSPPolygon*>::iterator i = polys->polygons.begin(); i != polys->polygons.end(); i++) {
+    if(!(*i)->isTransparent()) {
+      polygons.push_back(*i);
+      polys->polygons.erase(i);
+    }
+  }
+}
+
 BSPPolygon* BSPPolygonSet::chooseDivider() {
   // IMPLEMENT BETTER CHOOSING OF THE DIVIDING POLYGON
-  BSPPolygon* poly = getPolygon();
-  poly->setDivider();
-  return poly;
+  //BSPPolygon* poly = getPolygon();
+  //poly->setDivider();
+  //return poly;
   
-  if(isConvexSet())
+  if(isConvexSet()) {
+    cout << "CONVEX" << endl;
     return NULL;
+  }
   //double minRelation = MINIMUMRELATION;
-  double minRelation = 0.3;
+  double minRelation = 0.8;
   BSPPolygon* bestPolygon = NULL;
   //  int leastSplits = infinity;
   int leastSplits = 1000000000;
   double bestRelation = 0;
   int loop = 0;
+  /*  list<BSPPolygon*> candidates;
+  while(candidates.empty()) {
+    for(list<BSPPolygon*>::const_iterator i = polygons.begin(); i != polygons.end(); i++) {
+      if((double)rand() / RAND_MAX < 0.35) {
+	candidates.push_back(*i);
+      }
+    }
+    }*/
   while(bestPolygon == NULL) {
     loop++;
     //  cout << "try " << loop << endl;
@@ -461,12 +492,13 @@ BSPPolygon* BSPPolygonSet::chooseDivider() {
 	double relation;
 
 	for(list<BSPPolygon*>::const_iterator j = polygons.begin(); j != polygons.end(); j++) {
-	  if(distance(i, j) != 0) { 
+	  //if(distance(i, j) != 0) { 
+	  if(true) {
 	    value = (**i).calculateSide(**j);
 	    if(value == BSPPolygon::INFRONT)
-	      numPositive++;
+	      numPositive += 10;
 	    else if(value == BSPPolygon::BEHIND)
-	      numNegative++;
+	      numNegative += 10;
 	    else if(value == BSPPolygon::SPANNING) 
 	      numSpanning++;
 	    /*	    else if(value == BSPPolygon::COINCIDING) {
@@ -524,7 +556,8 @@ void BSPPolygonSet::drawPolygons() {
   if(components.size() == 0 && polygons.size() > 0) {
     int dlist;
     SceneObject* object;
-    polygons.sort();
+    if(polygons.front()->isTransparent()) 
+      polygons.sort();
     int current_id = -1;
     int comps = 0;
     
@@ -535,7 +568,7 @@ void BSPPolygonSet::drawPolygons() {
 	dlist = glGenLists(1);
 	if(dlist != 0) {
 	   glNewList(dlist, GL_COMPILE);
-	   //glBegin(GL_TRIANGLES);
+	   glBegin(GL_TRIANGLES);
 	   while(i != polygons.end() && current_id == (**i).getObjectId()) {
 	     (**i).drawPolygon();
 	     if(!(**i).hasBeenDivider())
@@ -544,7 +577,7 @@ void BSPPolygonSet::drawPolygons() {
 	     i++;
 	   }
 	   i--;
-	   //glEnd();
+	   glEnd();
 	   glEndList();
 	   components.push_back(new SceneObjectComponent(object, dlist));
 	   comps++;
@@ -609,11 +642,8 @@ void BSPPolygonSet::removeHiddenPolygons(list<CylinderVolume>* cylinders) {
 	  t_b++;
 	}
       }
-      //if(isOutside)
-	//cout << "is outside" << endl;
-	//cout << "inside: " << numInside << endl;
-	//cout << "border: " << numBorder << endl;
       if(!isOutside && numInside > 0) {
+	//if(!isOutside && numBorder == 0) {
 	//cout << "DELETED!" << endl;
 	if(!(**i).hasBeenDivider()) 
 	  delete (*i);

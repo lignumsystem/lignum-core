@@ -16,6 +16,13 @@ public:
   BSPPolygonSet* makeCylinder(double radius, double height, Point point, PositionVector direction, bool drawBottom, bool drawTop, BSPPolygonMaterial* material, int texture, int detail = 20);
   BSPPolygonSet* makeSquare(double height, double width, Point point, PositionVector direction, BSPPolygonMaterial* material, int texture, int detail = 10);
   int loadTexture(std::string fileName);
+
+  void mousePressEvent(QMouseEvent* event);
+  void mouseReleaseEvent(QMouseEvent* event);
+  void mouseMoveEvent(QMouseEvent* event);
+  void keyPressEvent(QKeyEvent* event);
+  void keyReleaseEvent(QKeyEvent* event);
+
   BSPPolygonMaterial* green;
   BSPPolygonMaterial* red;
   BSPPolygonMaterial* blue;
@@ -36,6 +43,7 @@ public slots:
   void toggleLights();
   void toggleTexturing();
   void changeTree();
+  void setTreeFile(QString fileName);
   //void moveCameraLeft();
   //void moveCameraRight();
   //void moveCameraUp();
@@ -48,6 +56,7 @@ private:
   void initTextureSettings();
 
   GLfloat* light0_position;
+  GLfloat* light0_direction;
   GLfloat camera_x, camera_y, camera_z;
   GLfloat cam_rot_x, cam_rot_y;
   GLfloat cam_mov_speed, cam_rot_speed;
@@ -61,6 +70,10 @@ private:
   bool lights_on;
   bool use_textures;
   int tex1;
+  bool m_button_pressed[3];
+  QPoint m_last_pos;
+  double m_look_speed;
+  QString tree_file;
 };
 
 #endif

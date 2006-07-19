@@ -9,17 +9,20 @@ using namespace cxxadt;
 
 class CylinderVolume /*: public Volume*/ {
  public :
-  CylinderVolume(double radius, double height, Point point, PositionVector direction);
+  CylinderVolume(double radius, double height, Point point, PositionVector direction, int detail);
   ~CylinderVolume();
   int isPointInside(Point point);
 
  private:
   double radius;
+  double real_radius;
   double height;
   Point point;
   Point origo;
   PositionVector direction;
-  PositionVector rotationDirection;
+  PositionVector plane;
+  double c;
+  double a;
 };
 
 #endif
