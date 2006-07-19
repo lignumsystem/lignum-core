@@ -43,10 +43,12 @@ BSPTree::~BSPTree() {
 
 }
 
-void BSPTree::buildBSPTree(BSPPolygonSet& polys) {
+void BSPTree::buildBSPTree(BSPPolygonSet& polys, list<CylinderVolume>* cylinders) {
   //polygons.addPolygons(&polys);
   //return;
   
+  opaquePolygons.getOpaquePolygons(&polys);
+
   if(polys.isEmpty()) {
     // DEBUG
     cout << "Cannot create a empty bsp-tree."<< endl;
@@ -57,6 +59,7 @@ void BSPTree::buildBSPTree(BSPPolygonSet& polys) {
   if(divider == NULL) {
     //cout << "NULL" << endl;
     polygons.addPolygons(&polys);
+    polygons.removeHiddenPolygons(cylinders);
     return;
   }
 
@@ -85,6 +88,8 @@ void BSPTree::buildBSPTree(BSPPolygonSet& polys) {
 	poly->split(*divider, front_pieces, back_pieces);
 	//cout << "split done!" << endl;
 	delete poly;
+	back_pieces->removeHiddenPolygons(cylinders);
+	front_pieces->removeHiddenPolygons(cylinders);
 	back_polygons.addPolygons(back_pieces);
 	front_polygons.addPolygons(front_pieces);
 	delete back_pieces;
@@ -95,16 +100,18 @@ void BSPTree::buildBSPTree(BSPPolygonSet& polys) {
 
   if(!front_polygons.isEmpty()) {
     front = new BSPTree();
-    front->buildBSPTree(front_polygons);
+    front->buildBSPTree(front_polygons, cylinders);
   }
   
   if(!back_polygons.isEmpty()) {
     back = new BSPTree();
-    back->buildBSPTree(back_polygons);
+    back->buildBSPTree(back_polygons, cylinders);
   }
+  
+  polygons.removeHiddenPolygons(cylinders);
 }
 
-void BSPTree::drawTree(Point& eye) {
+/*void BSPTree::drawTree(Point& eye) {
   BSPTree* tree = this;
   stack<BSPTree*> trees;
   while(true) {
@@ -128,10 +135,10 @@ void BSPTree::drawTree(Point& eye) {
 	  trees.push(tree->front);
       }
       else {
-	if(tree->back != NULL)
-	  trees.push(tree->back);
 	if(tree->front != NULL)
 	  trees.push(tree->front);
+	if(tree->back != NULL)
+	  trees.push(tree->back);
       }
     }
     if(!trees.empty()) {
@@ -141,7 +148,7 @@ void BSPTree::drawTree(Point& eye) {
     else
       break;
   }
-}
+  }*/
 
 bool BSPTree::removeHiddenPolygons(list<CylinderVolume>* volumes) {
   //list<BSPPolygon*> polys = polygons.getPolygons();
@@ -154,40 +161,56 @@ bool BSPTree::removeHiddenPolygons(list<CylinderVolume>* volumes) {
 
 }
 
-/*void BSPTree::drawTree(Point& eye) {
+void BSPTree::drawTree(Point& eye, PositionVector& direction) {
+  //glEnable(GL_DEPTH_TEST);
+  glDepthMask(GL_TRUE);
+  opaquePolygons.drawPolygons();
+  
+  glDepthMask(GL_FALSE);
+  //glDisable(GL_DEPTH_TEST);
+  drawTransparentTree(eye, direction);
+}
+
+void BSPTree::drawTransparentTree(Point& eye, PositionVector& direction) {
   if(divider == NULL) {
     polygons.drawPolygons();
   }
   else { 
     double result = divider->classifyPoint(eye);
-
+    /*double draw_back = true;
+    double draw_front = true;
+    if(back != NULL) {
+      if( 
+      }*/  
+      
     if(result > 0) {
       if(back != NULL) 
-	back->drawTree(eye);
+	back->drawTransparentTree(eye, direction);
       polygons.drawPolygons();
       if(front != NULL)
-	front->drawTree(eye);
+	front->drawTransparentTree(eye, direction);
     }
     
     else if(result < 0) {
       if(front != NULL)
-	front->drawTree(eye);
+	front->drawTransparentTree(eye, direction);
       polygons.drawPolygons();
       if(back != NULL)
-	back->drawTree(eye);
+	back->drawTransparentTree(eye, direction);
     }
     
     else {
       if(front != NULL)
-	front->drawTree(eye);
+	front->drawTransparentTree(eye, direction);
       if(back != NULL)
-	back->drawTree(eye);
+	back->drawTransparentTree(eye, direction);
     }
   }
-  }*/
+}
 
 int BSPTree::countPolygons() const {
   int polys = polygons.size();
+  polys += opaquePolygons.size();
   if(front != NULL)
     polys += front->countPolygons();
   if(back != NULL)
@@ -202,4 +225,26 @@ int BSPTree::countComponents() const {
   if(back != NULL)
     comps += back->countComponents();
   return comps;
+}
+
+int BSPTree::getDepth() const {
+  int back_depth = 0;
+  int front_depth = 0;
+  if(back != NULL)
+    back_depth = back->getDepth();
+  if(front != NULL)
+    front_depth = front->getDepth();
+  if(back_depth > front_depth)
+    return 1 + back_depth;
+  else
+    return 1 + front_depth;
+}
+
+int BSPTree::getNodeCount() const {
+  int nodes = 1;
+  if(back != NULL)
+    nodes += back->getNodeCount();
+  if(front != NULL)
+    nodes += front->getNodeCount();
+  return nodes;
 }
