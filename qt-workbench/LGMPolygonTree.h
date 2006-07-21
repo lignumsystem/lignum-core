@@ -24,7 +24,7 @@ class PolygonTreeBuilder {
   PolygonTreeBuilder(VisualizationParameters params, list<CylinderVolume>* cyls):
   parameters(params), cylinders(cyls) { }
   
-  BSPPolygonSet* operator() (BSPPolygonSet* polygons, const TreeCompartment<TS,BUD>* tc) const ;
+  BSPPolygonSet* operator() (BSPPolygonSet* polygons, TreeCompartment<TS,BUD>* tc) const ;
   
   private:
   
@@ -37,6 +37,10 @@ class PolygonTreeBuilder {
 			       SceneObject* object,
 			       int r_detail,
 			       int y_detail) const;
+
+  BSPPolygonSet* makePetiole(Point sp, Point ep, SceneObject* object) const;
+  BSPPolygonSet* makeTriangleLeaf(Point lc, Point rc, Point ac, SceneObject* object) const;
+  BSPPolygonSet* makeEllipseLeaf(vector<Point> vertexVector, SceneObject* object) const;
   mutable list<CylinderVolume>* cylinders;
   VisualizationParameters parameters;
 };
@@ -55,36 +59,58 @@ template <class TS, class BUD=DefaultBud<TS>, class S=Ellipse>
 
 
 template <class TS, class BUD, class S>
-  BSPPolygonSet* PolygonTreeBuilder<TS,BUD,S>::operator() (BSPPolygonSet* polygons, const TreeCompartment<TS,BUD>*tc) const {
+  BSPPolygonSet* PolygonTreeBuilder<TS,BUD,S>::operator() (BSPPolygonSet* polygons, TreeCompartment<TS,BUD>*tc) const {
 
-  if(const TreeSegment<TS,BUD>* ts = dynamic_cast<const TreeSegment<TS,BUD>*>(tc)) {
+  if(TreeSegment<TS,BUD>* ts = dynamic_cast<TreeSegment<TS,BUD>*>(tc)) {
     double radius = GetValue(*ts, LGAR);
     double length = GetValue(*ts, LGAL);
     Point point = GetPoint(*ts);
     PositionVector direction = GetDirection(*ts);
-    /*    GLfloat color1[] = {1.0, 1.0, 1.0, 1.0,
-			1.0, 1.0, 1.0, 1.0,
-			1.0, 1.0, 1.0, 1.0,
-			50};
-			BSPPolygonMaterial* green = new BSPPolygonMaterial(color1);*/
     SceneObject* object = new SceneObject(parameters.getMaterial(), parameters.getCylinderTexture(), false);
-    //int detail = 20;
-    polygons->addPolygons(makeCylinder(radius+0.01, length, Point(point.getX(), point.getZ(), -point.getY()),
-					       PositionVector(direction.getX(), direction.getZ(), -direction.getY()),
-				       false, true, object,
-				       parameters.getCylinderRDetail(), parameters.getCylinderHDetail()));
-    CylinderVolume cylinder((radius+0.01), length, Point(point.getX(), point.getZ(), -point.getY()),
+    BSPPolygonSet* cyl = makeCylinder(radius, length, Point(point.getX(), point.getZ(), -point.getY()),
+					   PositionVector(direction.getX(), direction.getZ(), -direction.getY()),
+					   false, true, object,
+					   parameters.getCylinderRDetail(), parameters.getCylinderHDetail());
+    polygons->addPolygons(cyl);
+    delete cyl;
+    CylinderVolume cylinder(radius, length, Point(point.getX(), point.getZ(), -point.getY()),
 			    PositionVector(direction.getX(), direction.getZ(), -direction.getY()),
 			    parameters.getCylinderRDetail());
     cylinders->push_back(cylinder);
+
+    if(HwTreeSegment<TS,BUD,S>* hw = dynamic_cast<HwTreeSegment<TS,BUD,S>*>(ts)) {
+      list<BroadLeaf<S>*>& ll = GetLeafList(*hw);
+      for(typename list<BroadLeaf<S>*>::iterator i = ll.begin(); i != ll.end(); i++) {
+	const Shape& s = static_cast<const Shape&>(GetShape(**i));
+	Petiole p = GetPetiole(**i);
+	SceneObject* p_object = new SceneObject(parameters.getLeafMaterial(), 0, false);
+	BSPPolygonSet* petiole = makePetiole(GetStartPoint(p),
+					     GetEndPoint(p),
+					     p_object);
+	polygons->addPolygons(petiole);
+	delete petiole;
+	if(const Triangle* t = dynamic_cast<const Triangle*>(&s)) {
+	  SceneObject* object = new SceneObject(parameters.getLeafMaterial(), parameters.getLeafTexture(), true);
+	  BSPPolygonSet* leaf = makeTriangleLeaf(t->getLeftCorner(),
+						 t->getRightCorner(),
+						 t->getApexCorner(),
+						 object);
+	  polygons->addPolygons(leaf);
+	  delete leaf;
+	}
+	else if(const Ellipse* e = dynamic_cast<const Ellipse*>(&s)) {
+	  SceneObject* object = new SceneObject(parameters.getLeafMaterial(), parameters.getLeafTexture(), true);
+	  vector<Point> vertices;
+	  BSPPolygonSet* leaf = makeEllipseLeaf(e->getVertexVector(vertices, 10),
+						object);
+	  polygons->addPolygons(leaf);
+	  delete leaf;
+	}
+      }
+    }
   }
   return polygons;
 }
-
-/*template <class TS, class BUD, class S>
-  list<CylinderVolume> PolygonTreeBuilder<TS,BUD,S>::getCylinders() {
-  return cylinders;
-  }*/
 
 template <class TS, class BUD, class S>
   BSPPolygonSet* LGMPolygonTree<TS,BUD,S>::buildTree(Tree<TS,BUD>& tree, VisualizationParameters params) {
@@ -107,7 +133,6 @@ template <class TS, class BUD, class S>
   double PI = 3.14159265;
   double sine, cosine, sine_next, cosine_next, y, y_next;
   BSPPolygonSet* polygons = new BSPPolygonSet();
-  //  SceneObject* object = new SceneObject(material, 0);
 
   PositionVector dir(direction.normalize().getX()/2.0,
 		     (1+direction.normalize().getY())/2.0,
@@ -119,13 +144,17 @@ template <class TS, class BUD, class S>
   vector<Point> vertices(3);
   vector<Point> t_vertices(3);
   
-  vector<Point> vertices2(4);
-  vector<Point> t_vertices2(4);
+  // vector<Point> vertices2(4);
+  //vector<Point> t_vertices2(4);
   PositionVector v1, v2, v3, v4;
+  sine_next = radius*sin(0*2.0*PI/r_detail);
+  cosine_next = radius*cos(0*2.0*PI/r_detail);
 
   for(int i = 0; i < r_detail; i++) {
-    sine = radius*sin(i*2.0*PI/r_detail);
-    cosine = radius*cos(i*2.0*PI/r_detail);
+    //sine = radius*sin(i*2.0*PI/r_detail);
+    //cosine = radius*cos(i*2.0*PI/r_detail);
+    sine = sine_next;
+    cosine = cosine_next;
     sine_next = radius*sin((i+1)*2.0*PI/r_detail);
     cosine_next = radius*cos((i+1)*2.0*PI/r_detail);
 
@@ -133,7 +162,7 @@ template <class TS, class BUD, class S>
       y = j / (double)y_detail * height;
       y_next = (j+1) / (double)y_detail * height;
       
-      /*v1 = PositionVector(sine, y, cosine);
+      /*  v1 = PositionVector(sine, y, cosine);
       v2 = PositionVector(sine, y_next, cosine);
       v3 = PositionVector(sine_next, y_next, cosine_next);
       v4 = PositionVector(sine_next, y, cosine_next);
@@ -209,7 +238,7 @@ template <class TS, class BUD, class S>
       v2 = v2.rotate(origo, dir, PI);
       v3 = v3.rotate(origo, dir, PI);
       
-      /* vertices[0] = Point(v1)+point;
+      /*vertices[0] = Point(v1)+point;
       vertices[1] = Point(v2)+point;
       vertices[2] = Point(v3)+point;
       polygons->addPolygon(new BSPPolygon(vertices, object));*/
@@ -243,6 +272,120 @@ template <class TS, class BUD, class S>
 
   }
   //cout << "Cylinder size:" << polygons->size() << endl;
+  return polygons;
+}
+
+template <class TS, class BUD, class S>
+BSPPolygonSet* PolygonTreeBuilder<TS,BUD,S>::makePetiole(Point sp, Point ep, SceneObject* object) const {
+  BSPPolygonSet* polygons = new BSPPolygonSet();
+
+  double temp = sp.getY();
+  sp.setY(sp.getZ());
+  sp.setZ(-temp);
+
+  temp = ep.getY();
+  ep.setY(ep.getZ());
+  ep.setZ(-temp);
+  
+  /*  vector<Point> vertices(3);
+
+  vertices[0] = sp;
+  vertices[1] = Point(ep.getX()+0.0005, ep.getY(),ep.getZ());
+  vertices[2] = ep;
+  polygons->addPolygon(new BSPPolygon(vertices, object));
+
+  vertices[0] = sp;
+  vertices[1] = Point(sp.getX()+0.0005, sp.getY(),sp.getZ());
+  vertices[2] = Point(ep.getX()+0.0005, ep.getY(),ep.getZ());
+  polygons->addPolygon(new BSPPolygon(vertices, object));
+
+  vertices[0] = sp;
+  vertices[1] = ep;
+  vertices[2] = Point(ep.getX()+0.0005, ep.getY(),ep.getZ());
+  polygons->addPolygon(new BSPPolygon(vertices, object));
+
+  vertices[0] = sp;
+  vertices[1] = Point(ep.getX()+0.0005, ep.getY(),ep.getZ());
+  vertices[2] = Point(sp.getX()+0.0005, sp.getY(),sp.getZ());
+  polygons->addPolygon(new BSPPolygon(vertices, object));*/
+
+
+  polygons->addPolygon(new BSPPolygon(sp,
+				      Point(ep.getX()+0.0005, ep.getY(),ep.getZ()),
+				      ep,
+				      object));
+  polygons->addPolygon(new BSPPolygon(sp,
+				      Point(sp.getX()+0.0005, sp.getY(), sp.getZ()),
+				      Point(ep.getX()+0.0005, ep.getY(), ep.getZ()),
+				      object));
+  polygons->addPolygon(new BSPPolygon(sp,
+				      ep,
+				      Point(ep.getX()+0.0005, ep.getY(),ep.getZ()),
+				      object));
+  polygons->addPolygon(new BSPPolygon(sp,
+				      Point(ep.getX()+0.0005, ep.getY(), ep.getZ()),
+				      Point(sp.getX()+0.0005, sp.getY(), sp.getZ()),
+				      object));
+  return polygons;
+}
+
+template <class TS, class BUD, class S>
+BSPPolygonSet* PolygonTreeBuilder<TS,BUD,S>::makeTriangleLeaf(Point lc, Point rc, Point ac, SceneObject* object) const {
+  BSPPolygonSet* polygons = new BSPPolygonSet();
+
+  /*vector<Point> vertices(3);
+  vertices[0] = lc;
+  vertices[1] = rc;
+  vertices[2] = ac;
+  polygons->addPolygon(new BSPPolygon(vertices, object));
+
+  vertices[0] = lc;
+  vertices[1] = ac;
+  vertices[2] = rc;
+  polygons->addPolygon(new BSPPolygon(vertices, object));*/
+  
+  polygons->addPolygon(new BSPPolygon(lc, rc, ac, object));
+  polygons->addPolygon(new BSPPolygon(lc, ac, rc, object));
+  
+  return polygons;
+
+}
+
+template <class TS, class BUD, class S>
+BSPPolygonSet* PolygonTreeBuilder<TS,BUD,S>::makeEllipseLeaf(vector<Point> vertices, SceneObject* object) const {
+  BSPPolygonSet* polygons = new BSPPolygonSet();
+
+  int size = vertices.size();
+  for(int i = 0; i < size; i++) {
+    double temp = vertices[i].getY();
+    vertices[i].setY(vertices[i].getZ());
+    vertices[i].setZ(-temp);
+  }
+  //polygons->addPolygon(new BSPPolygon(vertices, object));
+
+  double step = 1.0/size;
+  polygons->addPolygon(new BSPPolygon(vertices[0], vertices[1], vertices[size-1],
+				      Point(0.5,1,0), Point(1,1-step,0), Point(0,1-step,0), object));
+  polygons->addPolygon(new BSPPolygon(vertices[0], vertices[size-1], vertices[1],
+				      Point(0.5,1,0), Point(0,1-step,0), Point(1,1-step,0), object));
+  
+  polygons->addPolygon(new BSPPolygon(vertices[size/2-1], vertices[size/2], vertices[size/2+1],
+				      Point(1,step,0), Point(0.5,0,0), Point(0,step,0), object));
+  polygons->addPolygon(new BSPPolygon(vertices[size/2-1], vertices[size/2+1], vertices[size/2],
+				      Point(1,step,0), Point(0,step,0), Point(0.5,0,0), object));
+  
+  for(int i = 1; i < size/2-1; i++) {
+    polygons->addPolygon(new BSPPolygon(vertices[i], vertices[i+1], vertices[size-i],
+					Point(1,1-step*i,0), Point(1,1-step*(i+1),0), Point(0,1-step*i,0), object));
+    polygons->addPolygon(new BSPPolygon(vertices[i+1], vertices[size-i-1], vertices[size-i],
+					Point(1,1-step*(i+1),0), Point(0,1-step*(i+1),0),  Point(0,1-step*i,0), object));
+    
+    polygons->addPolygon(new BSPPolygon(vertices[i], vertices[size-i], vertices[i+1],
+					Point(1,1-step*i,0), Point(0,1-step*i,0),  Point(1,1-step*(i+1),0), object));
+    polygons->addPolygon(new BSPPolygon(vertices[i+1], vertices[size-i], vertices[size-i-1],
+					Point(1,1-step*(i+1),0), Point(0,1-step*i,0), Point(0,1-step*(i+1),0), object));
+  }
+  
   return polygons;
 }
 

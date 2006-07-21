@@ -38,7 +38,7 @@ BSPPolygon::BSPPolygon(Point p1, Point p2, Point p3, Point t_p1, Point t_p2, Poi
   for(int i = 0; i < t_vertices.size(); i++) {
     t_vertices[i] = Point(0,0,0);
   }
-}
+  }
 
 BSPPolygon::BSPPolygon(vector<Point> points, vector<Point> texturePoints, SceneObject* obj):
   beenDivider(false), vertices(points), t_vertices(texturePoints), object(obj) {
@@ -60,8 +60,8 @@ BSPPolygon::~BSPPolygon() {
 
 //int BSPPolygon::last_material = 0;
 
-/*
-void BSPPolygon::split(BSPPolygon& divider, BSPPolygonSet *front, BSPPolygonSet *back) {
+
+/*void BSPPolygon::split(BSPPolygon& divider, BSPPolygonSet *front, BSPPolygonSet *back) {
   vector<Point> outpts, t_outpts;
   vector<Point> inpts, t_inpts;
   Point ptA, ptB;
@@ -405,6 +405,13 @@ vector<Point> BSPPolygon::getVertices() const {
   return vertices;
 }
 
+/*Point BSPPolygon::getCenter() const {
+  Point center(0,0,0);
+  center.setX((p1.getX() + p2.getX() + p3.getX())/3.0);
+  center.setY((p1.getY() + p2.getY() + p3.getY())/3.0);
+  center.setZ((p1.getZ() + p2.getZ() + p3.getZ())/3.0);
+  }*/
+
 BSPPolygonSet::~BSPPolygonSet() {
   for(list<BSPPolygon*>::iterator i = polygons.begin(); i != polygons.end(); i++) {
     delete *i;
@@ -472,18 +479,26 @@ BSPPolygon* BSPPolygonSet::chooseDivider() {
   int leastSplits = 1000000000;
   double bestRelation = 0;
   int loop = 0;
-  /*  list<BSPPolygon*> candidates;
-  while(candidates.empty()) {
-    for(list<BSPPolygon*>::const_iterator i = polygons.begin(); i != polygons.end(); i++) {
-      if((double)rand() / RAND_MAX < 0.35) {
-	candidates.push_back(*i);
+  list<BSPPolygon*> candidates;
+
+  if(polygons.size() > 5) {
+    while(candidates.empty()) {
+      candidates.clear();
+      for(list<BSPPolygon*>::const_iterator i = polygons.begin(); i != polygons.end(); i++) {
+	if((double)rand() / RAND_MAX < 0.05) {
+	  candidates.push_back(*i);
+	}
       }
     }
-    }*/
+  }
+  else {
+    for(list<BSPPolygon*>::const_iterator i = polygons.begin(); i != polygons.end(); i++) {
+      candidates.push_back(*i);
+    }
+  }
   while(bestPolygon == NULL) {
     loop++;
-    //  cout << "try " << loop << endl;
-    for(list<BSPPolygon*>::const_iterator i = polygons.begin(); i != polygons.end();i++) {
+    for(list<BSPPolygon*>::const_iterator i = candidates.begin(); i != candidates.end();i++) {
       if(!(**i).hasBeenDivider()) {
 	int numPositive = 1;
 	int numNegative = 1;
@@ -496,39 +511,25 @@ BSPPolygon* BSPPolygonSet::chooseDivider() {
 	  if(true) {
 	    value = (**i).calculateSide(**j);
 	    if(value == BSPPolygon::INFRONT)
-	      numPositive += 10;
+	      numPositive++;
 	    else if(value == BSPPolygon::BEHIND)
-	      numNegative += 10;
+	      numNegative++;
 	    else if(value == BSPPolygon::SPANNING) 
 	      numSpanning++;
-	    /*	    else if(value == BSPPolygon::COINCIDING) {
-	      numCoinciding++;
-	      cout << "COINCIDING" << endl;
-	      }*/
 	  }
 	}
 	if(numPositive < numNegative)
 	  relation = (double)numPositive / (double)numNegative;
 	else
 	  relation = (double)numNegative / (double)numPositive;
-	//	cout << "size: " << polygons.size() << endl;
-	//cout << "relation: " << relation << endl;
-	//eeeeeee	cout << numPositive << " " << numNegative << " " << numCoinciding << " " << numSpanning << endl;
 	if(relation > minRelation && (numSpanning < leastSplits || 
 				      numSpanning == leastSplits && relation > bestRelation)) {
-	  /* bestPolygon = *i;
-	  polygons.remove(*i);
-	  if(bestPolygon != NULL)
-	  polygons.push_back(bestPolygon);*/
 	  bestPolygon = *i;
 	  leastSplits = numSpanning;
 	  bestRelation = relation;
 	}
       }
     }
-
-    //    cout << "minRelation: " << minRelation << endl;
-    //minRelation = minRelation / MINRELATIONSCALE;
     minRelation = minRelation / 2;
   }
   

@@ -162,12 +162,12 @@ bool BSPTree::removeHiddenPolygons(list<CylinderVolume>* volumes) {
 }
 
 void BSPTree::drawTree(Point& eye, PositionVector& direction) {
-  //glEnable(GL_DEPTH_TEST);
   glDepthMask(GL_TRUE);
+  //glEnable(GL_CULL_FACE);
   opaquePolygons.drawPolygons();
   
   glDepthMask(GL_FALSE);
-  //glDisable(GL_DEPTH_TEST);
+  //glDisable(GL_CULL_FACE);
   drawTransparentTree(eye, direction);
 }
 

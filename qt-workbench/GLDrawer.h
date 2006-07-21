@@ -8,6 +8,7 @@
 #include <LGMPolygonTree.h>
 #include <VisualizationParameters.h>
 
+
 class GLDrawer : public QGLWidget
 {
   Q_OBJECT
@@ -45,6 +46,10 @@ public slots:
   void toggleTexturing();
   void changeTree();
   void setTreeFile(QString fileName);
+  void setCylinderRDetail(int detail);
+  void setCylinderHDetail(int detail);
+  void setCylinderTexture(QString fileName);
+  void setLeafTexture(QString fileName);
   //void moveCameraLeft();
   //void moveCameraRight();
   //void moveCameraUp();

@@ -9,10 +9,13 @@
 //#include <LGMPolygonTree.h>
 #include <XMLTree.h>
 #include <ScotsPine.h>
+#include <SugarMaple.h>
 #include <vector>
 #include <ctime>
+#include <Lignum.h>
 
 using namespace std;
+using namespace Lignum;
 
 GLDrawer::GLDrawer(QWidget* parent)
   : QGLWidget(parent)  {
@@ -44,14 +47,17 @@ GLDrawer::GLDrawer(QWidget* parent)
   tree_file = QString("test.xml");
 
   tree = new BSPTree();
+  setCylinderRDetail(8);
+  setCylinderHDetail(1);
+
   
 }
 
 void GLDrawer::initMaterials() {
-  GLfloat color1[] = {0.2, 0.9, 0.2, 0.5,
-		      0.1, 0.9, 0.1, 0.5,
-		      0.1, 0.9, 0.1, 0.5,
-		      50};
+  GLfloat color1[] = {0.2, 0.9, 0.2, 1.0,
+		      0.1, 0.9, 0.1, 1.0,
+		      0.1, 0.9, 0.1, 1.0,
+		      5};
   GLfloat color2[] = {0.9, 0.2, 0.2, 0.5,
 		      0.9, 0.1, 0.1, 0.5,
 		      1.0, 0.1, 0.1, 0.5,
@@ -65,6 +71,7 @@ void GLDrawer::initMaterials() {
   red = new BSPPolygonMaterial(color2);
   white = new BSPPolygonMaterial(color3);
   parameters.setMaterial(white);
+  parameters.setLeafMaterial(white);
 }
 
 void GLDrawer::initLights() {
@@ -119,6 +126,7 @@ void GLDrawer::initTextureSettings() {
 }
 
 int GLDrawer::loadTexture(std::string fileName) {
+  cout << fileName << endl;
   return bindTexture(QImage(QString(fileName.c_str())));
 }
 
@@ -138,9 +146,10 @@ void GLDrawer::initializeGL()
   initMaterials();
   initLights();
   initTextureSettings();
-
-  tex1 = loadTexture(std::string("pine_texture.png"));
-  parameters.setCylinderTexture(tex1);
+  setCylinderTexture(QString("pine_texture.png"));
+  setLeafTexture(QString("maple_leaf.png"));
+  //tex1 = loadTexture(std::string("pine_texture.png"));
+  //parameters.setCylinderTexture(tex1);
 
 
   /* BSPPolygonSet polygons;
@@ -255,12 +264,15 @@ void GLDrawer::changeTree() {
   tree = new BSPTree();
   BSPPolygonSet polygons;
 
-  Tree<ScotsPineSegment, ScotsPineBud> pine2(Point(0,0,0), PositionVector(0,1,0));
-  XMLDomTreeReader<ScotsPineSegment, ScotsPineBud> reader;
+  //Tree<ScotsPineSegment, ScotsPineBud> pine2(Point(0,0,0), PositionVector(0,1,0));
+  Tree<SugarMapleSegment, SugarMapleBud> pine2(Point(0,0,0), PositionVector(0,1,0));
+  
+  //XMLDomTreeReader<ScotsPineSegment, ScotsPineBud> reader;
+  XMLDomTreeReader<SugarMapleSegment, SugarMapleBud> reader;
   reader.readXMLToTree(pine2, tree_file.toStdString());
 
-  LGMPolygonTree<ScotsPineSegment, ScotsPineBud> constructor;
-  VisualizationParameters params(20, 1, tex1, white);
+  //LGMPolygonTree<ScotsPineSegment, ScotsPineBud> constructor;
+  LGMPolygonTree<SugarMapleSegment, SugarMapleBud> constructor;
 
   BSPPolygonSet* treePolygons = constructor.buildTree(pine2, parameters);
   polygons.addPolygons(treePolygons);
@@ -366,13 +378,13 @@ BSPPolygonSet* GLDrawer::makeCylinder(double radius, double height, Point point,
     v2 = v2.rotate(origo, dir, PI);
     v3 = v3.rotate(origo, dir, PI);
 
-    /*vertices[0] = Point(v1)+point;
+    /*    vertices[0] = Point(v1)+point;
     vertices[1] = Point(v2)+point;
     vertices[2] = Point(v3)+point;
     t_vertices[0] = Point((i+1)/(double)detail, 0, 0);
     t_vertices[1] = Point(i/(double)detail, 1, 0);
     t_vertices[2] = Point((i+1)/(double)detail, 1, 0);
-    polygons->addPolygon(new BSPPolygon(vertices, t_vertices, object));*/
+    poygons->addPolygon(new BSPPolygon(vertices, t_vertices, object));*/
     
     polygons->addPolygon(new BSPPolygon(Point(v1)+point,
 					Point(v2)+point,
@@ -434,7 +446,7 @@ BSPPolygonSet* GLDrawer::makeSquare(double height, double width, Point point, Po
   double x1, z1, x2, z2;
   double tx1, tz1, tx2, tz2;
   BSPPolygonSet* polygons = new BSPPolygonSet();
-  SceneObject* object = new SceneObject(material, texture, true);
+  SceneObject* object = new SceneObject(material, texture, false);
 
   PositionVector dir(direction.normalize().getX()/2.0,
 		     (1+direction.normalize().getY())/2.0,
@@ -615,4 +627,34 @@ void GLDrawer::keyReleaseEvent(QKeyEvent* event) {
 
 void GLDrawer::setTreeFile(QString fileName) {
   tree_file = fileName;
+}
+
+void GLDrawer::setCylinderRDetail(int detail) {
+  parameters.setCylinderRDetail(detail);
+}
+
+void GLDrawer::setCylinderHDetail(int detail) {
+  parameters.setCylinderHDetail(detail);
+}
+
+void GLDrawer::setCylinderTexture(QString texture) {
+  QFile file(texture);
+  
+  if(file.exists()) {
+    int tex = loadTexture(texture.toStdString());
+    parameters.setCylinderTexture(tex);
+  }
+  else 
+    cout << "Texture file: " << texture.toStdString() << " is not found!" << endl;
+}
+
+void GLDrawer::setLeafTexture(QString texture) {
+  QFile file(texture);
+  
+  if(file.exists()) {
+    int tex = loadTexture(texture.toStdString());
+    parameters.setLeafTexture(tex);
+  }
+  else 
+    cout << "Texture file: " << texture.toStdString() << " is not found!" << endl;
 }

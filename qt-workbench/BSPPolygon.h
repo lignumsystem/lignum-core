@@ -32,6 +32,8 @@ class BSPPolygonSet;
   int           getObjectId() const;
   SceneObject*  getSceneObject() const;
   vector<Point> getVertices()const;
+  bool         isTransparent() const;
+  //Point        getCenter() const;
   inline friend bool operator < (const BSPPolygon& polygon1, const BSPPolygon& polygon2);
 
   enum {COINCIDING, BEHIND, INFRONT, SPANNING};
@@ -46,7 +48,7 @@ private:
   SceneObject* object;
   double distance;
 
-  };*/
+};*/
 
 
 class BSPPolygon {
@@ -65,6 +67,7 @@ public :
   SceneObject* getSceneObject() const;
   vector<Point> getVertices() const;
   bool         isTransparent() const;
+  //  Point        getCenter() const;
   inline friend bool operator < (const BSPPolygon& polygon1, const BSPPolygon& polygon2);
 
   enum {COINCIDING, BEHIND, INFRONT, SPANNING};
@@ -79,7 +82,7 @@ private:
   SceneObject* object;
   double distance;
 
-};
+  };
 
 
 
