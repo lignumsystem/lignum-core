@@ -5,14 +5,16 @@ VisualizationParameters::VisualizationParameters(int c_r_detail,
 						 int c_tex,
 						 int l_tex,
 						 BSPPolygonMaterial* mat,
-						 BSPPolygonMaterial* leafMat) :
+						 BSPPolygonMaterial* leafMat,
+						 BSPPolygonMaterial* petioleMat) :
   cylinder_r_detail(c_r_detail), cylinder_h_detail(c_h_detail), 
-  cylinder_tex(c_tex), leaf_tex(l_tex), material(mat), leafMaterial(leafMat) {
+  cylinder_tex(c_tex), leaf_tex(l_tex), material(mat), leafMaterial(leafMat),
+  petioleMaterial(petioleMat), use_BSP(true) {
 }
 
 VisualizationParameters::VisualizationParameters() :
   cylinder_r_detail(20), cylinder_h_detail(1), cylinder_tex(0),
-  material(NULL), leafMaterial(NULL) {
+  material(NULL), leafMaterial(NULL), petioleMaterial(NULL) {
 }
 
 VisualizationParameters::~VisualizationParameters() {
@@ -65,6 +67,11 @@ void VisualizationParameters::setLeafMaterial(BSPPolygonMaterial* mat) {
   leafMaterial = mat;
 }
 
+void VisualizationParameters::setPetioleMaterial(BSPPolygonMaterial* mat) {
+  petioleMaterial = mat;
+}
+
+
 BSPPolygonMaterial* VisualizationParameters::getMaterial() const {
   return material;
 }
@@ -72,4 +79,16 @@ BSPPolygonMaterial* VisualizationParameters::getMaterial() const {
 
 BSPPolygonMaterial* VisualizationParameters::getLeafMaterial() const {
   return leafMaterial;
+}
+
+BSPPolygonMaterial* VisualizationParameters::getPetioleMaterial() const {
+  return petioleMaterial;
+}
+
+void VisualizationParameters::setBSPUsage(bool uBSP) {
+  use_BSP = uBSP;
+}
+
+bool VisualizationParameters::useBSP() const {
+  return use_BSP;
 }

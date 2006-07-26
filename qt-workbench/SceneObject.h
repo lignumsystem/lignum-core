@@ -17,6 +17,7 @@ public :
   void   increaseComponentCount();
   void   decreaseComponentCount();
   bool   isTransparent() const;
+  bool   hasTexture() const;
   int    id;
   static int n_objects;
 private:
@@ -30,6 +31,7 @@ class SceneObjectComponent {
 public:
   SceneObjectComponent(SceneObject* object, int component_index);
   ~SceneObjectComponent();
+  void buildDrawList();
   void drawComponent() ;
 
 private:

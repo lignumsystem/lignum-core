@@ -25,15 +25,13 @@ GLDrawer::GLDrawer(QWidget* parent)
   camera_z = -4.8;
   cam_rot_x = 0;
   cam_rot_y = 0;
+  cam_rot_z = 0;
   cam_mov_speed = 0.01;
   cam_rot_speed = 1;
-  cyl_x = 0;
-  cyl_y = 0;
-  cyl_z = -2;
-  cyl_rot_angle = 0;
-  cyl_rot_x = 0;
-  cyl_rot_y = 0;
-  cyl_rot_z = 0;
+  r_axis = PositionVector(0,1,0);
+  t_point = Point(0,0,0);
+  t_height = 1;
+
   DEGTORAD = 2*3.14159265/360.0;
   wire = false;
   lights_on = true;
@@ -54,17 +52,17 @@ GLDrawer::GLDrawer(QWidget* parent)
 }
 
 void GLDrawer::initMaterials() {
-  GLfloat color1[] = {0.2, 0.9, 0.2, 1.0,
-		      0.1, 0.9, 0.1, 1.0,
-		      0.1, 0.9, 0.1, 1.0,
+  GLfloat color1[] = {0.1, 0.3, 0.1, 1.0,
+		      0.1, 0.3, 0.1, 1.0,
+		      0.0, 0.1, 0.0, 1.0,
 		      5};
   GLfloat color2[] = {0.9, 0.2, 0.2, 0.5,
 		      0.9, 0.1, 0.1, 0.5,
-		      1.0, 0.1, 0.1, 0.5,
+		      0.2, 0.1, 0.1, 0.5,
 		      50};
   GLfloat color3[] = {1.0, 1.0, 1.0, 1.0,
 		      1.0, 1.0, 1.0, 1.0,
-		      1.0, 1.0, 1.0, 1.0,
+		      0.2, 0.2, 0.2, 1.0,
 		      50};
   
   green = new BSPPolygonMaterial(color1);
@@ -72,6 +70,7 @@ void GLDrawer::initMaterials() {
   white = new BSPPolygonMaterial(color3);
   parameters.setMaterial(white);
   parameters.setLeafMaterial(white);
+  parameters.setPetioleMaterial(green);
 }
 
 void GLDrawer::initLights() {
@@ -132,8 +131,8 @@ int GLDrawer::loadTexture(std::string fileName) {
 
 void GLDrawer::initializeGL()
 {  
-  //glClearColor(0.9, 0.9, 0.9, 0.9);
-    glClearColor(0, 0, 0, 0);
+  glClearColor(0.9, 0.9, 0.9, 0.9);
+  //glClearColor(0, 0, 0, 0);
     glEnable(GL_DEPTH_TEST);
     //glDisable(GL_DEPTH_TEST);
   glFrontFace(GL_CW);
@@ -148,24 +147,11 @@ void GLDrawer::initializeGL()
   initTextureSettings();
   setCylinderTexture(QString("pine_texture.png"));
   setLeafTexture(QString("maple_leaf.png"));
-  //tex1 = loadTexture(std::string("pine_texture.png"));
-  //parameters.setCylinderTexture(tex1);
-
-
-  /* BSPPolygonSet polygons;
-
-  Tree<ScotsPineSegment, ScotsPineBud> pine2(Point(0,0,0), PositionVector(0,1,0));
-  XMLDomTreeReader<ScotsPineSegment, ScotsPineBud> reader;
-  reader.readXMLToTree(pine2, "test.xml");
-
-  LGMPolygonTree<ScotsPineSegment, ScotsPineBud> constructor;*/
-  //BSPPolygonSet* treePolygons = constructor.buildTree(pine2, tex1);
-  //polygons.addPolygons(treePolygons);
-  //delete treePolygons;
-  //cout << "tree done!" << endl;
 
   if(isExtensionSupported("GL_ARB_vertex_buffer_object"))
-     cout << "VBOs are supported!" << endl;
+    emit textOutput("VBOs are supported!");
+  else
+    emit textOutput("VBOs are not supported!");
 }
 
 void GLDrawer::resizeGL(int width, int height)
@@ -264,40 +250,48 @@ void GLDrawer::changeTree() {
   tree = new BSPTree();
   BSPPolygonSet polygons;
 
-  //Tree<ScotsPineSegment, ScotsPineBud> pine2(Point(0,0,0), PositionVector(0,1,0));
-  Tree<SugarMapleSegment, SugarMapleBud> pine2(Point(0,0,0), PositionVector(0,1,0));
+  Tree<ScotsPineSegment, ScotsPineBud> pine2(Point(0,0,0), PositionVector(0,1,0));
+  //Tree<SugarMapleSegment, SugarMapleBud> pine2(Point(0,0,0), PositionVector(0,1,0));
   
-  //XMLDomTreeReader<ScotsPineSegment, ScotsPineBud> reader;
-  XMLDomTreeReader<SugarMapleSegment, SugarMapleBud> reader;
+  XMLDomTreeReader<ScotsPineSegment, ScotsPineBud> reader;
+  //XMLDomTreeReader<SugarMapleSegment, SugarMapleBud> reader;
   reader.readXMLToTree(pine2, tree_file.toStdString());
 
-  //LGMPolygonTree<ScotsPineSegment, ScotsPineBud> constructor;
-  LGMPolygonTree<SugarMapleSegment, SugarMapleBud> constructor;
+  LGMPolygonTree<ScotsPineSegment, ScotsPineBud> constructor;
+  //LGMPolygonTree<SugarMapleSegment, SugarMapleBud> constructor;
 
   BSPPolygonSet* treePolygons = constructor.buildTree(pine2, parameters);
   polygons.addPolygons(treePolygons);
   delete treePolygons;
 
   
-  BSPPolygonSet* ground = makeSquare(10, 10, Point(5,0,-5), PositionVector(0,1,0), green, 0, 2);
-  polygons.addPolygons(ground);
-  delete ground;
+  //BSPPolygonSet* ground = makeSquare(10, 10, Point(5,0,-5), PositionVector(0,1,0), green, 0, 2);
+  //polygons.addPolygons(ground);
+  //delete ground;
 
   list<CylinderVolume>* cylinders = constructor.getCylinders();
   //polygons.removeHiddenPolygons(cylinders);
 
+
   tree->buildBSPTree(polygons, cylinders);
-  //int size = polygons.size();
-  //tree->removeHiddenPolygons(constructor.getCylinders());
-  //cout << "polygons removed: " << size - polygons.size() << endl;
 
   cout << "polygons: " << tree->countPolygons() << endl;
+  updateGL();
   cout << "components: " << tree->countComponents() << endl;
   cout << "depth:" << tree->getDepth() << endl;
   cout << "nodes:" << tree->getNodeCount() << endl;
   delete cylinders;
   
+  r_axis = GetDirection(GetRootAxis(pine2));
+  t_point = GetPoint(pine2);
+  t_height = GetValue(pine2, LGAH);
+  resetCamera();
+
   updateGL();
+
+  emit textOutput(QString("Tree file %1 has been loaded.").arg(tree_file));
+  //PositionVector cross(Cross(PositionVector(0,1,0), PositionVector(0,2,0)));
+  //cout << "cross: " << cross.getX() << " " << cross.getY() << " " << cross.getZ() << endl;
 
 }
   
@@ -306,16 +300,21 @@ void GLDrawer::paintGL()  {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   //glClear(GL_COLOR_BUFFER_BIT);
   glLoadIdentity();
-  
 
-  glRotatef(cam_rot_x, 1, 0, 0);
+  glRotatef(cam_rot_x, 1, 0, 0);  
   glRotatef(cam_rot_y, 0, 1, 0);
+
   glTranslatef(-camera_x, -camera_y, -camera_z);    
+  //glRotatef(cam_rot_z, 0, 0, 1);
+  glRotatef(-90, 1, 0, 0);
 
   glLightfv(GL_LIGHT0, GL_POSITION, light0_position);
   //glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, light0_direction);
 
-  Point eye(camera_x, camera_y, camera_z);
+  PositionVector pv(camera_x, camera_y, camera_z);
+  pv = pv.rotate(Point(0,0,0), PositionVector(1,0,0), DEGTORAD*90);
+  Point eye(pv.getX(), pv.getY(), pv.getZ());
+  
   PositionVector direction(sin(cam_rot_y*DEGTORAD),
 			   cos(cam_rot_y*DEGTORAD),
 			   sin(-cam_rot_x*DEGTORAD));
@@ -657,4 +656,28 @@ void GLDrawer::setLeafTexture(QString texture) {
   }
   else 
     cout << "Texture file: " << texture.toStdString() << " is not found!" << endl;
+}
+
+void GLDrawer::resetCamera() {
+  r_axis = r_axis.normalize();
+  double translate = 2.2*t_height;
+  cout << "point: " << t_point.getX() << " " << t_point.getY() << " " << t_point.getZ() << endl;
+  cout << "height: " << t_height << endl;
+  camera_x = t_point.getX() + t_height/2*r_axis.getX() + translate;
+  camera_y = t_point.getY() + t_height/2*r_axis.getY();
+  camera_z = t_point.getZ() + t_height/2*r_axis.getZ();
+  Point camera(camera_x, camera_y, camera_z);
+  cout << "camera: " << camera_x << " " << camera_y << " " << camera_z << endl;
+
+  Point p(t_point + Point((t_height/2.0)*r_axis));
+  PositionVector direction(PositionVector(p - camera));
+  direction = direction.normalize();
+  cam_rot_x = 1/DEGTORAD*asin(direction.getY());
+  cam_rot_y = 1/DEGTORAD*asin(direction.getX());
+
+  updateGL();
+}
+
+void GLDrawer::useBSP(bool use) {
+  parameters.setBSPUsage(use);
 }

@@ -111,7 +111,8 @@ public:
   
  private:
   list<BSPPolygon*>  polygons;
-  list<SceneObjectComponent*> components;
+  //list<SceneObjectComponent*> components;
+  vector<SceneObjectComponent*> components;
 
   static const int infinity = 1000000000;
   static const double MINIMUMRELATION = 0.3;

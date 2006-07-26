@@ -10,7 +10,8 @@ class VisualizationParameters {
 			  int cylinder_tex,
 			  int leaf_tex,
 			  BSPPolygonMaterial* material,
-			  BSPPolygonMaterial* leafMat);
+			  BSPPolygonMaterial* leafMat,
+			  BSPPolygonMaterial* petioleMaterial);
   VisualizationParameters();
   ~VisualizationParameters();
   
@@ -24,8 +25,13 @@ class VisualizationParameters {
   void setLeafTexture(int texture);
   void setMaterial(BSPPolygonMaterial* material);
   void setLeafMaterial(BSPPolygonMaterial* material);
+  void setPetioleMaterial(BSPPolygonMaterial* material);
   BSPPolygonMaterial* getMaterial() const ;
   BSPPolygonMaterial* getLeafMaterial() const;
+  BSPPolygonMaterial* getPetioleMaterial() const;
+  void setBSPUsage(bool useBSP);
+  bool useBSP() const;
+  
 
  private:
 
@@ -35,7 +41,8 @@ class VisualizationParameters {
   int leaf_tex;
   BSPPolygonMaterial* material;
   BSPPolygonMaterial* leafMaterial;
-
+  BSPPolygonMaterial* petioleMaterial;
+  bool use_BSP;
 };
 
 #endif

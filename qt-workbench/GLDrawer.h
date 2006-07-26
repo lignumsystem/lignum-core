@@ -24,6 +24,7 @@ public:
   void mouseMoveEvent(QMouseEvent* event);
   void keyPressEvent(QKeyEvent* event);
   void keyReleaseEvent(QKeyEvent* event);
+  
 
   BSPPolygonMaterial* green;
   BSPPolygonMaterial* red;
@@ -50,36 +51,42 @@ public slots:
   void setCylinderHDetail(int detail);
   void setCylinderTexture(QString fileName);
   void setLeafTexture(QString fileName);
+  void resetCamera();
+  void useBSP(bool use);
   //void moveCameraLeft();
   //void moveCameraRight();
   //void moveCameraUp();
   //void moveCameraDown();
   
+ signals:
+  void textOutput(QString text);
+
 private:
   bool isExtensionSupported(char* szTargetExtension);
   void initMaterials();
   void initLights();
   void initTextureSettings();
 
-  GLfloat*  light0_position;
-  GLfloat*  light0_direction;
-  GLfloat   camera_x, camera_y, camera_z;
-  GLfloat   cam_rot_x, cam_rot_y;
-  GLfloat   cam_mov_speed, cam_rot_speed;
-  GLfloat   cyl_x, cyl_y, cyl_z;
-  GLfloat   cyl_rot_angle, cyl_rot_x, cyl_rot_y, cyl_rot_z;
-  GLfloat   DEGTORAD;
-  //  static const GLfloat PI = 3.14159265;
-  GLfloat   PI;
-  BSPTree   *tree;
-  bool      wire;
-  bool      lights_on;
-  bool      use_textures;
-  int       tex1;
+  GLfloat*  light0_position;                   // Position of light0
+  GLfloat*  light0_direction;                  // Direction of light0
+  GLfloat   camera_x, camera_y, camera_z;      // Position of camera
+  GLfloat   cam_rot_x, cam_rot_y, cam_rot_z;   // Rotation of camera
+  GLfloat   cam_mov_speed, cam_rot_speed;      // Movement and rotation speed of camera
+  PositionVector r_axis;                       // Root axis of central tree in visualization
+  Point t_point;                               // Origin of the central tree
+  double t_height;                             // Height of the tallest tree 
+  GLfloat   DEGTORAD;                          // Conversion coefficient from degrees to radians
+  //  static const GLfloat PI = 3.14159265;  
+  GLfloat   PI;                                // PI
+  BSPTree   *tree;                             // BSP-tree object
+  bool      wire;                              // Is wireframe on
+  bool      lights_on;                         // Are lights on
+  bool      use_textures;                      // Are textures used
+  int       tex1;   
   QPoint    m_last_pos;
   double    m_look_speed;
   QString   tree_file;
-  VisualizationParameters parameters;
+  VisualizationParameters parameters;          // Parameters of the visualization
   
 };
 

@@ -265,7 +265,7 @@ void BSPPolygon::split(BSPPolygon& divider, BSPPolygonSet *front, BSPPolygonSet 
 
 
 double BSPPolygon::classifyPoint(const Point& point) const {
-  double EPSILON = 0.0001;
+  double EPSILON = 0.000001;
   double sideValue = normal.getX() * point.getX() +
     normal.getY() * point.getY() +
     normal.getZ() * point.getZ();
@@ -309,7 +309,7 @@ int BSPPolygon::calculateSide(const BSPPolygon& polygon) const {
     return INFRONT;
   else if(numPositive == 0 && numNegative > 0)
     return BEHIND;
-  else if(numPositive == 0 && numNegative == 0)
+  else if(numPositive == 0 && numNegative == 0) 
     return COINCIDING;
   else
     {
@@ -417,9 +417,17 @@ BSPPolygonSet::~BSPPolygonSet() {
     delete *i;
     polygons.erase(i);
   }
-  for(list<SceneObjectComponent*>::iterator i = components.begin(); i != components.end(); i++) {
+  /*for(int i = 0; i < components.size(); i++) {
+    delete components[i];
+    components.erase(i);
+    }*/
+  /* for(list<SceneObjectComponent*>::iterator i = components.begin(); i != components.end(); i++) {
     delete *i;
     components.erase(i);
+    }*/
+  for(vector<SceneObjectComponent*>::iterator i = components.begin(); i != components.end(); i++) {
+    delete *i;
+    //components.erase(i);
   }
 }    
 
@@ -441,9 +449,11 @@ void BSPPolygonSet::addPolygon(BSPPolygon *polygon) {
 
 void BSPPolygonSet::addPolygons(BSPPolygonSet* polys) {
   //cout << "size:" << polys->size() << endl;
-  while(!polys->isEmpty()) {
+  /*  while(!polys->isEmpty()) {
     addPolygon(polys->getPolygon());
-  }
+    }*/
+  polygons.insert(polygons.end(), polys->polygons.begin(), polys->polygons.end());
+  polys->polygons.clear();
   //cout << "size:" << polys->size() << endl;
 }
 
@@ -561,7 +571,7 @@ void BSPPolygonSet::drawPolygons() {
       polygons.sort();
     int current_id = -1;
     int comps = 0;
-    
+
     for(list<BSPPolygon*>::iterator i = polygons.begin(); i != polygons.end(); i++) {
       if(current_id != (**i).getObjectId()) {
 	current_id = (**i).getObjectId();
@@ -585,15 +595,15 @@ void BSPPolygonSet::drawPolygons() {
 	}
       }
     }
-    //polygons.clear();
+  }
 
-    //cout << "components:" << comps << endl;
+  for(int i = 0; i < components.size(); i++) {
+    components[i]->drawComponent();
   }
-  else {
-    for(list<SceneObjectComponent*>::iterator i = components.begin(); i != components.end(); i++) {
-      (**i).drawComponent();
-    }
-  }
+  
+  /*for(list<SceneObjectComponent*>::iterator i = components.begin(); i != components.end(); i++) {
+    (**i).drawComponent();
+    }*/
 }
 
 int BSPPolygonSet::size() const {

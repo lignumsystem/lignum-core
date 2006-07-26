@@ -1,6 +1,7 @@
+#include "qt_wb.h"
 #include <QApplication>
-#include "GLDrawer.h"
-//#include "ui_qt_wb.h"
+/*#include "GLDrawer.h"
+
 
 #include <QFont>
 #include <QPushButton>
@@ -22,7 +23,6 @@ MyWidget::MyWidget(QWidget *parent)
   connect(quit, SIGNAL(clicked()), qApp, SLOT(quit()));
   GLDrawer *glDrawer = new GLDrawer(this);
   glDrawer->show();
-  //  glDrawer->setGeometry(10, 40, 500, 500);
   glDrawer->updateGL();
 
   QVBoxLayout *layout = new QVBoxLayout;
@@ -41,16 +41,16 @@ int main(int argc, char* argv[])
   widget.resize(400, 400);
   widget.show();
   return app.exec();
-} 
+} */
 
-/*
+
 int main(int argc, char *argv[])
 {
   QApplication app(argc, argv);
-  QDialog *window = new QDialog;
-  Ui:: ui;
+  QMainWindow *window = new QMainWindow;
+  Ui::MainWindow ui;
   ui.setupUi(window);
   
   window->show();
   return app.exec();
-  }*/
+}

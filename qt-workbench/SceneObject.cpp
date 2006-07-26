@@ -52,6 +52,13 @@ bool SceneObject::isTransparent() const {
   return transparent;
 }
 
+bool SceneObject::hasTexture() const {
+  if(texture_id == 0)
+    return false;
+  else
+    return true;
+}
+
 int SceneObject::n_objects = 0;
 
 SceneObject::~SceneObject() {
@@ -72,9 +79,10 @@ SceneObjectComponent::~SceneObjectComponent() {
 SceneObjectComponent::SceneObjectComponent(SceneObject* obj, int c_index)
   : object(obj), component_index(c_index), used_material(-1) {
   obj->increaseComponentCount();
+  buildDrawList();
 }
 
-void SceneObjectComponent::drawComponent() {
+void SceneObjectComponent::buildDrawList() {
   if(used_material != object->getMaterialId()) {
     draw_index = glGenLists(1);
     if(draw_index != 0) {
@@ -86,10 +94,28 @@ void SceneObjectComponent::drawComponent() {
     used_material = object->getMaterialId();
   }
   else {
+    draw_index = component_index;
+  }
+}
+
+void SceneObjectComponent::drawComponent() {
+  /*  if(used_material != object->getMaterialId()) {
+    draw_index = glGenLists(1);
+    if(draw_index != 0) {
+      glNewList(draw_index, GL_COMPILE);
+      object->setMaterial();
+      glCallList(component_index);
+      glEndList();
+    }
+    cout << "sfsef" << endl;
+    used_material = object->getMaterialId();
+  }
+  else {
     if(draw_index != 0)
       glCallList(draw_index);
     else if(component_index != 0)
       glCallList(component_index);
-  }
+      }*/
+  glCallList(draw_index);
 }
     
