@@ -1,0 +1,438 @@
+<ui version="4.0" >
+ <author></author>
+ <comment></comment>
+ <exportmacro></exportmacro>
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1170</width>
+    <height>902</height>
+   </rect>
+  </property>
+  <property name="mouseTracking" >
+   <bool>false</bool>
+  </property>
+  <property name="windowTitle" >
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget" >
+   <widget class="QWidget" name="widget" >
+    <property name="geometry" >
+     <rect>
+      <x>9</x>
+      <y>9</y>
+      <width>1051</width>
+      <height>671</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" >
+     <property name="margin" >
+      <number>0</number>
+     </property>
+     <property name="spacing" >
+      <number>6</number>
+     </property>
+     <item>
+      <widget class="QWidget" name="widget" >
+       <layout class="QVBoxLayout" >
+        <property name="margin" >
+         <number>0</number>
+        </property>
+        <property name="spacing" >
+         <number>6</number>
+        </property>
+        <item>
+         <layout class="QHBoxLayout" >
+          <property name="margin" >
+           <number>0</number>
+          </property>
+          <property name="spacing" >
+           <number>6</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="label" >
+            <property name="text" >
+             <string>Tree file:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="lineEdit" />
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton" >
+            <property name="text" >
+             <string>Change tree</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="GLDrawer" name="gldrawer" >
+          <property name="toolTip" >
+           <string>OpenGL visualization for Lignum</string>
+          </property>
+          <property name="whatsThis" >
+           <string> Visualization for Lignum</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" >
+       <property name="margin" >
+        <number>0</number>
+       </property>
+       <property name="spacing" >
+        <number>6</number>
+       </property>
+       <item>
+        <layout class="QVBoxLayout" >
+         <property name="margin" >
+          <number>0</number>
+         </property>
+         <property name="spacing" >
+          <number>6</number>
+         </property>
+         <item>
+          <widget class="QPushButton" name="pushButton_2" >
+           <property name="text" >
+            <string>Wireframe on/off</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_3" >
+           <property name="text" >
+            <string>Lights on/off</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_4" >
+           <property name="text" >
+            <string>Textures on/off</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_5" >
+           <property name="text" >
+            <string>Reset Camera</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" >
+         <property name="margin" >
+          <number>0</number>
+         </property>
+         <property name="spacing" >
+          <number>6</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="label_2" >
+           <property name="text" >
+            <string>Segment radius detail</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSpinBox" name="spinBox" />
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" >
+         <property name="margin" >
+          <number>0</number>
+         </property>
+         <property name="spacing" >
+          <number>6</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="label_3" >
+           <property name="text" >
+            <string>Segment height detail</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSpinBox" name="spinBox_2" />
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="checkBox" >
+         <property name="text" >
+          <string>Use BSP</string>
+         </property>
+         <property name="checked" >
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" >
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QTextBrowser" name="textBrowser" >
+    <property name="geometry" >
+     <rect>
+      <x>10</x>
+      <y>690</y>
+      <width>831</width>
+      <height>151</height>
+     </rect>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar" >
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1170</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile" >
+    <property name="title" >
+     <string>File</string>
+    </property>
+    <addaction name="actionQuit" />
+   </widget>
+   <addaction name="menuFile" />
+  </widget>
+  <widget class="QStatusBar" name="statusbar" />
+  <action name="actionFsd" >
+   <property name="checkable" >
+    <bool>true</bool>
+   </property>
+   <property name="icon" >
+    <iconset>../../../Qt-4.1.4/bin/maple_leaf.png</iconset>
+   </property>
+   <property name="text" >
+    <string>fsd</string>
+   </property>
+  </action>
+  <action name="actionQuit" >
+   <property name="icon" >
+    <iconset>../../../Qt-4.1.4/bin/maple_texture.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Quit</string>
+   </property>
+  </action>
+ </widget>
+ <pixmapfunction></pixmapfunction>
+ <customwidgets>
+  <customwidget>
+   <class>GLDrawer</class>
+   <extends>QWidget</extends>
+   <header>GLDrawer.h</header>
+   <container>0</container>
+   <pixmap></pixmap>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>lineEdit</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>gldrawer</receiver>
+   <slot>setTreeFile(QString)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>328</x>
+     <y>102</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>274</x>
+     <y>252</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>gldrawer</receiver>
+   <slot>changeTree()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>842</x>
+     <y>107</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>648</x>
+     <y>237</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_2</sender>
+   <signal>clicked()</signal>
+   <receiver>gldrawer</receiver>
+   <slot>toggleWireModel()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>1057</x>
+     <y>108</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>771</x>
+     <y>313</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_3</sender>
+   <signal>clicked()</signal>
+   <receiver>gldrawer</receiver>
+   <slot>toggleLights()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>1057</x>
+     <y>146</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>771</x>
+     <y>467</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_4</sender>
+   <signal>clicked()</signal>
+   <receiver>gldrawer</receiver>
+   <slot>toggleTexturing()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>1057</x>
+     <y>184</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>771</x>
+     <y>393</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>menubar</sender>
+   <signal>triggered(QAction*)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>25</x>
+     <y>16</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>79</x>
+     <y>69</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>spinBox</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>gldrawer</receiver>
+   <slot>setCylinderRDetail(int)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>1057</x>
+     <y>257</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>677</x>
+     <y>152</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>spinBox_2</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>gldrawer</receiver>
+   <slot>setCylinderHDetail(int)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>1057</x>
+     <y>292</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>638</x>
+     <y>249</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_5</sender>
+   <signal>clicked()</signal>
+   <receiver>gldrawer</receiver>
+   <slot>resetCamera()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>946</x>
+     <y>212</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>779</x>
+     <y>135</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>gldrawer</receiver>
+   <slot>useBSP(bool)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>986</x>
+     <y>307</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>772</x>
+     <y>276</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gldrawer</sender>
+   <signal>textOutput(QString)</signal>
+   <receiver>textBrowser</receiver>
+   <slot>append(QString)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>538</x>
+     <y>377</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>536</x>
+     <y>778</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
