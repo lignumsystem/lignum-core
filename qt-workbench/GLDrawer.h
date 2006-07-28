@@ -51,8 +51,11 @@ public slots:
   void setCylinderHDetail(int detail);
   void setCylinderTexture(QString fileName);
   void setLeafTexture(QString fileName);
+  void setFoliageTexture(QString fileName);
   void resetCamera();
   void useBSP(bool use);
+  void useLeafTextures(bool use);
+  void setLeafDetail(int detail);
   //void moveCameraLeft();
   //void moveCameraRight();
   //void moveCameraUp();

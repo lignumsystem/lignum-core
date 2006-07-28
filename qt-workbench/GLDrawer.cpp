@@ -47,13 +47,13 @@ GLDrawer::GLDrawer(QWidget* parent)
   tree = new BSPTree();
   setCylinderRDetail(8);
   setCylinderHDetail(1);
-
+  setLeafDetail(10);
   
 }
 
 void GLDrawer::initMaterials() {
-  GLfloat color1[] = {0.1, 0.3, 0.1, 1.0,
-		      0.1, 0.3, 0.1, 1.0,
+  GLfloat color1[] = {0.1, 0.8, 0.1, 1.0,
+		      0.1, 0.8, 0.1, 1.0,
 		      0.0, 0.1, 0.0, 1.0,
 		      5};
   GLfloat color2[] = {0.9, 0.2, 0.2, 0.5,
@@ -69,7 +69,7 @@ void GLDrawer::initMaterials() {
   red = new BSPPolygonMaterial(color2);
   white = new BSPPolygonMaterial(color3);
   parameters.setMaterial(white);
-  parameters.setLeafMaterial(white);
+  parameters.setLeafMaterial(green);
   parameters.setPetioleMaterial(green);
 }
 
@@ -82,7 +82,7 @@ void GLDrawer::initLights() {
 
   light0_position[0] = 0;
   light0_position[1] = 1;
-  light0_position[2] = 1;
+  light0_position[2] = -1;
   light0_position[3] = 0;
 
   /*light0_direction = new GLfloat(4);
@@ -92,7 +92,7 @@ void GLDrawer::initLights() {
   light0_direction[3] = 1;*/
 
   GLfloat light0_diffuse[] = { 1.0, 1.0, 1.0, 1.0 };
-  GLfloat light0_ambient[] = { 0.2, 0.2, 0.2, 0.2 };
+  GLfloat light0_ambient[] = { 0.0, 0.0, 0.0, 1.0 };
   GLfloat light0_specular[] = { 1.0, 1.0, 1.0, 1.0 };
   
   glLightfv(GL_LIGHT0, GL_POSITION, light0_position);
@@ -103,10 +103,18 @@ void GLDrawer::initLights() {
   glLightfv(GL_LIGHT0, GL_SPECULAR, light0_specular);
  
 
-  glLightModeli(GL_LIGHT_MODEL_COLOR_CONTROL,GL_SEPARATE_SPECULAR_COLOR);
+  //glLightModeli(GL_LIGHT_MODEL_COLOR_CONTROL,GL_SEPARATE_SPECULAR_COLOR);
+
   glEnable(GL_LIGHT0);
   glEnable(GL_LIGHTING);
-
+  glEnable(GL_COLOR_MATERIAL);
+  glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
+  
+  GLfloat specular[] = { 1, 1, 1, 1 };
+  GLfloat emission[] = { 0, 0, 0, 1 };
+  
+  glMaterialfv(GL_FRONT, GL_SPECULAR, specular);
+  glMaterialfv(GL_FRONT, GL_EMISSION, emission);
 }
 
 void GLDrawer::initTextureSettings() {
@@ -133,20 +141,16 @@ void GLDrawer::initializeGL()
 {  
   glClearColor(0.9, 0.9, 0.9, 0.9);
   //glClearColor(0, 0, 0, 0);
-    glEnable(GL_DEPTH_TEST);
-    //glDisable(GL_DEPTH_TEST);
+  glEnable(GL_DEPTH_TEST);
   glFrontFace(GL_CW);
   glEnable(GL_CULL_FACE);
   
-  // Wireframe
-  //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-  glLineWidth(1);
-
   initMaterials();
   initLights();
   initTextureSettings();
   setCylinderTexture(QString("pine_texture.png"));
-  setLeafTexture(QString("maple_leaf.png"));
+  setLeafTexture(QString("maple_texture.png"));
+  setFoliageTexture(QString("foliage.png"));
 
   if(isExtensionSupported("GL_ARB_vertex_buffer_object"))
     emit textOutput("VBOs are supported!");
@@ -156,17 +160,12 @@ void GLDrawer::initializeGL()
 
 void GLDrawer::resizeGL(int width, int height)
 {
-  //int side = qMin(width, height);
-  //glViewport((width - side) / 2, (height - side) / 2, side, side);
   glViewport(0, 0, width, height);
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
-  gluPerspective(60.0, (GLfloat)width/(GLfloat)height, 0.01, 20.0);
-  //glFrustum(-1.0, +1.0, -1.0, 1.0, 5.0, 60.0);
+  gluPerspective(60.0, (GLfloat)width/(GLfloat)height, 0.0001, 20.0);
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
-  //  glTranslated(0.0, 0.0, -40.0);
-	
 }
 
 void GLDrawer::rotateCameraUp() {
@@ -224,10 +223,12 @@ void GLDrawer::toggleLights() {
   if(lights_on) {
     lights_on = false;
     glDisable(GL_LIGHTING);
+    glDisable(GL_COLOR_MATERIAL);
   }
   else {
     lights_on = true;
     glEnable(GL_LIGHTING);
+    glEnable(GL_COLOR_MATERIAL);
   }
   updateGL();
 }
@@ -245,54 +246,64 @@ void GLDrawer::toggleTexturing() {
 }
 
 void GLDrawer::changeTree() {
-  delete tree;
-
-  tree = new BSPTree();
-  BSPPolygonSet polygons;
-
-  Tree<ScotsPineSegment, ScotsPineBud> pine2(Point(0,0,0), PositionVector(0,1,0));
-  //Tree<SugarMapleSegment, SugarMapleBud> pine2(Point(0,0,0), PositionVector(0,1,0));
+  QFile file(tree_file);
   
-  XMLDomTreeReader<ScotsPineSegment, ScotsPineBud> reader;
-  //XMLDomTreeReader<SugarMapleSegment, SugarMapleBud> reader;
-  reader.readXMLToTree(pine2, tree_file.toStdString());
+  if(!file.exists()) {
+    emit textOutput(QString("Tree file %1 is not found!").arg(tree_file));
+  }
+  else {
+    delete tree;
+    
+    tree = new BSPTree();
+    BSPPolygonSet polygons;
+    
+    //Tree<ScotsPineSegment, ScotsPineBud> pine2(Point(0,0,0), PositionVector(0,1,0));
+    Tree<SugarMapleSegment, SugarMapleBud> pine2(Point(0,0,0), PositionVector(0,1,0));
+        
+    //XMLDomTreeReader<ScotsPineSegment, ScotsPineBud> reader;
+    XMLDomTreeReader<SugarMapleSegment, SugarMapleBud> reader;
+    reader.readXMLToTree(pine2, tree_file.toStdString());
+    
+    //LGMPolygonTree<ScotsPineSegment, ScotsPineBud> constructor;
+    LGMPolygonTree<SugarMapleSegment, SugarMapleBud> constructor;
+    
+    BSPPolygonSet* treePolygons = constructor.buildTree(pine2, parameters);
+    polygons.addPolygons(treePolygons);
+    delete treePolygons;
+    
+    
+    //BSPPolygonSet* ground = makeSquare(10, 10, Point(5,0,-5), PositionVector(0,1,0), green, 0, 2);
+    //polygons.addPolygons(ground);
+    //delete ground;
+    
+    list<CylinderVolume>* cylinders = constructor.getCylinders();
+    //polygons.removeHiddenPolygons(cylinders);
+    
+    
+    tree->buildBSPTree(polygons, cylinders);
 
-  LGMPolygonTree<ScotsPineSegment, ScotsPineBud> constructor;
-  //LGMPolygonTree<SugarMapleSegment, SugarMapleBud> constructor;
-
-  BSPPolygonSet* treePolygons = constructor.buildTree(pine2, parameters);
-  polygons.addPolygons(treePolygons);
-  delete treePolygons;
-
-  
-  //BSPPolygonSet* ground = makeSquare(10, 10, Point(5,0,-5), PositionVector(0,1,0), green, 0, 2);
-  //polygons.addPolygons(ground);
-  //delete ground;
-
-  list<CylinderVolume>* cylinders = constructor.getCylinders();
-  //polygons.removeHiddenPolygons(cylinders);
-
-
-  tree->buildBSPTree(polygons, cylinders);
-
-  cout << "polygons: " << tree->countPolygons() << endl;
-  updateGL();
-  cout << "components: " << tree->countComponents() << endl;
-  cout << "depth:" << tree->getDepth() << endl;
-  cout << "nodes:" << tree->getNodeCount() << endl;
-  delete cylinders;
-  
-  r_axis = GetDirection(GetRootAxis(pine2));
-  t_point = GetPoint(pine2);
-  t_height = GetValue(pine2, LGAH);
-  resetCamera();
-
-  updateGL();
-
-  emit textOutput(QString("Tree file %1 has been loaded.").arg(tree_file));
-  //PositionVector cross(Cross(PositionVector(0,1,0), PositionVector(0,2,0)));
-  //cout << "cross: " << cross.getX() << " " << cross.getY() << " " << cross.getZ() << endl;
-
+    cout << "polygons: " << tree->countPolygons() << endl;
+    updateGL();
+    cout << "components: " << tree->countComponents() << endl;
+    cout << "depth:" << tree->getDepth() << endl;
+    cout << "nodes:" << tree->getNodeCount() << endl;
+    delete cylinders;
+    
+    r_axis = GetDirection(GetRootAxis(pine2));
+    t_point = GetPoint(pine2);
+    t_height = GetValue(pine2, LGAH);
+    r_axis = r_axis.normalize();
+    r_axis = PositionVector(r_axis.getX(), r_axis.getZ(), -r_axis.getY());
+    t_point = Point(t_point.getX(), t_point.getZ(), -t_point.getY());
+    
+    resetCamera();
+    
+    updateGL();
+    
+    emit textOutput(QString("Tree file %1 has been loaded.").arg(tree_file));
+    //PositionVector cross(Cross(PositionVector(0,1,0), PositionVector(0,2,0)));
+    //cout << "cross: " << cross.getX() << " " << cross.getY() << " " << cross.getZ() << endl;
+  }
 }
   
 
@@ -301,11 +312,12 @@ void GLDrawer::paintGL()  {
   //glClear(GL_COLOR_BUFFER_BIT);
   glLoadIdentity();
 
+
   glRotatef(cam_rot_x, 1, 0, 0);  
   glRotatef(cam_rot_y, 0, 1, 0);
 
-  glTranslatef(-camera_x, -camera_y, -camera_z);    
-  //glRotatef(cam_rot_z, 0, 0, 1);
+
+  glTranslatef(-camera_x, -camera_y, -camera_z);   
   glRotatef(-90, 1, 0, 0);
 
   glLightfv(GL_LIGHT0, GL_POSITION, light0_position);
@@ -658,26 +670,49 @@ void GLDrawer::setLeafTexture(QString texture) {
     cout << "Texture file: " << texture.toStdString() << " is not found!" << endl;
 }
 
+void GLDrawer::setFoliageTexture(QString texture) {
+  QFile file(texture);
+  
+  if(file.exists()) {
+    int tex = loadTexture(texture.toStdString());
+    parameters.setFoliageTexture(tex);
+  }
+  else 
+    cout << "Texture file: " << texture.toStdString() << " is not found!" << endl;
+}
+
+
 void GLDrawer::resetCamera() {
-  r_axis = r_axis.normalize();
-  double translate = 2.2*t_height;
+
+  
+  double translate = 2*t_height;
   cout << "point: " << t_point.getX() << " " << t_point.getY() << " " << t_point.getZ() << endl;
   cout << "height: " << t_height << endl;
-  camera_x = t_point.getX() + t_height/2*r_axis.getX() + translate;
-  camera_y = t_point.getY() + t_height/2*r_axis.getY();
-  camera_z = t_point.getZ() + t_height/2*r_axis.getZ();
+  camera_x = t_point.getX();
+  camera_y = t_point.getY() - t_height/2*r_axis.getZ();
+  camera_z = t_point.getZ() + translate;
   Point camera(camera_x, camera_y, camera_z);
   cout << "camera: " << camera_x << " " << camera_y << " " << camera_z << endl;
 
-  Point p(t_point + Point((t_height/2.0)*r_axis));
+  Point p(t_point.getX(), t_point.getY() - (t_height/2.0)*r_axis.getZ(), t_point.getZ());
   PositionVector direction(PositionVector(p - camera));
   direction = direction.normalize();
+  cout << "direction: " << direction.getX() << " " << direction.getY() << " " << direction.getZ() << endl;
   cam_rot_x = 1/DEGTORAD*asin(direction.getY());
   cam_rot_y = 1/DEGTORAD*asin(direction.getX());
-
+  cam_rot_z = 1/DEGTORAD*acos(r_axis.getZ());
+  
   updateGL();
 }
 
 void GLDrawer::useBSP(bool use) {
   parameters.setBSPUsage(use);
+}
+
+void GLDrawer::useLeafTextures(bool use) {
+  parameters.setLeafTextureUsage(use);
+}
+ 
+void GLDrawer::setLeafDetail(int detail) {
+  parameters.setLeafDetail(detail);
 }

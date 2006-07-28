@@ -342,8 +342,23 @@ int BSPPolygon::calculateSide(const BSPPolygon& polygon) const {
 
 void BSPPolygon::drawPolygon() const {
   glNormal3f(normal.getX(), normal.getY(), normal.getZ());
-  glTexCoord2f(tp1.getX(), tp1.getY());  glVertex3f(p1.getX(), p1.getY(), p1.getZ());
-  glTexCoord2f(tp2.getX(), tp2.getY());  glVertex3f(p2.getX(), p2.getY(), p2.getZ());
+
+  if((tp1.getX() == 0) && (tp1.getY() == 0) && (tp1.getZ() == 0) &&
+     (tp2.getX() == 0) && (tp2.getY() == 0) && (tp2.getZ() == 0) &&
+     (tp3.getX() == 0) && (tp3.getY() == 0) && (tp3.getZ() == 0)) {
+    glVertex3f(p1.getX(), p1.getY(), p1.getZ());
+    glVertex3f(p2.getX(), p2.getY(), p2.getZ());
+    glVertex3f(p3.getX(), p3.getY(), p3.getZ());
+  }
+  else {
+    glTexCoord2f(tp1.getX(), tp1.getY());  glVertex3f(p1.getX(), p1.getY(), p1.getZ());
+    glTexCoord2f(tp2.getX(), tp2.getY());  glVertex3f(p2.getX(), p2.getY(), p2.getZ());
+    glTexCoord2f(tp3.getX(), tp3.getY());  glVertex3f(p3.getX(), p3.getY(), p3.getZ());
+  }
+}
+
+void BSPPolygon::nextVertice() const {
+  glNormal3f(normal.getX(), normal.getY(), normal.getZ());
   glTexCoord2f(tp3.getX(), tp3.getY());  glVertex3f(p3.getX(), p3.getY(), p3.getZ());
 }
 
@@ -479,7 +494,6 @@ BSPPolygon* BSPPolygonSet::chooseDivider() {
   //return poly;
   
   if(isConvexSet()) {
-    cout << "CONVEX" << endl;
     return NULL;
   }
   //double minRelation = MINIMUMRELATION;
@@ -579,6 +593,7 @@ void BSPPolygonSet::drawPolygons() {
 	dlist = glGenLists(1);
 	if(dlist != 0) {
 	   glNewList(dlist, GL_COMPILE);
+       
 	   glBegin(GL_TRIANGLES);
 	   while(i != polygons.end() && current_id == (**i).getObjectId()) {
 	     (**i).drawPolygon();
@@ -587,6 +602,18 @@ void BSPPolygonSet::drawPolygons() {
 	     polygons.erase(i);
 	     i++;
 	   }
+
+	   /*glBegin(GL_TRIANGLE_STRIP);
+	   (**i).drawPolygon();
+	   i++;
+	   while(i != polygons.end() && current_id == (**i).getObjectId()) {
+	     (**i).nextVertice();
+	     if(!(**i).hasBeenDivider())
+	       delete (*i);
+	     polygons.erase(i);
+	     i++;
+	     }*/
+	     
 	   i--;
 	   glEnd();
 	   glEndList();

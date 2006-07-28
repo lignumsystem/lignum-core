@@ -61,6 +61,7 @@ public :
   bool         infront(const BSPPolygon& polygon) const;
   int          calculateSide(const BSPPolygon& polygon) const;
   void         drawPolygon() const;
+  void         nextVertice() const;
   void         setDivider();
   bool         hasBeenDivider() const;
   int          getObjectId() const;
@@ -81,8 +82,7 @@ private:
   //BSPPolygonMaterial* material;
   SceneObject* object;
   double distance;
-
-  };
+};
 
 
 

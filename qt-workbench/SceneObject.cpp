@@ -28,11 +28,11 @@ int SceneObject::getMaterialId() const{
 void SceneObject::setMaterial() const{
   material->setMaterial();
   if(texture_id != 0) {
-    glEnable(GL_TEXTURE_2D);
+    //glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, texture_id);
   }
   else {
-    glDisable(GL_TEXTURE_2D);
+    //glDisable(GL_TEXTURE_2D);
   }
 }
 
@@ -83,7 +83,7 @@ SceneObjectComponent::SceneObjectComponent(SceneObject* obj, int c_index)
 }
 
 void SceneObjectComponent::buildDrawList() {
-  if(used_material != object->getMaterialId()) {
+  /* if(used_material != object->getMaterialId()) {
     draw_index = glGenLists(1);
     if(draw_index != 0) {
       glNewList(draw_index, GL_COMPILE);
@@ -96,6 +96,8 @@ void SceneObjectComponent::buildDrawList() {
   else {
     draw_index = component_index;
   }
+  */
+  draw_index = component_index;
 }
 
 void SceneObjectComponent::drawComponent() {
@@ -116,6 +118,7 @@ void SceneObjectComponent::drawComponent() {
     else if(component_index != 0)
       glCallList(component_index);
       }*/
+  object->setMaterial();
   glCallList(draw_index);
 }
     

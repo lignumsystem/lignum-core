@@ -59,7 +59,7 @@ void BSPTree::buildBSPTree(BSPPolygonSet& polys, list<CylinderVolume>* cylinders
   if(divider == NULL) {
     //cout << "NULL" << endl;
     polygons.addPolygons(&polys);
-    polygons.removeHiddenPolygons(cylinders);
+    //polygons.removeHiddenPolygons(cylinders);
     return;
   }
 
@@ -88,8 +88,8 @@ void BSPTree::buildBSPTree(BSPPolygonSet& polys, list<CylinderVolume>* cylinders
 	poly->split(*divider, front_pieces, back_pieces);
 	//cout << "split done!" << endl;
 	delete poly;
-	back_pieces->removeHiddenPolygons(cylinders);
-	front_pieces->removeHiddenPolygons(cylinders);
+	//	back_pieces->removeHiddenPolygons(cylinders);
+	//front_pieces->removeHiddenPolygons(cylinders);
 	back_polygons.addPolygons(back_pieces);
 	front_polygons.addPolygons(front_pieces);
 	delete back_pieces;
@@ -108,10 +108,10 @@ void BSPTree::buildBSPTree(BSPPolygonSet& polys, list<CylinderVolume>* cylinders
     back->buildBSPTree(back_polygons, cylinders);
   }
   
-  polygons.removeHiddenPolygons(cylinders);
+  //polygons.removeHiddenPolygons(cylinders);
 }
 
-/*void BSPTree::drawTree(Point& eye) {
+/*void BSPTree::drawTransparentTree(Point& eye, PositionVector& direction) {
   BSPTree* tree = this;
   stack<BSPTree*> trees;
   while(true) {
@@ -177,11 +177,6 @@ void BSPTree::drawTransparentTree(Point& eye, PositionVector& direction) {
   }
   else { 
     double result = divider->classifyPoint(eye);
-    /*double draw_back = true;
-    double draw_front = true;
-    if(back != NULL) {
-      if( 
-      }*/  
       
     if(result > 0) {
       if(back != NULL) 

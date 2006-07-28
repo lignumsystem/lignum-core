@@ -26,10 +26,11 @@ int BSPPolygonMaterial::n_materials = 0;
 
 void BSPPolygonMaterial::setMaterial() {
   //glColor4fv(color);
-  glMaterialfv(GL_FRONT, GL_AMBIENT, ambient);
-  glMaterialfv(GL_FRONT, GL_DIFFUSE, diffuse);
-  glMaterialfv(GL_FRONT, GL_SPECULAR, specular);
-  glMaterialfv(GL_FRONT, GL_SHININESS, shine);
+  //glMaterialfv(GL_FRONT, GL_AMBIENT, ambient);
+  //glMaterialfv(GL_FRONT, GL_DIFFUSE, diffuse);
+  //glMaterialfv(GL_FRONT, GL_SPECULAR, specular);
+  //glMaterialfv(GL_FRONT, GL_SHININESS, shine);
+  glColor4fv(diffuse);
   
 }
 
