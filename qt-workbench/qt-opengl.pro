@@ -6,13 +6,19 @@ TEMPLATE = app
 FORMS = qt_wb.ui
 TARGET += 
 # Input
-HEADERS += LGMPolygonTree.h GLDrawer.h BSPPolygon.h BSPTree.h SceneObject.h BSPPolygonMaterial.h CylinderVolume.h VisualizationParameters.h LignumWB.h VisualizationConfig.h
-SOURCES += LGMPolygonTree.cpp GLDrawer.cpp main.cpp BSPPolygon.cpp BSPTree.cpp SceneObject.cpp BSPPolygonMaterial.cpp CylinderVolume.cpp VisualizationParameters.cpp ../SugarMaple/src/SugarMapleSegmentMetabolism.cc LignumWB.cpp VisualizationConfig.cpp
+HEADERS += LGMPolygonTree.h GLDrawer.h BSPPolygon.h BSPTree.h SceneObject.h BSPPolygonMaterial.h CylinderVolume.h VisualizationParameters.h LignumWB.h VisualizationConfig.h GenericCfTree.h GenericHwTree.h
+SOURCES += LGMPolygonTree.cpp GLDrawer.cpp main.cpp BSPPolygon.cpp BSPTree.cpp SceneObject.cpp BSPPolygonMaterial.cpp CylinderVolume.cpp VisualizationParameters.cpp LignumWB.cpp VisualizationConfig.cpp 
+
+#../SugarMaple/src/SugarMapleSegmentMetabolism.cc
 
 DEPENDPATH += .
-INCLUDEPATH += . ../stl-lignum/include ../c++adt/include ../Firmament/include ../LEngine/include ../stl-voxelspace/include ../Graphics ../Pine ../Lig-Crobas/include ../XMLTree ../ScotsPine/include ../SugarMaple/include .. 
+INCLUDEPATH += . ../stl-lignum/include ../c++adt/include ../Firmament/include ../LEngine/include ../stl-voxelspace/include ../Graphics ../XMLTree ..
+
+#../ScotsPine/include ../SugarMaple/include ../Lig-Crobas/include ../Pine
+
 CONFIG += qt
 QT += opengl xml
 # -L/usr/freeware/lib32 -lglut -lXmu -pine
-LIBS	+= -L../c++adt/lib -L../stl-lignum/lib -L../Firmament/lib -L../LEngine/lib -L../Lig-Crobas -L../SugarMaple -L../stl-voxelspace/lib -L../Graphics -lVisual -lsky -llsys -lL -lvoxel -lLGM  -lc++adt
+LIBS	+= -L../c++adt/lib -L../stl-lignum/lib -L../Firmament/lib -L../LEngine/lib -L../stl-voxelspace/lib -L../Graphics -lVisual -lsky -lL -lvoxel -lLGM  -lc++adt
 
+#-L../Lig-Crobas -L../SugarMaple -llsys
