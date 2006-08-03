@@ -33,6 +33,7 @@ public:
   ~SceneObjectComponent();
   void buildDrawList();
   void drawComponent() ;
+  inline friend bool operator < (const SceneObjectComponent& component1, const SceneObjectComponent& component2);
 
 private:
   SceneObject* object;

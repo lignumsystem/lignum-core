@@ -15,7 +15,6 @@ class GLDrawer : public QGLWidget
   
 public: 
   GLDrawer(QWidget* parent = 0);
-  BSPPolygonSet* makeCylinder(double radius, double height, Point point, PositionVector direction, bool drawBottom, bool drawTop, BSPPolygonMaterial* material, int texture, int detail = 20);
   BSPPolygonSet* makeSquare(double height, double width, Point point, PositionVector direction, BSPPolygonMaterial* material, int texture, int detail = 10);
   int loadTexture(std::string fileName);
 
@@ -90,7 +89,7 @@ private:
   double    m_look_speed;
   QString   tree_file;
   VisualizationParameters parameters;          // Parameters of the visualization
-  
+  QHash<QString, int> textures;
 };
 
 #endif

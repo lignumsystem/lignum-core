@@ -1,5 +1,6 @@
-#include "qt_wb.h"
+//#include "qt_wb.h"
 #include <QApplication>
+#include "LignumWB.h"
 /*#include "GLDrawer.h"
 
 
@@ -47,10 +48,14 @@ int main(int argc, char* argv[])
 int main(int argc, char *argv[])
 {
   QApplication app(argc, argv);
-  QMainWindow *window = new QMainWindow;
-  Ui::MainWindow ui;
-  ui.setupUi(window);
+  //QMainWindow *window = new QMainWindow;
+  //Ui::MainWindow ui;
+  //ui.setupUi(window);
   
+  //window->show();
+
+  LignumWB *window = new LignumWB;
   window->show();
+  
   return app.exec();
 }

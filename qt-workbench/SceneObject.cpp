@@ -26,14 +26,20 @@ int SceneObject::getMaterialId() const{
 }
 
 void SceneObject::setMaterial() const{
-  material->setMaterial();
-  if(texture_id != 0) {
+  static int last_material = -1;
+  int id = material->getId();
+  if(last_material != id) {
+    last_material = id;    
+    material->setMaterial();
+  }
+
+  static int last_texture = -1;
+  if(texture_id != 0 && texture_id != last_texture) {
     //glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, texture_id);
+    last_texture = texture_id;
   }
-  else {
-    //glDisable(GL_TEXTURE_2D);
-  }
+
 }
 
 int SceneObject::getComponentCount() const{
@@ -83,7 +89,7 @@ SceneObjectComponent::SceneObjectComponent(SceneObject* obj, int c_index)
 }
 
 void SceneObjectComponent::buildDrawList() {
-  /* if(used_material != object->getMaterialId()) {
+  /*if(used_material != object->getMaterialId()) {
     draw_index = glGenLists(1);
     if(draw_index != 0) {
       glNewList(draw_index, GL_COMPILE);
@@ -118,7 +124,19 @@ void SceneObjectComponent::drawComponent() {
     else if(component_index != 0)
       glCallList(component_index);
       }*/
+  /* static int last_material = -1;
+  int id = object->getMaterialId();
+  if(last_material != id) {
+    object->setMaterial();
+    last_material = id;
+    }*/
   object->setMaterial();
   glCallList(draw_index);
 }
     
+inline bool operator < (const SceneObjectComponent& component1, const SceneObjectComponent& component2) {
+  if(component1.object->getMaterialId() <= component2.object->getMaterialId())
+    return true;
+  else
+    return false;
+}

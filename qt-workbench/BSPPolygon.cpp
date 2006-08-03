@@ -1,8 +1,14 @@
-#include <BSPPolygon.h>
-#include <list>
+// Qt includes
 #include <QtOpenGL>
-#include <cstdlib>
+
+// Lignum includes
+#include <BSPPolygon.h>
 #include <SceneObject.h>
+
+// Standard C/C++ includes
+#include <list>
+#include <algorithm>
+#include <cstdlib>
 
 using namespace std;
 using namespace cxxadt;
@@ -622,7 +628,9 @@ void BSPPolygonSet::drawPolygons() {
 	}
       }
     }
+    std::sort(components.begin(), components.end());
   }
+
 
   for(int i = 0; i < components.size(); i++) {
     components[i]->drawComponent();

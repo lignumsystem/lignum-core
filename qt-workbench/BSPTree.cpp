@@ -43,23 +43,16 @@ BSPTree::~BSPTree() {
 
 }
 
-void BSPTree::buildBSPTree(BSPPolygonSet& polys, list<CylinderVolume>* cylinders) {
-  //polygons.addPolygons(&polys);
-  //return;
-  
+void BSPTree::buildBSPTree(BSPPolygonSet& polys) {
   opaquePolygons.getOpaquePolygons(&polys);
 
   if(polys.isEmpty()) {
-    // DEBUG
-    cout << "Cannot create a empty bsp-tree."<< endl;
     return;
   }
   BSPPolygon *root = polys.chooseDivider();
   divider = root;
   if(divider == NULL) {
-    //cout << "NULL" << endl;
     polygons.addPolygons(&polys);
-    //polygons.removeHiddenPolygons(cylinders);
     return;
   }
 
@@ -84,12 +77,8 @@ void BSPTree::buildBSPTree(BSPPolygonSet& polys, list<CylinderVolume>* cylinders
       case BSPPolygon::SPANNING:
 	BSPPolygonSet *front_pieces = new BSPPolygonSet();
 	BSPPolygonSet *back_pieces = new BSPPolygonSet();
-	//	cout << "split begins.." << endl;
 	poly->split(*divider, front_pieces, back_pieces);
-	//cout << "split done!" << endl;
 	delete poly;
-	//	back_pieces->removeHiddenPolygons(cylinders);
-	//front_pieces->removeHiddenPolygons(cylinders);
 	back_polygons.addPolygons(back_pieces);
 	front_polygons.addPolygons(front_pieces);
 	delete back_pieces;
@@ -100,15 +89,13 @@ void BSPTree::buildBSPTree(BSPPolygonSet& polys, list<CylinderVolume>* cylinders
 
   if(!front_polygons.isEmpty()) {
     front = new BSPTree();
-    front->buildBSPTree(front_polygons, cylinders);
+    front->buildBSPTree(front_polygons);
   }
   
   if(!back_polygons.isEmpty()) {
     back = new BSPTree();
-    back->buildBSPTree(back_polygons, cylinders);
+    back->buildBSPTree(back_polygons);
   }
-  
-  //polygons.removeHiddenPolygons(cylinders);
 }
 
 /*void BSPTree::drawTransparentTree(Point& eye, PositionVector& direction) {
@@ -150,24 +137,11 @@ void BSPTree::buildBSPTree(BSPPolygonSet& polys, list<CylinderVolume>* cylinders
   }
   }*/
 
-bool BSPTree::removeHiddenPolygons(list<CylinderVolume>* volumes) {
-  //list<BSPPolygon*> polys = polygons.getPolygons();
-  polygons.removeHiddenPolygons(volumes);
-
-  if(front != NULL)
-    front->removeHiddenPolygons(volumes);
-  if(back != NULL)
-    back->removeHiddenPolygons(volumes);
-
-}
-
 void BSPTree::drawTree(Point& eye, PositionVector& direction) {
   glDepthMask(GL_TRUE);
-  //glEnable(GL_CULL_FACE);
   opaquePolygons.drawPolygons();
   
   glDepthMask(GL_FALSE);
-  //glDisable(GL_CULL_FACE);
   drawTransparentTree(eye, direction);
 }
 
@@ -243,3 +217,4 @@ int BSPTree::getNodeCount() const {
     nodes += front->getNodeCount();
   return nodes;
 }
+

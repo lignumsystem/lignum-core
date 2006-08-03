@@ -21,8 +21,8 @@ using namespace cxxadt;
 template <class TS, class BUD=DefaultBud<TS>, class S=Ellipse>
 class PolygonTreeBuilder {
   public:
-  PolygonTreeBuilder(VisualizationParameters params, list<CylinderVolume>* cyls):
-  parameters(params), cylinders(cyls) { }
+  PolygonTreeBuilder(VisualizationParameters params):
+  parameters(params) { }
   
   BSPPolygonSet* operator() (BSPPolygonSet* polygons, TreeCompartment<TS,BUD>* tc) const ;
   
@@ -44,7 +44,7 @@ class PolygonTreeBuilder {
   BSPPolygonSet* makeTriangleLeaf(Point lc, Point rc, Point ac, SceneObject* object) const;
   BSPPolygonSet* makeEllipseLeaf(const Ellipse* ellipse, int detail, bool use_tex, SceneObject* object) const;
   
-  mutable list<CylinderVolume>* cylinders;
+  //  mutable list<CylinderVolume>* cylinders;
   VisualizationParameters parameters;
 };
 
@@ -54,10 +54,8 @@ template <class TS, class BUD=DefaultBud<TS>, class S=Ellipse>
   public:
   LGMPolygonTree() { }
   BSPPolygonSet* buildTree(Tree<TS,BUD>& tree, VisualizationParameters params);
-  list<CylinderVolume>* getCylinders();
 
   private:
-  list<CylinderVolume>* cylinders;
 };
 
 
@@ -69,17 +67,17 @@ template <class TS, class BUD, class S>
     double length = GetValue(*ts, LGAL);
     Point point = GetPoint(*ts);
     PositionVector direction = GetDirection(*ts);
-    SceneObject* object = new SceneObject(parameters.getMaterial(), parameters.getCylinderTexture(), false);
+    SceneObject* object = new SceneObject(parameters.getMaterial(), parameters.getSegmentTexture(), false);
     BSPPolygonSet* cyl = makeCylinder(radius, length, Point(point.getX(), point.getY(), point.getZ()),
-					   PositionVector(direction.getX(), direction.getY(), direction.getZ()),
-					   false, false, object,
-					   parameters.getCylinderRDetail(), parameters.getCylinderHDetail());
+				      PositionVector(direction.getX(), direction.getY(), direction.getZ()),
+				      true, true, object,
+				      parameters.getSegmentRDetail(), parameters.getSegmentHDetail());
     polygons->addPolygons(cyl);
     delete cyl;
-    CylinderVolume cylinder(radius, length, Point(point.getX(), point.getY(), point.getZ()),
-			    PositionVector(direction.getX(), direction.getY(), direction.getZ()),
-			    parameters.getCylinderRDetail());
-    cylinders->push_back(cylinder);
+    //    CylinderVolume cylinder(radius, length, Point(point.getX(), point.getY(), point.getZ()),
+    //			    PositionVector(direction.getX(), direction.getY(), direction.getZ()),
+    //			    parameters.getCylinderRDetail());
+  //    cylinders->push_back(cylinder);
 
     if(HwTreeSegment<TS,BUD,S>* hw = dynamic_cast<HwTreeSegment<TS,BUD,S>*>(ts)) {
       list<BroadLeaf<S>*>& ll = GetLeafList(*hw);
@@ -118,9 +116,9 @@ template <class TS, class BUD, class S>
     else if(CfTreeSegment<TS,BUD>* cf = dynamic_cast<CfTreeSegment<TS,BUD>*>(ts)) {
       double fmass = GetValue(*cf, LGAWf);
       //cout << "foliage: " << fmass << endl;
-      if(fmass > 0.001 && (GetValue(*cf, LGAage) <= 6)) {
+      if(fmass > R_EPSILON /* && (GetValue(*cf, LGAage) <= 6)*/) {
 	object = new SceneObject(parameters.getLeafMaterial(), parameters.getFoliageTexture(), parameters.useBSP());
-	BSPPolygonSet* foliage = makeFoliage(radius, length, point, direction, parameters.getCylinderRDetail(), fmass, object);
+	BSPPolygonSet* foliage = makeFoliage(radius, length, point, direction, parameters.getSegmentRDetail(), fmass, object);
 	polygons->addPolygons(foliage);
 	delete foliage;
       }
@@ -134,16 +132,10 @@ template <class TS, class BUD, class S>
   BSPPolygonSet* LGMPolygonTree<TS,BUD,S>::buildTree(Tree<TS,BUD>& tree, VisualizationParameters params) {
   BSPPolygonSet* polygons = new BSPPolygonSet();
 
-  cylinders = new list<CylinderVolume>();
-  PolygonTreeBuilder<TS,BUD,S> builder(params, cylinders);  
+  PolygonTreeBuilder<TS,BUD,S> builder(params);  
   PropagateUp(tree, polygons, builder);
 
   return polygons;
-}
-
-template <class TS, class BUD, class S>
-  list<CylinderVolume>* LGMPolygonTree<TS,BUD,S>::getCylinders() {
-  return cylinders;
 }
 
 template <class TS, class BUD, class S>
@@ -252,7 +244,8 @@ template <class TS, class BUD, class S>
   double y, y_next;
   double PI = 3.14159265;
   double factor = 10;
-  double needle_length = 0.05;
+  //double needle_length = 0.05;
+  double needle_length = 11*fmass;
   double NEEDLE_AREA = 0.00015;
   double amount = 0.23 * fmass * 28.6 / NEEDLE_AREA;
   int amount2 = static_cast<int>(fmass / 0.0000035);

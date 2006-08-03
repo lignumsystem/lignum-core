@@ -4,11 +4,13 @@
 #include <iostream>
 #include <BSPPolygonMaterial.h>
 
+using namespace std;
+
 class VisualizationParameters {
  public:
-  VisualizationParameters(int cylinder_r_detail, int cylinder_h_detail,
+  VisualizationParameters(int segment_r_detail, int segment_h_detail,
 			  int leaf_detail,
-			  int cylinder_tex,
+			  int segment_tex,
 			  int leaf_tex,
 			  int foliage_tex,
 			  BSPPolygonMaterial* material,
@@ -17,35 +19,45 @@ class VisualizationParameters {
   VisualizationParameters();
   ~VisualizationParameters();
   
-  int                   getCylinderRDetail() const ;
-  int                   getCylinderHDetail() const ;
+  void                  setSegmentTextureFile(string texture);
+  string                getSegmentTextureFile();
+  void                  setLeafTextureFile(string texture);
+  string                getLeafTextureFile();
+
+  int                   getSegmentRDetail() const ;
+  void                  setSegmentRDetail(int detail);
+  int                   getSegmentHDetail() const ;
+  void                  setSegmentHDetail(int detail);
+  int                   getSegmentTexture() const ;
+  void                  setSegmentTexture(int texture);
+
   int                   getLeafDetail() const;
-  void                  setCylinderRDetail(int detail);
-  void                  setCylinderHDetail(int detail);
   void                  setLeafDetail(int detail);
-  int                   getCylinderTexture() const ;
-  void                  setCylinderTexture(int texture);
   int                   getLeafTexture() const;
   void                  setLeafTexture(int texture);
+
   int                   getFoliageTexture() const;
   void                  setFoliageTexture(int texture);
-  void                  setMaterial(BSPPolygonMaterial* material);
-  void                  setLeafMaterial(BSPPolygonMaterial* material);
-  void                  setPetioleMaterial(BSPPolygonMaterial* material);
+
   BSPPolygonMaterial*   getMaterial() const ;
+  void                  setMaterial(BSPPolygonMaterial* material);
   BSPPolygonMaterial*   getLeafMaterial() const;
+  void                  setLeafMaterial(BSPPolygonMaterial* material);
   BSPPolygonMaterial*   getPetioleMaterial() const;
+  void                  setPetioleMaterial(BSPPolygonMaterial* material);
+
   void                  setBSPUsage(bool useBSP);
   bool                  useBSP() const;
   void                  setLeafTextureUsage(bool useLeafTextures);
   bool                  useLeafTextures() const;
 
  private:
-
-  int cylinder_r_detail;
-  int cylinder_h_detail;
+  string segment_texture_file;
+  string leaf_texture_file;
+  int segment_r_detail;
+  int segment_h_detail;
   int leaf_detail;
-  int cylinder_tex;
+  int segment_tex;
   int leaf_tex;
   int foliage_tex;
   BSPPolygonMaterial* material;

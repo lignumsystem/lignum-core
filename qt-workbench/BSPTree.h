@@ -12,10 +12,9 @@ public:
   BSPTree():
 divider(NULL), front(NULL), back(NULL){ }
   ~BSPTree();  
-  void buildBSPTree(BSPPolygonSet& polygons, list<CylinderVolume>* cylinders); 
+  void buildBSPTree(BSPPolygonSet& polygons); 
   void drawTree(Point& eye, PositionVector& direction);
   void drawTransparentTree(Point& eye, PositionVector& direction);
-  bool removeHiddenPolygons(list<CylinderVolume>* volumes);
   int countPolygons() const;
   int countComponents() const;
   int getDepth() const;
