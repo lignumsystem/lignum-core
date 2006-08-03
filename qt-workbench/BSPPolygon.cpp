@@ -21,7 +21,7 @@ BSPPolygon::BSPPolygon(Point p1, Point p2, Point p3, SceneObject* obj):
 }
 
 BSPPolygon::BSPPolygon(Point p1, Point p2, Point p3, Point t_p1, Point t_p2, Point t_p3, SceneObject* obj):
-  beenDivider(false), p1(p1), p2(p2), p3(p3), object(obj), tp1(t_p1), tp2(t_p2), tp3(t_p3) {
+  beenDivider(false), p1(p1), p2(p2), p3(p3), tp1(t_p1), tp2(t_p2), tp3(t_p3), object(obj) {
   normal = PositionVector(-1*Cross(PositionVector(p1-p2), PositionVector(p2-p3)));
   normal = normal.normalize();
   distance = -(p1.getX()*normal.getX() + p1.getY()*normal.getY() + p1.getZ()*normal.getZ());

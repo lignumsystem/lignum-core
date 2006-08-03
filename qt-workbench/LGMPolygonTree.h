@@ -154,7 +154,7 @@ template <class TS, class BUD, class S>
   //  vector<Point> vertices(3);
   //vector<Point> t_vertices(3);
   double tex_length = 0.2;
-  double tex_start = rand()/(double)RAND_MAX;
+  //double tex_start = rand()/(double)RAND_MAX;
   
   PositionVector v1, v2, v3, v4;
   sine_next = radius*sin(0*2.0*PI/r_detail);
@@ -243,12 +243,12 @@ template <class TS, class BUD, class S>
   double sine, cosine, sine_next, cosine_next;
   double y, y_next;
   double PI = 3.14159265;
-  double factor = 10;
+  //  double factor = 10;
   //double needle_length = 0.05;
   double needle_length = 11*fmass;
-  double NEEDLE_AREA = 0.00015;
-  double amount = 0.23 * fmass * 28.6 / NEEDLE_AREA;
-  int amount2 = static_cast<int>(fmass / 0.0000035);
+  //double NEEDLE_AREA = 0.00015;
+  //double amount = 0.23 * fmass * 28.6 / NEEDLE_AREA;
+  //int amount2 = static_cast<int>(fmass / 0.0000035);
 
   LGMdouble tex_len = 0.1;
   LGMdouble tex_per_plane = height / tex_len;
@@ -257,7 +257,7 @@ template <class TS, class BUD, class S>
   int needles_per_plane = static_cast<int>(tex_per_plane * needles_per_tex);
   if (needles_per_plane == 0)
     return polygons;
-  int directions = static_cast<int>(amount2 / needles_per_plane);
+  //int directions = static_cast<int>(amount2 / needles_per_plane);
 
   if(detail == 0)
     return polygons;
@@ -409,7 +409,7 @@ template <class TS, class BUD, class S>
 
     int size = vertices.size();
     
-    double step = 1.0/(size/2.0 );
+    //double step = 1.0/(size/2.0 );
     polygons->addPolygon(new BSPPolygon(vertices[0], vertices[size-1], vertices[1], object));
         
     for(int i = 1; i < size/2-1; i++) {

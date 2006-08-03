@@ -19,8 +19,10 @@ void LignumWB::loadTree() {
 						  "XML-tree files (*.xml)");
   
   // Should this be implemented with signals & slots?
-  ui.gldrawer->setTreeFile(fileName);
-  ui.gldrawer->changeTree();
+  if(!fileName.isEmpty()) {
+    ui.gldrawer->setTreeFile(fileName);
+    ui.gldrawer->changeTree();
+  }
 }
 
 void LignumWB::options() {

@@ -19,10 +19,10 @@ public:
   int loadTexture(std::string fileName);
 
   void mousePressEvent(QMouseEvent* event);
-  void mouseReleaseEvent(QMouseEvent* event);
+  //void mouseReleaseEvent(QMouseEvent* event);
   void mouseMoveEvent(QMouseEvent* event);
   void keyPressEvent(QKeyEvent* event);
-  void keyReleaseEvent(QKeyEvent* event);
+  //  void keyReleaseEvent(QKeyEvent* event);
   
 
   BSPPolygonMaterial* green;

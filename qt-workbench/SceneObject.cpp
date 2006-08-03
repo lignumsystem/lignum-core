@@ -6,13 +6,13 @@
 using namespace std;
 
 SceneObject::SceneObject(BSPPolygonMaterial* mat, bool transp)
-  : component_count(0), material(mat), texture_id(0), transparent(transp) {
+  : component_count(0), texture_id(0), transparent(transp), material(mat) {
   n_objects++;
   id = n_objects;
 }
 
 SceneObject::SceneObject(BSPPolygonMaterial* mat, int t_id, bool transp) 
-  : component_count(0), material(mat), texture_id(t_id), transparent(transp) {
+  : component_count(0), texture_id(t_id), transparent(transp), material(mat) {
   n_objects++;
   id = n_objects;
 }
