@@ -32,8 +32,13 @@ class XMLDomTreeReader
 public:
   // XMLDomTreeReader(Tree<TS,BUD>& t)
   //:tree(t){}
-  XMLDomTreeReader() {}
+  XMLDomTreeReader() {}  
   Tree<TS,BUD>& readXMLToTree(Tree<TS,BUD>& t, const string& fileName);
+  int treeType(const string& fileName);
+  int leafType(const string& fileName);
+
+  enum {Cf, Hw};
+  enum {TRIANGLE, ELLIPSE, NONE};
 private:
   void parseTree(QDomNode&, Tree<TS,BUD>& t); 
   void parseRootAxis(QDomNode&, Axis<TS,BUD>*, Tree<TS,BUD>& );
@@ -57,9 +62,59 @@ private:
   void insertLeaf(QDomNode&, HwTreeSegment<TS,BUD,Triangle>*); 
 
   QDomDocument m_doc;			  
+
+  // Change this to enum
   QString segmentType;
-  //Tree<TS, BUD>& tree;
 };
+
+template <class TS, class BUD, class S>
+int XMLDomTreeReader<TS,BUD,S>::treeType(const string& fileName) {
+  QString fName(fileName.c_str());
+ 
+  m_doc = QDomDocument("LMODEL");
+  QString tmp;
+
+  QFile file(fName);
+  if(!file.open(QIODevice::ReadOnly))
+    return -1;
+  if(!m_doc.setContent(&file)) {
+    file.close();
+    return -1;
+  }
+  
+  QDomNode root = m_doc.firstChild();
+
+  QString type = root.toElement().attribute("SegmentType");
+  if(type == "Cf")
+    return XMLDomTreeReader::Cf;
+  else
+    return XMLDomTreeReader::Hw;
+}
+
+template <class TS, class BUD, class S>
+int XMLDomTreeReader<TS,BUD,S>::leafType(const string& fileName) {
+  
+  QString fName(fileName.c_str());
+ 
+  m_doc = QDomDocument("LMODEL");
+  QString tmp;
+
+  QFile file(fName);
+  if(!file.open(QIODevice::ReadOnly))
+    return -1;
+  if(!m_doc.setContent(&file)) {
+    file.close();
+    return -1;
+  }
+  
+  QDomNode root = m_doc.firstChild();
+
+  QString type = root.toElement().attribute("LeafType");
+  if(type == "Triangle")
+    return XMLDomTreeReader::TRIANGLE;
+  else
+    return XMLDomTreeReader::ELLIPSE;
+}
 
 /**
  * Reads the XML-file to a Tree-object.

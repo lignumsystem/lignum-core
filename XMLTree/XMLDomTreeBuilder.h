@@ -26,7 +26,7 @@ class XMLDomTreeBuilder
 {
 public:
   XMLDomTreeBuilder(QDomDocument& doc, QDomElement& root, Tree<TS,BUD>& tree)
-   : m_tree(tree), m_doc(doc), m_root(root), segmentTypeFound(false){}
+: m_tree(tree), m_doc(doc), m_root(root), segmentTypeFound(false), leafTypeFound(false) {}
   QDomElement& operator() (QDomElement&, TreeCompartment<TS, BUD>*)const ;
   void addTreeCompartmentAttributeNode(QDomElement&, QDomDocument&, TreeCompartment<TS,BUD>*)const;
   void addTreeAttributeNode(QDomElement&, QDomDocument&, Tree<TS,BUD>*)const; 
@@ -43,7 +43,9 @@ private:
   mutable QDomDocument m_doc;
   mutable QDomElement m_root;
   mutable QString segmentType;
-  mutable bool segmentTypeFound;  
+  mutable bool segmentTypeFound;
+  mutable QString leafType;
+  mutable bool leafTypeFound;
   mutable QStack<QDomElement> m_stack;
   mutable QStack<QDomElement> m_segstack;
 };
@@ -513,10 +515,10 @@ void XMLDomTreeBuilder<TS,BUD,S>::addCfTreeSegmentAttributeNode(QDomElement& nod
   attrib.appendChild(m_doc.createTextNode(tmp));
   rootNode.appendChild(attrib);
 
-  /*attrib = m_doc.createElement("LGAR");
+  attrib = m_doc.createElement("LGAR");
   tmp = QString("%1").arg(GetValue(*ts, LGAR));
   attrib.appendChild(m_doc.createTextNode(tmp));
-  rootNode.appendChild(attrib);*/
+  rootNode.appendChild(attrib);
 
   attrib = m_doc.createElement("LGARh");
   tmp = QString("%1").arg(GetValue(*ts, LGARh));
@@ -943,6 +945,10 @@ void XMLDomTreeBuilder<TS,BUD,S>::addBroadLeafAttributeNode(QDomElement& node, Q
   
   const Shape& s = static_cast<const Shape&>(GetShape(*leaf));
   if(node.attribute("Shape") == "Triangle") {
+    if(!leafTypeFound) {
+      leafTypeFound = true;
+      m_root.setAttribute("LeafType", "Triangle");
+    }
     const Triangle& t = dynamic_cast<const Triangle&>(s);    
     
     attrib = m_doc.createElement("TriangleLC");
@@ -961,6 +967,10 @@ void XMLDomTreeBuilder<TS,BUD,S>::addBroadLeafAttributeNode(QDomElement& node, Q
     rootNode.appendChild(attrib);
   }
   else if (node.attribute("Shape") == "Ellipse") {
+    if(!leafTypeFound) {
+      leafTypeFound = true;
+      m_root.setAttribute("LeafType", "Ellipse");
+    }
     const Ellipse& e = dynamic_cast<const Ellipse&>(s);
 
     attrib = m_doc.createElement("EllipseSMajorA");
