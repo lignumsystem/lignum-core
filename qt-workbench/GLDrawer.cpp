@@ -25,7 +25,7 @@ using namespace std;
 using namespace Lignum;
 
 GLDrawer::GLDrawer(QWidget* parent)
-  : QGLWidget(parent)  {
+  : QGLWidget(QGLFormat(), parent)  {
   resize(400, 300);
   camera_x = 5;
   camera_y = 0.5;
@@ -152,7 +152,7 @@ void GLDrawer::resizeGL(int width, int height)
   glViewport(0, 0, width, height);
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
-  gluPerspective(60.0, (GLfloat)width/(GLfloat)height, 0.0001, 20.0);
+  gluPerspective(60.0, (GLfloat)width/(GLfloat)height, 0.01, 20.0);
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
 }
@@ -297,9 +297,11 @@ void GLDrawer::changeTree() {
 	t_point = Point(t_point.getX(), t_point.getZ(), -t_point.getY());
       }
     }
-    //BSPPolygonSet* ground = makeSquare(10, 10, Point(5,0,-5), PositionVector(0,1,0), green, 0, 2);
-    //polygons.addPolygons(ground);
-    //delete ground;
+    
+    //BSPPolygonSet* ground = makeSquare(10, 10, Point(t_point.getX(), -t_point.getZ(), t_point.getY()),
+    //				       PositionVector(r_axis.getX(), -r_axis.getZ(), r_axis.getY()), green, 0, 2);
+  //polygons.addPolygons(ground);
+  // delete ground;
     
     tree->buildBSPTree(polygons);
 
@@ -320,6 +322,7 @@ void GLDrawer::changeTree() {
 
 void GLDrawer::paintGL()  {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  //glClear(GL_COLOR_BUFFER_BIT);
   glLoadIdentity();
 
   glRotatef(cam_rot_x, 1, 0, 0);  
