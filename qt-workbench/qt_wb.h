@@ -69,7 +69,7 @@ public:
     void setupUi(QMainWindow *MainWindow)
     {
     MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
-    MainWindow->resize(QSize(1346, 922).expandedTo(MainWindow->minimumSizeHint()));
+    MainWindow->resize(QSize(818, 543).expandedTo(MainWindow->minimumSizeHint()));
     MainWindow->setMouseTracking(false);
     actionQuit = new QAction(MainWindow);
     actionQuit->setObjectName(QString::fromUtf8("actionQuit"));
@@ -263,7 +263,7 @@ public:
     MainWindow->setCentralWidget(centralwidget);
     menubar = new QMenuBar(MainWindow);
     menubar->setObjectName(QString::fromUtf8("menubar"));
-    menubar->setGeometry(QRect(0, 0, 1346, 22));
+    menubar->setGeometry(QRect(0, 0, 818, 22));
     menuValikko = new QMenu(menubar);
     menuValikko->setObjectName(QString::fromUtf8("menuValikko"));
     menuFile = new QMenu(menubar);
