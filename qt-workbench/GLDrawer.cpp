@@ -245,26 +245,9 @@ void GLDrawer::changeTree() {
     
     tree = new BSPTree();
     BSPPolygonSet polygons;
-    
-    //XMLDomTreeReader<ScotsPineSegment, ScotsPineBud> cf_reader;
+        
     XMLDomTreeReader<GenericCfTreeSegment, GenericCfBud> cf_reader;
 
-
-    /*if(cf_reader.treeType(tree_file.toStdString()) == XMLDomTreeReader<ScotsPineSegment, ScotsPineBud>::Cf) {
-      Tree<ScotsPineSegment, ScotsPineBud> cftree(Point(0,0,0), PositionVector(0,1,0));
-      cf_reader.readXMLToTree(cftree, tree_file.toStdString());
-      LGMPolygonTree<ScotsPineSegment, ScotsPineBud> constructor;
-      BSPPolygonSet* treePolygons = constructor.buildTree(cftree, parameters);
-      polygons.addPolygons(treePolygons);
-      delete treePolygons;
-
-      r_axis = GetDirection(GetRootAxis(cftree));
-      t_point = GetPoint(cftree);
-      t_height = GetValue(cftree, LGAH);
-      r_axis = r_axis.normalize();
-      r_axis = PositionVector(r_axis.getX(), r_axis.getZ(), -r_axis.getY());
-      t_point = Point(t_point.getX(), t_point.getZ(), -t_point.getY());
-      }*/
     if(cf_reader.treeType(tree_file.toStdString()) == XMLDomTreeReader<GenericCfTreeSegment, GenericCfBud>::Cf) {
       Tree<GenericCfTreeSegment, GenericCfBud> cftree(Point(0,0,0), PositionVector(0,1,0));
       cf_reader.readXMLToTree(cftree, tree_file.toStdString());
@@ -314,26 +297,9 @@ void GLDrawer::changeTree() {
 	t_point = Point(t_point.getX(), t_point.getZ(), -t_point.getY());
       }
     }
-    /*else {
-      Tree<SugarMapleSegment, SugarMapleBud> hwtree(Point(0,0,0), PositionVector(0,1,0));
-      hw_reader.readXMLToTree(hwtree, tree_file.toStdString());
-      LGMPolygonTree<SugarMapleSegment, SugarMapleBud> constructor;
-      BSPPolygonSet* treePolygons = constructor.buildTree(hwtree, parameters);
-      polygons.addPolygons(treePolygons);
-      delete treePolygons;
-
-      r_axis = GetDirection(GetRootAxis(hwtree));
-      t_point = GetPoint(hwtree);
-      t_height = GetValue(hwtree, LGAH);
-      r_axis = r_axis.normalize();
-      r_axis = PositionVector(r_axis.getX(), r_axis.getZ(), -r_axis.getY());
-      t_point = Point(t_point.getX(), t_point.getZ(), -t_point.getY());
-      }*/
-      
-    
-      //BSPPolygonSet* ground = makeSquare(10, 10, Point(5,0,-5), PositionVector(0,1,0), green, 0, 2);
-      //polygons.addPolygons(ground);
-      //delete ground;
+    //BSPPolygonSet* ground = makeSquare(10, 10, Point(5,0,-5), PositionVector(0,1,0), green, 0, 2);
+    //polygons.addPolygons(ground);
+    //delete ground;
     
     tree->buildBSPTree(polygons);
 
