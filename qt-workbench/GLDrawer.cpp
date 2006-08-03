@@ -26,6 +26,7 @@ using namespace Lignum;
 
 GLDrawer::GLDrawer(QWidget* parent)
   : QGLWidget(QGLFormat(), parent)  {
+  cout << "depth: " << format().depthBufferSize() << endl;
   resize(400, 300);
   camera_x = 5;
   camera_y = 0.5;
