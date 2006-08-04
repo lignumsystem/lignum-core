@@ -78,7 +78,8 @@ SceneObjectComponent::~SceneObjectComponent() {
     //    cout << "SceneObject deleted" << endl;
     delete object;
   }
-  glDeleteLists(draw_index, 1);
+  if(draw_index != 0 && draw_index != component_index)
+    glDeleteLists(draw_index, 1);
   glDeleteLists(component_index, 1);
 }
 

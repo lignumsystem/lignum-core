@@ -7,6 +7,7 @@ LignumWB::LignumWB(QWidget *parent)
   connect(ui.actionQuit, SIGNAL(triggered()), this, SLOT(close()));
   connect(ui.actionLoad_tree, SIGNAL(triggered()), this, SLOT(loadTree()));
   connect(ui.actionVisualization_settings, SIGNAL(triggered()), this, SLOT(options()));
+ 
 }
 
 void LignumWB::loadTree() {
@@ -28,7 +29,10 @@ void LignumWB::loadTree() {
 void LignumWB::options() {
   if(!viz_config) {
     viz_config = new VisualizationConfig();
+    viz_config->setModal(true);
+    connect(viz_config, SIGNAL(settingsChanged(VisualizationParameters)), ui.gldrawer, SLOT(changeSettings(VisualizationParameters)));
   } 
+  viz_config->setSettings(ui.gldrawer->getParameters());
   viz_config->show();
   viz_config->raise();
   viz_config->activateWindow(); 

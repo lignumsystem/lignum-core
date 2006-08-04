@@ -446,9 +446,9 @@ BSPPolygonSet::~BSPPolygonSet() {
     delete *i;
     components.erase(i);
     }*/
-  for(vector<SceneObjectComponent*>::iterator i = components.begin(); i != components.end(); i++) {
+  for(vector<SceneObjectComponent*>::iterator i = components.begin(); i != components.end(); ) {
     delete *i;
-    //components.erase(i);
+    i = components.erase(i);
   }
 }    
 

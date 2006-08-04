@@ -13,18 +13,44 @@ VisualizationParameters::VisualizationParameters(int s_r_detail,
 						 BSPPolygonMaterial* petioleMat) :
   segment_r_detail(s_r_detail), segment_h_detail(s_h_detail), leaf_detail(l_detail), 
   segment_tex(s_tex), leaf_tex(l_tex), foliage_tex(f_tex), material(mat), leafMaterial(leafMat),
-  petioleMaterial(petioleMat), use_BSP(true) {
+  petioleMaterial(petioleMat), use_BSP(true), use_wireframe(false), use_lighting(true),
+  use_texturing(true) {
   if(leaf_tex == 0)
-    useLeafTex == false;
+    use_leaftex == false;
   else 
-  useLeafTex == true;
+    use_leaftex == true;
 
 }
 
 VisualizationParameters::VisualizationParameters() :
   segment_r_detail(20), segment_h_detail(1), leaf_detail(10), 
   segment_tex(0), leaf_tex(0), foliage_tex(0), material(NULL), leafMaterial(NULL),
-  petioleMaterial(NULL), use_BSP(false), useLeafTex(false) {
+  petioleMaterial(NULL), use_BSP(false), use_leaftex(false), use_wireframe(false), use_lighting(true),
+  use_texturing(true) {
+}
+
+void VisualizationParameters::setSegmentTextureFile(string texture) {
+  segment_texture_file = texture;
+}
+
+void VisualizationParameters::setLeafTextureFile(string texture) {
+  leaf_texture_file = texture;
+}
+
+void VisualizationParameters::setFoliageTextureFile(string texture) {
+  foliage_texture_file = texture;
+}
+
+string VisualizationParameters::getSegmentTextureFile() const {
+  return segment_texture_file;
+}
+
+string VisualizationParameters::getLeafTextureFile() const {
+  return leaf_texture_file;
+}
+
+string VisualizationParameters::getFoliageTextureFile() const {
+  return foliage_texture_file;
 }
 
 VisualizationParameters::~VisualizationParameters() {
@@ -122,9 +148,33 @@ bool VisualizationParameters::useBSP() const {
 }
 
 void VisualizationParameters::setLeafTextureUsage(bool use_tex) {
-  useLeafTex = use_tex;
+  use_leaftex = use_tex;
 }
 
 bool VisualizationParameters::useLeafTextures() const {
-  return useLeafTex;
+  return use_leaftex;
+}
+
+void VisualizationParameters::setWireframeUsage(bool useWireframe) {
+  use_wireframe = useWireframe;
+}
+
+bool VisualizationParameters::useWireframe() const {
+  return use_wireframe;
+}
+
+void VisualizationParameters::setLightingUsage(bool useLighting) {
+  use_lighting = useLighting;
+}
+
+bool VisualizationParameters::useLighting() const {
+  return use_lighting;
+}
+
+void VisualizationParameters::setTexturingUsage(bool useTexturing) {
+  use_texturing = useTexturing;
+}
+
+bool VisualizationParameters::useTexturing() const {
+  return use_texturing;
 }

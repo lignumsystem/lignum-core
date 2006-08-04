@@ -3,17 +3,61 @@
 #include <QDir>
 #include <QFileDialog>
 
+
 VisualizationConfig::VisualizationConfig(QWidget *parent)
   : QDialog(parent) {
   ui.setupUi(this);
+
   connect(ui.segmentButton, SIGNAL(clicked()), this, SLOT(loadSegmentFile()));
   connect(ui.leafButton, SIGNAL(clicked()), this, SLOT(loadLeafFile()));
+  connect(ui.foliageButton, SIGNAL(clicked()), this, SLOT(loadFoliageFile()));
   
   connect(this, SIGNAL(segmentFileChanged(QString)), ui.segmentText, SLOT(setText(QString)));
   connect(this, SIGNAL(leafFileChanged(QString)), ui.leafText, SLOT(setText(QString)));
+  connect(this, SIGNAL(foliageFileChanged(QString)), ui.foliageText, SLOT(setText(QString)));
 
-  connect(ui.okButton, SIGNAL(clicked()), this, SLOT(setSettings()));
+  connect(ui.okButton, SIGNAL(clicked()), this, SLOT(applySettings()));
   connect(ui.cancelButton, SIGNAL(clicked()), this, SLOT(reject()));
+}
+
+VisualizationConfig::~VisualizationConfig() {
+
+}
+
+void VisualizationConfig::setSettings(VisualizationParameters params) {
+  if(params.useBSP())
+    ui.bspBox->setCheckState(Qt::Checked);
+  else
+    ui.bspBox->setCheckState(Qt::Unchecked);
+
+  if(params.useLeafTextures())
+    ui.leaftexBox->setCheckState(Qt::Checked);
+  else
+    ui.leaftexBox->setCheckState(Qt::Unchecked);
+
+  if(params.useWireframe())
+    ui.wireBox->setCheckState(Qt::Checked);
+  else
+    ui.wireBox->setCheckState(Qt::Unchecked);
+
+  if(params.useLighting())
+    ui.lightBox->setCheckState(Qt::Checked);
+  else
+    ui.lightBox->setCheckState(Qt::Unchecked);
+  
+  if(params.useTexturing())
+    ui.texBox->setCheckState(Qt::Checked);
+  else
+    ui.texBox->setCheckState(Qt::Unchecked);
+
+  ui.srdetailBox->setValue(params.getSegmentRDetail());
+  ui.shdetailBox->setValue(params.getSegmentHDetail());
+  ui.ldetailBox->setValue(params.getLeafDetail());
+  
+  ui.segmentText->setText(QString(params.getSegmentTextureFile().c_str()));
+  ui.leafText->setText(QString(params.getLeafTextureFile().c_str()));
+  ui.foliageText->setText(QString(params.getFoliageTextureFile().c_str()));
+  
 
 }
 
@@ -22,7 +66,7 @@ void VisualizationConfig::loadSegmentFile() {
   QString file = QFileDialog::getOpenFileName(this,
 					      "Choose a file",
 					      QDir::currentPath(),
-					      "Image files (*.png *.jpg *.xpm)");
+					      "Images (*.png *.jpg *.xpm)");
   if(!file.isEmpty())
     emit segmentFileChanged(file);
 }
@@ -31,7 +75,56 @@ void VisualizationConfig::loadLeafFile() {
   QString file = QFileDialog::getOpenFileName(this,
 					      "Choose a file",
 					      QDir::currentPath(),
-					      "Image files (*.png *.jpg *.xpm)");
+					      "Images (*.png *.jpg *.xpm)");
   if(!file.isEmpty())
     emit leafFileChanged(file);
+}
+
+void VisualizationConfig::loadFoliageFile() {
+  QString file = QFileDialog::getOpenFileName(this,
+					      "Choose a file",
+					      QDir::currentPath(),
+					      "Images (*.png *.jpg *.xpm)");
+  if(!file.isEmpty())
+    emit foliageFileChanged(file);
+}
+
+void VisualizationConfig::applySettings() {
+  VisualizationParameters params;
+  params.setSegmentRDetail(ui.srdetailBox->value());
+  params.setSegmentHDetail(ui.shdetailBox->value());
+  params.setLeafDetail(ui.ldetailBox->value());
+
+  params.setSegmentTextureFile(ui.segmentText->text().toStdString());
+  params.setLeafTextureFile(ui.leafText->text().toStdString());
+  params.setFoliageTextureFile(ui.foliageText->text().toStdString());
+
+  if(ui.bspBox->checkState() == Qt::Checked)
+    params.setBSPUsage(true);
+  else
+    params.setBSPUsage(false);
+
+  if(ui.leaftexBox->checkState() == Qt::Checked)
+    params.setLeafTextureUsage(true);
+  else
+    params.setLeafTextureUsage(false);
+
+  if(ui.wireBox->checkState() == Qt::Checked)
+    params.setWireframeUsage(true);
+  else
+    params.setWireframeUsage(false);
+
+  if(ui.lightBox->checkState() == Qt::Checked)
+    params.setLightingUsage(true);
+  else
+    params.setLightingUsage(false);
+  
+  if(ui.texBox->checkState() == Qt::Checked)
+    params.setTexturingUsage(true);
+  else
+    params.setTexturingUsage(false);
+
+
+  emit settingsChanged(params);
+  accept();
 }
