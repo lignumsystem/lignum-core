@@ -394,7 +394,9 @@ void GLDrawer::paintGL()  {
   glLightfv(GL_LIGHT0, GL_POSITION, light0_position);
   //glScalef(-1.0, 0, 0);
   
-  glTranslatef(t_point.getX(), t_point.getY(), t_point.getZ());
+  glTranslatef(t_point.getX(), t_point.getY() + 0.5*t_height, t_point.getZ());
+  glRotatef(t_rot_x, 1, 0, 0);
+  glTranslatef(0, -0.5*t_height, 0); 
   glRotatef(t_rot_y, r_axis.getX(), r_axis.getZ(), -r_axis.getY());
   glTranslatef(-t_point.getX(), -t_point.getY(), -t_point.getZ());
   
@@ -564,10 +566,12 @@ void GLDrawer::keyPressEvent(QKeyEvent* event) {
   switch(key) 
     {
     case Qt::Key_W:
-      moveCameraForward();
+      //moveCameraForward();
+      t_rot_x -= 2;
       break;
     case Qt::Key_S:
-      moveCameraBackward();
+      //moveCameraBackward();
+      t_rot_x += 2;
       break;
     case Qt::Key_A:
       //rotateCameraLeft();
