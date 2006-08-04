@@ -25,8 +25,7 @@ using namespace std;
 using namespace Lignum;
 
 GLDrawer::GLDrawer(QWidget* parent)
-  : QGLWidget(QGLFormat(), parent)  {
-  cout << "depth: " << format().depthBufferSize() << endl;
+  : QGLWidget(parent)  {
   resize(400, 300);
   camera_x = 5;
   camera_y = 0.5;
@@ -41,9 +40,23 @@ GLDrawer::GLDrawer(QWidget* parent)
   t_height = 1;
 
   DEGTORAD = 2*3.14159265/360.0;
-  wire = false;
+
+  parameters.setWireframeUsage(false);
+  parameters.setLightingUsage(true);
+  parameters.setTexturingUsage(true);
+
+  parameters.setSegmentTextureFile(std::string("pine_texture.png"));
+  parameters.setLeafTextureFile(std::string("maple_texture.png"));
+  parameters.setFoliageTextureFile(std::string("foliage.png"));
+
+  /*setCylinderTexture(QString("pine_texture.png"));
+  setLeafTexture(QString("maple_texture.png"));
+  setFoliageTexture(QString("foliage.png"));*/
+  
+  /*wire = false;
   lights_on = true;
-  use_textures = true;
+  use_textures = true;*/
+
   PI = 3.14159265;
   m_look_speed = 0.3;
   setFocusPolicy(Qt::ClickFocus);
@@ -56,6 +69,8 @@ GLDrawer::GLDrawer(QWidget* parent)
   setCylinderRDetail(10);
   setCylinderHDetail(1);
   setLeafDetail(10);
+
+  settingsChanged = true;
   
 }
 
@@ -138,9 +153,6 @@ void GLDrawer::initializeGL()
   initMaterials();
   initLights();
   initTextureSettings();
-  setCylinderTexture(QString("pine_texture.png"));
-  setLeafTexture(QString("maple_texture.png"));
-  setFoliageTexture(QString("foliage.png"));
 
   if(isExtensionSupported("GL_ARB_vertex_buffer_object"))
     emit textOutput("VBOs are supported!");
@@ -197,20 +209,47 @@ void GLDrawer::moveCameraBackward() {
   updateGL();
 }
 
+void GLDrawer::setParameterSettings() {
+  if(settingsChanged) {
+    settingsChanged = false;
+    
+    if(parameters.useWireframe())
+      glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    else
+      glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+    if(parameters.useLighting()) 
+      glEnable(GL_LIGHTING);
+    else
+      glDisable(GL_LIGHTING);
+    
+    if(parameters.useTexturing())
+      glEnable(GL_TEXTURE_2D);
+    else
+      glDisable(GL_TEXTURE_2D);
+    
+    setCylinderTexture(QString(parameters.getSegmentTextureFile().c_str()));
+    setLeafTexture(QString(parameters.getLeafTextureFile().c_str()));
+    setFoliageTexture(QString(parameters.getFoliageTextureFile().c_str()));
+  }
+}
+
 void GLDrawer::toggleWireModel() {
-  if(wire) {
+  /*if(wire) {
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     wire = false;
   }
   else {
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     wire = true;
-  }
+    }*/
+  parameters.setWireframeUsage(!parameters.useWireframe());
+  settingsChanged = true;
   updateGL();
 }
 
 void GLDrawer::toggleLights() {
-  if(lights_on) {
+  /*if(lights_on) {
     lights_on = false;
     glDisable(GL_LIGHTING);
     glDisable(GL_COLOR_MATERIAL);
@@ -219,19 +258,23 @@ void GLDrawer::toggleLights() {
     lights_on = true;
     glEnable(GL_LIGHTING);
     glEnable(GL_COLOR_MATERIAL);
-  }
+    }*/
+  parameters.setLightingUsage(!parameters.useLighting());
+  settingsChanged = true;
   updateGL();
 }
 
 void GLDrawer::toggleTexturing() {
-  if(use_textures) {
+  /*if(use_textures) {
     use_textures = false;
     glDisable(GL_TEXTURE_2D);
   }
   else {
     use_textures = true;
     glEnable(GL_TEXTURE_2D);
-  }
+    }*/
+  parameters.setTexturingUsage(!parameters.useTexturing());
+  settingsChanged = true;
   updateGL();
 }
 
@@ -325,6 +368,8 @@ void GLDrawer::paintGL()  {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   //glClear(GL_COLOR_BUFFER_BIT);
   glLoadIdentity();
+
+  setParameterSettings();
 
   glRotatef(cam_rot_x, 1, 0, 0);  
   glRotatef(cam_rot_y, 0, 1, 0);
@@ -605,18 +650,29 @@ void GLDrawer::resetCamera() {
   cout << "point: " << t_point.getX() << " " << t_point.getY() << " " << t_point.getZ() << endl;
   cout << "height: " << t_height << endl;
   camera_x = t_point.getX();
-  camera_y = t_point.getY() - t_height/2*r_axis.getZ();
+  //camera_y = t_point.getY() - t_height/2*r_axis.getZ();
+  camera_y = t_point.getY() + t_height/2;
   camera_z = t_point.getZ() + translate;
   Point camera(camera_x, camera_y, camera_z);
   cout << "camera: " << camera_x << " " << camera_y << " " << camera_z << endl;
 
-  Point p(t_point.getX(), t_point.getY() - (t_height/2.0)*r_axis.getZ(), t_point.getZ());
+  //Point p(t_point.getX(), t_point.getY() - (t_height/2.0)*r_axis.getZ(), t_point.getZ());
+  Point p(t_point.getX(), t_point.getY() + (t_height/2.0), t_point.getZ());
   PositionVector direction(PositionVector(p - camera));
   direction = direction.normalize();
   cout << "direction: " << direction.getX() << " " << direction.getY() << " " << direction.getZ() << endl;
   cam_rot_x = 1/DEGTORAD*asin(direction.getY());
-  cam_rot_y = 1/DEGTORAD*asin(direction.getX());
-  cam_rot_z = 1/DEGTORAD*acos(r_axis.getZ());
+
+  if(direction.getX() >= 0 && direction.getZ() >= 0)
+    cam_rot_y = 180-1/DEGTORAD*asin(direction.getX());
+  else if(direction.getX() < 0 && direction.getZ() >= 0)
+    cam_rot_y = -(180-1/DEGTORAD*asin(-direction.getX()));
+  else if(direction.getX() < 0 && direction.getZ() < 0)
+    cam_rot_y = -(1/DEGTORAD*asin(-direction.getX()));
+  else 
+    cam_rot_y = (1/DEGTORAD*asin(direction.getX()));
+
+  //  cam_rot_z = 1/DEGTORAD*acos(r_axis.getZ());
   
   updateGL();
 }
@@ -631,4 +687,17 @@ void GLDrawer::useLeafTextures(bool use) {
  
 void GLDrawer::setLeafDetail(int detail) {
   parameters.setLeafDetail(detail);
+}
+
+VisualizationParameters GLDrawer::getParameters() const {
+  return parameters;
+}
+
+void GLDrawer::changeSettings(VisualizationParameters params) {
+  params.setMaterial(parameters.getMaterial());
+  params.setLeafMaterial(parameters.getLeafMaterial());
+  params.setPetioleMaterial(parameters.getPetioleMaterial());
+  parameters = params;
+  settingsChanged = true;
+  updateGL();
 }
