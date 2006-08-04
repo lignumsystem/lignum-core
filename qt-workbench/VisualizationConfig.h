@@ -10,28 +10,26 @@ class VisualizationConfig : public QDialog
 
 public:
   VisualizationConfig(QWidget *parent = 0);
+  void setSettings(VisualizationParameters params);
+  ~VisualizationConfig();
 
 private slots:
   void loadSegmentFile();
   void loadLeafFile();
-  
+  void loadFoliageFile();
+  void applySettings();
+
 signals:
 
   void segmentFileChanged(QString fileName);
   void leafFileChanged(QString fileName);
-  void setSettings();
+  void foliageFileChanged(QString fileName);
   void settingsChanged(VisualizationParameters params);
 
 private:
 
   Ui::VisualizationConfig ui;
-  QString segmentFile;
-  QString leafFile;
-  bool useBSP;
-  bool useLeafTextures;
-  int segmentRDetail;
-  int segmentHDetail;
-  int leafDetail;
+  VisualizationParameters parameters;
 
 };
 

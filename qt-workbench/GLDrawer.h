@@ -23,7 +23,7 @@ public:
   void mouseMoveEvent(QMouseEvent* event);
   void keyPressEvent(QKeyEvent* event);
   //  void keyReleaseEvent(QKeyEvent* event);
-  
+  VisualizationParameters getParameters() const;
 
   BSPPolygonMaterial* green;
   BSPPolygonMaterial* red;
@@ -55,6 +55,7 @@ public slots:
   void useBSP(bool use);
   void useLeafTextures(bool use);
   void setLeafDetail(int detail);
+  void changeSettings(VisualizationParameters params);
   //void moveCameraLeft();
   //void moveCameraRight();
   //void moveCameraUp();
@@ -68,6 +69,7 @@ private:
   void initMaterials();
   void initLights();
   void initTextureSettings();
+  void setParameterSettings();
 
   GLfloat*  light0_position;                   // Position of light0
   GLfloat*  light0_direction;                  // Direction of light0
@@ -81,15 +83,16 @@ private:
   //  static const GLfloat PI = 3.14159265;  
   GLfloat   PI;                                // PI
   BSPTree   *tree;                             // BSP-tree object
-  bool      wire;                              // Is wireframe on
+  /*bool      wire;                              // Is wireframe on
   bool      lights_on;                         // Are lights on
   bool      use_textures;                      // Are textures used
-  int       tex1;   
+  int       tex1;   */
   QPoint    m_last_pos;
   double    m_look_speed;
   QString   tree_file;
   VisualizationParameters parameters;          // Parameters of the visualization
   QHash<QString, int> textures;
+  bool      settingsChanged;
 };
 
 #endif

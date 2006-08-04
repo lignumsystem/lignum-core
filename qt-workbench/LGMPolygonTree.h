@@ -117,7 +117,7 @@ template <class TS, class BUD, class S>
       double fmass = GetValue(*cf, LGAWf);
       //cout << "foliage: " << fmass << endl;
       if(fmass > R_EPSILON /* && (GetValue(*cf, LGAage) <= 6)*/) {
-	object = new SceneObject(parameters.getLeafMaterial(), parameters.getFoliageTexture(), parameters.useBSP());
+	object = new SceneObject(parameters.getMaterial(), parameters.getFoliageTexture(), parameters.useBSP());
 	BSPPolygonSet* foliage = makeFoliage(radius, length, point, direction, parameters.getSegmentRDetail(), fmass, object);
 	polygons->addPolygons(foliage);
 	delete foliage;
@@ -153,7 +153,7 @@ template <class TS, class BUD, class S>
   Point origo(0,0,0);
   //  vector<Point> vertices(3);
   //vector<Point> t_vertices(3);
-  double tex_length = 0.2;
+  double tex_length = 1;
   //double tex_start = rand()/(double)RAND_MAX;
   
   PositionVector v1, v2, v3, v4;

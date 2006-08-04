@@ -25,9 +25,11 @@ public:
     QVBoxLayout *vboxLayout1;
     QPushButton *segmentButton;
     QPushButton *leafButton;
+    QPushButton *foliageButton;
     QVBoxLayout *vboxLayout2;
     QLineEdit *segmentText;
     QLineEdit *leafText;
+    QLineEdit *foliageText;
     QHBoxLayout *hboxLayout1;
     QVBoxLayout *vboxLayout3;
     QCheckBox *bspBox;
@@ -44,9 +46,9 @@ public:
     QLabel *label_5;
     QLabel *label_6;
     QVBoxLayout *vboxLayout6;
-    QSpinBox *spinBox;
-    QSpinBox *spinBox_2;
-    QSpinBox *spinBox_3;
+    QSpinBox *srdetailBox;
+    QSpinBox *shdetailBox;
+    QSpinBox *ldetailBox;
     QSpacerItem *spacerItem2;
     QHBoxLayout *hboxLayout3;
     QSpacerItem *spacerItem3;
@@ -56,10 +58,10 @@ public:
     void setupUi(QDialog *VisualizationConfig)
     {
     VisualizationConfig->setObjectName(QString::fromUtf8("VisualizationConfig"));
-    VisualizationConfig->resize(QSize(521, 336).expandedTo(VisualizationConfig->minimumSizeHint()));
+    VisualizationConfig->resize(QSize(524, 368).expandedTo(VisualizationConfig->minimumSizeHint()));
     layoutWidget = new QWidget(VisualizationConfig);
     layoutWidget->setObjectName(QString::fromUtf8("layoutWidget"));
-    layoutWidget->setGeometry(QRect(14, 14, 491, 303));
+    layoutWidget->setGeometry(QRect(14, 14, 491, 341));
     vboxLayout = new QVBoxLayout(layoutWidget);
     vboxLayout->setSpacing(6);
     vboxLayout->setMargin(0);
@@ -82,6 +84,11 @@ public:
 
     vboxLayout1->addWidget(leafButton);
 
+    foliageButton = new QPushButton(layoutWidget);
+    foliageButton->setObjectName(QString::fromUtf8("foliageButton"));
+
+    vboxLayout1->addWidget(foliageButton);
+
 
     hboxLayout->addLayout(vboxLayout1);
 
@@ -101,6 +108,11 @@ public:
     leafText->setReadOnly(false);
 
     vboxLayout2->addWidget(leafText);
+
+    foliageText = new QLineEdit(layoutWidget);
+    foliageText->setObjectName(QString::fromUtf8("foliageText"));
+
+    vboxLayout2->addWidget(foliageText);
 
 
     hboxLayout->addLayout(vboxLayout2);
@@ -188,20 +200,20 @@ public:
     vboxLayout6->setSpacing(6);
     vboxLayout6->setMargin(0);
     vboxLayout6->setObjectName(QString::fromUtf8("vboxLayout6"));
-    spinBox = new QSpinBox(layoutWidget);
-    spinBox->setObjectName(QString::fromUtf8("spinBox"));
+    srdetailBox = new QSpinBox(layoutWidget);
+    srdetailBox->setObjectName(QString::fromUtf8("srdetailBox"));
 
-    vboxLayout6->addWidget(spinBox);
+    vboxLayout6->addWidget(srdetailBox);
 
-    spinBox_2 = new QSpinBox(layoutWidget);
-    spinBox_2->setObjectName(QString::fromUtf8("spinBox_2"));
+    shdetailBox = new QSpinBox(layoutWidget);
+    shdetailBox->setObjectName(QString::fromUtf8("shdetailBox"));
 
-    vboxLayout6->addWidget(spinBox_2);
+    vboxLayout6->addWidget(shdetailBox);
 
-    spinBox_3 = new QSpinBox(layoutWidget);
-    spinBox_3->setObjectName(QString::fromUtf8("spinBox_3"));
+    ldetailBox = new QSpinBox(layoutWidget);
+    ldetailBox->setObjectName(QString::fromUtf8("ldetailBox"));
 
-    vboxLayout6->addWidget(spinBox_3);
+    vboxLayout6->addWidget(ldetailBox);
 
 
     hboxLayout2->addLayout(vboxLayout6);
@@ -250,6 +262,7 @@ public:
     VisualizationConfig->setWindowTitle(QApplication::translate("VisualizationConfig", "Visualization settings", 0, QApplication::UnicodeUTF8));
     segmentButton->setText(QApplication::translate("VisualizationConfig", "Segment texture...", 0, QApplication::UnicodeUTF8));
     leafButton->setText(QApplication::translate("VisualizationConfig", "Leaf texture...", 0, QApplication::UnicodeUTF8));
+    foliageButton->setText(QApplication::translate("VisualizationConfig", "Foliage texture...", 0, QApplication::UnicodeUTF8));
     bspBox->setText(QApplication::translate("VisualizationConfig", "Use BSP-tree", 0, QApplication::UnicodeUTF8));
     leaftexBox->setText(QApplication::translate("VisualizationConfig", "Use texture in leafs", 0, QApplication::UnicodeUTF8));
     wireBox->setText(QApplication::translate("VisualizationConfig", "Wireframe model", 0, QApplication::UnicodeUTF8));
