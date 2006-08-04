@@ -38,6 +38,8 @@ GLDrawer::GLDrawer(QWidget* parent)
   r_axis = PositionVector(0,1,0);
   t_point = Point(0,0,0);
   t_height = 1;
+  t_rot_y = 0;
+  t_rot_x = 0;
 
   DEGTORAD = 2*3.14159265/360.0;
 
@@ -139,6 +141,7 @@ void GLDrawer::initTextureSettings() {
 }
 
 int GLDrawer::loadTexture(std::string fileName) {
+
   return bindTexture(QImage(QString(fileName.c_str())));
 }
 
@@ -209,6 +212,17 @@ void GLDrawer::moveCameraBackward() {
   updateGL();
 }
 
+bool GLDrawer::setTextures() {
+  if(!setCylinderTexture(QString(parameters.getSegmentTextureFile().c_str())))
+    return false;
+  else if(!setLeafTexture(QString(parameters.getLeafTextureFile().c_str())))
+    return false;
+  else if(!setFoliageTexture(QString(parameters.getFoliageTextureFile().c_str())))
+    return false;
+  else
+    return true;
+}
+
 void GLDrawer::setParameterSettings() {
   if(settingsChanged) {
     settingsChanged = false;
@@ -228,9 +242,9 @@ void GLDrawer::setParameterSettings() {
     else
       glDisable(GL_TEXTURE_2D);
     
-    setCylinderTexture(QString(parameters.getSegmentTextureFile().c_str()));
+    /* setCylinderTexture(QString(parameters.getSegmentTextureFile().c_str()));
     setLeafTexture(QString(parameters.getLeafTextureFile().c_str()));
-    setFoliageTexture(QString(parameters.getFoliageTextureFile().c_str()));
+    setFoliageTexture(QString(parameters.getFoliageTextureFile().c_str()));*/
   }
 }
 
@@ -279,6 +293,8 @@ void GLDrawer::toggleTexturing() {
 }
 
 void GLDrawer::changeTree() {
+  if(!setTextures())
+    ;
   QFile file(tree_file);
   
   if(!file.exists()) {
@@ -376,8 +392,13 @@ void GLDrawer::paintGL()  {
   glTranslatef(-camera_x, -camera_y, -camera_z);   
 
   glLightfv(GL_LIGHT0, GL_POSITION, light0_position);
+  //glScalef(-1.0, 0, 0);
+  
+  glTranslatef(t_point.getX(), t_point.getY(), t_point.getZ());
+  glRotatef(t_rot_y, r_axis.getX(), r_axis.getZ(), -r_axis.getY());
+  glTranslatef(-t_point.getX(), -t_point.getY(), -t_point.getZ());
+  
   glRotatef(-90, 1, 0, 0);
-
 
   PositionVector pv(camera_x, camera_y, camera_z);
   pv = pv.rotate(Point(0,0,0), PositionVector(1,0,0), DEGTORAD*90);
@@ -513,10 +534,10 @@ void GLDrawer::mouseMoveEvent(QMouseEvent* event) {
 
   if (event->buttons() & Qt::LeftButton) {
     cam_rot_x += m_look_speed*dy;
-    if(cam_rot_x > 180)
-      cam_rot_x = -180;
-    else if(cam_rot_x < -180)
-      cam_rot_x = 180;
+    if(cam_rot_x > 90)
+      cam_rot_x = 90;
+    else if(cam_rot_x < -90)
+      cam_rot_x = -90;
 
     cam_rot_y += m_look_speed*dx;
     if(cam_rot_y > 180)
@@ -549,10 +570,12 @@ void GLDrawer::keyPressEvent(QKeyEvent* event) {
       moveCameraBackward();
       break;
     case Qt::Key_A:
-      rotateCameraLeft();
+      //rotateCameraLeft();
+      t_rot_y += 2;
       break;
     case Qt::Key_D:
-      rotateCameraRight();
+      //rotateCameraRight();
+      t_rot_y -= 2;
       break;
     case Qt::Key_Q:
       rotateCameraUp();
@@ -573,7 +596,7 @@ void GLDrawer::keyPressEvent(QKeyEvent* event) {
       toggleTexturing();
       break;
     }
-  //    updateGL();
+  updateGL();
 }
 
 /*void GLDrawer::keyReleaseEvent(QKeyEvent* event) {
@@ -592,9 +615,10 @@ void GLDrawer::setCylinderHDetail(int detail) {
   parameters.setSegmentHDetail(detail);
 }
 
-void GLDrawer::setCylinderTexture(QString texture) {
+bool GLDrawer::setCylinderTexture(QString texture) {
   if(textures.contains(texture)) {
     parameters.setSegmentTexture(textures.value(texture));
+    return true;
   }
   else {
     QFile file(texture);
@@ -603,15 +627,19 @@ void GLDrawer::setCylinderTexture(QString texture) {
       int tex = loadTexture(texture.toStdString());
       parameters.setSegmentTexture(tex);
       textures.insert(texture, tex);
+      return true;
     }
-    else 
+    else {
       cout << "Texture file: " << texture.toStdString() << " is not found!" << endl;
+      return false;
+    }
   }
 }
   
-void GLDrawer::setLeafTexture(QString texture) {
+bool GLDrawer::setLeafTexture(QString texture) {
   if(textures.contains(texture)) {
     parameters.setLeafTexture(textures.value(texture));
+    return true;
   }
   else {
     QFile file(texture);
@@ -620,15 +648,19 @@ void GLDrawer::setLeafTexture(QString texture) {
       int tex = loadTexture(texture.toStdString());
       parameters.setLeafTexture(tex);
       textures.insert(texture, tex);
+      return true;
     }
-    else 
+    else {
       cout << "Texture file: " << texture.toStdString() << " is not found!" << endl;
+      return false;
+    }
   }
 }
 
-void GLDrawer::setFoliageTexture(QString texture) {
+bool GLDrawer::setFoliageTexture(QString texture) {
   if(textures.contains(texture)) {
     parameters.setFoliageTexture(textures.value(texture));
+    return true;
   }
   else {
     QFile file(texture);
@@ -637,13 +669,18 @@ void GLDrawer::setFoliageTexture(QString texture) {
       int tex = loadTexture(texture.toStdString());
       parameters.setFoliageTexture(tex);
       textures.insert(texture, tex);
+      return true;
     }
-    else 
+    else {
       cout << "Texture file: " << texture.toStdString() << " is not found!" << endl;
+      return false;
+    }
   }
 }
 
 void GLDrawer::resetCamera() {
+  t_rot_y = 0;
+  t_rot_x = 0;
 
   
   double translate = 2*t_height;
