@@ -48,9 +48,9 @@ public slots:
   void setTreeFile(QString fileName);
   void setCylinderRDetail(int detail);
   void setCylinderHDetail(int detail);
-  void setCylinderTexture(QString fileName);
-  void setLeafTexture(QString fileName);
-  void setFoliageTexture(QString fileName);
+  bool setCylinderTexture(QString fileName);
+  bool setLeafTexture(QString fileName);
+  bool setFoliageTexture(QString fileName);
   void resetCamera();
   void useBSP(bool use);
   void useLeafTextures(bool use);
@@ -70,6 +70,7 @@ private:
   void initLights();
   void initTextureSettings();
   void setParameterSettings();
+  bool setTextures();
 
   GLfloat*  light0_position;                   // Position of light0
   GLfloat*  light0_direction;                  // Direction of light0
@@ -79,6 +80,9 @@ private:
   PositionVector r_axis;                       // Root axis of central tree in visualization
   Point t_point;                               // Origin of the central tree
   double t_height;                             // Height of the tallest tree 
+  GLfloat t_rot_y;
+  GLfloat t_rot_x;
+
   GLfloat   DEGTORAD;                          // Conversion coefficient from degrees to radians
   //  static const GLfloat PI = 3.14159265;  
   GLfloat   PI;                                // PI
@@ -93,6 +97,7 @@ private:
   VisualizationParameters parameters;          // Parameters of the visualization
   QHash<QString, int> textures;
   bool      settingsChanged;
+  
 };
 
 #endif
