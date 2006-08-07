@@ -403,7 +403,24 @@ void GLDrawer::paintGL()  {
   glRotatef(-90, 1, 0, 0);
 
   PositionVector pv(camera_x, camera_y, camera_z);
+
+
+  //pv = pv + PositionVector(-t_point.getX(), -t_point.getY(), -t_point.getZ());
+  pv = pv.rotate(Point(t_point.getX(), t_point.getY() + 0.5*t_height, t_point.getZ()),
+  		 PositionVector(1,0,0), -DEGTORAD*t_rot_x);
+  pv = pv.rotate(Point(t_point.getX(), t_point.getY(), t_point.getZ()),
+  		 PositionVector(r_axis.getX(), r_axis.getZ(), -r_axis.getY()), -DEGTORAD*t_rot_y);
   pv = pv.rotate(Point(0,0,0), PositionVector(1,0,0), DEGTORAD*90);
+  // pv = pv + PositionVector(0, -0.5*t_height, 0);
+  
+
+  //pv = pv + PositionVector(t_point.getX(), t_point.getY() + 0.5*t_height, t_point.getZ());
+  
+
+
+
+
+
   Point eye(pv.getX(), pv.getY(), pv.getZ());
   
   PositionVector direction(sin(cam_rot_y*DEGTORAD),
