@@ -43,7 +43,8 @@ class PolygonTreeBuilder {
   BSPPolygonSet* makePetiole(Point sp, Point ep, SceneObject* object) const;
   BSPPolygonSet* makeTriangleLeaf(Point lc, Point rc, Point ac, SceneObject* object) const;
   BSPPolygonSet* makeEllipseLeaf(const Ellipse* ellipse, int detail, bool use_tex, SceneObject* object) const;
-  
+  BSPPolygonSet* makeBud(Point point, PositionVector direction, int la_detail, int lo_detail, SceneObject* object) const;
+
   //  mutable list<CylinderVolume>* cylinders;
   VisualizationParameters parameters;
 };
@@ -124,6 +125,24 @@ template <class TS, class BUD, class S>
       }
     }
 
+  }
+  else if(BUD* bud = dynamic_cast<BUD*>(tc)) {
+    //cout << "BUD" << endl;
+    SceneObject* object;
+    if(GetValue(*bud, LGAstate) == ALIVE)
+      object = new SceneObject(parameters.getBudAliveMaterial(), 0, false);
+    else if(GetValue(*bud, LGAstate) == DEAD)
+      object = new SceneObject(parameters.getBudDeadMaterial(), 0, false);
+    else if(GetValue(*bud, LGAstate) == DORMANT)
+      object = new SceneObject(parameters.getBudDormantMaterial(), 0, false);
+    else if(GetValue(*bud, LGAstate) == FLOWER)
+      object = new SceneObject(parameters.getBudFlowerMaterial(), 0, false);
+    else
+      object = new SceneObject(parameters.getMaterial(), 0, false);
+    BSPPolygonSet* budi = makeBud(GetPoint(*bud), GetDirection(*bud), 
+				  parameters.getBudLoDetail(), parameters.getBudLaDetail(), object);
+    polygons->addPolygons(budi);
+    delete budi;
   }
   return polygons;
 }
@@ -336,9 +355,6 @@ template <class TS, class BUD, class S>
 }
 
 
-
-
-
 template <class TS, class BUD, class S>
 BSPPolygonSet* PolygonTreeBuilder<TS,BUD,S>::makePetiole(Point sp, Point ep, SceneObject* object) const {
   BSPPolygonSet* polygons = new BSPPolygonSet();
@@ -374,6 +390,7 @@ BSPPolygonSet* PolygonTreeBuilder<TS,BUD,S>::makeTriangleLeaf(Point lc, Point rc
   return polygons;
 
 }
+
 
 template <class TS, class BUD, class S>
   BSPPolygonSet* PolygonTreeBuilder<TS,BUD,S>::makeEllipseLeaf(const Ellipse* ellipse, int detail, bool use_tex, SceneObject* object) const {
@@ -431,5 +448,70 @@ template <class TS, class BUD, class S>
     return polygons;
   }
 }
+
+template<class TS, class BUD, class S>
+BSPPolygonSet* PolygonTreeBuilder<TS,BUD,S>::makeBud(Point point, PositionVector direction, int la_detail, int lo_detail, SceneObject* object) const {
+  BSPPolygonSet* polygons = new BSPPolygonSet();
+  double PI = 3.14159265;  
+  int i, j;
+  double scale = 0.0010;
+  double y_scale = 2;
+  double z_scale = 0.75;
+  PositionVector dir(direction.normalize().getX()/2.0,
+		     (1+direction.normalize().getY())/2.0,
+		     direction.normalize().getZ()/2.0);
+  if(dir.getX() == 0 && dir.getY() == 0 && dir.getZ() == 0)
+    dir = PositionVector(1,0,0);
+  
+  Point origo(0,0,0);
+  for (i = 0; i < la_detail; i++) {
+    double lat0 = PI * (-0.5 + (double) i / la_detail);
+    double z0 = sin(lat0);
+    double zr0 = cos(lat0);
+    
+    double lat1 = PI * (-0.5 + (double) (i + 1) / la_detail);
+    double z1 = sin(lat1);
+    double zr1 = cos(lat1);
+    for (j = 0; j <= lo_detail; j++) {
+      double lng = 2 * PI * (double) j / lo_detail;
+      double x1 = cos(lng);
+      double y1 = sin(lng);
+      double x2 = cos(lng*(j + 1) / j);
+      double y2 = sin(lng*(j + 1) / j);
+      
+      PositionVector v1(scale * (Point(0,y_scale,0) + Point(x1 * zr0, y_scale * y1 * zr0, z_scale * z0)));
+      PositionVector v2(scale * (Point(0,y_scale,0) + Point(x1 * zr1, y_scale * y1 * zr1, z_scale * z1)));
+      PositionVector v3(scale * (Point(0,y_scale,0) + Point(x2 * zr1, y_scale * y2 * zr1, z_scale * z1)));
+      PositionVector v4(scale * (Point(0,y_scale,0) + Point(x2 * zr0, y_scale * y2 * zr0, z_scale * z0)));
+      v1 = v1.rotate(origo, dir, PI);
+      v2 = v2.rotate(origo, dir, PI);
+      v3 = v3.rotate(origo, dir, PI);
+      v4 = v4.rotate(origo, dir, PI);
+
+      polygons->addPolygon(new BSPPolygon(point + Point(v1),
+					  point + Point(v2),
+					  point + Point(v3),
+					  object));
+
+      polygons->addPolygon(new BSPPolygon(point + Point(v3),
+					  point + Point(v4),
+					  point + Point(v1),
+					  object));
+      
+
+      /*polygons->addPolygon(new BSPPolygon(point + Point(scale * x1 * zr0, scale * y1 * zr0, scale * z0),
+					  point + Point(scale * x1 * zr1, scale * y1 * zr1, scale * z1),
+					  point + Point(scale * x2 * zr1, scale * y2 * zr1, scale * z1),
+					  object));
+      polygons->addPolygon(new BSPPolygon(point + Point(scale * x2 * zr1, scale * y2 * zr1, scale * z1),
+					  point + Point(scale * x2 * zr0, scale * y2 * zr0, scale * z0),
+					  point + Point(scale * x1 * zr0, scale * y1 * zr0, scale * z0),
+					  object));*/
+    }
+  }
+  return polygons;
+}
+
+
   
 #endif
