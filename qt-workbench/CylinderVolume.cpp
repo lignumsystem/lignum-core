@@ -15,7 +15,7 @@ CylinderVolume::CylinderVolume(double r, double h, Point p, PositionVector d, in
     origo = Point(0,0,0);*/
   double sine, cosine;
   sine = r*(sin(2.0/(double)detail*3.14159265)) / 2.0;
-  cosine = r*(cos(0) + cos(2.0/(double)detail*3.14159265)) / 2.0;
+  cosine = r*(cos(0.0) + cos(2.0/(double)detail*3.14159265)) / 2.0;
   radius = sqrt(sine*sine + cosine*cosine);
   //cout << radius << endl;
   

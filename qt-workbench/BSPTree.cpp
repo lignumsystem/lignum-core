@@ -138,9 +138,9 @@ void BSPTree::buildBSPTree(BSPPolygonSet& polys) {
   }*/
 
 void BSPTree::drawTree(Point& eye, PositionVector& direction) {
-  glDepthMask(GL_TRUE);
   opaquePolygons.drawPolygons();
   glDepthMask(GL_FALSE);
+
   drawTransparentTree(eye, direction);
   glDepthMask(GL_TRUE);
 }

@@ -53,6 +53,8 @@ void VisualizationConfig::setSettings(VisualizationParameters params) {
   ui.srdetailBox->setValue(params.getSegmentRDetail());
   ui.shdetailBox->setValue(params.getSegmentHDetail());
   ui.ldetailBox->setValue(params.getLeafDetail());
+  ui.budloBox->setValue(params.getBudLoDetail());
+  ui.budlaBox->setValue(params.getBudLaDetail());
   
   ui.segmentText->setText(QString(params.getSegmentTextureFile().c_str()));
   ui.leafText->setText(QString(params.getLeafTextureFile().c_str()));
@@ -94,6 +96,8 @@ void VisualizationConfig::applySettings() {
   params.setSegmentRDetail(ui.srdetailBox->value());
   params.setSegmentHDetail(ui.shdetailBox->value());
   params.setLeafDetail(ui.ldetailBox->value());
+  params.setBudLoDetail(ui.budloBox->value());
+  params.setBudLaDetail(ui.budlaBox->value());
 
   params.setSegmentTextureFile(ui.segmentText->text().toStdString());
   params.setLeafTextureFile(ui.leafText->text().toStdString());

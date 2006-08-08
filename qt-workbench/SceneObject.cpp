@@ -34,11 +34,27 @@ void SceneObject::setMaterial() const{
   }
 
   static int last_texture = -1;
-  if(texture_id != 0 && texture_id != last_texture) {
+  if(texture_id != last_texture) {
+    if(last_texture != 0) {
+      if(texture_id != 0)
+	glBindTexture(GL_TEXTURE_2D, texture_id);
+      else
+	glDisable(GL_TEXTURE_2D);
+    }
+    else {
+      if(texture_id != 0) {
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, texture_id);
+      }
+    }
+    last_texture = texture_id;
+  }
+  
+  /*if(texture_id != 0 && texture_id != last_texture) {
     //glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, texture_id);
     last_texture = texture_id;
-  }
+    }*/
 
 }
 

@@ -11,9 +11,12 @@ VisualizationParameters::VisualizationParameters(int s_r_detail,
 						 BSPPolygonMaterial* mat,
 						 BSPPolygonMaterial* leafMat,
 						 BSPPolygonMaterial* petioleMat) :
-  segment_r_detail(s_r_detail), segment_h_detail(s_h_detail), leaf_detail(l_detail), 
+  segment_r_detail(s_r_detail), segment_h_detail(s_h_detail), leaf_detail(l_detail),
+  bud_lo_detail(6), bud_la_detail(6),
   segment_tex(s_tex), leaf_tex(l_tex), foliage_tex(f_tex), material(mat), leafMaterial(leafMat),
-  petioleMaterial(petioleMat), use_BSP(true), use_wireframe(false), use_lighting(true),
+  petioleMaterial(petioleMat), budAliveMaterial(NULL), budDeadMaterial(NULL), budDormantMaterial(NULL),
+  budFlowerMaterial(NULL),
+  use_BSP(true), use_wireframe(false), use_lighting(true),
   use_texturing(true) {
   if(leaf_tex == 0)
     use_leaftex == false;
@@ -23,9 +26,11 @@ VisualizationParameters::VisualizationParameters(int s_r_detail,
 }
 
 VisualizationParameters::VisualizationParameters() :
-  segment_r_detail(20), segment_h_detail(1), leaf_detail(10), 
+  segment_r_detail(20), segment_h_detail(1), leaf_detail(10), bud_lo_detail(6), bud_la_detail(6), 
   segment_tex(0), leaf_tex(0), foliage_tex(0), material(NULL), leafMaterial(NULL),
-  petioleMaterial(NULL), use_BSP(false), use_leaftex(false), use_wireframe(false), use_lighting(true),
+  petioleMaterial(NULL), budAliveMaterial(NULL), budDeadMaterial(NULL), budDormantMaterial(NULL),
+  budFlowerMaterial(NULL),
+  use_BSP(false), use_leaftex(false), use_wireframe(false), use_lighting(true),
   use_texturing(true) {
 }
 
@@ -69,6 +74,15 @@ int VisualizationParameters::getLeafDetail() const {
   return leaf_detail;
 }
 
+int VisualizationParameters::getBudLoDetail() const {
+  return bud_lo_detail;
+}
+
+int VisualizationParameters::getBudLaDetail() const {
+  return bud_la_detail;
+}
+
+
 void VisualizationParameters::setSegmentRDetail(int detail) {
   if(detail >= 3)
     segment_r_detail = detail;
@@ -87,6 +101,21 @@ void VisualizationParameters::setLeafDetail(int detail) {
   if(detail > 3 && (detail % 2 == 0)) {
     leaf_detail = detail;
   }
+}
+
+
+void VisualizationParameters::setBudLoDetail(int detail) {
+  if(detail >= 4)
+    bud_lo_detail = detail;
+  else 
+    bud_lo_detail = 4;
+}
+
+void VisualizationParameters::setBudLaDetail(int detail) {
+  if(detail >= 4)
+    bud_la_detail = detail;
+  else 
+    bud_la_detail = 4;
 }
 
 int VisualizationParameters::getSegmentTexture() const {
@@ -125,6 +154,22 @@ void VisualizationParameters::setPetioleMaterial(BSPPolygonMaterial* mat) {
   petioleMaterial = mat;
 }
 
+void VisualizationParameters::setBudAliveMaterial(BSPPolygonMaterial* mat) {
+  budAliveMaterial = mat;
+}
+
+void VisualizationParameters::setBudDeadMaterial(BSPPolygonMaterial* mat) {
+  budDeadMaterial = mat;
+}
+
+void VisualizationParameters::setBudDormantMaterial(BSPPolygonMaterial* mat) {
+  budDormantMaterial = mat;
+}
+
+void VisualizationParameters::setBudFlowerMaterial(BSPPolygonMaterial* mat) {
+  budFlowerMaterial = mat;
+}
+
 
 BSPPolygonMaterial* VisualizationParameters::getMaterial() const {
   return material;
@@ -138,6 +183,25 @@ BSPPolygonMaterial* VisualizationParameters::getLeafMaterial() const {
 BSPPolygonMaterial* VisualizationParameters::getPetioleMaterial() const {
   return petioleMaterial;
 }
+
+BSPPolygonMaterial* VisualizationParameters::getBudAliveMaterial() const {
+  return budAliveMaterial;
+}
+
+BSPPolygonMaterial* VisualizationParameters::getBudDeadMaterial() const {
+  return budDeadMaterial;
+}
+
+BSPPolygonMaterial* VisualizationParameters::getBudDormantMaterial() const {
+  return budDormantMaterial;
+}
+
+BSPPolygonMaterial* VisualizationParameters::getBudFlowerMaterial() const {
+  return budFlowerMaterial;
+}
+
+
+
 
 void VisualizationParameters::setBSPUsage(bool uBSP) {
   use_BSP = uBSP;

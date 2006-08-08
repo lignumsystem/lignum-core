@@ -434,9 +434,9 @@ vector<Point> BSPPolygon::getVertices() const {
   }*/
 
 BSPPolygonSet::~BSPPolygonSet() {
-  for(list<BSPPolygon*>::iterator i = polygons.begin(); i != polygons.end(); i++) {
+  for(list<BSPPolygon*>::iterator i = polygons.begin(); i != polygons.end(); ) {
     delete *i;
-    polygons.erase(i);
+    i = polygons.erase(i);
   }
   /*for(int i = 0; i < components.size(); i++) {
     delete components[i];
@@ -485,11 +485,13 @@ BSPPolygon* BSPPolygonSet::getPolygon() {
 }
 
 void BSPPolygonSet::getOpaquePolygons(BSPPolygonSet* polys) {
-  for(list<BSPPolygon*>::iterator i = polys->polygons.begin(); i != polys->polygons.end(); i++) {
+  for(list<BSPPolygon*>::iterator i = polys->polygons.begin(); i != polys->polygons.end(); ) {
     if(!(*i)->isTransparent()) {
       polygons.push_back(*i);
-      polys->polygons.erase(i);
+      i = polys->polygons.erase(i);
     }
+    else 
+      i++;
   }
 }
 
@@ -605,8 +607,7 @@ void BSPPolygonSet::drawPolygons() {
 	     (**i).drawPolygon();
 	     if(!(**i).hasBeenDivider())
 	       delete (*i);
-	     polygons.erase(i);
-	     i++;
+	     i = polygons.erase(i);
 	   }
 
 	   /*glBegin(GL_TRIANGLE_STRIP);
