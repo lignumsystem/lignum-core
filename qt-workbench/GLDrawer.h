@@ -28,6 +28,10 @@ public:
   BSPPolygonMaterial* green;
   BSPPolygonMaterial* red;
   BSPPolygonMaterial* white;
+  BSPPolygonMaterial* budAlive;
+  BSPPolygonMaterial* budDead;
+  BSPPolygonMaterial* budDormant;
+  BSPPolygonMaterial* budFlower;
 protected:
 
   void initializeGL();
