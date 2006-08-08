@@ -127,22 +127,24 @@ template <class TS, class BUD, class S>
 
   }
   else if(BUD* bud = dynamic_cast<BUD*>(tc)) {
-    //cout << "BUD" << endl;
-    SceneObject* object;
-    if(GetValue(*bud, LGAstate) == ALIVE)
-      object = new SceneObject(parameters.getBudAliveMaterial(), 0, false);
-    else if(GetValue(*bud, LGAstate) == DEAD)
-      object = new SceneObject(parameters.getBudDeadMaterial(), 0, false);
-    else if(GetValue(*bud, LGAstate) == DORMANT)
-      object = new SceneObject(parameters.getBudDormantMaterial(), 0, false);
-    else if(GetValue(*bud, LGAstate) == FLOWER)
-      object = new SceneObject(parameters.getBudFlowerMaterial(), 0, false);
-    else
-      object = new SceneObject(parameters.getMaterial(), 0, false);
-    BSPPolygonSet* budi = makeBud(GetPoint(*bud), GetDirection(*bud), 
-				  parameters.getBudLoDetail(), parameters.getBudLaDetail(), object);
-    polygons->addPolygons(budi);
-    delete budi;
+    if(parameters.useBuds()) {
+      //cout << "BUD" << endl;
+      SceneObject* object;
+      if(GetValue(*bud, LGAstate) == ALIVE)
+	object = new SceneObject(parameters.getBudAliveMaterial(), 0, false);
+      else if(GetValue(*bud, LGAstate) == DEAD)
+	object = new SceneObject(parameters.getBudDeadMaterial(), 0, false);
+      else if(GetValue(*bud, LGAstate) == DORMANT)
+	object = new SceneObject(parameters.getBudDormantMaterial(), 0, false);
+      else if(GetValue(*bud, LGAstate) == FLOWER)
+	object = new SceneObject(parameters.getBudFlowerMaterial(), 0, false);
+      else
+	object = new SceneObject(parameters.getMaterial(), 0, false);
+      BSPPolygonSet* budi = makeBud(GetPoint(*bud), GetDirection(*bud), 
+				    parameters.getBudLoDetail(), parameters.getBudLaDetail(), object);
+      polygons->addPolygons(budi);
+      delete budi;
+    }
   }
   return polygons;
 }

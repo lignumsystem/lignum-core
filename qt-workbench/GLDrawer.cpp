@@ -69,8 +69,8 @@ GLDrawer::GLDrawer(QWidget* parent)
 }
 
 void GLDrawer::initMaterials() {
-  GLfloat color1[] = {0.1, 0.8, 0.1, 1.0,
-		      0.1, 0.8, 0.1, 1.0,
+  GLfloat color1[] = {0.2, 0.8, 0.1, 1.0,
+		      0.2, 0.8, 0.1, 1.0,
 		      0.0, 0.1, 0.0, 1.0,
 		      5};
   GLfloat color2[] = {0.9, 0.2, 0.2, 0.5,
@@ -697,20 +697,20 @@ void GLDrawer::resetCamera() {
 
   
   double translate = 2*t_height;
-  cout << "point: " << t_point.getX() << " " << t_point.getY() << " " << t_point.getZ() << endl;
-  cout << "height: " << t_height << endl;
+  //cout << "point: " << t_point.getX() << " " << t_point.getY() << " " << t_point.getZ() << endl;
+  //cout << "height: " << t_height << endl;
   camera_x = t_point.getX();
   //camera_y = t_point.getY() - t_height/2*r_axis.getZ();
   camera_y = t_point.getY() + t_height/2;
   camera_z = t_point.getZ() + translate;
   Point camera(camera_x, camera_y, camera_z);
-  cout << "camera: " << camera_x << " " << camera_y << " " << camera_z << endl;
+  //  cout << "camera: " << camera_x << " " << camera_y << " " << camera_z << endl;
 
   //Point p(t_point.getX(), t_point.getY() - (t_height/2.0)*r_axis.getZ(), t_point.getZ());
   Point p(t_point.getX(), t_point.getY() + (t_height/2.0), t_point.getZ());
   PositionVector direction(PositionVector(p - camera));
   direction = direction.normalize();
-  cout << "direction: " << direction.getX() << " " << direction.getY() << " " << direction.getZ() << endl;
+  //cout << "direction: " << direction.getX() << " " << direction.getY() << " " << direction.getZ() << endl;
   cam_rot_x = 1/DEGTORAD*asin(direction.getY());
 
   if(direction.getX() >= 0 && direction.getZ() >= 0)

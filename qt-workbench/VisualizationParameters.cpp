@@ -11,13 +11,26 @@ VisualizationParameters::VisualizationParameters(int s_r_detail,
 						 BSPPolygonMaterial* mat,
 						 BSPPolygonMaterial* leafMat,
 						 BSPPolygonMaterial* petioleMat) :
-  segment_r_detail(s_r_detail), segment_h_detail(s_h_detail), leaf_detail(l_detail),
-  bud_lo_detail(6), bud_la_detail(6),
-  segment_tex(s_tex), leaf_tex(l_tex), foliage_tex(f_tex), material(mat), leafMaterial(leafMat),
-  petioleMaterial(petioleMat), budAliveMaterial(NULL), budDeadMaterial(NULL), budDormantMaterial(NULL),
+  segment_r_detail(s_r_detail),
+  segment_h_detail(s_h_detail),
+  leaf_detail(l_detail),
+  bud_lo_detail(6),
+  bud_la_detail(6),
+  segment_tex(s_tex),
+  leaf_tex(l_tex),
+  foliage_tex(f_tex),
+  material(mat),
+  leafMaterial(leafMat),
+  petioleMaterial(petioleMat),
+  budAliveMaterial(NULL),
+  budDeadMaterial(NULL),
+  budDormantMaterial(NULL),
   budFlowerMaterial(NULL),
-  use_BSP(true), use_wireframe(false), use_lighting(true),
-  use_texturing(true) {
+  use_BSP(true),
+  use_wireframe(false),
+  use_lighting(true),
+  use_texturing(true),
+  use_buds(true) {
   if(leaf_tex == 0)
     use_leaftex == false;
   else 
@@ -26,12 +39,27 @@ VisualizationParameters::VisualizationParameters(int s_r_detail,
 }
 
 VisualizationParameters::VisualizationParameters() :
-  segment_r_detail(20), segment_h_detail(1), leaf_detail(10), bud_lo_detail(6), bud_la_detail(6), 
-  segment_tex(0), leaf_tex(0), foliage_tex(0), material(NULL), leafMaterial(NULL),
-  petioleMaterial(NULL), budAliveMaterial(NULL), budDeadMaterial(NULL), budDormantMaterial(NULL),
+  segment_r_detail(20),
+  segment_h_detail(1),
+  leaf_detail(10),
+  bud_lo_detail(6),
+  bud_la_detail(6), 
+  segment_tex(0),
+  leaf_tex(0),
+  foliage_tex(0),
+  material(NULL),
+  leafMaterial(NULL),
+  petioleMaterial(NULL),
+  budAliveMaterial(NULL),
+  budDeadMaterial(NULL),
+  budDormantMaterial(NULL),
   budFlowerMaterial(NULL),
-  use_BSP(false), use_leaftex(false), use_wireframe(false), use_lighting(true),
-  use_texturing(true) {
+  use_BSP(false),
+  use_leaftex(false),
+  use_wireframe(false),
+  use_lighting(true),
+  use_texturing(true),
+  use_buds(true){
 }
 
 void VisualizationParameters::setSegmentTextureFile(string texture) {
@@ -241,4 +269,12 @@ void VisualizationParameters::setTexturingUsage(bool useTexturing) {
 
 bool VisualizationParameters::useTexturing() const {
   return use_texturing;
+}
+
+void VisualizationParameters::setBudUsage(bool useBuds) {
+  use_buds = useBuds;
+}
+
+bool VisualizationParameters::useBuds() const {
+  return use_buds;
 }

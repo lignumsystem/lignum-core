@@ -66,12 +66,14 @@ class VisualizationParameters {
   void                  setWireframeUsage(bool useWireframe);
   void                  setLightingUsage(bool useLighting);
   void                  setTexturingUsage(bool useTexturing);
+  void                  setBudUsage(bool useBuds);
 
   bool                  useBSP() const;
   bool                  useLeafTextures() const;
   bool                  useWireframe() const;
   bool                  useLighting() const;
   bool                  useTexturing() const;
+  bool                  useBuds() const;
 
  private:
   string segment_texture_file;
@@ -97,6 +99,7 @@ class VisualizationParameters {
   bool use_wireframe;
   bool use_lighting;
   bool use_texturing;
+  bool use_buds;
 };
 
 #endif

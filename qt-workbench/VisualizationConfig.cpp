@@ -50,6 +50,11 @@ void VisualizationConfig::setSettings(VisualizationParameters params) {
   else
     ui.texBox->setCheckState(Qt::Unchecked);
 
+  if(params.useBuds())
+    ui.budBox->setCheckState(Qt::Checked);
+  else
+    ui.budBox->setCheckState(Qt::Unchecked);
+
   ui.srdetailBox->setValue(params.getSegmentRDetail());
   ui.shdetailBox->setValue(params.getSegmentHDetail());
   ui.ldetailBox->setValue(params.getLeafDetail());
@@ -127,6 +132,11 @@ void VisualizationConfig::applySettings() {
     params.setTexturingUsage(true);
   else
     params.setTexturingUsage(false);
+
+  if(ui.budBox->checkState() == Qt::Checked)
+    params.setBudUsage(true);
+  else
+    params.setBudUsage(false);
 
 
   emit settingsChanged(params);
