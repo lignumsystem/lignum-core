@@ -51,14 +51,6 @@ GLDrawer::GLDrawer(QWidget* parent)
   parameters.setLeafTextureFile(std::string("maple_texture.png"));
   parameters.setFoliageTextureFile(std::string("foliage.png"));
 
-  /*setCylinderTexture(QString("pine_texture.png"));
-  setLeafTexture(QString("maple_texture.png"));
-  setFoliageTexture(QString("foliage.png"));*/
-  
-  /*wire = false;
-  lights_on = true;
-  use_textures = true;*/
-
   PI = 3.14159265;
   m_look_speed = 0.3;
   setFocusPolicy(Qt::ClickFocus);
@@ -89,13 +81,38 @@ void GLDrawer::initMaterials() {
 		      1.0, 1.0, 1.0, 1.0,
 		      0.2, 0.2, 0.2, 1.0,
 		      50};
+
+  GLfloat budAliveColor[]   = {255.0/255.0, 185.0/255.0, 15.0/255.0, 1.0,
+			       255.0/255.0, 185.0/255.0, 15.0/255.0, 1.0,
+			       0.2, 0.2, 0.2, 1.0,
+			       50};
+  GLfloat budDeadColor[]    = {0.0, 0.0, 0.0, 1.0,
+			       0.0, 0.0, 0.0, 1.0,
+			       0.2, 0.2, 0.2, 1.0,
+			       50};
+  GLfloat budDormantColor[] = {72.0/255.0, 118.0/255.0, 255/255.0, 1.0,
+			       72.0/255.0, 118.0/255.0, 255/255.0, 1.0,
+			       0.2, 0.2, 0.2, 1.0,
+			       50};
+  GLfloat budFlowerColor[]  = {255.0/255.0, 48.0/255.0, 48.0/255.0, 1.0,
+			       255.0/255.0, 48.0/255.0, 48.0/255.0, 1.0,
+			       0.2, 0.2, 0.2, 1.0,
+			       50};
   
   green = new BSPPolygonMaterial(color1);
   red = new BSPPolygonMaterial(color2);
   white = new BSPPolygonMaterial(color3);
+  budAlive = new BSPPolygonMaterial(budAliveColor);
+  budDead = new BSPPolygonMaterial(budDeadColor);
+  budDormant = new BSPPolygonMaterial(budDormantColor);
+  budFlower = new BSPPolygonMaterial(budFlowerColor);
   parameters.setMaterial(white);
   parameters.setLeafMaterial(green);
   parameters.setPetioleMaterial(green);
+  parameters.setBudAliveMaterial(budAlive);
+  parameters.setBudDeadMaterial(budDead);
+  parameters.setBudDormantMaterial(budDormant);
+  parameters.setBudFlowerMaterial(budFlower);
 }
 
 void GLDrawer::initLights() {
@@ -152,6 +169,7 @@ void GLDrawer::initializeGL()
   glEnable(GL_DEPTH_TEST);
   glFrontFace(GL_CW);
   glEnable(GL_CULL_FACE);
+  glShadeModel(GL_SMOOTH);
   
   initMaterials();
   initLights();
@@ -168,7 +186,7 @@ void GLDrawer::resizeGL(int width, int height)
   glViewport(0, 0, width, height);
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
-  gluPerspective(60.0, (GLfloat)width/(GLfloat)height, 0.01, 20.0);
+  gluPerspective(60.0, (GLfloat)width/(GLfloat)height, 0.001, 20.0);
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
 }
@@ -249,44 +267,18 @@ void GLDrawer::setParameterSettings() {
 }
 
 void GLDrawer::toggleWireModel() {
-  /*if(wire) {
-    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    wire = false;
-  }
-  else {
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    wire = true;
-    }*/
   parameters.setWireframeUsage(!parameters.useWireframe());
   settingsChanged = true;
   updateGL();
 }
 
 void GLDrawer::toggleLights() {
-  /*if(lights_on) {
-    lights_on = false;
-    glDisable(GL_LIGHTING);
-    glDisable(GL_COLOR_MATERIAL);
-  }
-  else {
-    lights_on = true;
-    glEnable(GL_LIGHTING);
-    glEnable(GL_COLOR_MATERIAL);
-    }*/
   parameters.setLightingUsage(!parameters.useLighting());
   settingsChanged = true;
   updateGL();
 }
 
 void GLDrawer::toggleTexturing() {
-  /*if(use_textures) {
-    use_textures = false;
-    glDisable(GL_TEXTURE_2D);
-  }
-  else {
-    use_textures = true;
-    glEnable(GL_TEXTURE_2D);
-    }*/
   parameters.setTexturingUsage(!parameters.useTexturing());
   settingsChanged = true;
   updateGL();
@@ -755,6 +747,10 @@ void GLDrawer::changeSettings(VisualizationParameters params) {
   params.setMaterial(parameters.getMaterial());
   params.setLeafMaterial(parameters.getLeafMaterial());
   params.setPetioleMaterial(parameters.getPetioleMaterial());
+  params.setBudAliveMaterial(parameters.getBudAliveMaterial());
+  params.setBudDeadMaterial(parameters.getBudDeadMaterial());
+  params.setBudDormantMaterial(parameters.getBudDormantMaterial());
+  params.setBudFlowerMaterial(parameters.getBudFlowerMaterial());
   parameters = params;
   settingsChanged = true;
   updateGL();
