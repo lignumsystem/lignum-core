@@ -30,9 +30,13 @@ class VisualizationParameters {
   void                  setSegmentRDetail(int detail);
   void                  setSegmentHDetail(int detail);
   void                  setLeafDetail(int detail);
+  void                  setBudLoDetail(int detail);
+  void                  setBudLaDetail(int detail);
   int                   getSegmentRDetail() const ;
   int                   getSegmentHDetail() const ;
   int                   getLeafDetail() const;
+  int                   getBudLoDetail() const;
+  int                   getBudLaDetail() const;
 
   void                  setLeafTexture(int texture);
   void                  setFoliageTexture(int texture);
@@ -44,10 +48,18 @@ class VisualizationParameters {
   BSPPolygonMaterial*   getMaterial() const ;
   BSPPolygonMaterial*   getLeafMaterial() const;
   BSPPolygonMaterial*   getPetioleMaterial() const;
+  BSPPolygonMaterial*   getBudAliveMaterial() const;
+  BSPPolygonMaterial*   getBudDeadMaterial() const;
+  BSPPolygonMaterial*   getBudDormantMaterial() const;
+  BSPPolygonMaterial*   getBudFlowerMaterial() const;
 
   void                  setMaterial(BSPPolygonMaterial* material);
   void                  setLeafMaterial(BSPPolygonMaterial* material);
   void                  setPetioleMaterial(BSPPolygonMaterial* material);
+  void                  setBudAliveMaterial(BSPPolygonMaterial* material);
+  void                  setBudDeadMaterial(BSPPolygonMaterial* material);
+  void                  setBudDormantMaterial(BSPPolygonMaterial* material);
+  void                  setBudFlowerMaterial(BSPPolygonMaterial* material);
 
   void                  setBSPUsage(bool useBSP);
   void                  setLeafTextureUsage(bool useLeafTextures);
@@ -68,12 +80,18 @@ class VisualizationParameters {
   int segment_r_detail;
   int segment_h_detail;
   int leaf_detail;
+  int bud_lo_detail;
+  int bud_la_detail;
   int segment_tex;
   int leaf_tex;
   int foliage_tex;
   BSPPolygonMaterial* material;
   BSPPolygonMaterial* leafMaterial;
   BSPPolygonMaterial* petioleMaterial;
+  BSPPolygonMaterial* budAliveMaterial;
+  BSPPolygonMaterial* budDeadMaterial;
+  BSPPolygonMaterial* budDormantMaterial;
+  BSPPolygonMaterial* budFlowerMaterial;
   bool use_BSP;
   bool use_leaftex;
   bool use_wireframe;
