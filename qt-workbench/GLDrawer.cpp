@@ -69,8 +69,8 @@ GLDrawer::GLDrawer(QWidget* parent)
 }
 
 void GLDrawer::initMaterials() {
-  GLfloat color1[] = {0.2, 0.8, 0.1, 1.0,
-		      0.2, 0.8, 0.1, 1.0,
+  GLfloat color1[] = {0.0, 100.0/255.0, 0.0, 1.0,
+		      0.0, 100.0/255.0, 0.0, 1.0,
 		      0.0, 0.1, 0.0, 1.0,
 		      5};
   GLfloat color2[] = {0.9, 0.2, 0.2, 0.5,
