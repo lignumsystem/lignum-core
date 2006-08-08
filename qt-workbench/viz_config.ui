@@ -132,6 +132,13 @@
           </widget>
          </item>
          <item>
+          <widget class="QCheckBox" name="budBox" >
+           <property name="text" >
+            <string>Show buds</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QCheckBox" name="wireBox" >
            <property name="text" >
             <string>Wireframe model</string>
