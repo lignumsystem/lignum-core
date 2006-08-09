@@ -50,17 +50,19 @@ ScotsPine	      			      ScotsPine
 ScotsPineVisual	      			      ScotsPineVisual
 Lig-Crobas	      	                      Lig-Crobas
 SugarMaple            -s JariP	      	      SugarMaple	      	    
+qt-workbench                                  qt-workbench
 voxel-lignum	      			      voxel-lignum	      	    
 watervisual	      			      watervisual	      	    
 webdocs		      			      webdocs		      	    
 WhiteBirch            			      WhiteBirch            	    
+XMLTree                                       XMLTree
 CityTree              -s JariP                CityTree
 ctree                 -s JariP                ctree
 lignum-core           			      &c++adt &stl-lignum &Firmament
 poplar                -s Alice                poplar
-Poplar                -s Alice                &c++adt &stl-lignum &Firmament &LEngine&Graphics &stl-voxelspace &poplar
-maple                                         &c++adt &stl-lignum &Firmament &LEngine&Graphics &stl-voxelspace &SugarMaple
-Lignum-Crobas                                 &c++adt &stl-lignum &Firmament &LEngine &Graphics &stl-voxelspace &Pine &ScotsPine &ScotsPineVisual &Lig-Crobas
+Poplar                -s Alice                &c++adt &stl-lignum &Firmament &LEngine &Graphics &stl-voxelspace &poplar
+maple                                         &c++adt &stl-lignum &Firmament &LEngine &Graphics &stl-voxelspace &XMLTree &qt-workbench &SugarMaple
+Lignum-Crobas                                 &c++adt &stl-lignum &Firmament &LEngine &Graphics &stl-voxelspace &Pine &ScotsPine &ScotsPineVisual &XMLTree &qt-workbench &Lig-Crobas
 DataTree             -s JariP                 DataTree
 DataTreeAll                                   &c++adt &stl-lignum &Firmament &stl-voxelspace &Pine &Graphics &DataTree
 ShootModel                                    ShootModel  
