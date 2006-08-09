@@ -7,7 +7,9 @@ LignumWB::LignumWB(QWidget *parent)
   connect(ui.actionQuit, SIGNAL(triggered()), this, SLOT(close()));
   connect(ui.actionLoad_tree, SIGNAL(triggered()), this, SLOT(loadTree()));
   connect(ui.actionVisualization_settings, SIGNAL(triggered()), this, SLOT(options()));
- 
+  connect(ui.actionFree_roam, SIGNAL(triggered()), ui.gldrawer, SLOT(freeRoamMode()));
+  connect(ui.actionOrbit, SIGNAL(triggered()), ui.gldrawer, SLOT(orbitCameraMode()));
+  connect(ui.actionMove_center, SIGNAL(triggered()), ui.gldrawer, SLOT(moveCenterMode()));
 }
 
 void LignumWB::loadTree() {

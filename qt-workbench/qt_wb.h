@@ -18,6 +18,7 @@
 #include <QtGui/QSpinBox>
 #include <QtGui/QStatusBar>
 #include <QtGui/QTextBrowser>
+#include <QtGui/QToolBar>
 #include <QtGui/QVBoxLayout>
 #include <QtGui/QWidget>
 
@@ -27,6 +28,9 @@ public:
     QAction *actionQuit;
     QAction *actionLoad_tree;
     QAction *actionVisualization_settings;
+    QAction *actionFree_roam;
+    QAction *actionOrbit;
+    QAction *actionMove_center;
     QWidget *centralwidget;
     QHBoxLayout *hboxLayout;
     QVBoxLayout *vboxLayout;
@@ -65,6 +69,7 @@ public:
     QMenu *menuFile;
     QMenu *menuOptions;
     QStatusBar *statusbar;
+    QToolBar *toolBar;
 
     void setupUi(QMainWindow *MainWindow)
     {
@@ -78,6 +83,12 @@ public:
     actionLoad_tree->setObjectName(QString::fromUtf8("actionLoad_tree"));
     actionVisualization_settings = new QAction(MainWindow);
     actionVisualization_settings->setObjectName(QString::fromUtf8("actionVisualization_settings"));
+    actionFree_roam = new QAction(MainWindow);
+    actionFree_roam->setObjectName(QString::fromUtf8("actionFree_roam"));
+    actionOrbit = new QAction(MainWindow);
+    actionOrbit->setObjectName(QString::fromUtf8("actionOrbit"));
+    actionMove_center = new QAction(MainWindow);
+    actionMove_center->setObjectName(QString::fromUtf8("actionMove_center"));
     centralwidget = new QWidget(MainWindow);
     centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
     hboxLayout = new QHBoxLayout(centralwidget);
@@ -263,7 +274,7 @@ public:
     MainWindow->setCentralWidget(centralwidget);
     menubar = new QMenuBar(MainWindow);
     menubar->setObjectName(QString::fromUtf8("menubar"));
-    menubar->setGeometry(QRect(0, 0, 818, 22));
+    menubar->setGeometry(QRect(0, 0, 818, 26));
     menuValikko = new QMenu(menubar);
     menuValikko->setObjectName(QString::fromUtf8("menuValikko"));
     menuFile = new QMenu(menubar);
@@ -274,12 +285,19 @@ public:
     statusbar = new QStatusBar(MainWindow);
     statusbar->setObjectName(QString::fromUtf8("statusbar"));
     MainWindow->setStatusBar(statusbar);
+    toolBar = new QToolBar(MainWindow);
+    toolBar->setObjectName(QString::fromUtf8("toolBar"));
+    toolBar->setOrientation(Qt::Horizontal);
+    MainWindow->addToolBar(static_cast<Qt::ToolBarArea>(4), toolBar);
 
     menubar->addAction(menuFile->menuAction());
     menubar->addAction(menuOptions->menuAction());
     menuFile->addAction(actionLoad_tree);
     menuFile->addAction(actionQuit);
     menuOptions->addAction(actionVisualization_settings);
+    toolBar->addAction(actionOrbit);
+    toolBar->addAction(actionMove_center);
+    toolBar->addAction(actionFree_roam);
     retranslateUi(MainWindow);
     QObject::connect(lineEdit, SIGNAL(textChanged(QString)), gldrawer, SLOT(setTreeFile(QString)));
     QObject::connect(pushButton, SIGNAL(clicked()), gldrawer, SLOT(changeTree()));
@@ -303,6 +321,9 @@ public:
     actionQuit->setText(QApplication::translate("MainWindow", "Quit", 0, QApplication::UnicodeUTF8));
     actionLoad_tree->setText(QApplication::translate("MainWindow", "Load tree...", 0, QApplication::UnicodeUTF8));
     actionVisualization_settings->setText(QApplication::translate("MainWindow", "Visualization settings...", 0, QApplication::UnicodeUTF8));
+    actionFree_roam->setText(QApplication::translate("MainWindow", "Free roam", 0, QApplication::UnicodeUTF8));
+    actionOrbit->setText(QApplication::translate("MainWindow", "Orbit", 0, QApplication::UnicodeUTF8));
+    actionMove_center->setText(QApplication::translate("MainWindow", "Move center", 0, QApplication::UnicodeUTF8));
     label->setText(QApplication::translate("MainWindow", "Tree file:", 0, QApplication::UnicodeUTF8));
     pushButton->setText(QApplication::translate("MainWindow", "Change tree", 0, QApplication::UnicodeUTF8));
     gldrawer->setToolTip(QApplication::translate("MainWindow", "OpenGL visualization for Lignum", 0, QApplication::UnicodeUTF8));

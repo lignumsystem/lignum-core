@@ -455,7 +455,7 @@ BSPPolygonSet* PolygonTreeBuilder<TS,BUD,S>::makeBud(Point point, PositionVector
   BSPPolygonSet* polygons = new BSPPolygonSet();
   double PI = 3.14159265;  
   int i, j;
-  double scale = 0.0050;
+  double scale = 0.0010;
   double y_scale = 2;
   double z_scale = 0.75;
   PositionVector dir(direction.normalize().getX()/2.0,

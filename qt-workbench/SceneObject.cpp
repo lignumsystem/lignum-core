@@ -34,6 +34,7 @@ void SceneObject::setMaterial() const{
   }
 
   static int last_texture = -1;
+  
   if(texture_id != last_texture) {
     if(last_texture != 0) {
       if(texture_id != 0)

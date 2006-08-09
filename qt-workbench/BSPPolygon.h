@@ -89,6 +89,7 @@ private:
 class BSPPolygonSet {
 public:
   BSPPolygonSet() { }
+    //    infinity(1000000000), MINIMUMRELATION(0.3), MINRELATIONSCALE(2.0)  { }
   ~BSPPolygonSet();
   bool               isConvexSet() const;
   void               addPolygon(BSPPolygon *polygon);
@@ -114,9 +115,9 @@ public:
   //list<SceneObjectComponent*> components;
   vector<SceneObjectComponent*> components;
 
-  static const int infinity = 1000000000;
-  static const double MINIMUMRELATION = 0.3;
-  static const double MINRELATIONSCALE = 2;
+  //static const int infinity;
+  //static const double MINIMUMRELATION;
+  //static const double MINRELATIONSCALE;
 };
   
 //int BSPPolygonSet::infinity = 1000000000;
