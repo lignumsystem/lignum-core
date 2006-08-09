@@ -41,6 +41,12 @@ GLDrawer::GLDrawer(QWidget* parent)
   t_rot_y = 0;
   t_rot_x = 0;
 
+  distance = 1;
+
+  tree_trans_x = 0;
+  tree_trans_y = 0;
+  tree_trans_z = 0;
+
   DEGTORAD = 2*3.14159265/360.0;
 
   parameters.setWireframeUsage(false);
@@ -65,6 +71,9 @@ GLDrawer::GLDrawer(QWidget* parent)
   setLeafDetail(10);
 
   settingsChanged = true;
+  
+  control_mode = ORBIT;
+  
   
 }
 
@@ -186,7 +195,7 @@ void GLDrawer::resizeGL(int width, int height)
   glViewport(0, 0, width, height);
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
-  gluPerspective(60.0, (GLfloat)width/(GLfloat)height, 0.001, 20.0);
+  gluPerspective(60.0, (GLfloat)width/(GLfloat)height, 0.01, 20.0);
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
 }
@@ -364,7 +373,7 @@ void GLDrawer::changeTree() {
     cout << "nodes:" << tree->getNodeCount() << endl;
     
     resetCamera();
-    
+
     updateGL();
     
     emit textOutput(QString("Tree file %1 has been loaded.").arg(tree_file));
@@ -379,45 +388,53 @@ void GLDrawer::paintGL()  {
 
   setParameterSettings();
 
-  glRotatef(cam_rot_x, 1, 0, 0);  
-  glRotatef(cam_rot_y, 0, 1, 0);
-  glTranslatef(-camera_x, -camera_y, -camera_z);   
+  PositionVector pv(0.0, 0.0, 0.0);
+  if(control_mode == MOUSE_LOOK) {
+    glRotatef(cam_rot_x, 1, 0, 0);  
+    glRotatef(cam_rot_y, 0, 1, 0);
+    glTranslatef(-camera_x, -camera_y, -camera_z);   
+    
+    glLightfv(GL_LIGHT0, GL_POSITION, light0_position);
+    //glScalef(-1.0, 0, 0);
+    
+    glTranslatef(t_point.getX(), t_point.getY() + 0.5*t_height, t_point.getZ());
+    glRotatef(t_rot_x, 1, 0, 0);
+    glTranslatef(0, -0.5*t_height, 0); 
+    glRotatef(t_rot_y, r_axis.getX(), r_axis.getZ(), -r_axis.getY());
+    glTranslatef(-t_point.getX(), -t_point.getY(), -t_point.getZ());
+    
+    pv = PositionVector(camera_x, camera_y, camera_z);
+    
+    pv = pv.rotate(Point(t_point.getX(), t_point.getY() + 0.5*t_height, t_point.getZ()),
+		   PositionVector(1,0,0), -DEGTORAD*t_rot_x);
+    pv = pv.rotate(Point(t_point.getX(), t_point.getY(), t_point.getZ()),
+		   PositionVector(r_axis.getX(), r_axis.getZ(), -r_axis.getY()), -DEGTORAD*t_rot_y);
+    pv = pv.rotate(Point(0,0,0), PositionVector(1,0,0), DEGTORAD*90);
+  }
+  else {
 
-  glLightfv(GL_LIGHT0, GL_POSITION, light0_position);
-  //glScalef(-1.0, 0, 0);
-  
-  glTranslatef(t_point.getX(), t_point.getY() + 0.5*t_height, t_point.getZ());
-  glRotatef(t_rot_x, 1, 0, 0);
-  glTranslatef(0, -0.5*t_height, 0); 
-  glRotatef(t_rot_y, r_axis.getX(), r_axis.getZ(), -r_axis.getY());
-  glTranslatef(-t_point.getX(), -t_point.getY(), -t_point.getZ());
-  
-  glRotatef(-90, 1, 0, 0);
-
-  PositionVector pv(camera_x, camera_y, camera_z);
-
-
-  //pv = pv + PositionVector(-t_point.getX(), -t_point.getY(), -t_point.getZ());
-  pv = pv.rotate(Point(t_point.getX(), t_point.getY() + 0.5*t_height, t_point.getZ()),
-  		 PositionVector(1,0,0), -DEGTORAD*t_rot_x);
-  pv = pv.rotate(Point(t_point.getX(), t_point.getY(), t_point.getZ()),
-  		 PositionVector(r_axis.getX(), r_axis.getZ(), -r_axis.getY()), -DEGTORAD*t_rot_y);
-  pv = pv.rotate(Point(0,0,0), PositionVector(1,0,0), DEGTORAD*90);
-  // pv = pv + PositionVector(0, -0.5*t_height, 0);
-  
-
-  //pv = pv + PositionVector(t_point.getX(), t_point.getY() + 0.5*t_height, t_point.getZ());
-  
-
-
-
-
-
+    glTranslatef(0.0, 0.0, -distance);
+    glRotatef(0, 0.0, 0.0, 1.0);
+    glRotatef(-cam_rot_x, 1.0, 0.0, 0.0);
+    glRotatef(cam_rot_y, 0.0, 1.0, 0.0);
+    glTranslatef(-t_point.getX() - tree_trans_x,
+		 -(t_point.getY() + tree_trans_y + t_height/2.0),
+		 -t_point.getZ() - tree_trans_z);
+    
+    pv = PositionVector(t_point.getX(), t_point.getY(), t_point.getZ() + distance);
+    pv = pv.rotate(Point(t_point.getX(), t_point.getY(), t_point.getZ()),
+		   PositionVector(0, 0, 1), cam_rot_y);
+    pv = pv.rotate(Point(t_point.getX(), t_point.getY(), t_point.getZ()),
+    PositionVector(1, 0, 0), cam_rot_x);
+    
+  }
   Point eye(pv.getX(), pv.getY(), pv.getZ());
   
   PositionVector direction(sin(cam_rot_y*DEGTORAD),
 			   cos(cam_rot_y*DEGTORAD),
 			   sin(-cam_rot_x*DEGTORAD));
+
+  glRotatef(-90, 1, 0, 0);
 
   tree->drawTree(eye, direction);
   glFlush();
@@ -544,27 +561,41 @@ void GLDrawer::mouseMoveEvent(QMouseEvent* event) {
   int dy = event->y() - m_last_pos.y();
 
   if (event->buttons() & Qt::LeftButton) {
-    cam_rot_x += m_look_speed*dy;
-    if(cam_rot_x > 90)
-      cam_rot_x = 90;
-    else if(cam_rot_x < -90)
-      cam_rot_x = -90;
-
-    cam_rot_y += m_look_speed*dx;
-    if(cam_rot_y > 180)
-      cam_rot_y = -180;
-    else if(cam_rot_y < -180)
-      cam_rot_y = 180;
+    if(control_mode == MOVE_TREE) {
+      tree_trans_x += 0.01*dx;
+      tree_trans_z += 0.01*dy;
+    }
+    else {
+      cam_rot_x += m_look_speed*dy;
+      if(cam_rot_x > 90)
+	cam_rot_x = 90;
+      else if(cam_rot_x < -90)
+	cam_rot_x = -90;
+      
+      cam_rot_y += m_look_speed*dx;
+      if(cam_rot_y > 180)
+	cam_rot_y = -180;
+      else if(cam_rot_y < -180)
+	cam_rot_y = 180;
+    }
   } 
   else if (event->buttons() & Qt::RightButton) {
-    Turtle turtle;
-    turtle.turn(-cam_rot_y*DEGTORAD);
-    turtle.pitch(cam_rot_x*DEGTORAD);
-
-    PositionVector heading = GetHeading(turtle);
-    camera_x -= dy*0.01*heading.getX();
-    camera_y += dy*0.01*heading.getY();
-    camera_z -= dy*0.01*heading.getZ();
+    if(control_mode == MOUSE_LOOK) {
+      Turtle turtle;
+      turtle.turn(-cam_rot_y*DEGTORAD);
+      turtle.pitch(cam_rot_x*DEGTORAD);
+      
+      PositionVector heading = GetHeading(turtle);
+      camera_x -= dy*0.01*heading.getX();
+      camera_y += dy*0.01*heading.getY();
+      camera_z -= dy*0.01*heading.getZ();
+    }
+    else if(control_mode == ORBIT) {
+      distance += dy*0.01;
+    }
+    else {
+      tree_trans_y += 0.01*dy;
+    }
   }
   updateGL();
   m_last_pos = event->pos();
@@ -695,6 +726,10 @@ void GLDrawer::resetCamera() {
   t_rot_y = 0;
   t_rot_x = 0;
 
+  tree_trans_x = 0;
+  tree_trans_y = 0;
+  tree_trans_z = 0;
+  
   
   double translate = 2*t_height;
   //cout << "point: " << t_point.getX() << " " << t_point.getY() << " " << t_point.getZ() << endl;
@@ -754,4 +789,22 @@ void GLDrawer::changeSettings(VisualizationParameters params) {
   parameters = params;
   settingsChanged = true;
   updateGL();
+}
+
+void GLDrawer::orbitCameraMode() {
+  if(control_mode == MOUSE_LOOK)
+    resetCamera();
+  control_mode = ORBIT;
+}
+
+void GLDrawer::moveCenterMode() {
+  if(control_mode == MOUSE_LOOK)
+    resetCamera();
+  control_mode = MOVE_TREE;
+}
+
+void GLDrawer::freeRoamMode() {
+  if(control_mode != MOUSE_LOOK)
+    resetCamera();  
+  control_mode = MOUSE_LOOK;
 }

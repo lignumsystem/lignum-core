@@ -60,6 +60,9 @@ public slots:
   void useLeafTextures(bool use);
   void setLeafDetail(int detail);
   void changeSettings(VisualizationParameters params);
+  void orbitCameraMode();
+  void moveCenterMode();
+  void freeRoamMode();
   //void moveCameraLeft();
   //void moveCameraRight();
   //void moveCameraUp();
@@ -81,6 +84,8 @@ private:
   GLfloat   camera_x, camera_y, camera_z;      // Position of camera
   GLfloat   cam_rot_x, cam_rot_y, cam_rot_z;   // Rotation of camera
   GLfloat   cam_mov_speed, cam_rot_speed;      // Movement and rotation speed of camera
+  GLfloat   distance;
+  GLfloat   tree_trans_x, tree_trans_y, tree_trans_z; 
   PositionVector r_axis;                       // Root axis of central tree in visualization
   Point t_point;                               // Origin of the central tree
   double t_height;                             // Height of the tallest tree 
@@ -101,6 +106,9 @@ private:
   VisualizationParameters parameters;          // Parameters of the visualization
   QHash<QString, int> textures;
   bool      settingsChanged;
+  int       control_mode;
+  enum { MOUSE_LOOK, MOVE_TREE, ORBIT };
+
   
 };
 
