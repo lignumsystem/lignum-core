@@ -382,8 +382,8 @@ void GLDrawer::changeTree() {
   
 
 void GLDrawer::paintGL()  {
+  // Clear buffers and load identity matrix
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  //glClear(GL_COLOR_BUFFER_BIT);
   glLoadIdentity();
 
   setParameterSettings();
@@ -414,19 +414,21 @@ void GLDrawer::paintGL()  {
   else {
 
     glTranslatef(0.0, 0.0, -distance);
-    glRotatef(0, 0.0, 0.0, 1.0);
     glRotatef(-cam_rot_x, 1.0, 0.0, 0.0);
     glRotatef(cam_rot_y, 0.0, 1.0, 0.0);
-    glTranslatef(-t_point.getX() - tree_trans_x,
-		 -(t_point.getY() + tree_trans_y + t_height/2.0),
-		 -t_point.getZ() - tree_trans_z);
+    glTranslatef(-tree_trans_x,
+		 -tree_trans_y,
+		 -tree_trans_z);
     
-    pv = PositionVector(t_point.getX(), t_point.getY(), t_point.getZ() + distance);
-    pv = pv.rotate(Point(t_point.getX(), t_point.getY(), t_point.getZ()),
-		   PositionVector(0, 0, 1), cam_rot_y);
-    pv = pv.rotate(Point(t_point.getX(), t_point.getY(), t_point.getZ()),
-    PositionVector(1, 0, 0), cam_rot_x);
+    // Rotate the position of the eye accordingly 
+    pv = PositionVector(0, 0, distance);
     
+    pv = pv.rotate(Point(0,0,0), PositionVector(1, 0, 0), DEGTORAD*cam_rot_x);
+    pv = pv.rotate(Point(0,0,0), PositionVector(0, 1, 0), -DEGTORAD*cam_rot_y);
+ 
+    pv = pv + PositionVector(tree_trans_x, tree_trans_y, tree_trans_z);
+    pv = pv.rotate(Point(0,0,0), PositionVector(1,0,0), DEGTORAD*90);
+   
   }
   Point eye(pv.getX(), pv.getY(), pv.getZ());
   
@@ -434,6 +436,7 @@ void GLDrawer::paintGL()  {
 			   cos(cam_rot_y*DEGTORAD),
 			   sin(-cam_rot_x*DEGTORAD));
 
+  // Transform from LIGNUM-coordinates to OpenGL-coordinates
   glRotatef(-90, 1, 0, 0);
 
   tree->drawTree(eye, direction);
@@ -475,14 +478,6 @@ BSPPolygonSet* GLDrawer::makeSquare(double height, double width, Point point, Po
       v2 = v2.rotate(origo, dir, PI);
       v3 = v3.rotate(origo, dir, PI);
       
-      /*vertices[0] = Point(v1)+point;
-      vertices[1] = Point(v3)+point;
-      vertices[2] = Point(v2)+point;
-      t_vertices[0] = Point(tx1, tz1, 0);
-      t_vertices[1] = Point(tx2, tz1, 0);
-      t_vertices[2] = Point(tx1, tz2, 0);
-      polygons->addPolygon(new BSPPolygon(vertices, t_vertices, object));*/
-
       polygons->addPolygon(new BSPPolygon(Point(v1)+point,
 					  Point(v3)+point,
 					  Point(v2)+point,
@@ -498,14 +493,6 @@ BSPPolygonSet* GLDrawer::makeSquare(double height, double width, Point point, Po
       v1 = v1.rotate(origo, dir, PI);
       v2 = v2.rotate(origo, dir, PI);
       v3 = v3.rotate(origo, dir, PI);
-
-      /*vertices[0] = Point(v1)+point;
-      vertices[1] = Point(v3)+point;
-      vertices[2] = Point(v2)+point;
-      t_vertices[0] = Point(tx2, tz1, 0);
-      t_vertices[1] = Point(tx2, tz2, 0);
-      t_vertices[2] = Point(tx1, tz2, 0);
-      polygons->addPolygon(new BSPPolygon(vertices, t_vertices, object));*/
 
       polygons->addPolygon(new BSPPolygon(Point(v1)+point,
 					  Point(v3)+point,
@@ -562,8 +549,19 @@ void GLDrawer::mouseMoveEvent(QMouseEvent* event) {
 
   if (event->buttons() & Qt::LeftButton) {
     if(control_mode == MOVE_TREE) {
-      tree_trans_x += 0.01*dx;
-      tree_trans_z += 0.01*dy;
+      //tree_trans_x += 0.01*dx;
+      //tree_trans_z += 0.01*dy;
+      Turtle turtle;
+      turtle.turn(-cam_rot_y*DEGTORAD);
+      PositionVector heading = GetHeading(turtle);
+      tree_trans_x -= dy*0.01*heading.getX();
+      tree_trans_z -= dy*0.01*heading.getZ();
+      
+      turtle.turn(PI/2);
+      heading = GetHeading(turtle);
+      tree_trans_x -= dx*0.01*heading.getX();
+      tree_trans_z -= dx*0.01*heading.getZ();
+
     }
     else {
       cam_rot_x += m_look_speed*dy;
@@ -606,20 +604,28 @@ void GLDrawer::keyPressEvent(QKeyEvent* event) {
   switch(key) 
     {
     case Qt::Key_W:
-      //moveCameraForward();
-      t_rot_x -= 2;
+      if(control_mode == MOUSE_LOOK)
+	t_rot_x -= 2;
+      else 
+	cam_rot_x -= 2;
       break;
     case Qt::Key_S:
-      //moveCameraBackward();
-      t_rot_x += 2;
+      if(control_mode == MOUSE_LOOK)
+	t_rot_x += 2;
+      else 
+	cam_rot_x += 2;
       break;
     case Qt::Key_A:
-      //rotateCameraLeft();
-      t_rot_y += 2;
+      if(control_mode == MOUSE_LOOK)
+	t_rot_y += 2;
+      else 
+	cam_rot_y -= 2;
       break;
     case Qt::Key_D:
-      //rotateCameraRight();
-      t_rot_y -= 2;
+      if(control_mode == MOUSE_LOOK)
+	t_rot_y -= 2;
+      else 
+	cam_rot_y += 2;
       break;
     case Qt::Key_Q:
       rotateCameraUp();
@@ -726,18 +732,17 @@ void GLDrawer::resetCamera() {
   t_rot_y = 0;
   t_rot_x = 0;
 
-  tree_trans_x = 0;
-  tree_trans_y = 0;
-  tree_trans_z = 0;
+  tree_trans_x = t_point.getX();
+  tree_trans_y = t_point.getY() + t_height/2;
+  tree_trans_z = t_point.getZ();
+  distance = 2*t_height;
   
-  
-  double translate = 2*t_height;
   //cout << "point: " << t_point.getX() << " " << t_point.getY() << " " << t_point.getZ() << endl;
   //cout << "height: " << t_height << endl;
   camera_x = t_point.getX();
   //camera_y = t_point.getY() - t_height/2*r_axis.getZ();
   camera_y = t_point.getY() + t_height/2;
-  camera_z = t_point.getZ() + translate;
+  camera_z = t_point.getZ() + distance;
   Point camera(camera_x, camera_y, camera_z);
   //  cout << "camera: " << camera_x << " " << camera_y << " " << camera_z << endl;
 
