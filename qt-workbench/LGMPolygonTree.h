@@ -116,8 +116,7 @@ template <class TS, class BUD, class S>
     }
     else if(CfTreeSegment<TS,BUD>* cf = dynamic_cast<CfTreeSegment<TS,BUD>*>(ts)) {
       double fmass = GetValue(*cf, LGAWf);
-      //cout << "foliage: " << fmass << endl;
-      if(fmass > R_EPSILON /* && (GetValue(*cf, LGAage) <= 6)*/) {
+      if(fmass > R_EPSILON) {
 	object = new SceneObject(parameters.getMaterial(), parameters.getFoliageTexture(), parameters.useBSP());
 	BSPPolygonSet* foliage = makeFoliage(radius, length, point, direction, parameters.getSegmentRDetail(), fmass, object);
 	polygons->addPolygons(foliage);
@@ -128,8 +127,8 @@ template <class TS, class BUD, class S>
   }
   else if(BUD* bud = dynamic_cast<BUD*>(tc)) {
     if(parameters.useBuds()) {
-      //cout << "BUD" << endl;
       SceneObject* object;
+      // Set the appropriate color for the bud
       if(GetValue(*bud, LGAstate) == ALIVE)
 	object = new SceneObject(parameters.getBudAliveMaterial(), 0, false);
       else if(GetValue(*bud, LGAstate) == DEAD)
@@ -456,7 +455,7 @@ BSPPolygonSet* PolygonTreeBuilder<TS,BUD,S>::makeBud(Point point, PositionVector
   BSPPolygonSet* polygons = new BSPPolygonSet();
   double PI = 3.14159265;  
   int i, j;
-  double scale = 0.0010;
+  double scale = 0.0050;
   double y_scale = 2;
   double z_scale = 0.75;
   PositionVector dir(direction.normalize().getX()/2.0,
@@ -474,12 +473,14 @@ BSPPolygonSet* PolygonTreeBuilder<TS,BUD,S>::makeBud(Point point, PositionVector
     double lat1 = PI * (-0.5 + (double) (i + 1) / la_detail);
     double z1 = sin(lat1);
     double zr1 = cos(lat1);
-    for (j = 0; j <= lo_detail; j++) {
-      double lng = 2 * PI * (double) j / lo_detail;
-      double x1 = cos(lng);
-      double y1 = sin(lng);
-      double x2 = cos(lng*(j + 1) / j);
-      double y2 = sin(lng*(j + 1) / j);
+    for (j = 0; j < lo_detail; j++) {
+      double lng1 = 2 * PI * (double) j / lo_detail;
+      double lng2 = 2 * PI * (double) (j + 1) / lo_detail;
+      double x1 = cos(lng1);
+      double y1 = sin(lng1);
+
+      double x2 = cos(lng2);
+      double y2 = sin(lng2);
       
       PositionVector v1(scale * (Point(0,y_scale,0) + Point(x1 * zr0, y_scale * y1 * zr0, z_scale * z0)));
       PositionVector v2(scale * (Point(0,y_scale,0) + Point(x1 * zr1, y_scale * y1 * zr1, z_scale * z1)));
@@ -490,17 +491,20 @@ BSPPolygonSet* PolygonTreeBuilder<TS,BUD,S>::makeBud(Point point, PositionVector
       v3 = v3.rotate(origo, dir, PI);
       v4 = v4.rotate(origo, dir, PI);
 
-      polygons->addPolygon(new BSPPolygon(point + Point(v1),
-					  point + Point(v2),
-					  point + Point(v3),
-					  object));
+      if(i != la_detail - 1) {
+	polygons->addPolygon(new BSPPolygon(point + Point(v2),
+					    point + Point(v3),
+					    point + Point(v1),
+					    object));
+      }
 
+      if(i != 0) {
       polygons->addPolygon(new BSPPolygon(point + Point(v3),
 					  point + Point(v4),
 					  point + Point(v1),
 					  object));
-      
-
+      }
+				       
       /*polygons->addPolygon(new BSPPolygon(point + Point(scale * x1 * zr0, scale * y1 * zr0, scale * z0),
 					  point + Point(scale * x1 * zr1, scale * y1 * zr1, scale * z1),
 					  point + Point(scale * x2 * zr1, scale * y2 * zr1, scale * z1),
