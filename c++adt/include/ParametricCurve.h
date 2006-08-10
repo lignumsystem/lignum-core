@@ -24,6 +24,7 @@ public:
   bool ok()const;
   double eval(double x)const;
   string getFile()const{return file;}
+  vector<double> getVector()const{return v;}
 private:
   ParametricCurve& read_xy_file(const char *file_name);
   string file;
