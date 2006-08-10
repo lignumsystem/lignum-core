@@ -56,7 +56,7 @@ void LignumWB::setWorkingDirectory() {
   // Should this be implemented with signals & slots?
   if(!directory.isEmpty()) {
     if(QDir::setCurrent(directory))
-      ui.textBrowser->append(QString("Working directory changed succesfully."));
+      ui.textBrowser->append(QString("Working directory changed to ")+QDir::currentPath());
     else 
       ui.textBrowser->append(QString("Working directory not changed."));
   }
