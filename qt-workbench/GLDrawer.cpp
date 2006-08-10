@@ -589,7 +589,9 @@ void GLDrawer::mouseMoveEvent(QMouseEvent* event) {
       camera_z -= dy*0.01*heading.getZ();
     }
     else if(control_mode == ORBIT) {
-      distance += dy*0.01;
+      distance += dy*0.05;
+      if(distance < 0.05) 
+	distance = 0.05;
     }
     else {
       tree_trans_y += 0.01*dy;
@@ -735,7 +737,7 @@ void GLDrawer::resetCamera() {
   tree_trans_x = t_point.getX();
   tree_trans_y = t_point.getY() + t_height/2;
   tree_trans_z = t_point.getZ();
-  distance = 2*t_height;
+  distance = abs(4*t_height);
   
   //cout << "point: " << t_point.getX() << " " << t_point.getY() << " " << t_point.getZ() << endl;
   //cout << "height: " << t_height << endl;
