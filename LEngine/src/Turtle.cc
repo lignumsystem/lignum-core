@@ -54,12 +54,14 @@ Turtle& Turtle::roll(const RADIAN angle)
 Turtle& Turtle::hroll()
 {
   PositionVector up(0,0,1); //opposite to gravity
+  PositionVector new_l = Cross(up,h);
+  if (new_l.length() > R_EPSILON){
+    l = Cross(up,h); //left becomes horizontal 
+    l.normalize();
 
-  l = Cross(up,h); //left becomes horizontal 
-  l.normalize();
-
-  u = Cross(h,l);  //adjust up
-  u.normalize();
+    u = Cross(h,l);  //adjust up
+    u.normalize();
+  }
    
   return *this;
 }
