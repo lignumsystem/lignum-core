@@ -200,8 +200,15 @@
     <addaction name="actionVisualization_settings" />
     <addaction name="actionWorking_directory" />
    </widget>
+   <widget class="QMenu" name="menuTools" >
+    <property name="title" >
+     <string>Tools</string>
+    </property>
+    <addaction name="actionFunction_editor" />
+   </widget>
    <addaction name="menuFile" />
    <addaction name="menuOptions" />
+   <addaction name="menuTools" />
   </widget>
   <widget class="QStatusBar" name="statusbar" />
   <widget class="QToolBar" name="toolBar" >
@@ -251,6 +258,11 @@
   <action name="actionWorking_directory" >
    <property name="text" >
     <string>Change working directory...</string>
+   </property>
+  </action>
+  <action name="actionFunction_editor" >
+   <property name="text" >
+    <string>Function editor</string>
    </property>
   </action>
  </widget>

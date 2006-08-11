@@ -29,6 +29,7 @@ public:
     QAction *actionOrbit;
     QAction *actionMove_center;
     QAction *actionWorking_directory;
+    QAction *actionFunction_editor;
     QWidget *centralwidget;
     QHBoxLayout *hboxLayout;
     QVBoxLayout *vboxLayout;
@@ -52,6 +53,7 @@ public:
     QMenu *menuValikko;
     QMenu *menuFile;
     QMenu *menuOptions;
+    QMenu *menuTools;
     QStatusBar *statusbar;
     QToolBar *toolBar;
 
@@ -75,6 +77,8 @@ public:
     actionMove_center->setObjectName(QString::fromUtf8("actionMove_center"));
     actionWorking_directory = new QAction(MainWindow);
     actionWorking_directory->setObjectName(QString::fromUtf8("actionWorking_directory"));
+    actionFunction_editor = new QAction(MainWindow);
+    actionFunction_editor->setObjectName(QString::fromUtf8("actionFunction_editor"));
     centralwidget = new QWidget(MainWindow);
     centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
     hboxLayout = new QHBoxLayout(centralwidget);
@@ -188,6 +192,8 @@ public:
     menuFile->setObjectName(QString::fromUtf8("menuFile"));
     menuOptions = new QMenu(menubar);
     menuOptions->setObjectName(QString::fromUtf8("menuOptions"));
+    menuTools = new QMenu(menubar);
+    menuTools->setObjectName(QString::fromUtf8("menuTools"));
     MainWindow->setMenuBar(menubar);
     statusbar = new QStatusBar(MainWindow);
     statusbar->setObjectName(QString::fromUtf8("statusbar"));
@@ -199,10 +205,12 @@ public:
 
     menubar->addAction(menuFile->menuAction());
     menubar->addAction(menuOptions->menuAction());
+    menubar->addAction(menuTools->menuAction());
     menuFile->addAction(actionLoad_tree);
     menuFile->addAction(actionQuit);
     menuOptions->addAction(actionVisualization_settings);
     menuOptions->addAction(actionWorking_directory);
+    menuTools->addAction(actionFunction_editor);
     toolBar->addAction(actionOrbit);
     toolBar->addAction(actionMove_center);
     toolBar->addAction(actionFree_roam);
@@ -222,6 +230,7 @@ public:
     actionOrbit->setText(QApplication::translate("MainWindow", "Orbit", 0, QApplication::UnicodeUTF8));
     actionMove_center->setText(QApplication::translate("MainWindow", "Move center", 0, QApplication::UnicodeUTF8));
     actionWorking_directory->setText(QApplication::translate("MainWindow", "Change working directory...", 0, QApplication::UnicodeUTF8));
+    actionFunction_editor->setText(QApplication::translate("MainWindow", "Function editor", 0, QApplication::UnicodeUTF8));
     gldrawer->setToolTip(QApplication::translate("MainWindow", "OpenGL visualization for Lignum", 0, QApplication::UnicodeUTF8));
     gldrawer->setWhatsThis(QApplication::translate("MainWindow", " Visualization for Lignum", 0, QApplication::UnicodeUTF8));
     runButton->setText(QApplication::translate("MainWindow", "Run", 0, QApplication::UnicodeUTF8));
@@ -229,6 +238,7 @@ public:
     menuValikko->setTitle(QApplication::translate("MainWindow", "valikko", 0, QApplication::UnicodeUTF8));
     menuFile->setTitle(QApplication::translate("MainWindow", "File", 0, QApplication::UnicodeUTF8));
     menuOptions->setTitle(QApplication::translate("MainWindow", "Options", 0, QApplication::UnicodeUTF8));
+    menuTools->setTitle(QApplication::translate("MainWindow", "Tools", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 
 };
