@@ -16,6 +16,10 @@ class ParametricCurve{
 public:
   ParametricCurve();
   ParametricCurve(const string& file_name);
+  // In this constructor values for the curve are stored
+  // in the string parameter. Second parameter is only
+  // used for overloading the function.
+  ParametricCurve(const string& values, int dummy);
   ParametricCurve(const vector<double>& v);
   ParametricCurve(const ParametricCurve& pc);
   ParametricCurve(const double c);

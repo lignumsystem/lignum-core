@@ -1,6 +1,7 @@
 
 #include "stdafx.h"
 #include <iostream>
+#include <sstream>
 
 #include <ParametricCurve.h>
 
@@ -15,6 +16,37 @@ ParametricCurve::ParametricCurve()
 ParametricCurve::ParametricCurve(const string& file_name)
 {
   read_xy_file(file_name.c_str());
+}
+
+ParametricCurve::ParametricCurve(const string& values, int dummy)
+{
+  double value = 0.0;
+  stringstream v_stream(values,stringstream::in);
+  char buffer[100];
+  
+  //Skip the comments. A line beginning with '#' is a comment 
+  v_stream >> ws;//Skip white space
+  while (v_stream.peek() == '#'){
+    v_stream.getline(buffer,100);
+    v_stream >> ws; //skip white space
+  }
+ 
+  //clear the previous function 
+  v.clear();
+
+  file = string("");
+  
+  v_stream.setf(ios::fixed,ios::floatfield);
+
+  while (v_stream >> value){
+    v.insert(v.end(),value);
+  }
+
+  //mark the end of (x,y) value pairs with FLT_MAX 
+  //FLT_MAX should be defined in <float.h>
+  v.insert(v.end(),FLT_MAX);
+  num_of_elements = v.size();
+
 }
 
 ParametricCurve::ParametricCurve(const vector<double>& v1)
