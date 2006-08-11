@@ -5,6 +5,7 @@
 #include <QProcess>
 #include "qt_wb.h"
 #include "VisualizationConfig.h"
+#include "FunctionEditor.h"
 
 class LignumWB : public QMainWindow
 {
@@ -17,13 +18,14 @@ private:
   Ui::MainWindow ui;
   VisualizationConfig* viz_config;
   QProcess *externalProgram;
-  //QString workingDirectory;
+  FunctionEditor *function_editor;
 
   void clearExternalProgram();
 
 private slots:
   void loadTree();
   void options();
+  void functionEditor();
   void setWorkingDirectory();
   void startExternalProgram();
   void endExternalProgram(int, QProcess::ExitStatus);

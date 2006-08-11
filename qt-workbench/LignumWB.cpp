@@ -1,7 +1,8 @@
 #include "LignumWB.h"
+#include "FunctionEditor.h"
 
 LignumWB::LignumWB(QWidget *parent)
-  : QMainWindow(parent), viz_config(NULL), externalProgram(NULL)
+  : QMainWindow(parent), viz_config(NULL), externalProgram(NULL), function_editor(NULL)
 {
   ui.setupUi(this);
   connect(ui.actionQuit, SIGNAL(triggered()), this, SLOT(close()));
@@ -11,8 +12,10 @@ LignumWB::LignumWB(QWidget *parent)
   connect(ui.actionOrbit, SIGNAL(triggered()), ui.gldrawer, SLOT(orbitCameraMode()));
   connect(ui.actionMove_center, SIGNAL(triggered()), ui.gldrawer, SLOT(moveCenterMode()));
   connect(ui.actionWorking_directory, SIGNAL(triggered()), this, SLOT(setWorkingDirectory()));
+  connect(ui.console, SIGNAL(returnPressed()), this, SLOT(startExternalProgram()));
   connect(ui.runButton, SIGNAL(clicked()), this, SLOT(startExternalProgram()));
   connect(ui.killButton, SIGNAL(clicked()), this, SLOT(killExternalProgram()));
+  connect(ui.actionFunction_editor, SIGNAL(triggered()), this, SLOT(functionEditor()));
 }
 
 void LignumWB::loadTree() {
@@ -29,6 +32,16 @@ void LignumWB::loadTree() {
     ui.gldrawer->setTreeFile(fileName);
     ui.gldrawer->changeTree();
   }
+
+}
+
+void LignumWB::functionEditor() {
+  if(!function_editor) {
+    function_editor = new FunctionEditor();
+  } 
+  function_editor->show();
+  function_editor->raise();
+  function_editor->activateWindow(); 
 }
 
 void LignumWB::options() {
@@ -49,7 +62,7 @@ void LignumWB::options() {
 
 void LignumWB::setWorkingDirectory() {
   QString directory = QFileDialog::getExistingDirectory(this,
-							"Choose a directory",
+							"Choose a working directory",
 							QDir::currentPath(),
 							QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
   

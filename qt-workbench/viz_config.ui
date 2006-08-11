@@ -222,12 +222,18 @@
                <property name="text" >
                 <string>Segment radius detail</string>
                </property>
+               <property name="buddy" >
+                <cstring>srdetailBox</cstring>
+               </property>
               </widget>
              </item>
              <item>
               <widget class="QLabel" name="label_5" >
                <property name="text" >
                 <string>Segment height detail</string>
+               </property>
+               <property name="buddy" >
+                <cstring>shdetailBox</cstring>
                </property>
               </widget>
              </item>
@@ -236,6 +242,9 @@
                <property name="text" >
                 <string>Leaf detail</string>
                </property>
+               <property name="buddy" >
+                <cstring>ldetailBox</cstring>
+               </property>
               </widget>
              </item>
              <item>
@@ -243,12 +252,18 @@
                <property name="text" >
                 <string>Bud longitude detail</string>
                </property>
+               <property name="buddy" >
+                <cstring>budloBox</cstring>
+               </property>
               </widget>
              </item>
              <item>
               <widget class="QLabel" name="label_2" >
                <property name="text" >
                 <string>Bud latitude detail</string>
+               </property>
+               <property name="buddy" >
+                <cstring>budlaBox</cstring>
                </property>
               </widget>
              </item>

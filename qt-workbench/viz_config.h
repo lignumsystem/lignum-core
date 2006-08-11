@@ -285,6 +285,11 @@ public:
 
     hboxLayout->addLayout(vboxLayout);
 
+    label_4->setBuddy(srdetailBox);
+    label_5->setBuddy(shdetailBox);
+    label_6->setBuddy(ldetailBox);
+    label->setBuddy(budloBox);
+    label_2->setBuddy(budlaBox);
     retranslateUi(VisualizationConfig);
 
     QMetaObject::connectSlotsByName(VisualizationConfig);
