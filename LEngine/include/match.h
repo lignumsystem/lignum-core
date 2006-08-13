@@ -178,13 +178,6 @@ inline bool MatchRightContext(LstringIterator& pos,
     }
   }
 
-  front = fm_ls.begin();
-  while (front != fm_ls.end()){
-    //cout << GetModuleName(*front) << " ";
-    front++;
-  }
-  //cout << endl;
-
   //start matching, the right context is
   //the immediate modules in the same branch
   //and/or modules in immediate subbranches 
@@ -212,14 +205,18 @@ inline bool MatchRightContext(LstringIterator& pos,
     //consider_set.end()) && !(pos.GetModuleId() == *front)) << endl;
     //cout       <<       ((ignore_set.find(pos.GetModuleId())      ==
     //ignore_set.end()) && (!(pos.GetModuleId() == *front))) << endl;
+    //4. Insert modules into the  right context. If the context search
+    //   fails the the right context will be resetted.
     if (((consider_set.find(pos.GetModuleId()) != consider_set.end()) && !(pos.GetModuleId() == *front)) ||
 	((ignore_set.find(pos.GetModuleId()) == ignore_set.end()) && (!(pos.GetModuleId() == *front)))){
       has_right_context = false;
+      caller_data.RCntxt.Reset();
       break; //break the while loop
     }
     //pop only the Module if we had to compare (current position in a _string_
     //was not in ignore list) 
     if (ignore_set.find(pos.GetModuleId()) == ignore_set.end()){
+      caller_data.RCntxt.AddModuleAddr(pos.Ptr());
       fm_ls.pop_front();
     }
     else{
@@ -230,15 +227,17 @@ inline bool MatchRightContext(LstringIterator& pos,
       pos++;
   }
   //no match if context not exhausted but the string is
-  if (pos.AtEnd() && !(fm_ls.empty()))
+  if (pos.AtEnd() && !(fm_ls.empty())){
+    caller_data.RCntxt.Reset();
     has_right_context = false;
+  }
     
   //return to the original place in string
   while (current_pos != pos.CurrentPosition())
     pos--;
   //if right context exists add the arguments (see MatchStrictPredecessor)
-  if (has_right_context)
-    caller_data.RCntxt.AddModuleAddr(pos.Ptr());
+  //if (has_right_context)
+  //caller_data.RCntxt.AddModuleAddr(pos.Ptr());
   return has_right_context;
 }
 
@@ -307,15 +306,20 @@ inline bool MatchLeftContext(LstringIterator& pos,
     //consider_set.end()) && !(pos.GetModuleId() == *front)) << endl;
     //cout       <<       ((ignore_set.find(pos.GetModuleId())      ==
     //ignore_set.end()) && (!(pos.GetModuleId() == *front))) << endl;
+    
+    //4. Insert modules into the left  context. If the searh fails the
+    //   left context will be resetted.
     if (((consider_set.find(pos.GetModuleId()) != consider_set.end()) && !(pos.GetModuleId() == *front))||
 	((ignore_set.find(pos.GetModuleId()) == ignore_set.end()) && (!(pos.GetModuleId() == *front)))) {
       //if no match then no left context
       has_left_context = false;
-      break;
+      caller_data.LCntxt.Reset();
+      break;//break the while loop
     }
     //pop only the Module if we had to compare (current position in a string
     //was not in ignore list) move in the string 
     if (ignore_set.find(pos.GetModuleId()) ==  ignore_set.end()){
+      caller_data.LCntxt.AddModuleAddr(pos.Ptr());
       fm_ls.pop_front();
     }
     else{
@@ -342,6 +346,7 @@ inline bool MatchLeftContext(LstringIterator& pos,
   //can be  ignored and current value of  has_left_context remains and
   //if 4) fails we cannot have context.
   //&& (ignore_set.find(pos.GetModuleId()) == ignore_set.end)
+  
   if (pos.AtBeginning() && (fm_ls.size() == 1)&& (ignore_set.find(pos.GetModuleId()) == ignore_set.end()) && 
 						  (pos.GetModuleId() == fm_ls.front())){
     //cout << "  Comparing: " << GetModuleName(pos.GetModuleId()) << " " <<  GetModuleName( fm_ls.front())<< endl;
@@ -349,15 +354,16 @@ inline bool MatchLeftContext(LstringIterator& pos,
   }
   //no match if context not exhausted but the string is 
   else if (pos.AtBeginning() && (fm_ls.size() >= 1)){
-    
+    caller_data.LCntxt.Reset();
     has_left_context = false;
   }	
+  //Reverse the order  of modules. It is needed  to get the parameters
+  //in right order.
+  if (has_left_context)
+    caller_data.LCntxt.Reverse();
   //return to the original place in string
   while (current_pos != pos.CurrentPosition())
     pos++;
-  //if left context add the arguments (see MatchStrictPredecessor)
-  if (has_left_context)
-    caller_data.LCntxt.AddModuleAddr(pos.Ptr());
   return has_left_context;
 }
 
