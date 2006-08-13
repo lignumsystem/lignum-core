@@ -36,6 +36,19 @@ inline void ActualParameters::AddModuleAddr(const char* pX)
   _count++;
 }
 
+//Reverse the  order of modules. It  is needed in left  context to get
+//the parameters in right order.
+inline void ActualParameters::Reverse()
+{
+  const char* tmp_arr[eMaxFormalModules];
+  int i = 0;
+  for (int tmp_count=_count-1; tmp_count >= 0; tmp_count--,i++){
+    tmp_arr[i] = _arr[tmp_count];
+  }
+  for (i = 0; i <= _count; i++){
+    _arr[i] =  tmp_arr[i];
+  }
+}
 inline void ActualParameters::Reset()
 {
   _count = 0;

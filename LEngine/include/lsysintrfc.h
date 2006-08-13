@@ -8,6 +8,7 @@ public:
   int Count() const
   { return _count; }
   int hasParameters()const{return _arr[0] != NULL;}  
+  void Reverse();
   void Reset();
 private:
   const char* _arr[eMaxFormalModules];
