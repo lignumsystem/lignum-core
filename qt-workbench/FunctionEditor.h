@@ -17,6 +17,7 @@ private slots:
   void updateFunction();
   void saveFile();
   void saveFileAs();
+  void closeProgram();
 
 private:
   void setWindowName();
