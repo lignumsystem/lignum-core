@@ -8,44 +8,399 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>864</width>
+    <height>534</height>
    </rect>
   </property>
   <property name="windowTitle" >
    <string>Function Editor</string>
   </property>
   <widget class="QWidget" name="centralwidget" >
-   <widget class="QTextEdit" name="textEdit" >
-    <property name="geometry" >
-     <rect>
-      <x>420</x>
-      <y>40</y>
-      <width>331</width>
-      <height>451</height>
-     </rect>
+   <layout class="QHBoxLayout" >
+    <property name="margin" >
+     <number>9</number>
     </property>
-   </widget>
-   <widget class="QPushButton" name="updateButton" >
-    <property name="geometry" >
-     <rect>
-      <x>390</x>
-      <y>520</y>
-      <width>87</width>
-      <height>26</height>
-     </rect>
+    <property name="spacing" >
+     <number>6</number>
     </property>
-    <property name="text" >
-     <string>Update</string>
-    </property>
-   </widget>
+    <item>
+     <layout class="QVBoxLayout" >
+      <property name="margin" >
+       <number>0</number>
+      </property>
+      <property name="spacing" >
+       <number>6</number>
+      </property>
+      <item>
+       <layout class="QHBoxLayout" >
+        <property name="margin" >
+         <number>0</number>
+        </property>
+        <property name="spacing" >
+         <number>6</number>
+        </property>
+        <item>
+         <widget class="FunctionPainter" name="f_painter" >
+          <property name="sizePolicy" >
+           <sizepolicy>
+            <hsizetype>7</hsizetype>
+            <vsizetype>7</vsizetype>
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip" >
+           <string>Function painter for Lignum</string>
+          </property>
+          <property name="whatsThis" >
+           <string> Function painter for Lignum</string>
+          </property>
+          <property name="autoFillBackground" >
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QTextEdit" name="textEdit" >
+          <property name="minimumSize" >
+           <size>
+            <width>0</width>
+            <height>400</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" >
+        <property name="margin" >
+         <number>0</number>
+        </property>
+        <property name="spacing" >
+         <number>6</number>
+        </property>
+        <item>
+         <layout class="QHBoxLayout" >
+          <property name="margin" >
+           <number>0</number>
+          </property>
+          <property name="spacing" >
+           <number>6</number>
+          </property>
+          <item>
+           <layout class="QVBoxLayout" >
+            <property name="margin" >
+             <number>0</number>
+            </property>
+            <property name="spacing" >
+             <number>6</number>
+            </property>
+            <item>
+             <layout class="QHBoxLayout" >
+              <property name="margin" >
+               <number>0</number>
+              </property>
+              <property name="spacing" >
+               <number>6</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="label_6" >
+                <property name="text" >
+                 <string>X ticks:</string>
+                </property>
+                <property name="buddy" >
+                 <cstring>xtickBox</cstring>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QDoubleSpinBox" name="xtickBox" >
+                <property name="minimum" >
+                 <double>0.1</double>
+                </property>
+                <property name="singleStep" >
+                 <double>0.1</double>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" >
+              <property name="margin" >
+               <number>0</number>
+              </property>
+              <property name="spacing" >
+               <number>6</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="label_5" >
+                <property name="text" >
+                 <string>Y ticks:</string>
+                </property>
+                <property name="buddy" >
+                 <cstring>yticBox</cstring>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QDoubleSpinBox" name="yticBox" >
+                <property name="minimum" >
+                 <double>0.1</double>
+                </property>
+                <property name="singleStep" >
+                 <double>0.1</double>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" >
+            <property name="margin" >
+             <number>0</number>
+            </property>
+            <property name="spacing" >
+             <number>6</number>
+            </property>
+            <item>
+             <layout class="QHBoxLayout" >
+              <property name="margin" >
+               <number>0</number>
+              </property>
+              <property name="spacing" >
+               <number>6</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="label_3" >
+                <property name="text" >
+                 <string>Min X:</string>
+                </property>
+                <property name="buddy" >
+                 <cstring>minXBox</cstring>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QDoubleSpinBox" name="minXBox" >
+                <property name="maximum" >
+                 <double>1e+07</double>
+                </property>
+                <property name="minimum" >
+                 <double>-1e+07</double>
+                </property>
+                <property name="singleStep" >
+                 <double>0.1</double>
+                </property>
+                <property name="value" >
+                 <double>0</double>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" >
+              <property name="margin" >
+               <number>0</number>
+              </property>
+              <property name="spacing" >
+               <number>6</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="label_4" >
+                <property name="text" >
+                 <string>Max X:</string>
+                </property>
+                <property name="buddy" >
+                 <cstring>maxXBox</cstring>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QDoubleSpinBox" name="maxXBox" >
+                <property name="maximum" >
+                 <double>1e+08</double>
+                </property>
+                <property name="minimum" >
+                 <double>-1e+07</double>
+                </property>
+                <property name="singleStep" >
+                 <double>0.1</double>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" >
+            <property name="margin" >
+             <number>0</number>
+            </property>
+            <property name="spacing" >
+             <number>6</number>
+            </property>
+            <item>
+             <layout class="QHBoxLayout" >
+              <property name="margin" >
+               <number>0</number>
+              </property>
+              <property name="spacing" >
+               <number>6</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="label" >
+                <property name="text" >
+                 <string>Min Y:</string>
+                </property>
+                <property name="buddy" >
+                 <cstring>minYBox</cstring>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QDoubleSpinBox" name="minYBox" >
+                <property name="maximum" >
+                 <double>1e+07</double>
+                </property>
+                <property name="minimum" >
+                 <double>-1e+07</double>
+                </property>
+                <property name="singleStep" >
+                 <double>0.1</double>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" >
+              <property name="margin" >
+               <number>0</number>
+              </property>
+              <property name="spacing" >
+               <number>6</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="label_2" >
+                <property name="text" >
+                 <string>Max Y:</string>
+                </property>
+                <property name="buddy" >
+                 <cstring>maxYBo</cstring>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QDoubleSpinBox" name="maxYBo" >
+                <property name="maximum" >
+                 <double>1e+07</double>
+                </property>
+                <property name="minimum" >
+                 <double>-1e+07</double>
+                </property>
+                <property name="singleStep" >
+                 <double>0.1</double>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <spacer>
+          <property name="orientation" >
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" >
+           <size>
+            <width>31</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" >
+          <property name="margin" >
+           <number>0</number>
+          </property>
+          <property name="spacing" >
+           <number>6</number>
+          </property>
+          <item>
+           <layout class="QHBoxLayout" >
+            <property name="margin" >
+             <number>0</number>
+            </property>
+            <property name="spacing" >
+             <number>6</number>
+            </property>
+            <item>
+             <widget class="QPushButton" name="newButton" >
+              <property name="text" >
+               <string>New</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="openButton" >
+              <property name="text" >
+               <string>Open...</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="saveButton" >
+              <property name="text" >
+               <string>Save</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="saveAsButton" >
+              <property name="text" >
+               <string>Save as...</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <spacer>
+            <property name="orientation" >
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" >
+             <size>
+              <width>20</width>
+              <height>21</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
+   </layout>
   </widget>
   <widget class="QMenuBar" name="menubar" >
    <property name="geometry" >
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>864</width>
      <height>26</height>
     </rect>
    </property>
@@ -53,6 +408,7 @@
     <property name="title" >
      <string>File</string>
     </property>
+    <addaction name="actionNew" />
     <addaction name="actionOpen" />
     <addaction name="separator" />
     <addaction name="actionSave" />
@@ -83,8 +439,217 @@
     <string>Save as...</string>
    </property>
   </action>
+  <action name="actionNew" >
+   <property name="text" >
+    <string>New</string>
+   </property>
+  </action>
  </widget>
  <pixmapfunction></pixmapfunction>
- <resources/>
- <connections/>
+ <customwidgets>
+  <customwidget>
+   <class>FunctionPainter</class>
+   <extends>QWidget</extends>
+   <header>FunctionPainter.h</header>
+   <container>0</container>
+   <pixmap></pixmap>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="resources.qrc" />
+ </resources>
+ <connections>
+  <connection>
+   <sender>xtickBox</sender>
+   <signal>valueChanged(double)</signal>
+   <receiver>f_painter</receiver>
+   <slot>setXTicks(double)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>89</x>
+     <y>466</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>143</x>
+     <y>329</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>yticBox</sender>
+   <signal>valueChanged(double)</signal>
+   <receiver>f_painter</receiver>
+   <slot>setYTicks(double)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>94</x>
+     <y>492</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>154</x>
+     <y>326</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>minXBox</sender>
+   <signal>valueChanged(double)</signal>
+   <receiver>f_painter</receiver>
+   <slot>setMinX(double)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>198</x>
+     <y>456</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>245</x>
+     <y>316</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>maxXBox</sender>
+   <signal>valueChanged(double)</signal>
+   <receiver>f_painter</receiver>
+   <slot>setMaxX(double)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>220</x>
+     <y>480</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>276</x>
+     <y>377</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>minYBox</sender>
+   <signal>valueChanged(double)</signal>
+   <receiver>f_painter</receiver>
+   <slot>setMinY(double)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>315</x>
+     <y>452</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>337</x>
+     <y>358</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>maxYBo</sender>
+   <signal>valueChanged(double)</signal>
+   <receiver>f_painter</receiver>
+   <slot>setMaxY(double)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>316</x>
+     <y>493</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>357</x>
+     <y>414</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>f_painter</sender>
+   <signal>xTicksChanged(double)</signal>
+   <receiver>xtickBox</receiver>
+   <slot>setValue(double)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>67</x>
+     <y>319</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>69</x>
+     <y>455</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>f_painter</sender>
+   <signal>yTicksChanged(double)</signal>
+   <receiver>yticBox</receiver>
+   <slot>setValue(double)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>103</x>
+     <y>393</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>85</x>
+     <y>481</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>f_painter</sender>
+   <signal>minXChanged(double)</signal>
+   <receiver>minXBox</receiver>
+   <slot>setValue(double)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>210</x>
+     <y>365</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>202</x>
+     <y>464</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>f_painter</sender>
+   <signal>maxXChanged(double)</signal>
+   <receiver>maxXBox</receiver>
+   <slot>setValue(double)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>229</x>
+     <y>407</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>184</x>
+     <y>490</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>f_painter</sender>
+   <signal>minYChanged(double)</signal>
+   <receiver>minYBox</receiver>
+   <slot>setValue(double)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>318</x>
+     <y>423</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>296</x>
+     <y>460</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>f_painter</sender>
+   <signal>maxYChanged(double)</signal>
+   <receiver>maxYBo</receiver>
+   <slot>setValue(double)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>319</x>
+     <y>322</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>319</x>
+     <y>483</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
