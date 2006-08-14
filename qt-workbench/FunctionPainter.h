@@ -26,12 +26,12 @@ public slots:
   void setMaxY(double value);
 
 signals:
-  xTicksChanged(double value);
-  yTicksChanged(double value);
-  minXChanged(double value);
-  maxXChanged(double value);
-  minYChanged(double value);
-  maxYChanged(double value);
+  void xTicksChanged(double value);
+  void yTicksChanged(double value);
+  void minXChanged(double value);
+  void maxXChanged(double value);
+  void minYChanged(double value);
+  void maxYChanged(double value);
 
 
 protected:
