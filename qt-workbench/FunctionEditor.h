@@ -2,7 +2,6 @@
 #define FUNCTIONEDITOR_H
 
 #include <QMainWindow>
-#include "FunctionPainter.h"
 #include "func_edit.h"
 
 class FunctionEditor : public QMainWindow {
@@ -12,18 +11,18 @@ public:
 
   FunctionEditor(QWidget *parent = 0);
 
-private slots: 
+private slots:
+  void newFile();
   void openFile();
   void updateFunction();
   void saveFile();
   void saveFileAs();
-  
 
-private: 
-  FunctionPainter *f_painter;
+private:
+  void setWindowName();
   Ui::FunctionEditor ui;
   QString fileName;
-
+  bool fileSaved;
 };
 
 #endif

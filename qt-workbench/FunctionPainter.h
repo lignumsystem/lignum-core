@@ -10,12 +10,28 @@ class FunctionPainter : public QWidget {
   Q_OBJECT
   
 public:
-  FunctionPainter(QWidget *parent = 0);
+  FunctionPainter(QWidget *parent);
+
   void setView(double minX, double minY, double maxX, double maxY);
   void setTicks(double width, double height);
 
 public slots:
+  void clear();
   void changeFunction(QString values);
+  void setXTicks(double value);
+  void setYTicks(double value);
+  void setMinX(double value);
+  void setMaxX(double value);
+  void setMinY(double value);
+  void setMaxY(double value);
+
+signals:
+  xTicksChanged(double value);
+  yTicksChanged(double value);
+  minXChanged(double value);
+  maxXChanged(double value);
+  minYChanged(double value);
+  maxYChanged(double value);
 
 
 protected:
