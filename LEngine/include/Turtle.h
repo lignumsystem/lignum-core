@@ -9,6 +9,28 @@
 using namespace std;
 using namespace cxxadt;
 
+
+// The  symbols the turtle understands are
+//    Turn(a)     rotation round turtle up by angle 'a'
+//    Pitch(a)    rotation round turtle left by angle 'a'
+//    Roll(a)     rotation round turtle heading by angle 'a'
+//    F(d)        move turtle forward distance 'd'
+//    HRoll()     rotation round heading so that heading is horizontal
+//                in world coordinates. Formally:  L = UpxH and U = HxL.
+//    Hrz()       rotations of turtle HLU round horizontal, Hrz = UpxH,
+//                so that turtle heading becomes horizontal in world coordinates.
+//    Up()        rotations of turtle HLU round horizontal, so that turtle up
+//                is pointing directly upwards in  world coordinates
+//    HDir(a)     set the turtle heading to angle 'a' measured from world up
+//                by rotating turtle HLU round horizontal
+//    HUp(a)      conditionally set the turtle heading to angle 'a'
+//                measured from world up: rotate turtle HLU round horizontal
+//                if and only if turtle heading is pointing downwards
+//                in world coordinates
+//    H(x,y,z)    turtle heading
+//    L(x,y,z) 	  turtle left
+//    U(x,y,z)    turtle up
+
 //See also LsysteI.h for the symbols to be used in L-file
 class Turtle{
   friend ostream& operator << (ostream& os, const Turtle& t);
