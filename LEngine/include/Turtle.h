@@ -13,6 +13,8 @@ using namespace cxxadt;
 class Turtle{
   friend ostream& operator << (ostream& os, const Turtle& t);
   friend const PositionVector& GetHeading(const Turtle& t);
+  friend const PositionVector& GetLeft(const Turtle& t);
+  friend const PositionVector& GetUp(const Turtle& t);
   friend const Point& GetPoint(const Turtle& t);
   friend void SetPoint(Turtle& t, const Point& p);
  public:

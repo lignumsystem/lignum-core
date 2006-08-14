@@ -178,6 +178,16 @@ const PositionVector& GetHeading(const Turtle& t)
   return t.h;
 }
 
+const PositionVector& GetLeft(const Turtle& t)
+{
+  return t.l;
+}
+
+const PositionVector& GetUp(const Turtle& t)
+{
+  return t.u;
+}
+
 const Point& GetPoint(const Turtle& t)
 {
   return t.p;
