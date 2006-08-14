@@ -1,27 +1,73 @@
 #include "FunctionEditor.h"
 
 #include <QFileDialog>
+#include <QMessageBox>
 #include <QTextStream>
 
 FunctionEditor::FunctionEditor(QWidget *parent) 
-  : QMainWindow(parent) {
+  : QMainWindow(parent), fileSaved(false) {
   ui.setupUi(this);
-  f_painter = new FunctionPainter(this);
-  f_painter->show();
-  f_painter->setGeometry(5, 30, 400, 400);
+  //  f_painter = new FunctionPainter(this);
+  //f_painter->show();
+  //f_painter->setGeometry(5, 30, 400, 400);
   // f_painter->changeFunction(QString("-2 2 -0.2 -3.1 0.5 0.5 1.0 2.0 1.5 0.5"));
   //  f_painter->setView(-5, -5, 5, 5);
-  f_painter->setTicks(0.5, 0.5);
+  ui.f_painter->setTicks(1, 1);
   
+  connect(ui.actionNew, SIGNAL(triggered()), this, SLOT(newFile()));
   connect(ui.actionOpen, SIGNAL(triggered()), this, SLOT(openFile()));
   connect(ui.actionSave, SIGNAL(triggered()), this, SLOT(saveFile()));
   connect(ui.actionSave_as, SIGNAL(triggered()), this, SLOT(saveFileAs()));
   connect(ui.actionQuit, SIGNAL(triggered()), this, SLOT(close()));
-  connect(ui.updateButton, SIGNAL(clicked()), this, SLOT(updateFunction()));
   connect(ui.textEdit, SIGNAL(textChanged()), this, SLOT(updateFunction()));
+  connect(ui.newButton, SIGNAL(clicked()), this, SLOT(newFile()));
+  connect(ui.openButton, SIGNAL(clicked()), this, SLOT(openFile()));
+  connect(ui.saveButton, SIGNAL(clicked()), this, SLOT(saveFile()));
+  connect(ui.saveAsButton, SIGNAL(clicked()), this, SLOT(saveFileAs()));
+
+  setWindowName();
+}
+
+void FunctionEditor::newFile() {
+  if(!ui.textEdit->toPlainText().isEmpty() && !fileSaved) {
+    int message = QMessageBox::question(this,
+					QString("Save changes?"),
+					QString("Do you want to save changes before starting a new file?"),
+					QMessageBox::Yes,
+					QMessageBox::No,
+					QMessageBox::Cancel);
+    if(message == QMessageBox::Cancel)
+      return;
+    else {
+      if(message == QMessageBox::Yes) {
+	saveFile();
+      }
+    }
+  }
+  fileSaved = false;
+  fileName.clear();
+  ui.textEdit->clear();
+  ui.f_painter->clear();
+  setWindowName();
+
 }
 
 void FunctionEditor::openFile() {
+  if(!ui.textEdit->toPlainText().isEmpty() && !fileSaved) {
+    int message = QMessageBox::question(this,
+					QString("Save changes?"),
+					QString("Do you want to save changes before opening a file?"),
+					QMessageBox::Yes,
+					QMessageBox::No,
+					QMessageBox::Cancel);
+    if(message == QMessageBox::Cancel)
+      return;
+    else {
+      if(message == QMessageBox::Yes) {
+	saveFile();
+      }
+    }
+  }
   fileName = QFileDialog::getOpenFileName(this,
 					  "Choose a file",
 					  QDir::currentPath(),
@@ -33,7 +79,10 @@ void FunctionEditor::openFile() {
     QString text(file.readAll());
     
     ui.textEdit->setPlainText(text);
-    f_painter->changeFunction(text);
+    ui.f_painter->changeFunction(text);
+    fileSaved = true;
+    setWindowName();
+  
   }
 }
 
@@ -42,8 +91,11 @@ void FunctionEditor::saveFile() {
     QFile file(fileName);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
       return;
+    
     QTextStream out(&file);
     out << ui.textEdit->toPlainText();
+    fileSaved = true;
+    setWindowName();
   }
   else 
     saveFileAs();
@@ -62,6 +114,20 @@ void FunctionEditor::saveFileAs() {
 }
 
 void FunctionEditor::updateFunction() {
-  f_painter->changeFunction(ui.textEdit->toPlainText());
+  ui.f_painter->changeFunction(ui.textEdit->toPlainText());
+  fileSaved = false;
+  setWindowName();
   //f_painter->setView(-5, -5, 5, 5);
+}
+
+void FunctionEditor::setWindowName() {
+  if(fileName.isEmpty()) {
+    setWindowTitle(QString("Function Editor - *untitled*"));
+  }
+  else {
+    if(fileSaved)
+      setWindowTitle(QString("Function Editor - %1").arg(fileName));
+    else
+      setWindowTitle(QString("Function Editor - %1*").arg(fileName));
+  }
 }
