@@ -225,7 +225,7 @@ int LSystem<TS,BUD,T,F>::lstring2Lignum(list<Axis<TS,BUD>*>& ls,
   }
   
   const char* name = ltr.GetCurrentModuleName();
-  
+
   //Branching point sees "SB" --> axis
   if (strcmp(name,"SB") == 0){
     //push the turtle to the top of the stack
@@ -299,7 +299,7 @@ int LSystem<TS,BUD,T,F>::lstring2Lignum(list<TreeCompartment<TS,BUD>*>& ls,
   }
 
   const char* name =  ltr.GetCurrentModuleName();
-  
+
   //If axis sees "EB" --> end of axis
   //we should be in some branching point so return
   //and let the branching point scan the string forward
@@ -519,6 +519,57 @@ int LSystem<TS,BUD,T,F>::lstring2Lignum(list<TreeCompartment<TS,BUD>*>& ls,
     caller_data.Strct.AddModuleAddr(ltr.Ptr());
     memcpy(&arg1,caller_data.Strct.pArg(0),sizeof(double));
     turtle_stack.top().hup(arg1);
+    ltr++;
+  }
+  //H: query the turtle heading  
+  else if (strcmp(name,"H") == 0){
+    PositionVector h = GetHeading(turtle_stack.top());
+    double x,y,z;
+    x = h.getX();
+    y = h.getY();
+    z = h.getZ();
+    caller_data.Reset();
+    caller_data.Strct.AddModuleAddr(ltr.Ptr());
+    const char* pArg = caller_data.Strct.pArg(0);
+    memcpy(const_cast<char*>(pArg),&x,sizeof(double));
+    pArg += sizeof(double);
+    memcpy(const_cast<char*>(pArg),&y,sizeof(double));
+    pArg += sizeof(double);
+    memcpy(const_cast<char*>(pArg),&z,sizeof(double));
+    ltr++;
+  }
+  //L: query the turtle left  
+  else if (strcmp(name,"L") == 0){
+    PositionVector l = GetLeft(turtle_stack.top());
+    double x,y,z;
+    x = l.getX();
+    y = l.getY();
+    z = l.getZ();
+    caller_data.Reset();
+    caller_data.Strct.AddModuleAddr(ltr.Ptr());
+    const char* pArg = caller_data.Strct.pArg(0);
+    memcpy(const_cast<char*>(pArg),&x,sizeof(double));
+    pArg += sizeof(double);
+    memcpy(const_cast<char*>(pArg),&y,sizeof(double));
+    pArg += sizeof(double);
+    memcpy(const_cast<char*>(pArg),&z,sizeof(double));
+    ltr++;
+  }
+  //U: query the turtle up  
+  else if (strcmp(name,"U") == 0){
+    PositionVector u = GetUp(turtle_stack.top());
+    double x,y,z;
+    x = u.getX();
+    y = u.getY();
+    z = u.getZ();
+    caller_data.Reset();
+    caller_data.Strct.AddModuleAddr(ltr.Ptr());
+    const char* pArg = caller_data.Strct.pArg(0);
+    memcpy(const_cast<char*>(pArg),&x,sizeof(double));
+    pArg += sizeof(double);
+    memcpy(const_cast<char*>(pArg),&y,sizeof(double));
+    pArg += sizeof(double);
+    memcpy(const_cast<char*>(pArg),&z,sizeof(double));
     ltr++;
   }
   //Ignore  other symbols, go forward in the string
