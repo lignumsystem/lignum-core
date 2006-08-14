@@ -18,7 +18,7 @@ FunctionEditor::FunctionEditor(QWidget *parent)
   connect(ui.actionOpen, SIGNAL(triggered()), this, SLOT(openFile()));
   connect(ui.actionSave, SIGNAL(triggered()), this, SLOT(saveFile()));
   connect(ui.actionSave_as, SIGNAL(triggered()), this, SLOT(saveFileAs()));
-  connect(ui.actionQuit, SIGNAL(triggered()), this, SLOT(close()));
+  connect(ui.actionQuit, SIGNAL(triggered()), this, SLOT(closeProgram()));
   connect(ui.textEdit, SIGNAL(textChanged()), this, SLOT(updateFunction()));
   connect(ui.newButton, SIGNAL(clicked()), this, SLOT(newFile()));
   connect(ui.openButton, SIGNAL(clicked()), this, SLOT(openFile()));
@@ -130,4 +130,23 @@ void FunctionEditor::setWindowName() {
     else
       setWindowTitle(QString("Function Editor - %1*").arg(fileName));
   }
+}
+
+void FunctionEditor::closeProgram() {
+  if(!ui.textEdit->toPlainText().isEmpty() && !fileSaved) {
+    int message = QMessageBox::question(this,
+					QString("Save changes?"),
+					QString("Do you want to save changes before quitting?"),
+					QMessageBox::Yes,
+					QMessageBox::No,
+					QMessageBox::Cancel);
+    if(message == QMessageBox::Cancel)
+      return;
+    else {
+      if(message == QMessageBox::Yes) {
+	saveFile();
+      }
+    }
+  }
+  close();
 }
