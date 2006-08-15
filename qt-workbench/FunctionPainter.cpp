@@ -35,6 +35,10 @@ void FunctionPainter::changeFunction(QString values) {
     }
     xTick = (maxXValue - minXValue) / 10;
     yTick = (maxYValue - minYValue) / 10;
+    if(xTick == 0)
+      xTick = maxXValue / 10;
+    if(yTick == 0)
+      yTick = maxYValue / 10;
     emit xTicksChanged(xTick);
     emit yTicksChanged(yTick);  
 
@@ -136,7 +140,6 @@ void FunctionPainter::paintEvent(QPaintEvent *event) {
 			      size().height() - (i*yTick - minYValue) / yRange * size().height()));
       // Draw the number beside the ticks
       QString text = QString("%1").arg(i*yTick);
-      cout << "size: " << text.size() << " (" << text.toStdString() << ")" << endl;
 
       painter.drawText(QPoint(-minXValue / xRange * size().width() - text.size()*6 - tickLength*3,
 			      size().height() - (i*yTick - minYValue) / yRange * size().height() +
