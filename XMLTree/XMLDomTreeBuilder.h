@@ -470,48 +470,13 @@ void XMLDomTreeBuilder<TS,BUD,S>::addCfTreeSegmentAttributeNode(QDomElement& nod
 
   addTreeCompartmentAttributeNode(rootNode, m_doc, ts);
  
-  /*  attrib = m_doc.createElement("LGAA");
-  tmp = QString("%1").arg(GetValue(*ts, LGAA));
-  attrib.appendChild(m_doc.createTextNode(tmp));
-  rootNode.appendChild(attrib);*/
-
-  /*attrib = m_doc.createElement("LGAAh");
-  tmp = QString("%1").arg(GetValue(*ts, LGAAh));
-  attrib.appendChild(m_doc.createTextNode(tmp));
-  rootNode.appendChild(attrib);*/
-
-  /*attrib = m_doc.createElement("LGAAs");
-  tmp = QString("%1").arg(GetValue(*ts, LGAAs));
-  attrib.appendChild(m_doc.createTextNode(tmp));
-  rootNode.appendChild(attrib);*/
-
-  attrib = m_doc.createElement("LGAage");
-  tmp = QString("%1").arg(GetValue(*ts, LGAage));
-  attrib.appendChild(m_doc.createTextNode(tmp));
-  rootNode.appendChild(attrib);
-
-  /*attrib = m_doc.createElement("LGAH");
-  tmp = QString("%1").arg(GetValue(*ts, LGAH));
-  attrib.appendChild(m_doc.createTextNode(tmp));
-  rootNode.appendChild(attrib);*/
-
-  /*attrib = m_doc.createElement("LGAHTop");
-  tmp = QString("%1").arg(GetValue(*ts, LGAHTop));
-  attrib.appendChild(m_doc.createTextNode(tmp));
-  rootNode.appendChild(attrib);*/
-  
-  attrib = m_doc.createElement("LGAL");
-  tmp = QString("%1").arg(GetValue(*ts, LGAL));
-  attrib.appendChild(m_doc.createTextNode(tmp));
-  rootNode.appendChild(attrib);
-
-  attrib = m_doc.createElement("LGAM");
-  tmp = QString("%1").arg(GetValue(*ts, LGAM));
-  attrib.appendChild(m_doc.createTextNode(tmp));
-  rootNode.appendChild(attrib);
-
   attrib = m_doc.createElement("LGAomega");
   tmp = QString("%1").arg(GetValue(*ts, LGAomega));
+  attrib.appendChild(m_doc.createTextNode(tmp));
+  rootNode.appendChild(attrib);
+
+  attrib = m_doc.createElement("LGAL");
+  tmp = QString("%1").arg(GetValue(*ts, LGAL));
   attrib.appendChild(m_doc.createTextNode(tmp));
   rootNode.appendChild(attrib);
 
@@ -525,30 +490,25 @@ void XMLDomTreeBuilder<TS,BUD,S>::addCfTreeSegmentAttributeNode(QDomElement& nod
   attrib.appendChild(m_doc.createTextNode(tmp));
   rootNode.appendChild(attrib);
 
- attrib = m_doc.createElement("LGARTop");
+  attrib = m_doc.createElement("LGAage");
+  tmp = QString("%1").arg(GetValue(*ts, LGAage));
+  attrib.appendChild(m_doc.createTextNode(tmp));
+  rootNode.appendChild(attrib);
+  
+  attrib = m_doc.createElement("LGAM");
+  tmp = QString("%1").arg(GetValue(*ts, LGAM));
+  attrib.appendChild(m_doc.createTextNode(tmp));
+  rootNode.appendChild(attrib);
+
+  attrib = m_doc.createElement("LGARTop");
   tmp = QString("%1").arg(GetValue(*ts, LGARTop));
   attrib.appendChild(m_doc.createTextNode(tmp));
   rootNode.appendChild(attrib);
-
- attrib = m_doc.createElement("LGAvi");
+  
+  attrib = m_doc.createElement("LGAvi");
   tmp = QString("%1").arg(GetValue(*ts, LGAvi));
   attrib.appendChild(m_doc.createTextNode(tmp));
   rootNode.appendChild(attrib);
-
-  /*attrib = m_doc.createElement("LGAV");
-  tmp = QString("%1").arg(GetValue(*ts, LGAV));
-  attrib.appendChild(m_doc.createTextNode(tmp));
-  rootNode.appendChild(attrib);*/
-
-  /*attrib = m_doc.createElement("LGAVh");
-  tmp = QString("%1").arg(GetValue(*ts, LGAVh));
-  attrib.appendChild(m_doc.createTextNode(tmp));
-  rootNode.appendChild(attrib);*/
-
-  /*attrib = m_doc.createElement("LGAVs");
-  tmp = QString("%1").arg(GetValue(*ts, LGAVs));
-  attrib.appendChild(m_doc.createTextNode(tmp));
-  rootNode.appendChild(attrib);*/
   
   attrib = m_doc.createElement("LGAWs");
   tmp = QString("%1").arg(GetValue(*ts, LGAWs));
@@ -559,11 +519,6 @@ void XMLDomTreeBuilder<TS,BUD,S>::addCfTreeSegmentAttributeNode(QDomElement& nod
   tmp = QString("%1").arg(GetValue(*ts, LGAWh));
   attrib.appendChild(m_doc.createTextNode(tmp));
   rootNode.appendChild(attrib);
-
-  /*attrib = m_doc.createElement("LGAAf");
-  tmp = QString("%1").arg(GetValue(*ts, LGAAf));
-  attrib.appendChild(m_doc.createTextNode(tmp));
-  rootNode.appendChild(attrib);*/
 
   attrib = m_doc.createElement("LGAHf");
   tmp = QString("%1").arg(GetValue(*ts, LGAHf));
@@ -590,11 +545,6 @@ void XMLDomTreeBuilder<TS,BUD,S>::addCfTreeSegmentAttributeNode(QDomElement& nod
   attrib.appendChild(m_doc.createTextNode(tmp));
   rootNode.appendChild(attrib);
 
-  /*attrib = m_doc.createElement("LGASa");
-  tmp = QString("%1").arg(GetValue(*ts, LGASa));
-  attrib.appendChild(m_doc.createTextNode(tmp));
-  rootNode.appendChild(attrib);*/
-  
   attrib = m_doc.createElement("LGAstarm");
   tmp = QString("%1").arg(GetValue(*ts, LGAstarm));
   attrib.appendChild(m_doc.createTextNode(tmp));
@@ -629,48 +579,13 @@ void XMLDomTreeBuilder<TS,BUD,S>::addHwTreeSegmentAttributeNode(QDomElement& nod
 
   addTreeCompartmentAttributeNode(rootNode, m_doc, ts);
   
-  /*attrib = m_doc.createElement("LGAA");
-  tmp = QString("%1").arg(GetValue(*ts, LGAA));
-  attrib.appendChild(m_doc.createTextNode(tmp));
-  rootNode.appendChild(attrib);*/
-
-  /*attrib = m_doc.createElement("LGAAh");
-  tmp = QString("%1").arg(GetValue(*ts, LGAAh));
-  attrib.appendChild(m_doc.createTextNode(tmp));
-  rootNode.appendChild(attrib);*/
-
-  /*attrib = m_doc.createElement("LGAAs");
-  tmp = QString("%1").arg(GetValue(*ts, LGAAs));
-  attrib.appendChild(m_doc.createTextNode(tmp));
-  rootNode.appendChild(attrib);*/
-
-  attrib = m_doc.createElement("LGAage");
-  tmp = QString("%1").arg(GetValue(*ts, LGAage));
-  attrib.appendChild(m_doc.createTextNode(tmp));
-  rootNode.appendChild(attrib);
-
-  /*attrib = m_doc.createElement("LGAH");
-  tmp = QString("%1").arg(GetValue(*ts, LGAH));
-  attrib.appendChild(m_doc.createTextNode(tmp));
-  rootNode.appendChild(attrib);*/
-
-  /*attrib = m_doc.createElement("LGAHTop");
-  tmp = QString("%1").arg(GetValue(*ts, LGAHTop));
-  attrib.appendChild(m_doc.createTextNode(tmp));
-  rootNode.appendChild(attrib);*/
-  
-  attrib = m_doc.createElement("LGAL");
-  tmp = QString("%1").arg(GetValue(*ts, LGAL));
-  attrib.appendChild(m_doc.createTextNode(tmp));
-  rootNode.appendChild(attrib);
-
-  attrib = m_doc.createElement("LGAM");
-  tmp = QString("%1").arg(GetValue(*ts, LGAM));
-  attrib.appendChild(m_doc.createTextNode(tmp));
-  rootNode.appendChild(attrib);
-  
   attrib = m_doc.createElement("LGAomega");
   tmp = QString("%1").arg(GetValue(*ts, LGAomega));
+  attrib.appendChild(m_doc.createTextNode(tmp));
+  rootNode.appendChild(attrib);
+
+  attrib = m_doc.createElement("LGAL");
+  tmp = QString("%1").arg(GetValue(*ts, LGAL));
   attrib.appendChild(m_doc.createTextNode(tmp));
   rootNode.appendChild(attrib);
 
@@ -684,6 +599,16 @@ void XMLDomTreeBuilder<TS,BUD,S>::addHwTreeSegmentAttributeNode(QDomElement& nod
   attrib.appendChild(m_doc.createTextNode(tmp));
   rootNode.appendChild(attrib);
 
+  attrib = m_doc.createElement("LGAage");
+  tmp = QString("%1").arg(GetValue(*ts, LGAage));
+  attrib.appendChild(m_doc.createTextNode(tmp));
+  rootNode.appendChild(attrib);
+
+  attrib = m_doc.createElement("LGAM");
+  tmp = QString("%1").arg(GetValue(*ts, LGAM));
+  attrib.appendChild(m_doc.createTextNode(tmp));
+  rootNode.appendChild(attrib);
+
   attrib = m_doc.createElement("LGARTop");
   tmp = QString("%1").arg(GetValue(*ts, LGARTop));
   attrib.appendChild(m_doc.createTextNode(tmp));
@@ -694,21 +619,6 @@ void XMLDomTreeBuilder<TS,BUD,S>::addHwTreeSegmentAttributeNode(QDomElement& nod
   attrib.appendChild(m_doc.createTextNode(tmp));
   rootNode.appendChild(attrib);
   
-  /*attrib = m_doc.createElement("LGAV");
-  tmp = QString("%1").arg(GetValue(*ts, LGAV));
-  attrib.appendChild(m_doc.createTextNode(tmp));
-  rootNode.appendChild(attrib);*/
-
-  /*attrib = m_doc.createElement("LGAVh");
-  tmp = QString("%1").arg(GetValue(*ts, LGAVh));
-  attrib.appendChild(m_doc.createTextNode(tmp));
-  rootNode.appendChild(attrib);*/
-
-  /*attrib = m_doc.createElement("LGAVs");
-  tmp = QString("%1").arg(GetValue(*ts, LGAVs));
-  attrib.appendChild(m_doc.createTextNode(tmp));
-  rootNode.appendChild(attrib);*/
-
   attrib = m_doc.createElement("LGAWs");
   tmp = QString("%1").arg(GetValue(*ts, LGAWs));
   attrib.appendChild(m_doc.createTextNode(tmp));
@@ -719,45 +629,13 @@ void XMLDomTreeBuilder<TS,BUD,S>::addHwTreeSegmentAttributeNode(QDomElement& nod
   attrib.appendChild(m_doc.createTextNode(tmp));
   rootNode.appendChild(attrib);
 
-  attrib = m_doc.createElement("LGAWf");
-  tmp = QString("%1").arg(GetValue(*ts, LGAWf));
-  attrib.appendChild(m_doc.createTextNode(tmp));
-  rootNode.appendChild(attrib);
-
-  attrib = m_doc.createElement("LGAP");
-  tmp = QString("%1").arg(GetValue(*ts, LGAP));
-  attrib.appendChild(m_doc.createTextNode(tmp));
-  rootNode.appendChild(attrib);
-
-  attrib = m_doc.createElement("LGAQin");
-  tmp = QString("%1").arg(GetValue(*ts, LGAQin));
-  attrib.appendChild(m_doc.createTextNode(tmp));
-  rootNode.appendChild(attrib);
-
-  attrib = m_doc.createElement("LGAQabs");
-  tmp = QString("%1").arg(GetValue(*ts, LGAQabs));
-  attrib.appendChild(m_doc.createTextNode(tmp));
-  rootNode.appendChild(attrib);
-
-  attrib = m_doc.createElement("LGAAf");
-  tmp = QString("%1").arg(GetValue(*ts, LGAAf));
-  attrib.appendChild(m_doc.createTextNode(tmp));
-  rootNode.appendChild(attrib);
-
   list<BroadLeaf<S>*>& ll = GetLeafList(*ts);
   
-  /*int n_leaves = GetNumberOfLeaves(*ts);
-  
-  attrib = m_doc.createElement("NumberOfLeaves");
-  tmp = QString("%1").arg(n_leaves);
-  attrib.appendChild(m_doc.createTextNode(tmp));
-  rootNode.appendChild(attrib);*/
   for(typename list<BroadLeaf<S>*>::iterator i = ll.begin(); i != ll.end(); i++) {
     const Shape& s = static_cast<const Shape&>(GetShape(**i));
     QDomElement leaf = m_doc.createElement("BroadLeaf");
     if(dynamic_cast<const Triangle*>(&s))
       leaf.setAttribute("Shape", "Triangle");
-    //else if(dynamic_cast<Ellipse&>(GetShape(**i)))
     else
       leaf.setAttribute("Shape", "Ellipse");
     addBroadLeafAttributeNode(leaf, m_doc, *i);
@@ -778,6 +656,11 @@ void XMLDomTreeBuilder<TS,BUD,S>::addBudAttributeNode(QDomElement& node, QDomDoc
  
   addTreeCompartmentAttributeNode(rootNode, m_doc, bud);
 
+  attrib = m_doc.createElement("LGAomega");
+  tmp = QString("%1").arg(GetValue(*bud, LGAomega));
+  attrib.appendChild(m_doc.createTextNode(tmp));
+  rootNode.appendChild(attrib);
+
   attrib = m_doc.createElement("LGAcollision");
   tmp = QString("%1").arg(GetValue(*bud, LGAcollision));
   attrib.appendChild(m_doc.createTextNode(tmp));
@@ -785,11 +668,6 @@ void XMLDomTreeBuilder<TS,BUD,S>::addBudAttributeNode(QDomElement& node, QDomDoc
 
   attrib = m_doc.createElement("LGAip");
   tmp = QString("%1").arg(GetValue(*bud, LGAip));
-  attrib.appendChild(m_doc.createTextNode(tmp));
-  rootNode.appendChild(attrib);
-
-  attrib = m_doc.createElement("LGAomega");
-  tmp = QString("%1").arg(GetValue(*bud, LGAomega));
   attrib.appendChild(m_doc.createTextNode(tmp));
   rootNode.appendChild(attrib);
 
@@ -860,11 +738,16 @@ template <class TS, class BUD, class S>
 void XMLDomTreeBuilder<TS,BUD,S>::addBroadLeafAttributeNode(QDomElement& node, QDomDocument& m_doc, BroadLeaf<S>* leaf) const {
   QDomElement rootNode = m_doc.createElement("BroadLeafAttributes");
   QDomElement attrib;
+
   QString tmp;
 
+  attrib = m_doc.createElement("LGAsf");
+  tmp = QString("%1").arg(GetValue(*leaf, LGAsf));
+  attrib.appendChild(m_doc.createTextNode(tmp));
+  rootNode.appendChild(attrib);
 
-  attrib = m_doc.createElement("LGAA");
-  tmp = QString("%1").arg(GetValue(*leaf, LGAA));
+  attrib = m_doc.createElement("LGAtauL");
+  tmp = QString("%1").arg(GetValue(*leaf, LGAtauL));
   attrib.appendChild(m_doc.createTextNode(tmp));
   rootNode.appendChild(attrib);
 
@@ -873,56 +756,12 @@ void XMLDomTreeBuilder<TS,BUD,S>::addBroadLeafAttributeNode(QDomElement& node, Q
   attrib.appendChild(m_doc.createTextNode(tmp));
   rootNode.appendChild(attrib);
 
-  attrib = m_doc.createElement("LGAtauL");
-  tmp = QString("%1").arg(GetValue(*leaf, LGAtauL));
-  attrib.appendChild(m_doc.createTextNode(tmp));
-  rootNode.appendChild(attrib);
-  
-  attrib = m_doc.createElement("LGAP");
-  tmp = QString("%1").arg(GetValue(*leaf, LGAP));
-  attrib.appendChild(m_doc.createTextNode(tmp));
-  rootNode.appendChild(attrib);
+  vector<double> rv = GetRadiationVector(*leaf);
 
-  attrib = m_doc.createElement("LGAM");
-  tmp = QString("%1").arg(GetValue(*leaf, LGAM));
-  attrib.appendChild(m_doc.createTextNode(tmp));
-  rootNode.appendChild(attrib);
-
-  attrib = m_doc.createElement("LGAQabs");
-  tmp = QString("%1").arg(GetValue(*leaf, LGAQabs));
-  attrib.appendChild(m_doc.createTextNode(tmp));
-  rootNode.appendChild(attrib);
-
-  attrib = m_doc.createElement("LGAQin");
-  tmp = QString("%1").arg(GetValue(*leaf, LGAQin));
-  attrib.appendChild(m_doc.createTextNode(tmp));
-  rootNode.appendChild(attrib);
-  
-  attrib = m_doc.createElement("LGAsf");
-  tmp = QString("%1").arg(GetValue(*leaf, LGAsf));
-  attrib.appendChild(m_doc.createTextNode(tmp));
-  rootNode.appendChild(attrib);
-
-  attrib = m_doc.createElement("LGAWf");
-  tmp = QString("%1").arg(GetValue(*leaf, LGAWf));
-  attrib.appendChild(m_doc.createTextNode(tmp));
-  rootNode.appendChild(attrib);
-
-  vector<double> rv = GetRadiationVector(*leaf);													    
   attrib = m_doc.createElement("SkySectors");
   tmp = QString("%1").arg(rv.size());
   attrib.appendChild(m_doc.createTextNode(tmp));
   rootNode.appendChild(attrib);
-  
-  if(rv.size() >= 1) {
-    tmp = QString("%1").arg(rv[0]);
-    for(int i = 1; i < rv.size(); i++) {
-      tmp.append(QString(" %1").arg(rv[i]));
-    }
-    attrib = m_doc.createElement("RadiationVector");
-    attrib.appendChild(m_doc.createTextNode(tmp));
-    rootNode.appendChild(attrib);
-  }
 
   Petiole p = GetPetiole(*leaf);
   Point sp = GetStartPoint(p);
@@ -931,7 +770,7 @@ void XMLDomTreeBuilder<TS,BUD,S>::addBroadLeafAttributeNode(QDomElement& node, Q
   tmp = QString("%1 %2 %3").arg(sp.getX()).arg(sp.getY()).arg(sp.getZ());
   attrib.appendChild(m_doc.createTextNode(tmp));
   rootNode.appendChild(attrib);
-  
+
   attrib = m_doc.createElement("PetioleEnd");
   tmp = QString("%1 %2 %3").arg(ep.getX()).arg(ep.getY()).arg(ep.getZ());
   attrib.appendChild(m_doc.createTextNode(tmp));
@@ -942,7 +781,7 @@ void XMLDomTreeBuilder<TS,BUD,S>::addBroadLeafAttributeNode(QDomElement& node, Q
   tmp = QString("%1 %2 %3").arg(normal.getX()).arg(normal.getY()).arg(normal.getZ());
   attrib.appendChild(m_doc.createTextNode(tmp));
   rootNode.appendChild(attrib);
-  
+
   const Shape& s = static_cast<const Shape&>(GetShape(*leaf));
   if(node.attribute("Shape") == "Triangle") {
     if(!leafTypeFound) {
@@ -984,6 +823,49 @@ void XMLDomTreeBuilder<TS,BUD,S>::addBroadLeafAttributeNode(QDomElement& node, Q
     rootNode.appendChild(attrib);
   }
 
+
+  attrib = m_doc.createElement("LGAA");
+  tmp = QString("%1").arg(GetValue(*leaf, LGAA));
+  attrib.appendChild(m_doc.createTextNode(tmp));
+  rootNode.appendChild(attrib);
+  
+  attrib = m_doc.createElement("LGAP");
+  tmp = QString("%1").arg(GetValue(*leaf, LGAP));
+  attrib.appendChild(m_doc.createTextNode(tmp));
+  rootNode.appendChild(attrib);
+
+  attrib = m_doc.createElement("LGAM");
+  tmp = QString("%1").arg(GetValue(*leaf, LGAM));
+  attrib.appendChild(m_doc.createTextNode(tmp));
+  rootNode.appendChild(attrib);
+
+  attrib = m_doc.createElement("LGAQabs");
+  tmp = QString("%1").arg(GetValue(*leaf, LGAQabs));
+  attrib.appendChild(m_doc.createTextNode(tmp));
+  rootNode.appendChild(attrib);
+
+  attrib = m_doc.createElement("LGAQin");
+  tmp = QString("%1").arg(GetValue(*leaf, LGAQin));
+  attrib.appendChild(m_doc.createTextNode(tmp));
+  rootNode.appendChild(attrib);
+  
+  attrib = m_doc.createElement("LGAWf");
+  tmp = QString("%1").arg(GetValue(*leaf, LGAWf));
+  attrib.appendChild(m_doc.createTextNode(tmp));
+  rootNode.appendChild(attrib);
+
+  
+  if(rv.size() >= 1) {
+    tmp = QString("%1").arg(rv[0]);
+    for(int i = 1; i < rv.size(); i++) {
+      tmp.append(QString(" %1").arg(rv[i]));
+    }
+    attrib = m_doc.createElement("RadiationVector");
+    attrib.appendChild(m_doc.createTextNode(tmp));
+    rootNode.appendChild(attrib);
+  }
+
   node.appendChild(rootNode);
 }
+
 #endif
