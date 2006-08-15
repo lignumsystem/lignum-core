@@ -151,23 +151,40 @@ template <class TS, class BUD, class S>
 void XMLDomTreeReader<TS,BUD,S>::parseTree(QDomNode& root, Tree<TS,BUD>& tree) {
   QDomNode node = root.firstChild();
   QDomNode attrib, param, functions, axisNode; 
-    
+
   // Find the nodes in the DOM-document
-  while(!node.isNull()) {
-    if(node.isElement()) {
+  while(true) {
+    if(!node.isNull() && node.isElement()) {
       if(node.nodeName() == "TreeAttributes") {
 	attrib = node;
+	node = node.nextSibling();
+	if(node.isNull() || !node.isElement())
+	  break;
       }
-      else if(node.nodeName() == "TreeParameters")
+      if(node.nodeName() == "TreeParameters") {
 	param = node;
-      else if(node.nodeName() == "Axis")
-	axisNode = node;
-      else if(node.nodeName() == "TreeFunctions")
+	node = node.nextSibling();
+	if(node.isNull() || !node.isElement())
+	  break;
+      }
+      if(node.nodeName() == "TreeFunctions") {
 	functions = node;
-      
+	node = node.nextSibling();
+	if(node.isNull() || !node.isElement())
+	  break;
+      }
+      if(node.nodeName() == "Axis") {
+	axisNode = node;
+	node = node.nextSibling();
+	if(node.isNull() || !node.isElement())
+	  break;
+      }
+
+
     }
-    node = node.nextSibling();
+    break;
   }
+  
   
   // Parse the simulation parameters.
   parseTreeParameters(param, tree);
@@ -193,6 +210,7 @@ void XMLDomTreeReader<TS,BUD,S>::parseRootAxis(QDomNode& axisNode, Axis<TS, BUD>
   QDomNode child;
   QString tmp;
   double x, y, z;
+  bool nodeFound;
 
   while(!node.isNull()) {
     if(node.isElement()) {
@@ -303,7 +321,7 @@ Axis<TS, BUD>* XMLDomTreeReader<TS,BUD,S>::parseAxis(QDomNode& axisNode, Tree<TS
       if(node.nodeName() == "TreeSegment") {
 	InsertTreeCompartment(*axis, parseTreeSegment(node, tree));
       }
-      if(node.nodeName() == "BranchingPoint") {
+      else if(node.nodeName() == "BranchingPoint") {
 	InsertTreeCompartment(*axis, parseBranchingPoint(node, tree));
       }
       else if(node.nodeName() == "Bud") {
@@ -333,8 +351,8 @@ TS* XMLDomTreeReader<TS,BUD,S>::parseTreeSegment(QDomNode& node, Tree<TS,BUD>& t
     if(node2.isElement()) {
       if(node2.nodeName() == "TreeSegmentAttributes") {
 	QDomNode child = node2.firstChild();
-	while(!child.isNull()) {
-	  if(child.isElement()) {
+	while(true) {
+	  if(!child.isNull() && child.isElement()) {
 	    QDomElement element = child.toElement();
 	    if(child.nodeName() == "point") {
 	      tmp = element.text();
@@ -342,29 +360,50 @@ TS* XMLDomTreeReader<TS,BUD,S>::parseTreeSegment(QDomNode& node, Tree<TS,BUD>& t
 	      y = tmp.section(' ', 1, 1).toDouble();
 	      z = tmp.section(' ', 2, 2).toDouble();
 	      p = Point(x, y, z);
+	      child = child.nextSibling();
+	      if(child.isNull() || !child.isElement())
+		break;
+	      element = child.toElement();
 	    }
 	    
-	    else if(child.nodeName() == "direction") {
+	    if(child.nodeName() == "direction") {
 	      tmp = element.text();
 	      x = tmp.section(' ', 0, 0).toDouble();
 	      y = tmp.section(' ', 1, 1).toDouble();
 	      z = tmp.section(' ', 2, 2).toDouble();
 	      v = PositionVector(x, y, z);
+	      child = child.nextSibling();
+	      if(child.isNull() || !child.isElement())
+		break;
+	      element = child.toElement();
+		      
 	    }
-	    else if(child.nodeName() == "LGAomega") {
+	    if(child.nodeName() == "LGAomega") {
 	      go = element.text().toDouble();
+	      child = child.nextSibling();
+	      if(child.isNull() || !child.isElement())
+		break;
+	      element = child.toElement();
 	    }
-	    else if(child.nodeName() == "LGAL") {
+	    if(child.nodeName() == "LGAL") {
 	      l = element.text().toDouble();
+	      child = child.nextSibling();
+	      if(child.isNull() || !child.isElement())
+		break;
+	      element = child.toElement();
 	    }
-	    else if(child.nodeName() == "LGAR") {
+	    if(child.nodeName() == "LGAR") {
 	      r = element.text().toDouble();
+	      child = child.nextSibling();
+	      if(child.isNull() || !child.isElement())
+		break;
+	      element = child.toElement();
 	    }
-	    else if(child.nodeName() == "LGARh") {
+	    if(child.nodeName() == "LGARh") {
 	      rh = element.text().toDouble();
 	    }
 	  }
-	  child = child.nextSibling();
+	  break;
 	}
 
 	// Object creation
@@ -372,10 +411,10 @@ TS* XMLDomTreeReader<TS,BUD,S>::parseTreeSegment(QDomNode& node, Tree<TS,BUD>& t
 
 	// Parse the rest of the attributes
 	if(segmentType == "Cf") {
-	  parseCfTreeSegmentAttributes(node2, dynamic_cast<CfTreeSegment<TS,BUD>*>(ts));
+	  parseCfTreeSegmentAttributes(child.nextSibling(), dynamic_cast<CfTreeSegment<TS,BUD>*>(ts));
 	}
 	else if(segmentType == "Hw") {
-	  parseHwTreeSegmentAttributes(node2, dynamic_cast<HwTreeSegment<TS,BUD,S>*>(ts));
+	  parseHwTreeSegmentAttributes(child.nextSibling(), dynamic_cast<HwTreeSegment<TS,BUD,S>*>(ts));
 	}
 	break;
       }
@@ -429,7 +468,7 @@ BranchingPoint<TS,BUD>* XMLDomTreeReader<TS,BUD,S>::parseBranchingPoint(QDomNode
 	bpoint = new BranchingPoint<TS, BUD>(p, v, &tree);    
 	
 	// Parse the rest of the attributes
-	parseBranchingPointAttributes(node, bpoint);
+	parseBranchingPointAttributes(child.nextSibling(), bpoint);
 	break;
       }
     }
@@ -497,7 +536,7 @@ BUD* XMLDomTreeReader<TS,BUD,S>::parseBud(QDomNode& bNode, Tree<TS,BUD>& tree) {
 	bud = new BUD(p, v, omega, &tree);
 	
 	// Parse the rest of the attributes
-	parseBudAttributes(node, bud);
+	parseBudAttributes(child.nextSibling(), bud);
 	break;
       }
     }
@@ -525,53 +564,93 @@ BroadLeaf<Triangle>* XMLDomTreeReader<TS,BUD,S>::parseTriangleBroadLeaf(QDomNode
     if(node.isElement()) {
       if(node.nodeName() == "BroadLeafAttributes") {
 	child = node.firstChild();
-	while(!child.isNull()) {
-	  if(child.isElement()) {
+	while(true) {
+	  if(!child.isNull() && child.isElement()) {
 	    QDomElement element = child.toElement();
-	    if(child.nodeName() == "LGAsf") 
+	    if(child.nodeName() == "LGAsf") { 
 	      sf = element.text().toDouble();
-	    else if(child.nodeName() == "LGAtauL")
+	      child = child.nextSibling();
+	      if(child.isNull() || !child.isElement())
+		break;
+	      element = child.toElement();
+	    }
+	    if(child.nodeName() == "LGAtauL") {
 	      tauL = element.text().toDouble();
-	    else if(child.nodeName() == "LGAdof")
+	      child = child.nextSibling();
+	      if(child.isNull() || !child.isElement())
+		break;
+	      element = child.toElement();
+	    }
+	    if(child.nodeName() == "LGAdof") { 
 	      dof = element.text().toDouble();
-	    else if(child.nodeName() == "SkySectors")
+	      child = child.nextSibling();
+	      if(child.isNull() || !child.isElement())
+		break;
+	      element = child.toElement();
+	    }
+	    if(child.nodeName() == "SkySectors") {
 	      number_of_sectors = element.text().toInt();
-	    else if(child.nodeName() == "PetioleStart") {
+	      child = child.nextSibling();
+	      if(child.isNull() || !child.isElement())
+		break;
+	      element = child.toElement();
+	    }
+	    if(child.nodeName() == "PetioleStart") {
 	      tmp = element.text();
 	      x = tmp.section(' ', 0, 0).toDouble();
 	      y = tmp.section(' ', 1, 1).toDouble();
 	      z = tmp.section(' ', 2, 2).toDouble();
 	      pstart = Point(x, y, z);
+	      child = child.nextSibling();
+	      if(child.isNull() || !child.isElement())
+		break;
+	      element = child.toElement();
 	    }
-	    else if(child.nodeName() == "PetioleEnd") {
+	    if(child.nodeName() == "PetioleEnd") {
 	      tmp = element.text();
 	      x = tmp.section(' ', 0, 0).toDouble();
 	      y = tmp.section(' ', 1, 1).toDouble();
 	      z = tmp.section(' ', 2, 2).toDouble();
 	      pend = Point(x, y, z);
+	      child = child.nextSibling();
+	      if(child.isNull() || !child.isElement())
+		break;
+	      element = child.toElement();
 	    }
-	    else if(child.nodeName() == "LeafNormal") {
+	    if(child.nodeName() == "LeafNormal") {
 	      tmp = element.text();
 	      x = tmp.section(' ', 0, 0).toDouble();
 	      y = tmp.section(' ', 1, 1).toDouble();
 	      z = tmp.section(' ', 2, 2).toDouble();
 	      normal = PositionVector(x, y, z);
+	      child = child.nextSibling();
+	      if(child.isNull() || !child.isElement())
+		break;
+	      element = child.toElement();
 	    }
-	    else if (child.nodeName() == "TriangleLC") {
+	    if (child.nodeName() == "TriangleLC") {
 	      tmp = element.text();
 	      x = tmp.section(' ', 0, 0).toDouble();
 	      y = tmp.section(' ', 1, 1).toDouble();
 	      z = tmp.section(' ', 2, 2).toDouble();
 	      triangleLC = Point(x, y, z);
+	      child = child.nextSibling();
+	      if(child.isNull() || !child.isElement())
+		break;
+	      element = child.toElement();
 	    }
-	    else if (child.nodeName() == "TriangleRC") {
+	    if (child.nodeName() == "TriangleRC") {
 	      tmp = element.text();
 	      x = tmp.section(' ', 0, 0).toDouble();
 	      y = tmp.section(' ', 1, 1).toDouble();
 	      z = tmp.section(' ', 2, 2).toDouble();
 	      triangleRC = Point(x, y, z);
+	      child = child.nextSibling();
+	      if(child.isNull() || !child.isElement())
+		break;
+	      element = child.toElement();
 	    }
-	    else if (child.nodeName() == "TriangleAC") {
+	    if (child.nodeName() == "TriangleAC") {
 	      tmp = element.text();
 	      x = tmp.section(' ', 0, 0).toDouble();
 	      y = tmp.section(' ', 1, 1).toDouble();
@@ -582,7 +661,7 @@ BroadLeaf<Triangle>* XMLDomTreeReader<TS,BUD,S>::parseTriangleBroadLeaf(QDomNode
 	      break;
 	    }
 	  }
-	  child = child.nextSibling();
+	  break;
 	}
       
 	parseTriangleBroadLeafAttributes(child, leaf);
@@ -612,42 +691,78 @@ BroadLeaf<Ellipse>* XMLDomTreeReader<TS,BUD,S>::parseEllipseBroadLeaf(QDomNode& 
     if(node.isElement()) {
       if(node.nodeName() == "BroadLeafAttributes") {
 	child = node.firstChild();
-	while(!child.isNull()) {
-	  if(child.isElement()) {
+	while(true) {
+	  if(!child.isNull() && child.isElement()) {
 	    QDomElement element = child.toElement();
-	    if(child.nodeName() == "LGAsf") 
+	    if(child.nodeName() == "LGAsf") {
 	      sf = element.text().toDouble();
-	    else if(child.nodeName() == "LGAtauL")
+	      child = child.nextSibling();
+	      if(child.isNull() || !child.isElement())
+		break;
+	      element = child.toElement();
+	    }
+	    if(child.nodeName() == "LGAtauL") {
 	      tauL = element.text().toDouble();
-	    else if(child.nodeName() == "LGAdof")
+	      child = child.nextSibling();
+	      if(child.isNull() || !child.isElement())
+		break;
+	      element = child.toElement();
+	    }
+	    if(child.nodeName() == "LGAdof") {
 	      dof = element.text().toDouble();
-	    else if(child.nodeName() == "SkySectors")
+	      child = child.nextSibling();
+	      if(child.isNull() || !child.isElement())
+		break;
+	      element = child.toElement();	      
+	    }
+	    if(child.nodeName() == "SkySectors") {
 	      number_of_sectors = element.text().toInt();
-	    else if(child.nodeName() == "PetioleStart") {
+	      child = child.nextSibling();
+	      if(child.isNull() || !child.isElement())
+		break;
+	      element = child.toElement();	    
+	    }
+	    if(child.nodeName() == "PetioleStart") {
 	      tmp = element.text();
 	      x = tmp.section(' ', 0, 0).toDouble();
 	      y = tmp.section(' ', 1, 1).toDouble();
 	      z = tmp.section(' ', 2, 2).toDouble();
 	      pstart = Point(x, y, z);
+	      child = child.nextSibling();
+	      if(child.isNull() || !child.isElement())
+		break;
+	      element = child.toElement();
 	    }
-	    else if(child.nodeName() == "PetioleEnd") {
+	    if(child.nodeName() == "PetioleEnd") {
 	      tmp = element.text();
 	      x = tmp.section(' ', 0, 0).toDouble();
 	      y = tmp.section(' ', 1, 1).toDouble();
 	      z = tmp.section(' ', 2, 2).toDouble();
 	      pend = Point(x, y, z);
+	      child = child.nextSibling();
+	      if(child.isNull() || !child.isElement())
+		break;
+	      element = child.toElement();
 	    }
-	    else if(child.nodeName() == "LeafNormal") {
+	    if(child.nodeName() == "LeafNormal") {
 	      tmp = element.text();
 	      x = tmp.section(' ', 0, 0).toDouble();
 	      y = tmp.section(' ', 1, 1).toDouble();
 	      z = tmp.section(' ', 2, 2).toDouble();
 	      normal = PositionVector(x, y, z);
+	      child = child.nextSibling();
+	      if(child.isNull() || !child.isElement())
+		break;
+	      element = child.toElement();
 	    }
-	    else if (child.nodeName() == "EllipseSMajorA") {
+	    if (child.nodeName() == "EllipseSMajorA") {
 	      emajor = element.text().toDouble();
+	      child = child.nextSibling();
+	      if(child.isNull() || !child.isElement())
+		break;
+	      element = child.toElement();
 	    }
-	    else if (child.nodeName() == "EllipseSMinorA") {
+	    if (child.nodeName() == "EllipseSMinorA") {
 	      eminor = element.text().toDouble();
 	      leaf = new BroadLeaf<Ellipse>(sf, tauL, dof, number_of_sectors, Petiole(pstart, pend),
 				  normal, Ellipse(pend, PositionVector(pend-pstart), normal, emajor, eminor));
@@ -655,7 +770,7 @@ BroadLeaf<Ellipse>* XMLDomTreeReader<TS,BUD,S>::parseEllipseBroadLeaf(QDomNode& 
 	    }
 
 	  }
-	  child = child.nextSibling();
+	  break;
 	}
       
 	parseEllipseBroadLeafAttributes(child, leaf);
@@ -675,83 +790,154 @@ BroadLeaf<Ellipse>* XMLDomTreeReader<TS,BUD,S>::parseEllipseBroadLeaf(QDomNode& 
 template <class TS, class BUD, class S>
 void XMLDomTreeReader<TS,BUD,S>::parseTreeParameters(QDomNode& node, Tree<TS,BUD>& tree) {
   QDomNode child = node.firstChild();
-  while(!child.isNull()) {
-    if(child.isElement()) {
+  
+  while(true) {
+    if(!child.isNull() && child.isElement()) {
       if(child.nodeName() == "LGPaf") {
 	SetValue(tree, LGPaf, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() || !child.isElement())
+	  break;
       }
-      else if(child.nodeName() == "LGPaleafmax") {
+      if(child.nodeName() == "LGPaleafmax") {
 	SetValue(tree, LGPaleafmax, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() || !child.isElement())
+	  break;
       }
-      else if(child.nodeName() == "LGPapical") {
+      if(child.nodeName() == "LGPapical") {
 	SetValue(tree, LGPapical, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() || !child.isElement())
+	  break;
       }
-      else if(child.nodeName() == "LGPar") {
+      if(child.nodeName() == "LGPar") {
 	SetValue(tree, LGPar, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() || !child.isElement())
+	  break;
       }
-      else if(child.nodeName() == "LGPdof") {
+      if(child.nodeName() == "LGPdof") {
 	SetValue(tree, LGPdof, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() || !child.isElement())
+	  break;
       }
-      else if(child.nodeName() == "LGPLmin") {
+      if(child.nodeName() == "LGPLmin") {
 	SetValue(tree, LGPLmin, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() || !child.isElement())
+	  break;
       }
-      else if(child.nodeName() == "LGPlr") {
+      if(child.nodeName() == "LGPlr") {
 	SetValue(tree, LGPlr, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() || !child.isElement())
+	  break;
       }
-      else if(child.nodeName() == "LGPmf") {
+      if(child.nodeName() == "LGPmf") {
 	SetValue(tree, LGPmf, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() || !child.isElement())
+	  break;
       }
-      else if(child.nodeName() == "LGPmr") {
+      if(child.nodeName() == "LGPmr") {
 	SetValue(tree, LGPmr, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() || !child.isElement())
+	  break;
       }
-      else if(child.nodeName() == "LGPms") {
+      if(child.nodeName() == "LGPms") {
 	SetValue(tree, LGPms, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() || !child.isElement())
+	  break;
       }
-      else if(child.nodeName() == "LGPna") {
+      if(child.nodeName() == "LGPna") {
 	SetValue(tree, LGPna, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() || !child.isElement())
+	  break;
       }
-      else if(child.nodeName() == "LGPnl") {
+      if(child.nodeName() == "LGPnl") {
 	SetValue(tree, LGPnl, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() || !child.isElement())
+	  break;
       }
-      else if(child.nodeName() == "LGPpr") {
+      if(child.nodeName() == "LGPpr") {
 	SetValue(tree, LGPpr, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() || !child.isElement())
+	  break;
       }
-      else if(child.nodeName() == "LGPq") {
+      if(child.nodeName() == "LGPq") {
 	SetValue(tree, LGPq, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() || !child.isElement())
+	  break;
       }
-      else if(child.nodeName() == "LGPrhoW") {
+      if(child.nodeName() == "LGPrhoW") {
 	SetValue(tree, LGPrhoW, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() || !child.isElement())
+	  break;
       }
-      else if(child.nodeName() == "LGPrho_root") {
+      if(child.nodeName() == "LGPrho_root") {
 	SetValue(tree, LGPrho_root, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() || !child.isElement())
+	  break;
       }
-      else if(child.nodeName() == "LGPrho_hair") {
+      if(child.nodeName() == "LGPrho_hair") {
 	SetValue(tree, LGPrho_hair, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() || !child.isElement())
+	  break;
       }
-      else if(child.nodeName() == "LGPsf") {
+      if(child.nodeName() == "LGPsf") {
 	SetValue(tree, LGPsf, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() || !child.isElement())
+	  break;
       }
-      else if(child.nodeName() == "LGPsr") {
+      if(child.nodeName() == "LGPsr") {
 	SetValue(tree, LGPsr, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() || !child.isElement())
+	  break;
       }
-      else if(child.nodeName() == "LGPss") {
+      if(child.nodeName() == "LGPss") {
 	SetValue(tree, LGPss, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() || !child.isElement())
+	  break;
       }
-      else if(child.nodeName() == "LGPtauL") {
+      if(child.nodeName() == "LGPtauL") {
 	SetValue(tree, LGPtauL, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() || !child.isElement())
+	  break;
       }
-      else if(child.nodeName() == "LGPxi") {
+      if(child.nodeName() == "LGPxi") {
 	SetValue(tree, LGPxi, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() || !child.isElement())
+	  break;
       }
-      else if(child.nodeName() == "LGPyc") {
+      if(child.nodeName() == "LGPyc") {
 	SetValue(tree, LGPyc, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() || !child.isElement())
+	  break;
       }
-      else if(child.nodeName() == "LGPzbrentEpsilon") {
+      if(child.nodeName() == "LGPzbrentEpsilon") {
 	SetValue(tree, LGPzbrentEpsilon, child.toElement().text().toDouble());
       }
     }
-    child = child.nextSibling();
+    break;
   }
+  
 }
 
 /**
@@ -811,38 +997,30 @@ void XMLDomTreeReader<TS,BUD,S>::parseTreeFunctions(QDomNode& node, Tree<TS, BUD
   while(!child.isNull()) {
     if(child.isElement()) {
       if(child.nodeName() == "LGMAL") {
-	//SetFunction(tree, ParametricCurve(child.toElement().text().toStdString()), LGMAL);
 	function = ParametricCurve(child.toElement().text().toStdString());
 	SetFunction(tree, function, LGMAL);
       }
       else if(child.nodeName() == "LGMFM") {
-	
-	//SetFunction(tree, ParametricCurve(child.toElement().text().toStdString()), LGMFM);
 	function = ParametricCurve(child.toElement().text().toStdString());
 	SetFunction(tree, function, LGMFM);
       }
       else if(child.nodeName() == "LGMIP") {
-	//SetFunction(tree, ParametricCurve(child.toElement().text().toStdString()), LGMIP);
 	function = ParametricCurve(child.toElement().text().toStdString());
 	SetFunction(tree, function, LGMIP);
       }
       else if(child.nodeName() == "LGMNB") {
-	//SetFunction(tree, ParametricCurve(child.toElement().text().toStdString()), LGMNB);
 	function = ParametricCurve(child.toElement().text().toStdString());
 	SetFunction(tree, function, LGMNB);
       }
       else if(child.nodeName() == "LGMLONB") {
-	//SetFunction(tree, ParametricCurve(child.toElement().text().toStdString()), LGMLONB);
 	function = ParametricCurve(child.toElement().text().toStdString());
 	SetFunction(tree, function, LGMLONB);
       }
       else if(child.nodeName() == "LGMVI") {
-	//SetFunction(tree, ParametricCurve(child.toElement().text().toStdString()), LGMVI);
 	function = ParametricCurve(child.toElement().text().toStdString());
 	SetFunction(tree, function, LGMVI);
       }
       else if(child.nodeName() == "LGMVIONB") {
-	//SetFunction(tree, ParametricCurve(child.toElement().text().toStdString()), LGMVIONB);
 	function = ParametricCurve(child.toElement().text().toStdString());
 	SetFunction(tree, function, LGMVIONB);
       }
@@ -881,102 +1059,115 @@ void XMLDomTreeReader<TS,BUD,S>::parseAxisAttributes(QDomNode& node, Axis<TS,BUD
  */
 template <class TS, class BUD, class S>
 void XMLDomTreeReader<TS,BUD,S>::parseCfTreeSegmentAttributes(QDomNode& node, CfTreeSegment<TS,BUD>* ts) {
-  QDomNode child = node.firstChild();
+  QDomNode child = node;
   
-  while(!child.isNull()) {
-    if(child.isElement()) {
-      /*     if(child.nodeName() == "LGAAf") {
-	SetValue(*ts, LGAAf, child.toElement().text().toDouble());
-	}*/
+  while(true) {
+    if(!child.isNull() && child.isElement()) {
+      if(child.nodeName() == "LGAage") {
+	SetValue(*ts, LGAage, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() || !child.isElement())
+	  break;
+      }
+      if(child.nodeName() == "LGAM") {
+	SetValue(*ts, LGAM, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() || !child.isElement())
+	  break;
+      }
+      if(child.nodeName() == "LGARTop") {
+	SetValue(*ts, LGARTop, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() || !child.isElement())
+	  break;
+      }
+      if(child.nodeName() == "LGAvi") {
+	SetValue(*ts, LGAvi, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() || !child.isElement())
+	  break;
+      }
+      if(child.nodeName() == "LGAWs") {
+	SetValue(*ts, LGAWs, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() || !child.isElement())
+	  break;
+      }
+      if(child.nodeName() == "LGAWh") {
+	SetValue(*ts, LGAWh, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() || !child.isElement())
+	  break;
+      }
       if(child.nodeName() == "LGAHf") {
 	SetValue(*ts, LGAHf, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() || !child.isElement())
+	  break;
       }
-      else if(child.nodeName() == "LGAP") {
+      if(child.nodeName() == "LGAP") {
 	SetValue(*ts, LGAP, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() || !child.isElement())
+	  break;
       }
-      else if(child.nodeName() == "LGAQin") {
+      if(child.nodeName() == "LGAQin") {
 	SetValue(*ts, LGAQin, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() || !child.isElement())
+	  break;
       }
-      else if(child.nodeName() == "LGAQabs") {
+      if(child.nodeName() == "LGAQabs") {
 	SetValue(*ts, LGAQabs, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() || !child.isElement())
+	  break;
       }
-      else if(child.nodeName() == "LGARf") {
+      if(child.nodeName() == "LGARf") {
 	SetValue(*ts, LGARf, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() || !child.isElement())
+	  break;
       }
-      /* else if(child.nodeName() == "LGASa") {
-	SetValue(*ts, LGASa, child.toElement().text().toDouble());
-	}*/
-      else if(child.nodeName() == "LGAstarm") {
+      if(child.nodeName() == "LGAstarm") {
 	SetValue(*ts, LGAstarm, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() || !child.isElement())
+	  break;
       }
-      /*      else if(child.nodeName() == "LGAVf") {
-	SetValue(*ts, LGAVf, child.toElement().text().toDouble());
-	}*/
-      else if(child.nodeName() == "LGAWf") {
+      if(child.nodeName() == "LGAVf") {
+	SetValue(*ts, LGAstarm, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() || !child.isElement())
+	  break;
+      }
+      if(child.nodeName() == "LGAWf") {
 	SetValue(*ts, LGAWf, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() || !child.isElement())
+	  break;
       }
-      else if(child.nodeName() == "LGAWf0") {
+      if(child.nodeName() == "LGAWf0") {
 	SetValue(*ts, LGAWf0, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() || !child.isElement())
+	  break;
       }
-      /*else if(child.nodeName() == "LGAA") {
-	SetValue(*ts, LGAA, child.toElement().text().toDouble());
-	}
-      else if(child.nodeName() == "LGAAh") {
-	SetValue(*ts, LGAAh, child.toElement().text().toDouble());
+
+      /*else if(child.nodeName() == "LGAomega") {
+	SetValue(*ts, LGAomega, child.toElement().text().toDouble());
       }
-      else if(child.nodeName() == "LGAAs") {
-	SetValue(*ts, LGAAs, child.toElement().text().toDouble());
-	}*/
-      else if(child.nodeName() == "LGAAs0") {
-	SetValue(*ts, LGAAs0, child.toElement().text().toDouble());
-	}
-      else if(child.nodeName() == "LGAage") {
-	SetValue(*ts, LGAage, child.toElement().text().toDouble());
-      }
-      /* else if(child.nodeName() == "LGAH") {
-	SetValue(*ts, LGAH, child.toElement().text().toDouble());
-	}*/
-      /*else if(child.nodeName() == "LGAHTop") {
-	SetValue(*ts, LGAHTop, child.toElement().text().toDouble());
-	}*/
       else if(child.nodeName() == "LGAL") {
 	SetValue(*ts, LGAL, child.toElement().text().toDouble());
-      }
-      else if(child.nodeName() == "LGAM") {
-	SetValue(*ts, LGAM, child.toElement().text().toDouble());
-      }
-      else if(child.nodeName() == "LGAomega") {
-	SetValue(*ts, LGAomega, child.toElement().text().toDouble());
       }
       else if(child.nodeName() == "LGAR") {
 	SetValue(*ts, LGAR, child.toElement().text().toDouble());
       }
       else if(child.nodeName() == "LGARh") {
 	SetValue(*ts, LGARh, child.toElement().text().toDouble());
-      }
-      else if(child.nodeName() == "LGARTop") {
-	SetValue(*ts, LGARTop, child.toElement().text().toDouble());
-      }
-      else if(child.nodeName() == "LGAvi") {
-	SetValue(*ts, LGAvi, child.toElement().text().toDouble());
-      }
-      /*      else if(child.nodeName() == "LGAV") {
-	SetValue(*ts, LGAV, child.toElement().text().toDouble());
 	}*/
-      /*else if(child.nodeName() == "LGAVh") {
-	SetValue(*ts, LGAVh, child.toElement().text().toDouble());
-	}*/
-      /*else if(child.nodeName() == "LGAVs") {
-	SetValue(*ts, LGAVs, child.toElement().text().toDouble());
-	}*/
-      else if(child.nodeName() == "LGAWs") {
-	SetValue(*ts, LGAWs, child.toElement().text().toDouble());
-      }
-      else if(child.nodeName() == "LGAWh") {
-	SetValue(*ts, LGAWh, child.toElement().text().toDouble());
-      }
     }
-    child = child.nextSibling();
+    break;
   }
 }
 
@@ -986,111 +1177,51 @@ void XMLDomTreeReader<TS,BUD,S>::parseCfTreeSegmentAttributes(QDomNode& node, Cf
  */
 template <class TS, class BUD, class S>
 void XMLDomTreeReader<TS,BUD,S>::parseHwTreeSegmentAttributes(QDomNode& node, HwTreeSegment<TS,BUD,S>* ts) {
-  QDomNode child = node.firstChild();
+  QDomNode child = node;
   
-  while(!child.isNull()) {
-    if(child.isElement()) {
-      /*if(child.nodeName() == "LGAAf") {
-	SetValue(*ts, LGAAf, child.toElement().text().toDouble());
-	}*/
-      /*else if(child.nodeName() == "LGAHf") {
-	SetValue(*ts, LGAHf, child.toElement().text().toDouble());
-	}*/
-      /*else if(child.nodeName() == "LGAP") {
-	SetValue(*ts, LGAP, child.toElement().text().toDouble());
-	}*/
-      /*else if(child.nodeName() == "LGAQin") {
-	SetValue(*ts, LGAQin, child.toElement().text().toDouble());
-      }
-      else if(child.nodeName() == "LGAQabs") {
-	SetValue(*ts, LGAQabs, child.toElement().text().toDouble());
-	}*/
-      /*      else if(child.nodeName() == "LGARf") {
-	SetValue(*ts, LGARf, child.toElement().text().toDouble());
-	}*/
-      /*else if(child.nodeName() == "LGASa") {
-	SetValue(*ts, LGASa, child.toElement().text().toDouble());
-	}*/
-      /*else if(child.nodeName() == "LGAstarm") {
-	SetValue(*ts, LGAstarm, child.toElement().text().toDouble());
-	}*/
-      /*else if(child.nodeName() == "LGAVf") {
-	SetValue(*ts, LGAVf, child.toElement().text().toDouble());
-	}*/
-      /*else if(child.nodeName() == "LGAWf") {
-	SetValue(*ts, LGAWf, child.toElement().text().toDouble());
-	}*/
-      /*else if(child.nodeName() == "LGAWf0") {
-	SetValue(*ts, LGAWf0, child.toElement().text().toDouble());
-	}*/
-      /*else if(child.nodeName() == "LGAA") {
-	SetValue(*ts, LGAA, child.toElement().text().toDouble());
-	}*/
-      /*else if(child.nodeName() == "LGAAh") {
-	SetValue(*ts, LGAAh, child.toElement().text().toDouble());
-	}*/
-      /*else if(child.nodeName() == "LGAAs") {
-	SetValue(*ts, LGAAs, child.toElement().text().toDouble());
-	}*/
-      if(child.nodeName() == "LGAAs0") {
-	SetValue(*ts, LGAAs0, child.toElement().text().toDouble());
-      }
-      else if(child.nodeName() == "LGAage") {
+  while(true) {
+    if(!child.isNull() && child.isElement()) {
+      if(child.nodeName() == "LGAage") {
 	SetValue(*ts, LGAage, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() && !child.isElement())
+	  break;
       }
-      /*else if(child.nodeName() == "LGAH") {
-	SetValue(*ts, LGAH, child.toElement().text().toDouble());
-	}*/
-      /*else if(child.nodeName() == "LGAHTop") {
-	SetValue(*ts, LGAHTop, child.toElement().text().toDouble());
-	}*/
-      else if(child.nodeName() == "LGAL") {
-	SetValue(*ts, LGAL, child.toElement().text().toDouble());
-      }
-      else if(child.nodeName() == "LGAM") {
+      if(child.nodeName() == "LGAM") {
 	SetValue(*ts, LGAM, child.toElement().text().toDouble());
+      	child = child.nextSibling();
+	if(child.isNull() && !child.isElement())
+	  break;
       }
-      else if(child.nodeName() == "LGAomega") {
-	SetValue(*ts, LGAomega, child.toElement().text().toDouble());
-      }
-      else if(child.nodeName() == "LGAR") {
-	SetValue(*ts, LGAR, child.toElement().text().toDouble());
-      }
-      else if(child.nodeName() == "LGARh") {
-	SetValue(*ts, LGARh, child.toElement().text().toDouble());
-      }
-      else if(child.nodeName() == "LGARTop") {
+      if(child.nodeName() == "LGARTop") {
 	SetValue(*ts, LGARTop, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() && !child.isElement())
+	  break;
       }
-      else if(child.nodeName() == "LGAvi") {
+      if(child.nodeName() == "LGAvi") {
 	SetValue(*ts, LGAvi, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() && !child.isElement())
+	  break;
       }
-      /*else if(child.nodeName() == "LGAV") {
-	SetValue(*ts, LGAV, child.toElement().text().toDouble());
-	}*/
-      /*else if(child.nodeName() == "LGAVh") {
-	SetValue(*ts, LGAVh, child.toElement().text().toDouble());
-	}*/
-      /*else if(child.nodeName() == "LGAVs") {
-	SetValue(*ts, LGAVs, child.toElement().text().toDouble());
-	}*/
-      else if(child.nodeName() == "LGAWs") {
+      if(child.nodeName() == "LGAWs") {
 	SetValue(*ts, LGAWs, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() && !child.isElement())
+	  break;
       }
-      else if(child.nodeName() == "LGAWh") {
+      if(child.nodeName() == "LGAWh") {
 	SetValue(*ts, LGAWh, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() && !child.isElement())
+	  break;
       }
-      else if(child.nodeName() == "BroadLeaf") {
+      if(child.nodeName() == "BroadLeaf") {
 	insertLeaf(child, ts);
       }
-      //      else if(child.nodeName() == "BroadLeaf") {
-      //	if(child.toElement().attribute("Shape") == "Ellipse") 
-      //	  InsertLeaf(*ts, parseEllipseBroadLeaf(child));
-	//else if(child.toElement().attribute("Shape") == "Triangle") 
-	  //InsertLeaf(*ts, parseTriangleBroadLeaf(child));
     }      
-    child = child.nextSibling();
-    
+    break;
   }
 }
 
@@ -1110,28 +1241,41 @@ void XMLDomTreeReader<TS,BUD,S>::insertLeaf(QDomNode& node, HwTreeSegment<TS,BUD
  */
 template <class TS, class BUD, class S>
 void XMLDomTreeReader<TS,BUD,S>::parseBranchingPointAttributes(QDomNode& node, BranchingPoint<TS,BUD>* bpoint) {
-  QDomNode child = node.firstChild();
+  QDomNode child = node;
   
-  while(!child.isNull()) {
-    if(child.isElement()) {
+  while(true) {
+    if(!child.isNull() && child.isElement()) {
       if(child.nodeName() == "LGAMaxD") {
 	SetValue(*bpoint, LGAMaxD, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() || child.isElement())
+	  break;
       }
-      else if(child.nodeName() == "LGAage") {
+      if(child.nodeName() == "LGAage") {
 	SetValue(*bpoint, LGAage, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() || child.isElement())
+	  break;
       }
-      else if(child.nodeName() == "LGAomega") {
+      if(child.nodeName() == "LGAomega") {
 	SetValue(*bpoint, LGAomega, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() || child.isElement())
+	  break;
       }
-      else if(child.nodeName() == "LGAstate") {
+      if(child.nodeName() == "LGAstate") {
 	SetValue(*bpoint, LGAstate, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() || child.isElement())
+	  break;
       }
-      else if(child.nodeName() == "LGAtype") {
+      if(child.nodeName() == "LGAtype") {
 	SetValue(*bpoint, LGAtype, child.toElement().text().toDouble());
       }
     }
-    child = child.nextSibling();
+    break;
   }
+ 
 }
 
 /**
@@ -1140,33 +1284,45 @@ void XMLDomTreeReader<TS,BUD,S>::parseBranchingPointAttributes(QDomNode& node, B
  */
 template <class TS, class BUD, class S>
 void XMLDomTreeReader<TS,BUD,S>::parseBudAttributes(QDomNode& node, Bud<TS,BUD>* bud) {
-  QDomNode child = node.firstChild();
+  QDomNode child = node;
   
-  while(!child.isNull()) {
-    if(child.isElement()) {
+  while(true) {
+    if(!child.isNull() && child.isElement()) {
       if(child.nodeName() == "LGAcollision") {
 	SetValue(*bud, LGAcollision, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() && !child.isElement())
+	  break;
       }
       else if(child.nodeName() == "LGAip") {
 	SetValue(*bud, LGAip, child.toElement().text().toDouble());
-      }
-      else if(child.nodeName() == "LGAomega") {
-	SetValue(*bud, LGAomega, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() && !child.isElement())
+	  break;
       }
       else if(child.nodeName() == "LGAQin") {
 	SetValue(*bud, LGAQin, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() && !child.isElement())
+	  break;
       }
       else if(child.nodeName() == "LGAstatus") {
 	SetValue(*bud, LGAstatus, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() && !child.isElement())
+	  break;
       }
       else if(child.nodeName() == "LGAstate") {
 	SetValue(*bud, LGAstate, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() && !child.isElement())
+	  break;
       }
       else if(child.nodeName() == "LGAtype") {
 	SetValue(*bud, LGAtype, child.toElement().text().toDouble());
       }
     }
-    child = child.nextSibling();
+    break;
   }
 }
 
@@ -1175,27 +1331,45 @@ void XMLDomTreeReader<TS,BUD,S>::parseTriangleBroadLeafAttributes(QDomNode& node
   QDomNode child = node.firstChild();
   QString tmp;
   
-  while(!child.isNull()) {
-    if(child.isElement()) {
+  while(true) {
+    if(!child.isNull && child.isElement()) {
       if(child.nodeName() == "LGAA") {
 	SetValue(*leaf, LGAA, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull || !child.isElement())
+	  break;
       }
-      else if(child.nodeName() == "LGAP") {
+      if(child.nodeName() == "LGAP") {
 	SetValue(*leaf, LGAP, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull || !child.isElement())
+	  break;
       }
-      else if(child.nodeName() == "LGAM") {
+      if(child.nodeName() == "LGAM") {
 	SetValue(*leaf, LGAM, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull || !child.isElement())
+	  break;
       }
-      else if(child.nodeName() == "LGAQabs") {
+      if(child.nodeName() == "LGAQabs") {
 	SetValue(*leaf, LGAQabs, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull || !child.isElement())
+	  break;
       }
-      else if(child.nodeName() == "LGAQin") {
+      if(child.nodeName() == "LGAQin") {
 	SetValue(*leaf, LGAQin, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull || !child.isElement())
+	  break;
       }
-      else if(child.nodeName() == "LGAWf") {
+      if(child.nodeName() == "LGAWf") {
 	SetValue(*leaf, LGAWf, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull || !child.isElement())
+	  break;
       }
-      else if(child.nodeName() == "RadiationVector") {
+      if(child.nodeName() == "RadiationVector") {
 	vector<double> rv;
 	tmp = child.toElement().text();
 
@@ -1205,8 +1379,9 @@ void XMLDomTreeReader<TS,BUD,S>::parseTriangleBroadLeafAttributes(QDomNode& node
 	SetRadiationVector(*leaf, rv);
       }
     }
-    child = child.nextSibling();
+
   }
+  break;
 }
 
 template <class TS, class BUD, class S>
@@ -1214,27 +1389,45 @@ void XMLDomTreeReader<TS,BUD,S>::parseEllipseBroadLeafAttributes(QDomNode& node,
   QDomNode child = node.firstChild();
   QString tmp;
 
-  while(!child.isNull()) {
-    if(child.isElement()) {
+  while(true) {
+    if(!child.isNull() && child.isElement()) {
       if(child.nodeName() == "LGAA") {
 	SetValue(*leaf, LGAA, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() || !child.isElement())
+	  break;
       }
-      else if(child.nodeName() == "LGAP") {
+      if(child.nodeName() == "LGAP") {
 	SetValue(*leaf, LGAP, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() || !child.isElement())
+	  break;
       }
-      else if(child.nodeName() == "LGAM") {
+      if(child.nodeName() == "LGAM") {
 	SetValue(*leaf, LGAM, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() || !child.isElement())
+	  break;
       }
-      else if(child.nodeName() == "LGAQabs") {
+      if(child.nodeName() == "LGAQabs") {
 	SetValue(*leaf, LGAQabs, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() || !child.isElement())
+	  break;
       }
-      else if(child.nodeName() == "LGAQin") {
+      if(child.nodeName() == "LGAQin") {
 	SetValue(*leaf, LGAQin, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() || !child.isElement())
+	  break;
       }
-      else if(child.nodeName() == "LGAWf") {
+      if(child.nodeName() == "LGAWf") {
 	SetValue(*leaf, LGAWf, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() || !child.isElement())
+	  break;
       }
-      else if(child.nodeName() == "RadiationVector") {
+      if(child.nodeName() == "RadiationVector") {
 	vector<double> rv;
 	tmp = child.toElement().text();
 
@@ -1244,7 +1437,7 @@ void XMLDomTreeReader<TS,BUD,S>::parseEllipseBroadLeafAttributes(QDomNode& node,
 	SetRadiationVector(*leaf, rv);
       }
     }
-    child = child.nextSibling();
+    break;
   }
 }
 
