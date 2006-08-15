@@ -1332,7 +1332,7 @@ void XMLDomTreeReader<TS,BUD,S>::parseTriangleBroadLeafAttributes(QDomNode& node
   QString tmp;
   
   while(true) {
-    if(!child.isNull && child.isElement()) {
+    if(!child.isNull() && child.isElement()) {
       if(child.nodeName() == "LGAA") {
 	SetValue(*leaf, LGAA, child.toElement().text().toDouble());
 	child = child.nextSibling();
@@ -1381,7 +1381,7 @@ void XMLDomTreeReader<TS,BUD,S>::parseTriangleBroadLeafAttributes(QDomNode& node
     }
 
   }
-  break;
+  return;
 }
 
 template <class TS, class BUD, class S>
