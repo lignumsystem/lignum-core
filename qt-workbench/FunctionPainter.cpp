@@ -91,8 +91,10 @@ void FunctionPainter::paintEvent(QPaintEvent *event) {
 		       QPoint((i*xTick - minXValue) / xRange * size().width(),
 			      size().height() + minYValue / yRange * size().height() - tickLength));
       // Draw the numbers beside the ticks
-      painter.drawText(QPoint((i*xTick - minXValue) / xRange * size().width() - tickLength/2,
-			      size().height() + minYValue / yRange * size().height() - tickLength*2),
+      QString text = QString("%1").arg(i*xTick);
+
+      painter.drawText(QPoint((i*xTick - minXValue) / xRange * size().width() - tickLength/2 - text.size()*3,
+			      size().height() + minYValue / yRange * size().height() + tickLength*4),
 		       QString("%1").arg(i*xTick));
       i++;
     }
@@ -106,8 +108,10 @@ void FunctionPainter::paintEvent(QPaintEvent *event) {
 		       QPoint((i*xTick - minXValue) / xRange * size().width(),
 			      size().height() + minYValue / yRange * size().height() - tickLength));
       // Draw the numbers beside the ticks
-      painter.drawText(QPoint((i*xTick - minXValue) / xRange * size().width() - tickLength/2,
-			      size().height() + minYValue / yRange * size().height() - tickLength*2),
+      QString text = QString("%1").arg(i*xTick);
+
+      painter.drawText(QPoint((i*xTick - minXValue) / xRange * size().width() - tickLength/2 - text.size()*3,
+			      size().height() + minYValue / yRange * size().height() + tickLength*4),
 		       QString("%1").arg(i*xTick));
       i--;
     }
@@ -131,7 +135,10 @@ void FunctionPainter::paintEvent(QPaintEvent *event) {
 		       QPoint(-minXValue / xRange * size().width() - tickLength,
 			      size().height() - (i*yTick - minYValue) / yRange * size().height()));
       // Draw the number beside the ticks
-      painter.drawText(QPoint(-minXValue / xRange * size().width() + tickLength*2,
+      QString text = QString("%1").arg(i*yTick);
+      cout << "size: " << text.size() << " (" << text.toStdString() << ")" << endl;
+
+      painter.drawText(QPoint(-minXValue / xRange * size().width() - text.size()*6 - tickLength*3,
 			      size().height() - (i*yTick - minYValue) / yRange * size().height() +
 			      tickLength),
 		       QString("%1").arg(i*yTick));
@@ -147,7 +154,9 @@ void FunctionPainter::paintEvent(QPaintEvent *event) {
 		       QPoint(-minXValue / xRange * size().width() - tickLength,
 			      size().height() - (i*yTick - minYValue) / yRange * size().height()));
       // Draw the numbers beside the ticks
-      painter.drawText(QPoint(-minXValue / xRange * size().width() + tickLength*2,
+      QString text = QString("%1").arg(i*yTick);
+
+      painter.drawText(QPoint(-minXValue / xRange * size().width() - text.size()*6 - tickLength*3,
 			      size().height() - (i*yTick - minYValue) / yRange * size().height() +
 			      tickLength),
 		       QString("%1").arg(i*yTick));
