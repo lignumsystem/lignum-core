@@ -14,7 +14,8 @@ using namespace cxxadt;
 //    Turn(a)     rotation round turtle up by angle 'a'
 //    Pitch(a)    rotation round turtle left by angle 'a'
 //    Roll(a)     rotation round turtle heading by angle 'a'
-//    F(d)        move turtle forward distance 'd'
+//    F(d)        move turtle forward distance 'd', create segment
+//    f(d)        move turtle forward distance 'd', do not create segment
 //    HRoll()     rotation round heading so that heading is horizontal
 //                in world coordinates. Formally:  L = UpxH and U = HxL.
 //    Hrz()       rotations of turtle HLU round horizontal, Hrz = UpxH,
@@ -27,11 +28,10 @@ using namespace cxxadt;
 //                measured from world up: rotate turtle HLU round horizontal
 //                if and only if turtle heading is pointing downwards
 //                in world coordinates
-//    H(x,y,z)    turtle heading
-//    L(x,y,z) 	  turtle left
-//    U(x,y,z)    turtle up
-
-//See also LsysteI.h for the symbols to be used in L-file
+//    H(x,y,z)    query turtle heading
+//    L(x,y,z) 	  query turtle left
+//    U(x,y,z)    query turtle up
+//See also LsysteI.h for the implementation of the symbols
 class Turtle{
   friend ostream& operator << (ostream& os, const Turtle& t);
   friend const PositionVector& GetHeading(const Turtle& t);
