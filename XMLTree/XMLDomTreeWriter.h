@@ -14,7 +14,7 @@
 using namespace Lignum;
 using namespace cxxadt;
 
-template <class TS, class BUD>
+template <class TS, class BUD = DefaultBud<TS>, class S = Ellipse>
 class XMLDomTreeWriter
 {
 public:
@@ -22,14 +22,14 @@ public:
   bool writeTreeToXML(Tree<TS,BUD>&, const string&);
 };
 
-template <class TS, class BUD>
-bool XMLDomTreeWriter<TS,BUD>::writeTreeToXML(Tree<TS, BUD>& tree, const string& fileName) {
+template <class TS, class BUD, class S>
+bool XMLDomTreeWriter<TS,BUD,S>::writeTreeToXML(Tree<TS, BUD>& tree, const string& fileName) {
   QDomDocument doc("LMODEL");
 
   QDomElement root = doc.createElement("Tree"); 
   QDomElement par;
 
-  XMLDomTreeBuilder<TS, BUD> XMLDocBuild(doc, root, tree);
+  XMLDomTreeBuilder<TS,BUD,S> XMLDocBuild(doc, root, tree);
   PropagateUp(tree, par, XMLDocBuild); 
   
   QString fname(fileName.c_str());
