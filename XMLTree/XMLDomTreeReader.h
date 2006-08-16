@@ -562,14 +562,12 @@ BroadLeaf<Triangle>* XMLDomTreeReader<TS,BUD,S>::parseTriangleBroadLeaf(QDomNode
   
   PositionVector normal;
   QString tmp;
-  cout << "leafstart" << endl;
 
   while(!node.isNull()) {
     if(node.isElement()) {
       if(node.nodeName() == "BroadLeafAttributes") {
 	child = node.firstChild();
 	while(true) {
-	  cout << "broad leaf" << endl;
 	
 	  if(!child.isNull() && child.isElement()) {
 	    QDomElement element = child.toElement();
@@ -781,8 +779,8 @@ BroadLeaf<Ellipse>* XMLDomTreeReader<TS,BUD,S>::parseEllipseBroadLeaf(QDomNode& 
 	  }
 	  break;
 	}
-      
 	parseEllipseBroadLeafAttributes(child, leaf);
+	
 	break;
       }
     }
@@ -1236,13 +1234,11 @@ void XMLDomTreeReader<TS,BUD,S>::parseHwTreeSegmentAttributes(QDomNode& node, Hw
 
 template <class TS, class BUD, class S>
 void XMLDomTreeReader<TS,BUD,S>::insertLeaf(QDomNode& node, HwTreeSegment<TS,BUD,Ellipse>* ts) {
-  cout << "ellipse insert" << endl;
   InsertLeaf(*ts, parseEllipseBroadLeaf(node));
 }
 
 template <class TS, class BUD, class S>
 void XMLDomTreeReader<TS,BUD,S>::insertLeaf(QDomNode& node, HwTreeSegment<TS,BUD,Triangle>* ts) {
-  cout << "triangle insert" << endl;
   InsertLeaf(*ts, parseTriangleBroadLeaf(node));
 }
 
@@ -1381,7 +1377,7 @@ void XMLDomTreeReader<TS,BUD,S>::parseTriangleBroadLeafAttributes(QDomNode& node
 	  break;
       }
       if(child.nodeName() == "RadiationVector") {
-	vector<double> rv;
+	vector<double> rv(GetRadiationVector(*leaf).size());
 	tmp = child.toElement().text();
 
 	for(int i = 0; i < rv.size(); i++) {
@@ -1402,7 +1398,7 @@ void XMLDomTreeReader<TS,BUD,S>::parseEllipseBroadLeafAttributes(QDomNode& node,
 
   while(true) {
     if(!child.isNull() && child.isElement()) {
-      if(child.nodeName() == "LGAA") {
+       if(child.nodeName() == "LGAA") {
 	SetValue(*leaf, LGAA, child.toElement().text().toDouble());
 	child = child.nextSibling();
 	if(child.isNull() || !child.isElement())
@@ -1438,16 +1434,18 @@ void XMLDomTreeReader<TS,BUD,S>::parseEllipseBroadLeafAttributes(QDomNode& node,
 	if(child.isNull() || !child.isElement())
 	  break;
       }
-      if(child.nodeName() == "RadiationVector") {
-	vector<double> rv;
-	tmp = child.toElement().text();
 
-	for(int i = 0; i < rv.size(); i++) {
+      if(child.nodeName() == "RadiationVector") {
+	vector<double> rv(GetRadiationVector(*leaf).size());
+	tmp = child.toElement().text();
+	for(int i = 0; i < rv.size() ; i++) {
 	  rv[i] = tmp.section(' ', i, i).toDouble();
 	}
 	SetRadiationVector(*leaf, rv);
       }
     }
+
+     
     break;
   }
 }
