@@ -41,7 +41,7 @@ class PolygonTreeBuilder {
   BSPPolygonSet* makeFoliage(double radius, double height, Point point, PositionVector direction,
 			     int detail, double fmass, SceneObject* object) const;
   BSPPolygonSet* makePetiole(Point sp, Point ep, SceneObject* object) const;
-  BSPPolygonSet* makeTriangleLeaf(Point lc, Point rc, Point ac, SceneObject* object) const;
+  BSPPolygonSet* makeTriangleLeaf(Point lc, Point rc, Point ac, bool use_tex, SceneObject* object) const;
   BSPPolygonSet* makeEllipseLeaf(const Ellipse* ellipse, int detail, bool use_tex, SceneObject* object) const;
   BSPPolygonSet* makeBud(Point point, PositionVector direction, int la_detail, int lo_detail, SceneObject* object) const;
 
@@ -92,10 +92,15 @@ template <class TS, class BUD, class S>
 	polygons->addPolygons(petiole);
 	delete petiole;
 	if(const Triangle* t = dynamic_cast<const Triangle*>(&s)) {
-	  SceneObject* object = new SceneObject(parameters.getLeafMaterial(), parameters.getLeafTexture(), parameters.useBSP());
+	  SceneObject* object;
+	  if(parameters.useLeafTextures())
+	    object = new SceneObject(parameters.getMaterial(), parameters.getLeafTexture(), parameters.useBSP());
+	  else
+	    object = new SceneObject(parameters.getLeafMaterial(), 0, false);
 	  BSPPolygonSet* leaf = makeTriangleLeaf(t->getLeftCorner(),
 						 t->getRightCorner(),
 						 t->getApexCorner(),
+						 parameters.useLeafTextures(),
 						 object);
 	  polygons->addPolygons(leaf);
 	  delete leaf;
@@ -382,11 +387,19 @@ BSPPolygonSet* PolygonTreeBuilder<TS,BUD,S>::makePetiole(Point sp, Point ep, Sce
 }
 
 template <class TS, class BUD, class S>
-BSPPolygonSet* PolygonTreeBuilder<TS,BUD,S>::makeTriangleLeaf(Point lc, Point rc, Point ac, SceneObject* object) const {
+BSPPolygonSet* PolygonTreeBuilder<TS,BUD,S>::makeTriangleLeaf(Point lc, Point rc, Point ac, bool use_tex, SceneObject* object) const {
   BSPPolygonSet* polygons = new BSPPolygonSet();
 
-  polygons->addPolygon(new BSPPolygon(lc, rc, ac, object));
-  polygons->addPolygon(new BSPPolygon(lc, ac, rc, object));
+  if(use_tex) {
+    polygons->addPolygon(new BSPPolygon(lc, rc, ac,
+					Point(0,0,0), Point(1,0,0), Point(0.5,1,0), object));
+    polygons->addPolygon(new BSPPolygon(lc, ac, rc,
+					Point(0,0,0), Point(0.5,1,0), Point(1,0,0), object));
+  }
+  else {
+    polygons->addPolygon(new BSPPolygon(lc, rc, ac, object));
+    polygons->addPolygon(new BSPPolygon(lc, ac, rc, object));
+  }
   
   return polygons;
 
