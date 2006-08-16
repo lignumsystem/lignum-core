@@ -406,15 +406,16 @@ TS* XMLDomTreeReader<TS,BUD,S>::parseTreeSegment(QDomNode& node, Tree<TS,BUD>& t
 	  break;
 	}
 
+	child = child.nextSibling();
 	// Object creation
 	ts = new TS(p,v,go,l,r,rh,&tree);
 
 	// Parse the rest of the attributes
 	if(segmentType == "Cf") {
-	  parseCfTreeSegmentAttributes(child.nextSibling(), dynamic_cast<CfTreeSegment<TS,BUD>*>(ts));
+	  parseCfTreeSegmentAttributes(child, dynamic_cast<CfTreeSegment<TS,BUD>*>(ts));
 	}
 	else if(segmentType == "Hw") {
-	  parseHwTreeSegmentAttributes(child.nextSibling(), dynamic_cast<HwTreeSegment<TS,BUD,S>*>(ts));
+	  parseHwTreeSegmentAttributes(child, dynamic_cast<HwTreeSegment<TS,BUD,S>*>(ts));
 	}
 	break;
       }
@@ -458,6 +459,7 @@ BranchingPoint<TS,BUD>* XMLDomTreeReader<TS,BUD,S>::parseBranchingPoint(QDomNode
 	      y = tmp.section(' ', 1, 1).toDouble();
 	      z = tmp.section(' ', 2, 2).toDouble();
 	      v = PositionVector(x, y, z);
+	      child = child.nextSibling();
 	      break;
 	    }
 	  }
@@ -468,7 +470,7 @@ BranchingPoint<TS,BUD>* XMLDomTreeReader<TS,BUD,S>::parseBranchingPoint(QDomNode
 	bpoint = new BranchingPoint<TS, BUD>(p, v, &tree);    
 	
 	// Parse the rest of the attributes
-	parseBranchingPointAttributes(child.nextSibling(), bpoint);
+	parseBranchingPointAttributes(child, bpoint);
 	break;
       }
     }
@@ -527,6 +529,7 @@ BUD* XMLDomTreeReader<TS,BUD,S>::parseBud(QDomNode& bNode, Tree<TS,BUD>& tree) {
 	    }
 	    else if(child.nodeName() == "LGAomega") {
 	      omega = child.toElement().text().toDouble();
+	      child = child.nextSibling();
 	      break;
 	    }
 	  }
@@ -536,7 +539,7 @@ BUD* XMLDomTreeReader<TS,BUD,S>::parseBud(QDomNode& bNode, Tree<TS,BUD>& tree) {
 	bud = new BUD(p, v, omega, &tree);
 	
 	// Parse the rest of the attributes
-	parseBudAttributes(child.nextSibling(), bud);
+	parseBudAttributes(child, bud);
 	break;
       }
     }
