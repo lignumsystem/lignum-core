@@ -562,12 +562,15 @@ BroadLeaf<Triangle>* XMLDomTreeReader<TS,BUD,S>::parseTriangleBroadLeaf(QDomNode
   
   PositionVector normal;
   QString tmp;
+  cout << "leafstart" << endl;
 
   while(!node.isNull()) {
     if(node.isElement()) {
       if(node.nodeName() == "BroadLeafAttributes") {
 	child = node.firstChild();
 	while(true) {
+	  cout << "broad leaf" << endl;
+	
 	  if(!child.isNull() && child.isElement()) {
 	    QDomElement element = child.toElement();
 	    if(child.nodeName() == "LGAsf") { 
@@ -661,8 +664,10 @@ BroadLeaf<Triangle>* XMLDomTreeReader<TS,BUD,S>::parseTriangleBroadLeaf(QDomNode
 	      triangleAC = Point(x, y, z);
 	      leaf = new BroadLeaf<Triangle>(sf, tauL, dof, number_of_sectors, Petiole(pstart, pend),
 				      normal, Triangle(triangleLC, triangleRC, triangleAC));
+	      child = child.nextSibling();
 	      break;
 	    }
+	  
 	  }
 	  break;
 	}
@@ -769,6 +774,7 @@ BroadLeaf<Ellipse>* XMLDomTreeReader<TS,BUD,S>::parseEllipseBroadLeaf(QDomNode& 
 	      eminor = element.text().toDouble();
 	      leaf = new BroadLeaf<Ellipse>(sf, tauL, dof, number_of_sectors, Petiole(pstart, pend),
 				  normal, Ellipse(pend, PositionVector(pend-pstart), normal, emajor, eminor));
+	      child = child.nextSibling();
 	      break;
 	    }
 
@@ -1230,11 +1236,13 @@ void XMLDomTreeReader<TS,BUD,S>::parseHwTreeSegmentAttributes(QDomNode& node, Hw
 
 template <class TS, class BUD, class S>
 void XMLDomTreeReader<TS,BUD,S>::insertLeaf(QDomNode& node, HwTreeSegment<TS,BUD,Ellipse>* ts) {
+  cout << "ellipse insert" << endl;
   InsertLeaf(*ts, parseEllipseBroadLeaf(node));
 }
 
 template <class TS, class BUD, class S>
 void XMLDomTreeReader<TS,BUD,S>::insertLeaf(QDomNode& node, HwTreeSegment<TS,BUD,Triangle>* ts) {
+  cout << "triangle insert" << endl;
   InsertLeaf(*ts, parseTriangleBroadLeaf(node));
 }
 
@@ -1331,7 +1339,7 @@ void XMLDomTreeReader<TS,BUD,S>::parseBudAttributes(QDomNode& node, Bud<TS,BUD>*
 
 template <class TS, class BUD, class S>
 void XMLDomTreeReader<TS,BUD,S>::parseTriangleBroadLeafAttributes(QDomNode& node, BroadLeaf<Triangle>* leaf) {
-  QDomNode child = node.firstChild();
+  QDomNode child = node;
   QString tmp;
   
   while(true) {
@@ -1339,37 +1347,37 @@ void XMLDomTreeReader<TS,BUD,S>::parseTriangleBroadLeafAttributes(QDomNode& node
       if(child.nodeName() == "LGAA") {
 	SetValue(*leaf, LGAA, child.toElement().text().toDouble());
 	child = child.nextSibling();
-	if(child.isNull || !child.isElement())
+	if(child.isNull() || !child.isElement())
 	  break;
       }
       if(child.nodeName() == "LGAP") {
 	SetValue(*leaf, LGAP, child.toElement().text().toDouble());
 	child = child.nextSibling();
-	if(child.isNull || !child.isElement())
+	if(child.isNull() || !child.isElement())
 	  break;
       }
       if(child.nodeName() == "LGAM") {
 	SetValue(*leaf, LGAM, child.toElement().text().toDouble());
 	child = child.nextSibling();
-	if(child.isNull || !child.isElement())
+	if(child.isNull() || !child.isElement())
 	  break;
       }
       if(child.nodeName() == "LGAQabs") {
 	SetValue(*leaf, LGAQabs, child.toElement().text().toDouble());
 	child = child.nextSibling();
-	if(child.isNull || !child.isElement())
+	if(child.isNull() || !child.isElement())
 	  break;
       }
       if(child.nodeName() == "LGAQin") {
 	SetValue(*leaf, LGAQin, child.toElement().text().toDouble());
 	child = child.nextSibling();
-	if(child.isNull || !child.isElement())
+	if(child.isNull() || !child.isElement())
 	  break;
       }
       if(child.nodeName() == "LGAWf") {
 	SetValue(*leaf, LGAWf, child.toElement().text().toDouble());
 	child = child.nextSibling();
-	if(child.isNull || !child.isElement())
+	if(child.isNull() || !child.isElement())
 	  break;
       }
       if(child.nodeName() == "RadiationVector") {
@@ -1382,14 +1390,14 @@ void XMLDomTreeReader<TS,BUD,S>::parseTriangleBroadLeafAttributes(QDomNode& node
 	SetRadiationVector(*leaf, rv);
       }
     }
-
+    break;
   }
   return;
 }
 
 template <class TS, class BUD, class S>
 void XMLDomTreeReader<TS,BUD,S>::parseEllipseBroadLeafAttributes(QDomNode& node, BroadLeaf<Ellipse>* leaf) {
-  QDomNode child = node.firstChild();
+  QDomNode child = node;
   QString tmp;
 
   while(true) {
