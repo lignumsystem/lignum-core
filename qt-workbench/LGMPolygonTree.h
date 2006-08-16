@@ -391,10 +391,34 @@ BSPPolygonSet* PolygonTreeBuilder<TS,BUD,S>::makeTriangleLeaf(Point lc, Point rc
   BSPPolygonSet* polygons = new BSPPolygonSet();
 
   if(use_tex) {
-    polygons->addPolygon(new BSPPolygon(lc, rc, ac,
-					Point(0,0,0), Point(1,0,0), Point(0.5,1,0), object));
-    polygons->addPolygon(new BSPPolygon(lc, ac, rc,
-					Point(0,0,0), Point(0.5,1,0), Point(1,0,0), object));
+    polygons->addPolygon(new BSPPolygon(lc,
+					rc,
+					ac+0.5*(lc-rc),
+					Point(0,0,0),
+					Point(1,0,0),
+					Point(0,1,0),
+					object));
+    polygons->addPolygon(new BSPPolygon(lc,
+					ac+0.5*(lc-rc),
+					rc,
+					Point(0,0,0),
+					Point(0,1,0),
+					Point(1,0,0),
+					object));
+    polygons->addPolygon(new BSPPolygon(rc,
+					ac+0.5*(rc-lc),
+					ac+0.5*(lc-rc),
+					Point(1,0,0),
+					Point(1,1,0),
+					Point(0,1,0),
+					object));
+    polygons->addPolygon(new BSPPolygon(rc,
+					ac+0.5*(lc-rc),
+					ac+0.5*(rc-lc),
+					Point(1,0,0),
+					Point(0,1,0),
+					Point(1,1,0),
+					object));
   }
   else {
     polygons->addPolygon(new BSPPolygon(lc, rc, ac, object));
