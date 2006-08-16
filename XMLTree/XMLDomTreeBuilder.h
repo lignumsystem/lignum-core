@@ -21,7 +21,7 @@ using namespace cxxadt;
  * Note: This class is ONLY for building the DOM-document. To write
  * it to a XML-file use XMLDomTreeWriter-class. 
  */   
-template <class TS, class BUD=DefaultBud<TS>, class S=Ellipse>
+template <class TS, class BUD, class S>
 class XMLDomTreeBuilder
 {
 public:
@@ -97,7 +97,7 @@ QDomElement& XMLDomTreeBuilder<TS, BUD, S>::operator()(QDomElement& prev, TreeCo
   else if (TS* ts = dynamic_cast<TS*>(tc)) {
     QDomElement treeSegment = m_doc.createElement("TreeSegment");
     tmp = QString("NULL");
-    if(HwTreeSegment<TS,BUD>* hw = dynamic_cast<HwTreeSegment<TS,BUD,S>*>(ts)) {
+    if(HwTreeSegment<TS,BUD,S>* hw = dynamic_cast<HwTreeSegment<TS,BUD,S>*>(ts)) {
       if(!segmentTypeFound) {
 	segmentTypeFound = true;
 	m_root.setAttribute("SegmentType", "Hw");
