@@ -31,6 +31,11 @@ using namespace cxxadt;
 //    H(x,y,z)    query turtle heading
 //    L(x,y,z) 	  query turtle left
 //    U(x,y,z)    query turtle up
+//                Note that  lstringToLignum updates the  arguments of
+//                H,L,U. After  derive arguments have  values they are
+//                given or undefined.
+
+
 //See also LsysteI.h for the implementation of the symbols
 class Turtle{
   friend ostream& operator << (ostream& os, const Turtle& t);
