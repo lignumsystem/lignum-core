@@ -106,15 +106,11 @@ void XMLViewer::parseAttributeElement(const QDomElement &element, QTreeWidgetIte
   
   QDomElement child = element.firstChildElement();
   while(!child.isNull()) {
-    if(child.tagName() == "BroadLeaf") {
-      parseBroadLeafElement(child, item);
-    }
-    else {
-      QTreeWidgetItem *childItem = createItem(child, item);
-      QString childName = child.tagName();
-      childItem->setText(0, childName);
-      childItem->setText(1, child.text());
-    }
+    QTreeWidgetItem *childItem = createItem(child, item);
+    QString childName = child.tagName();
+    childItem->setText(0, childName);
+    childItem->setText(1, child.text());
+    
     child = child.nextSiblingElement();
   }
 
@@ -165,6 +161,10 @@ void XMLViewer::parseTreeSegmentElement(const QDomElement &element, QTreeWidgetI
     if(child.tagName() == "TreeSegmentAttributes") {
       parseAttributeElement(child, item);
     }
+    else if(child.tagName() == "BroadLeaf") {
+      parseBroadLeafElement(child, item);
+    }
+
     child = child.nextSiblingElement();
   }
 }
