@@ -5,7 +5,7 @@
 CONFIG+=staticlib
 TEMPLATE = lib
 DESTDIR = lib
-TARGET = c++adt 
+TARGET = cxxadt 
 DEPENDPATH += src include
 INCLUDEPATH += . include
 
