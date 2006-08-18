@@ -6,8 +6,8 @@ TEMPLATE = app
 FORMS = qt_wb.ui
 TARGET += 
 # Input
-HEADERS += LGMPolygonTree.h GLDrawer.h BSPPolygon.h BSPTree.h SceneObject.h BSPPolygonMaterial.h CylinderVolume.h VisualizationParameters.h LignumWB.h VisualizationConfig.h GenericCfTree.h GenericHwTree.h FunctionEditor.h FunctionPainter.h
-SOURCES += GLDrawer.cpp main.cpp BSPPolygon.cpp BSPTree.cpp SceneObject.cpp BSPPolygonMaterial.cpp CylinderVolume.cpp VisualizationParameters.cpp LignumWB.cpp VisualizationConfig.cpp FunctionEditor.cpp FunctionPainter.cpp
+HEADERS += LGMPolygonTree.h GLDrawer.h BSPPolygon.h BSPTree.h SceneObject.h BSPPolygonMaterial.h CylinderVolume.h VisualizationParameters.h LignumWB.h VisualizationConfig.h GenericCfTree.h GenericHwTree.h FunctionEditor.h FunctionPainter.h XMLViewer.h XMLViewerWindow.h
+SOURCES += GLDrawer.cpp main.cpp BSPPolygon.cpp BSPTree.cpp SceneObject.cpp BSPPolygonMaterial.cpp CylinderVolume.cpp VisualizationParameters.cpp LignumWB.cpp VisualizationConfig.cpp FunctionEditor.cpp FunctionPainter.cpp XMLViewer.cpp XMLViewerWindow.cpp
 
 #../SugarMaple/src/SugarMapleSegmentMetabolism.cc
 
