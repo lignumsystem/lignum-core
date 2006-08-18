@@ -168,7 +168,6 @@ Tree<TS,BUD>& XMLDomTreeReader<TS,BUD,S>::readXMLToTree(Tree<TS,BUD>& tree, cons
 
   parseTree(root, tree);
   
-  file.close();
   return tree;
 }
 
