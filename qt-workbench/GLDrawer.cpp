@@ -2,6 +2,7 @@
 #include <QtGui>
 #include <QtOpenGL>
 #include <QHash>
+#include <QMultiHash>
 
 // Standard C/C++ includes
 #include <vector>
@@ -25,7 +26,7 @@ using namespace std;
 using namespace Lignum;
 
 GLDrawer::GLDrawer(QWidget* parent)
-  : QGLWidget(parent)  {
+  : QGLWidget(parent), trees(vector<BSPTree*>(1)), sceneObjects(vector<QMultiHash<int, SceneObject*>* >(1)) {
   resize(400, 300);
   camera_x = 5;
   camera_y = 0.5;
@@ -65,7 +66,10 @@ GLDrawer::GLDrawer(QWidget* parent)
   
   tree_file = QString("test.xml");
 
-  tree = new BSPTree();
+  currentTree = 0;
+  
+  trees[currentTree] = new BSPTree();
+  sceneObjects[currentTree] = NULL;
   setCylinderRDetail(10);
   setCylinderHDetail(1);
   setLeafDetail(10);
@@ -74,7 +78,6 @@ GLDrawer::GLDrawer(QWidget* parent)
   
   control_mode = ORBIT;
   
-  
 }
 
 void GLDrawer::initMaterials() {
@@ -82,9 +85,9 @@ void GLDrawer::initMaterials() {
 		      0.0, 100.0/255.0, 0.0, 1.0,
 		      0.0, 0.1, 0.0, 1.0,
 		      5};
-  GLfloat color2[] = {0.9, 0.2, 0.2, 0.5,
-		      0.9, 0.1, 0.1, 0.5,
-		      0.2, 0.1, 0.1, 0.5,
+  GLfloat color2[] = {0.9, 0.2, 0.2, 1.0,
+		      0.9, 0.1, 0.1, 1.0,
+		      0.2, 0.1, 0.1, 1.0,
 		      50};
   GLfloat color3[] = {1.0, 1.0, 1.0, 1.0,
 		      1.0, 1.0, 1.0, 1.0,
@@ -293,6 +296,11 @@ void GLDrawer::toggleTexturing() {
   updateGL();
 }
 
+/*void GLDrawer::changeTree(const QDomDocument& doc) 
+{
+  
+}*/
+
 void GLDrawer::changeTree() {
   if(!setTextures())
     ;
@@ -302,9 +310,11 @@ void GLDrawer::changeTree() {
     emit textOutput(QString("Tree file %1 is not found!").arg(tree_file));
   }
   else {
-    delete tree;
+    /*delete tree;
     
-    tree = new BSPTree();
+    tree = new BSPTree();*/
+    delete trees[currentTree];
+    trees[currentTree] = new BSPTree();
     BSPPolygonSet polygons;
         
     XMLDomTreeReader<GenericCfTreeSegment, GenericCfBud> cf_reader;
@@ -312,10 +322,14 @@ void GLDrawer::changeTree() {
     if(cf_reader.treeType(tree_file.toStdString()) == XMLDomTreeReader<GenericCfTreeSegment, GenericCfBud>::Cf) {
       Tree<GenericCfTreeSegment, GenericCfBud> cftree(Point(0,0,0), PositionVector(0,1,0));
       cf_reader.readXMLToTree(cftree, tree_file.toStdString());
+
       LGMPolygonTree<GenericCfTreeSegment, GenericCfBud> constructor;
-      BSPPolygonSet* treePolygons = constructor.buildTree(cftree, parameters);
+      BSPPolygonSet* treePolygons = constructor.buildTree(cftree, parameters,
+							  cf_reader.getTreeCompartmentHash(),
+							  cf_reader.getLeafHash());
       polygons.addPolygons(treePolygons);
       delete treePolygons;
+      sceneObjects[currentTree] = constructor.getSceneObjects();
 
       r_axis = GetDirection(GetRootAxis(cftree));
       t_point = GetPoint(cftree);
@@ -330,10 +344,14 @@ void GLDrawer::changeTree() {
 	XMLDomTreeReader<GenericHwTriangleTreeSegment, GenericHwTriangleBud, Triangle> hwt_reader;	
 	Tree<GenericHwTriangleTreeSegment, GenericHwTriangleBud> hwtree(Point(0,0,0), PositionVector(0,1,0));
 	hwt_reader.readXMLToTree(hwtree, tree_file.toStdString());
+
 	LGMPolygonTree<GenericHwTriangleTreeSegment, GenericHwTriangleBud, Triangle> constructor;
-	BSPPolygonSet* treePolygons = constructor.buildTree(hwtree, parameters);
+	BSPPolygonSet* treePolygons = constructor.buildTree(hwtree, parameters,
+							    hwt_reader.getTreeCompartmentHash(),
+							    hwt_reader.getLeafHash());
 	polygons.addPolygons(treePolygons);
 	delete treePolygons;
+	sceneObjects[currentTree] = constructor.getSceneObjects();
 	
 	r_axis = GetDirection(GetRootAxis(hwtree));
 	t_point = GetPoint(hwtree);
@@ -346,10 +364,14 @@ void GLDrawer::changeTree() {
 	XMLDomTreeReader<GenericHwEllipseTreeSegment, GenericHwEllipseBud, Ellipse> hwt_reader;	
 	Tree<GenericHwEllipseTreeSegment, GenericHwEllipseBud> hwtree(Point(0,0,0), PositionVector(0,1,0));
 	hwt_reader.readXMLToTree(hwtree, tree_file.toStdString());
+
 	LGMPolygonTree<GenericHwEllipseTreeSegment, GenericHwEllipseBud, Ellipse> constructor;
-	BSPPolygonSet* treePolygons = constructor.buildTree(hwtree, parameters);
+	BSPPolygonSet* treePolygons = constructor.buildTree(hwtree, parameters,
+							    hwt_reader.getTreeCompartmentHash(),
+							    hwt_reader.getLeafHash());
 	polygons.addPolygons(treePolygons);
 	delete treePolygons;
+	sceneObjects[currentTree] = constructor.getSceneObjects();
 	
 	r_axis = GetDirection(GetRootAxis(hwtree));
 	t_point = GetPoint(hwtree);
@@ -364,14 +386,15 @@ void GLDrawer::changeTree() {
     //				       PositionVector(r_axis.getX(), -r_axis.getZ(), r_axis.getY()), green, 0, 2);
   //polygons.addPolygons(ground);
   // delete ground;
-    
-    tree->buildBSPTree(polygons);
 
-    cout << "polygons: " << tree->countPolygons() << endl;
+    cout << "Building BSP..." << endl;
+    trees[currentTree]->buildBSPTree(polygons);
+
+    cout << "polygons: " << trees[currentTree]->countPolygons() << endl;
     updateGL();
-    cout << "components: " << tree->countComponents() << endl;
-    cout << "depth:" << tree->getDepth() << endl;
-    cout << "nodes:" << tree->getNodeCount() << endl;
+    cout << "components: " << trees[currentTree]->countComponents() << endl;
+    cout << "depth:" << trees[currentTree]->getDepth() << endl;
+    cout << "nodes:" << trees[currentTree]->getNodeCount() << endl;
     
     resetCamera();
 
@@ -440,7 +463,8 @@ void GLDrawer::paintGL()  {
   // Transform from LIGNUM-coordinates to OpenGL-coordinates
   glRotatef(-90, 1, 0, 0);
 
-  tree->drawTree(eye, direction);
+  if(trees[currentTree])
+    trees[currentTree]->drawTree(eye, direction);
   glFlush();
 }
 
@@ -815,4 +839,32 @@ void GLDrawer::freeRoamMode() {
   if(control_mode != MOUSE_LOOK)
     resetCamera();  
   control_mode = MOUSE_LOOK;
+}
+
+void GLDrawer::setObjectsSelected(QList<int> selected) {
+
+  if(sceneObjects[currentTree]) {
+    // Reset previous selection
+    for(int i = 0; i < selectedObjects.size(); i++) {
+      if(sceneObjects[currentTree]->contains(selectedObjects[i])) {
+	QList<SceneObject*> objectList = sceneObjects[currentTree]->values(selectedObjects[i]);
+	for(int j = 0; j < objectList.size(); j++) {
+	  objectList[j]->unsetTempMaterial();
+	}
+      }
+    }
+    
+    // Select new objects
+    selectedObjects = selected;
+    for(int i = 0; i < selectedObjects.size(); i++) {
+      if(sceneObjects[currentTree]->contains(selectedObjects[i])) {
+	QList<SceneObject*> objectList = sceneObjects[currentTree]->values(selectedObjects[i]);
+	for(int j = 0; j < objectList.size(); j++) {
+	  objectList[j]->setTempMaterial(red);
+	}
+      }
+    }
+  }
+  updateGL();
+      
 }

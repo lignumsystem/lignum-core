@@ -2,12 +2,13 @@
 #define GLDRAWER_H
 
 #include <QGLWidget>
+#include <QList>
+#include <QMultiHash>
 #include <BSPTree.h>
 #include <BSPPolygon.h>
 #include <BSPPolygonMaterial.h>
 #include <LGMPolygonTree.h>
 #include <VisualizationParameters.h>
-
 
 class GLDrawer : public QGLWidget
 {
@@ -63,6 +64,7 @@ public slots:
   void orbitCameraMode();
   void moveCenterMode();
   void freeRoamMode();
+  void setObjectsSelected(QList<int>);
   //void moveCameraLeft();
   //void moveCameraRight();
   //void moveCameraUp();
@@ -95,7 +97,7 @@ private:
   GLfloat   DEGTORAD;                          // Conversion coefficient from degrees to radians
   //  static const GLfloat PI = 3.14159265;  
   GLfloat   PI;                                // PI
-  BSPTree   *tree;                             // BSP-tree object
+  //BSPTree   *tree;                             // BSP-tree object
   /*bool      wire;                              // Is wireframe on
   bool      lights_on;                         // Are lights on
   bool      use_textures;                      // Are textures used
@@ -109,7 +111,12 @@ private:
   int       control_mode;
   enum { MOUSE_LOOK, MOVE_TREE, ORBIT };
 
+  int currentTree;
+  vector<BSPTree*>   trees;
+  vector< QMultiHash<int, SceneObject*>* > sceneObjects;
+  QList<int> selectedObjects;
   
+
 };
 
 #endif
