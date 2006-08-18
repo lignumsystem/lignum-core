@@ -7,7 +7,7 @@ DESTDIR = ../bin
 TARGET = l2c
 DEPENDPATH += . 
 INCLUDEPATH += . ../Globals ../Common ../include
-CONFIG  -= app_bundle
+CONFIG  -= app_bundle qt
 # Input
 HEADERS += file.h l2c_tab.h module.h production.h stdmods.h warningset.h xptr.h
 
