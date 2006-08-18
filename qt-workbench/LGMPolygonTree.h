@@ -10,7 +10,8 @@
 #include <Point.h>
 #include <PositionVector.h>
 #include <SceneObject.h>
-
+#include <QHash>
+#include <QMultiHash>
 
 
 using namespace Lignum;
@@ -21,9 +22,12 @@ using namespace cxxadt;
 template <class TS, class BUD=DefaultBud<TS>, class S=Ellipse>
 class PolygonTreeBuilder {
   public:
-  PolygonTreeBuilder(VisualizationParameters params):
-  parameters(params) { }
-  
+  PolygonTreeBuilder(VisualizationParameters params,
+		     QHash<TreeCompartment<TS,BUD>*, int> compartmentHash,
+		     QHash<BroadLeaf<S>*, int> leafHash):
+  parameters(params), objectIndexForTreeCompartment(compartmentHash),
+  objectIndexForLeaf(leafHash) { sceneObjects = new QMultiHash<int, SceneObject*>(); }
+  QMultiHash<int, SceneObject*>* getSceneObjects();
   BSPPolygonSet* operator() (BSPPolygonSet* polygons, TreeCompartment<TS,BUD>* tc) const ;
   
   private:
@@ -47,28 +51,67 @@ class PolygonTreeBuilder {
 
   //  mutable list<CylinderVolume>* cylinders;
   VisualizationParameters parameters;
+  mutable QMultiHash<int, SceneObject*>* sceneObjects;
+  QHash<TreeCompartment<TS,BUD>*, int> objectIndexForTreeCompartment;
+  QHash<BroadLeaf<S>*, int> objectIndexForLeaf;
+  
 };
 
 
 template <class TS, class BUD=DefaultBud<TS>, class S=Ellipse>
-  class LGMPolygonTree {
-  public:
+class LGMPolygonTree {
+public:
   LGMPolygonTree() { }
-  BSPPolygonSet* buildTree(Tree<TS,BUD>& tree, VisualizationParameters params);
+  BSPPolygonSet* buildTree(Tree<TS,BUD>& tree, VisualizationParameters params,
+			   QHash<TreeCompartment<TS,BUD>*, int> compartmentHash,
+			   QHash<BroadLeaf<S>*, int> leafHash);
+  QMultiHash<int, SceneObject*>* getSceneObjects();
 
   private:
+  QMultiHash<int, SceneObject*>* s_objects;
 };
 
+template <class TS, class BUD, class S>
+QMultiHash<int, SceneObject*>* PolygonTreeBuilder<TS,BUD,S>::getSceneObjects() {
+  return sceneObjects;
+}
 
 template <class TS, class BUD, class S>
   BSPPolygonSet* PolygonTreeBuilder<TS,BUD,S>::operator() (BSPPolygonSet* polygons, TreeCompartment<TS,BUD>*tc) const {
+  int object_index = -1;
+  if(objectIndexForTreeCompartment.contains(tc))
+    object_index = objectIndexForTreeCompartment.value(tc);
 
-  if(TreeSegment<TS,BUD>* ts = dynamic_cast<TreeSegment<TS,BUD>*>(tc)) {
+
+  if(BUD* bud = dynamic_cast<BUD*>(tc)) {
+    if(parameters.useBuds()) {
+      SceneObject* object;
+      // Set the appropriate color for the bud
+      if(GetValue(*bud, LGAstate) == ALIVE)
+	object = new SceneObject(parameters.getBudAliveMaterial(), object_index, 0, false);
+      else if(GetValue(*bud, LGAstate) == DEAD)
+	object = new SceneObject(parameters.getBudDeadMaterial(), object_index, 0, false);
+      else if(GetValue(*bud, LGAstate) == DORMANT)
+	object = new SceneObject(parameters.getBudDormantMaterial(), object_index, 0, false);
+      else if(GetValue(*bud, LGAstate) == FLOWER)
+	object = new SceneObject(parameters.getBudFlowerMaterial(), object_index, 0, false);
+      else
+	object = new SceneObject(parameters.getMaterial(), object_index, 0, false);
+      sceneObjects->insert(object_index, object);
+      BSPPolygonSet* budi = makeBud(GetPoint(*bud), GetDirection(*bud), 
+				    parameters.getBudLoDetail(), parameters.getBudLaDetail(), object);
+      polygons->addPolygons(budi);
+      delete budi;
+    }
+  }
+  else if(TreeSegment<TS,BUD>* ts = dynamic_cast<TreeSegment<TS,BUD>*>(tc)) {
     double radius = GetValue(*ts, LGAR);
     double length = GetValue(*ts, LGAL);
     Point point = GetPoint(*ts);
     PositionVector direction = GetDirection(*ts);
-    SceneObject* object = new SceneObject(parameters.getMaterial(), parameters.getSegmentTexture(), false);
+    
+    SceneObject* object = new SceneObject(parameters.getMaterial(), object_index, parameters.getSegmentTexture(), false);
+    sceneObjects->insert(object_index, object);
     BSPPolygonSet* cyl = makeCylinder(radius, length, Point(point.getX(), point.getY(), point.getZ()),
 				      PositionVector(direction.getX(), direction.getY(), direction.getZ()),
 				      true, true, object,
@@ -78,14 +121,17 @@ template <class TS, class BUD, class S>
     //    CylinderVolume cylinder(radius, length, Point(point.getX(), point.getY(), point.getZ()),
     //			    PositionVector(direction.getX(), direction.getY(), direction.getZ()),
     //			    parameters.getCylinderRDetail());
-  //    cylinders->push_back(cylinder);
-
+    //    cylinders->push_back(cylinder);
+    
     if(HwTreeSegment<TS,BUD,S>* hw = dynamic_cast<HwTreeSegment<TS,BUD,S>*>(ts)) {
       list<BroadLeaf<S>*>& ll = GetLeafList(*hw);
       for(typename list<BroadLeaf<S>*>::iterator i = ll.begin(); i != ll.end(); i++) {
+	if(objectIndexForLeaf.contains(*i))
+	  object_index = objectIndexForLeaf.value(*i);
 	const Shape& s = static_cast<const Shape&>(GetShape(**i));
 	Petiole p = GetPetiole(**i);
-	SceneObject* p_object = new SceneObject(parameters.getPetioleMaterial(), 0, false);
+	SceneObject* p_object = new SceneObject(parameters.getPetioleMaterial(), object_index, 0, false);
+	sceneObjects->insert(object_index, p_object);
 	BSPPolygonSet* petiole = makePetiole(GetStartPoint(p),
 					     GetEndPoint(p),
 					     p_object);
@@ -94,9 +140,10 @@ template <class TS, class BUD, class S>
 	if(const Triangle* t = dynamic_cast<const Triangle*>(&s)) {
 	  SceneObject* object;
 	  if(parameters.useLeafTextures())
-	    object = new SceneObject(parameters.getMaterial(), parameters.getLeafTexture(), parameters.useBSP());
+	    object = new SceneObject(parameters.getMaterial(), object_index, parameters.getLeafTexture(), parameters.useBSP());
 	  else
-	    object = new SceneObject(parameters.getLeafMaterial(), 0, false);
+	    object = new SceneObject(parameters.getLeafMaterial(), object_index, 0, false);
+	  sceneObjects->insert(object_index, object);
 	  BSPPolygonSet* leaf = makeTriangleLeaf(t->getLeftCorner(),
 						 t->getRightCorner(),
 						 t->getApexCorner(),
@@ -108,9 +155,10 @@ template <class TS, class BUD, class S>
 	else if(const Ellipse* e = dynamic_cast<const Ellipse*>(&s)) {
 	  SceneObject* object;
 	  if(parameters.useLeafTextures())
-	    object = new SceneObject(parameters.getMaterial(), parameters.getLeafTexture(), parameters.useBSP());
+	    object = new SceneObject(parameters.getMaterial(), object_index, parameters.getLeafTexture(), parameters.useBSP());
 	  else 
-	    object = new SceneObject(parameters.getLeafMaterial(), 0, false);
+	    object = new SceneObject(parameters.getLeafMaterial(), object_index, 0, false);
+	  sceneObjects->insert(object_index, object);
 	  vector<Point> vertices;
 	  BSPPolygonSet* leaf = makeEllipseLeaf(e, parameters.getLeafDetail(), parameters.useLeafTextures(), 
 						object);
@@ -122,46 +170,38 @@ template <class TS, class BUD, class S>
     else if(CfTreeSegment<TS,BUD>* cf = dynamic_cast<CfTreeSegment<TS,BUD>*>(ts)) {
       double fmass = GetValue(*cf, LGAWf);
       if(fmass > R_EPSILON) {
-	object = new SceneObject(parameters.getMaterial(), parameters.getFoliageTexture(), parameters.useBSP());
+	object = new SceneObject(parameters.getMaterial(), object_index, parameters.getFoliageTexture(), parameters.useBSP());
+	sceneObjects->insert(object_index, object);
 	BSPPolygonSet* foliage = makeFoliage(radius, length, point, direction, parameters.getSegmentRDetail(), fmass, object);
 	polygons->addPolygons(foliage);
 	delete foliage;
       }
     }
+    
+  }
 
-  }
-  else if(BUD* bud = dynamic_cast<BUD*>(tc)) {
-    if(parameters.useBuds()) {
-      SceneObject* object;
-      // Set the appropriate color for the bud
-      if(GetValue(*bud, LGAstate) == ALIVE)
-	object = new SceneObject(parameters.getBudAliveMaterial(), 0, false);
-      else if(GetValue(*bud, LGAstate) == DEAD)
-	object = new SceneObject(parameters.getBudDeadMaterial(), 0, false);
-      else if(GetValue(*bud, LGAstate) == DORMANT)
-	object = new SceneObject(parameters.getBudDormantMaterial(), 0, false);
-      else if(GetValue(*bud, LGAstate) == FLOWER)
-	object = new SceneObject(parameters.getBudFlowerMaterial(), 0, false);
-      else
-	object = new SceneObject(parameters.getMaterial(), 0, false);
-      BSPPolygonSet* budi = makeBud(GetPoint(*bud), GetDirection(*bud), 
-				    parameters.getBudLoDetail(), parameters.getBudLaDetail(), object);
-      polygons->addPolygons(budi);
-      delete budi;
-    }
-  }
   return polygons;
 }
 
 template <class TS, class BUD, class S>
-  BSPPolygonSet* LGMPolygonTree<TS,BUD,S>::buildTree(Tree<TS,BUD>& tree, VisualizationParameters params) {
+  BSPPolygonSet* LGMPolygonTree<TS,BUD,S>::buildTree(Tree<TS,BUD>& tree, VisualizationParameters params,
+						     QHash<TreeCompartment<TS,BUD>*, int> compartmentHash,
+						     QHash<BroadLeaf<S>*, int> leafHash) {
   BSPPolygonSet* polygons = new BSPPolygonSet();
 
-  PolygonTreeBuilder<TS,BUD,S> builder(params);  
+  PolygonTreeBuilder<TS,BUD,S> builder(params, compartmentHash, leafHash);  
   PropagateUp(tree, polygons, builder);
+  s_objects = builder.getSceneObjects();
+
+  cout << "s_objects: " << s_objects->size() << endl;
 
   return polygons;
 }
+
+template <class TS, class BUD, class S>
+QMultiHash<int, SceneObject*>* LGMPolygonTree<TS,BUD,S>::getSceneObjects() {
+  return s_objects;
+} 
 
 template <class TS, class BUD, class S>
   BSPPolygonSet* PolygonTreeBuilder<TS,BUD,S>::makeCylinder(double radius, double height, Point point, PositionVector direction, bool drawBottom, bool drawTop, SceneObject* object, int r_detail, int y_detail) const  {
