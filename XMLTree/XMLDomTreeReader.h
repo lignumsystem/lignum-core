@@ -4,14 +4,13 @@
 #include <XMLTree.h>
 
 #include <list>
-//#include <QApplication>
 #include <QDomDocument>
-//#include <QStack>
 #include <Lignum.h>
 #include <string>
 #include <QFile>
 #include <QTextStream>
 #include <QIODevice>
+#include <QHash>
 
 using namespace Lignum;
 using namespace cxxadt;
@@ -34,8 +33,11 @@ public:
   //:tree(t){}
   XMLDomTreeReader() {}  
   Tree<TS,BUD>& readXMLToTree(Tree<TS,BUD>& t, const string& fileName);
+  Tree<TS,BUD>& readXMLToTree(Tree<TS,BUD>& t, const QDomDocument& doc);
   int treeType(const string& fileName);
   int leafType(const string& fileName);
+  QHash<TreeCompartment<TS,BUD>*, int> getTreeCompartmentHash();
+  QHash<BroadLeaf<S>*, int> getLeafHash();
 
   enum {Cf, Hw};
   enum {TRIANGLE, ELLIPSE, NONE};
@@ -65,6 +67,9 @@ private:
 
   // Change this to enum
   QString segmentType;
+  QHash<TreeCompartment<TS,BUD>*, int> objectIndexForTreeCompartment;
+  QHash<BroadLeaf<S>*, int> objectIndexForLeaf;
+
 };
 
 template <class TS, class BUD, class S>
@@ -121,6 +126,8 @@ int XMLDomTreeReader<TS,BUD,S>::leafType(const string& fileName) {
  */ 
 template <class TS, class BUD, class S>
 Tree<TS,BUD>& XMLDomTreeReader<TS,BUD,S>::readXMLToTree(Tree<TS,BUD>& tree, const string& fileName) {
+  objectIndexForTreeCompartment.clear();
+  objectIndexForLeaf.clear();
   QString fName(fileName.c_str());
  
   m_doc = QDomDocument("LMODEL");
@@ -133,6 +140,27 @@ Tree<TS,BUD>& XMLDomTreeReader<TS,BUD,S>::readXMLToTree(Tree<TS,BUD>& tree, cons
     file.close();
     return tree;
   }
+
+  
+  QDomNode root = m_doc.firstChild();
+
+  segmentType = root.toElement().attribute("SegmentType");
+
+  parseTree(root, tree);
+  
+  file.close();
+  return tree;
+
+}
+
+/**
+ * Reads the XML-file to a Tree-object.
+ */ 
+template <class TS, class BUD, class S>
+Tree<TS,BUD>& XMLDomTreeReader<TS,BUD,S>::readXMLToTree(Tree<TS,BUD>& tree, const QDomDocument& doc) {
+  objectIndexForTreeCompartment.clear();
+  objectIndexForLeaf.clear();
+  m_doc = doc;
   
   QDomNode root = m_doc.firstChild();
 
@@ -144,6 +172,18 @@ Tree<TS,BUD>& XMLDomTreeReader<TS,BUD,S>::readXMLToTree(Tree<TS,BUD>& tree, cons
   return tree;
 }
 
+template <class TS, class BUD, class S>
+QHash<TreeCompartment<TS,BUD>*, int> XMLDomTreeReader<TS,BUD,S>::getTreeCompartmentHash() 
+{
+  cout << "objectIndexForTreeCompartment" << objectIndexForTreeCompartment.size() << endl;
+  return objectIndexForTreeCompartment;
+}
+
+template <class TS, class BUD, class S>
+QHash<BroadLeaf<S>*, int> XMLDomTreeReader<TS,BUD,S>::getLeafHash() {
+  cout << "objectIndexForLeaf" << objectIndexForLeaf.size() << endl;
+  return objectIndexForLeaf;
+}
 /**
  * Parses the root element of the XML-document
  */
@@ -245,16 +285,27 @@ void XMLDomTreeReader<TS,BUD,S>::parseRootAxis(QDomNode& axisNode, Axis<TS, BUD>
       }
       // Insert a tree segment to the axis
       else if(node.nodeName() == "TreeSegment") {
-	InsertTreeCompartment(*axis, parseTreeSegment(node, tree));
+	TreeCompartment<TS,BUD>* ts = parseTreeSegment(node, tree);
+	InsertTreeCompartment(*axis, ts);
+	QString o_index = node.toElement().attribute("ObjectIndex");
+	if(!o_index.isEmpty())
+	  objectIndexForTreeCompartment.insert(ts, o_index.toInt());
+	
       }
       // Insert a branching point to the axis
       else if(node.nodeName() == "BranchingPoint") {
-	InsertTreeCompartment(*axis, parseBranchingPoint(node, tree));
+	TreeCompartment<TS,BUD>* bp = parseBranchingPoint(node, tree);
+	InsertTreeCompartment(*axis, bp);
+	
       }
 
       // Insert a bud to the axis
       else if(node.nodeName() == "Bud") {
-	InsertTreeCompartment(*axis, parseBud(node, tree));
+	TreeCompartment<TS,BUD>* bud =  parseBud(node, tree);
+	InsertTreeCompartment(*axis, bud);
+	QString o_index = node.toElement().attribute("ObjectIndex");
+	if(!o_index.isEmpty())
+	  objectIndexForTreeCompartment.insert(bud, o_index.toInt());
       }
     }
     node = node.nextSibling();
@@ -319,13 +370,27 @@ Axis<TS, BUD>* XMLDomTreeReader<TS,BUD,S>::parseAxis(QDomNode& axisNode, Tree<TS
   while(!node.isNull()) {
     if(node.isElement()) {
       if(node.nodeName() == "TreeSegment") {
-	InsertTreeCompartment(*axis, parseTreeSegment(node, tree));
+	TreeCompartment<TS,BUD>* ts = parseTreeSegment(node, tree);
+	InsertTreeCompartment(*axis, ts);
+	QString o_index = node.toElement().attribute("ObjectIndex");
+	if(!o_index.isEmpty())
+	  objectIndexForTreeCompartment.insert(ts, o_index.toInt());
+	
       }
+      // Insert a branching point to the axis
       else if(node.nodeName() == "BranchingPoint") {
-	InsertTreeCompartment(*axis, parseBranchingPoint(node, tree));
+	TreeCompartment<TS,BUD>* bp = parseBranchingPoint(node, tree);
+	InsertTreeCompartment(*axis, bp);
+	
       }
+      
+      // Insert a bud to the axis
       else if(node.nodeName() == "Bud") {
-	InsertTreeCompartment(*axis, parseBud(node, tree));
+	TreeCompartment<TS,BUD>* bud =  parseBud(node, tree);
+	InsertTreeCompartment(*axis, bud);
+	QString o_index = node.toElement().attribute("ObjectIndex");
+	if(!o_index.isEmpty())
+	  objectIndexForTreeCompartment.insert(bud, o_index.toInt());
       }
     }
     node = node.nextSibling();
@@ -1234,12 +1299,22 @@ void XMLDomTreeReader<TS,BUD,S>::parseHwTreeSegmentAttributes(QDomNode& node, Hw
 
 template <class TS, class BUD, class S>
 void XMLDomTreeReader<TS,BUD,S>::insertLeaf(QDomNode& node, HwTreeSegment<TS,BUD,Ellipse>* ts) {
-  InsertLeaf(*ts, parseEllipseBroadLeaf(node));
+  BroadLeaf<S>* leaf = parseEllipseBroadLeaf(node);
+  InsertLeaf(*ts, leaf);
+  QString o_index = node.toElement().attribute(QString("ObjectIndex"));
+  if(!o_index.isEmpty())
+    objectIndexForLeaf.insert(leaf, o_index.toInt());
+  
 }
 
 template <class TS, class BUD, class S>
 void XMLDomTreeReader<TS,BUD,S>::insertLeaf(QDomNode& node, HwTreeSegment<TS,BUD,Triangle>* ts) {
-  InsertLeaf(*ts, parseTriangleBroadLeaf(node));
+  BroadLeaf<S>* leaf = parseTriangleBroadLeaf(node);
+  InsertLeaf(*ts, leaf);
+  QString o_index = node.toElement().attribute(QString("ObjectIndex"));
+  if(!o_index.isEmpty())
+    objectIndexForLeaf.insert(leaf, o_index.toInt());
+
 }
 
 /**
