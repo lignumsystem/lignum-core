@@ -7,7 +7,7 @@ TEMPLATE = lib
 TARGET = L
 DESTDIR = ../lib 
 DEPENDPATH += . 
-INCLUDEPATH += . ../include ../../../c++adt/include
+INCLUDEPATH += . ../include ../../c++adt/include
 
 # Input
 SOURCES +=  Turtle.cc
