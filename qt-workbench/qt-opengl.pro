@@ -19,6 +19,6 @@ INCLUDEPATH += . ../stl-lignum/include ../c++adt/include ../Firmament/include ..
 CONFIG += qt
 QT += opengl xml
 # -L/usr/freeware/lib32 -lglut -lXmu -pine
-LIBS	+= -L../c++adt/lib -L../stl-lignum/lib -L../Firmament/lib -L../LEngine/lib -L../stl-voxelspace/lib -L../Graphics -lVisual -lsky -lL -lvoxel -lLGM  -lc++adt
+LIBS	+= -L../c++adt/lib -L../stl-lignum/lib -L../Firmament/lib -L../LEngine/lib -L../stl-voxelspace/lib  -lsky -lL -lvoxel -lLGM  -lc++adt
 
 #-L../Lig-Crobas -L../SugarMaple -llsys
