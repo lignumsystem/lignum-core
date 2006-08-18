@@ -632,6 +632,8 @@ void XMLDomTreeBuilder<TS,BUD,S>::addHwTreeSegmentAttributeNode(QDomElement& nod
   attrib.appendChild(m_doc.createTextNode(tmp));
   rootNode.appendChild(attrib);
 
+  node.appendChild(rootNode);
+
   list<BroadLeaf<S>*>& ll = GetLeafList(*ts);
   
   for(typename list<BroadLeaf<S>*>::iterator i = ll.begin(); i != ll.end(); i++) {
@@ -642,12 +644,12 @@ void XMLDomTreeBuilder<TS,BUD,S>::addHwTreeSegmentAttributeNode(QDomElement& nod
     else
       leaf.setAttribute("Shape", "Ellipse");
     addBroadLeafAttributeNode(leaf, m_doc, *i);
-    rootNode.appendChild(leaf);
+    node.appendChild(leaf);
   }
 
   node.setAttribute("ObjectIndex", object_index);
   object_index++;
-  node.appendChild(rootNode);
+
 }
 
 /**
