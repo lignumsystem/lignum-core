@@ -12,7 +12,6 @@
 #include <QtGui/QMenu>
 #include <QtGui/QMenuBar>
 #include <QtGui/QPushButton>
-#include <QtGui/QSpacerItem>
 #include <QtGui/QStatusBar>
 #include <QtGui/QTextBrowser>
 #include <QtGui/QToolBar>
@@ -30,6 +29,7 @@ public:
     QAction *actionMove_center;
     QAction *actionWorking_directory;
     QAction *actionFunction_editor;
+    QAction *actionXML_Viewer;
     QWidget *centralwidget;
     QHBoxLayout *hboxLayout;
     QVBoxLayout *vboxLayout;
@@ -38,16 +38,11 @@ public:
     QWidget *widget1;
     QVBoxLayout *vboxLayout1;
     GLDrawer *gldrawer;
-    QVBoxLayout *vboxLayout2;
     QHBoxLayout *hboxLayout2;
-    QHBoxLayout *hboxLayout3;
-    QHBoxLayout *hboxLayout4;
-    QSpacerItem *spacerItem;
-    QHBoxLayout *hboxLayout5;
     QLineEdit *console;
     QPushButton *runButton;
     QPushButton *killButton;
-    QHBoxLayout *hboxLayout6;
+    QHBoxLayout *hboxLayout3;
     QTextBrowser *textBrowser;
     QMenuBar *menubar;
     QMenu *menuValikko;
@@ -79,6 +74,8 @@ public:
     actionWorking_directory->setObjectName(QString::fromUtf8("actionWorking_directory"));
     actionFunction_editor = new QAction(MainWindow);
     actionFunction_editor->setObjectName(QString::fromUtf8("actionFunction_editor"));
+    actionXML_Viewer = new QAction(MainWindow);
+    actionXML_Viewer->setObjectName(QString::fromUtf8("actionXML_Viewer"));
     centralwidget = new QWidget(MainWindow);
     centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
     hboxLayout = new QHBoxLayout(centralwidget);
@@ -103,81 +100,54 @@ public:
     vboxLayout1->setObjectName(QString::fromUtf8("vboxLayout1"));
     gldrawer = new GLDrawer(widget1);
     gldrawer->setObjectName(QString::fromUtf8("gldrawer"));
+    QSizePolicy sizePolicy(static_cast<QSizePolicy::Policy>(7), static_cast<QSizePolicy::Policy>(7));
+    sizePolicy.setHorizontalStretch(0);
+    sizePolicy.setVerticalStretch(0);
+    sizePolicy.setHeightForWidth(gldrawer->sizePolicy().hasHeightForWidth());
+    gldrawer->setSizePolicy(sizePolicy);
 
     vboxLayout1->addWidget(gldrawer);
 
 
     hboxLayout1->addWidget(widget1);
 
-    vboxLayout2 = new QVBoxLayout();
-    vboxLayout2->setSpacing(6);
-    vboxLayout2->setMargin(0);
-    vboxLayout2->setObjectName(QString::fromUtf8("vboxLayout2"));
+
+    vboxLayout->addWidget(widget);
+
     hboxLayout2 = new QHBoxLayout();
     hboxLayout2->setSpacing(6);
     hboxLayout2->setMargin(0);
     hboxLayout2->setObjectName(QString::fromUtf8("hboxLayout2"));
+    console = new QLineEdit(centralwidget);
+    console->setObjectName(QString::fromUtf8("console"));
 
-    vboxLayout2->addLayout(hboxLayout2);
+    hboxLayout2->addWidget(console);
+
+    runButton = new QPushButton(centralwidget);
+    runButton->setObjectName(QString::fromUtf8("runButton"));
+
+    hboxLayout2->addWidget(runButton);
+
+    killButton = new QPushButton(centralwidget);
+    killButton->setObjectName(QString::fromUtf8("killButton"));
+
+    hboxLayout2->addWidget(killButton);
+
+
+    vboxLayout->addLayout(hboxLayout2);
 
     hboxLayout3 = new QHBoxLayout();
     hboxLayout3->setSpacing(6);
     hboxLayout3->setMargin(0);
     hboxLayout3->setObjectName(QString::fromUtf8("hboxLayout3"));
-
-    vboxLayout2->addLayout(hboxLayout3);
-
-    hboxLayout4 = new QHBoxLayout();
-    hboxLayout4->setSpacing(6);
-    hboxLayout4->setMargin(0);
-    hboxLayout4->setObjectName(QString::fromUtf8("hboxLayout4"));
-
-    vboxLayout2->addLayout(hboxLayout4);
-
-    spacerItem = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
-
-    vboxLayout2->addItem(spacerItem);
-
-
-    hboxLayout1->addLayout(vboxLayout2);
-
-
-    vboxLayout->addWidget(widget);
-
-    hboxLayout5 = new QHBoxLayout();
-    hboxLayout5->setSpacing(6);
-    hboxLayout5->setMargin(0);
-    hboxLayout5->setObjectName(QString::fromUtf8("hboxLayout5"));
-    console = new QLineEdit(centralwidget);
-    console->setObjectName(QString::fromUtf8("console"));
-
-    hboxLayout5->addWidget(console);
-
-    runButton = new QPushButton(centralwidget);
-    runButton->setObjectName(QString::fromUtf8("runButton"));
-
-    hboxLayout5->addWidget(runButton);
-
-    killButton = new QPushButton(centralwidget);
-    killButton->setObjectName(QString::fromUtf8("killButton"));
-
-    hboxLayout5->addWidget(killButton);
-
-
-    vboxLayout->addLayout(hboxLayout5);
-
-    hboxLayout6 = new QHBoxLayout();
-    hboxLayout6->setSpacing(6);
-    hboxLayout6->setMargin(0);
-    hboxLayout6->setObjectName(QString::fromUtf8("hboxLayout6"));
     textBrowser = new QTextBrowser(centralwidget);
     textBrowser->setObjectName(QString::fromUtf8("textBrowser"));
     textBrowser->setMaximumSize(QSize(16777215, 120));
 
-    hboxLayout6->addWidget(textBrowser);
+    hboxLayout3->addWidget(textBrowser);
 
 
-    vboxLayout->addLayout(hboxLayout6);
+    vboxLayout->addLayout(hboxLayout3);
 
 
     hboxLayout->addLayout(vboxLayout);
@@ -210,6 +180,7 @@ public:
     menuFile->addAction(actionQuit);
     menuOptions->addAction(actionVisualization_settings);
     menuOptions->addAction(actionWorking_directory);
+    menuTools->addAction(actionXML_Viewer);
     menuTools->addAction(actionFunction_editor);
     toolBar->addAction(actionOrbit);
     toolBar->addAction(actionMove_center);
@@ -230,7 +201,8 @@ public:
     actionOrbit->setText(QApplication::translate("MainWindow", "Orbit", 0, QApplication::UnicodeUTF8));
     actionMove_center->setText(QApplication::translate("MainWindow", "Move center", 0, QApplication::UnicodeUTF8));
     actionWorking_directory->setText(QApplication::translate("MainWindow", "Change working directory...", 0, QApplication::UnicodeUTF8));
-    actionFunction_editor->setText(QApplication::translate("MainWindow", "Function editor", 0, QApplication::UnicodeUTF8));
+    actionFunction_editor->setText(QApplication::translate("MainWindow", "Function editor...", 0, QApplication::UnicodeUTF8));
+    actionXML_Viewer->setText(QApplication::translate("MainWindow", "XML Viewer...", 0, QApplication::UnicodeUTF8));
     gldrawer->setToolTip(QApplication::translate("MainWindow", "OpenGL visualization for Lignum", 0, QApplication::UnicodeUTF8));
     gldrawer->setWhatsThis(QApplication::translate("MainWindow", " Visualization for Lignum", 0, QApplication::UnicodeUTF8));
     runButton->setText(QApplication::translate("MainWindow", "Run", 0, QApplication::UnicodeUTF8));

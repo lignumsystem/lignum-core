@@ -5,14 +5,14 @@
 
 using namespace std;
 
-SceneObject::SceneObject(BSPPolygonMaterial* mat, bool transp)
-  : component_count(0), texture_id(0), transparent(transp), material(mat) {
+SceneObject::SceneObject(BSPPolygonMaterial* mat, int s_id, bool transp)
+  : component_count(0), selection_id(s_id), texture_id(0), transparent(transp), material(mat), backup(NULL){
   n_objects++;
   id = n_objects;
 }
 
-SceneObject::SceneObject(BSPPolygonMaterial* mat, int t_id, bool transp) 
-  : component_count(0), texture_id(t_id), transparent(transp), material(mat) {
+SceneObject::SceneObject(BSPPolygonMaterial* mat, int s_id, int t_id, bool transp) 
+  : component_count(0), selection_id(s_id), texture_id(t_id), transparent(transp), material(mat), backup(NULL) {
   n_objects++;
   id = n_objects;
 }
@@ -23,6 +23,10 @@ int SceneObject::getId() const{
 
 int SceneObject::getMaterialId() const{
   return material->getId();
+}
+
+int SceneObject::getSelectionId() const {
+  return selection_id;
 }
 
 void SceneObject::setMaterial() const{
@@ -80,6 +84,18 @@ bool SceneObject::hasTexture() const {
     return false;
   else
     return true;
+}
+
+void SceneObject::setTempMaterial(BSPPolygonMaterial* mat) {
+  backup = material;
+  material = mat;
+}
+
+void SceneObject::unsetTempMaterial() {
+  if(backup != NULL) {
+    material = backup;
+    backup = NULL;
+  }
 }
 
 int SceneObject::n_objects = 0;

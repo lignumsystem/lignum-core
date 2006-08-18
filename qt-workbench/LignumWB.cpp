@@ -2,7 +2,7 @@
 #include "FunctionEditor.h"
 
 LignumWB::LignumWB(QWidget *parent)
-  : QMainWindow(parent), viz_config(NULL), externalProgram(NULL), function_editor(NULL)
+  : QMainWindow(parent), xml_viewer(NULL), viz_config(NULL), externalProgram(NULL), function_editor(NULL)
 {
   ui.setupUi(this);
   connect(ui.actionQuit, SIGNAL(triggered()), this, SLOT(close()));
@@ -16,6 +16,8 @@ LignumWB::LignumWB(QWidget *parent)
   connect(ui.runButton, SIGNAL(clicked()), this, SLOT(startExternalProgram()));
   connect(ui.killButton, SIGNAL(clicked()), this, SLOT(killExternalProgram()));
   connect(ui.actionFunction_editor, SIGNAL(triggered()), this, SLOT(functionEditor()));
+  connect(ui.actionXML_Viewer, SIGNAL(triggered()), this, SLOT(xmlviewer()));
+
 }
 
 void LignumWB::loadTree() {
@@ -33,6 +35,16 @@ void LignumWB::loadTree() {
     ui.gldrawer->changeTree();
   }
 
+}
+
+void LignumWB::xmlviewer() {
+  if(!xml_viewer) {
+    xml_viewer = new XMLViewerWindow();
+    connect(xml_viewer, SIGNAL(sceneObjectsSelected(QList<int>)), ui.gldrawer, SLOT(setObjectsSelected(QList<int>)));
+  } 
+  xml_viewer->show();
+  xml_viewer->raise();
+  xml_viewer->activateWindow(); 
 }
 
 void LignumWB::functionEditor() {

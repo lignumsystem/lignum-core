@@ -7,24 +7,29 @@
 
 class SceneObject {
 public :
-  SceneObject(BSPPolygonMaterial* material, bool transparent);
-  SceneObject(BSPPolygonMaterial* material, int texture_id, bool transparent);
+  SceneObject(BSPPolygonMaterial* material, int s_id, bool transparent);
+  SceneObject(BSPPolygonMaterial* material, int s_id, int texture_id, bool transparent);
   ~SceneObject();
   int    getId() const;
   int    getMaterialId() const;
+  int    getSelectionId() const;
   void   setMaterial() const;
   int    getComponentCount() const;
   void   increaseComponentCount();
   void   decreaseComponentCount();
   bool   isTransparent() const;
   bool   hasTexture() const;
+  void   setTempMaterial(BSPPolygonMaterial* material);
+  void   unsetTempMaterial();
   int    id;
+  int    selection_id;
   static int n_objects;
 private:
   int    component_count;
   int    texture_id;
   bool   transparent;
   BSPPolygonMaterial* material;
+  BSPPolygonMaterial* backup;
 };
 
 class SceneObjectComponent {

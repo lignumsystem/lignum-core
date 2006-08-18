@@ -6,6 +6,7 @@
 #include "qt_wb.h"
 #include "VisualizationConfig.h"
 #include "FunctionEditor.h"
+#include "XMLViewerWindow.h"
 
 class LignumWB : public QMainWindow
 {
@@ -16,6 +17,7 @@ public:
 
 private:
   Ui::MainWindow ui;
+  XMLViewerWindow* xml_viewer;
   VisualizationConfig* viz_config;
   QProcess *externalProgram;
   FunctionEditor *function_editor;
@@ -25,6 +27,7 @@ private:
 private slots:
   void loadTree();
   void options();
+  void xmlviewer();
   void functionEditor();
   void setWorkingDirectory();
   void startExternalProgram();

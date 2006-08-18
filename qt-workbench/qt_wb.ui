@@ -54,6 +54,14 @@
             </property>
             <item>
              <widget class="GLDrawer" name="gldrawer" >
+              <property name="sizePolicy" >
+               <sizepolicy>
+                <hsizetype>7</hsizetype>
+                <vsizetype>7</vsizetype>
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
               <property name="toolTip" >
                <string>OpenGL visualization for Lignum</string>
               </property>
@@ -64,59 +72,6 @@
             </item>
            </layout>
           </widget>
-         </item>
-         <item>
-          <layout class="QVBoxLayout" >
-           <property name="margin" >
-            <number>0</number>
-           </property>
-           <property name="spacing" >
-            <number>6</number>
-           </property>
-           <item>
-            <layout class="QHBoxLayout" >
-             <property name="margin" >
-              <number>0</number>
-             </property>
-             <property name="spacing" >
-              <number>6</number>
-             </property>
-            </layout>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" >
-             <property name="margin" >
-              <number>0</number>
-             </property>
-             <property name="spacing" >
-              <number>6</number>
-             </property>
-            </layout>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" >
-             <property name="margin" >
-              <number>0</number>
-             </property>
-             <property name="spacing" >
-              <number>6</number>
-             </property>
-            </layout>
-           </item>
-           <item>
-            <spacer>
-             <property name="orientation" >
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" >
-              <size>
-               <width>20</width>
-               <height>40</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-          </layout>
          </item>
         </layout>
        </widget>
@@ -204,6 +159,7 @@
     <property name="title" >
      <string>Tools</string>
     </property>
+    <addaction name="actionXML_Viewer" />
     <addaction name="actionFunction_editor" />
    </widget>
    <addaction name="menuFile" />
@@ -262,7 +218,12 @@
   </action>
   <action name="actionFunction_editor" >
    <property name="text" >
-    <string>Function editor</string>
+    <string>Function editor...</string>
+   </property>
+  </action>
+  <action name="actionXML_Viewer" >
+   <property name="text" >
+    <string>XML Viewer...</string>
    </property>
   </action>
  </widget>
