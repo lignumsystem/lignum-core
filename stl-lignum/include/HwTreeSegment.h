@@ -9,7 +9,7 @@
 #include <LGMUnits.h>
 #include <LGMSymbols.h>
 #include <Firmament.h>
-
+#include <TreeSegment.h>
 namespace Lignum{
 
 template <class TS, class BUD=DefaultBud<TS>, class SHAPE=Ellipse>
