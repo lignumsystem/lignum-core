@@ -481,7 +481,11 @@ TS* XMLDomTreeReader<TS,BUD,S>::parseTreeSegment(QDomNode& node, Tree<TS,BUD>& t
 	else if(segmentType == "Hw") {
 	  parseHwTreeSegmentAttributes(child, dynamic_cast<HwTreeSegment<TS,BUD,S>*>(ts));
 	}
-	break;
+      }
+      
+      else if(node2.nodeName() == "BroadLeaf" && segmentType == "Hw") {
+	if(HwTreeSegment<TS,BUD,S>* hw = dynamic_cast<HwTreeSegment<TS,BUD,S>*>(ts))
+	  insertLeaf(node2, hw);
       }
     }
     node2 = node2.nextSibling();
@@ -1288,9 +1292,14 @@ void XMLDomTreeReader<TS,BUD,S>::parseHwTreeSegmentAttributes(QDomNode& node, Hw
 	if(child.isNull() && !child.isElement())
 	  break;
       }
-      if(child.nodeName() == "BroadLeaf") {
-	insertLeaf(child, ts);
-      }
+      /*  while(true) {
+	if(child.nodeName() == "BroadLeaf") {
+	  insertLeaf(child, ts);
+	}
+	child = child.nextSibling();
+	if(child.isNull() && !child.isElement())
+	  break;
+	  }*/
     }      
     break;
   }
