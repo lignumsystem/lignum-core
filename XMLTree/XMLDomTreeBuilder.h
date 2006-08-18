@@ -26,7 +26,7 @@ class XMLDomTreeBuilder
 {
 public:
   XMLDomTreeBuilder(QDomDocument& doc, QDomElement& root, Tree<TS,BUD>& tree)
-: m_tree(tree), m_doc(doc), m_root(root), segmentTypeFound(false), leafTypeFound(false) {}
+: object_index(0), m_tree(tree), m_doc(doc), m_root(root), segmentTypeFound(false), leafTypeFound(false) {}
   QDomElement& operator() (QDomElement&, TreeCompartment<TS, BUD>*)const ;
   void addTreeCompartmentAttributeNode(QDomElement&, QDomDocument&, TreeCompartment<TS,BUD>*)const;
   void addTreeAttributeNode(QDomElement&, QDomDocument&, Tree<TS,BUD>*)const; 
@@ -39,6 +39,7 @@ public:
   void addBranchingPointAttributeNode(QDomElement&, QDomDocument&, BranchingPoint<TS,BUD>*)const;
   void addBroadLeafAttributeNode(QDomElement&, QDomDocument&, BroadLeaf<S>*)const;
 private:
+  mutable int object_index;
   mutable Tree<TS,BUD>& m_tree;
   mutable QDomDocument m_doc;
   mutable QDomElement m_root;
@@ -565,6 +566,8 @@ void XMLDomTreeBuilder<TS,BUD,S>::addCfTreeSegmentAttributeNode(QDomElement& nod
   attrib.appendChild(m_doc.createTextNode(tmp));
   rootNode.appendChild(attrib);
 
+  node.setAttribute("ObjectIndex", object_index);
+  object_index++;
   node.appendChild(rootNode);
 }
 
@@ -642,6 +645,8 @@ void XMLDomTreeBuilder<TS,BUD,S>::addHwTreeSegmentAttributeNode(QDomElement& nod
     rootNode.appendChild(leaf);
   }
 
+  node.setAttribute("ObjectIndex", object_index);
+  object_index++;
   node.appendChild(rootNode);
 }
 
@@ -691,6 +696,8 @@ void XMLDomTreeBuilder<TS,BUD,S>::addBudAttributeNode(QDomElement& node, QDomDoc
   attrib.appendChild(m_doc.createTextNode(tmp));
   rootNode.appendChild(attrib);
   
+  node.setAttribute("ObjectIndex", object_index);
+  object_index++;
   node.appendChild(rootNode);
 }
 
@@ -865,6 +872,8 @@ void XMLDomTreeBuilder<TS,BUD,S>::addBroadLeafAttributeNode(QDomElement& node, Q
     rootNode.appendChild(attrib);
   }
 
+  node.setAttribute("ObjectIndex", object_index);
+  object_index++;
   node.appendChild(rootNode);
 }
 
