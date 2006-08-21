@@ -22,12 +22,12 @@ class GenericHwTriangleBud : public Bud<GenericHwTriangleTreeSegment, GenericHwT
 
 
 
-class GenericHwEllipseTreeSegment : public HwTreeSegment<GenericHwEllipseTreeSegment, GenericHwEllipseBud, Ellipse> {
+class GenericHwEllipseTreeSegment : public HwTreeSegment<GenericHwEllipseTreeSegment, GenericHwEllipseBud, cxxadt::Ellipse> {
  public:
   GenericHwEllipseTreeSegment(const Point& p, const PositionVector& d, const LGMdouble go,
 			      const METER l, const METER r, const METER rn,
 			      Tree<GenericHwEllipseTreeSegment, GenericHwEllipseBud>* t)
-    : HwTreeSegment<GenericHwEllipseTreeSegment, GenericHwEllipseBud, Ellipse>(p,d,go,l,r,rn,t) { }
+    : HwTreeSegment<GenericHwEllipseTreeSegment, GenericHwEllipseBud, cxxadt::Ellipse>(p,d,go,l,r,rn,t) { }
 };
 
 class GenericHwEllipseBud : public Bud<GenericHwEllipseTreeSegment, GenericHwEllipseBud> {

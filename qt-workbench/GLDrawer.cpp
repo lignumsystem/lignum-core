@@ -361,11 +361,11 @@ void GLDrawer::changeTree() {
 	t_point = Point(t_point.getX(), t_point.getZ(), -t_point.getY());
       }
       else if (cf_reader.leafType(tree_file.toStdString()) == XMLDomTreeReader<GenericCfTreeSegment, GenericCfBud>::ELLIPSE) {
-	XMLDomTreeReader<GenericHwEllipseTreeSegment, GenericHwEllipseBud, Ellipse> hwt_reader;	
+	XMLDomTreeReader<GenericHwEllipseTreeSegment, GenericHwEllipseBud, cxxadt::Ellipse> hwt_reader;	
 	Tree<GenericHwEllipseTreeSegment, GenericHwEllipseBud> hwtree(Point(0,0,0), PositionVector(0,1,0));
 	hwt_reader.readXMLToTree(hwtree, tree_file.toStdString());
 
-	LGMPolygonTree<GenericHwEllipseTreeSegment, GenericHwEllipseBud, Ellipse> constructor;
+	LGMPolygonTree<GenericHwEllipseTreeSegment, GenericHwEllipseBud, cxxadt::Ellipse> constructor;
 	BSPPolygonSet* treePolygons = constructor.buildTree(hwtree, parameters,
 							    hwt_reader.getTreeCompartmentHash(),
 							    hwt_reader.getLeafHash());

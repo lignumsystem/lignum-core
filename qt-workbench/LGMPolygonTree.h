@@ -1,25 +1,22 @@
 #ifndef LGMPOLYGONTREE_H
 #define LGMPOLYGONTREE_H
-
+class Ellipse;
 #include <list>
-#include <Lignum.h>
 #include "CylinderVolume.h"
 //#include <GLDrawer.h>
 #include <BSPPolygon.h>
 #include <BSPPolygonMaterial.h>
-#include <Point.h>
-#include <PositionVector.h>
 #include <SceneObject.h>
 #include <QHash>
 #include <QMultiHash>
-
+#include <Lignum.h>
 
 using namespace Lignum;
 using namespace cxxadt;
 
 #include <VisualizationParameters.h>
 
-template <class TS, class BUD=DefaultBud<TS>, class S=Ellipse>
+template <class TS, class BUD=DefaultBud<TS>, class S=cxxadt::Ellipse>
 class PolygonTreeBuilder {
   public:
   PolygonTreeBuilder(VisualizationParameters params,
@@ -46,7 +43,7 @@ class PolygonTreeBuilder {
 			     int detail, double fmass, SceneObject* object) const;
   BSPPolygonSet* makePetiole(Point sp, Point ep, SceneObject* object) const;
   BSPPolygonSet* makeTriangleLeaf(Point lc, Point rc, Point ac, bool use_tex, SceneObject* object) const;
-  BSPPolygonSet* makeEllipseLeaf(const Ellipse* ellipse, int detail, bool use_tex, SceneObject* object) const;
+  BSPPolygonSet* makeEllipseLeaf(const cxxadt::Ellipse* ellipse, int detail, bool use_tex, SceneObject* object) const;
   BSPPolygonSet* makeBud(Point point, PositionVector direction, int la_detail, int lo_detail, SceneObject* object) const;
 
   //  mutable list<CylinderVolume>* cylinders;
@@ -58,7 +55,7 @@ class PolygonTreeBuilder {
 };
 
 
-template <class TS, class BUD=DefaultBud<TS>, class S=Ellipse>
+template <class TS, class BUD=DefaultBud<TS>, class S=cxxadt::Ellipse>
 class LGMPolygonTree {
 public:
   LGMPolygonTree() { }
@@ -152,7 +149,7 @@ template <class TS, class BUD, class S>
 	  polygons->addPolygons(leaf);
 	  delete leaf;
 	}
-	else if(const Ellipse* e = dynamic_cast<const Ellipse*>(&s)) {
+	else if(const cxxadt::Ellipse* e = dynamic_cast<const cxxadt::Ellipse*>(&s)) {
 	  SceneObject* object;
 	  if(parameters.useLeafTextures())
 	    object = new SceneObject(parameters.getMaterial(), object_index, parameters.getLeafTexture(), parameters.useBSP());
@@ -471,7 +468,7 @@ BSPPolygonSet* PolygonTreeBuilder<TS,BUD,S>::makeTriangleLeaf(Point lc, Point rc
 
 
 template <class TS, class BUD, class S>
-  BSPPolygonSet* PolygonTreeBuilder<TS,BUD,S>::makeEllipseLeaf(const Ellipse* ellipse, int detail, bool use_tex, SceneObject* object) const {
+  BSPPolygonSet* PolygonTreeBuilder<TS,BUD,S>::makeEllipseLeaf(const cxxadt::Ellipse* ellipse, int detail, bool use_tex, SceneObject* object) const {
   BSPPolygonSet* polygons = new BSPPolygonSet();
   if(use_tex) {
     Point p1(ellipse->getCenterPoint() +
