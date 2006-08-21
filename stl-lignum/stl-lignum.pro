@@ -3,6 +3,7 @@
 ######################################################################
 
 CONFIG+=staticlib
+CONFIG-=qt
 TEMPLATE =  lib 
 DESTDIR = lib
 TARGET = LGM
