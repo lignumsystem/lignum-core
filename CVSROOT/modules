@@ -64,7 +64,8 @@ Poplar                -s Alice                &c++adt &stl-lignum &Firmament &LE
 maple                                         &c++adt &stl-lignum &Firmament &LEngine &Graphics &stl-voxelspace &XMLTree &qt-workbench &SugarMaple
 Lignum-Crobas                                 &c++adt &stl-lignum &Firmament &LEngine &Graphics &stl-voxelspace &Pine &ScotsPine &ScotsPineVisual &XMLTree &qt-workbench &Lig-Crobas
 DataTree             -s JariP                 DataTree
-DataTreeAll                                   &c++adt &stl-lignum &Firmament &stl-voxelspace &Pine &Graphics &DataTree
+DataRoot                                      DataRoot
+DataTreeAll                                   &c++adt &stl-lignum &Firmament &stl-voxelspace &Pine &Graphics &DataTree &DataRoot
 ShootModel                                    ShootModel  
 ShootModelAll                                 &c++adt &stl-lignum &Firmament &stl-voxelspace &LEngine &Pine &Graphics &ShootModel
 Cowberry             -s JariP                 Cowberry
