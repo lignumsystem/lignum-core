@@ -14,7 +14,7 @@
 using namespace Lignum;
 using namespace cxxadt;
 
-template <class TS, class BUD = DefaultBud<TS>, class S = Ellipse>
+template <class TS, class BUD = DefaultBud<TS>, class S = cxxadt::Ellipse>
 class XMLDomTreeWriter
 {
 public:

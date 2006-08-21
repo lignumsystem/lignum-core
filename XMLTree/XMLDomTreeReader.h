@@ -25,7 +25,7 @@ using namespace cxxadt;
  * by calling the readXMLToTree-function of the XMLDomTreeReader-object.
  */
 
-template <class TS, class BUD, class S = Ellipse>
+template <class TS, class BUD, class S = cxxadt::Ellipse>
 class XMLDomTreeReader
 {
 public:
@@ -49,7 +49,7 @@ private:
   BranchingPoint<TS,BUD>* parseBranchingPoint(QDomNode&, Tree<TS,BUD>& );
   BUD* parseBud(QDomNode&, Tree<TS,BUD>& );
   BroadLeaf<Triangle>* parseTriangleBroadLeaf(QDomNode&);
-  BroadLeaf<Ellipse>* parseEllipseBroadLeaf(QDomNode&);
+  BroadLeaf<cxxadt::Ellipse>* parseEllipseBroadLeaf(QDomNode&);
   void parseTreeParameters(QDomNode&, Tree<TS,BUD>&);
   void parseTreeAttributes(QDomNode&, Tree<TS,BUD>&);
   void parseTreeFunctions(QDomNode&, Tree<TS,BUD>&);
@@ -59,8 +59,8 @@ private:
   void parseBranchingPointAttributes(QDomNode&, BranchingPoint<TS,BUD>*);
   void parseBudAttributes(QDomNode&, Bud<TS,BUD>*);
   void parseTriangleBroadLeafAttributes(QDomNode&, BroadLeaf<Triangle>*);
-  void parseEllipseBroadLeafAttributes(QDomNode&, BroadLeaf<Ellipse>*);
-  void insertLeaf(QDomNode&, HwTreeSegment<TS,BUD,Ellipse>*);
+  void parseEllipseBroadLeafAttributes(QDomNode&, BroadLeaf<cxxadt::Ellipse>*);
+  void insertLeaf(QDomNode&, HwTreeSegment<TS,BUD,cxxadt::Ellipse>*);
   void insertLeaf(QDomNode&, HwTreeSegment<TS,BUD,Triangle>*); 
 
   QDomDocument m_doc;			  
@@ -749,8 +749,8 @@ BroadLeaf<Triangle>* XMLDomTreeReader<TS,BUD,S>::parseTriangleBroadLeaf(QDomNode
 }
 
 template <class TS, class BUD, class S>
-BroadLeaf<Ellipse>* XMLDomTreeReader<TS,BUD,S>::parseEllipseBroadLeaf(QDomNode& leafNode) {
-  BroadLeaf<Ellipse>* leaf;
+BroadLeaf<cxxadt::Ellipse>* XMLDomTreeReader<TS,BUD,S>::parseEllipseBroadLeaf(QDomNode& leafNode) {
+  BroadLeaf<cxxadt::Ellipse>* leaf;
   QDomNode node = leafNode.firstChild();
   QDomNode child;
   double sf, tauL, dof, x, y, z, eminor, emajor;
@@ -838,8 +838,8 @@ BroadLeaf<Ellipse>* XMLDomTreeReader<TS,BUD,S>::parseEllipseBroadLeaf(QDomNode& 
 	    }
 	    if (child.nodeName() == "EllipseSMinorA") {
 	      eminor = element.text().toDouble();
-	      leaf = new BroadLeaf<Ellipse>(sf, tauL, dof, number_of_sectors, Petiole(pstart, pend),
-				  normal, Ellipse(pend, PositionVector(pend-pstart), normal, emajor, eminor));
+	      leaf = new BroadLeaf<cxxadt::Ellipse>(sf, tauL, dof, number_of_sectors, Petiole(pstart, pend),
+				  normal, cxxadt::Ellipse(pend, PositionVector(pend-pstart), normal, emajor, eminor));
 	      child = child.nextSibling();
 	      break;
 	    }
@@ -1306,7 +1306,7 @@ void XMLDomTreeReader<TS,BUD,S>::parseHwTreeSegmentAttributes(QDomNode& node, Hw
 }
 
 template <class TS, class BUD, class S>
-void XMLDomTreeReader<TS,BUD,S>::insertLeaf(QDomNode& node, HwTreeSegment<TS,BUD,Ellipse>* ts) {
+void XMLDomTreeReader<TS,BUD,S>::insertLeaf(QDomNode& node, HwTreeSegment<TS,BUD,cxxadt::Ellipse>* ts) {
   BroadLeaf<S>* leaf = parseEllipseBroadLeaf(node);
   InsertLeaf(*ts, leaf);
   QString o_index = node.toElement().attribute(QString("ObjectIndex"));
@@ -1475,7 +1475,7 @@ void XMLDomTreeReader<TS,BUD,S>::parseTriangleBroadLeafAttributes(QDomNode& node
 }
 
 template <class TS, class BUD, class S>
-void XMLDomTreeReader<TS,BUD,S>::parseEllipseBroadLeafAttributes(QDomNode& node, BroadLeaf<Ellipse>* leaf) {
+void XMLDomTreeReader<TS,BUD,S>::parseEllipseBroadLeafAttributes(QDomNode& node, BroadLeaf<cxxadt::Ellipse>* leaf) {
   QDomNode child = node;
   QString tmp;
 
