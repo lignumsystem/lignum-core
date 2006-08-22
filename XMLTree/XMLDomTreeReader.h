@@ -174,13 +174,11 @@ Tree<TS,BUD>& XMLDomTreeReader<TS,BUD,S>::readXMLToTree(Tree<TS,BUD>& tree, cons
 template <class TS, class BUD, class S>
 QHash<TreeCompartment<TS,BUD>*, int> XMLDomTreeReader<TS,BUD,S>::getTreeCompartmentHash() 
 {
-  cout << "objectIndexForTreeCompartment" << objectIndexForTreeCompartment.size() << endl;
   return objectIndexForTreeCompartment;
 }
 
 template <class TS, class BUD, class S>
 QHash<BroadLeaf<S>*, int> XMLDomTreeReader<TS,BUD,S>::getLeafHash() {
-  cout << "objectIndexForLeaf" << objectIndexForLeaf.size() << endl;
   return objectIndexForLeaf;
 }
 /**
