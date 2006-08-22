@@ -2,7 +2,7 @@
 #include "FunctionEditor.h"
 
 LignumWB::LignumWB(QWidget *parent)
-  : QMainWindow(parent), xml_viewer(NULL), viz_config(NULL), externalProgram(NULL), function_editor(NULL)
+  : QMainWindow(parent), xml_viewer(NULL), viz_config(NULL), externalProgram(NULL)
 {
   ui.setupUi(this);
   connect(ui.actionQuit, SIGNAL(triggered()), this, SLOT(close()));
@@ -17,6 +17,14 @@ LignumWB::LignumWB(QWidget *parent)
   connect(ui.killButton, SIGNAL(clicked()), this, SLOT(killExternalProgram()));
   connect(ui.actionFunction_editor, SIGNAL(triggered()), this, SLOT(functionEditor()));
   connect(ui.actionXML_Viewer, SIGNAL(triggered()), this, SLOT(xmlviewer()));
+
+  viewActions = new QActionGroup(this);
+  viewActions->addAction(ui.actionFree_roam);
+  viewActions->addAction(ui.actionOrbit);
+  viewActions->addAction(ui.actionMove_center);
+  ui.actionOrbit->setChecked(true);
+  
+  viewActions->setExclusive(true);
 
 }
 
@@ -48,9 +56,9 @@ void LignumWB::xmlviewer() {
 }
 
 void LignumWB::functionEditor() {
-  if(!function_editor) {
-    function_editor = new FunctionEditor();
-  } 
+  //  if(!function_editor) {
+  FunctionEditor* function_editor = new FunctionEditor();
+    //} 
   function_editor->show();
   function_editor->raise();
   function_editor->activateWindow(); 

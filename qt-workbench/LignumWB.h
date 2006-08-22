@@ -20,7 +20,8 @@ private:
   XMLViewerWindow* xml_viewer;
   VisualizationConfig* viz_config;
   QProcess *externalProgram;
-  FunctionEditor *function_editor;
+  //  FunctionEditor *function_editor;
+  QActionGroup *viewActions;
 
   void clearExternalProgram();
 
