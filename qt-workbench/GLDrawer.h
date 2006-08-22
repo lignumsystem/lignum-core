@@ -111,9 +111,8 @@ private:
   int       control_mode;
   enum { MOUSE_LOOK, MOVE_TREE, ORBIT };
 
-  int currentTree;
-  vector<BSPTree*>   trees;
-  vector< QMultiHash<int, SceneObject*>* > sceneObjects;
+  BSPTree* tree;
+  QMultiHash<int, SceneObject*>* sceneObjects;
   QList<int> selectedObjects;
   
 
