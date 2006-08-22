@@ -46,9 +46,9 @@ public:
     QTextBrowser *textBrowser;
     QMenuBar *menubar;
     QMenu *menuValikko;
-    QMenu *menuFile;
     QMenu *menuOptions;
     QMenu *menuTools;
+    QMenu *menuFile;
     QStatusBar *statusbar;
     QToolBar *toolBar;
 
@@ -66,10 +66,14 @@ public:
     actionVisualization_settings->setObjectName(QString::fromUtf8("actionVisualization_settings"));
     actionFree_roam = new QAction(MainWindow);
     actionFree_roam->setObjectName(QString::fromUtf8("actionFree_roam"));
+    actionFree_roam->setCheckable(true);
     actionOrbit = new QAction(MainWindow);
     actionOrbit->setObjectName(QString::fromUtf8("actionOrbit"));
+    actionOrbit->setCheckable(true);
+    actionOrbit->setChecked(false);
     actionMove_center = new QAction(MainWindow);
     actionMove_center->setObjectName(QString::fromUtf8("actionMove_center"));
+    actionMove_center->setCheckable(true);
     actionWorking_directory = new QAction(MainWindow);
     actionWorking_directory->setObjectName(QString::fromUtf8("actionWorking_directory"));
     actionFunction_editor = new QAction(MainWindow);
@@ -105,6 +109,7 @@ public:
     sizePolicy.setVerticalStretch(0);
     sizePolicy.setHeightForWidth(gldrawer->sizePolicy().hasHeightForWidth());
     gldrawer->setSizePolicy(sizePolicy);
+    gldrawer->setAcceptDrops(true);
 
     vboxLayout1->addWidget(gldrawer);
 
@@ -158,12 +163,12 @@ public:
     menubar->setGeometry(QRect(0, 0, 953, 26));
     menuValikko = new QMenu(menubar);
     menuValikko->setObjectName(QString::fromUtf8("menuValikko"));
-    menuFile = new QMenu(menubar);
-    menuFile->setObjectName(QString::fromUtf8("menuFile"));
     menuOptions = new QMenu(menubar);
     menuOptions->setObjectName(QString::fromUtf8("menuOptions"));
     menuTools = new QMenu(menubar);
     menuTools->setObjectName(QString::fromUtf8("menuTools"));
+    menuFile = new QMenu(menubar);
+    menuFile->setObjectName(QString::fromUtf8("menuFile"));
     MainWindow->setMenuBar(menubar);
     statusbar = new QStatusBar(MainWindow);
     statusbar->setObjectName(QString::fromUtf8("statusbar"));
@@ -176,12 +181,12 @@ public:
     menubar->addAction(menuFile->menuAction());
     menubar->addAction(menuOptions->menuAction());
     menubar->addAction(menuTools->menuAction());
-    menuFile->addAction(actionLoad_tree);
-    menuFile->addAction(actionQuit);
     menuOptions->addAction(actionVisualization_settings);
     menuOptions->addAction(actionWorking_directory);
     menuTools->addAction(actionXML_Viewer);
     menuTools->addAction(actionFunction_editor);
+    menuFile->addAction(actionLoad_tree);
+    menuFile->addAction(actionQuit);
     toolBar->addAction(actionOrbit);
     toolBar->addAction(actionMove_center);
     toolBar->addAction(actionFree_roam);
@@ -208,9 +213,9 @@ public:
     runButton->setText(QApplication::translate("MainWindow", "Run", 0, QApplication::UnicodeUTF8));
     killButton->setText(QApplication::translate("MainWindow", "Kill program", 0, QApplication::UnicodeUTF8));
     menuValikko->setTitle(QApplication::translate("MainWindow", "valikko", 0, QApplication::UnicodeUTF8));
-    menuFile->setTitle(QApplication::translate("MainWindow", "File", 0, QApplication::UnicodeUTF8));
     menuOptions->setTitle(QApplication::translate("MainWindow", "Options", 0, QApplication::UnicodeUTF8));
     menuTools->setTitle(QApplication::translate("MainWindow", "Tools", 0, QApplication::UnicodeUTF8));
+    menuFile->setTitle(QApplication::translate("MainWindow", "File", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 
 };
