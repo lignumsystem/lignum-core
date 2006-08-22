@@ -26,7 +26,7 @@ using namespace std;
 using namespace Lignum;
 
 GLDrawer::GLDrawer(QWidget* parent)
-  : QGLWidget(parent), trees(vector<BSPTree*>(1)), sceneObjects(vector<QMultiHash<int, SceneObject*>* >(1)) {
+  : QGLWidget(parent) {
   resize(400, 300);
   camera_x = 5;
   camera_y = 0.5;
@@ -65,11 +65,9 @@ GLDrawer::GLDrawer(QWidget* parent)
   srand((unsigned)time(0)); 
   
   tree_file = QString("test.xml");
-
-  currentTree = 0;
   
-  trees[currentTree] = new BSPTree();
-  sceneObjects[currentTree] = NULL;
+  tree = new BSPTree();
+  sceneObjects = NULL;
   setCylinderRDetail(10);
   setCylinderHDetail(1);
   setLeafDetail(10);
@@ -312,8 +310,8 @@ void GLDrawer::changeTree() {
     /*delete tree;
     
     tree = new BSPTree();*/
-    delete trees[currentTree];
-    trees[currentTree] = new BSPTree();
+    delete tree;
+    tree = new BSPTree();
     BSPPolygonSet polygons;
         
     XMLDomTreeReader<GenericCfTreeSegment, GenericCfBud> cf_reader;
@@ -328,7 +326,7 @@ void GLDrawer::changeTree() {
 							  cf_reader.getLeafHash());
       polygons.addPolygons(treePolygons);
       delete treePolygons;
-      sceneObjects[currentTree] = constructor.getSceneObjects();
+      sceneObjects = constructor.getSceneObjects();
 
       r_axis = GetDirection(GetRootAxis(cftree));
       t_point = GetPoint(cftree);
@@ -350,7 +348,7 @@ void GLDrawer::changeTree() {
 							    hwt_reader.getLeafHash());
 	polygons.addPolygons(treePolygons);
 	delete treePolygons;
-	sceneObjects[currentTree] = constructor.getSceneObjects();
+	sceneObjects = constructor.getSceneObjects();
 	
 	r_axis = GetDirection(GetRootAxis(hwtree));
 	t_point = GetPoint(hwtree);
@@ -370,7 +368,7 @@ void GLDrawer::changeTree() {
 							    hwt_reader.getLeafHash());
 	polygons.addPolygons(treePolygons);
 	delete treePolygons;
-	sceneObjects[currentTree] = constructor.getSceneObjects();
+	sceneObjects = constructor.getSceneObjects();
 	
 	r_axis = GetDirection(GetRootAxis(hwtree));
 	t_point = GetPoint(hwtree);
@@ -383,17 +381,16 @@ void GLDrawer::changeTree() {
     
     //BSPPolygonSet* ground = makeSquare(10, 10, Point(t_point.getX(), -t_point.getZ(), t_point.getY()),
     //				       PositionVector(r_axis.getX(), -r_axis.getZ(), r_axis.getY()), green, 0, 2);
-  //polygons.addPolygons(ground);
-  // delete ground;
+    //polygons.addPolygons(ground);
+    //delete ground;
 
-    cout << "Building BSP..." << endl;
-    trees[currentTree]->buildBSPTree(polygons);
+    tree->buildBSPTree(polygons);
 
-    cout << "polygons: " << trees[currentTree]->countPolygons() << endl;
+    cout << "polygons: " << tree->countPolygons() << endl;
     updateGL();
-    cout << "components: " << trees[currentTree]->countComponents() << endl;
-    cout << "depth:" << trees[currentTree]->getDepth() << endl;
-    cout << "nodes:" << trees[currentTree]->getNodeCount() << endl;
+    cout << "components: " << tree->countComponents() << endl;
+    cout << "depth:" << tree->getDepth() << endl;
+    cout << "nodes:" << tree->getNodeCount() << endl;
     
     resetCamera();
 
@@ -465,8 +462,8 @@ void GLDrawer::paintGL()  {
   
 
 
-  if(trees[currentTree])
-    trees[currentTree]->drawTree(eye, direction);
+  if(tree)
+    tree->drawTree(eye, direction);
   glFlush();
 }
 
@@ -857,11 +854,11 @@ void GLDrawer::freeRoamMode() {
 
 void GLDrawer::setObjectsSelected(QList<int> selected) {
 
-  if(sceneObjects[currentTree]) {
+  if(sceneObjects) {
     // Reset previous selection
     for(int i = 0; i < selectedObjects.size(); i++) {
-      if(sceneObjects[currentTree]->contains(selectedObjects[i])) {
-	QList<SceneObject*> objectList = sceneObjects[currentTree]->values(selectedObjects[i]);
+      if(sceneObjects->contains(selectedObjects[i])) {
+	QList<SceneObject*> objectList = sceneObjects->values(selectedObjects[i]);
 	for(int j = 0; j < objectList.size(); j++) {
 	  objectList[j]->unsetTempMaterial();
 	}
@@ -871,8 +868,8 @@ void GLDrawer::setObjectsSelected(QList<int> selected) {
     // Select new objects
     selectedObjects = selected;
     for(int i = 0; i < selectedObjects.size(); i++) {
-      if(sceneObjects[currentTree]->contains(selectedObjects[i])) {
-	QList<SceneObject*> objectList = sceneObjects[currentTree]->values(selectedObjects[i]);
+      if(sceneObjects->contains(selectedObjects[i])) {
+	QList<SceneObject*> objectList = sceneObjects->values(selectedObjects[i]);
 	for(int j = 0; j < objectList.size(); j++) {
 	  objectList[j]->setTempMaterial(red);
 	}
