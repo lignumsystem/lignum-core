@@ -116,6 +116,8 @@ void LignumWB::startExternalProgram() {
 
 void LignumWB::endExternalProgram(int exitCode, QProcess::ExitStatus exitStatus) {
   clearExternalProgram();
+  delete externalProgram;
+  externalProgram = NULL;
   if(exitStatus == QProcess::NormalExit)
     ui.textBrowser->append(QString("External program exited normally."));
   else
@@ -128,8 +130,9 @@ void LignumWB::addExternalOutput() {
 }
 
 void LignumWB::externalError(QProcess::ProcessError error) {
-  ui.textBrowser->append(QString("Error running the external program. Exiting."));
+  ui.textBrowser->append(QString("Error running the external program. Exiting(%1).").arg(error));
   clearExternalProgram();
+  externalProgram = NULL;
 }
 
 void LignumWB::killExternalProgram() {
@@ -144,6 +147,5 @@ void LignumWB::clearExternalProgram() {
 	     this, SLOT(addExternalOutput()));
   disconnect(externalProgram, SIGNAL(error(QProcess::ProcessError)),
 	     this, SLOT(externalError(QProcess::ProcessError)));
-  delete externalProgram;
-  externalProgram = NULL;
+
 }
