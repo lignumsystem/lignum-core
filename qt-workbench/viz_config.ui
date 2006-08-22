@@ -267,6 +267,13 @@
                </property>
               </widget>
              </item>
+             <item>
+              <widget class="QLabel" name="foliageLabe" >
+               <property name="text" >
+                <string>Folige detail</string>
+               </property>
+              </widget>
+             </item>
             </layout>
            </item>
            <item>
@@ -291,6 +298,9 @@
              </item>
              <item>
               <widget class="QSpinBox" name="budlaBox" />
+             </item>
+             <item>
+              <widget class="QSpinBox" name="foliageBox" />
              </item>
             </layout>
            </item>
