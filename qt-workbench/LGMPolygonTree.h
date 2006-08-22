@@ -40,7 +40,7 @@ class PolygonTreeBuilder {
 			       int y_detail) const;
 
   BSPPolygonSet* makeFoliage(double radius, double height, Point point, PositionVector direction,
-			     int detail, double fmass, SceneObject* object) const;
+			     int f_detail, int s_detail, double fmass, SceneObject* object) const;
   BSPPolygonSet* makePetiole(Point sp, Point ep, SceneObject* object) const;
   BSPPolygonSet* makeTriangleLeaf(Point lc, Point rc, Point ac, bool use_tex, SceneObject* object) const;
   BSPPolygonSet* makeEllipseLeaf(const cxxadt::Ellipse* ellipse, int detail, bool use_tex, SceneObject* object) const;
@@ -169,7 +169,8 @@ template <class TS, class BUD, class S>
       if(fmass > R_EPSILON) {
 	object = new SceneObject(parameters.getMaterial(), object_index, parameters.getFoliageTexture(), parameters.useBSP());
 	sceneObjects->insert(object_index, object);
-	BSPPolygonSet* foliage = makeFoliage(radius, length, point, direction, parameters.getSegmentRDetail(), fmass, object);
+	BSPPolygonSet* foliage = makeFoliage(radius, length, point, direction, parameters.getFoliageDetail(),
+					     parameters.getSegmentRDetail(), fmass, object);
 	polygons->addPolygons(foliage);
 	delete foliage;
       }
@@ -299,8 +300,8 @@ template <class TS, class BUD, class S>
 }
 
 template <class TS, class BUD, class S>
-  BSPPolygonSet* PolygonTreeBuilder<TS,BUD,S>::makeFoliage(double radius, double height, Point point, PositionVector direction,
-							   int detail, double fmass, SceneObject* object) const {
+BSPPolygonSet* PolygonTreeBuilder<TS,BUD,S>::makeFoliage(double radius, double height, Point point, PositionVector direction,
+							   int f_detail, int s_detail, double fmass, SceneObject* object) const {
   BSPPolygonSet* polygons = new BSPPolygonSet();
   double sine, cosine, sine_next, cosine_next;
   double y, y_next;
@@ -321,10 +322,10 @@ template <class TS, class BUD, class S>
     return polygons;
   //int directions = static_cast<int>(amount2 / needles_per_plane);
 
-  if(detail == 0)
+  if(f_detail == 0)
     return polygons;
 
-  int y_detail = (int)(height/0.05);
+  int y_detail = (int)(height/0.15);
   
   PositionVector dir(direction.normalize().getX()/2.0,
 		     (1+direction.normalize().getY())/2.0,
@@ -334,13 +335,16 @@ template <class TS, class BUD, class S>
 
   Point origo(0,0,0);
 
+  Point p1(radius*sin(0.0), radius*cos(0.0), 0);
+  Point p2(radius*sin(1.0/s_detail*2*PI), radius*cos(1.0/s_detail*2*PI), 0);
+  radius = PositionVector(0.5*(p1+p2)).length(); 
   for(int j = 0; j < y_detail; j++) {
     y = j/(double)y_detail*height;
     y_next = (j+1)/(double)y_detail*height;
 
-    for(int i = 0; i < detail; i++) {
-      sine = radius*sin(i/(double)detail*2*PI);
-      cosine = radius*cos(i/(double)detail*2*PI);
+    for(int i = 0; i < f_detail; i++) {
+      sine = radius*sin(i/(double)f_detail*2*PI);
+      cosine = radius*cos(i/(double)f_detail*2*PI);
       sine_next = sine*(needle_length+radius)/radius;
       cosine_next = cosine*(needle_length+radius)/radius;
 
