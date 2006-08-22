@@ -61,6 +61,7 @@ void VisualizationConfig::setSettings(VisualizationParameters params) {
   ui.budloBox->setValue(params.getBudLoDetail());
   ui.budlaBox->setValue(params.getBudLaDetail());
   ui.foliageBox->setValue(params.getFoliageDetail());
+  ui.petioleBox->setValue(params.getPetioleDetail());
   
   ui.segmentText->setText(QString(params.getSegmentTextureFile().c_str()));
   ui.leafText->setText(QString(params.getLeafTextureFile().c_str()));
@@ -105,6 +106,7 @@ void VisualizationConfig::applySettings() {
   params.setBudLoDetail(ui.budloBox->value());
   params.setBudLaDetail(ui.budlaBox->value());
   params.setFoliageDetail(ui.foliageBox->value());
+  params.setPetioleDetail(ui.petioleBox->value());
 
   params.setSegmentTextureFile(ui.segmentText->text().toStdString());
   params.setLeafTextureFile(ui.leafText->text().toStdString());
