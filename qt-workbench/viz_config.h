@@ -48,6 +48,7 @@ public:
     QLabel *label;
     QLabel *label_2;
     QLabel *foliageLabe;
+    QLabel *label_3;
     QVBoxLayout *vboxLayout6;
     QSpinBox *srdetailBox;
     QSpinBox *shdetailBox;
@@ -55,9 +56,9 @@ public:
     QSpinBox *budloBox;
     QSpinBox *budlaBox;
     QSpinBox *foliageBox;
-    QSpacerItem *spacerItem2;
+    QSpinBox *petioleBox;
     QHBoxLayout *hboxLayout4;
-    QSpacerItem *spacerItem3;
+    QSpacerItem *spacerItem2;
     QPushButton *okButton;
     QPushButton *cancelButton;
 
@@ -220,6 +221,11 @@ public:
 
     vboxLayout5->addWidget(foliageLabe);
 
+    label_3 = new QLabel(VisualizationConfig);
+    label_3->setObjectName(QString::fromUtf8("label_3"));
+
+    vboxLayout5->addWidget(label_3);
+
 
     hboxLayout3->addLayout(vboxLayout5);
 
@@ -257,15 +263,16 @@ public:
 
     vboxLayout6->addWidget(foliageBox);
 
+    petioleBox = new QSpinBox(VisualizationConfig);
+    petioleBox->setObjectName(QString::fromUtf8("petioleBox"));
+
+    vboxLayout6->addWidget(petioleBox);
+
 
     hboxLayout3->addLayout(vboxLayout6);
 
 
     vboxLayout4->addLayout(hboxLayout3);
-
-    spacerItem2 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
-
-    vboxLayout4->addItem(spacerItem2);
 
 
     hboxLayout2->addLayout(vboxLayout4);
@@ -277,9 +284,9 @@ public:
     hboxLayout4->setSpacing(6);
     hboxLayout4->setMargin(0);
     hboxLayout4->setObjectName(QString::fromUtf8("hboxLayout4"));
-    spacerItem3 = new QSpacerItem(231, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+    spacerItem2 = new QSpacerItem(231, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
-    hboxLayout4->addItem(spacerItem3);
+    hboxLayout4->addItem(spacerItem2);
 
     okButton = new QPushButton(VisualizationConfig);
     okButton->setObjectName(QString::fromUtf8("okButton"));
@@ -325,6 +332,7 @@ public:
     label->setText(QApplication::translate("VisualizationConfig", "Bud longitude detail", 0, QApplication::UnicodeUTF8));
     label_2->setText(QApplication::translate("VisualizationConfig", "Bud latitude detail", 0, QApplication::UnicodeUTF8));
     foliageLabe->setText(QApplication::translate("VisualizationConfig", "Folige detail", 0, QApplication::UnicodeUTF8));
+    label_3->setText(QApplication::translate("VisualizationConfig", "Petiole detail", 0, QApplication::UnicodeUTF8));
     okButton->setText(QApplication::translate("VisualizationConfig", "OK", 0, QApplication::UnicodeUTF8));
     cancelButton->setText(QApplication::translate("VisualizationConfig", "Cancel", 0, QApplication::UnicodeUTF8));
     Q_UNUSED(VisualizationConfig);

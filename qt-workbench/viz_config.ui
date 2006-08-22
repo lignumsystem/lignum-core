@@ -274,6 +274,13 @@
                </property>
               </widget>
              </item>
+             <item>
+              <widget class="QLabel" name="label_3" >
+               <property name="text" >
+                <string>Petiole detail</string>
+               </property>
+              </widget>
+             </item>
             </layout>
            </item>
            <item>
@@ -302,22 +309,12 @@
              <item>
               <widget class="QSpinBox" name="foliageBox" />
              </item>
+             <item>
+              <widget class="QSpinBox" name="petioleBox" />
+             </item>
             </layout>
            </item>
           </layout>
-         </item>
-         <item>
-          <spacer>
-           <property name="orientation" >
-            <enum>Qt::Vertical</enum>
-           </property>
-           <property name="sizeHint" >
-            <size>
-             <width>20</width>
-             <height>40</height>
-            </size>
-           </property>
-          </spacer>
          </item>
         </layout>
        </item>
