@@ -7,11 +7,6 @@
 FunctionEditor::FunctionEditor(QWidget *parent) 
   : QMainWindow(parent), fileSaved(false) {
   ui.setupUi(this);
-  //  f_painter = new FunctionPainter(this);
-  //f_painter->show();
-  //f_painter->setGeometry(5, 30, 400, 400);
-  // f_painter->changeFunction(QString("-2 2 -0.2 -3.1 0.5 0.5 1.0 2.0 1.5 0.5"));
-  //  f_painter->setView(-5, -5, 5, 5);
   ui.f_painter->setTicks(1, 1);
   
   connect(ui.actionNew, SIGNAL(triggered()), this, SLOT(newFile()));
@@ -20,10 +15,8 @@ FunctionEditor::FunctionEditor(QWidget *parent)
   connect(ui.actionSave_as, SIGNAL(triggered()), this, SLOT(saveFileAs()));
   connect(ui.actionQuit, SIGNAL(triggered()), this, SLOT(closeProgram()));
   connect(ui.textEdit, SIGNAL(textChanged()), this, SLOT(updateFunction()));
-  connect(ui.newButton, SIGNAL(clicked()), this, SLOT(newFile()));
-  connect(ui.openButton, SIGNAL(clicked()), this, SLOT(openFile()));
-  connect(ui.saveButton, SIGNAL(clicked()), this, SLOT(saveFile()));
-  connect(ui.saveAsButton, SIGNAL(clicked()), this, SLOT(saveFileAs()));
+
+  setAttribute(Qt::WA_DeleteOnClose);
 
   setWindowName();
 }
@@ -71,7 +64,7 @@ void FunctionEditor::openFile() {
   fileName = QFileDialog::getOpenFileName(this,
 					  "Choose a file",
 					  QDir::currentPath(),
-					  "Function files (*.fun)");
+					  "Function files (*.*)");
   if(!fileName.isEmpty()) {
     QFile file(fileName);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
@@ -105,10 +98,10 @@ void FunctionEditor::saveFileAs() {
   fileName = QFileDialog::getSaveFileName(this,
 					  "Choose a filename to save under",
 					  QDir::currentPath(),
-					  "Function files  (*.fun)");
+					  "Function files  (*.*)");
   if(!fileName.isEmpty()) {
-    if(!fileName.endsWith(".fun"))
-      fileName.append(".fun");
+    /*    if(!fileName.endsWith(".fun"))
+	  fileName.append(".fun");*/
     saveFile();
   }
 }
