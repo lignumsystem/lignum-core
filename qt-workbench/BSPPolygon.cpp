@@ -27,105 +27,9 @@ BSPPolygon::BSPPolygon(Point p1, Point p2, Point p3, Point t_p1, Point t_p2, Poi
   distance = -(p1.getX()*normal.getX() + p1.getY()*normal.getY() + p1.getZ()*normal.getZ());
 }
 
-
-/*BSPPolygon::BSPPolygon(vector<Point> points, SceneObject* obj):
-  beenDivider(false), vertices(points), object(obj) {
-  if(points.size() < 3) {
-    cout << "ERROR: Atleast three vertices are needed to create a BSPPolygon!" << endl;
-    return;
-  }
-  normal = PositionVector(-1*Cross(PositionVector(vertices[0]-vertices[1]),
-				   PositionVector(vertices[1]-vertices[2])));
-  normal = normal.normalize();
-  distance = -(vertices[0].getX()*normal.getX() +
-	       vertices[0].getY()*normal.getY() +
-	       vertices[0].getZ()*normal.getZ());
-  t_vertices = vector<Point>(vertices.size());
-  for(int i = 0; i < t_vertices.size(); i++) {
-    t_vertices[i] = Point(0,0,0);
-  }
-  }
-
-BSPPolygon::BSPPolygon(vector<Point> points, vector<Point> texturePoints, SceneObject* obj):
-  beenDivider(false), vertices(points), t_vertices(texturePoints), object(obj) {
-  if(points.size() < 3) {
-    cout << "ERROR: Atleast three vertices are needed to create a BSPPolygon!" << endl;
-    return;
-  }
-  normal = PositionVector(-1*Cross(PositionVector(vertices[0]-vertices[1]),
-				   PositionVector(vertices[1]-vertices[2])));
-  normal = normal.normalize();
-  distance = -(vertices[0].getX()*normal.getX() +
-	       vertices[0].getY()*normal.getY() +
-	       vertices[0].getZ()*normal.getZ());
-	       }*/
-
 BSPPolygon::~BSPPolygon() {
-  //  cout << "Polygon Deleted" << endl;
+
 }
-
-//int BSPPolygon::last_material = 0;
-
-
-/*void BSPPolygon::split(BSPPolygon& divider, BSPPolygonSet *front, BSPPolygonSet *back) {
-  vector<Point> outpts, t_outpts;
-  vector<Point> inpts, t_inpts;
-  Point ptA, ptB;
-  Point tptA, tptB;
-  int count = vertices.size();
-  double sideA, sideB;
-  ptA = vertices[count-1];
-  tptA = t_vertices[count-1];
-  sideA = divider.classifyPoint(ptA);
-  for(int i = -1; ++i < count;) {
-
-    ptB = vertices[i];
-    tptB = t_vertices[i];
-    sideB = divider.classifyPoint(ptB);
-    if (sideB > 0) {
-      if(sideA < 0) {
-	PositionVector v(ptB - ptA);
-	PositionVector tv(tptB - tptA);
-	double sect = - sideA / Dot(divider.normal, v);
-	outpts.push_back(ptA + Point(v*sect));
-	inpts.push_back(ptA + Point(v*sect));
-	t_outpts.push_back(tptA + Point(tv*sect));
-	t_inpts.push_back(tptA + Point(tv*sect));
-      }
-      outpts.push_back(ptB);
-      t_outpts.push_back(tptB);
-    }
-    else if(sideB < 0) {
-      if (sideA > 0) {
-	PositionVector v(ptB - ptA);
-	PositionVector tv(tptB - tptA);
-	double sect = - sideA / Dot(divider.normal, v);
-	outpts.push_back(ptA + Point(v*sect));
-	inpts.push_back(ptA + Point(v*sect));
-	t_outpts.push_back(tptA + Point(tv*sect));
-	t_inpts.push_back(tptA + Point(tv*sect));
-      }
-      inpts.push_back(ptB);
-      t_inpts.push_back(tptB);
-    }
-    else {
-      outpts.push_back(ptB);
-      t_outpts.push_back(tptB);
-      inpts.push_back(ptB);
-      t_inpts.push_back(tptB);
-    }
-    ptA = ptB;
-    tptA = tptB;
-    sideA = sideB;
-  }    
-  BSPPolygon *poly = new BSPPolygon(outpts, t_outpts, object);
-  front->addPolygon(poly);
-  poly = new BSPPolygon(inpts, t_inpts,	object);
-  back->addPolygon(poly);
-  //cout << "vertices: " << vertices.size() << endl;
-  //cout << "front:    " << outpts.size() << endl;
-  //cout << "back:     " << inpts.size() << endl;
-  } */
 
 // Splits a triangle polygon to a three smaller polygons based on the dividing polygon.
 void BSPPolygon::split(BSPPolygon& divider, BSPPolygonSet *front, BSPPolygonSet *back)  {
@@ -133,10 +37,7 @@ void BSPPolygon::split(BSPPolygon& divider, BSPPolygonSet *front, BSPPolygonSet 
   const double sideB = divider.classifyPoint(p2);
   const double sideC = divider.classifyPoint(p3);
 
-  //cout << "split" << endl;
- 
   if(sideB >= 0 && sideC >= 0) {
-    //cout << "1" << endl;
     PositionVector v1(p2 - p1);
     PositionVector v2(p3 - p1);
     PositionVector tv1(tp2 - tp1);
@@ -158,7 +59,6 @@ void BSPPolygon::split(BSPPolygon& divider, BSPPolygonSet *front, BSPPolygonSet 
   }
 
   else if(sideB <= 0 && sideC <= 0) {
-    //cout << "2" << endl;
     PositionVector v1(p2 - p1);
     PositionVector v2(p3 - p1);
     PositionVector tv1(tp2 - tp1);
@@ -180,7 +80,6 @@ void BSPPolygon::split(BSPPolygon& divider, BSPPolygonSet *front, BSPPolygonSet 
   }
 
   else if(sideA >= 0 && sideB >= 0) {
-    //cout << "3" << endl;
     PositionVector v1(p1 - p3);
     PositionVector v2(p2 - p3);
     PositionVector tv1(tp1 - tp3); 
@@ -202,7 +101,6 @@ void BSPPolygon::split(BSPPolygon& divider, BSPPolygonSet *front, BSPPolygonSet 
   }
 
   else if(sideA <= 0 && sideB <= 0) {
-    //cout << "4" << endl;
     PositionVector v1(p1 - p3);
     PositionVector v2(p2 - p3);
     PositionVector tv1(tp1 - tp3); 
@@ -224,7 +122,6 @@ void BSPPolygon::split(BSPPolygon& divider, BSPPolygonSet *front, BSPPolygonSet 
   }
 
   else if(sideA >= 0 && sideC >= 0) {
-    //    cout << "5" << endl;
     PositionVector v1(p1 - p2);
     PositionVector v2(p3 - p2);
     PositionVector tv1(tp1 - tp2);
@@ -246,7 +143,6 @@ void BSPPolygon::split(BSPPolygon& divider, BSPPolygonSet *front, BSPPolygonSet 
   }
 
   else if(sideA <= 0 && sideC <= 0) {
-    //cout << "6" << endl;
     PositionVector v1(p1 - p2);
     PositionVector v2(p3 - p2);
     PositionVector tv1(tp1 - tp2);
@@ -269,7 +165,8 @@ void BSPPolygon::split(BSPPolygon& divider, BSPPolygonSet *front, BSPPolygonSet 
 
 }
 
-
+// Calculates the distance of the given point from plane
+// defined by the calling polygon.
 double BSPPolygon::classifyPoint(const Point& point) const {
   double EPSILON = 0.000001;
   double sideValue = normal.getX() * point.getX() +
@@ -281,6 +178,8 @@ double BSPPolygon::classifyPoint(const Point& point) const {
     return sideValue + distance;
 }
 
+// Returns true if the given polygon is infront of the calling polygon,
+// and false if it isn't.
 bool BSPPolygon::infront(const BSPPolygon& polygon) const {
   if(calculateSide(polygon) == INFRONT)
     return true;
@@ -288,6 +187,8 @@ bool BSPPolygon::infront(const BSPPolygon& polygon) const {
     return false;
 }
 
+// Calculates the relational side of the given polygon to the calling polygon.
+// Possible returning values are INFRONT, BEHIND, COINCIDING and SPANNING.
 int BSPPolygon::calculateSide(const BSPPolygon& polygon) const {
   int numPositive = 0;
   int numNegative = 0;
@@ -323,29 +224,7 @@ int BSPPolygon::calculateSide(const BSPPolygon& polygon) const {
     }
 }
 
-
-/*int BSPPolygon::calculateSide(const BSPPolygon& polygon) const {
-  int numPositive = 0;
-  int numNegative = 0;
-
-
-  for(int i = 0; i < polygon.vertices.size() ; i++) {
-    double cp = classifyPoint(polygon.vertices[i]);
-    if(cp > 0)
-      numPositive += 1;
-    else if (cp < 0)
-      numNegative += 1;
-  }
-  if(numPositive > 0 && numNegative == 0)
-    return INFRONT;
-  else if(numPositive == 0 && numNegative > 0)
-    return BEHIND;
-  else if(numPositive == 0 && numNegative == 0)
-    return COINCIDING;
-  else
-    return SPANNING;
-    }*/
-
+// Draws the polygon.
 void BSPPolygon::drawPolygon() const {
   glNormal3f(normal.getX(), normal.getY(), normal.getZ());
 
@@ -372,25 +251,6 @@ bool BSPPolygon::isTransparent() const {
   return object->isTransparent();
 }
 
-
-/*void BSPPolygon::drawPolygon() const {
-  if(vertices.size() == 3)
-    glBegin(GL_TRIANGLES);
-  else if(vertices.size() == 4)
-    glBegin(GL_QUADS);
-  else
-    glBegin(GL_POLYGON);
-  glNormal3f(normal.getX(), normal.getY(), normal.getZ());
-  for(int i = 0; i < vertices.size(); i++) {
-    glTexCoord2f(t_vertices[i].getX(), t_vertices[i].getY());
-    glVertex3f(vertices[i].getX(), vertices[i].getY(), vertices[i].getZ());
-  }
-  glEnd();
-  //cout << "size:" << vertices.size() << endl;
-  }*/
-	
-
-
 bool BSPPolygon::hasBeenDivider() const {
   return beenDivider;
 }
@@ -414,10 +274,6 @@ inline bool operator < (const BSPPolygon& polygon1, const BSPPolygon& polygon2) 
     return false;
 }
 
-/*vector<Point> BSPPolygon::getVertices() const {
-  return vertices;
-  }*/
-
 vector<Point> BSPPolygon::getVertices() const {
   vector<Point> vertices;
   vertices.push_back(p1);
@@ -426,26 +282,12 @@ vector<Point> BSPPolygon::getVertices() const {
   return vertices;
 }
 
-/*Point BSPPolygon::getCenter() const {
-  Point center(0,0,0);
-  center.setX((p1.getX() + p2.getX() + p3.getX())/3.0);
-  center.setY((p1.getY() + p2.getY() + p3.getY())/3.0);
-  center.setZ((p1.getZ() + p2.getZ() + p3.getZ())/3.0);
-  }*/
-
 BSPPolygonSet::~BSPPolygonSet() {
   for(list<BSPPolygon*>::iterator i = polygons.begin(); i != polygons.end(); ) {
     delete *i;
     i = polygons.erase(i);
   }
-  /*for(int i = 0; i < components.size(); i++) {
-    delete components[i];
-    components.erase(i);
-    }*/
-  /* for(list<SceneObjectComponent*>::iterator i = components.begin(); i != components.end(); i++) {
-    delete *i;
-    components.erase(i);
-    }*/
+
   for(vector<SceneObjectComponent*>::iterator i = components.begin(); i != components.end(); ) {
     delete *i;
     i = components.erase(i);
