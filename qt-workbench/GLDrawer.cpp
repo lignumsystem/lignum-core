@@ -243,14 +243,13 @@ void GLDrawer::moveCameraBackward() {
 }
 
 bool GLDrawer::setTextures() {
-  if(!setCylinderTexture(QString(parameters.getSegmentTextureFile().c_str())))
-    return false;
-  else if(!setLeafTexture(QString(parameters.getLeafTextureFile().c_str())))
-    return false;
-  else if(!setFoliageTexture(QString(parameters.getFoliageTextureFile().c_str())))
-    return false;
-  else
-    return true;
+  setCylinderTexture(QString(parameters.getSegmentTextureFile().c_str()));
+  
+  setLeafTexture(QString(parameters.getLeafTextureFile().c_str()));
+  
+  setFoliageTexture(QString(parameters.getFoliageTextureFile().c_str()));
+  
+  return true;
 }
 
 void GLDrawer::setParameterSettings() {
@@ -302,8 +301,8 @@ void GLDrawer::toggleTexturing() {
 }*/
 
 void GLDrawer::changeTree() {
-  if(!setTextures())
-    ;
+  setTextures();
+
   QFile file(tree_file);
   
   if(!file.exists()) {
@@ -418,7 +417,6 @@ void GLDrawer::paintGL()  {
     glRotatef(cam_rot_y, 0, 1, 0);
     glTranslatef(-camera_x, -camera_y, -camera_z);   
     
-    glLightfv(GL_LIGHT0, GL_POSITION, light0_position);
     //glScalef(-1.0, 0, 0);
     
     glTranslatef(t_point.getX(), t_point.getY() + 0.5*t_height, t_point.getZ());
@@ -459,9 +457,13 @@ void GLDrawer::paintGL()  {
   PositionVector direction(sin(cam_rot_y*DEGTORAD),
 			   cos(cam_rot_y*DEGTORAD),
 			   sin(-cam_rot_x*DEGTORAD));
+  
+  glLightfv(GL_LIGHT0, GL_POSITION, light0_position);
 
   // Transform from LIGNUM-coordinates to OpenGL-coordinates
   glRotatef(-90, 1, 0, 0);
+  
+
 
   if(trees[currentTree])
     trees[currentTree]->drawTree(eye, direction);
@@ -702,9 +704,13 @@ bool GLDrawer::setCylinderTexture(QString texture) {
     
     if(file.exists()) {
       int tex = loadTexture(texture.toStdString());
-      parameters.setSegmentTexture(tex);
-      textures.insert(texture, tex);
-      return true;
+      if(tex != 0) {
+	textures.insert(texture, tex);
+	parameters.setSegmentTexture(tex);
+	return true;
+      }
+      else
+	return false;
     }
     else {
       cout << "Texture file: " << texture.toStdString() << " is not found!" << endl;
@@ -723,9 +729,13 @@ bool GLDrawer::setLeafTexture(QString texture) {
     
     if(file.exists()) {
       int tex = loadTexture(texture.toStdString());
-      parameters.setLeafTexture(tex);
-      textures.insert(texture, tex);
-      return true;
+      if(tex != 0) {
+	parameters.setLeafTexture(tex);
+	textures.insert(texture, tex);
+	return true;
+      }
+      else 
+	return false;
     }
     else {
       cout << "Texture file: " << texture.toStdString() << " is not found!" << endl;
@@ -744,9 +754,13 @@ bool GLDrawer::setFoliageTexture(QString texture) {
     
     if(file.exists()) {
       int tex = loadTexture(texture.toStdString());
-      parameters.setFoliageTexture(tex);
-      textures.insert(texture, tex);
-      return true;
+      if(tex != 0) {
+	parameters.setFoliageTexture(tex);
+	textures.insert(texture, tex);
+	return true;
+      }
+      else
+	return false;
     }
     else {
       cout << "Texture file: " << texture.toStdString() << " is not found!" << endl;
