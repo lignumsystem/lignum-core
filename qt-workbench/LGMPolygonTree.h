@@ -41,7 +41,7 @@ class PolygonTreeBuilder {
 
   BSPPolygonSet* makeFoliage(double radius, double height, Point point, PositionVector direction,
 			     int f_detail, int s_detail, double fmass, SceneObject* object) const;
-  BSPPolygonSet* makePetiole(Point sp, Point ep, SceneObject* object) const;
+  BSPPolygonSet* makePetiole(Point sp, Point ep, int detail, SceneObject* object) const;
   BSPPolygonSet* makeTriangleLeaf(Point lc, Point rc, Point ac, bool use_tex, SceneObject* object) const;
   BSPPolygonSet* makeEllipseLeaf(const cxxadt::Ellipse* ellipse, int detail, bool use_tex, SceneObject* object) const;
   BSPPolygonSet* makeBud(Point point, PositionVector direction, int la_detail, int lo_detail, SceneObject* object) const;
@@ -131,6 +131,7 @@ template <class TS, class BUD, class S>
 	sceneObjects->insert(object_index, p_object);
 	BSPPolygonSet* petiole = makePetiole(GetStartPoint(p),
 					     GetEndPoint(p),
+					     parameters.getPetioleDetail(),
 					     p_object);
 	polygons->addPolygons(petiole);
 	delete petiole;
@@ -403,10 +404,10 @@ BSPPolygonSet* PolygonTreeBuilder<TS,BUD,S>::makeFoliage(double radius, double h
 
 
 template <class TS, class BUD, class S>
-BSPPolygonSet* PolygonTreeBuilder<TS,BUD,S>::makePetiole(Point sp, Point ep, SceneObject* object) const {
-  BSPPolygonSet* polygons = new BSPPolygonSet();
+BSPPolygonSet* PolygonTreeBuilder<TS,BUD,S>::makePetiole(Point sp, Point ep, int detail, SceneObject* object) const {
+  //  BSPPolygonSet* polygons = new BSPPolygonSet();
 
-  polygons->addPolygon(new BSPPolygon(ep,
+  /*polygons->addPolygon(new BSPPolygon(ep,
 				      sp,
 				      Point(ep.getX()+0.005, ep.getY(),ep.getZ()),
  				      object));
@@ -423,6 +424,9 @@ BSPPolygonSet* PolygonTreeBuilder<TS,BUD,S>::makePetiole(Point sp, Point ep, Sce
 				      Point(ep.getX()+0.005, ep.getY(),ep.getZ()),
 				      ep,
 				      object));
+  */
+
+  BSPPolygonSet* polygons = makeCylinder(0.001, PositionVector(sp-ep).length(), sp, PositionVector(ep-sp), false, false, object, detail, 1);
 
   return polygons;
 }
