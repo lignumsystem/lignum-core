@@ -40,7 +40,7 @@ class PolygonTreeBuilder {
 			       int y_detail) const;
 
   BSPPolygonSet* makeFoliage(double radius, double height, Point point, PositionVector direction,
-			     int f_detail, int s_detail, double fmass, SceneObject* object) const;
+			     int f_detail, int s_detail, double fmass, double spacing, SceneObject* object) const;
   BSPPolygonSet* makePetiole(Point sp, Point ep, int detail, SceneObject* object) const;
   BSPPolygonSet* makeTriangleLeaf(Point lc, Point rc, Point ac, bool use_tex, SceneObject* object) const;
   BSPPolygonSet* makeEllipseLeaf(const cxxadt::Ellipse* ellipse, int detail, bool use_tex, SceneObject* object) const;
@@ -171,7 +171,7 @@ template <class TS, class BUD, class S>
 	object = new SceneObject(parameters.getMaterial(), object_index, parameters.getFoliageTexture(), parameters.useBSP());
 	sceneObjects->insert(object_index, object);
 	BSPPolygonSet* foliage = makeFoliage(radius, length, point, direction, parameters.getFoliageDetail(),
-					     parameters.getSegmentRDetail(), fmass, object);
+					     parameters.getSegmentRDetail(), fmass, parameters.getFoliageSpacing(), object);
 	polygons->addPolygons(foliage);
 	delete foliage;
       }
@@ -302,7 +302,7 @@ template <class TS, class BUD, class S>
 
 template <class TS, class BUD, class S>
 BSPPolygonSet* PolygonTreeBuilder<TS,BUD,S>::makeFoliage(double radius, double height, Point point, PositionVector direction,
-							   int f_detail, int s_detail, double fmass, SceneObject* object) const {
+							   int f_detail, int s_detail, double fmass, double spacing, SceneObject* object) const {
   BSPPolygonSet* polygons = new BSPPolygonSet();
   double sine, cosine, sine_next, cosine_next;
   double y, y_next;
@@ -326,7 +326,7 @@ BSPPolygonSet* PolygonTreeBuilder<TS,BUD,S>::makeFoliage(double radius, double h
   if(f_detail == 0)
     return polygons;
 
-  int y_detail = (int)(height/0.15);
+  int y_detail = (int)(height/spacing);
   
   PositionVector dir(direction.normalize().getX()/2.0,
 		     (1+direction.normalize().getY())/2.0,
