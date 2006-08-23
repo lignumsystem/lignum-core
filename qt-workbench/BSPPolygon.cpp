@@ -428,7 +428,7 @@ void BSPPolygonSet::sort() {
 }
 
 void BSPPolygonSet::drawPolygons() {
-  if(components.size() == 0 && polygons.size() > 0) {
+  if(polygons.size() > 1) {
     int dlist;
     SceneObject* object;
     if(polygons.front()->isTransparent()) 

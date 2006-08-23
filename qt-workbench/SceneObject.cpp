@@ -101,8 +101,7 @@ void SceneObject::unsetTempMaterial() {
 int SceneObject::n_objects = 0;
 
 SceneObject::~SceneObject() {
-  //delete material;
-  //cout << "Object deleted" << endl;
+
 }
 
 SceneObjectComponent::~SceneObjectComponent() {
