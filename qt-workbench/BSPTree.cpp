@@ -35,6 +35,7 @@
 
 */
 
+// Destructor
 BSPTree::~BSPTree() {
   if(front != NULL)
     delete front;
@@ -43,6 +44,10 @@ BSPTree::~BSPTree() {
 
 }
 
+// Builds a new BSP-tree node. Chooses a dividing polygon for the node,
+// and puts the rest of the polygons to the node itself (polygons coincident
+// to the dividing polygon), or creates children nodes for the node,
+// if some of the polygons are in front of or back of the dividing polygon. 
 void BSPTree::buildBSPTree(BSPPolygonSet& polys) {
   opaquePolygons.getOpaquePolygons(&polys);
 
@@ -98,7 +103,85 @@ void BSPTree::buildBSPTree(BSPPolygonSet& polys) {
   }
 }
 
-/*void BSPTree::drawTransparentTree(Point& eye, PositionVector& direction) {
+// Adds new polygons to a existing BSP-tree. If some of the inserted
+// polygons are infront or back of the dividing polygons, and no
+// corresponding child node exist for the node, a new node is created
+// for the polygons to be inserted.
+void BSPTree::addPolygonsToTree(BSPPolygonSet& polys) {
+  opaquePolygons.getOpaquePolygons(&polys);
+
+  if(polys.isEmpty()) {
+    return;
+  }
+  // If the existing tree-node is a convex set of polygons.
+  if(divider == NULL) {
+    polys.addPolygons(&polygons);
+    // New divider must be chosen for the polygons.
+    divider = polys.chooseDivider();
+    // If the new set remains convex.
+    if(divider == NULL) {
+      polygons.addPolygons(&polys);
+      return;
+    }
+    // Else create new BSP-subtree starting from the current node.
+  }
+
+  BSPPolygonSet front_polygons, back_polygons;
+  BSPPolygon *poly;
+
+  while(!polys.isEmpty()) {
+    poly = polys.getPolygon();
+    int result = divider->calculateSide(*poly);
+    switch(result)
+      {
+      case BSPPolygon::COINCIDING:
+	polygons.addPolygon(poly);
+	break;
+      case BSPPolygon::BEHIND:
+	back_polygons.addPolygon(poly);
+	break;
+      case BSPPolygon::INFRONT:
+	front_polygons.addPolygon(poly);
+	break;
+      case BSPPolygon::SPANNING:
+	BSPPolygonSet *front_pieces = new BSPPolygonSet();
+	BSPPolygonSet *back_pieces = new BSPPolygonSet();
+	poly->split(*divider, front_pieces, back_pieces);
+	delete poly;
+	back_polygons.addPolygons(back_pieces);
+	front_polygons.addPolygons(front_pieces);
+	delete back_pieces;
+	delete front_pieces;
+	break;
+      }
+  }
+
+  if(!front_polygons.isEmpty()) {
+    // If front-node doesn't exist create a new one.
+    if(!front) {
+      front = new BSPTree();
+      front->buildBSPTree(front_polygons);
+    }
+    else
+      front->addPolygonsToTree(front_polygons);
+  }
+  
+  if(!back_polygons.isEmpty()) {
+    // If back-node doesn't exist create a new one.
+    if(!back) {
+      back = new BSPTree();
+      back->buildBSPTree(back_polygons);
+    }
+    else
+      back->addPolygonsToTree(back_polygons);
+  }
+}
+
+/*
+  // Stack based implementation of drawTransparentTree-method.
+  // Might be a bit faster on some processors than the recursive based method,
+  // but currently the drawing order doesn't work correctly.
+  void BSPTree::drawTransparentTree(Point& eye, PositionVector& direction) {
   BSPTree* tree = this;
   stack<BSPTree*> trees;
   while(true) {
@@ -137,18 +220,28 @@ void BSPTree::buildBSPTree(BSPPolygonSet& polys) {
   }
   }*/
 
+// Draws the whole tree.
 void BSPTree::drawTree(Point& eye, PositionVector& direction) {
+  // Draw the opaque polygons. Depth-buffer writing is set on during
+  // the drawing. 
   opaquePolygons.drawPolygons();
   glDepthMask(GL_FALSE);
 
+  // Draw the transparent polygons. Depth-buffer writing is disabled,
+  // but depth-testing is left on. Sorting of the transparent is done
+  // using the BSP.
   drawTransparentTree(eye, direction);
   glDepthMask(GL_TRUE);
 }
 
+// Draws the transparent polygons.
 void BSPTree::drawTransparentTree(Point& eye, PositionVector& direction) {
+  // Polygons form a convex set, so they can be drawn in a arbitrary order.
   if(divider == NULL) {
     polygons.drawPolygons();
   }
+  // Else the polygons must be drawn in order based on the
+  // position of the viewer. 
   else { 
     double result = divider->classifyPoint(eye);
       
@@ -177,6 +270,7 @@ void BSPTree::drawTransparentTree(Point& eye, PositionVector& direction) {
   }
 }
 
+// Counts the number of polygons in the tree.
 int BSPTree::countPolygons() const {
   int polys = polygons.size();
   polys += opaquePolygons.size();
@@ -187,6 +281,8 @@ int BSPTree::countPolygons() const {
   return polys;
 }
 
+// Counts the number of SceneObjectComponents of
+// of the tree.
 int BSPTree::countComponents() const {
   int comps = polygons.componentCount();
   if(front != NULL)
@@ -196,6 +292,7 @@ int BSPTree::countComponents() const {
   return comps;
 }
 
+// Gets the maximum depth of the tree.
 int BSPTree::getDepth() const {
   int back_depth = 0;
   int front_depth = 0;
@@ -209,6 +306,7 @@ int BSPTree::getDepth() const {
     return 1 + front_depth;
 }
 
+// Gets the number of nodes in the tree.
 int BSPTree::getNodeCount() const {
   int nodes = 1;
   if(back != NULL)

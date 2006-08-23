@@ -13,6 +13,7 @@ public:
 divider(NULL), front(NULL), back(NULL){ }
   ~BSPTree();  
   void buildBSPTree(BSPPolygonSet& polygons); 
+  void addPolygonsToTree(BSPPolygonSet& polygons);
   void drawTree(Point& eye, PositionVector& direction);
   void drawTransparentTree(Point& eye, PositionVector& direction);
   int countPolygons() const;
