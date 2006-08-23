@@ -17,6 +17,7 @@ VisualizationParameters::VisualizationParameters(int s_r_detail,
   bud_lo_detail(4),
   bud_la_detail(8),
   foliage_detail(6),
+  foliage_spacing(0.05),
   petiole_detail(6),
   segment_tex(s_tex),
   leaf_tex(l_tex),
@@ -47,6 +48,7 @@ VisualizationParameters::VisualizationParameters() :
   bud_lo_detail(4),
   bud_la_detail(8),
   foliage_detail(6),
+  foliage_spacing(0.05),
   petiole_detail(6),
   segment_tex(0),
   leaf_tex(0),
@@ -118,6 +120,10 @@ int VisualizationParameters::getFoliageDetail() const {
   return foliage_detail;
 }
 
+double VisualizationParameters::getFoliageSpacing() const {
+  return foliage_spacing;
+}
+
 int VisualizationParameters::getPetioleDetail() const {
   return petiole_detail;
 }
@@ -162,10 +168,17 @@ void VisualizationParameters::setFoliageDetail(int detail) {
     foliage_detail = detail;
 }
 
+void VisualizationParameters::setFoliageSpacing(double detail) {
+  if(detail >= 0)	
+  	foliage_spacing = detail;
+}
+
 void VisualizationParameters::setPetioleDetail(int detail) {
   if(detail >= 0)
     petiole_detail = detail;
 }
+
+
 int VisualizationParameters::getSegmentTexture() const {
   return segment_tex;
 }
