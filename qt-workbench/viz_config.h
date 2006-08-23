@@ -7,6 +7,7 @@
 #include <QtGui/QButtonGroup>
 #include <QtGui/QCheckBox>
 #include <QtGui/QDialog>
+#include <QtGui/QDoubleSpinBox>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
@@ -48,6 +49,7 @@ public:
     QLabel *label;
     QLabel *label_2;
     QLabel *foliageLabe;
+    QLabel *label_7;
     QLabel *label_3;
     QVBoxLayout *vboxLayout6;
     QSpinBox *srdetailBox;
@@ -56,6 +58,7 @@ public:
     QSpinBox *budloBox;
     QSpinBox *budlaBox;
     QSpinBox *foliageBox;
+    QDoubleSpinBox *fspacingBox;
     QSpinBox *petioleBox;
     QHBoxLayout *hboxLayout4;
     QSpacerItem *spacerItem2;
@@ -65,7 +68,7 @@ public:
     void setupUi(QDialog *VisualizationConfig)
     {
     VisualizationConfig->setObjectName(QString::fromUtf8("VisualizationConfig"));
-    VisualizationConfig->resize(QSize(543, 359).expandedTo(VisualizationConfig->minimumSizeHint()));
+    VisualizationConfig->resize(QSize(562, 593).expandedTo(VisualizationConfig->minimumSizeHint()));
     hboxLayout = new QHBoxLayout(VisualizationConfig);
     hboxLayout->setSpacing(6);
     hboxLayout->setMargin(9);
@@ -221,6 +224,11 @@ public:
 
     vboxLayout5->addWidget(foliageLabe);
 
+    label_7 = new QLabel(VisualizationConfig);
+    label_7->setObjectName(QString::fromUtf8("label_7"));
+
+    vboxLayout5->addWidget(label_7);
+
     label_3 = new QLabel(VisualizationConfig);
     label_3->setObjectName(QString::fromUtf8("label_3"));
 
@@ -262,6 +270,11 @@ public:
     foliageBox->setObjectName(QString::fromUtf8("foliageBox"));
 
     vboxLayout6->addWidget(foliageBox);
+
+    fspacingBox = new QDoubleSpinBox(VisualizationConfig);
+    fspacingBox->setObjectName(QString::fromUtf8("fspacingBox"));
+
+    vboxLayout6->addWidget(fspacingBox);
 
     petioleBox = new QSpinBox(VisualizationConfig);
     petioleBox->setObjectName(QString::fromUtf8("petioleBox"));
@@ -332,6 +345,7 @@ public:
     label->setText(QApplication::translate("VisualizationConfig", "Bud longitude detail", 0, QApplication::UnicodeUTF8));
     label_2->setText(QApplication::translate("VisualizationConfig", "Bud latitude detail", 0, QApplication::UnicodeUTF8));
     foliageLabe->setText(QApplication::translate("VisualizationConfig", "Folige detail", 0, QApplication::UnicodeUTF8));
+    label_7->setText(QApplication::translate("VisualizationConfig", "Foliage spacing", 0, QApplication::UnicodeUTF8));
     label_3->setText(QApplication::translate("VisualizationConfig", "Petiole detail", 0, QApplication::UnicodeUTF8));
     okButton->setText(QApplication::translate("VisualizationConfig", "OK", 0, QApplication::UnicodeUTF8));
     cancelButton->setText(QApplication::translate("VisualizationConfig", "Cancel", 0, QApplication::UnicodeUTF8));

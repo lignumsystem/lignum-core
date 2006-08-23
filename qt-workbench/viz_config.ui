@@ -8,8 +8,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>543</width>
-    <height>359</height>
+    <width>562</width>
+    <height>593</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -275,6 +275,13 @@
               </widget>
              </item>
              <item>
+              <widget class="QLabel" name="label_7" >
+               <property name="text" >
+                <string>Foliage spacing</string>
+               </property>
+              </widget>
+             </item>
+             <item>
               <widget class="QLabel" name="label_3" >
                <property name="text" >
                 <string>Petiole detail</string>
@@ -308,6 +315,13 @@
              </item>
              <item>
               <widget class="QSpinBox" name="foliageBox" />
+             </item>
+             <item>
+              <widget class="QDoubleSpinBox" name="fspacingBox" >
+               <property name="singleStep" >
+                <double>0.01</double>
+               </property>
+              </widget>
              </item>
              <item>
               <widget class="QSpinBox" name="petioleBox" />
