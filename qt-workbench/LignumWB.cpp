@@ -51,8 +51,10 @@ void LignumWB::xmlviewer() {
     xml_viewer = new XMLViewerWindow();
     connect(xml_viewer, SIGNAL(sceneObjectsSelected(QHash<QString, QList<int> >)),
 	    ui.gldrawer, SLOT(setObjectsSelected(QHash<QString, QList<int> >)));
-    connect(xml_viewer, SIGNAL(fileAdded(QString)),
-	    ui.gldrawer, SLOT(addTree(QString)));
+   /* connect(xml_viewer, SIGNAL(fileAdded(QString)),
+	    ui.gldrawer, SLOT(addTree(QString)));*/
+	connect(xml_viewer, SIGNAL(updateVisualization(QList<QString>)),
+	  	    ui.gldrawer, SLOT(resetVisualization(QList<QString>)));
   } 
   xml_viewer->show();
   xml_viewer->raise();
