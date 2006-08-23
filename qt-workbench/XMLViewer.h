@@ -3,6 +3,7 @@
 
 #include <QDomDocument>
 #include <QHash>
+#include <QMultiHash>
 #include <QIcon>
 #include <QTreeWidget>
 #include <vector>
@@ -22,7 +23,7 @@ public:
 
 signals:
   
-  void sceneObjectsSelected(QList<int>);
+  void sceneObjectsSelected(QHash<QString, QList<int> >);
 
 private slots:
  
@@ -31,17 +32,17 @@ private slots:
 private:
   void parseTreeElement(const QDomElement &element, QString fileName,
 			  QTreeWidgetItem *parentItem = 0);
-  void parseAttributeElement(const QDomElement &element,
+  void parseAttributeElement(const QDomElement &element, 
 			     QTreeWidgetItem *parentItem);
-  void parseAxisElement(const QDomElement &element,
+  void parseAxisElement(const QDomElement &element, QString fileName,
 			QTreeWidgetItem *parentItem);
-  void parseTreeSegmentElement(const QDomElement &element,
+  void parseTreeSegmentElement(const QDomElement &element, QString fileName,
 			       QTreeWidgetItem *parentItem);
-  void parseBranchingPointElement(const QDomElement &element,
+  void parseBranchingPointElement(const QDomElement &element, QString fileName,
 				  QTreeWidgetItem *parentItem);
-  void parseBudElement(const QDomElement &element,
+  void parseBudElement(const QDomElement &element, QString fileName,
 		       QTreeWidgetItem *parentItem);
-  void parseBroadLeafElement(const QDomElement &element,
+  void parseBroadLeafElement(const QDomElement &element, QString fileName,
 		       QTreeWidgetItem *parentItem);
   
 
@@ -51,6 +52,7 @@ private:
   vector<QDomDocument> documents;
   QHash<QTreeWidgetItem *, QDomDocument> domDocumentForItem;
   QHash<QTreeWidgetItem *, int> sceneObjectIndexForItem;
+  QHash<QTreeWidgetItem *, QString> fileNameForItem;
   //QTreeWidgetItem *rootItem;
   
   
