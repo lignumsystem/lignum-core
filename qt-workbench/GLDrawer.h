@@ -49,7 +49,8 @@ public slots:
   void toggleWireModel();
   void toggleLights();
   void toggleTexturing();
-  void changeTree();
+  void resetVisualization();
+  void addTree(QString fileName);
   void setTreeFile(QString fileName);
   void setCylinderRDetail(int detail);
   void setCylinderHDetail(int detail);
@@ -64,7 +65,7 @@ public slots:
   void orbitCameraMode();
   void moveCenterMode();
   void freeRoamMode();
-  void setObjectsSelected(QList<int>);
+  void setObjectsSelected(QHash<QString, QList<int> >);
   //void moveCameraLeft();
   //void moveCameraRight();
   //void moveCameraUp();
@@ -112,8 +113,8 @@ private:
   enum { MOUSE_LOOK, MOVE_TREE, ORBIT };
 
   BSPTree* tree;
-  QMultiHash<int, SceneObject*>* sceneObjects;
-  QList<int> selectedObjects;
+  QHash<QString, QMultiHash<int, SceneObject*>* > sceneObjects;
+  QHash<QString, QList<int> > selectedObjects;
   
 
 };

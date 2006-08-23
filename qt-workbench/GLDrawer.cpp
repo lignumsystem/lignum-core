@@ -67,7 +67,6 @@ GLDrawer::GLDrawer(QWidget* parent)
   tree_file = QString("test.xml");
   
   tree = new BSPTree();
-  sceneObjects = NULL;
   setCylinderRDetail(10);
   setCylinderHDetail(1);
   setLeafDetail(10);
@@ -76,6 +75,7 @@ GLDrawer::GLDrawer(QWidget* parent)
   
   control_mode = ORBIT;
   
+
 }
 
 void GLDrawer::initMaterials() {
@@ -298,27 +298,40 @@ void GLDrawer::toggleTexturing() {
   
 }*/
 
-void GLDrawer::changeTree() {
+void GLDrawer::resetVisualization() {
+  delete tree;
+  tree = new BSPTree();
+  QList<QString> objects = sceneObjects.keys();
+  for(int i = 0; i < objects.size(); i++) {
+    if(sceneObjects.contains(objects[i])) {
+      delete sceneObjects.value(objects[i]);
+    }
+  }
+  sceneObjects.clear();
+  selectedObjects.clear();
+  updateGL();
+}
+
+void GLDrawer::addTree(QString fileName) {
   setTextures();
 
-  QFile file(tree_file);
-  
+  //QFile file(tree_file);
+  QFile file(fileName);
+
   if(!file.exists()) {
     emit textOutput(QString("Tree file %1 is not found!").arg(tree_file));
   }
   else {
-    /*delete tree;
-    
-    tree = new BSPTree();*/
-    delete tree;
-    tree = new BSPTree();
+
+    //delete tree;
+    //tree = new BSPTree();
     BSPPolygonSet polygons;
         
     XMLDomTreeReader<GenericCfTreeSegment, GenericCfBud> cf_reader;
 
-    if(cf_reader.treeType(tree_file.toStdString()) == XMLDomTreeReader<GenericCfTreeSegment, GenericCfBud>::Cf) {
+    if(cf_reader.treeType(fileName.toStdString()) == XMLDomTreeReader<GenericCfTreeSegment, GenericCfBud>::Cf) {
       Tree<GenericCfTreeSegment, GenericCfBud> cftree(Point(0,0,0), PositionVector(0,1,0));
-      cf_reader.readXMLToTree(cftree, tree_file.toStdString());
+      cf_reader.readXMLToTree(cftree, fileName.toStdString());
 
       LGMPolygonTree<GenericCfTreeSegment, GenericCfBud> constructor;
       BSPPolygonSet* treePolygons = constructor.buildTree(cftree, parameters,
@@ -326,7 +339,7 @@ void GLDrawer::changeTree() {
 							  cf_reader.getLeafHash());
       polygons.addPolygons(treePolygons);
       delete treePolygons;
-      sceneObjects = constructor.getSceneObjects();
+      sceneObjects.insert(fileName, constructor.getSceneObjects());
 
       r_axis = GetDirection(GetRootAxis(cftree));
       t_point = GetPoint(cftree);
@@ -336,11 +349,11 @@ void GLDrawer::changeTree() {
       t_point = Point(t_point.getX(), t_point.getZ(), -t_point.getY());
       }
     else {
-      if(cf_reader.leafType(tree_file.toStdString()) == XMLDomTreeReader<GenericCfTreeSegment, GenericCfBud>::TRIANGLE) {
+      if(cf_reader.leafType(fileName.toStdString()) == XMLDomTreeReader<GenericCfTreeSegment, GenericCfBud>::TRIANGLE) {
 	
 	XMLDomTreeReader<GenericHwTriangleTreeSegment, GenericHwTriangleBud, Triangle> hwt_reader;	
 	Tree<GenericHwTriangleTreeSegment, GenericHwTriangleBud> hwtree(Point(0,0,0), PositionVector(0,1,0));
-	hwt_reader.readXMLToTree(hwtree, tree_file.toStdString());
+	hwt_reader.readXMLToTree(hwtree, fileName.toStdString());
 
 	LGMPolygonTree<GenericHwTriangleTreeSegment, GenericHwTriangleBud, Triangle> constructor;
 	BSPPolygonSet* treePolygons = constructor.buildTree(hwtree, parameters,
@@ -348,7 +361,7 @@ void GLDrawer::changeTree() {
 							    hwt_reader.getLeafHash());
 	polygons.addPolygons(treePolygons);
 	delete treePolygons;
-	sceneObjects = constructor.getSceneObjects();
+	sceneObjects.insert(fileName, constructor.getSceneObjects());
 	
 	r_axis = GetDirection(GetRootAxis(hwtree));
 	t_point = GetPoint(hwtree);
@@ -357,10 +370,10 @@ void GLDrawer::changeTree() {
 	r_axis = PositionVector(r_axis.getX(), r_axis.getZ(), -r_axis.getY());
 	t_point = Point(t_point.getX(), t_point.getZ(), -t_point.getY());
       }
-      else if (cf_reader.leafType(tree_file.toStdString()) == XMLDomTreeReader<GenericCfTreeSegment, GenericCfBud>::ELLIPSE) {
+      else if (cf_reader.leafType(fileName.toStdString()) == XMLDomTreeReader<GenericCfTreeSegment, GenericCfBud>::ELLIPSE) {
 	XMLDomTreeReader<GenericHwEllipseTreeSegment, GenericHwEllipseBud, cxxadt::Ellipse> hwt_reader;	
 	Tree<GenericHwEllipseTreeSegment, GenericHwEllipseBud> hwtree(Point(0,0,0), PositionVector(0,1,0));
-	hwt_reader.readXMLToTree(hwtree, tree_file.toStdString());
+	hwt_reader.readXMLToTree(hwtree, fileName.toStdString());
 
 	LGMPolygonTree<GenericHwEllipseTreeSegment, GenericHwEllipseBud, cxxadt::Ellipse> constructor;
 	BSPPolygonSet* treePolygons = constructor.buildTree(hwtree, parameters,
@@ -368,7 +381,7 @@ void GLDrawer::changeTree() {
 							    hwt_reader.getLeafHash());
 	polygons.addPolygons(treePolygons);
 	delete treePolygons;
-	sceneObjects = constructor.getSceneObjects();
+	sceneObjects.insert(fileName, constructor.getSceneObjects());
 	
 	r_axis = GetDirection(GetRootAxis(hwtree));
 	t_point = GetPoint(hwtree);
@@ -384,7 +397,9 @@ void GLDrawer::changeTree() {
     //polygons.addPolygons(ground);
     //delete ground;
 
-    tree->buildBSPTree(polygons);
+    // tree->buildBSPTree(polygons);
+
+    tree->addPolygonsToTree(polygons);
 
     cout << "polygons: " << tree->countPolygons() << endl;
     updateGL();
@@ -396,7 +411,7 @@ void GLDrawer::changeTree() {
 
     updateGL();
     
-    emit textOutput(QString("Tree file %1 has been loaded.").arg(tree_file));
+    emit textOutput(QString("Tree file %1 has been added.").arg(tree_file));
   }
 }
   
@@ -666,7 +681,7 @@ void GLDrawer::keyPressEvent(QKeyEvent* event) {
       toggleLights();
       break;
     case Qt::Key_J:
-      changeTree();
+      resetVisualization();
       break;
     case Qt::Key_T:
       toggleTexturing();
@@ -852,9 +867,45 @@ void GLDrawer::freeRoamMode() {
   control_mode = MOUSE_LOOK;
 }
 
-void GLDrawer::setObjectsSelected(QList<int> selected) {
+void GLDrawer::setObjectsSelected(QHash<QString, QList<int> > selected) {
 
-  if(sceneObjects) {
+
+  QList<QString> files = selectedObjects.keys();
+
+  for(int i = 0; i < files.size(); i++) {
+    if(sceneObjects.contains(files[i])) {
+      QMultiHash<int, SceneObject*>* scene_objects = sceneObjects.value(files[i]);
+      QList<int> objects = selectedObjects.value(files[i]);
+      for(int j = 0; j < objects.size(); j++) {
+	if(scene_objects->contains(objects[j])) {
+	  QList<SceneObject*> s_objects = scene_objects->values(objects[j]);
+	  for(int k = 0; k < s_objects.size(); k++) {
+	    s_objects[k]->unsetTempMaterial();
+	  }
+	}  
+      }
+    }    
+  }
+
+  selectedObjects = selected;
+  files = selected.keys();
+
+  for(int i = 0; i < files.size(); i++) {
+    if(sceneObjects.contains(files[i])) {
+      QMultiHash<int, SceneObject*>* scene_objects = sceneObjects.value(files[i]);
+      QList<int> objects = selectedObjects.value(files[i]);
+      for(int j = 0; j < objects.size(); j++) {
+	if(scene_objects->contains(objects[j])) {
+	  QList<SceneObject*> s_objects = scene_objects->values(objects[j]);
+	  for(int k = 0; k < s_objects.size(); k++) {
+	    s_objects[k]->setTempMaterial(red);
+	  }
+	}  
+      }
+    }    
+  }
+   
+    /*  if(sceneObjects) {
     // Reset previous selection
     for(int i = 0; i < selectedObjects.size(); i++) {
       if(sceneObjects->contains(selectedObjects[i])) {
@@ -875,7 +926,7 @@ void GLDrawer::setObjectsSelected(QList<int> selected) {
 	}
       }
     }
-  }
+    }*/
   updateGL();
       
 }
