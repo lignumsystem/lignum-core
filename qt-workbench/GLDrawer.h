@@ -50,6 +50,7 @@ public slots:
   void toggleLights();
   void toggleTexturing();
   void resetVisualization();
+  void resetVisualization(QList<QString> files);
   void addTree(QString fileName);
   void setTreeFile(QString fileName);
   void setCylinderRDetail(int detail);

@@ -312,6 +312,13 @@ void GLDrawer::resetVisualization() {
   updateGL();
 }
 
+void GLDrawer::resetVisualization(QList<QString> files) {
+  resetVisualization();
+  for(int i = 0; i < files.size(); i++) {
+	 addTree(files[i]);
+  }
+}
+
 void GLDrawer::addTree(QString fileName) {
   setTextures();
 
