@@ -49,31 +49,43 @@ bool XMLViewer::addTree(QString fileName)
 			     .arg(errorStr));
     return false;
   }
-  addTree(domDocument, fileName);
-  return true;  
+  
+
+  return addTree(domDocument, fileName);
+    
 }
 
-void XMLViewer::addTree(QDomDocument document, QString fileName)
+bool XMLViewer::addTree(QDomDocument document, QString fileName)
 {
-  documents.push_back(document);
-
+  //documents.push_back(document);
+  for(int i = 0; i < files.size(); i++)
+	 if(*files[i] == fileName)
+	    return false;		 
+  
+  QString* file_name = new QString(fileName);
+  files.push_back(file_name);
   QDomElement root = document.documentElement();
 
-  if(root.tagName() == QString("Tree"))
-    parseTreeElement(root, fileName);
-
+  sceneObjectIndexForItem.insert(fileName, new QHash<QTreeWidgetItem *, int>());	
+	if(root.tagName() == QString("Tree"))	
+  parseTreeElement(root, file_name);
+  
+  return true;			
 }
 
-void XMLViewer::parseTreeElement(const QDomElement &element, QString fileName, QTreeWidgetItem *parentItem)
+void XMLViewer::parseTreeElement(const QDomElement &element, QString* fileName, QTreeWidgetItem *parentItem)
 {
   QTreeWidgetItem *item = createItem(element, parentItem);
-  
+  rootItemForFileName.insert(*fileName, item);		
+	
   QString elementName = element.tagName();
-  item->setText(0, elementName + QString("%1").arg(documents.size()));
+  item->setText(0, elementName + QString("%1").arg(files.size()));
   
+  item->setCheckState(0, Qt::Checked);
+	
   QTreeWidgetItem *fileNameItem = new QTreeWidgetItem(item);
   fileNameItem->setText(0, QString("File name"));
-  fileNameItem->setText(1, fileName);
+  fileNameItem->setText(1, *fileName);
   
   setItemExpanded(item, false);
 
@@ -116,7 +128,7 @@ void XMLViewer::parseAttributeElement(const QDomElement &element, QTreeWidgetIte
 
 }
 
-void XMLViewer::parseAxisElement(const QDomElement &element, QString fileName, QTreeWidgetItem *parentItem)
+void XMLViewer::parseAxisElement(const QDomElement &element, QString *fileName, QTreeWidgetItem *parentItem)
 {
   QTreeWidgetItem *item = createItem(element, parentItem);
   
@@ -143,7 +155,7 @@ void XMLViewer::parseAxisElement(const QDomElement &element, QString fileName, Q
   }
 }
 
-void XMLViewer::parseTreeSegmentElement(const QDomElement &element, QString fileName, QTreeWidgetItem *parentItem)
+void XMLViewer::parseTreeSegmentElement(const QDomElement &element, QString *fileName, QTreeWidgetItem *parentItem)
 {
   QTreeWidgetItem *item = createItem(element, parentItem);
   
@@ -154,7 +166,7 @@ void XMLViewer::parseTreeSegmentElement(const QDomElement &element, QString file
 
   QString o_index = element.attribute("ObjectIndex");
   if(!o_index.isEmpty())
-    sceneObjectIndexForItem.insert(item, o_index.toInt());
+    sceneObjectIndexForItem.value(*fileName)->insert(item, o_index.toInt());
   fileNameForItem.insert(item, fileName);
 
   QDomElement child = element.firstChildElement();
@@ -170,7 +182,7 @@ void XMLViewer::parseTreeSegmentElement(const QDomElement &element, QString file
   }
 }
 
-void XMLViewer::parseBranchingPointElement(const QDomElement &element, QString fileName, QTreeWidgetItem *parentItem)
+void XMLViewer::parseBranchingPointElement(const QDomElement &element, QString *fileName, QTreeWidgetItem *parentItem)
 {
   QTreeWidgetItem *item = createItem(element, parentItem);
   
@@ -191,7 +203,7 @@ void XMLViewer::parseBranchingPointElement(const QDomElement &element, QString f
   }
 }
 
-void XMLViewer::parseBudElement(const QDomElement &element, QString fileName, QTreeWidgetItem *parentItem)
+void XMLViewer::parseBudElement(const QDomElement &element, QString *fileName, QTreeWidgetItem *parentItem)
 {
   QTreeWidgetItem *item = createItem(element, parentItem);
   
@@ -201,8 +213,9 @@ void XMLViewer::parseBudElement(const QDomElement &element, QString fileName, QT
   setItemExpanded(item, false);
 
   QString o_index = element.attribute("ObjectIndex");
-  if(!o_index.isEmpty())
-    sceneObjectIndexForItem.insert(item, o_index.toInt());
+  if(!o_index.isEmpty()) {
+    sceneObjectIndexForItem.value(*fileName)->insert(item, o_index.toInt());
+  }
   fileNameForItem.insert(item, fileName);
 
   QDomElement child = element.firstChildElement();
@@ -214,7 +227,7 @@ void XMLViewer::parseBudElement(const QDomElement &element, QString fileName, QT
   }
 }
 
-void XMLViewer::parseBroadLeafElement(const QDomElement &element, QString fileName, QTreeWidgetItem *parentItem)
+void XMLViewer::parseBroadLeafElement(const QDomElement &element, QString *fileName, QTreeWidgetItem *parentItem)
 {
   QTreeWidgetItem *item = createItem(element, parentItem);
   
@@ -225,7 +238,7 @@ void XMLViewer::parseBroadLeafElement(const QDomElement &element, QString fileNa
 
   QString o_index = element.attribute("ObjectIndex");
   if(!o_index.isEmpty())
-    sceneObjectIndexForItem.insert(item, o_index.toInt());
+    sceneObjectIndexForItem.value(*fileName)->insert(item, o_index.toInt());
   fileNameForItem.insert(item, fileName);
 
   QDomElement child = element.firstChildElement();
@@ -258,12 +271,13 @@ void XMLViewer::selectSceneObjects()
   QMultiHash<QString, int> objects;
   QSet<QString> fileNames;
   for(int i = 0; i < items.size(); i++) {
-    if(sceneObjectIndexForItem.contains(items[i])) {
-      if(fileNameForItem.contains(items[i])) {
-	QString fileName = fileNameForItem.value(items[i]);
-	if(!fileNames.contains(fileName))
-	  fileNames.insert(fileName);
-	objects.insert(fileNameForItem.value(items[i]), sceneObjectIndexForItem.value(items[i]));
+    if(fileNameForItem.contains(items[i])) {
+     QString fileName = *fileNameForItem.value(items[i]);		
+     if(sceneObjectIndexForItem.value(fileName)->contains(items[i])) {
+ 
+      if(!fileNames.contains(fileName))
+	   fileNames.insert(fileName);
+	  objects.insert(*fileNameForItem.value(items[i]), sceneObjectIndexForItem.value(fileName)->value(items[i]));
 	//cout << sceneObjectIndexForItem.value(items[i]) << endl;
       }
     }
@@ -275,4 +289,14 @@ void XMLViewer::selectSceneObjects()
     selectedObjects.insert(file, objects.values(file)); 
   }
   emit sceneObjectsSelected(selectedObjects);
+}
+
+void XMLViewer::sendVisualizationUpdate() {
+  QList<QString> fileList;
+  for(int i = 0; i < files.size(); i++) {
+	  if(rootItemForFileName.contains(*files[i])) 
+    	  if(rootItemForFileName.value(*files[i])->checkState(0) == Qt::Checked)
+             fileList.push_back(*files[i]);		  
+  }
+  emit updateVisualization(fileList);	
 }

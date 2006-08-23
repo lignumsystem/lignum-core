@@ -19,40 +19,43 @@ public:
   XMLViewer(QWidget *parent = 0);
   
   bool addTree(QString fileName);
-  void addTree(QDomDocument document, QString fileName);
+  bool addTree(QDomDocument document, QString fileName);
 
 signals:
   
   void sceneObjectsSelected(QHash<QString, QList<int> >);
+  void updateVisualization(QList<QString>);
 
 private slots:
- 
-  void selectSceneObjects(); 
+  void sendVisualizationUpdate();
+  void selectSceneObjects();
 
 private:
-  void parseTreeElement(const QDomElement &element, QString fileName,
+  void parseTreeElement(const QDomElement &element, QString *fileName,
 			  QTreeWidgetItem *parentItem = 0);
   void parseAttributeElement(const QDomElement &element, 
 			     QTreeWidgetItem *parentItem);
-  void parseAxisElement(const QDomElement &element, QString fileName,
+  void parseAxisElement(const QDomElement &element, QString *fileName,
 			QTreeWidgetItem *parentItem);
-  void parseTreeSegmentElement(const QDomElement &element, QString fileName,
+  void parseTreeSegmentElement(const QDomElement &element, QString *fileName,
 			       QTreeWidgetItem *parentItem);
-  void parseBranchingPointElement(const QDomElement &element, QString fileName,
+  void parseBranchingPointElement(const QDomElement &element, QString *fileName,
 				  QTreeWidgetItem *parentItem);
-  void parseBudElement(const QDomElement &element, QString fileName,
+  void parseBudElement(const QDomElement &element, QString *fileName,
 		       QTreeWidgetItem *parentItem);
-  void parseBroadLeafElement(const QDomElement &element, QString fileName,
+  void parseBroadLeafElement(const QDomElement &element, QString *fileName,
 		       QTreeWidgetItem *parentItem);
   
 
   QTreeWidgetItem *createItem(const QDomElement &element,
 			      QTreeWidgetItem *parentItem = 0);
 
-  vector<QDomDocument> documents;
-  QHash<QTreeWidgetItem *, QDomDocument> domDocumentForItem;
-  QHash<QTreeWidgetItem *, int> sceneObjectIndexForItem;
-  QHash<QTreeWidgetItem *, QString> fileNameForItem;
+  //vector<QDomDocument> documents;
+  QList<QString *> files;
+  //QHash<QTreeWidgetItem *, QDomDocument> domDocumentForItem;
+  QHash<QString, QHash<QTreeWidgetItem *, int> *> sceneObjectIndexForItem;
+  QHash<QTreeWidgetItem *, QString *> fileNameForItem;
+  QHash<QString, QTreeWidgetItem*> rootItemForFileName; 
   //QTreeWidgetItem *rootItem;
   
   

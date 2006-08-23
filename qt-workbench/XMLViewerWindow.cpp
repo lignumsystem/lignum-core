@@ -3,25 +3,31 @@
 #include "XMLViewerWindow.h"
 #include "XMLViewer.h"
 
+
 XMLViewerWindow::XMLViewerWindow()
 {
-  xml_viewer = new XMLViewer();
-  setCentralWidget(xml_viewer);
+  //xml_viewer = new XMLViewer();
+  //setCentralWidget(xml_viewer);
   
-  createActions();
-  createMenus();
-  
+  //createActions();
+  //createMenus();
+  //createToolbar();
+  ui.setupUi(this);
+
   statusBar()->showMessage("Ready");
   
   setWindowTitle("XML Viewer");
   resize(480, 320);
   
-  connect(xml_viewer, SIGNAL(sceneObjectsSelected(QHash<QString, QList<int> >)),
+  connect(ui.xml_viewer, SIGNAL(sceneObjectsSelected(QHash<QString, QList<int> >)),
 	  this, SIGNAL(sceneObjectsSelected(QHash<QString, QList<int> >)));
-
+  connect(ui.actionAdd_tree, SIGNAL(triggered()), this, SLOT(addTree()));
+  connect(ui.actionQuit, SIGNAL(triggered()), this, SLOT(close()));
+  connect(ui.actionUpdate_visualization, SIGNAL(triggered()), ui.xml_viewer, SLOT(sendVisualizationUpdate()));
+  connect(ui.xml_viewer, SIGNAL(updateVisualization(QList<QString>)), this, SIGNAL(updateVisualization(QList<QString>)));
 }
 
-void XMLViewerWindow::open()
+void XMLViewerWindow::addTree()
 {
   QString fileName =
     QFileDialog::getOpenFileName(this, tr("Open a XML File"),
@@ -30,19 +36,19 @@ void XMLViewerWindow::open()
   if (fileName.isEmpty())
     return;
   
-  if (xml_viewer->addTree(fileName))
+  if (ui.xml_viewer->addTree(fileName)) {
     statusBar()->showMessage(tr("File loaded"), 2000);
-
-  emit fileAdded(fileName);
+    emit fileAdded(fileName);
+  }
 }
 
 
 
-void XMLViewerWindow::createActions()
+/*void XMLViewerWindow::createActions()
 {
-  openAct = new QAction(tr("&Open..."), this);
-  openAct->setShortcut(tr("Ctrl+O"));
-  connect(openAct, SIGNAL(triggered()), this, SLOT(open()));
+  addAct = new QAction(tr("A&dd tree..."), this);
+  addAct->setShortcut(tr("Ctrl+A"));
+  connect(addAct, SIGNAL(triggered()), this, SLOT(addTree()));
   
   exitAct = new QAction(tr("E&xit"), this);
   exitAct->setShortcut(tr("Ctrl+Q"));
@@ -52,6 +58,13 @@ void XMLViewerWindow::createActions()
 void XMLViewerWindow::createMenus()
 {
   fileMenu = menuBar()->addMenu(tr("&File"));
-  fileMenu->addAction(openAct);
+  fileMenu->addAction(addAct);
   fileMenu->addAction(exitAct);
 }
+
+void XMLViewerWindow::createToolbar() {
+  toolBar = new QToolBar(this);
+  addToolBar(toolBar);
+  toolBar->addAction(addAct);	
+  		
+}*/
