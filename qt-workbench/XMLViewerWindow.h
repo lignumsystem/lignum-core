@@ -2,6 +2,7 @@
 #define XMLVIEWERWINDOW_H
 
 #include <QMainWindow>
+#include <QMultiHash>
 
 class XMLViewer;
 
@@ -13,7 +14,8 @@ public:
   XMLViewerWindow();
   
 signals: 
-  void sceneObjectsSelected(QList<int>);
+  void sceneObjectsSelected(QHash<QString, QList<int> >);
+  void fileAdded(QString);
 
 private slots:
   void open();

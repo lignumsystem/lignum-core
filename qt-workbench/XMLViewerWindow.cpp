@@ -16,7 +16,8 @@ XMLViewerWindow::XMLViewerWindow()
   setWindowTitle("XML Viewer");
   resize(480, 320);
   
-  connect(xml_viewer, SIGNAL(sceneObjectsSelected(QList<int>)), this, SIGNAL(sceneObjectsSelected(QList<int>)));
+  connect(xml_viewer, SIGNAL(sceneObjectsSelected(QHash<QString, QList<int> >)),
+	  this, SIGNAL(sceneObjectsSelected(QHash<QString, QList<int> >)));
 
 }
 
@@ -32,6 +33,7 @@ void XMLViewerWindow::open()
   if (xml_viewer->addTree(fileName))
     statusBar()->showMessage(tr("File loaded"), 2000);
 
+  emit fileAdded(fileName);
 }
 
 
