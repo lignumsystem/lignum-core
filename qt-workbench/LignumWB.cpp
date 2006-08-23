@@ -39,8 +39,9 @@ void LignumWB::loadTree() {
   
   // Should this be implemented with signals & slots?
   if(!fileName.isEmpty()) {
-    ui.gldrawer->setTreeFile(fileName);
-    ui.gldrawer->changeTree();
+    //ui.gldrawer->setTreeFile(fileName);
+    //ui.gldrawer->changeTree();
+    ui.gldrawer->addTree(fileName);
   }
 
 }
@@ -48,7 +49,10 @@ void LignumWB::loadTree() {
 void LignumWB::xmlviewer() {
   if(!xml_viewer) {
     xml_viewer = new XMLViewerWindow();
-    connect(xml_viewer, SIGNAL(sceneObjectsSelected(QList<int>)), ui.gldrawer, SLOT(setObjectsSelected(QList<int>)));
+    connect(xml_viewer, SIGNAL(sceneObjectsSelected(QHash<QString, QList<int> >)),
+	    ui.gldrawer, SLOT(setObjectsSelected(QHash<QString, QList<int> >)));
+    connect(xml_viewer, SIGNAL(fileAdded(QString)),
+	    ui.gldrawer, SLOT(addTree(QString)));
   } 
   xml_viewer->show();
   xml_viewer->raise();
