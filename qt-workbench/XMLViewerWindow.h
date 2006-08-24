@@ -1,18 +1,20 @@
 #ifndef XMLVIEWERWINDOW_H
 #define XMLVIEWERWINDOW_H
 
-#include <QMainWindow>
+//#include <QMainWindow>
+#include <QDockWidget>
 #include <QMultiHash>
-#include "xml_viewer.h"
+#include <XMLViewerWidget.h>
+//#include "xml_viewer.h"
 
-class XMLViewer;
+//class XMLViewer;
 
-class XMLViewerWindow : public QMainWindow
+class XMLViewerWindow : public QDockWidget
 {
   Q_OBJECT
   
 public:
-  XMLViewerWindow();
+  XMLViewerWindow(QWidget *parent = 0);
   
 signals: 
   void sceneObjectsSelected(QHash<QString, QList<int> >);
@@ -21,20 +23,10 @@ signals:
 
 private slots:
   void addTree();
-  //  void displayStatusText(
   
 private:
-  //void createActions();
-  //void createMenus();
-  //void createToolbar();
-  
-  //XMLViewer *xml_viewer;
-  
-  //QMenu *fileMenu;
-  //QToolBar *toolBar;
-  //QAction *addAct;
-  //QAction *exitAct;
-  Ui::TreeViewer ui;
+  //  Ui::TreeViewer ui;
+  XMLViewerWidget *xml_widget;
 };
 
 #endif
