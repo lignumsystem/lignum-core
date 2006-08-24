@@ -25,6 +25,7 @@ signals:
   
   void sceneObjectsSelected(QHash<QString, QList<int> >);
   void updateVisualization(QList<QString>);
+  void statusText(QString, int);
 
 private slots:
   void sendVisualizationUpdate();

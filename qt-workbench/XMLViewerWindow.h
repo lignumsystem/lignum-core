@@ -18,8 +18,10 @@ signals:
   void sceneObjectsSelected(QHash<QString, QList<int> >);
   void fileAdded(QString);
   void updateVisualization(QList<QString>);
+
 private slots:
   void addTree();
+  //  void displayStatusText(
   
 private:
   //void createActions();

@@ -25,6 +25,7 @@ XMLViewerWindow::XMLViewerWindow()
   connect(ui.actionQuit, SIGNAL(triggered()), this, SLOT(close()));
   connect(ui.actionUpdate_visualization, SIGNAL(triggered()), ui.xml_viewer, SLOT(sendVisualizationUpdate()));
   connect(ui.xml_viewer, SIGNAL(updateVisualization(QList<QString>)), this, SIGNAL(updateVisualization(QList<QString>)));
+  connect(ui.xml_viewer, SIGNAL(statusText(QString, int)), statusBar(), SLOT(showMessage(QString, int)));
 }
 
 void XMLViewerWindow::addTree()

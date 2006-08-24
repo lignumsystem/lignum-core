@@ -30,6 +30,12 @@ bool XMLViewer::addTree(QString fileName)
   int errorLine;
   int errorColumn;
   
+  for(int i = 0; i < files.size(); i++)
+    if(*files[i] == fileName) {
+      emit statusText(QString("File %1 has already been loaded.").arg(fileName), 3000);
+      return false;	
+    }	
+  
   QFile file(fileName);
   if (!file.open(QFile::ReadOnly | QFile::Text)) {
     QMessageBox::warning(this, tr("arks"),
@@ -57,10 +63,11 @@ bool XMLViewer::addTree(QString fileName)
 
 bool XMLViewer::addTree(QDomDocument document, QString fileName)
 {
-  //documents.push_back(document);
-  for(int i = 0; i < files.size(); i++)
-	 if(*files[i] == fileName)
-	    return false;		 
+  /*  for(int i = 0; i < files.size(); i++)
+    if(*files[i] == fileName) {
+      emit statusText(QString("File %1 has already been loaded.").arg(fileName), 3000);
+      return false;	
+      }*/	 
   
   QString* file_name = new QString(fileName);
   files.push_back(file_name);
