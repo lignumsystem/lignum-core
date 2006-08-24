@@ -22,7 +22,6 @@ class Ui_MainWindow
 {
 public:
     QAction *actionQuit;
-    QAction *actionLoad_tree;
     QAction *actionVisualization_settings;
     QAction *actionFree_roam;
     QAction *actionOrbit;
@@ -60,13 +59,12 @@ public:
     actionQuit = new QAction(MainWindow);
     actionQuit->setObjectName(QString::fromUtf8("actionQuit"));
     actionQuit->setIcon(QIcon(QString::fromUtf8("../../../Qt-4.1.4/bin/maple_texture.png")));
-    actionLoad_tree = new QAction(MainWindow);
-    actionLoad_tree->setObjectName(QString::fromUtf8("actionLoad_tree"));
     actionVisualization_settings = new QAction(MainWindow);
     actionVisualization_settings->setObjectName(QString::fromUtf8("actionVisualization_settings"));
     actionFree_roam = new QAction(MainWindow);
     actionFree_roam->setObjectName(QString::fromUtf8("actionFree_roam"));
     actionFree_roam->setCheckable(true);
+    actionFree_roam->setChecked(true);
     actionOrbit = new QAction(MainWindow);
     actionOrbit->setObjectName(QString::fromUtf8("actionOrbit"));
     actionOrbit->setCheckable(true);
@@ -185,7 +183,6 @@ public:
     menuOptions->addAction(actionWorking_directory);
     menuTools->addAction(actionXML_Viewer);
     menuTools->addAction(actionFunction_editor);
-    menuFile->addAction(actionLoad_tree);
     menuFile->addAction(actionQuit);
     toolBar->addAction(actionOrbit);
     toolBar->addAction(actionMove_center);
@@ -200,7 +197,6 @@ public:
     {
     MainWindow->setWindowTitle(QApplication::translate("MainWindow", "Lignum Workbench", 0, QApplication::UnicodeUTF8));
     actionQuit->setText(QApplication::translate("MainWindow", "Quit", 0, QApplication::UnicodeUTF8));
-    actionLoad_tree->setText(QApplication::translate("MainWindow", "Load tree...", 0, QApplication::UnicodeUTF8));
     actionVisualization_settings->setText(QApplication::translate("MainWindow", "Visualization settings...", 0, QApplication::UnicodeUTF8));
     actionFree_roam->setText(QApplication::translate("MainWindow", "Free roam", 0, QApplication::UnicodeUTF8));
     actionOrbit->setText(QApplication::translate("MainWindow", "Orbit", 0, QApplication::UnicodeUTF8));

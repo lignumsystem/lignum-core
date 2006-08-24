@@ -162,7 +162,6 @@
     <property name="title" >
      <string>File</string>
     </property>
-    <addaction name="actionLoad_tree" />
     <addaction name="actionQuit" />
    </widget>
    <addaction name="menuFile" />
@@ -187,11 +186,6 @@
    </property>
    <property name="text" >
     <string>Quit</string>
-   </property>
-  </action>
-  <action name="actionLoad_tree" >
-   <property name="text" >
-    <string>Load tree...</string>
    </property>
   </action>
   <action name="actionVisualization_settings" >
