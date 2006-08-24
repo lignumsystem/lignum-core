@@ -26,7 +26,7 @@ private:
   void clearExternalProgram();
 
 private slots:
-  void loadTree();
+//  void loadTree();
   void options();
   void xmlviewer();
   void functionEditor();
