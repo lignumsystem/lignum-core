@@ -418,7 +418,7 @@ void GLDrawer::addTree(QString fileName) {
 
     updateGL();
     
-    emit textOutput(QString("Tree file %1 has been added.").arg(tree_file));
+    //emit textOutput(QString("Tree file %1 has been added.").arg(fileName));
   }
 }
   
@@ -896,7 +896,6 @@ void GLDrawer::setObjectsSelected(QHash<QString, QList<int> > selected) {
 
   selectedObjects = selected;
   files = selected.keys();
-
   for(int i = 0; i < files.size(); i++) {
     if(sceneObjects.contains(files[i])) {
       QMultiHash<int, SceneObject*>* scene_objects = sceneObjects.value(files[i]);
