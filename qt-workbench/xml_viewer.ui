@@ -3,84 +3,96 @@
  <comment></comment>
  <exportmacro></exportmacro>
  <class>TreeViewer</class>
- <widget class="QMainWindow" name="TreeViewer" >
+ <widget class="QWidget" name="TreeViewer" >
   <property name="geometry" >
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>581</width>
+    <height>582</height>
    </rect>
   </property>
   <property name="windowTitle" >
-   <string>MainWindow</string>
+   <string>Form</string>
   </property>
-  <widget class="QWidget" name="centralwidget" >
-   <layout class="QHBoxLayout" >
-    <property name="margin" >
-     <number>9</number>
-    </property>
-    <property name="spacing" >
-     <number>6</number>
-    </property>
-    <item>
-     <widget class="XMLViewer" name="xml_viewer" >
-      <property name="toolTip" >
-       <string>Function painter for Lignum</string>
-      </property>
-      <property name="whatsThis" >
-       <string> Function painter for Lignum</string>
-      </property>
-     </widget>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QMenuBar" name="menubar" >
-   <property name="geometry" >
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>800</width>
-     <height>31</height>
-    </rect>
+  <layout class="QHBoxLayout" >
+   <property name="margin" >
+    <number>9</number>
    </property>
-   <widget class="QMenu" name="menuFile" >
-    <property name="title" >
-     <string>File</string>
-    </property>
-    <addaction name="actionAdd_tree" />
-    <addaction name="separator" />
-    <addaction name="actionQuit" />
-   </widget>
-   <addaction name="menuFile" />
-  </widget>
-  <widget class="QStatusBar" name="statusbar" />
-  <widget class="QToolBar" name="toolBar" >
-   <property name="orientation" >
-    <enum>Qt::Horizontal</enum>
+   <property name="spacing" >
+    <number>6</number>
    </property>
-   <attribute name="toolBarArea" >
-    <number>4</number>
-   </attribute>
-   <addaction name="actionAdd_tree" />
-   <addaction name="separator" />
-   <addaction name="actionUpdate_visualization" />
-  </widget>
-  <action name="actionAdd_tree" >
-   <property name="text" >
-    <string>Add tree...</string>
-   </property>
-  </action>
-  <action name="actionQuit" >
-   <property name="text" >
-    <string>Quit</string>
-   </property>
-  </action>
-  <action name="actionUpdate_visualization" >
-   <property name="text" >
-    <string>Update visualization</string>
-   </property>
-  </action>
+   <item>
+    <layout class="QVBoxLayout" >
+     <property name="margin" >
+      <number>0</number>
+     </property>
+     <property name="spacing" >
+      <number>6</number>
+     </property>
+     <item>
+      <layout class="QHBoxLayout" >
+       <property name="margin" >
+        <number>0</number>
+       </property>
+       <property name="spacing" >
+        <number>6</number>
+       </property>
+       <item>
+        <widget class="QPushButton" name="addButton" >
+         <property name="text" >
+          <string>Add tree...</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="removeButton" >
+         <property name="text" >
+          <string>Remove selected</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="updatevButton" >
+         <property name="text" >
+          <string>Update visualization</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" >
+          <size>
+           <width>71</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="XMLViewer" name="xml_viewer" >
+       <property name="minimumSize" >
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="toolTip" >
+        <string>Function painter for Lignum</string>
+       </property>
+       <property name="whatsThis" >
+        <string> Function painter for Lignum</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
  </widget>
  <pixmapfunction></pixmapfunction>
  <customwidgets>
