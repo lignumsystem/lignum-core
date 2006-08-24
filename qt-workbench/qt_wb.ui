@@ -8,7 +8,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>953</width>
+    <width>1022</width>
     <height>661</height>
    </rect>
   </property>
@@ -27,7 +27,7 @@
      <number>6</number>
     </property>
     <item>
-     <layout class="QVBoxLayout" >
+     <layout class="QHBoxLayout" >
       <property name="margin" >
        <number>0</number>
       </property>
@@ -35,52 +35,7 @@
        <number>6</number>
       </property>
       <item>
-       <widget class="QWidget" name="widget" >
-        <layout class="QHBoxLayout" >
-         <property name="margin" >
-          <number>0</number>
-         </property>
-         <property name="spacing" >
-          <number>6</number>
-         </property>
-         <item>
-          <widget class="QWidget" name="widget" >
-           <layout class="QVBoxLayout" >
-            <property name="margin" >
-             <number>0</number>
-            </property>
-            <property name="spacing" >
-             <number>6</number>
-            </property>
-            <item>
-             <widget class="GLDrawer" name="gldrawer" >
-              <property name="sizePolicy" >
-               <sizepolicy>
-                <hsizetype>7</hsizetype>
-                <vsizetype>7</vsizetype>
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="acceptDrops" >
-               <bool>true</bool>
-              </property>
-              <property name="toolTip" >
-               <string>OpenGL visualization for Lignum</string>
-              </property>
-              <property name="whatsThis" >
-               <string> Visualization for Lignum</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" >
+       <layout class="QVBoxLayout" >
         <property name="margin" >
          <number>0</number>
         </property>
@@ -88,41 +43,96 @@
          <number>6</number>
         </property>
         <item>
-         <widget class="QLineEdit" name="console" />
-        </item>
-        <item>
-         <widget class="QPushButton" name="runButton" >
-          <property name="text" >
-           <string>Run</string>
-          </property>
+         <widget class="QWidget" name="widget" >
+          <layout class="QHBoxLayout" >
+           <property name="margin" >
+            <number>0</number>
+           </property>
+           <property name="spacing" >
+            <number>6</number>
+           </property>
+           <item>
+            <widget class="QWidget" name="widget" >
+             <layout class="QVBoxLayout" >
+              <property name="margin" >
+               <number>0</number>
+              </property>
+              <property name="spacing" >
+               <number>6</number>
+              </property>
+              <item>
+               <widget class="GLDrawer" name="gldrawer" >
+                <property name="sizePolicy" >
+                 <sizepolicy>
+                  <hsizetype>7</hsizetype>
+                  <vsizetype>7</vsizetype>
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="acceptDrops" >
+                 <bool>true</bool>
+                </property>
+                <property name="toolTip" >
+                 <string>OpenGL visualization for Lignum</string>
+                </property>
+                <property name="whatsThis" >
+                 <string> Visualization for Lignum</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+          </layout>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="killButton" >
-          <property name="text" >
-           <string>Kill program</string>
+         <layout class="QHBoxLayout" >
+          <property name="margin" >
+           <number>0</number>
           </property>
-         </widget>
+          <property name="spacing" >
+           <number>6</number>
+          </property>
+          <item>
+           <widget class="QLineEdit" name="console" />
+          </item>
+          <item>
+           <widget class="QPushButton" name="runButton" >
+            <property name="text" >
+             <string>Run</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="killButton" >
+            <property name="text" >
+             <string>Kill program</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" >
-        <property name="margin" >
-         <number>0</number>
-        </property>
-        <property name="spacing" >
-         <number>6</number>
-        </property>
         <item>
-         <widget class="QTextBrowser" name="textBrowser" >
-          <property name="maximumSize" >
-           <size>
-            <width>16777215</width>
-            <height>120</height>
-           </size>
+         <layout class="QHBoxLayout" >
+          <property name="margin" >
+           <number>0</number>
           </property>
-         </widget>
+          <property name="spacing" >
+           <number>6</number>
+          </property>
+          <item>
+           <widget class="QTextBrowser" name="textBrowser" >
+            <property name="maximumSize" >
+             <size>
+              <width>16777215</width>
+              <height>120</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
        </layout>
       </item>
@@ -135,7 +145,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>953</width>
+     <width>1022</width>
      <height>26</height>
     </rect>
    </property>
@@ -258,12 +268,12 @@
    <slot>append(QString)</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>538</x>
-     <y>377</y>
+     <x>472</x>
+     <y>443</y>
     </hint>
     <hint type="destinationlabel" >
-     <x>547</x>
-     <y>888</y>
+     <x>471</x>
+     <y>629</y>
     </hint>
    </hints>
   </connection>

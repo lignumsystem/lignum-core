@@ -31,17 +31,18 @@ public:
     QAction *actionXML_Viewer;
     QWidget *centralwidget;
     QHBoxLayout *hboxLayout;
+    QHBoxLayout *hboxLayout1;
     QVBoxLayout *vboxLayout;
     QWidget *widget;
-    QHBoxLayout *hboxLayout1;
+    QHBoxLayout *hboxLayout2;
     QWidget *widget1;
     QVBoxLayout *vboxLayout1;
     GLDrawer *gldrawer;
-    QHBoxLayout *hboxLayout2;
+    QHBoxLayout *hboxLayout3;
     QLineEdit *console;
     QPushButton *runButton;
     QPushButton *killButton;
-    QHBoxLayout *hboxLayout3;
+    QHBoxLayout *hboxLayout4;
     QTextBrowser *textBrowser;
     QMenuBar *menubar;
     QMenu *menuValikko;
@@ -54,7 +55,7 @@ public:
     void setupUi(QMainWindow *MainWindow)
     {
     MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
-    MainWindow->resize(QSize(953, 661).expandedTo(MainWindow->minimumSizeHint()));
+    MainWindow->resize(QSize(1022, 661).expandedTo(MainWindow->minimumSizeHint()));
     MainWindow->setMouseTracking(false);
     actionQuit = new QAction(MainWindow);
     actionQuit->setObjectName(QString::fromUtf8("actionQuit"));
@@ -84,16 +85,20 @@ public:
     hboxLayout->setSpacing(6);
     hboxLayout->setMargin(9);
     hboxLayout->setObjectName(QString::fromUtf8("hboxLayout"));
+    hboxLayout1 = new QHBoxLayout();
+    hboxLayout1->setSpacing(6);
+    hboxLayout1->setMargin(0);
+    hboxLayout1->setObjectName(QString::fromUtf8("hboxLayout1"));
     vboxLayout = new QVBoxLayout();
     vboxLayout->setSpacing(6);
     vboxLayout->setMargin(0);
     vboxLayout->setObjectName(QString::fromUtf8("vboxLayout"));
     widget = new QWidget(centralwidget);
     widget->setObjectName(QString::fromUtf8("widget"));
-    hboxLayout1 = new QHBoxLayout(widget);
-    hboxLayout1->setSpacing(6);
-    hboxLayout1->setMargin(0);
-    hboxLayout1->setObjectName(QString::fromUtf8("hboxLayout1"));
+    hboxLayout2 = new QHBoxLayout(widget);
+    hboxLayout2->setSpacing(6);
+    hboxLayout2->setMargin(0);
+    hboxLayout2->setObjectName(QString::fromUtf8("hboxLayout2"));
     widget1 = new QWidget(widget);
     widget1->setObjectName(QString::fromUtf8("widget1"));
     vboxLayout1 = new QVBoxLayout(widget1);
@@ -112,53 +117,56 @@ public:
     vboxLayout1->addWidget(gldrawer);
 
 
-    hboxLayout1->addWidget(widget1);
+    hboxLayout2->addWidget(widget1);
 
 
     vboxLayout->addWidget(widget);
-
-    hboxLayout2 = new QHBoxLayout();
-    hboxLayout2->setSpacing(6);
-    hboxLayout2->setMargin(0);
-    hboxLayout2->setObjectName(QString::fromUtf8("hboxLayout2"));
-    console = new QLineEdit(centralwidget);
-    console->setObjectName(QString::fromUtf8("console"));
-
-    hboxLayout2->addWidget(console);
-
-    runButton = new QPushButton(centralwidget);
-    runButton->setObjectName(QString::fromUtf8("runButton"));
-
-    hboxLayout2->addWidget(runButton);
-
-    killButton = new QPushButton(centralwidget);
-    killButton->setObjectName(QString::fromUtf8("killButton"));
-
-    hboxLayout2->addWidget(killButton);
-
-
-    vboxLayout->addLayout(hboxLayout2);
 
     hboxLayout3 = new QHBoxLayout();
     hboxLayout3->setSpacing(6);
     hboxLayout3->setMargin(0);
     hboxLayout3->setObjectName(QString::fromUtf8("hboxLayout3"));
-    textBrowser = new QTextBrowser(centralwidget);
-    textBrowser->setObjectName(QString::fromUtf8("textBrowser"));
-    textBrowser->setMaximumSize(QSize(16777215, 120));
+    console = new QLineEdit(centralwidget);
+    console->setObjectName(QString::fromUtf8("console"));
 
-    hboxLayout3->addWidget(textBrowser);
+    hboxLayout3->addWidget(console);
+
+    runButton = new QPushButton(centralwidget);
+    runButton->setObjectName(QString::fromUtf8("runButton"));
+
+    hboxLayout3->addWidget(runButton);
+
+    killButton = new QPushButton(centralwidget);
+    killButton->setObjectName(QString::fromUtf8("killButton"));
+
+    hboxLayout3->addWidget(killButton);
 
 
     vboxLayout->addLayout(hboxLayout3);
 
+    hboxLayout4 = new QHBoxLayout();
+    hboxLayout4->setSpacing(6);
+    hboxLayout4->setMargin(0);
+    hboxLayout4->setObjectName(QString::fromUtf8("hboxLayout4"));
+    textBrowser = new QTextBrowser(centralwidget);
+    textBrowser->setObjectName(QString::fromUtf8("textBrowser"));
+    textBrowser->setMaximumSize(QSize(16777215, 120));
 
-    hboxLayout->addLayout(vboxLayout);
+    hboxLayout4->addWidget(textBrowser);
+
+
+    vboxLayout->addLayout(hboxLayout4);
+
+
+    hboxLayout1->addLayout(vboxLayout);
+
+
+    hboxLayout->addLayout(hboxLayout1);
 
     MainWindow->setCentralWidget(centralwidget);
     menubar = new QMenuBar(MainWindow);
     menubar->setObjectName(QString::fromUtf8("menubar"));
-    menubar->setGeometry(QRect(0, 0, 953, 26));
+    menubar->setGeometry(QRect(0, 0, 1022, 26));
     menuValikko = new QMenu(menubar);
     menuValikko->setObjectName(QString::fromUtf8("menuValikko"));
     menuOptions = new QMenu(menubar);
