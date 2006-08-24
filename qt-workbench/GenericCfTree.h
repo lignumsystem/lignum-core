@@ -2,7 +2,6 @@
 #define GENERICCFTREE
 
 #include <Lignum.h>
-#include <../Pine/Pine.h>
 class GenericCfBud;
 class GenericCfTreeSegment : public CfTreeSegment<GenericCfTreeSegment, GenericCfBud> {
  public:
