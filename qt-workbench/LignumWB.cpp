@@ -25,6 +25,7 @@ LignumWB::LignumWB(QWidget *parent)
   ui.actionOrbit->setChecked(true);
   
   viewActions->setExclusive(true);
+  xmlviewer();
 
 }
 
@@ -42,17 +43,16 @@ LignumWB::LignumWB(QWidget *parent)
 
 void LignumWB::xmlviewer() {
   if(!xml_viewer) {
-    xml_viewer = new XMLViewerWindow();
+    xml_viewer = new XMLViewerWindow(this);
     connect(xml_viewer, SIGNAL(sceneObjectsSelected(QHash<QString, QList<int> >)),
 	    ui.gldrawer, SLOT(setObjectsSelected(QHash<QString, QList<int> >)));
-   /* connect(xml_viewer, SIGNAL(fileAdded(QString)),
-	    ui.gldrawer, SLOT(addTree(QString)));*/
-	connect(xml_viewer, SIGNAL(updateVisualization(QList<QString>)),
-	  	    ui.gldrawer, SLOT(resetVisualization(QList<QString>)));
+    connect(xml_viewer, SIGNAL(updateVisualization(QList<QString>)),
+	    ui.gldrawer, SLOT(resetVisualization(QList<QString>)));
+    addDockWidget(Qt::RightDockWidgetArea, xml_viewer);
   } 
   xml_viewer->show();
   xml_viewer->raise();
-  xml_viewer->activateWindow(); 
+  xml_viewer->activateWindow();
 }
 
 void LignumWB::functionEditor() {
