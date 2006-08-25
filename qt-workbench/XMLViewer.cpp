@@ -310,7 +310,8 @@ void XMLViewer::sendVisualizationUpdate() {
     	  if(rootItemForFileName.value(*files[i])->checkState(0) == Qt::Checked)
              fileList.push_back(*files[i]);		  
   }
-  focusedFile = fileList[fileList.size()-1];
+  if(fileList.size() >= 1)
+    focusedFile = fileList[fileList.size()-1];
   emit updateVisualization(fileList);	
 }
 
@@ -374,6 +375,8 @@ void XMLViewer::deleteItem(QTreeWidgetItem *item) {
 
 void XMLViewer::setFocus() {
   QList<QTreeWidgetItem *> items = selectedItems();
+  if(items.size() < 1)
+    return;
   if(fileNameForItem.contains(items[items.size()-1])) {
     QString fileName = *fileNameForItem.value(items[items.size()-1]);
     if(fileName != focusedFile) {
