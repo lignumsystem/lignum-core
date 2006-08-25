@@ -55,7 +55,7 @@
        <item>
         <widget class="QPushButton" name="updatevButton" >
          <property name="text" >
-          <string>Update visualization</string>
+          <string>Visualize selected</string>
          </property>
         </widget>
        </item>

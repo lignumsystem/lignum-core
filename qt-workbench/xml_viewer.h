@@ -64,7 +64,7 @@ public:
 
     xml_viewer = new XMLViewer(TreeViewer);
     xml_viewer->setObjectName(QString::fromUtf8("xml_viewer"));
-    xml_viewer->setMinimumSize(QSize(300, 400));
+    xml_viewer->setMinimumSize(QSize(0, 0));
 
     vboxLayout->addWidget(xml_viewer);
 
@@ -81,7 +81,7 @@ public:
     TreeViewer->setWindowTitle(QApplication::translate("TreeViewer", "Form", 0, QApplication::UnicodeUTF8));
     addButton->setText(QApplication::translate("TreeViewer", "Add tree...", 0, QApplication::UnicodeUTF8));
     removeButton->setText(QApplication::translate("TreeViewer", "Remove selected", 0, QApplication::UnicodeUTF8));
-    updatevButton->setText(QApplication::translate("TreeViewer", "Update visualization", 0, QApplication::UnicodeUTF8));
+    updatevButton->setText(QApplication::translate("TreeViewer", "Visualize selected", 0, QApplication::UnicodeUTF8));
     xml_viewer->setToolTip(QApplication::translate("TreeViewer", "Function painter for Lignum", 0, QApplication::UnicodeUTF8));
     xml_viewer->setWhatsThis(QApplication::translate("TreeViewer", " Function painter for Lignum", 0, QApplication::UnicodeUTF8));
     Q_UNUSED(TreeViewer);
