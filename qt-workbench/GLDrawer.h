@@ -67,6 +67,7 @@ public slots:
   void moveCenterMode();
   void freeRoamMode();
   void setObjectsSelected(QHash<QString, QList<int> >);
+  void setFocus(Point point, PositionVector direction, double height);
   //void moveCameraLeft();
   //void moveCameraRight();
   //void moveCameraUp();

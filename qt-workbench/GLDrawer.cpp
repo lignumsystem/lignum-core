@@ -936,3 +936,18 @@ void GLDrawer::setObjectsSelected(QHash<QString, QList<int> > selected) {
   updateGL();
       
 }
+
+void GLDrawer::setFocus(Point point, PositionVector direction, double height) {
+  r_axis = direction.normalize();
+  t_point = point;
+  r_axis = PositionVector(r_axis.getX(), r_axis.getZ(), -r_axis.getY());
+  t_point = Point(t_point.getX(), t_point.getZ(), -t_point.getY());
+  t_height = height;
+
+  tree_trans_x = t_point.getX();
+  tree_trans_y = t_point.getY() + t_height/2;
+  tree_trans_z = t_point.getZ();
+  
+  updateGL();
+  //resetCamera();
+}
