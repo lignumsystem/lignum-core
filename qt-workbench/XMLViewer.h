@@ -30,11 +30,12 @@ signals:
 private slots:
   void sendVisualizationUpdate();
   void selectSceneObjects();
+  void removeSelected();
 
 private:
   void parseTreeElement(const QDomElement &element, QString *fileName,
 			  QTreeWidgetItem *parentItem = 0);
-  void parseAttributeElement(const QDomElement &element, 
+  void parseAttributeElement(const QDomElement &element, QString *fileName,
 			     QTreeWidgetItem *parentItem);
   void parseAxisElement(const QDomElement &element, QString *fileName,
 			QTreeWidgetItem *parentItem);
@@ -46,9 +47,9 @@ private:
 		       QTreeWidgetItem *parentItem);
   void parseBroadLeafElement(const QDomElement &element, QString *fileName,
 		       QTreeWidgetItem *parentItem);
-  
+  void deleteItem(QTreeWidgetItem *item);
 
-  QTreeWidgetItem *createItem(const QDomElement &element,
+  QTreeWidgetItem *createItem(const QDomElement &element, QString *fileName,
 			      QTreeWidgetItem *parentItem = 0);
 
   //vector<QDomDocument> documents;
