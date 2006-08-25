@@ -312,16 +312,22 @@ void XMLViewer::sendVisualizationUpdate() {
 }
 
 void XMLViewer::removeSelected() {
-  QList<QTreeWidgetItem*> items = selectedItems();
+  //QList<QTreeWidgetItem*> items = selectedItems();
   QList<QString *> filesToBeRemoved;
-  for(int i = 0; i < items.size(); i++) {
+  /*  for(int i = 0; i < items.size(); i++) {
     if(fileNameForItem.contains(items[i])) {
       QString *fileName = fileNameForItem.value(items[i]);
       if(!filesToBeRemoved.contains(fileName))
 	filesToBeRemoved.push_back(fileName);
-      //fileNameForItem.remove(items[i]);
+    }
+    }*/
+  for(int i = 0; i < files.size(); i++) {
+    if(rootItemForFileName.contains(*files[i])) {
+      if(rootItemForFileName.value(*files[i])->checkState(0) == Qt::Checked)
+	filesToBeRemoved.push_back(files[i]);
     }
   }
+  
 
   for(int i = 0; i < filesToBeRemoved.size(); i++) {
     if(sceneObjectIndexForItem.contains(*filesToBeRemoved[i])) {
