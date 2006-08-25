@@ -7,8 +7,11 @@
 #include <QIcon>
 #include <QTreeWidget>
 #include <vector>
+#include <Point.h>
+#include <PositionVector.h>
 
 using namespace std;
+using namespace cxxadt;
 
 class XMLViewer : public QTreeWidget
 {
@@ -25,12 +28,15 @@ signals:
   
   void sceneObjectsSelected(QHash<QString, QList<int> >);
   void updateVisualization(QList<QString>);
-  void statusText(QString, int);
+  void textOutput(QString);
+  void setFocus(Point, PositionVector, double);
 
 private slots:
   void sendVisualizationUpdate();
   void selectSceneObjects();
   void removeSelected();
+  void setFocus();
+
 
 private:
   void parseTreeElement(const QDomElement &element, QString *fileName,
@@ -52,7 +58,9 @@ private:
   QTreeWidgetItem *createItem(const QDomElement &element, QString *fileName,
 			      QTreeWidgetItem *parentItem = 0);
 
+
   //vector<QDomDocument> documents;
+  QString focusedFile;
   QList<QString *> files;
   //QHash<QTreeWidgetItem *, QDomDocument> domDocumentForItem;
   QHash<QString, QHash<QTreeWidgetItem *, int> *> sceneObjectIndexForItem;

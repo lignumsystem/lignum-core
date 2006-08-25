@@ -3,6 +3,7 @@
 #include "XMLViewer.h"
 #include <iostream>
 
+using namespace cxxadt;
 using namespace std;
 
 XMLViewer::XMLViewer(QWidget *parent)
@@ -21,6 +22,7 @@ XMLViewer::XMLViewer(QWidget *parent)
   //rootItem->setText(0, QString("Trees"));
 
   connect(this, SIGNAL(itemSelectionChanged()), this, SLOT(selectSceneObjects()));
+  connect(this, SIGNAL(itemSelectionChanged()), this, SLOT(setFocus()));
 }
 
 bool XMLViewer::addTree(QString fileName) 
@@ -32,7 +34,7 @@ bool XMLViewer::addTree(QString fileName)
   
   for(int i = 0; i < files.size(); i++)
     if(*files[i] == fileName) {
-      emit statusText(QString("File %1 has already been loaded.").arg(fileName), 3000);
+      emit textOutput(QString("File %1 has already been loaded.").arg(fileName));
       return false;	
     }	
   
@@ -308,6 +310,7 @@ void XMLViewer::sendVisualizationUpdate() {
     	  if(rootItemForFileName.value(*files[i])->checkState(0) == Qt::Checked)
              fileList.push_back(*files[i]);		  
   }
+  focusedFile = fileList[fileList.size()-1];
   emit updateVisualization(fileList);	
 }
 
@@ -367,4 +370,51 @@ void XMLViewer::deleteItem(QTreeWidgetItem *item) {
     fileNameForItem.remove(item);
   delete item;
   //cout << "item deleted" << endl;
+}
+
+void XMLViewer::setFocus() {
+  QList<QTreeWidgetItem *> items = selectedItems();
+  if(fileNameForItem.contains(items[items.size()-1])) {
+    QString fileName = *fileNameForItem.value(items[items.size()-1]);
+    if(fileName != focusedFile) {
+      focusedFile = fileName;
+      if(rootItemForFileName.contains(fileName)) {
+	QTreeWidgetItem *root = rootItemForFileName.value(fileName);
+	QTreeWidgetItem *child;
+	for(int i = 0; i < root->childCount();i++) {
+	  child = root->child(i);
+	  if(child->text(0) == QString("TreeAttributes")) {
+	    Point point;
+	    PositionVector direction;
+	    double height;
+	    double x, y, z;
+	    QTreeWidgetItem *child2;
+	    for(int j = 0; j < child->childCount(); j++) {
+	      child2 = child->child(j);
+	      if(child2->text(0) == QString("point")) {
+		QString data = child2->text(1);
+		x = data.section(' ', 0, 0).toDouble();
+		y = data.section(' ', 1, 1).toDouble();
+		z = data.section(' ', 2, 2).toDouble();
+		point = Point(x, y, z);
+	      }
+	      else if(child2->text(0) == QString("direction")) {
+		QString data = child2->text(1);
+		x = data.section(' ', 0, 0).toDouble();
+		y = data.section(' ', 1, 1).toDouble();
+		z = data.section(' ', 2, 2).toDouble();
+		direction = PositionVector(x, y, z);
+	      }
+	      else if(child2->text(0) == QString("LGAH")) {
+		QString data = child2->text(1);
+		height = data.toDouble();
+		emit setFocus(point, direction, height);
+		return;
+	      }
+	    } 
+	  }
+	}
+      }
+    }
+  }
 }
