@@ -12,6 +12,7 @@ XMLViewerWidget::XMLViewerWidget(QWidget *parent) :
 	  this, SIGNAL(updateVisualization(QList<QString>))); 
   connect(ui.xml_viewer, SIGNAL(sceneObjectsSelected(QHash<QString, QList<int> >)),
  	  this, SIGNAL(sceneObjectsSelected(QHash<QString, QList<int> >))); 
+  connect(ui.removeButton, SIGNAL(clicked()), ui.xml_viewer, SLOT(removeSelected()));
 }
 
 
