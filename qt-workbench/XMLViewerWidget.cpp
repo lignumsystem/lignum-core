@@ -13,6 +13,9 @@ XMLViewerWidget::XMLViewerWidget(QWidget *parent) :
   connect(ui.xml_viewer, SIGNAL(sceneObjectsSelected(QHash<QString, QList<int> >)),
  	  this, SIGNAL(sceneObjectsSelected(QHash<QString, QList<int> >))); 
   connect(ui.removeButton, SIGNAL(clicked()), ui.xml_viewer, SLOT(removeSelected()));
+  connect(ui.xml_viewer, SIGNAL(textOutput(QString)), this, SIGNAL(textOutput(QString)));
+  connect(ui.xml_viewer, SIGNAL(setFocus(Point, PositionVector, double)),
+	  this, SIGNAL(setFocus(Point, PositionVector, double)));
 }
 
 

@@ -25,7 +25,9 @@ XMLViewerWindow::XMLViewerWindow(QWidget *parent)
   connect(xml_widget, SIGNAL(sceneObjectsSelected(QHash<QString, QList<int> >)),
  	  this, SIGNAL(sceneObjectsSelected(QHash<QString, QList<int> >)));
   connect(xml_widget, SIGNAL(updateVisualization(QList<QString>)), this, SIGNAL(updateVisualization(QList<QString>)));
-
+  connect(xml_widget, SIGNAL(textOutput(QString)), this, SIGNAL(textOutput(QString)));
+  connect(xml_widget, SIGNAL(setFocus(Point, PositionVector, double)),
+	  this, SIGNAL(setFocus(Point, PositionVector, double)));
   //connect(xml_widget, SIGNAL(statusText(QString, int)), statusBar(), SLOT(showMessage(QString, int)));
 
   //connect(ui.actionAdd_tree, SIGNAL(triggered()), this, SLOT(addTree()));

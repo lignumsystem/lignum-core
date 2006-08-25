@@ -16,7 +16,8 @@ signals:
   void sceneObjectsSelected(QHash<QString, QList<int> >);
   void fileAdded(QString);
   void updateVisualization(QList<QString>);
-
+  void textOutput(QString);
+  void setFocus(Point, PositionVector, double);
 private slots:
   void addTree();
 

@@ -48,6 +48,9 @@ void LignumWB::xmlviewer() {
 	    ui.gldrawer, SLOT(setObjectsSelected(QHash<QString, QList<int> >)));
     connect(xml_viewer, SIGNAL(updateVisualization(QList<QString>)),
 	    ui.gldrawer, SLOT(resetVisualization(QList<QString>)));
+    connect(xml_viewer, SIGNAL(textOutput(QString)), ui.textBrowser, SLOT(append(QString)));
+    connect(xml_viewer, SIGNAL(setFocus(Point, PositionVector, double)),
+	    ui.gldrawer, SLOT(setFocus(Point, PositionVector, double)));
     addDockWidget(Qt::RightDockWidgetArea, xml_viewer);
   } 
   xml_viewer->show();
