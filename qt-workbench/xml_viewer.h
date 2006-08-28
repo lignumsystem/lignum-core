@@ -5,6 +5,7 @@
 #include <QtGui/QAction>
 #include <QtGui/QApplication>
 #include <QtGui/QButtonGroup>
+#include <QtGui/QCheckBox>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QPushButton>
 #include <QtGui/QSpacerItem>
@@ -23,11 +24,14 @@ public:
     QPushButton *updatevButton;
     QSpacerItem *spacerItem;
     XMLViewer *xml_viewer;
+    QHBoxLayout *hboxLayout2;
+    QCheckBox *trackingBox;
+    QSpacerItem *spacerItem1;
 
     void setupUi(QWidget *TreeViewer)
     {
     TreeViewer->setObjectName(QString::fromUtf8("TreeViewer"));
-    TreeViewer->resize(QSize(581, 582).expandedTo(TreeViewer->minimumSizeHint()));
+    TreeViewer->resize(QSize(605, 706).expandedTo(TreeViewer->minimumSizeHint()));
     hboxLayout = new QHBoxLayout(TreeViewer);
     hboxLayout->setSpacing(6);
     hboxLayout->setMargin(9);
@@ -68,6 +72,22 @@ public:
 
     vboxLayout->addWidget(xml_viewer);
 
+    hboxLayout2 = new QHBoxLayout();
+    hboxLayout2->setSpacing(6);
+    hboxLayout2->setMargin(0);
+    hboxLayout2->setObjectName(QString::fromUtf8("hboxLayout2"));
+    trackingBox = new QCheckBox(TreeViewer);
+    trackingBox->setObjectName(QString::fromUtf8("trackingBox"));
+
+    hboxLayout2->addWidget(trackingBox);
+
+    spacerItem1 = new QSpacerItem(441, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+    hboxLayout2->addItem(spacerItem1);
+
+
+    vboxLayout->addLayout(hboxLayout2);
+
 
     hboxLayout->addLayout(vboxLayout);
 
@@ -84,6 +104,7 @@ public:
     updatevButton->setText(QApplication::translate("TreeViewer", "Visualize selected", 0, QApplication::UnicodeUTF8));
     xml_viewer->setToolTip(QApplication::translate("TreeViewer", "Function painter for Lignum", 0, QApplication::UnicodeUTF8));
     xml_viewer->setWhatsThis(QApplication::translate("TreeViewer", " Function painter for Lignum", 0, QApplication::UnicodeUTF8));
+    trackingBox->setText(QApplication::translate("TreeViewer", "Tracking", 0, QApplication::UnicodeUTF8));
     Q_UNUSED(TreeViewer);
     } // retranslateUi
 
