@@ -78,8 +78,6 @@ int& EvaluateCollisionForThisBud<TS,BUD>::
       //if the len is within the given distance
       if(len < c_distance) {
 	coll = 1;
-	cout << "Coll" << p << " " << point << " " 
-	     << c_cos << " " << dotp/len << endl;
       }
     }
     
