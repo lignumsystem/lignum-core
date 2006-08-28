@@ -505,6 +505,11 @@ void XMLDomTreeBuilder<TS,BUD,S>::addCfTreeSegmentAttributeNode(QDomElement& nod
   tmp = QString("%1").arg(GetValue(*ts, LGARTop));
   attrib.appendChild(m_doc.createTextNode(tmp));
   rootNode.appendChild(attrib);
+
+  attrib = m_doc.createElement("LGAtype");
+  tmp = QString("%1").arg(GetValue(*ts, LGAtype));
+  attrib.appendChild(m_doc.createTextNode(tmp));
+  rootNode.appendChild(attrib);
   
   attrib = m_doc.createElement("LGAvi");
   tmp = QString("%1").arg(GetValue(*ts, LGAvi));
@@ -614,6 +619,11 @@ void XMLDomTreeBuilder<TS,BUD,S>::addHwTreeSegmentAttributeNode(QDomElement& nod
 
   attrib = m_doc.createElement("LGARTop");
   tmp = QString("%1").arg(GetValue(*ts, LGARTop));
+  attrib.appendChild(m_doc.createTextNode(tmp));
+  rootNode.appendChild(attrib);
+
+  attrib = m_doc.createElement("LGAtype");
+  tmp = QString("%1").arg(GetValue(*ts, LGAtype));
   attrib.appendChild(m_doc.createTextNode(tmp));
   rootNode.appendChild(attrib);
 
