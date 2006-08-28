@@ -293,6 +293,9 @@ LGMdouble GetValue(const TreeSegment<TS,BUD>& ts, const LGMAD name)
   else if (name == LGARTop)
     return ts.tsa.Rtop;
   
+  else if (name == LGAtype)
+    return ts.tsa.type;
+
   else if(name == LGAvi)
     return ts.tsa.vigour;
 
@@ -362,6 +365,9 @@ LGMdouble SetValue(TreeSegment<TS,BUD>& ts, const LGMAD name, const LGMdouble va
   else if (name == LGARTop)
     ts.tsa.Rtop = value;
 
+  else if (name == LGAtype){
+    ts.tsa.type = value;
+  }
   else if(name == LGAvi)
 	ts.tsa.vigour = value;
 

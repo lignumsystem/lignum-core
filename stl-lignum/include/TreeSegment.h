@@ -29,6 +29,7 @@ public:
   KGC Wh;                 //Heartwood mass of the segment
   vector<METER> annual_rings; //Annual rings of the tree segment
   LGMdouble vigour;			//Vigour index
+  LGMdouble type;         //Dominant, Nondominant etc.  
 };
 
 
