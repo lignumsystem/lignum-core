@@ -16,6 +16,7 @@ XMLViewerWidget::XMLViewerWidget(QWidget *parent) :
   connect(ui.xml_viewer, SIGNAL(textOutput(QString)), this, SIGNAL(textOutput(QString)));
   connect(ui.xml_viewer, SIGNAL(setFocus(Point, PositionVector, double)),
 	  this, SIGNAL(setFocus(Point, PositionVector, double)));
+  connect(ui.trackingBox, SIGNAL(toggled(bool)), ui.xml_viewer, SLOT(useTracking(bool)));
 }
 
 
