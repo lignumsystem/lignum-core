@@ -58,6 +58,10 @@ class VisualizationParameters {
   BSPPolygonMaterial*   getBudDeadMaterial() const;
   BSPPolygonMaterial*   getBudDormantMaterial() const;
   BSPPolygonMaterial*   getBudFlowerMaterial() const;
+  BSPPolygonMaterial*   getDominantMaterial() const;
+  BSPPolygonMaterial*   getNondominantMaterial() const;
+  BSPPolygonMaterial*   getShootMaterial() const;
+  BSPPolygonMaterial*   getShootAboveMaterial() const;
 
   void                  setMaterial(BSPPolygonMaterial* material);
   void                  setLeafMaterial(BSPPolygonMaterial* material);
@@ -66,6 +70,10 @@ class VisualizationParameters {
   void                  setBudDeadMaterial(BSPPolygonMaterial* material);
   void                  setBudDormantMaterial(BSPPolygonMaterial* material);
   void                  setBudFlowerMaterial(BSPPolygonMaterial* material);
+  void                  setDominantMaterial(BSPPolygonMaterial* material);
+  void                  setNondominantMaterial(BSPPolygonMaterial* material);
+  void                  setShootMaterial(BSPPolygonMaterial* material);
+  void                  setShootAboveMaterial(BSPPolygonMaterial* material);
 
   void                  setBSPUsage(bool useBSP);
   void                  setLeafTextureUsage(bool useLeafTextures);
@@ -103,6 +111,10 @@ class VisualizationParameters {
   BSPPolygonMaterial* budDeadMaterial;
   BSPPolygonMaterial* budDormantMaterial;
   BSPPolygonMaterial* budFlowerMaterial;
+  BSPPolygonMaterial* dominantMaterial;
+  BSPPolygonMaterial* nondominantMaterial;
+  BSPPolygonMaterial* shootMaterial;
+  BSPPolygonMaterial* shootAboveMaterial;
   bool use_BSP;
   bool use_leaftex;
   bool use_wireframe;

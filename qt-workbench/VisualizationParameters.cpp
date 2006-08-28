@@ -29,6 +29,11 @@ VisualizationParameters::VisualizationParameters(int s_r_detail,
   budDeadMaterial(NULL),
   budDormantMaterial(NULL),
   budFlowerMaterial(NULL),
+  dominantMaterial(NULL),
+  nondominantMaterial(NULL),
+  shootMaterial(NULL),
+  shootAboveMaterial(NULL),
+
   use_BSP(true),
   use_wireframe(false),
   use_lighting(true),
@@ -60,6 +65,11 @@ VisualizationParameters::VisualizationParameters() :
   budDeadMaterial(NULL),
   budDormantMaterial(NULL),
   budFlowerMaterial(NULL),
+  dominantMaterial(NULL),
+  nondominantMaterial(NULL),
+  shootMaterial(NULL),
+  shootAboveMaterial(NULL),
+
   use_BSP(false),
   use_leaftex(false),
   use_wireframe(false),
@@ -231,6 +241,22 @@ void VisualizationParameters::setBudFlowerMaterial(BSPPolygonMaterial* mat) {
   budFlowerMaterial = mat;
 }
 
+void VisualizationParameters::setDominantMaterial(BSPPolygonMaterial* mat) {
+  dominantMaterial = mat;
+}
+
+void VisualizationParameters::setNondominantMaterial(BSPPolygonMaterial* mat) {
+  nondominantMaterial = mat;
+}
+
+void VisualizationParameters::setShootMaterial(BSPPolygonMaterial* mat) {
+  shootMaterial = mat;
+}
+
+void VisualizationParameters::setShootAboveMaterial(BSPPolygonMaterial* mat) {
+  shootAboveMaterial = mat;
+}
+
 
 BSPPolygonMaterial* VisualizationParameters::getMaterial() const {
   return material;
@@ -261,7 +287,21 @@ BSPPolygonMaterial* VisualizationParameters::getBudFlowerMaterial() const {
   return budFlowerMaterial;
 }
 
+BSPPolygonMaterial* VisualizationParameters::getDominantMaterial() const {
+  return dominantMaterial;
+}
 
+BSPPolygonMaterial* VisualizationParameters::getNondominantMaterial() const {
+  return nondominantMaterial;
+}
+
+BSPPolygonMaterial* VisualizationParameters::getShootMaterial() const {
+  return shootMaterial;
+}
+
+BSPPolygonMaterial* VisualizationParameters::getShootAboveMaterial() const {
+  return shootAboveMaterial;
+}
 
 
 void VisualizationParameters::setBSPUsage(bool uBSP) {
