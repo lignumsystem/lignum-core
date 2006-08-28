@@ -75,7 +75,6 @@ GLDrawer::GLDrawer(QWidget* parent)
   
   control_mode = ORBIT;
   
-
 }
 
 void GLDrawer::initMaterials() {
@@ -108,6 +107,22 @@ void GLDrawer::initMaterials() {
 			       255.0/255.0, 48.0/255.0, 48.0/255.0, 1.0,
 			       0.2, 0.2, 0.2, 1.0,
 			       50};
+  GLfloat dominantColor[]  = {255.0/255.0, 185.0/255.0, 15.0/255.0, 1.0,
+			      255.0/255.0, 185.0/255.0, 15.0/255.0, 1.0,
+			      0.2, 0.2, 0.2, 1.0,
+			      50};
+  GLfloat nondominantColor[]  = {255.0/255.0, 48.0/255.0, 48.0/255.0, 1.0,
+				 255.0/255.0, 48.0/255.0, 48.0/255.0, 1.0,
+				 0.2, 0.2, 0.2, 1.0,
+				 50};
+  GLfloat shootColor[]  = {72.0/255.0, 118.0/255.0, 255.0/255.0, 1.0,
+			   72.0/255.0, 118.0/255.0, 255.0/255.0, 1.0,
+			   0.2, 0.2, 0.2, 1.0,
+			   50};
+  GLfloat shootAboveColor[]  = {255.0/255.0, 140.0/255.0, 0.0/255.0, 1.0,
+				255.0/255.0, 140.0/255.0, 0.0/255.0, 1.0,
+				0.2, 0.2, 0.2, 1.0,
+				50};
   
   green = new BSPPolygonMaterial(color1);
   red = new BSPPolygonMaterial(color2);
@@ -116,6 +131,11 @@ void GLDrawer::initMaterials() {
   budDead = new BSPPolygonMaterial(budDeadColor);
   budDormant = new BSPPolygonMaterial(budDormantColor);
   budFlower = new BSPPolygonMaterial(budFlowerColor);
+  dominant = new BSPPolygonMaterial(dominantColor);
+  nondominant = new BSPPolygonMaterial(nondominantColor);
+  shoot = new BSPPolygonMaterial(shootColor);
+  shootAbove = new BSPPolygonMaterial(shootAboveColor);
+  
   parameters.setMaterial(white);
   parameters.setLeafMaterial(green);
   parameters.setPetioleMaterial(green);
@@ -123,6 +143,10 @@ void GLDrawer::initMaterials() {
   parameters.setBudDeadMaterial(budDead);
   parameters.setBudDormantMaterial(budDormant);
   parameters.setBudFlowerMaterial(budFlower);
+  parameters.setDominantMaterial(dominant);
+  parameters.setNondominantMaterial(nondominant);
+  parameters.setShootMaterial(shoot);
+  parameters.setShootAboveMaterial(shootAbove);
 }
 
 void GLDrawer::initLights() {
@@ -309,6 +333,7 @@ void GLDrawer::resetVisualization() {
   }
   sceneObjects.clear();
   selectedObjects.clear();
+  objectLists.clear();
   updateGL();
 }
 
@@ -405,6 +430,12 @@ void GLDrawer::addTree(QString fileName) {
     //delete ground;
 
     // tree->buildBSPTree(polygons);
+    QList<QString> files = sceneObjects.keys();
+    for(int i = 0; i < files.size(); i++) {
+      if(sceneObjects.contains(files[i])) {
+	objectLists.insert(files[i], sceneObjects.value(files[i])->values());
+      }
+    }
 
     tree->addPolygonsToTree(polygons);
 
@@ -792,22 +823,28 @@ void GLDrawer::resetCamera() {
   t_rot_y = 0;
   t_rot_x = 0;
 
-  tree_trans_x = t_point.getX();
-  tree_trans_y = t_point.getY() + t_height/2;
-  tree_trans_z = t_point.getZ();
+  tree_trans_x = t_point.getX() + r_axis.getX()*t_height/2;
+  tree_trans_y = t_point.getY() - r_axis.getZ()*t_height/2;
+  tree_trans_z = t_point.getZ() + r_axis.getY()*t_height/2;
   distance = abs(4*t_height);
+  if(distance > 18)
+    distance = 18;
+  else if(distance < 0.2)
+    distance = 0.2;
   
   //cout << "point: " << t_point.getX() << " " << t_point.getY() << " " << t_point.getZ() << endl;
   //cout << "height: " << t_height << endl;
-  camera_x = t_point.getX();
+  camera_x = t_point.getX()+ r_axis.getX()*t_height/2;
   //camera_y = t_point.getY() - t_height/2*r_axis.getZ();
-  camera_y = t_point.getY() + t_height/2;
-  camera_z = t_point.getZ() + distance;
+  camera_y = t_point.getY() - r_axis.getZ()*t_height/2;
+  camera_z = t_point.getZ() + r_axis.getY()*t_height/2+ distance;
   Point camera(camera_x, camera_y, camera_z);
   //  cout << "camera: " << camera_x << " " << camera_y << " " << camera_z << endl;
 
   //Point p(t_point.getX(), t_point.getY() - (t_height/2.0)*r_axis.getZ(), t_point.getZ());
-  Point p(t_point.getX(), t_point.getY() + (t_height/2.0), t_point.getZ());
+  Point p(t_point.getX() + r_axis.getX()*t_height/2,
+	  t_point.getY() - r_axis.getZ()*t_height/2.0,
+	  t_point.getZ() + r_axis.getY()*t_height/2);
   PositionVector direction(PositionVector(p - camera));
   direction = direction.normalize();
   //cout << "direction: " << direction.getX() << " " << direction.getY() << " " << direction.getZ() << endl;
@@ -851,6 +888,10 @@ void GLDrawer::changeSettings(VisualizationParameters params) {
   params.setBudDeadMaterial(parameters.getBudDeadMaterial());
   params.setBudDormantMaterial(parameters.getBudDormantMaterial());
   params.setBudFlowerMaterial(parameters.getBudFlowerMaterial());
+  params.setDominantMaterial(parameters.getDominantMaterial());
+  params.setNondominantMaterial(parameters.getNondominantMaterial());
+  params.setShootMaterial(parameters.getShootMaterial());
+  params.setShootAboveMaterial(parameters.getShootAboveMaterial());
   parameters = params;
   settingsChanged = true;
   updateGL();
@@ -944,10 +985,22 @@ void GLDrawer::setFocus(Point point, PositionVector direction, double height) {
   t_point = Point(t_point.getX(), t_point.getZ(), -t_point.getY());
   t_height = height;
 
-  tree_trans_x = t_point.getX();
-  tree_trans_y = t_point.getY() + t_height/2;
-  tree_trans_z = t_point.getZ();
+  tree_trans_x = t_point.getX() + r_axis.getX()*t_height/2;
+  tree_trans_y = t_point.getY() + r_axis.getY()*t_height/2;
+  tree_trans_z = t_point.getZ() + r_axis.getZ()*t_height/2;
   
   updateGL();
   //resetCamera();
+}
+
+void GLDrawer::switchMaterials() {
+  QList<QString> files = objectLists.keys();
+  for(int i = 0; i < files.size(); i++) {
+    QList<SceneObject*> objects = objectLists.value(files[i]);
+    for(int j = 0; j < objects.size(); j++) {
+      objects[j]->switchMaterial();
+    }
+  }
+  updateGL();
+
 }
