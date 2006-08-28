@@ -1,0 +1,30 @@
+Quick instructions for installing WB's custom widgets to the Qt Designer:
+
+- The source and header files of the widget to be installed must be
+  added to the install-widget.pro -file's HEADERS and SOURCES lines
+  accordingly. Both the files for the actual class of the widget (i.e.
+  XMLViewer) AND the it's plugin class (i.e. XMLViewerPlugin for the
+  XMLViewer-class) must be specified in the .pro file, or the operation
+  won't work. 
+
+  NOTE: Only one custom widget can be loaded at a time for the designer.
+  This means that if there is multiple plugin-classes defined in the
+  .pro-file only the first of them is installed for the Designer.
+  
+  In order to install multiple custom widget one must also change the name
+  of the .pro-file for each widget (i.e. for XMLViewer .pro-file would be
+  XMLViewer.pro) as Qt names the dynamic libraries for the custom
+  widgets based on the name of the used .pro-file. 
+
+- Write "qmake <PRO-FILE>", where <PRO-FILE> for the widget to be
+  installed.
+
+- Write "make"
+
+- The dynamic library for the widget should be compiled now. It can
+  installed by writing "make install". It is likely that administrator's
+  rights are needed for the installation to succeed. This can be achieved
+  by writing "su" before "make install".
+
+- Designer must be restarted if it were running during the installation
+  of the file.
