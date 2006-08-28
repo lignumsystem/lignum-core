@@ -164,9 +164,10 @@ template <class TS, class BUD, class S>
 	if(const Triangle* t = dynamic_cast<const Triangle*>(&s)) {
 	  SceneObject* object;
 	  if(parameters.useLeafTextures())
-	    object = new SceneObject(parameters.getMaterial(), secondary, object_index, parameters.getLeafTexture(), parameters.useBSP());
+	    object = new SceneObject(parameters.getMaterial(), object_index,
+				     parameters.getLeafTexture(), parameters.useBSP());
 	  else
-	    object = new SceneObject(parameters.getLeafMaterial(), secondary, object_index, 0, false);
+	    object = new SceneObject(parameters.getLeafMaterial(), object_index, 0, false);
 	  sceneObjects->insert(object_index, object);
 	  BSPPolygonSet* leaf = makeTriangleLeaf(t->getLeftCorner(),
 						 t->getRightCorner(),
@@ -179,9 +180,10 @@ template <class TS, class BUD, class S>
 	else if(const cxxadt::Ellipse* e = dynamic_cast<const cxxadt::Ellipse*>(&s)) {
 	  SceneObject* object;
 	  if(parameters.useLeafTextures())
-	    object = new SceneObject(parameters.getMaterial(), secondary, object_index, parameters.getLeafTexture(), parameters.useBSP());
+	    object = new SceneObject(parameters.getMaterial(), object_index,
+				     parameters.getLeafTexture(), parameters.useBSP());
 	  else 
-	    object = new SceneObject(parameters.getLeafMaterial(), secondary, object_index, 0, false);
+	    object = new SceneObject(parameters.getLeafMaterial(), object_index, 0, false);
 	  sceneObjects->insert(object_index, object);
 	  vector<Point> vertices;
 	  BSPPolygonSet* leaf = makeEllipseLeaf(e, parameters.getLeafDetail(), parameters.useLeafTextures(), 
@@ -194,7 +196,8 @@ template <class TS, class BUD, class S>
     else if(CfTreeSegment<TS,BUD>* cf = dynamic_cast<CfTreeSegment<TS,BUD>*>(ts)) {
       double fmass = GetValue(*cf, LGAWf);
       if(fmass > R_EPSILON) {
-	object = new SceneObject(parameters.getMaterial(), secondary, object_index, parameters.getFoliageTexture(), parameters.useBSP());
+	object = new SceneObject(parameters.getMaterial(), object_index,
+				 parameters.getFoliageTexture(), parameters.useBSP());
 	sceneObjects->insert(object_index, object);
 	BSPPolygonSet* foliage = makeFoliage(radius, length, point, direction, parameters.getFoliageDetail(),
 					     parameters.getSegmentRDetail(), fmass, parameters.getFoliageSpacing(), object);
