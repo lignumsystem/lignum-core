@@ -6,13 +6,33 @@
 using namespace std;
 
 SceneObject::SceneObject(BSPPolygonMaterial* mat, int s_id, bool transp)
-  : component_count(0), selection_id(s_id), texture_id(0), transparent(transp), material(mat), backup(NULL){
+  : component_count(0), selection_id(s_id), texture_id(0), transparent(transp),
+    use_secondary_mat(false), material(mat), s_material(NULL), backup(NULL) {
   n_objects++;
   id = n_objects;
 }
 
 SceneObject::SceneObject(BSPPolygonMaterial* mat, int s_id, int t_id, bool transp) 
-  : component_count(0), selection_id(s_id), texture_id(t_id), transparent(transp), material(mat), backup(NULL) {
+  : component_count(0), selection_id(s_id), texture_id(t_id), transparent(transp),
+    use_secondary_mat(false), material(mat), s_material(NULL), backup(NULL) {
+  n_objects++;
+  id = n_objects;
+}
+
+SceneObject::SceneObject(BSPPolygonMaterial* mat, BSPPolygonMaterial *s_mat,
+			 int s_id, bool transp)
+  : component_count(0), selection_id(s_id), texture_id(0),
+    use_secondary_mat(false), transparent(transp), material(mat), s_material(s_mat),
+    backup(NULL) {
+  n_objects++;
+  id = n_objects;
+}
+
+SceneObject::SceneObject(BSPPolygonMaterial* mat, BSPPolygonMaterial *s_mat,
+			 int s_id, int t_id, bool transp) 
+  : component_count(0), selection_id(s_id), texture_id(t_id),
+    use_secondary_mat(false), transparent(transp), material(mat), s_material(s_mat),
+    backup(NULL) {
   n_objects++;
   id = n_objects;
 }
@@ -95,6 +115,23 @@ void SceneObject::unsetTempMaterial() {
   if(backup != NULL) {
     material = backup;
     backup = NULL;
+  }
+}
+
+void SceneObject::switchMaterial() {
+  if(s_material != NULL) {
+    BSPPolygonMaterial *temp;
+    if(backup) {
+      temp = backup;
+      backup = s_material;
+      s_material = temp;
+    }
+    else {
+      temp = material;
+      material = s_material;
+      s_material = temp;
+    }
+    //    use_secondary_mat = use;
   }
 }
 
