@@ -1154,6 +1154,13 @@ void XMLDomTreeReader<TS,BUD,S>::parseCfTreeSegmentAttributes(QDomNode& node, Cf
 	if(child.isNull() || !child.isElement())
 	  break;
       }
+      if(child.nodeName() == "LGAtype") {
+	SetValue(*ts, LGAtype, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() || !child.isElement())
+	  break;
+      }
+
       if(child.nodeName() == "LGAvi") {
 	SetValue(*ts, LGAvi, child.toElement().text().toDouble());
 	child = child.nextSibling();
@@ -1272,6 +1279,12 @@ void XMLDomTreeReader<TS,BUD,S>::parseHwTreeSegmentAttributes(QDomNode& node, Hw
 	if(child.isNull() && !child.isElement())
 	  break;
       }
+      if(child.nodeName() == "LGAtype") {
+	SetValue(*ts, LGAtype, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() || !child.isElement())
+	  break;
+      }
       if(child.nodeName() == "LGAvi") {
 	SetValue(*ts, LGAvi, child.toElement().text().toDouble());
 	child = child.nextSibling();
@@ -1373,40 +1386,39 @@ void XMLDomTreeReader<TS,BUD,S>::parseBranchingPointAttributes(QDomNode& node, B
 template <class TS, class BUD, class S>
 void XMLDomTreeReader<TS,BUD,S>::parseBudAttributes(QDomNode& node, Bud<TS,BUD>* bud) {
   QDomNode child = node;
-  
   while(true) {
     if(!child.isNull() && child.isElement()) {
       if(child.nodeName() == "LGAcollision") {
 	SetValue(*bud, LGAcollision, child.toElement().text().toDouble());
 	child = child.nextSibling();
-	if(child.isNull() && !child.isElement())
+	if(child.isNull() || !child.isElement())
 	  break;
       }
-      else if(child.nodeName() == "LGAip") {
+      if(child.nodeName() == "LGAip") {
 	SetValue(*bud, LGAip, child.toElement().text().toDouble());
 	child = child.nextSibling();
-	if(child.isNull() && !child.isElement())
+	if(child.isNull() || !child.isElement())
 	  break;
       }
-      else if(child.nodeName() == "LGAQin") {
+      if(child.nodeName() == "LGAQin") {
 	SetValue(*bud, LGAQin, child.toElement().text().toDouble());
 	child = child.nextSibling();
-	if(child.isNull() && !child.isElement())
+	if(child.isNull() || !child.isElement())
 	  break;
       }
-      else if(child.nodeName() == "LGAstatus") {
+      if(child.nodeName() == "LGAstatus") {
 	SetValue(*bud, LGAstatus, child.toElement().text().toDouble());
 	child = child.nextSibling();
-	if(child.isNull() && !child.isElement())
+	if(child.isNull() || !child.isElement())
 	  break;
       }
-      else if(child.nodeName() == "LGAstate") {
+      if(child.nodeName() == "LGAstate") {
 	SetValue(*bud, LGAstate, child.toElement().text().toDouble());
 	child = child.nextSibling();
-	if(child.isNull() && !child.isElement())
+	if(child.isNull() || !child.isElement())
 	  break;
       }
-      else if(child.nodeName() == "LGAtype") {
+      if(child.nodeName() == "LGAtype") {
 	SetValue(*bud, LGAtype, child.toElement().text().toDouble());
       }
     }
