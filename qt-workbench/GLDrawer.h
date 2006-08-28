@@ -26,13 +26,20 @@ public:
   //  void keyReleaseEvent(QKeyEvent* event);
   VisualizationParameters getParameters() const;
 
-  BSPPolygonMaterial* green;
-  BSPPolygonMaterial* red;
-  BSPPolygonMaterial* white;
-  BSPPolygonMaterial* budAlive;
-  BSPPolygonMaterial* budDead;
-  BSPPolygonMaterial* budDormant;
-  BSPPolygonMaterial* budFlower;
+  BSPPolygonMaterial *green;
+  BSPPolygonMaterial *red;
+  BSPPolygonMaterial *white;
+  BSPPolygonMaterial *budAlive;
+  BSPPolygonMaterial *budDead;
+  BSPPolygonMaterial *budDormant;
+  BSPPolygonMaterial *budFlower;
+  BSPPolygonMaterial *dominant;
+  BSPPolygonMaterial *nondominant;
+  BSPPolygonMaterial *shoot;
+  BSPPolygonMaterial *shootAbove;
+  
+
+
 protected:
 
   void initializeGL();
@@ -68,6 +75,7 @@ public slots:
   void freeRoamMode();
   void setObjectsSelected(QHash<QString, QList<int> >);
   void setFocus(Point point, PositionVector direction, double height);
+  void switchMaterials();
   //void moveCameraLeft();
   //void moveCameraRight();
   //void moveCameraUp();
@@ -114,9 +122,11 @@ private:
   int       control_mode;
   enum { MOUSE_LOOK, MOVE_TREE, ORBIT };
 
+
   BSPTree* tree;
   QHash<QString, QMultiHash<int, SceneObject*>* > sceneObjects;
   QHash<QString, QList<int> > selectedObjects;
+  QHash<QString, QList<SceneObject*> > objectLists;
   
 
 };

@@ -17,6 +17,7 @@ LignumWB::LignumWB(QWidget *parent)
   connect(ui.killButton, SIGNAL(clicked()), this, SLOT(killExternalProgram()));
   connect(ui.actionFunction_editor, SIGNAL(triggered()), this, SLOT(functionEditor()));
   connect(ui.actionXML_Viewer, SIGNAL(triggered()), this, SLOT(xmlviewer()));
+  connect(ui.actionSwitch_materials, SIGNAL(triggered()), ui.gldrawer, SLOT(switchMaterials()));
 
   viewActions = new QActionGroup(this);
   viewActions->addAction(ui.actionFree_roam);
@@ -139,7 +140,8 @@ void LignumWB::externalError(QProcess::ProcessError error) {
 }
 
 void LignumWB::killExternalProgram() {
-  externalProgram->kill();
+  if(externalProgram)
+    externalProgram->kill();
   //  clearExternalProgram();
 }
 
