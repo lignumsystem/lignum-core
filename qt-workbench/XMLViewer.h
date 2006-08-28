@@ -24,6 +24,9 @@ public:
   bool addTree(QString fileName);
   bool addTree(QDomDocument document, QString fileName);
 
+public slots:
+  void useTracking(bool use);
+
 signals:
   
   void sceneObjectsSelected(QHash<QString, QList<int> >);
@@ -58,6 +61,7 @@ private:
   QTreeWidgetItem *createItem(const QDomElement &element, QString *fileName,
 			      QTreeWidgetItem *parentItem = 0);
 
+  bool use_tracking;
 
   //vector<QDomDocument> documents;
   QString focusedFile;
