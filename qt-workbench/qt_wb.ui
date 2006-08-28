@@ -189,6 +189,8 @@
    <addaction name="actionOrbit" />
    <addaction name="actionMove_center" />
    <addaction name="actionFree_roam" />
+   <addaction name="separator" />
+   <addaction name="actionSwitch_materials" />
   </widget>
   <action name="actionQuit" >
    <property name="icon" >
@@ -246,6 +248,20 @@
   <action name="actionXML_Viewer" >
    <property name="text" >
     <string>XML Viewer...</string>
+   </property>
+  </action>
+  <action name="actionSwitch_materials" >
+   <property name="checkable" >
+    <bool>true</bool>
+   </property>
+   <property name="text" >
+    <string>Show object types</string>
+   </property>
+   <property name="iconText" >
+    <string>Show object types</string>
+   </property>
+   <property name="toolTip" >
+    <string>Shows the types of segments and buds.</string>
    </property>
   </action>
  </widget>

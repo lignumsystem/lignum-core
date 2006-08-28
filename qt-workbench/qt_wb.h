@@ -29,6 +29,7 @@ public:
     QAction *actionWorking_directory;
     QAction *actionFunction_editor;
     QAction *actionXML_Viewer;
+    QAction *actionSwitch_materials;
     QWidget *centralwidget;
     QHBoxLayout *hboxLayout;
     QHBoxLayout *hboxLayout1;
@@ -79,6 +80,9 @@ public:
     actionFunction_editor->setObjectName(QString::fromUtf8("actionFunction_editor"));
     actionXML_Viewer = new QAction(MainWindow);
     actionXML_Viewer->setObjectName(QString::fromUtf8("actionXML_Viewer"));
+    actionSwitch_materials = new QAction(MainWindow);
+    actionSwitch_materials->setObjectName(QString::fromUtf8("actionSwitch_materials"));
+    actionSwitch_materials->setCheckable(true);
     centralwidget = new QWidget(MainWindow);
     centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
     hboxLayout = new QHBoxLayout(centralwidget);
@@ -195,6 +199,8 @@ public:
     toolBar->addAction(actionOrbit);
     toolBar->addAction(actionMove_center);
     toolBar->addAction(actionFree_roam);
+    toolBar->addSeparator();
+    toolBar->addAction(actionSwitch_materials);
     retranslateUi(MainWindow);
     QObject::connect(gldrawer, SIGNAL(textOutput(QString)), textBrowser, SLOT(append(QString)));
 
@@ -212,6 +218,9 @@ public:
     actionWorking_directory->setText(QApplication::translate("MainWindow", "Change working directory...", 0, QApplication::UnicodeUTF8));
     actionFunction_editor->setText(QApplication::translate("MainWindow", "Function editor...", 0, QApplication::UnicodeUTF8));
     actionXML_Viewer->setText(QApplication::translate("MainWindow", "XML Viewer...", 0, QApplication::UnicodeUTF8));
+    actionSwitch_materials->setText(QApplication::translate("MainWindow", "Show object types", 0, QApplication::UnicodeUTF8));
+    actionSwitch_materials->setIconText(QApplication::translate("MainWindow", "Show object types", 0, QApplication::UnicodeUTF8));
+    actionSwitch_materials->setToolTip(QApplication::translate("MainWindow", "Shows the types of segments and buds.", 0, QApplication::UnicodeUTF8));
     gldrawer->setToolTip(QApplication::translate("MainWindow", "OpenGL visualization for Lignum", 0, QApplication::UnicodeUTF8));
     gldrawer->setWhatsThis(QApplication::translate("MainWindow", " Visualization for Lignum", 0, QApplication::UnicodeUTF8));
     runButton->setText(QApplication::translate("MainWindow", "Run", 0, QApplication::UnicodeUTF8));
