@@ -18,9 +18,6 @@ XMLViewer::XMLViewer(QWidget *parent)
  
   setSelectionMode(QAbstractItemView::ExtendedSelection);
   
-  //rootItem = new QTreeWidgetItem(this);
-  //rootItem->setText(0, QString("Trees"));
-
   connect(this, SIGNAL(itemSelectionChanged()), this, SLOT(selectSceneObjects()));
   connect(this, SIGNAL(itemSelectionChanged()), this, SLOT(setFocus()));
 }
@@ -353,26 +350,26 @@ void XMLViewer::removeSelected() {
 	break;
       }	
     }
-    //cout << "file removed" << endl;
   }
-  /*cout << "files              :" << files.size() << endl;
-  cout << "scene object hash  :" << sceneObjectIndexForItem.size() << endl;
-  cout << "fileNameForItem    :" << fileNameForItem.size() << endl;
-  cout << "rootItemForFileName:" << rootItemForFileName.size() << endl;*/
+
 }
 
+// Deletes a item and it's children recursevily
+// from the XML viewer. 
 void XMLViewer::deleteItem(QTreeWidgetItem *item) {
-  //  cout << "item about to be deleted" << endl;
   while(item->childCount() > 0) {
     deleteItem(item->takeChild(0));
   }
 
+  // Delete 
   if(fileNameForItem.contains(item))
     fileNameForItem.remove(item);
   delete item;
-  //cout << "item deleted" << endl;
 }
 
+// Sets the focus of the visualization to the object
+// which is last in the list of items currently selected
+// in the XML viewer.
 void XMLViewer::setFocus() {
   if(!use_tracking)
     return;
@@ -380,52 +377,10 @@ void XMLViewer::setFocus() {
   if(items.size() < 1)
     return;
 
-  /*  if(fileNameForItem.contains(items[items.size()-1])) {
-  QString fileName = *fileNameForItem.value(items[items.size()-1]);
-  if(fileName != focusedFile) {
-    focusedFile = fileName;
-    if(rootItemForFileName.contains(fileName)) {
-	QTreeWidgetItem *root = rootItemForFileName.value(fileName);
-	QTreeWidgetItem *child;
-	for(int i = 0; i < root->childCount();i++) {
-	  child = root->child(i);
-	  if(child->text(0) == QString("TreeAttributes")) {
-	    Point point;
-	    PositionVector direction;
-	    double height;
-	    double x, y, z;
-	    QTreeWidgetItem *child2;
-	    for(int j = 0; j < child->childCount(); j++) {
-	      child2 = child->child(j);
-	      if(child2->text(0) == QString("point")) {
-		QString data = child2->text(1);
-		x = data.section(' ', 0, 0).toDouble();
-		y = data.section(' ', 1, 1).toDouble();
-		z = data.section(' ', 2, 2).toDouble();
-		point = Point(x, y, z);
-	      }
-	      else if(child2->text(0) == QString("direction")) {
-		QString data = child2->text(1);
-		x = data.section(' ', 0, 0).toDouble();
-		y = data.section(' ', 1, 1).toDouble();
-		z = data.section(' ', 2, 2).toDouble();
-		direction = PositionVector(x, y, z);
-	      }
-	      else if(child2->text(0) == QString("LGAH")) {
-		QString data = child2->text(1);
-		height = data.toDouble();
-		emit setFocus(point, direction, height);
-		return;
-	      }
-	    } 
-	  }
-	}
-      }
-    }
-    }*/
-
   QTreeWidgetItem *root = items[items.size()-1];
   QTreeWidgetItem *child;
+
+  // If the last item is a root item of a tree.
   if(root->parent() == NULL) {
     for(int i = 0; i < root->childCount();i++) {
       child = root->child(i);
