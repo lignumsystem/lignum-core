@@ -7,6 +7,7 @@
 #include <QtGui/QButtonGroup>
 #include <QtGui/QCheckBox>
 #include <QtGui/QHBoxLayout>
+#include <QtGui/QProgressBar>
 #include <QtGui/QPushButton>
 #include <QtGui/QSpacerItem>
 #include <QtGui/QVBoxLayout>
@@ -22,11 +23,11 @@ public:
     QPushButton *addButton;
     QPushButton *removeButton;
     QPushButton *updatevButton;
-    QSpacerItem *spacerItem;
+    QProgressBar *progressBar;
     XMLViewer *xml_viewer;
     QHBoxLayout *hboxLayout2;
     QCheckBox *trackingBox;
-    QSpacerItem *spacerItem1;
+    QSpacerItem *spacerItem;
 
     void setupUi(QWidget *TreeViewer)
     {
@@ -59,9 +60,15 @@ public:
 
     hboxLayout1->addWidget(updatevButton);
 
-    spacerItem = new QSpacerItem(71, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+    progressBar = new QProgressBar(TreeViewer);
+    progressBar->setObjectName(QString::fromUtf8("progressBar"));
+    progressBar->setEnabled(true);
+    progressBar->setMaximum(100);
+    progressBar->setValue(0);
+    progressBar->setTextVisible(false);
+    progressBar->setOrientation(Qt::Horizontal);
 
-    hboxLayout1->addItem(spacerItem);
+    hboxLayout1->addWidget(progressBar);
 
 
     vboxLayout->addLayout(hboxLayout1);
@@ -81,9 +88,9 @@ public:
 
     hboxLayout2->addWidget(trackingBox);
 
-    spacerItem1 = new QSpacerItem(441, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+    spacerItem = new QSpacerItem(441, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
-    hboxLayout2->addItem(spacerItem1);
+    hboxLayout2->addItem(spacerItem);
 
 
     vboxLayout->addLayout(hboxLayout2);
