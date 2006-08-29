@@ -41,10 +41,10 @@ class PolygonTreeBuilder {
 
   BSPPolygonSet* makeFoliage(double radius, double height, Point point, PositionVector direction,
 			     int f_detail, int s_detail, double fmass, double spacing, SceneObject* object) const;
-  BSPPolygonSet* makePetiole(Point sp, Point ep, int detail, SceneObject* object) const;
+  BSPPolygonSet* makePetiole(Point sp, Point ep, int detail, double radius, SceneObject* object) const;
   BSPPolygonSet* makeTriangleLeaf(Point lc, Point rc, Point ac, bool use_tex, SceneObject* object) const;
   BSPPolygonSet* makeEllipseLeaf(const cxxadt::Ellipse* ellipse, int detail, bool use_tex, SceneObject* object) const;
-  BSPPolygonSet* makeBud(Point point, PositionVector direction, int la_detail, int lo_detail, SceneObject* object) const;
+  BSPPolygonSet* makeBud(Point point, PositionVector direction, int la_detail, int lo_detail, double size, SceneObject* object) const;
 
   //  mutable list<CylinderVolume>* cylinders;
   VisualizationParameters parameters;
@@ -111,8 +111,8 @@ template <class TS, class BUD, class S>
 
       object = new SceneObject(primary, secondary, object_index, 0, false);
       sceneObjects->insert(object_index, object);
-      BSPPolygonSet* budi = makeBud(GetPoint(*bud), GetDirection(*bud), 
-				    parameters.getBudLoDetail(), parameters.getBudLaDetail(), object);
+      BSPPolygonSet* budi = makeBud(GetPoint(*bud), GetDirection(*bud), parameters.getBudLoDetail(),
+				    parameters.getBudLaDetail(), parameters.getBudSize(), object);
       polygons->addPolygons(budi);
       delete budi;
     }
@@ -158,6 +158,7 @@ template <class TS, class BUD, class S>
 	BSPPolygonSet* petiole = makePetiole(GetStartPoint(p),
 					     GetEndPoint(p),
 					     parameters.getPetioleDetail(),
+					     parameters.getPetioleRadius(),
 					     p_object);
 	polygons->addPolygons(petiole);
 	delete petiole;
@@ -221,8 +222,6 @@ template <class TS, class BUD, class S>
   PropagateUp(tree, polygons, builder);
   s_objects = builder.getSceneObjects();
 
-  cout << "s_objects: " << s_objects->size() << endl;
-
   return polygons;
 }
 
@@ -236,6 +235,9 @@ template <class TS, class BUD, class S>
   double PI = 3.14159265;
   double sine, cosine, sine_next, cosine_next, y, y_next;
   BSPPolygonSet* polygons = new BSPPolygonSet();
+
+  if(radius == 0)
+    return polygons;
 
   PositionVector dir(direction.normalize().getX()/2.0,
 		     (1+direction.normalize().getY())/2.0,
@@ -433,29 +435,9 @@ BSPPolygonSet* PolygonTreeBuilder<TS,BUD,S>::makeFoliage(double radius, double h
 
 
 template <class TS, class BUD, class S>
-BSPPolygonSet* PolygonTreeBuilder<TS,BUD,S>::makePetiole(Point sp, Point ep, int detail, SceneObject* object) const {
-  //  BSPPolygonSet* polygons = new BSPPolygonSet();
-
-  /*polygons->addPolygon(new BSPPolygon(ep,
-				      sp,
-				      Point(ep.getX()+0.005, ep.getY(),ep.getZ()),
- 				      object));
-  polygons->addPolygon(new BSPPolygon(sp,
-				      Point(ep.getX()+0.005, ep.getY(), ep.getZ()),
-				      Point(sp.getX()+0.005, sp.getY(), sp.getZ()),
-				      object));
-  polygons->addPolygon(new BSPPolygon(Point(sp.getX()+0.005, sp.getY(), sp.getZ()),
-				      Point(ep.getX()+0.005, ep.getY(), ep.getZ()),
-				      sp,
-				      object));
-
-  polygons->addPolygon(new BSPPolygon(sp,
-				      Point(ep.getX()+0.005, ep.getY(),ep.getZ()),
-				      ep,
-				      object));
-  */
-
-  BSPPolygonSet* polygons = makeCylinder(0.001, PositionVector(sp-ep).length(), sp, PositionVector(ep-sp), false, false, object, detail, 1);
+BSPPolygonSet* PolygonTreeBuilder<TS,BUD,S>::makePetiole(Point sp, Point ep, int detail, double radius, SceneObject* object) const {
+  
+  BSPPolygonSet* polygons = makeCylinder(radius, PositionVector(sp-ep).length(), sp, PositionVector(ep-sp), false, false, object, detail, 1);
 
   return polygons;
 }
@@ -562,11 +544,11 @@ template <class TS, class BUD, class S>
 }
 
 template<class TS, class BUD, class S>
-BSPPolygonSet* PolygonTreeBuilder<TS,BUD,S>::makeBud(Point point, PositionVector direction, int la_detail, int lo_detail, SceneObject* object) const {
+BSPPolygonSet* PolygonTreeBuilder<TS,BUD,S>::makeBud(Point point, PositionVector direction, int la_detail, int lo_detail,
+						     double scale, SceneObject* object) const {
   BSPPolygonSet* polygons = new BSPPolygonSet();
   double PI = 3.14159265;  
   int i, j;
-  double scale = 0.0010;
   double y_scale = 2;
   double z_scale = 0.75;
   PositionVector dir(direction.normalize().getX()/2.0,
