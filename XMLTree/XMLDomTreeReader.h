@@ -36,6 +36,8 @@ public:
   Tree<TS,BUD>& readXMLToTree(Tree<TS,BUD>& t, const QDomDocument& doc);
   int treeType(const string& fileName);
   int leafType(const string& fileName);
+  int treeType(const QDomDocument& doc);
+  int leafType(const QDomDocument& doc);
   QHash<TreeCompartment<TS,BUD>*, int> getTreeCompartmentHash();
   QHash<BroadLeaf<S>*, int> getLeafHash();
 
@@ -97,6 +99,15 @@ int XMLDomTreeReader<TS,BUD,S>::treeType(const string& fileName) {
 }
 
 template <class TS, class BUD, class S>
+int XMLDomTreeReader<TS,BUD,S>::treeType(const QDomDocument& doc) {
+  QString type = m_doc.firstChild().toElement().attribute("SegmentType");
+  if(type == "Cf")
+    return XMLDomTreeReader::Cf;
+  else
+    return XMLDomTreeReader::Hw;
+}
+
+template <class TS, class BUD, class S>
 int XMLDomTreeReader<TS,BUD,S>::leafType(const string& fileName) {
   
   QString fName(fileName.c_str());
@@ -115,6 +126,15 @@ int XMLDomTreeReader<TS,BUD,S>::leafType(const string& fileName) {
   QDomNode root = m_doc.firstChild();
 
   QString type = root.toElement().attribute("LeafType");
+  if(type == "Triangle")
+    return XMLDomTreeReader::TRIANGLE;
+  else
+    return XMLDomTreeReader::ELLIPSE;
+}
+
+template <class TS, class BUD, class S>
+int XMLDomTreeReader<TS,BUD,S>::leafType(const QDomDocument& doc) {
+  QString type = m_doc.firstChild().toElement().attribute("LeafType");
   if(type == "Triangle")
     return XMLDomTreeReader::TRIANGLE;
   else
