@@ -59,6 +59,8 @@ void LignumWB::xmlviewer() {
     connect(xml_viewer, SIGNAL(textOutput(QString)), this, SLOT(textOutput(QString)));
     connect(xml_viewer, SIGNAL(setFocus(Point, PositionVector, double)),
 	    ui.gldrawer, SLOT(setFocus(Point, PositionVector, double)));
+    connect(ui.gldrawer, SIGNAL(loadingTrees()), xml_viewer, SLOT(startProgressBarAnimation()));
+    connect(ui.gldrawer, SIGNAL(treesLoaded()), xml_viewer, SLOT(stopProgressBarAnimation()));
     addDockWidget(Qt::RightDockWidgetArea, xml_viewer);
   } 
   xml_viewer->show();
