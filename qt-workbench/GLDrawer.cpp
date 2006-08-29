@@ -28,7 +28,7 @@ using namespace std;
 using namespace Lignum;
 
 GLDrawer::GLDrawer(QWidget* parent)
-  : QGLWidget(parent) {
+  : QGLWidget(parent),sceneObjects(NULL) {
   resize(400, 300);
   camera_x = 5;
   camera_y = 0.5;
@@ -338,14 +338,17 @@ void GLDrawer::toggleTexturing() {
 void GLDrawer::resetVisualization() {
   delete tree;
   tree = NULL;
-  QList<QString> objects = sceneObjects->keys();
-  for(int i = 0; i < objects.size(); i++) {
-    if(sceneObjects->contains(objects[i])) {
-      delete sceneObjects->value(objects[i]);
+  if (sceneObjects){
+    QList<QString> objects = sceneObjects->keys();
+    for(int i = 0; i < objects.size(); i++) {
+      if(sceneObjects->contains(objects[i])) {
+	delete sceneObjects->value(objects[i]);
+      }
     }
+    sceneObjects->clear();
+    delete sceneObjects;
+    sceneObjects = NULL;
   }
-  sceneObjects->clear();
-  delete sceneObjects;
   selectedObjects.clear();
   objectLists.clear();
   updateGL();
@@ -1025,14 +1028,12 @@ void GLDrawer::updateTrees(BSPTree *tree, Point t_point, PositionVector r_axis,
   this->t_point = t_point;
   this->r_axis = r_axis;
   this->t_height = t_height;
-  
   QList<QString> files = sceneObjects->keys();
   for(int i = 0; i < files.size(); i++) {
     if(sceneObjects->contains(files[i])) {
       objectLists.insert(files[i], sceneObjects->value(files[i])->values());
     }
   }
-
   resetCamera();
   updateGL();
 }
