@@ -88,6 +88,11 @@ GLDrawer::GLDrawer(QWidget* parent)
 				      QHash<QString, QMultiHash<int, SceneObject*>* >*)),
 	  this, SLOT(updateTrees(BSPTree*, Point, PositionVector, double,
 				      QHash<QString, QMultiHash<int, SceneObject*>* >*)));
+
+  connect(&thread, SIGNAL(workStarted()), this, SIGNAL(loadingTrees()));
+  connect(&thread, SIGNAL(workFinished()), this, SIGNAL(treesLoaded()));
+
+
 }
 
 void GLDrawer::initMaterials() {

@@ -82,6 +82,8 @@ public slots:
   
  signals:
   void textOutput(QString text);
+  void loadingTrees();
+  void treesLoaded();
 
 private:
   bool isExtensionSupported(char* szTargetExtension);
