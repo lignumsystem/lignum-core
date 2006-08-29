@@ -48,18 +48,22 @@ public:
     QLabel *label_6;
     QLabel *label;
     QLabel *label_2;
+    QLabel *label_8;
     QLabel *foliageLabe;
     QLabel *label_7;
     QLabel *label_3;
+    QLabel *label_9;
     QVBoxLayout *vboxLayout6;
     QSpinBox *srdetailBox;
     QSpinBox *shdetailBox;
     QSpinBox *ldetailBox;
     QSpinBox *budloBox;
     QSpinBox *budlaBox;
+    QDoubleSpinBox *budsiBox;
     QSpinBox *foliageBox;
     QDoubleSpinBox *fspacingBox;
     QSpinBox *petioleBox;
+    QDoubleSpinBox *petiolerBox;
     QHBoxLayout *hboxLayout4;
     QSpacerItem *spacerItem2;
     QPushButton *okButton;
@@ -219,6 +223,11 @@ public:
 
     vboxLayout5->addWidget(label_2);
 
+    label_8 = new QLabel(VisualizationConfig);
+    label_8->setObjectName(QString::fromUtf8("label_8"));
+
+    vboxLayout5->addWidget(label_8);
+
     foliageLabe = new QLabel(VisualizationConfig);
     foliageLabe->setObjectName(QString::fromUtf8("foliageLabe"));
 
@@ -233,6 +242,11 @@ public:
     label_3->setObjectName(QString::fromUtf8("label_3"));
 
     vboxLayout5->addWidget(label_3);
+
+    label_9 = new QLabel(VisualizationConfig);
+    label_9->setObjectName(QString::fromUtf8("label_9"));
+
+    vboxLayout5->addWidget(label_9);
 
 
     hboxLayout3->addLayout(vboxLayout5);
@@ -266,6 +280,13 @@ public:
 
     vboxLayout6->addWidget(budlaBox);
 
+    budsiBox = new QDoubleSpinBox(VisualizationConfig);
+    budsiBox->setObjectName(QString::fromUtf8("budsiBox"));
+    budsiBox->setDecimals(3);
+    budsiBox->setSingleStep(0.01);
+
+    vboxLayout6->addWidget(budsiBox);
+
     foliageBox = new QSpinBox(VisualizationConfig);
     foliageBox->setObjectName(QString::fromUtf8("foliageBox"));
 
@@ -273,6 +294,7 @@ public:
 
     fspacingBox = new QDoubleSpinBox(VisualizationConfig);
     fspacingBox->setObjectName(QString::fromUtf8("fspacingBox"));
+    fspacingBox->setSingleStep(0.01);
 
     vboxLayout6->addWidget(fspacingBox);
 
@@ -280,6 +302,13 @@ public:
     petioleBox->setObjectName(QString::fromUtf8("petioleBox"));
 
     vboxLayout6->addWidget(petioleBox);
+
+    petiolerBox = new QDoubleSpinBox(VisualizationConfig);
+    petiolerBox->setObjectName(QString::fromUtf8("petiolerBox"));
+    petiolerBox->setDecimals(3);
+    petiolerBox->setSingleStep(0.01);
+
+    vboxLayout6->addWidget(petiolerBox);
 
 
     hboxLayout3->addLayout(vboxLayout6);
@@ -344,9 +373,11 @@ public:
     label_6->setText(QApplication::translate("VisualizationConfig", "Leaf detail", 0, QApplication::UnicodeUTF8));
     label->setText(QApplication::translate("VisualizationConfig", "Bud longitude detail", 0, QApplication::UnicodeUTF8));
     label_2->setText(QApplication::translate("VisualizationConfig", "Bud latitude detail", 0, QApplication::UnicodeUTF8));
+    label_8->setText(QApplication::translate("VisualizationConfig", "Bud size", 0, QApplication::UnicodeUTF8));
     foliageLabe->setText(QApplication::translate("VisualizationConfig", "Folige detail", 0, QApplication::UnicodeUTF8));
     label_7->setText(QApplication::translate("VisualizationConfig", "Foliage spacing", 0, QApplication::UnicodeUTF8));
     label_3->setText(QApplication::translate("VisualizationConfig", "Petiole detail", 0, QApplication::UnicodeUTF8));
+    label_9->setText(QApplication::translate("VisualizationConfig", "Petiole radius", 0, QApplication::UnicodeUTF8));
     okButton->setText(QApplication::translate("VisualizationConfig", "OK", 0, QApplication::UnicodeUTF8));
     cancelButton->setText(QApplication::translate("VisualizationConfig", "Cancel", 0, QApplication::UnicodeUTF8));
     Q_UNUSED(VisualizationConfig);

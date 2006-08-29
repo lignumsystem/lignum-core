@@ -268,6 +268,13 @@
               </widget>
              </item>
              <item>
+              <widget class="QLabel" name="label_8" >
+               <property name="text" >
+                <string>Bud size</string>
+               </property>
+              </widget>
+             </item>
+             <item>
               <widget class="QLabel" name="foliageLabe" >
                <property name="text" >
                 <string>Folige detail</string>
@@ -285,6 +292,13 @@
               <widget class="QLabel" name="label_3" >
                <property name="text" >
                 <string>Petiole detail</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_9" >
+               <property name="text" >
+                <string>Petiole radius</string>
                </property>
               </widget>
              </item>
@@ -314,6 +328,16 @@
               <widget class="QSpinBox" name="budlaBox" />
              </item>
              <item>
+              <widget class="QDoubleSpinBox" name="budsiBox" >
+               <property name="decimals" >
+                <number>3</number>
+               </property>
+               <property name="singleStep" >
+                <double>0.01</double>
+               </property>
+              </widget>
+             </item>
+             <item>
               <widget class="QSpinBox" name="foliageBox" />
              </item>
              <item>
@@ -325,6 +349,16 @@
              </item>
              <item>
               <widget class="QSpinBox" name="petioleBox" />
+             </item>
+             <item>
+              <widget class="QDoubleSpinBox" name="petiolerBox" >
+               <property name="decimals" >
+                <number>3</number>
+               </property>
+               <property name="singleStep" >
+                <double>0.01</double>
+               </property>
+              </widget>
              </item>
             </layout>
            </item>
