@@ -16,6 +16,10 @@ class XMLViewerWindow : public QDockWidget
 public:
   XMLViewerWindow(QWidget *parent = 0);
   
+public slots:
+  void startProgressBarAnimation();
+  void stopProgressBarAnimation();
+
 signals: 
   void sceneObjectsSelected(QHash<QString, QList<int> >);
   void fileAdded(QString);

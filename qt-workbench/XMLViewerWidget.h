@@ -12,6 +12,10 @@ class XMLViewerWidget : public QWidget
 public:
   XMLViewerWidget(QWidget *parent = 0);
 
+public slots:
+  void startProgressBarAnimation();
+  void stopProgressBarAnimation();
+
 signals:
   void sceneObjectsSelected(QHash<QString, QList<int> >);
   void fileAdded(QString);
@@ -20,7 +24,7 @@ signals:
   void setFocus(Point, PositionVector, double);
 private slots:
   void addTree();
-
+  
 private:
   Ui::TreeViewer ui;
 };

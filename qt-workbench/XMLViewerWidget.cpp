@@ -32,3 +32,11 @@ void XMLViewerWidget::addTree() {
     emit fileAdded(fileName);
   }
 }
+
+void XMLViewerWidget::startProgressBarAnimation() {
+  ui.progressBar->setMaximum(0);
+}
+
+void XMLViewerWidget::stopProgressBarAnimation() {
+  ui.progressBar->setMaximum(100);
+}
