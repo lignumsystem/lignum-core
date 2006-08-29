@@ -23,6 +23,8 @@ public:
 signals:
   void treesLoaded(BSPTree *tree, Point t_point, PositionVector r_axis,
 		   double t_height, QHash<QString, QMultiHash<int, SceneObject*>* > *sceneObjects);
+  void workStarted();
+  void workFinished();
 
 protected:
   void run();

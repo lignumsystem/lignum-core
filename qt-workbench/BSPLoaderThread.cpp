@@ -8,6 +8,7 @@
 #include <Point.h>
 #include <PositionVector.h>
 #include <LGMPolygonTree.h>
+#include <QProgressDialog>
 
 using namespace cxxadt;
 
@@ -52,14 +53,16 @@ void BSPLoaderThread::run()
     VisualizationParameters parameters = this->parameters;
     mutex.unlock();
 
+    emit workStarted();
     BSPTree *tree = new BSPTree;
+
     PositionVector r_axis;
     Point t_point;
     double t_height;
     QHash<QString, QMultiHash<int, SceneObject*>* > *sceneObjects = new QHash<QString, QMultiHash<int, SceneObject*>*>;
 
     BSPPolygonSet polygons;
-        
+
     for(int i = 0; i < files.size(); i++) {
       QString fileName = files[i];
       XMLDomTreeReader<GenericCfTreeSegment, GenericCfBud> cf_reader;
@@ -126,10 +129,11 @@ void BSPLoaderThread::run()
 	}
       }
     }
-    
+	    
     tree->buildBSPTree(polygons);
-
+	    
     emit treesLoaded(tree, t_point, r_axis, t_height, sceneObjects);
+    emit workFinished();
     
     mutex.lock();
     condition.wait(&mutex);
