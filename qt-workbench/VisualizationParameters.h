@@ -32,17 +32,22 @@ class VisualizationParameters {
   void                  setLeafDetail(int detail);
   void                  setBudLoDetail(int detail);
   void                  setBudLaDetail(int detail);
+  void                  setBudSize(double size);
   void                  setFoliageDetail(int detail);
-  void                  setFoliageSpacing(double detail);
+  void                  setFoliageSpacing(double spacing);
   void                  setPetioleDetail(int detail);
+  void                  setPetioleRadius(double radius);
+
   int                   getSegmentRDetail() const ;
   int                   getSegmentHDetail() const ;
   int                   getLeafDetail() const;
   int                   getBudLoDetail() const;
   int                   getBudLaDetail() const;
+  double                getBudSize() const;
   int                   getFoliageDetail() const;
-  double                   getFoliageSpacing() const;
+  double                getFoliageSpacing() const;
   int                   getPetioleDetail() const;
+  double                getPetioleRadius() const;
 
   void                  setLeafTexture(int texture);
   void                  setFoliageTexture(int texture);
@@ -98,9 +103,11 @@ class VisualizationParameters {
   int leaf_detail;
   int bud_lo_detail;
   int bud_la_detail;
+  double bud_size;
   int foliage_detail;
   double foliage_spacing;
   int petiole_detail;
+  double petiole_radius;
   int segment_tex;
   int leaf_tex;
   int foliage_tex;

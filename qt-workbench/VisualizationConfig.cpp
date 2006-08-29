@@ -60,9 +60,12 @@ void VisualizationConfig::setSettings(VisualizationParameters params) {
   ui.ldetailBox->setValue(params.getLeafDetail());
   ui.budloBox->setValue(params.getBudLoDetail());
   ui.budlaBox->setValue(params.getBudLaDetail());
+  ui.budsiBox->setValue(params.getBudSize());
   ui.foliageBox->setValue(params.getFoliageDetail());
   ui.fspacingBox->setValue(params.getFoliageSpacing());
   ui.petioleBox->setValue(params.getPetioleDetail());
+  ui.petiolerBox->setValue(params.getPetioleRadius());
+
   
   ui.segmentText->setText(QString(params.getSegmentTextureFile().c_str()));
   ui.leafText->setText(QString(params.getLeafTextureFile().c_str()));
@@ -106,9 +109,11 @@ void VisualizationConfig::applySettings() {
   params.setLeafDetail(ui.ldetailBox->value());
   params.setBudLoDetail(ui.budloBox->value());
   params.setBudLaDetail(ui.budlaBox->value());
+  params.setBudSize(ui.budsiBox->value());
   params.setFoliageDetail(ui.foliageBox->value());
   params.setFoliageSpacing(ui.fspacingBox->value());
   params.setPetioleDetail(ui.petioleBox->value());
+  params.setPetioleRadius(ui.petiolerBox->value());
 
   params.setSegmentTextureFile(ui.segmentText->text().toStdString());
   params.setLeafTextureFile(ui.leafText->text().toStdString());

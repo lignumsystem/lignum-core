@@ -16,9 +16,11 @@ VisualizationParameters::VisualizationParameters(int s_r_detail,
   leaf_detail(l_detail),
   bud_lo_detail(4),
   bud_la_detail(8),
+  bud_size(0.001),
   foliage_detail(6),
   foliage_spacing(0.05),
   petiole_detail(6),
+  petiole_radius(0.001),
   segment_tex(s_tex),
   leaf_tex(l_tex),
   foliage_tex(f_tex),
@@ -52,9 +54,11 @@ VisualizationParameters::VisualizationParameters() :
   leaf_detail(10),
   bud_lo_detail(4),
   bud_la_detail(8),
+  bud_size(0.001),
   foliage_detail(6),
   foliage_spacing(0.05),
   petiole_detail(6),
+  petiole_radius(0.001),
   segment_tex(0),
   leaf_tex(0),
   foliage_tex(0),
@@ -126,6 +130,10 @@ int VisualizationParameters::getBudLaDetail() const {
   return bud_la_detail;
 }
 
+double VisualizationParameters::getBudSize() const {
+  return bud_size;
+}
+
 int VisualizationParameters::getFoliageDetail() const {
   return foliage_detail;
 }
@@ -136,6 +144,10 @@ double VisualizationParameters::getFoliageSpacing() const {
 
 int VisualizationParameters::getPetioleDetail() const {
   return petiole_detail;
+}
+
+double VisualizationParameters::getPetioleRadius() const {
+  return petiole_radius;
 }
 
 void VisualizationParameters::setSegmentRDetail(int detail) {
@@ -173,6 +185,11 @@ void VisualizationParameters::setBudLaDetail(int detail) {
     bud_la_detail = 4;
 }
 
+void VisualizationParameters::setBudSize(double size) {
+  if(size >= 0)
+    bud_size = size;
+}
+
 void VisualizationParameters::setFoliageDetail(int detail) {
   if(detail >= 0)
     foliage_detail = detail;
@@ -188,6 +205,10 @@ void VisualizationParameters::setPetioleDetail(int detail) {
     petiole_detail = detail;
 }
 
+void VisualizationParameters::setPetioleRadius(double radius) {
+  if(radius >= 0)
+    petiole_radius = radius;
+}
 
 int VisualizationParameters::getSegmentTexture() const {
   return segment_tex;
