@@ -2,7 +2,7 @@
 #include "FunctionEditor.h"
 
 LignumWB::LignumWB(QWidget *parent)
-  : QMainWindow(parent), xml_viewer(NULL), viz_config(NULL), externalProgram(NULL)
+  : QMainWindow(parent), xml_viewer(NULL), console(NULL), viz_config(NULL)
 {
   ui.setupUi(this);
   connect(ui.actionQuit, SIGNAL(triggered()), this, SLOT(close()));
@@ -12,10 +12,11 @@ LignumWB::LignumWB(QWidget *parent)
   connect(ui.actionOrbit, SIGNAL(triggered()), ui.gldrawer, SLOT(orbitCameraMode()));
   connect(ui.actionMove_center, SIGNAL(triggered()), ui.gldrawer, SLOT(moveCenterMode()));
   connect(ui.actionWorking_directory, SIGNAL(triggered()), this, SLOT(setWorkingDirectory()));
-  connect(ui.console, SIGNAL(returnPressed()), this, SLOT(startExternalProgram()));
-  connect(ui.runButton, SIGNAL(clicked()), this, SLOT(startExternalProgram()));
-  connect(ui.killButton, SIGNAL(clicked()), this, SLOT(killExternalProgram()));
+  //connect(ui.console, SIGNAL(returnPressed()), this, SLOT(startExternalProgram()));
+  //connect(ui.runButton, SIGNAL(clicked()), this, SLOT(startExternalProgram()));
+  //connect(ui.killButton, SIGNAL(clicked()), this, SLOT(killExternalProgram()));
   connect(ui.actionFunction_editor, SIGNAL(triggered()), this, SLOT(functionEditor()));
+  connect(ui.actionConsole, SIGNAL(triggered()), this, SLOT(openConsole()));
   connect(ui.actionXML_Viewer, SIGNAL(triggered()), this, SLOT(xmlviewer()));
   connect(ui.actionSwitch_materials, SIGNAL(triggered()), ui.gldrawer, SLOT(switchMaterials()));
 
@@ -26,8 +27,14 @@ LignumWB::LignumWB(QWidget *parent)
   ui.actionOrbit->setChecked(true);
   
   viewActions->setExclusive(true);
-  xmlviewer();
 
+  setCorner(Qt::TopLeftCorner, Qt::LeftDockWidgetArea);
+  setCorner(Qt::BottomLeftCorner, Qt::LeftDockWidgetArea);
+  setCorner(Qt::TopRightCorner, Qt::RightDockWidgetArea);
+  setCorner(Qt::BottomRightCorner, Qt::RightDockWidgetArea);
+  
+  xmlviewer();
+  openConsole();
 }
 
 /*void LignumWB::loadTree() {
@@ -49,7 +56,7 @@ void LignumWB::xmlviewer() {
 	    ui.gldrawer, SLOT(setObjectsSelected(QHash<QString, QList<int> >)));
     connect(xml_viewer, SIGNAL(updateVisualization(QList<QString>)),
 	    ui.gldrawer, SLOT(resetVisualization(QList<QString>)));
-    connect(xml_viewer, SIGNAL(textOutput(QString)), ui.textBrowser, SLOT(append(QString)));
+    connect(xml_viewer, SIGNAL(textOutput(QString)), this, SLOT(textOutput(QString)));
     connect(xml_viewer, SIGNAL(setFocus(Point, PositionVector, double)),
 	    ui.gldrawer, SLOT(setFocus(Point, PositionVector, double)));
     addDockWidget(Qt::RightDockWidgetArea, xml_viewer);
@@ -57,6 +64,16 @@ void LignumWB::xmlviewer() {
   xml_viewer->show();
   xml_viewer->raise();
   xml_viewer->activateWindow();
+}
+
+void LignumWB::openConsole() {
+  if(!console) {
+    console = new ConsoleWindow(this);
+    addDockWidget(Qt::BottomDockWidgetArea, console);
+  } 
+  console->show();
+  console->raise();
+  console->activateWindow();
 }
 
 void LignumWB::functionEditor() {
@@ -91,15 +108,17 @@ void LignumWB::setWorkingDirectory() {
 							QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
   
   // Should this be implemented with signals & slots?
-  if(!directory.isEmpty()) {
+  if(!directory.isEmpty() && console != NULL) {
     if(QDir::setCurrent(directory))
-      ui.textBrowser->append(QString("Working directory changed to ")+QDir::currentPath());
+      //ui.textBrowser->append(QString("Working directory changed to ")+QDir::currentPath());
+      textOutput(QString("Working directory changed to ")+QDir::currentPath());
     else 
-      ui.textBrowser->append(QString("Working directory not changed."));
+      //ui.textBrowser->append(QString("Working directory not changed."));*/
+      textOutput(QString("Working directory not changed."));
   }
 }
 
-void LignumWB::startExternalProgram() {
+/*void LignumWB::startExternalProgram() {
   if(externalProgram == NULL) {
     QStringList text = ui.console->displayText().split(QString(" "));
     QString program = text.first();
@@ -116,9 +135,9 @@ void LignumWB::startExternalProgram() {
   }
   else 
     ui.textBrowser->append(QString("External program is already running! Wait for it to finish."));
-}
+    }*/
 
-void LignumWB::endExternalProgram(int exitCode, QProcess::ExitStatus exitStatus) {
+/*void LignumWB::endExternalProgram(int exitCode, QProcess::ExitStatus exitStatus) {
   clearExternalProgram();
   delete externalProgram;
   externalProgram = NULL;
@@ -126,14 +145,14 @@ void LignumWB::endExternalProgram(int exitCode, QProcess::ExitStatus exitStatus)
     ui.textBrowser->append(QString("External program exited normally."));
   else
     ui.textBrowser->append(QString("External program crashed."));
-}
+    }*/
 
-void LignumWB::addExternalOutput() {
+/*void LignumWB::addExternalOutput() {
   if(externalProgram != NULL)
     ui.textBrowser->append(QString(externalProgram->readAllStandardOutput()));
-}
+    }*/
 
-void LignumWB::externalError(QProcess::ProcessError error) {
+/*void LignumWB::externalError(QProcess::ProcessError error) {
   ui.textBrowser->append(QString("Error running the external program. Exiting(%1).").arg(error));
   clearExternalProgram();
   externalProgram = NULL;
@@ -153,4 +172,8 @@ void LignumWB::clearExternalProgram() {
   disconnect(externalProgram, SIGNAL(error(QProcess::ProcessError)),
 	     this, SLOT(externalError(QProcess::ProcessError)));
 
+	     }*/
+void LignumWB::textOutput(QString text) {
+  if(console)
+    console->printText(text);
 }

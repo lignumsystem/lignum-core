@@ -7,6 +7,7 @@
 #include "VisualizationConfig.h"
 #include "FunctionEditor.h"
 #include "XMLViewerWindow.h"
+#include "ConsoleWindow.h"
 
 class LignumWB : public QMainWindow
 {
@@ -17,25 +18,29 @@ public:
 
 private:
   Ui::MainWindow ui;
-  XMLViewerWindow* xml_viewer;
+  XMLViewerWindow *xml_viewer;
+  ConsoleWindow *console;
   VisualizationConfig* viz_config;
-  QProcess *externalProgram;
+  //  QProcess *externalProgram;
   //  FunctionEditor *function_editor;
   QActionGroup *viewActions;
 
-  void clearExternalProgram();
+  //void clearExternalProgram();
 
 private slots:
 //  void loadTree();
   void options();
   void xmlviewer();
+  void openConsole();
   void functionEditor();
   void setWorkingDirectory();
-  void startExternalProgram();
-  void endExternalProgram(int, QProcess::ExitStatus);
-  void addExternalOutput();
-  void externalError(QProcess::ProcessError error);
-  void killExternalProgram();
+  void textOutput(QString text);
+  //void startExternalProgram();
+  //void endExternalProgram(int, QProcess::ExitStatus);
+  //void addExternalOutput();
+  //void externalError(QProcess::ProcessError error);
+  //void killExternalProgram();
+ 
 };
 
 #endif
