@@ -95,43 +95,6 @@
           <property name="spacing" >
            <number>6</number>
           </property>
-          <item>
-           <widget class="QLineEdit" name="console" />
-          </item>
-          <item>
-           <widget class="QPushButton" name="runButton" >
-            <property name="text" >
-             <string>Run</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="killButton" >
-            <property name="text" >
-             <string>Kill program</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item>
-         <layout class="QHBoxLayout" >
-          <property name="margin" >
-           <number>0</number>
-          </property>
-          <property name="spacing" >
-           <number>6</number>
-          </property>
-          <item>
-           <widget class="QTextBrowser" name="textBrowser" >
-            <property name="maximumSize" >
-             <size>
-              <width>16777215</width>
-              <height>120</height>
-             </size>
-            </property>
-           </widget>
-          </item>
          </layout>
         </item>
        </layout>
@@ -161,18 +124,19 @@
     <addaction name="actionVisualization_settings" />
     <addaction name="actionWorking_directory" />
    </widget>
-   <widget class="QMenu" name="menuTools" >
-    <property name="title" >
-     <string>Tools</string>
-    </property>
-    <addaction name="actionXML_Viewer" />
-    <addaction name="actionFunction_editor" />
-   </widget>
    <widget class="QMenu" name="menuFile" >
     <property name="title" >
      <string>File</string>
     </property>
     <addaction name="actionQuit" />
+   </widget>
+   <widget class="QMenu" name="menuTools" >
+    <property name="title" >
+     <string>Tools</string>
+    </property>
+    <addaction name="actionConsole" />
+    <addaction name="actionXML_Viewer" />
+    <addaction name="actionFunction_editor" />
    </widget>
    <addaction name="menuFile" />
    <addaction name="menuOptions" />
@@ -264,6 +228,11 @@
     <string>Shows the types of segments and buds.</string>
    </property>
   </action>
+  <action name="actionConsole" >
+   <property name="text" >
+    <string>Console...</string>
+   </property>
+  </action>
  </widget>
  <pixmapfunction></pixmapfunction>
  <customwidgets>
@@ -276,22 +245,5 @@
   </customwidget>
  </customwidgets>
  <resources/>
- <connections>
-  <connection>
-   <sender>gldrawer</sender>
-   <signal>textOutput(QString)</signal>
-   <receiver>textBrowser</receiver>
-   <slot>append(QString)</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>472</x>
-     <y>443</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>471</x>
-     <y>629</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

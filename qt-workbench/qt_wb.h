@@ -7,13 +7,10 @@
 #include <QtGui/QApplication>
 #include <QtGui/QButtonGroup>
 #include <QtGui/QHBoxLayout>
-#include <QtGui/QLineEdit>
 #include <QtGui/QMainWindow>
 #include <QtGui/QMenu>
 #include <QtGui/QMenuBar>
-#include <QtGui/QPushButton>
 #include <QtGui/QStatusBar>
-#include <QtGui/QTextBrowser>
 #include <QtGui/QToolBar>
 #include <QtGui/QVBoxLayout>
 #include <QtGui/QWidget>
@@ -30,6 +27,7 @@ public:
     QAction *actionFunction_editor;
     QAction *actionXML_Viewer;
     QAction *actionSwitch_materials;
+    QAction *actionConsole;
     QWidget *centralwidget;
     QHBoxLayout *hboxLayout;
     QHBoxLayout *hboxLayout1;
@@ -40,16 +38,11 @@ public:
     QVBoxLayout *vboxLayout1;
     GLDrawer *gldrawer;
     QHBoxLayout *hboxLayout3;
-    QLineEdit *console;
-    QPushButton *runButton;
-    QPushButton *killButton;
-    QHBoxLayout *hboxLayout4;
-    QTextBrowser *textBrowser;
     QMenuBar *menubar;
     QMenu *menuValikko;
     QMenu *menuOptions;
-    QMenu *menuTools;
     QMenu *menuFile;
+    QMenu *menuTools;
     QStatusBar *statusbar;
     QToolBar *toolBar;
 
@@ -83,6 +76,8 @@ public:
     actionSwitch_materials = new QAction(MainWindow);
     actionSwitch_materials->setObjectName(QString::fromUtf8("actionSwitch_materials"));
     actionSwitch_materials->setCheckable(true);
+    actionConsole = new QAction(MainWindow);
+    actionConsole->setObjectName(QString::fromUtf8("actionConsole"));
     centralwidget = new QWidget(MainWindow);
     centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
     hboxLayout = new QHBoxLayout(centralwidget);
@@ -130,36 +125,8 @@ public:
     hboxLayout3->setSpacing(6);
     hboxLayout3->setMargin(0);
     hboxLayout3->setObjectName(QString::fromUtf8("hboxLayout3"));
-    console = new QLineEdit(centralwidget);
-    console->setObjectName(QString::fromUtf8("console"));
-
-    hboxLayout3->addWidget(console);
-
-    runButton = new QPushButton(centralwidget);
-    runButton->setObjectName(QString::fromUtf8("runButton"));
-
-    hboxLayout3->addWidget(runButton);
-
-    killButton = new QPushButton(centralwidget);
-    killButton->setObjectName(QString::fromUtf8("killButton"));
-
-    hboxLayout3->addWidget(killButton);
-
 
     vboxLayout->addLayout(hboxLayout3);
-
-    hboxLayout4 = new QHBoxLayout();
-    hboxLayout4->setSpacing(6);
-    hboxLayout4->setMargin(0);
-    hboxLayout4->setObjectName(QString::fromUtf8("hboxLayout4"));
-    textBrowser = new QTextBrowser(centralwidget);
-    textBrowser->setObjectName(QString::fromUtf8("textBrowser"));
-    textBrowser->setMaximumSize(QSize(16777215, 120));
-
-    hboxLayout4->addWidget(textBrowser);
-
-
-    vboxLayout->addLayout(hboxLayout4);
 
 
     hboxLayout1->addLayout(vboxLayout);
@@ -175,10 +142,10 @@ public:
     menuValikko->setObjectName(QString::fromUtf8("menuValikko"));
     menuOptions = new QMenu(menubar);
     menuOptions->setObjectName(QString::fromUtf8("menuOptions"));
-    menuTools = new QMenu(menubar);
-    menuTools->setObjectName(QString::fromUtf8("menuTools"));
     menuFile = new QMenu(menubar);
     menuFile->setObjectName(QString::fromUtf8("menuFile"));
+    menuTools = new QMenu(menubar);
+    menuTools->setObjectName(QString::fromUtf8("menuTools"));
     MainWindow->setMenuBar(menubar);
     statusbar = new QStatusBar(MainWindow);
     statusbar->setObjectName(QString::fromUtf8("statusbar"));
@@ -193,16 +160,16 @@ public:
     menubar->addAction(menuTools->menuAction());
     menuOptions->addAction(actionVisualization_settings);
     menuOptions->addAction(actionWorking_directory);
+    menuFile->addAction(actionQuit);
+    menuTools->addAction(actionConsole);
     menuTools->addAction(actionXML_Viewer);
     menuTools->addAction(actionFunction_editor);
-    menuFile->addAction(actionQuit);
     toolBar->addAction(actionOrbit);
     toolBar->addAction(actionMove_center);
     toolBar->addAction(actionFree_roam);
     toolBar->addSeparator();
     toolBar->addAction(actionSwitch_materials);
     retranslateUi(MainWindow);
-    QObject::connect(gldrawer, SIGNAL(textOutput(QString)), textBrowser, SLOT(append(QString)));
 
     QMetaObject::connectSlotsByName(MainWindow);
     } // setupUi
@@ -221,14 +188,13 @@ public:
     actionSwitch_materials->setText(QApplication::translate("MainWindow", "Show object types", 0, QApplication::UnicodeUTF8));
     actionSwitch_materials->setIconText(QApplication::translate("MainWindow", "Show object types", 0, QApplication::UnicodeUTF8));
     actionSwitch_materials->setToolTip(QApplication::translate("MainWindow", "Shows the types of segments and buds.", 0, QApplication::UnicodeUTF8));
+    actionConsole->setText(QApplication::translate("MainWindow", "Console...", 0, QApplication::UnicodeUTF8));
     gldrawer->setToolTip(QApplication::translate("MainWindow", "OpenGL visualization for Lignum", 0, QApplication::UnicodeUTF8));
     gldrawer->setWhatsThis(QApplication::translate("MainWindow", " Visualization for Lignum", 0, QApplication::UnicodeUTF8));
-    runButton->setText(QApplication::translate("MainWindow", "Run", 0, QApplication::UnicodeUTF8));
-    killButton->setText(QApplication::translate("MainWindow", "Kill program", 0, QApplication::UnicodeUTF8));
     menuValikko->setTitle(QApplication::translate("MainWindow", "valikko", 0, QApplication::UnicodeUTF8));
     menuOptions->setTitle(QApplication::translate("MainWindow", "Options", 0, QApplication::UnicodeUTF8));
-    menuTools->setTitle(QApplication::translate("MainWindow", "Tools", 0, QApplication::UnicodeUTF8));
     menuFile->setTitle(QApplication::translate("MainWindow", "File", 0, QApplication::UnicodeUTF8));
+    menuTools->setTitle(QApplication::translate("MainWindow", "Tools", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 
 };
