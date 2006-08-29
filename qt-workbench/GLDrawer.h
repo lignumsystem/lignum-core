@@ -5,6 +5,7 @@
 #include <QList>
 #include <QMultiHash>
 #include <BSPTree.h>
+#include <BSPLoaderThread.h>
 #include <BSPPolygon.h>
 #include <BSPPolygonMaterial.h>
 #include <LGMPolygonTree.h>
@@ -76,10 +77,8 @@ public slots:
   void setObjectsSelected(QHash<QString, QList<int> >);
   void setFocus(Point point, PositionVector direction, double height);
   void switchMaterials();
-  //void moveCameraLeft();
-  //void moveCameraRight();
-  //void moveCameraUp();
-  //void moveCameraDown();
+  void updateTrees(BSPTree *tree, Point t_point, PositionVector r_axis,
+		   double t_height, QHash<QString, QMultiHash<int, SceneObject*>* > *sceneObjects);
   
  signals:
   void textOutput(QString text);
@@ -122,9 +121,10 @@ private:
   int       control_mode;
   enum { MOUSE_LOOK, MOVE_TREE, ORBIT };
 
+  BSPLoaderThread thread;
 
   BSPTree* tree;
-  QHash<QString, QMultiHash<int, SceneObject*>* > sceneObjects;
+  QHash<QString, QMultiHash<int, SceneObject*>* > *sceneObjects;
   QHash<QString, QList<int> > selectedObjects;
   QHash<QString, QList<SceneObject*> > objectLists;
   

@@ -22,6 +22,8 @@
 #include <XMLTree.h>
 #include <Turtle.h>
 
+#include <QMetaType>
+
 using namespace std;
 using namespace Lignum;
 
@@ -74,7 +76,18 @@ GLDrawer::GLDrawer(QWidget* parent)
   settingsChanged = true;
   
   control_mode = ORBIT;
-  
+
+  qRegisterMetaType<BSPTree*>("BSPTree*");
+  qRegisterMetaType<Point>("Point");
+  qRegisterMetaType<PositionVector>("PositionVector");
+  qRegisterMetaType<SceneObject*>("SceneObject*");
+  qRegisterMetaType<QMultiHash<int, SceneObject*>* >("QMultiHash<int, SceneObject*>*");
+
+  qRegisterMetaType<QHash<QString, QMultiHash<int, SceneObject*>* >* >("QHash<QString, QMultiHash<int, SceneObject*>* >*");
+  connect(&thread, SIGNAL(treesLoaded(BSPTree*, Point, PositionVector, double,
+				      QHash<QString, QMultiHash<int, SceneObject*>* >*)),
+	  this, SLOT(updateTrees(BSPTree*, Point, PositionVector, double,
+				      QHash<QString, QMultiHash<int, SceneObject*>* >*)));
 }
 
 void GLDrawer::initMaterials() {
@@ -324,30 +337,32 @@ void GLDrawer::toggleTexturing() {
 
 void GLDrawer::resetVisualization() {
   delete tree;
-  tree = new BSPTree();
-  QList<QString> objects = sceneObjects.keys();
+  tree = NULL;
+  QList<QString> objects = sceneObjects->keys();
   for(int i = 0; i < objects.size(); i++) {
-    if(sceneObjects.contains(objects[i])) {
-      delete sceneObjects.value(objects[i]);
+    if(sceneObjects->contains(objects[i])) {
+      delete sceneObjects->value(objects[i]);
     }
   }
-  sceneObjects.clear();
+  sceneObjects->clear();
+  delete sceneObjects;
   selectedObjects.clear();
   objectLists.clear();
   updateGL();
 }
 
 void GLDrawer::resetVisualization(QList<QString> files) {
-  resetVisualization();
-  for(int i = 0; i < files.size(); i++) {
-	 addTree(files[i]);
-  }
+  //  resetVisualization();
+  //for(int i = 0; i < files.size(); i++) {
+  //	 addTree(files[i]);
+  //}
+  setTextures();
+  thread.loadTrees(files, parameters);
 }
 
 void GLDrawer::addTree(QString fileName) {
-  setTextures();
+  /*  setTextures();
 
-  //QFile file(tree_file);
   QFile file(fileName);
 
   if(!file.exists()) {
@@ -355,8 +370,6 @@ void GLDrawer::addTree(QString fileName) {
   }
   else {
 
-    //delete tree;
-    //tree = new BSPTree();
     BSPPolygonSet polygons;
         
     XMLDomTreeReader<GenericCfTreeSegment, GenericCfBud> cf_reader;
@@ -448,9 +461,7 @@ void GLDrawer::addTree(QString fileName) {
     resetCamera();
 
     updateGL();
-    
-    //emit textOutput(QString("Tree file %1 has been added.").arg(fileName));
-  }
+    }*/
 }
   
 
@@ -921,8 +932,8 @@ void GLDrawer::setObjectsSelected(QHash<QString, QList<int> > selected) {
   QList<QString> files = selectedObjects.keys();
 
   for(int i = 0; i < files.size(); i++) {
-    if(sceneObjects.contains(files[i])) {
-      QMultiHash<int, SceneObject*>* scene_objects = sceneObjects.value(files[i]);
+    if(sceneObjects->contains(files[i])) {
+      QMultiHash<int, SceneObject*>* scene_objects = sceneObjects->value(files[i]);
       QList<int> objects = selectedObjects.value(files[i]);
       for(int j = 0; j < objects.size(); j++) {
 	if(scene_objects->contains(objects[j])) {
@@ -938,8 +949,8 @@ void GLDrawer::setObjectsSelected(QHash<QString, QList<int> > selected) {
   selectedObjects = selected;
   files = selected.keys();
   for(int i = 0; i < files.size(); i++) {
-    if(sceneObjects.contains(files[i])) {
-      QMultiHash<int, SceneObject*>* scene_objects = sceneObjects.value(files[i]);
+    if(sceneObjects->contains(files[i])) {
+      QMultiHash<int, SceneObject*>* scene_objects = sceneObjects->value(files[i]);
       QList<int> objects = selectedObjects.value(files[i]);
       for(int j = 0; j < objects.size(); j++) {
 	if(scene_objects->contains(objects[j])) {
@@ -1003,4 +1014,25 @@ void GLDrawer::switchMaterials() {
   }
   updateGL();
 
+}
+
+void GLDrawer::updateTrees(BSPTree *tree, Point t_point, PositionVector r_axis,
+		   double t_height, QHash<QString, QMultiHash<int, SceneObject*>* > *sceneObjects)
+{
+  resetVisualization();
+  this->tree = tree;
+  this->sceneObjects = sceneObjects;
+  this->t_point = t_point;
+  this->r_axis = r_axis;
+  this->t_height = t_height;
+  
+  QList<QString> files = sceneObjects->keys();
+  for(int i = 0; i < files.size(); i++) {
+    if(sceneObjects->contains(files[i])) {
+      objectLists.insert(files[i], sceneObjects->value(files[i])->values());
+    }
+  }
+
+  resetCamera();
+  updateGL();
 }
