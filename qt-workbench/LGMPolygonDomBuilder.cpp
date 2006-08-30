@@ -200,7 +200,7 @@ void LGMPolygonDomBuilder::parseTreeSegmentElement(const QDomElement& element, c
       polygons->addPolygons(cyl);
       delete cyl;
     }
-    else if(child.tagName() == "BroadLeaf") {
+    else if(child.tagName() == "BroadLeaf" && parameters.useLeaves()) {
       parseBroadLeafElement(child, parameters, polygons);
     }
 

@@ -37,10 +37,11 @@ VisualizationParameters::VisualizationParameters(int s_r_detail,
   shootAboveMaterial(NULL),
 
   use_BSP(true),
+  use_leaves(true),
+  use_buds(true),
   use_wireframe(false),
   use_lighting(true),
-  use_texturing(true),
-  use_buds(true) {
+  use_texturing(true) {
   if(leaf_tex == 0)
     use_leaftex == false;
   else 
@@ -76,10 +77,11 @@ VisualizationParameters::VisualizationParameters() :
 
   use_BSP(false),
   use_leaftex(false),
+  use_leaves(true),
+  use_buds(true),
   use_wireframe(false),
   use_lighting(true),
-  use_texturing(true),
-  use_buds(true){
+  use_texturing(true){
 }
 
 void VisualizationParameters::setSegmentTextureFile(string texture) {
@@ -339,6 +341,14 @@ void VisualizationParameters::setLeafTextureUsage(bool use_tex) {
 
 bool VisualizationParameters::useLeafTextures() const {
   return use_leaftex;
+}
+
+void VisualizationParameters::setLeafUsage(bool use_tex) {
+  use_leaves = use_tex;
+}
+
+bool VisualizationParameters::useLeaves() const {
+  return use_leaves;
 }
 
 void VisualizationParameters::setWireframeUsage(bool useWireframe) {

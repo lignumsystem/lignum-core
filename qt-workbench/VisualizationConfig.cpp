@@ -54,6 +54,11 @@ void VisualizationConfig::setSettings(VisualizationParameters params) {
     ui.budBox->setCheckState(Qt::Checked);
   else
     ui.budBox->setCheckState(Qt::Unchecked);
+  
+  if(params.useLeaves())
+    ui.leafBox->setCheckState(Qt::Checked);
+  else
+    ui.leafBox->setCheckState(Qt::Unchecked);
 
   ui.srdetailBox->setValue(params.getSegmentRDetail());
   ui.shdetailBox->setValue(params.getSegmentHDetail());
@@ -148,6 +153,11 @@ void VisualizationConfig::applySettings() {
     params.setBudUsage(true);
   else
     params.setBudUsage(false);
+
+  if(ui.leafBox->checkState() == Qt::Checked)
+    params.setLeafUsage(true);
+  else
+    params.setLeafUsage(false);
 
 
   emit settingsChanged(params);

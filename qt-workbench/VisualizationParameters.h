@@ -82,6 +82,7 @@ class VisualizationParameters {
 
   void                  setBSPUsage(bool useBSP);
   void                  setLeafTextureUsage(bool useLeafTextures);
+  void                  setLeafUsage(bool useLeaves);
   void                  setWireframeUsage(bool useWireframe);
   void                  setLightingUsage(bool useLighting);
   void                  setTexturingUsage(bool useTexturing);
@@ -89,6 +90,7 @@ class VisualizationParameters {
 
   bool                  useBSP() const;
   bool                  useLeafTextures() const;
+  bool                  useLeaves() const;
   bool                  useWireframe() const;
   bool                  useLighting() const;
   bool                  useTexturing() const;
@@ -124,10 +126,12 @@ class VisualizationParameters {
   BSPPolygonMaterial* shootAboveMaterial;
   bool use_BSP;
   bool use_leaftex;
+  bool use_leaves;
+  bool use_buds;
   bool use_wireframe;
   bool use_lighting;
   bool use_texturing;
-  bool use_buds;
+
 };
 
 #endif

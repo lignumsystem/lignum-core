@@ -132,6 +132,13 @@
           </widget>
          </item>
          <item>
+          <widget class="QCheckBox" name="leafBox" >
+           <property name="text" >
+            <string>Show leaves</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QCheckBox" name="budBox" >
            <property name="text" >
             <string>Show buds</string>

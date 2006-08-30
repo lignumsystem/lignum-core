@@ -34,6 +34,7 @@ public:
     QVBoxLayout *vboxLayout3;
     QCheckBox *bspBox;
     QCheckBox *leaftexBox;
+    QCheckBox *leafBox;
     QCheckBox *budBox;
     QCheckBox *wireBox;
     QCheckBox *lightBox;
@@ -152,6 +153,11 @@ public:
     leaftexBox->setObjectName(QString::fromUtf8("leaftexBox"));
 
     vboxLayout3->addWidget(leaftexBox);
+
+    leafBox = new QCheckBox(VisualizationConfig);
+    leafBox->setObjectName(QString::fromUtf8("leafBox"));
+
+    vboxLayout3->addWidget(leafBox);
 
     budBox = new QCheckBox(VisualizationConfig);
     budBox->setObjectName(QString::fromUtf8("budBox"));
@@ -364,6 +370,7 @@ public:
     foliageButton->setText(QApplication::translate("VisualizationConfig", "Foliage texture...", 0, QApplication::UnicodeUTF8));
     bspBox->setText(QApplication::translate("VisualizationConfig", "Use BSP-tree", 0, QApplication::UnicodeUTF8));
     leaftexBox->setText(QApplication::translate("VisualizationConfig", "Use texture in leafs", 0, QApplication::UnicodeUTF8));
+    leafBox->setText(QApplication::translate("VisualizationConfig", "Show leaves", 0, QApplication::UnicodeUTF8));
     budBox->setText(QApplication::translate("VisualizationConfig", "Show buds", 0, QApplication::UnicodeUTF8));
     wireBox->setText(QApplication::translate("VisualizationConfig", "Wireframe model", 0, QApplication::UnicodeUTF8));
     lightBox->setText(QApplication::translate("VisualizationConfig", "Lighting", 0, QApplication::UnicodeUTF8));
