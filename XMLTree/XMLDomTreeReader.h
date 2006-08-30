@@ -100,7 +100,7 @@ int XMLDomTreeReader<TS,BUD,S>::treeType(const string& fileName) {
 
 template <class TS, class BUD, class S>
 int XMLDomTreeReader<TS,BUD,S>::treeType(const QDomDocument& doc) {
-  QString type = m_doc.firstChild().toElement().attribute("SegmentType");
+  QString type = doc.firstChild().toElement().attribute("SegmentType");
   if(type == "Cf")
     return XMLDomTreeReader::Cf;
   else
@@ -134,7 +134,7 @@ int XMLDomTreeReader<TS,BUD,S>::leafType(const string& fileName) {
 
 template <class TS, class BUD, class S>
 int XMLDomTreeReader<TS,BUD,S>::leafType(const QDomDocument& doc) {
-  QString type = m_doc.firstChild().toElement().attribute("LeafType");
+  QString type = doc.firstChild().toElement().attribute("LeafType");
   if(type == "Triangle")
     return XMLDomTreeReader::TRIANGLE;
   else
@@ -151,7 +151,6 @@ Tree<TS,BUD>& XMLDomTreeReader<TS,BUD,S>::readXMLToTree(Tree<TS,BUD>& tree, cons
   QString fName(fileName.c_str());
  
   m_doc = QDomDocument("LMODEL");
-  QString tmp;
 
   QFile file(fName);
   if(!file.open(QIODevice::ReadOnly))
