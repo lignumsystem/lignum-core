@@ -935,7 +935,8 @@ void GLDrawer::freeRoamMode() {
 }
 
 void GLDrawer::setObjectsSelected(QHash<QString, QList<int> > selected) {
-
+  if(sceneObjects == NULL || sceneObjects->size() < 1)
+    return;
 
   QList<QString> files = selectedObjects.keys();
 
