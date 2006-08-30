@@ -238,7 +238,7 @@ void GLDrawer::resizeGL(int width, int height)
   glViewport(0, 0, width, height);
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
-  gluPerspective(60.0, (GLfloat)width/(GLfloat)height, 0.01, 20.0);
+  gluPerspective(60.0, (GLfloat)width/(GLfloat)height, 0.001, 20.0);
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
 }
@@ -843,8 +843,8 @@ void GLDrawer::resetCamera() {
   t_rot_x = 0;
 
   tree_trans_x = t_point.getX() + r_axis.getX()*t_height/2;
-  tree_trans_y = t_point.getY() - r_axis.getZ()*t_height/2;
-  tree_trans_z = t_point.getZ() + r_axis.getY()*t_height/2;
+  tree_trans_y = t_point.getY() + r_axis.getY()*t_height/2;
+  tree_trans_z = t_point.getZ() + r_axis.getZ()*t_height/2;
   distance = abs(4*t_height);
   if(distance > 18)
     distance = 18;
@@ -855,15 +855,15 @@ void GLDrawer::resetCamera() {
   //cout << "height: " << t_height << endl;
   camera_x = t_point.getX()+ r_axis.getX()*t_height/2;
   //camera_y = t_point.getY() - t_height/2*r_axis.getZ();
-  camera_y = t_point.getY() - r_axis.getZ()*t_height/2;
-  camera_z = t_point.getZ() + r_axis.getY()*t_height/2+ distance;
+  camera_y = t_point.getY() + r_axis.getY()*t_height/2;
+  camera_z = t_point.getZ() + r_axis.getZ()*t_height/2+ distance;
   Point camera(camera_x, camera_y, camera_z);
   //  cout << "camera: " << camera_x << " " << camera_y << " " << camera_z << endl;
 
   //Point p(t_point.getX(), t_point.getY() - (t_height/2.0)*r_axis.getZ(), t_point.getZ());
   Point p(t_point.getX() + r_axis.getX()*t_height/2,
-	  t_point.getY() - r_axis.getZ()*t_height/2.0,
-	  t_point.getZ() + r_axis.getY()*t_height/2);
+	  t_point.getY() + r_axis.getY()*t_height/2.0,
+	  t_point.getZ() + r_axis.getZ()*t_height/2);
   PositionVector direction(PositionVector(p - camera));
   direction = direction.normalize();
   //cout << "direction: " << direction.getX() << " " << direction.getY() << " " << direction.getZ() << endl;
@@ -1042,4 +1042,5 @@ void GLDrawer::updateTrees(BSPTree *tree, Point t_point, PositionVector r_axis,
   }
   resetCamera();
   updateGL();
+
 }
