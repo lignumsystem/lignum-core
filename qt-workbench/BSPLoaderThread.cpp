@@ -52,33 +52,35 @@ void BSPLoaderThread::run()
     QList<QString> files = this->files;
     VisualizationParameters parameters = this->parameters;
     mutex.unlock();
-
+    
     emit workStarted();
     BSPTree *tree = new BSPTree;
-
+    
     PositionVector r_axis;
     Point t_point;
     double t_height;
     QHash<QString, QMultiHash<int, SceneObject*>* > *sceneObjects = new QHash<QString, QMultiHash<int, SceneObject*>*>;
-
+    
     BSPPolygonSet polygons;
-
-
+    
+    
     for(int i = 0; i < files.size(); i++) {
-      QDomDocument doc;
+      QDomDocument doc("LMODEL") ;
       QString fileName = files[i];
       QFile file(fileName);
       if(!file.open(QIODevice::ReadOnly))
-         continue;
+	continue;
       if(!doc.setContent(&file)) {
-         file.close();
-         continue;
+	file.close();
+	continue;
       }
+      file.close();
       XMLDomTreeReader<GenericCfTreeSegment, GenericCfBud> cf_reader;
-
+      
       int treeType = cf_reader.treeType(doc);
-      if(treeType == XMLDomTreeReader<GenericCfTreeSegment, GenericCfBud>::Cf) {	
-      //if(cf_reader.treeType(fileName.toStdString()) == XMLDomTreeReader<GenericCfTreeSegment, GenericCfBud>::Cf) {
+      if(treeType == XMLDomTreeReader<GenericCfTreeSegment, GenericCfBud>::Cf) {
+	cout << "CF!" << endl;
+	//if(cf_reader.treeType(fileName.toStdString()) == XMLDomTreeReader<GenericCfTreeSegment, GenericCfBud>::Cf) {
 	Tree<GenericCfTreeSegment, GenericCfBud> cftree(Point(0,0,0), PositionVector(0,1,0));
 	cf_reader.readXMLToTree(cftree, doc);
 	
@@ -89,6 +91,7 @@ void BSPLoaderThread::run()
 	polygons.addPolygons(treePolygons);
 	delete treePolygons;
 	sceneObjects->insert(fileName, constructor.getSceneObjects());
+	
 	r_axis = GetDirection(GetRootAxis(cftree));
 	t_point = GetPoint(cftree);
 	t_height = GetValue(cftree, LGAH);
@@ -97,10 +100,10 @@ void BSPLoaderThread::run()
 	t_point = Point(t_point.getX(), t_point.getZ(), -t_point.getY());
       }
       else {
-            int leafType = cf_reader.leafType(doc);
-
+	int leafType = cf_reader.leafType(doc);
+	
 	if(leafType == XMLDomTreeReader<GenericCfTreeSegment, GenericCfBud>::Cf) {
-    //if(cf_reader.leafType(fileName.toStdString()) == XMLDomTreeReader<GenericCfTreeSegment, GenericCfBud>::TRIANGLE) {
+	  //if(cf_reader.leafType(fileName.toStdString()) == XMLDomTreeReader<GenericCfTreeSegment, GenericCfBud>::TRIANGLE) {
 	  
 	  XMLDomTreeReader<GenericHwTriangleTreeSegment, GenericHwTriangleBud, Triangle> hwt_reader;	
 	  Tree<GenericHwTriangleTreeSegment, GenericHwTriangleBud> hwtree(Point(0,0,0), PositionVector(0,1,0));
@@ -122,22 +125,21 @@ void BSPLoaderThread::run()
 	  t_point = Point(t_point.getX(), t_point.getZ(), -t_point.getY());
 	}
 	else if(leafType == XMLDomTreeReader<GenericCfTreeSegment, GenericCfBud>::ELLIPSE) {
-    //else if (cf_reader.leafType(fileName.toStdString()) == XMLDomTreeReader<GenericCfTreeSegment, GenericCfBud>::ELLIPSE) {
+	  //else if (cf_reader.leafType(fileName.toStdString()) == XMLDomTreeReader<GenericCfTreeSegment, GenericCfBud>::ELLIPSE) {
 	  XMLDomTreeReader<GenericHwEllipseTreeSegment, GenericHwEllipseBud, cxxadt::Ellipse> hwt_reader;
-	
+	  
 	  Tree<GenericHwEllipseTreeSegment, GenericHwEllipseBud> hwtree(Point(0,0,0), PositionVector(0,1,0));
 	  hwt_reader.readXMLToTree(hwtree, doc);
-
+	  
 	  
 	  LGMPolygonTree<GenericHwEllipseTreeSegment, GenericHwEllipseBud, cxxadt::Ellipse> constructor;
 	  BSPPolygonSet* treePolygons = constructor.buildTree(hwtree, parameters,
 							      hwt_reader.getTreeCompartmentHash(),
 							      hwt_reader.getLeafHash());
-
+	  
 	  polygons.addPolygons(treePolygons);
 	  delete treePolygons;
-
-	  //sceneObjects->insert(fileName, constructor.getSceneObjects());
+	  sceneObjects->insert(fileName, constructor.getSceneObjects());
 	  
 	  r_axis = GetDirection(GetRootAxis(hwtree));
 	  t_point = GetPoint(hwtree);
@@ -148,7 +150,7 @@ void BSPLoaderThread::run()
 	}
       }
     }
-
+    
     tree->buildBSPTree(polygons);
 
     emit treesLoaded(tree, t_point, r_axis, t_height, sceneObjects);
