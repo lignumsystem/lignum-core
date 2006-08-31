@@ -3,10 +3,11 @@
 
 using namespace std;
 
-
+// Creates a new function painter widget used in the
+// function editor.
 FunctionPainter::FunctionPainter(QWidget* parent)
   :QWidget(parent), xMarginal(1.1), yMarginal(1.1), xTick(1.0), yTick(1.0),
-      tickLength(4) {
+      tickLength(4), circleSize(10) {
   emit xTicksChanged(xTick);
   emit yTicksChanged(yTick);
   emit minXChanged(0);
@@ -15,7 +16,14 @@ FunctionPainter::FunctionPainter(QWidget* parent)
   emit maxYChanged(0);
 }
 
+// Changes the function to displayed by the painter.
+// Argument string contains the 2D-points of the function
+// and the painter draws lines between adjacant points.
+// Painter ignores comment lines starting with character #,
+// but lines of that kind must be placed in the beginning of the
+// string.  
 void FunctionPainter::changeFunction(QString values) {
+  // Parsing of the string is left for ParametricCurve-object to do
   function = ParametricCurve(values.toStdString(), 1);
   vector<double> t_points = function.getVector();
   if(t_points.size() > 2 && t_points.size() % 2 != 0) {
@@ -176,6 +184,19 @@ void FunctionPainter::paintEvent(QPaintEvent *event) {
 			      size().height() - (points[i+1] - minYValue) / yRange * size().height()),
 		       QPoint((points[i+2] - minXValue) / xRange * size().width(),
 			    size().height() - (points[i+3] - minYValue) / yRange * size().height()));
+    }
+  }
+
+  // Draw the circles around the points
+  if(points.size() > 2) {
+    for(int i = 0; i < points.size() - 1; i+=2) {
+      painter.drawArc(QRect((points[i] - minXValue) / xRange * size().width() - circleSize/2, 
+			     size().height() - (points[i+1] - minYValue) / yRange * size().height() - circleSize/2,
+			     circleSize, circleSize),
+		       0, 16*360);
+		       
+		       
+
     }
   }
   
