@@ -1,8 +1,11 @@
 #ifndef LIGNUMWB_H
 #define LIGNUMWB_H
 
+// Qt includes
 #include <QMainWindow>
 #include <QProcess>
+
+// Workbench includes
 #include "qt_wb.h"
 #include "VisualizationConfig.h"
 #include "FunctionEditor.h"
@@ -21,26 +24,16 @@ private:
   XMLViewerWindow *xml_viewer;
   ConsoleWindow *console;
   VisualizationConfig* viz_config;
-  //  QProcess *externalProgram;
-  //  FunctionEditor *function_editor;
   QActionGroup *viewActions;
 
-  //void clearExternalProgram();
-
 private slots:
-//  void loadTree();
+  void loadTree();
   void options();
   void xmlviewer();
   void openConsole();
   void functionEditor();
   void setWorkingDirectory();
   void textOutput(QString text);
-  //void startExternalProgram();
-  //void endExternalProgram(int, QProcess::ExitStatus);
-  //void addExternalOutput();
-  //void externalError(QProcess::ProcessError error);
-  //void killExternalProgram();
- 
 };
 
 #endif

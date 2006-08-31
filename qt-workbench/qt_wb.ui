@@ -117,6 +117,14 @@
      <string>valikko</string>
     </property>
    </widget>
+   <widget class="QMenu" name="menuTools" >
+    <property name="title" >
+     <string>Tools</string>
+    </property>
+    <addaction name="actionConsole" />
+    <addaction name="actionXML_Viewer" />
+    <addaction name="actionFunction_editor" />
+   </widget>
    <widget class="QMenu" name="menuOptions" >
     <property name="title" >
      <string>Options</string>
@@ -128,15 +136,8 @@
     <property name="title" >
      <string>File</string>
     </property>
+    <addaction name="actionLoad_tree" />
     <addaction name="actionQuit" />
-   </widget>
-   <widget class="QMenu" name="menuTools" >
-    <property name="title" >
-     <string>Tools</string>
-    </property>
-    <addaction name="actionConsole" />
-    <addaction name="actionXML_Viewer" />
-    <addaction name="actionFunction_editor" />
    </widget>
    <addaction name="menuFile" />
    <addaction name="menuOptions" />
@@ -231,6 +232,14 @@
   <action name="actionConsole" >
    <property name="text" >
     <string>Console...</string>
+   </property>
+  </action>
+  <action name="actionLoad_tree" >
+   <property name="text" >
+    <string>Load tree...</string>
+   </property>
+   <property name="toolTip" >
+    <string>Loads a tree directly to visualization</string>
    </property>
   </action>
  </widget>

@@ -359,117 +359,18 @@ void GLDrawer::resetVisualization() {
   updateGL();
 }
 
+// Resets the visualization by loading the given files by the loader
+// thread which then sends a signal containing the created BSP-tree when
+// the job is done.
 void GLDrawer::resetVisualization(QList<QString> files) {
-  //  resetVisualization();
-  //for(int i = 0; i < files.size(); i++) {
-  //	 addTree(files[i]);
-  //}
   setTextures();
   thread.loadTrees(files, parameters);
 }
 
 void GLDrawer::addTree(QString fileName) {
-  /*  setTextures();
-
-  QFile file(fileName);
-
-  if(!file.exists()) {
-    emit textOutput(QString("Tree file %1 is not found!").arg(tree_file));
-  }
-  else {
-
-    BSPPolygonSet polygons;
-        
-    XMLDomTreeReader<GenericCfTreeSegment, GenericCfBud> cf_reader;
-
-    if(cf_reader.treeType(fileName.toStdString()) == XMLDomTreeReader<GenericCfTreeSegment, GenericCfBud>::Cf) {
-      Tree<GenericCfTreeSegment, GenericCfBud> cftree(Point(0,0,0), PositionVector(0,1,0));
-      cf_reader.readXMLToTree(cftree, fileName.toStdString());
-
-      LGMPolygonTree<GenericCfTreeSegment, GenericCfBud> constructor;
-      BSPPolygonSet* treePolygons = constructor.buildTree(cftree, parameters,
-							  cf_reader.getTreeCompartmentHash(),
-							  cf_reader.getLeafHash());
-      polygons.addPolygons(treePolygons);
-      delete treePolygons;
-      sceneObjects.insert(fileName, constructor.getSceneObjects());
-
-      r_axis = GetDirection(GetRootAxis(cftree));
-      t_point = GetPoint(cftree);
-      t_height = GetValue(cftree, LGAH);
-      r_axis = r_axis.normalize();
-      r_axis = PositionVector(r_axis.getX(), r_axis.getZ(), -r_axis.getY());
-      t_point = Point(t_point.getX(), t_point.getZ(), -t_point.getY());
-      }
-    else {
-      if(cf_reader.leafType(fileName.toStdString()) == XMLDomTreeReader<GenericCfTreeSegment, GenericCfBud>::TRIANGLE) {
-	
-	XMLDomTreeReader<GenericHwTriangleTreeSegment, GenericHwTriangleBud, Triangle> hwt_reader;	
-	Tree<GenericHwTriangleTreeSegment, GenericHwTriangleBud> hwtree(Point(0,0,0), PositionVector(0,1,0));
-	hwt_reader.readXMLToTree(hwtree, fileName.toStdString());
-
-	LGMPolygonTree<GenericHwTriangleTreeSegment, GenericHwTriangleBud, Triangle> constructor;
-	BSPPolygonSet* treePolygons = constructor.buildTree(hwtree, parameters,
-							    hwt_reader.getTreeCompartmentHash(),
-							    hwt_reader.getLeafHash());
-	polygons.addPolygons(treePolygons);
-	delete treePolygons;
-	sceneObjects.insert(fileName, constructor.getSceneObjects());
-	
-	r_axis = GetDirection(GetRootAxis(hwtree));
-	t_point = GetPoint(hwtree);
-	t_height = GetValue(hwtree, LGAH);
-	r_axis = r_axis.normalize();
-	r_axis = PositionVector(r_axis.getX(), r_axis.getZ(), -r_axis.getY());
-	t_point = Point(t_point.getX(), t_point.getZ(), -t_point.getY());
-      }
-      else if (cf_reader.leafType(fileName.toStdString()) == XMLDomTreeReader<GenericCfTreeSegment, GenericCfBud>::ELLIPSE) {
-	XMLDomTreeReader<GenericHwEllipseTreeSegment, GenericHwEllipseBud, cxxadt::Ellipse> hwt_reader;	
-	Tree<GenericHwEllipseTreeSegment, GenericHwEllipseBud> hwtree(Point(0,0,0), PositionVector(0,1,0));
-	hwt_reader.readXMLToTree(hwtree, fileName.toStdString());
-
-	LGMPolygonTree<GenericHwEllipseTreeSegment, GenericHwEllipseBud, cxxadt::Ellipse> constructor;
-	BSPPolygonSet* treePolygons = constructor.buildTree(hwtree, parameters,
-							    hwt_reader.getTreeCompartmentHash(),
-							    hwt_reader.getLeafHash());
-	polygons.addPolygons(treePolygons);
-	delete treePolygons;
-	sceneObjects.insert(fileName, constructor.getSceneObjects());
-	
-	r_axis = GetDirection(GetRootAxis(hwtree));
-	t_point = GetPoint(hwtree);
-	t_height = GetValue(hwtree, LGAH);
-	r_axis = r_axis.normalize();
-	r_axis = PositionVector(r_axis.getX(), r_axis.getZ(), -r_axis.getY());
-	t_point = Point(t_point.getX(), t_point.getZ(), -t_point.getY());
-      }
-    }
-    
-    //BSPPolygonSet* ground = makeSquare(10, 10, Point(t_point.getX(), -t_point.getZ(), t_point.getY()),
-    //				       PositionVector(r_axis.getX(), -r_axis.getZ(), r_axis.getY()), green, 0, 2);
-    //polygons.addPolygons(ground);
-    //delete ground;
-
-    // tree->buildBSPTree(polygons);
-    QList<QString> files = sceneObjects.keys();
-    for(int i = 0; i < files.size(); i++) {
-      if(sceneObjects.contains(files[i])) {
-	objectLists.insert(files[i], sceneObjects.value(files[i])->values());
-      }
-    }
-
-    tree->addPolygonsToTree(polygons);
-
-    cout << "polygons: " << tree->countPolygons() << endl;
-    updateGL();
-    cout << "components: " << tree->countComponents() << endl;
-    cout << "depth:" << tree->getDepth() << endl;
-    cout << "nodes:" << tree->getNodeCount() << endl;
-    
-    resetCamera();
-
-    updateGL();
-    }*/
+  QList<QString> files;
+  files.push_back(fileName);
+  resetVisualization(files);
 }
   
 

@@ -6,15 +6,12 @@ LignumWB::LignumWB(QWidget *parent)
 {
   ui.setupUi(this);
   connect(ui.actionQuit, SIGNAL(triggered()), this, SLOT(close()));
-  //connect(ui.actionLoad_tree, SIGNAL(triggered()), this, SLOT(loadTree()));
+  connect(ui.actionLoad_tree, SIGNAL(triggered()), this, SLOT(loadTree()));
   connect(ui.actionVisualization_settings, SIGNAL(triggered()), this, SLOT(options()));
   connect(ui.actionFree_roam, SIGNAL(triggered()), ui.gldrawer, SLOT(freeRoamMode()));
   connect(ui.actionOrbit, SIGNAL(triggered()), ui.gldrawer, SLOT(orbitCameraMode()));
   connect(ui.actionMove_center, SIGNAL(triggered()), ui.gldrawer, SLOT(moveCenterMode()));
   connect(ui.actionWorking_directory, SIGNAL(triggered()), this, SLOT(setWorkingDirectory()));
-  //connect(ui.console, SIGNAL(returnPressed()), this, SLOT(startExternalProgram()));
-  //connect(ui.runButton, SIGNAL(clicked()), this, SLOT(startExternalProgram()));
-  //connect(ui.killButton, SIGNAL(clicked()), this, SLOT(killExternalProgram()));
   connect(ui.actionFunction_editor, SIGNAL(triggered()), this, SLOT(functionEditor()));
   connect(ui.actionConsole, SIGNAL(triggered()), this, SLOT(openConsole()));
   connect(ui.actionXML_Viewer, SIGNAL(triggered()), this, SLOT(xmlviewer()));
@@ -28,6 +25,8 @@ LignumWB::LignumWB(QWidget *parent)
   
   viewActions->setExclusive(true);
 
+  ui.toolBar->setWindowTitle("Toolbar");
+
   setCorner(Qt::TopLeftCorner, Qt::LeftDockWidgetArea);
   setCorner(Qt::BottomLeftCorner, Qt::LeftDockWidgetArea);
   setCorner(Qt::TopRightCorner, Qt::RightDockWidgetArea);
@@ -37,7 +36,7 @@ LignumWB::LignumWB(QWidget *parent)
   openConsole();
 }
 
-/*void LignumWB::loadTree() {
+void LignumWB::loadTree() {
   QString fileName = QFileDialog::getOpenFileName(this,
 						  "Choose a file",
 						  QDir::currentPath(),
@@ -47,7 +46,7 @@ LignumWB::LignumWB(QWidget *parent)
   if(!fileName.isEmpty()) {
     ui.gldrawer->addTree(fileName);
   }
-  }*/
+}
 
 void LignumWB::xmlviewer() {
   if(!xml_viewer) {
@@ -68,6 +67,8 @@ void LignumWB::xmlviewer() {
   xml_viewer->activateWindow();
 }
 
+// Opens the console. Creates a new console object if there isn't
+// a one created before.
 void LignumWB::openConsole() {
   if(!console) {
     console = new ConsoleWindow(this);
@@ -78,10 +79,9 @@ void LignumWB::openConsole() {
   console->activateWindow();
 }
 
+// Opens a new function editor.
 void LignumWB::functionEditor() {
-  //  if(!function_editor) {
   FunctionEditor* function_editor = new FunctionEditor();
-    //} 
   function_editor->show();
   function_editor->raise();
   function_editor->activateWindow(); 

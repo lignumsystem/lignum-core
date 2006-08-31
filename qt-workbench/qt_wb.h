@@ -28,6 +28,7 @@ public:
     QAction *actionXML_Viewer;
     QAction *actionSwitch_materials;
     QAction *actionConsole;
+    QAction *actionLoad_tree;
     QWidget *centralwidget;
     QHBoxLayout *hboxLayout;
     QHBoxLayout *hboxLayout1;
@@ -40,9 +41,9 @@ public:
     QHBoxLayout *hboxLayout3;
     QMenuBar *menubar;
     QMenu *menuValikko;
+    QMenu *menuTools;
     QMenu *menuOptions;
     QMenu *menuFile;
-    QMenu *menuTools;
     QStatusBar *statusbar;
     QToolBar *toolBar;
 
@@ -78,6 +79,8 @@ public:
     actionSwitch_materials->setCheckable(true);
     actionConsole = new QAction(MainWindow);
     actionConsole->setObjectName(QString::fromUtf8("actionConsole"));
+    actionLoad_tree = new QAction(MainWindow);
+    actionLoad_tree->setObjectName(QString::fromUtf8("actionLoad_tree"));
     centralwidget = new QWidget(MainWindow);
     centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
     hboxLayout = new QHBoxLayout(centralwidget);
@@ -140,12 +143,12 @@ public:
     menubar->setGeometry(QRect(0, 0, 1022, 26));
     menuValikko = new QMenu(menubar);
     menuValikko->setObjectName(QString::fromUtf8("menuValikko"));
+    menuTools = new QMenu(menubar);
+    menuTools->setObjectName(QString::fromUtf8("menuTools"));
     menuOptions = new QMenu(menubar);
     menuOptions->setObjectName(QString::fromUtf8("menuOptions"));
     menuFile = new QMenu(menubar);
     menuFile->setObjectName(QString::fromUtf8("menuFile"));
-    menuTools = new QMenu(menubar);
-    menuTools->setObjectName(QString::fromUtf8("menuTools"));
     MainWindow->setMenuBar(menubar);
     statusbar = new QStatusBar(MainWindow);
     statusbar->setObjectName(QString::fromUtf8("statusbar"));
@@ -158,12 +161,13 @@ public:
     menubar->addAction(menuFile->menuAction());
     menubar->addAction(menuOptions->menuAction());
     menubar->addAction(menuTools->menuAction());
-    menuOptions->addAction(actionVisualization_settings);
-    menuOptions->addAction(actionWorking_directory);
-    menuFile->addAction(actionQuit);
     menuTools->addAction(actionConsole);
     menuTools->addAction(actionXML_Viewer);
     menuTools->addAction(actionFunction_editor);
+    menuOptions->addAction(actionVisualization_settings);
+    menuOptions->addAction(actionWorking_directory);
+    menuFile->addAction(actionLoad_tree);
+    menuFile->addAction(actionQuit);
     toolBar->addAction(actionOrbit);
     toolBar->addAction(actionMove_center);
     toolBar->addAction(actionFree_roam);
@@ -189,12 +193,14 @@ public:
     actionSwitch_materials->setIconText(QApplication::translate("MainWindow", "Show object types", 0, QApplication::UnicodeUTF8));
     actionSwitch_materials->setToolTip(QApplication::translate("MainWindow", "Shows the types of segments and buds.", 0, QApplication::UnicodeUTF8));
     actionConsole->setText(QApplication::translate("MainWindow", "Console...", 0, QApplication::UnicodeUTF8));
+    actionLoad_tree->setText(QApplication::translate("MainWindow", "Load tree...", 0, QApplication::UnicodeUTF8));
+    actionLoad_tree->setToolTip(QApplication::translate("MainWindow", "Loads a tree directly to visualization", 0, QApplication::UnicodeUTF8));
     gldrawer->setToolTip(QApplication::translate("MainWindow", "OpenGL visualization for Lignum", 0, QApplication::UnicodeUTF8));
     gldrawer->setWhatsThis(QApplication::translate("MainWindow", " Visualization for Lignum", 0, QApplication::UnicodeUTF8));
     menuValikko->setTitle(QApplication::translate("MainWindow", "valikko", 0, QApplication::UnicodeUTF8));
+    menuTools->setTitle(QApplication::translate("MainWindow", "Tools", 0, QApplication::UnicodeUTF8));
     menuOptions->setTitle(QApplication::translate("MainWindow", "Options", 0, QApplication::UnicodeUTF8));
     menuFile->setTitle(QApplication::translate("MainWindow", "File", 0, QApplication::UnicodeUTF8));
-    menuTools->setTitle(QApplication::translate("MainWindow", "Tools", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 
 };
