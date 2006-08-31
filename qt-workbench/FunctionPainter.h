@@ -46,6 +46,7 @@ private:
   double xMarginal, yMarginal;
   double xTick, yTick;
   int tickLength;
+  int circleSize;
 };
 
 #endif
