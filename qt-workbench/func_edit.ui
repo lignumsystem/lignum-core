@@ -325,6 +325,7 @@
      <string>File</string>
     </property>
     <addaction name="actionNew" />
+    <addaction name="actionNew_window" />
     <addaction name="actionOpen" />
     <addaction name="separator" />
     <addaction name="actionSave" />
@@ -373,6 +374,11 @@
     <string>New</string>
    </property>
   </action>
+  <action name="actionNew_window" >
+   <property name="text" >
+    <string>New window</string>
+   </property>
+  </action>
  </widget>
  <pixmapfunction></pixmapfunction>
  <customwidgets>
@@ -384,9 +390,7 @@
    <pixmap></pixmap>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="resources.qrc" />
- </resources>
+ <resources/>
  <connections>
   <connection>
    <sender>xtickBox</sender>

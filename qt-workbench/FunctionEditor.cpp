@@ -10,6 +10,7 @@ FunctionEditor::FunctionEditor(QWidget *parent)
   ui.f_painter->setTicks(1, 1);
   
   connect(ui.actionNew, SIGNAL(triggered()), this, SLOT(newFile()));
+  connect(ui.actionNew_window, SIGNAL(triggered()), this, SLOT(newWindow()));
   connect(ui.actionOpen, SIGNAL(triggered()), this, SLOT(openFile()));
   connect(ui.actionSave, SIGNAL(triggered()), this, SLOT(saveFile()));
   connect(ui.actionSave_as, SIGNAL(triggered()), this, SLOT(saveFileAs()));
@@ -142,4 +143,12 @@ void FunctionEditor::closeProgram() {
     }
   }
   close();
+}
+
+// Creates a new editor window.
+void FunctionEditor::newWindow() {
+  FunctionEditor* function_editor = new FunctionEditor();
+  function_editor->show();
+  function_editor->raise();
+  function_editor->activateWindow(); 
 }

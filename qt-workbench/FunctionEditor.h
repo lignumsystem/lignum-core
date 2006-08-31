@@ -13,6 +13,7 @@ public:
 
 private slots:
   void newFile();
+  void newWindow();
   void openFile();
   void updateFunction();
   void saveFile();

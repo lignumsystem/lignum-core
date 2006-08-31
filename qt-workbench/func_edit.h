@@ -26,6 +26,7 @@ public:
     QAction *actionSave;
     QAction *actionSave_as;
     QAction *actionNew;
+    QAction *actionNew_window;
     QWidget *centralwidget;
     QHBoxLayout *hboxLayout;
     QHBoxLayout *hboxLayout1;
@@ -73,6 +74,8 @@ public:
     actionSave_as->setObjectName(QString::fromUtf8("actionSave_as"));
     actionNew = new QAction(FunctionEditor);
     actionNew->setObjectName(QString::fromUtf8("actionNew"));
+    actionNew_window = new QAction(FunctionEditor);
+    actionNew_window->setObjectName(QString::fromUtf8("actionNew_window"));
     centralwidget = new QWidget(FunctionEditor);
     centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
     hboxLayout = new QHBoxLayout(centralwidget);
@@ -280,6 +283,7 @@ public:
 
     menubar->addAction(menuFile->menuAction());
     menuFile->addAction(actionNew);
+    menuFile->addAction(actionNew_window);
     menuFile->addAction(actionOpen);
     menuFile->addSeparator();
     menuFile->addAction(actionSave);
@@ -316,6 +320,7 @@ public:
     actionSave->setText(QApplication::translate("FunctionEditor", "Save", 0, QApplication::UnicodeUTF8));
     actionSave_as->setText(QApplication::translate("FunctionEditor", "Save as...", 0, QApplication::UnicodeUTF8));
     actionNew->setText(QApplication::translate("FunctionEditor", "New", 0, QApplication::UnicodeUTF8));
+    actionNew_window->setText(QApplication::translate("FunctionEditor", "New window", 0, QApplication::UnicodeUTF8));
     f_painter->setToolTip(QApplication::translate("FunctionEditor", "Function painter for Lignum", 0, QApplication::UnicodeUTF8));
     f_painter->setWhatsThis(QApplication::translate("FunctionEditor", " Function painter for Lignum", 0, QApplication::UnicodeUTF8));
     label_6->setText(QApplication::translate("FunctionEditor", "X ticks:", 0, QApplication::UnicodeUTF8));
