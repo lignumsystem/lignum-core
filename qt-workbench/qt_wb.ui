@@ -139,9 +139,16 @@
     <addaction name="actionLoad_tree" />
     <addaction name="actionQuit" />
    </widget>
+   <widget class="QMenu" name="menuHElp" >
+    <property name="title" >
+     <string>Help</string>
+    </property>
+    <addaction name="actionHelp" />
+   </widget>
    <addaction name="menuFile" />
    <addaction name="menuOptions" />
    <addaction name="menuTools" />
+   <addaction name="menuHElp" />
   </widget>
   <widget class="QStatusBar" name="statusbar" />
   <widget class="QToolBar" name="toolBar" >
@@ -242,6 +249,11 @@
     <string>Loads a tree directly to visualization</string>
    </property>
   </action>
+  <action name="actionHelp" >
+   <property name="text" >
+    <string>Help...</string>
+   </property>
+  </action>
  </widget>
  <pixmapfunction></pixmapfunction>
  <customwidgets>
@@ -253,6 +265,8 @@
    <pixmap></pixmap>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="resources.qrc" />
+ </resources>
  <connections/>
 </ui>
