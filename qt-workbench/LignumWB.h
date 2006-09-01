@@ -11,6 +11,7 @@
 #include "FunctionEditor.h"
 #include "XMLViewerWindow.h"
 #include "ConsoleWindow.h"
+#include "HelpDialog.h"
 
 class LignumWB : public QMainWindow
 {
@@ -24,6 +25,7 @@ private:
   XMLViewerWindow *xml_viewer;
   ConsoleWindow *console;
   VisualizationConfig* viz_config;
+  HelpDialog* help_dialog;
   QActionGroup *viewActions;
 
 private slots:
@@ -34,6 +36,7 @@ private slots:
   void functionEditor();
   void setWorkingDirectory();
   void textOutput(QString text);
+  void help();
 };
 
 #endif

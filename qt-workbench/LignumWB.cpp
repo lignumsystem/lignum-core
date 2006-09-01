@@ -1,10 +1,13 @@
 #include "LignumWB.h"
 #include "FunctionEditor.h"
+#include <QMessageBox>
 
 LignumWB::LignumWB(QWidget *parent)
-  : QMainWindow(parent), xml_viewer(NULL), console(NULL), viz_config(NULL)
+  : QMainWindow(parent), xml_viewer(NULL), console(NULL), viz_config(NULL),
+    help_dialog(NULL)
 {
   ui.setupUi(this);
+
   connect(ui.actionQuit, SIGNAL(triggered()), this, SLOT(close()));
   connect(ui.actionLoad_tree, SIGNAL(triggered()), this, SLOT(loadTree()));
   connect(ui.actionVisualization_settings, SIGNAL(triggered()), this, SLOT(options()));
@@ -16,17 +19,20 @@ LignumWB::LignumWB(QWidget *parent)
   connect(ui.actionConsole, SIGNAL(triggered()), this, SLOT(openConsole()));
   connect(ui.actionXML_Viewer, SIGNAL(triggered()), this, SLOT(xmlviewer()));
   connect(ui.actionSwitch_materials, SIGNAL(triggered()), ui.gldrawer, SLOT(switchMaterials()));
+  connect(ui.actionHelp, SIGNAL(triggered()), this, SLOT(help()));
 
+  // QActionGroup takes care of the mutually exclusive
+  // checking of view methods. 
   viewActions = new QActionGroup(this);
   viewActions->addAction(ui.actionFree_roam);
   viewActions->addAction(ui.actionOrbit);
   viewActions->addAction(ui.actionMove_center);
-  ui.actionOrbit->setChecked(true);
-  
   viewActions->setExclusive(true);
+  ui.actionOrbit->setChecked(true);
 
   ui.toolBar->setWindowTitle("Toolbar");
 
+  // Set the XML to have the bottom-right part of the dock area
   setCorner(Qt::TopLeftCorner, Qt::LeftDockWidgetArea);
   setCorner(Qt::BottomLeftCorner, Qt::LeftDockWidgetArea);
   setCorner(Qt::TopRightCorner, Qt::RightDockWidgetArea);
@@ -42,7 +48,6 @@ void LignumWB::loadTree() {
 						  QDir::currentPath(),
 						  "XML-tree files (*.xml)");
   
-  // Should this be implemented with signals & slots?
   if(!fileName.isEmpty()) {
     ui.gldrawer->addTree(fileName);
   }
@@ -87,6 +92,7 @@ void LignumWB::functionEditor() {
   function_editor->activateWindow(); 
 }
 
+// Opens the visualization options dialog.
 void LignumWB::options() {
   if(!viz_config) {
     viz_config = new VisualizationConfig();
@@ -97,85 +103,37 @@ void LignumWB::options() {
   viz_config->show();
   viz_config->raise();
   viz_config->activateWindow(); 
-      
-  /*VisualizationConfig* conf = new VisualizationConfig(this);
-  conf->show();
-  conf->raise();*/
+
 }
 
+
+// Opens the dialog for setting the working directory.
 void LignumWB::setWorkingDirectory() {
   QString directory = QFileDialog::getExistingDirectory(this,
 							"Choose a working directory",
 							QDir::currentPath(),
 							QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
   
-  // Should this be implemented with signals & slots?
   if(!directory.isEmpty() && console != NULL) {
     if(QDir::setCurrent(directory))
-      //ui.textBrowser->append(QString("Working directory changed to ")+QDir::currentPath());
       textOutput(QString("Working directory changed to ")+QDir::currentPath());
     else 
-      //ui.textBrowser->append(QString("Working directory not changed."));*/
       textOutput(QString("Working directory not changed."));
   }
 }
 
-/*void LignumWB::startExternalProgram() {
-  if(externalProgram == NULL) {
-    QStringList text = ui.console->displayText().split(QString(" "));
-    QString program = text.first();
-    text.removeFirst();
-    
-    externalProgram = new QProcess(this);
-    externalProgram->start(program, text);
-    connect(externalProgram, SIGNAL(finished(int, QProcess::ExitStatus)),
-	    this, SLOT(endExternalProgram(int, QProcess::ExitStatus)));
-    connect(externalProgram, SIGNAL(readyReadStandardOutput()),
-	    this, SLOT(addExternalOutput()));
-    connect(externalProgram, SIGNAL(error(QProcess::ProcessError)),
-	    this, SLOT(externalError(QProcess::ProcessError)));
-  }
-  else 
-    ui.textBrowser->append(QString("External program is already running! Wait for it to finish."));
-    }*/
-
-/*void LignumWB::endExternalProgram(int exitCode, QProcess::ExitStatus exitStatus) {
-  clearExternalProgram();
-  delete externalProgram;
-  externalProgram = NULL;
-  if(exitStatus == QProcess::NormalExit)
-    ui.textBrowser->append(QString("External program exited normally."));
-  else
-    ui.textBrowser->append(QString("External program crashed."));
-    }*/
-
-/*void LignumWB::addExternalOutput() {
-  if(externalProgram != NULL)
-    ui.textBrowser->append(QString(externalProgram->readAllStandardOutput()));
-    }*/
-
-/*void LignumWB::externalError(QProcess::ProcessError error) {
-  ui.textBrowser->append(QString("Error running the external program. Exiting(%1).").arg(error));
-  clearExternalProgram();
-  externalProgram = NULL;
-}
-
-void LignumWB::killExternalProgram() {
-  if(externalProgram)
-    externalProgram->kill();
-  //  clearExternalProgram();
-}
-
-void LignumWB::clearExternalProgram() {
-  disconnect(externalProgram, SIGNAL(finished(int, QProcess::ExitStatus)),
-	     this, SLOT(endExternalProgram(int, QProcess::ExitStatus)));
-  disconnect(externalProgram, SIGNAL(readyReadStandardOutput()),
-	     this, SLOT(addExternalOutput()));
-  disconnect(externalProgram, SIGNAL(error(QProcess::ProcessError)),
-	     this, SLOT(externalError(QProcess::ProcessError)));
-
-	     }*/
+// Prints text to the console
 void LignumWB::textOutput(QString text) {
   if(console)
     console->printText(text);
+}
+
+// Shows the help window
+void LignumWB::help() {
+  if(help_dialog == NULL) {
+    help_dialog = new HelpDialog(this);
+  }
+  help_dialog->show();
+  help_dialog->raise();
+  help_dialog->activateWindow(); 
 }
