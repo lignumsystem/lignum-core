@@ -13,6 +13,7 @@
 using namespace std;
 using namespace cxxadt;
 
+// Creates a new nontexturized polygon
 BSPPolygon::BSPPolygon(Point p1, Point p2, Point p3, SceneObject* obj):
   beenDivider(false), p1(p1), p2(p2), p3(p3), object(obj) {
   normal = PositionVector(-1*Cross(PositionVector(p1-p2), PositionVector(p2-p3)));
@@ -20,6 +21,7 @@ BSPPolygon::BSPPolygon(Point p1, Point p2, Point p3, SceneObject* obj):
   distance = -(p1.getX()*normal.getX() + p1.getY()*normal.getY() + p1.getZ()*normal.getZ());
 }
 
+// Creates a new texturized polygon
 BSPPolygon::BSPPolygon(Point p1, Point p2, Point p3, Point t_p1, Point t_p2, Point t_p3, SceneObject* obj):
   beenDivider(false), p1(p1), p2(p2), p3(p3), tp1(t_p1), tp2(t_p2), tp3(t_p3), object(obj) {
   normal = PositionVector(-1*Cross(PositionVector(p1-p2), PositionVector(p2-p3)));
@@ -33,6 +35,11 @@ BSPPolygon::~BSPPolygon() {
 
 // Splits a triangle polygon to a three smaller polygons based on the dividing polygon.
 void BSPPolygon::split(BSPPolygon& divider, BSPPolygonSet *front, BSPPolygonSet *back)  {
+  // Determine the side of the each point in the polygon to be splitted
+  // in relation to the plane defined by the dividing polygon.
+  // Because both polygons are triangles two point always lie in same side, and
+  // the third is on the other side. This way we must treat six different cases
+  // differently.
   const double sideA = divider.classifyPoint(p1);
   const double sideB = divider.classifyPoint(p2);
   const double sideC = divider.classifyPoint(p3);
@@ -242,31 +249,35 @@ void BSPPolygon::drawPolygon() const {
   }
 }
 
-void BSPPolygon::nextVertice() const {
-  glNormal3f(normal.getX(), normal.getY(), normal.getZ());
-  glTexCoord2f(tp3.getX(), tp3.getY());  glVertex3f(p3.getX(), p3.getY(), p3.getZ());
-}
-
+// Is the polygon transparent. 
 bool BSPPolygon::isTransparent() const {
   return object->isTransparent();
 }
 
+// Has the polygon been a dividing polygon in a
+// BSP-tree.
 bool BSPPolygon::hasBeenDivider() const {
   return beenDivider;
 }
 
+// Tell that the polygon has been a divider.
 void BSPPolygon::setDivider() {
   beenDivider = true;
 }
 
+// Returns the SceneObject-id of the polygon.
 int BSPPolygon::getObjectId() const {
   return object->getId();
 }
 
+// Returns pointer to the SceneObject which contains
+// the polygon.
 SceneObject* BSPPolygon::getSceneObject() const{
   return object;
 }
 
+// Relational operator used when sorting the polygons by
+// their SceneObject-ids.
 inline bool operator < (const BSPPolygon& polygon1, const BSPPolygon& polygon2) {
   if(polygon1.object->getId() <= polygon2.object->getId())
     return true;
@@ -311,13 +322,8 @@ void BSPPolygonSet::addPolygon(BSPPolygon *polygon) {
 
 
 void BSPPolygonSet::addPolygons(BSPPolygonSet* polys) {
-  //cout << "size:" << polys->size() << endl;
-  /*  while(!polys->isEmpty()) {
-    addPolygon(polys->getPolygon());
-    }*/
   polygons.insert(polygons.end(), polys->polygons.begin(), polys->polygons.end());
   polys->polygons.clear();
-  //cout << "size:" << polys->size() << endl;
 }
 
 BSPPolygon* BSPPolygonSet::getPolygon() {
@@ -338,11 +344,6 @@ void BSPPolygonSet::getOpaquePolygons(BSPPolygonSet* polys) {
 }
 
 BSPPolygon* BSPPolygonSet::chooseDivider() {
-  // IMPLEMENT BETTER CHOOSING OF THE DIVIDING POLYGON
-  //BSPPolygon* poly = getPolygon();
-  //poly->setDivider();
-  //return poly;
-  
   if(isConvexSet()) {
     return NULL;
   }
@@ -452,17 +453,6 @@ void BSPPolygonSet::drawPolygons() {
 	     i = polygons.erase(i);
 	   }
 
-	   /*glBegin(GL_TRIANGLE_STRIP);
-	   (**i).drawPolygon();
-	   i++;
-	   while(i != polygons.end() && current_id == (**i).getObjectId()) {
-	     (**i).nextVertice();
-	     if(!(**i).hasBeenDivider())
-	       delete (*i);
-	     polygons.erase(i);
-	     i++;
-	     }*/
-	     
 	   i--;
 	   glEnd();
 	   glEndList();
@@ -497,60 +487,3 @@ list<BSPPolygon*>& BSPPolygonSet::getPolygons() {
   return polygons;
 }
 
-void BSPPolygonSet::removeHiddenPolygons(list<CylinderVolume>* cylinders) {
-  //  cout << "cylinders: " << cylinders->size() << endl;
-  int count = 0;
-  int size = polygons.size();
-  int numBorder, numInside;
-  int t_i = 0;
-  int t_b = 0;
-  int t_o = 0;
-  bool deleted, isOutside;
-  list<BSPPolygon*>::iterator i = polygons.begin();
-  while(i != polygons.end()) {
-    //  for (list<BSPPolygon*>::iterator i = polygons.begin(); i != polygons.end(); i++) {
-    deleted = false;
-    vector<Point> vertices = (**i).getVertices();
-    count++;
-    for (list<CylinderVolume>::iterator j = cylinders->begin(); j != cylinders->end(); j++) {
-      numInside = numBorder = 0;
-      isOutside = false;
-      for(int k = 0; k < vertices.size(); k++) {
-	int result = (*j).isPointInside(vertices[k]);
-	if(result == -1) {
-	  isOutside = true;
-	  t_o++;
-	  break;
-	}
-	else if(result == 1) {
-	  numInside++;
-	  t_i++;
-	}
-	else if(result == 0) {
-	  numBorder++;
-	  t_b++;
-	}
-      }
-      if(!isOutside && numInside > 0) {
-	//if(!isOutside && numBorder == 0) {
-	//cout << "DELETED!" << endl;
-	if(!(**i).hasBeenDivider()) 
-	  delete (*i);
-	i = polygons.erase(i);
-	//	cout << "DELETE ENDS!" << endl;
-	//i++;
-	deleted = true;
-	break;
-      }
-    }
-    if(deleted)
-      continue;
-    else
-      i++;
-  }
-  //cout << "total outside: " << t_o << endl;
-  //cout << "total inside: " << t_i << endl;
-  //cout << "total border: " << t_b << endl;
-  if(count != size)
-    cout << "ERROR" << endl;
-}

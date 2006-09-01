@@ -4,11 +4,13 @@
 #include <QMessageBox>
 #include <QTextStream>
 
+// Creates a new function editor.
 FunctionEditor::FunctionEditor(QWidget *parent) 
   : QMainWindow(parent), fileSaved(false) {
   ui.setupUi(this);
   ui.f_painter->setTicks(1, 1);
   
+  // Connecting signals
   connect(ui.actionNew, SIGNAL(triggered()), this, SLOT(newFile()));
   connect(ui.actionNew_window, SIGNAL(triggered()), this, SLOT(newWindow()));
   connect(ui.actionOpen, SIGNAL(triggered()), this, SLOT(openFile()));
@@ -17,11 +19,14 @@ FunctionEditor::FunctionEditor(QWidget *parent)
   connect(ui.actionQuit, SIGNAL(triggered()), this, SLOT(closeProgram()));
   connect(ui.textEdit, SIGNAL(textChanged()), this, SLOT(updateFunction()));
 
+  // Clear memory when the window is closed
   setAttribute(Qt::WA_DeleteOnClose);
 
   setWindowName();
 }
 
+// Starts a blank file and asks whether to save the existing file first,
+// if there is need to do so.
 void FunctionEditor::newFile() {
   if(!ui.textEdit->toPlainText().isEmpty() && !fileSaved) {
     int message = QMessageBox::question(this,
@@ -46,6 +51,8 @@ void FunctionEditor::newFile() {
 
 }
 
+// Opens a new file to the editor. Pops a dialog where the user selects the
+// file to open.
 void FunctionEditor::openFile() {
   if(!ui.textEdit->toPlainText().isEmpty() && !fileSaved) {
     int message = QMessageBox::question(this,
@@ -80,7 +87,9 @@ void FunctionEditor::openFile() {
   }
 }
 
+// Saves the current file in the editor.
 void FunctionEditor::saveFile() {
+  // If the file name is specified
   if(!fileName.isEmpty()) {
     QFile file(fileName);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
@@ -91,30 +100,34 @@ void FunctionEditor::saveFile() {
     fileSaved = true;
     setWindowName();
   }
+  // If the file name is not specified
   else 
     saveFileAs();
 }
 
+// Asks the user a name for the file to be saved.
 void FunctionEditor::saveFileAs() {
   fileName = QFileDialog::getSaveFileName(this,
 					  "Choose a filename to save under",
 					  QDir::currentPath(),
 					  "Function files  (*.*)");
   if(!fileName.isEmpty()) {
-    /*    if(!fileName.endsWith(".fun"))
-	  fileName.append(".fun");*/
     saveFile();
   }
+  // Do nothing if the user didn't specify a file name
 }
 
+// Updates the painter
 void FunctionEditor::updateFunction() {
   ui.f_painter->changeFunction(ui.textEdit->toPlainText());
   fileSaved = false;
   setWindowName();
-  //f_painter->setView(-5, -5, 5, 5);
 }
 
+//  Sets the title for the window according to the file name
+//  of the file currently opened.
 void FunctionEditor::setWindowName() {
+  // File name not specified
   if(fileName.isEmpty()) {
     setWindowTitle(QString("Function Editor - *untitled*"));
   }
@@ -126,6 +139,8 @@ void FunctionEditor::setWindowName() {
   }
 }
 
+// Closes the window. Asks the user whether to save changes before
+// quitting.
 void FunctionEditor::closeProgram() {
   if(!ui.textEdit->toPlainText().isEmpty() && !fileSaved) {
     int message = QMessageBox::question(this,

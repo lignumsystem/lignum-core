@@ -17,16 +17,13 @@ class GLDrawer : public QGLWidget
   
 public: 
   GLDrawer(QWidget* parent = 0);
-  BSPPolygonSet* makeSquare(double height, double width, Point point, PositionVector direction, BSPPolygonMaterial* material, int texture, int detail = 10);
   int loadTexture(std::string fileName);
-
   void mousePressEvent(QMouseEvent* event);
-  //void mouseReleaseEvent(QMouseEvent* event);
   void mouseMoveEvent(QMouseEvent* event);
   void keyPressEvent(QKeyEvent* event);
-  //  void keyReleaseEvent(QKeyEvent* event);
   VisualizationParameters getParameters() const;
 
+  // Public materials
   BSPPolygonMaterial *green;
   BSPPolygonMaterial *red;
   BSPPolygonMaterial *white;
@@ -60,7 +57,6 @@ public slots:
   void resetVisualization();
   void resetVisualization(QList<QString> files);
   void addTree(QString fileName);
-  void setTreeFile(QString fileName);
   void setCylinderRDetail(int detail);
   void setCylinderHDetail(int detail);
   bool setCylinderTexture(QString fileName);
@@ -98,6 +94,7 @@ private:
   GLfloat   camera_x, camera_y, camera_z;      // Position of camera
   GLfloat   cam_rot_x, cam_rot_y, cam_rot_z;   // Rotation of camera
   GLfloat   cam_mov_speed, cam_rot_speed;      // Movement and rotation speed of camera
+  double    m_look_speed;
   GLfloat   distance;
   GLfloat   tree_trans_x, tree_trans_y, tree_trans_z; 
   PositionVector r_axis;                       // Root axis of central tree in visualization
@@ -105,22 +102,18 @@ private:
   double t_height;                             // Height of the tallest tree 
   GLfloat t_rot_y;
   GLfloat t_rot_x;
+  bool      settingsChanged;
+  bool      useSecondaryMaterials;
+  int       control_mode;
 
   GLfloat   DEGTORAD;                          // Conversion coefficient from degrees to radians
-  //  static const GLfloat PI = 3.14159265;  
   GLfloat   PI;                                // PI
-  //BSPTree   *tree;                             // BSP-tree object
-  /*bool      wire;                              // Is wireframe on
-  bool      lights_on;                         // Are lights on
-  bool      use_textures;                      // Are textures used
-  int       tex1;   */
+
   QPoint    m_last_pos;
-  double    m_look_speed;
-  QString   tree_file;
+
+  //QString   tree_file;
   VisualizationParameters parameters;          // Parameters of the visualization
   QHash<QString, int> textures;
-  bool      settingsChanged;
-  int       control_mode;
   enum { MOUSE_LOOK, MOVE_TREE, ORBIT };
 
   BSPLoaderThread thread;

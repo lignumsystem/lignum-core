@@ -101,6 +101,7 @@ void BSPTree::buildBSPTree(BSPPolygonSet& polys) {
     back = new BSPTree();
     back->buildBSPTree(back_polygons);
   }
+
 }
 
 // Adds new polygons to a existing BSP-tree. If some of the inserted

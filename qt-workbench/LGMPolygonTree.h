@@ -2,7 +2,6 @@
 #define LGMPOLYGONTREE_H
 class Ellipse;
 #include <list>
-#include "CylinderVolume.h"
 //#include <GLDrawer.h>
 #include <BSPPolygon.h>
 #include <BSPPolygonMaterial.h>
@@ -252,14 +251,18 @@ template <class TS, class BUD, class S>
   //double tex_start = rand()/(double)RAND_MAX;
   
   PositionVector v1, v2, v3, v4;
-  sine_next = radius*sin(0*2.0*PI/r_detail);
-  cosine_next = radius*cos(0*2.0*PI/r_detail);
+  double PI2_PER_DETAIL = 2.0*PI/r_detail;
+  double TEXL_PER_DETAIL = tex_length/(double)r_detail;
+  sine_next = radius*sin(0*PI2_PER_DETAIL);
+  cosine_next = radius*cos(0*PI2_PER_DETAIL);
 
   for(int i = 0; i < r_detail; i++) {
     sine = sine_next;
     cosine = cosine_next;
-    sine_next = radius*sin((i+1)*2.0*PI/r_detail);
-    cosine_next = radius*cos((i+1)*2.0*PI/r_detail);
+    sine_next = radius*sin((i+1)*PI2_PER_DETAIL);
+    cosine_next = radius*cos((i+1)*PI2_PER_DETAIL);
+    double temp1 = TEXL_PER_DETAIL*i;
+    double temp2 = TEXL_PER_DETAIL*(i+1);
 
     for(int j = 0; j < y_detail; j++) {
       y = j / (double)y_detail * height;
@@ -275,9 +278,9 @@ template <class TS, class BUD, class S>
       polygons->addPolygon(new BSPPolygon(Point(v1)+point,
 					  Point(v2)+point,
 					  Point(v3)+point,
-					  Point(tex_length*i/(double)r_detail, y/height, 0),
-					  Point(tex_length*i/(double)r_detail, y_next/height, 0),
-					  Point(tex_length*(i+1)/(double)r_detail, y/height, 0),
+					  Point(temp1, y/height, 0),
+					  Point(temp1, y_next/height, 0),
+					  Point(temp2, y/height, 0),
 					  object));
       
       v1 = PositionVector(sine_next, y, cosine_next);
@@ -290,9 +293,9 @@ template <class TS, class BUD, class S>
       polygons->addPolygon(new BSPPolygon(Point(v1)+point,
 					  Point(v2)+point,
 					  Point(v3)+point,
-					  Point(tex_length*(i+1)/(double)r_detail, y/height, 0),
-					  Point(tex_length*i/(double)r_detail, y_next/height, 0),
-					  Point(tex_length*(i+1)/(double)r_detail, y_next/height, 0),
+					  Point(temp2, y/height, 0),
+					  Point(temp1, y_next/height, 0),
+					  Point(temp2, y_next/height, 0),
 					  object));
     }
   
@@ -335,15 +338,13 @@ template <class TS, class BUD, class S>
 BSPPolygonSet* PolygonTreeBuilder<TS,BUD,S>::makeFoliage(double radius, double height, Point point, PositionVector direction,
 							   int f_detail, int s_detail, double fmass, double spacing, SceneObject* object) const {
   BSPPolygonSet* polygons = new BSPPolygonSet();
+  if(f_detail == 0 || s_detail == 0)
+    return polygons;
+
   double sine, cosine, sine_next, cosine_next;
   double y, y_next;
   double PI = 3.14159265;
-  //  double factor = 10;
-  //double needle_length = 0.05;
   double needle_length = 11*fmass;
-  //double NEEDLE_AREA = 0.00015;
-  //double amount = 0.23 * fmass * 28.6 / NEEDLE_AREA;
-  //int amount2 = static_cast<int>(fmass / 0.0000035);
 
   LGMdouble tex_len = 0.1;
   LGMdouble tex_per_plane = height / tex_len;
@@ -352,10 +353,7 @@ BSPPolygonSet* PolygonTreeBuilder<TS,BUD,S>::makeFoliage(double radius, double h
   int needles_per_plane = static_cast<int>(tex_per_plane * needles_per_tex);
   if (needles_per_plane == 0)
     return polygons;
-  //int directions = static_cast<int>(amount2 / needles_per_plane);
 
-  if(f_detail == 0)
-    return polygons;
 
   int y_detail = (int)(height/spacing);
   
@@ -369,14 +367,16 @@ BSPPolygonSet* PolygonTreeBuilder<TS,BUD,S>::makeFoliage(double radius, double h
 
   Point p1(radius*sin(0.0), radius*cos(0.0), 0);
   Point p2(radius*sin(1.0/s_detail*2*PI), radius*cos(1.0/s_detail*2*PI), 0);
-  radius = PositionVector(0.5*(p1+p2)).length(); 
+  radius = PositionVector(0.5*(p1+p2)).length();
+
+  double PI2_PER_FDETAIL = 2*PI/(double)f_detail;
   for(int j = 0; j < y_detail; j++) {
     y = j/(double)y_detail*height;
     y_next = (j+1)/(double)y_detail*height;
 
     for(int i = 0; i < f_detail; i++) {
-      sine = radius*sin(i/(double)f_detail*2*PI);
-      cosine = radius*cos(i/(double)f_detail*2*PI);
+      sine = radius*sin(i/PI2_PER_FDETAIL);
+      cosine = radius*cos(i/PI2_PER_FDETAIL);
       sine_next = sine*(needle_length+radius)/radius;
       cosine_next = cosine*(needle_length+radius)/radius;
 
@@ -514,6 +514,7 @@ template <class TS, class BUD, class S>
 					Point(0, 1, 0), Point(1, 1, 0), Point(1, 0, 0), object));    
     return polygons;
   }
+  // If textures are not used
   else {
     vector<Point> vertices;
     vertices = ellipse->getVertexVector(vertices, detail);
@@ -558,6 +559,7 @@ BSPPolygonSet* PolygonTreeBuilder<TS,BUD,S>::makeBud(Point point, PositionVector
     dir = PositionVector(1,0,0);
   
   Point origo(0,0,0);
+  double PI2_PER_LODETAIL = 2 * PI / lo_detail;
   for (i = 0; i < la_detail; i++) {
     double lat0 = PI * (-0.5 + (double) i / la_detail);
     double z0 = sin(lat0);
@@ -567,8 +569,8 @@ BSPPolygonSet* PolygonTreeBuilder<TS,BUD,S>::makeBud(Point point, PositionVector
     double z1 = sin(lat1);
     double zr1 = cos(lat1);
     for (j = 0; j < lo_detail; j++) {
-      double lng1 = 2 * PI * (double) j / lo_detail;
-      double lng2 = 2 * PI * (double) (j + 1) / lo_detail;
+      double lng1 = PI2_PER_LODETAIL * (double)j;
+      double lng2 = PI2_PER_LODETAIL * (double)(j + 1);
       double x1 = cos(lng1);
       double y1 = sin(lng1);
 

@@ -29,6 +29,7 @@ public:
     QAction *actionSwitch_materials;
     QAction *actionConsole;
     QAction *actionLoad_tree;
+    QAction *actionHelp;
     QWidget *centralwidget;
     QHBoxLayout *hboxLayout;
     QHBoxLayout *hboxLayout1;
@@ -44,6 +45,7 @@ public:
     QMenu *menuTools;
     QMenu *menuOptions;
     QMenu *menuFile;
+    QMenu *menuHElp;
     QStatusBar *statusbar;
     QToolBar *toolBar;
 
@@ -81,6 +83,8 @@ public:
     actionConsole->setObjectName(QString::fromUtf8("actionConsole"));
     actionLoad_tree = new QAction(MainWindow);
     actionLoad_tree->setObjectName(QString::fromUtf8("actionLoad_tree"));
+    actionHelp = new QAction(MainWindow);
+    actionHelp->setObjectName(QString::fromUtf8("actionHelp"));
     centralwidget = new QWidget(MainWindow);
     centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
     hboxLayout = new QHBoxLayout(centralwidget);
@@ -149,6 +153,8 @@ public:
     menuOptions->setObjectName(QString::fromUtf8("menuOptions"));
     menuFile = new QMenu(menubar);
     menuFile->setObjectName(QString::fromUtf8("menuFile"));
+    menuHElp = new QMenu(menubar);
+    menuHElp->setObjectName(QString::fromUtf8("menuHElp"));
     MainWindow->setMenuBar(menubar);
     statusbar = new QStatusBar(MainWindow);
     statusbar->setObjectName(QString::fromUtf8("statusbar"));
@@ -161,6 +167,7 @@ public:
     menubar->addAction(menuFile->menuAction());
     menubar->addAction(menuOptions->menuAction());
     menubar->addAction(menuTools->menuAction());
+    menubar->addAction(menuHElp->menuAction());
     menuTools->addAction(actionConsole);
     menuTools->addAction(actionXML_Viewer);
     menuTools->addAction(actionFunction_editor);
@@ -168,6 +175,7 @@ public:
     menuOptions->addAction(actionWorking_directory);
     menuFile->addAction(actionLoad_tree);
     menuFile->addAction(actionQuit);
+    menuHElp->addAction(actionHelp);
     toolBar->addAction(actionOrbit);
     toolBar->addAction(actionMove_center);
     toolBar->addAction(actionFree_roam);
@@ -195,12 +203,14 @@ public:
     actionConsole->setText(QApplication::translate("MainWindow", "Console...", 0, QApplication::UnicodeUTF8));
     actionLoad_tree->setText(QApplication::translate("MainWindow", "Load tree...", 0, QApplication::UnicodeUTF8));
     actionLoad_tree->setToolTip(QApplication::translate("MainWindow", "Loads a tree directly to visualization", 0, QApplication::UnicodeUTF8));
+    actionHelp->setText(QApplication::translate("MainWindow", "Help...", 0, QApplication::UnicodeUTF8));
     gldrawer->setToolTip(QApplication::translate("MainWindow", "OpenGL visualization for Lignum", 0, QApplication::UnicodeUTF8));
     gldrawer->setWhatsThis(QApplication::translate("MainWindow", " Visualization for Lignum", 0, QApplication::UnicodeUTF8));
     menuValikko->setTitle(QApplication::translate("MainWindow", "valikko", 0, QApplication::UnicodeUTF8));
     menuTools->setTitle(QApplication::translate("MainWindow", "Tools", 0, QApplication::UnicodeUTF8));
     menuOptions->setTitle(QApplication::translate("MainWindow", "Options", 0, QApplication::UnicodeUTF8));
     menuFile->setTitle(QApplication::translate("MainWindow", "File", 0, QApplication::UnicodeUTF8));
+    menuHElp->setTitle(QApplication::translate("MainWindow", "Help", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 
 };

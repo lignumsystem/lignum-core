@@ -7,18 +7,19 @@
 #include <XMLTree.h>
 #include <Point.h>
 #include <PositionVector.h>
-//#include <LGMPolygonTree.h>
 #include <LGMPolygonDomBuilder.h>
 #include <QProgressDialog>
 
 using namespace cxxadt;
 
+// Creates a new loader thread.
 BSPLoaderThread::BSPLoaderThread(QObject *parent)
   : QThread(parent)
 {
   abort = false;
 }
 
+// Destructor for the thread.
 BSPLoaderThread::~BSPLoaderThread()
 {
   mutex.lock();
@@ -29,7 +30,10 @@ BSPLoaderThread::~BSPLoaderThread()
   wait();
 }
 
-
+// Loads trees for visualization. Stores
+// the names of the files to be loaded and
+// and visualization parameters, and awakes the 
+// thread, if it were sleeping.
 void BSPLoaderThread::loadTrees(QList<QString> files, VisualizationParameters parameters) 
 {
 
@@ -46,9 +50,12 @@ void BSPLoaderThread::loadTrees(QList<QString> files, VisualizationParameters pa
 
 }
 
+// Function, where all the actual job is done.
 void BSPLoaderThread::run()
 {
   forever {
+    // loadTrees-function also access these members
+    // (from the main thread), so protection is needed.
     mutex.lock();
     QList<QString> files = this->files;
     VisualizationParameters parameters = this->parameters;
@@ -86,78 +93,8 @@ void BSPLoaderThread::run()
       t_point = builder.getPoint(doc);
       t_height = builder.getHeight(doc);
       r_axis = r_axis.normalize();
-      r_axis = PositionVector(r_axis.getX(), r_axis.getZ(), -r_axis.getY());
-      t_point = Point(t_point.getX(), t_point.getZ(), -t_point.getY());
-
-      /*      XMLDomTreeReader<GenericCfTreeSegment, GenericCfBud> cf_reader;
-      
-      int treeType = cf_reader.treeType(doc);
-      if(treeType == XMLDomTreeReader<GenericCfTreeSegment, GenericCfBud>::Cf) {
-	Tree<GenericCfTreeSegment, GenericCfBud> cftree(Point(0,0,0), PositionVector(0,1,0));
-	cf_reader.readXMLToTree(cftree, doc);
-	
-	LGMPolygonTree<GenericCfTreeSegment, GenericCfBud> constructor;
-	BSPPolygonSet* treePolygons = constructor.buildTree(cftree, parameters,
-							    cf_reader.getTreeCompartmentHash(),
-							    cf_reader.getLeafHash());
-	polygons.addPolygons(treePolygons);
-	delete treePolygons;
-	sceneObjects->insert(fileName, constructor.getSceneObjects());
-	
-	r_axis = GetDirection(GetRootAxis(cftree));
-	t_point = GetPoint(cftree);
-	t_height = GetValue(cftree, LGAH);
-	r_axis = r_axis.normalize();
-	r_axis = PositionVector(r_axis.getX(), r_axis.getZ(), -r_axis.getY());
-	t_point = Point(t_point.getX(), t_point.getZ(), -t_point.getY());
-      }
-      else {
-	int leafType = cf_reader.leafType(doc);
-	
-	if(leafType == XMLDomTreeReader<GenericCfTreeSegment, GenericCfBud>::Cf) {
-	  XMLDomTreeReader<GenericHwTriangleTreeSegment, GenericHwTriangleBud, Triangle> hwt_reader;	
-	  Tree<GenericHwTriangleTreeSegment, GenericHwTriangleBud> hwtree(Point(0,0,0), PositionVector(0,1,0));
-	  hwt_reader.readXMLToTree(hwtree, doc);
-	  
-	  LGMPolygonTree<GenericHwTriangleTreeSegment, GenericHwTriangleBud, Triangle> constructor;
-	  BSPPolygonSet* treePolygons = constructor.buildTree(hwtree, parameters,
-							      hwt_reader.getTreeCompartmentHash(),
-							      hwt_reader.getLeafHash());
-	  polygons.addPolygons(treePolygons);
-	  delete treePolygons;
-	  sceneObjects->insert(fileName, constructor.getSceneObjects());
-	  
-	  r_axis = GetDirection(GetRootAxis(hwtree));
-	  t_point = GetPoint(hwtree);
-	  t_height = GetValue(hwtree, LGAH);
-	  r_axis = r_axis.normalize();
-	  r_axis = PositionVector(r_axis.getX(), r_axis.getZ(), -r_axis.getY());
-	  t_point = Point(t_point.getX(), t_point.getZ(), -t_point.getY());
-	}
-	else if(leafType == XMLDomTreeReader<GenericCfTreeSegment, GenericCfBud>::ELLIPSE) {
-	  XMLDomTreeReader<GenericHwEllipseTreeSegment, GenericHwEllipseBud, cxxadt::Ellipse> hwt_reader;
-	  
-	  Tree<GenericHwEllipseTreeSegment, GenericHwEllipseBud> hwtree(Point(0,0,0), PositionVector(0,1,0));
-	  hwt_reader.readXMLToTree(hwtree, doc);
-	  
-	  
-	  LGMPolygonTree<GenericHwEllipseTreeSegment, GenericHwEllipseBud, cxxadt::Ellipse> constructor;
-	  BSPPolygonSet* treePolygons = constructor.buildTree(hwtree, parameters,
-							      hwt_reader.getTreeCompartmentHash(),
-							      hwt_reader.getLeafHash());
-	  
-	  polygons.addPolygons(treePolygons);
-	  delete treePolygons;
-	  sceneObjects->insert(fileName, constructor.getSceneObjects());
-	  
-	  r_axis = GetDirection(GetRootAxis(hwtree));
-	  t_point = GetPoint(hwtree);
-	  t_height = GetValue(hwtree, LGAH);
-	  r_axis = r_axis.normalize();
-	  r_axis = PositionVector(r_axis.getX(), r_axis.getZ(), -r_axis.getY());
-	  t_point = Point(t_point.getX(), t_point.getZ(), -t_point.getY());
-	}
-	}*/
+      r_axis = PositionVector(-r_axis.getX(), r_axis.getZ(), -r_axis.getY());
+      t_point = Point(-t_point.getX(), t_point.getZ(), -t_point.getY());
     }
     
     tree->buildBSPTree(polygons);
@@ -165,6 +102,7 @@ void BSPLoaderThread::run()
     emit treesLoaded(tree, t_point, r_axis, t_height, sceneObjects);
     emit workFinished();
     
+    // Put the thread to sleep.
     mutex.lock();
     condition.wait(&mutex);
     mutex.unlock();

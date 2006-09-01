@@ -206,6 +206,7 @@ void FunctionPainter::paintEvent(QPaintEvent *event) {
 
 }
 
+// Sets the viewing area of the painter.
 void FunctionPainter::setView(double minX, double minY, double maxX, double maxY) {
   if(minX <= maxX) {
     minXValue = minX;
@@ -225,6 +226,7 @@ void FunctionPainter::setView(double minX, double minY, double maxX, double maxY
   update();
 }
 
+// Sets the spacing of ticks around the axes.
 void FunctionPainter::setTicks(double width, double height) {
   xTick = width;
   yTick = height;

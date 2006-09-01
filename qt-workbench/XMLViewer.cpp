@@ -13,13 +13,16 @@ XMLViewer::XMLViewer(QWidget *parent)
   QStringList labels;
   labels << "Component/Attribute" << "Value";
   
-  header()->setResizeMode(QHeaderView::Stretch);
+  //  header()->setResizeMode(QHeaderView::Stretch);
   setHeaderLabels(labels);
  
   setSelectionMode(QAbstractItemView::ExtendedSelection);
   
   connect(this, SIGNAL(itemSelectionChanged()), this, SLOT(selectSceneObjects()));
   connect(this, SIGNAL(itemSelectionChanged()), this, SLOT(setFocus()));
+
+  header()->setResizeMode(0,QHeaderView::Interactive);
+  header()->setResizeMode(1,QHeaderView::Interactive);
 }
 
 bool XMLViewer::addTree(QString fileName) 
@@ -127,8 +130,7 @@ void XMLViewer::parseAttributeElement(const QDomElement &element, QString *fileN
   QDomElement child = element.firstChildElement();
   while(!child.isNull()) {
     QTreeWidgetItem *childItem = createItem(child, fileName, item);
-    QString childName = child.tagName();
-    childItem->setText(0, childName);
+    childItem->setText(0, child.tagName());
     childItem->setText(1, child.text());
     
     child = child.nextSiblingElement();

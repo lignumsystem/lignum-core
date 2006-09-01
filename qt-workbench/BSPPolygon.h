@@ -7,7 +7,6 @@
 #include <vector>
 #include <QtOpenGL>
 #include <SceneObject.h>
-#include <CylinderVolume.h>
 
 using namespace std;
 using namespace cxxadt;
@@ -16,40 +15,6 @@ class SceneObject;
 class SceneObjectComponent;
 
 class BSPPolygonSet;
-
-/*class BSPPolygon {
-  public :
-  BSPPolygon(vector<Point> points, SceneObject* object);
-  BSPPolygon(vector<Point> points, vector<Point> texturePoints, SceneObject* object);
-   ~BSPPolygon();
-  void          split(BSPPolygon& divider, BSPPolygonSet *front, BSPPolygonSet *back) ;
-  double        classifyPoint(const Point& point) const;
-  bool          infront(const BSPPolygon& polygon) const;
-  int           calculateSide(const BSPPolygon& polygon) const;
-  void          drawPolygon() const;
-  void          setDivider();
-  bool          hasBeenDivider() const;
-  int           getObjectId() const;
-  SceneObject*  getSceneObject() const;
-  vector<Point> getVertices()const;
-  bool         isTransparent() const;
-  //Point        getCenter() const;
-  inline friend bool operator < (const BSPPolygon& polygon1, const BSPPolygon& polygon2);
-
-  enum {COINCIDING, BEHIND, INFRONT, SPANNING};
-  //static const double EPSILON = 0.0001;
-  //  static int last_material;  
-private:
-  bool beenDivider;
-  vector<Point> vertices;
-  vector<Point> t_vertices;
-  PositionVector normal;
-  //BSPPolygonMaterial* material;
-  SceneObject* object;
-  double distance;
-
-};*/
-
 
 class BSPPolygon {
 public :
@@ -61,25 +26,20 @@ public :
   bool         infront(const BSPPolygon& polygon) const;
   int          calculateSide(const BSPPolygon& polygon) const;
   void         drawPolygon() const;
-  void         nextVertice() const;
   void         setDivider();
   bool         hasBeenDivider() const;
   int          getObjectId() const;
   SceneObject* getSceneObject() const;
   vector<Point> getVertices() const;
   bool         isTransparent() const;
-  //  Point        getCenter() const;
   inline friend bool operator < (const BSPPolygon& polygon1, const BSPPolygon& polygon2);
 
   enum {COINCIDING, BEHIND, INFRONT, SPANNING};
-  //static const double EPSILON = 0.0001;
-  //  static int last_material;  
 private:
   bool beenDivider;
   Point p1, p2, p3;
   Point tp1, tp2, tp3;
   PositionVector normal;
-  //BSPPolygonMaterial* material;
   SceneObject* object;
   double distance;
 };
@@ -103,7 +63,6 @@ public:
   int                componentCount() const;
   void               sort();
   list<BSPPolygon*>& getPolygons();
-  void               removeHiddenPolygons(list<CylinderVolume>* cylinders);
   void               getOpaquePolygons(BSPPolygonSet* polys);
   
   //static const int infinity = 1000000000;

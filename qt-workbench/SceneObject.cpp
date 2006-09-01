@@ -5,6 +5,7 @@
 
 using namespace std;
 
+// Creates a new SceneObject without a texture-id.
 SceneObject::SceneObject(BSPPolygonMaterial* mat, int s_id, bool transp)
   : component_count(0), selection_id(s_id), texture_id(0), transparent(transp),
     use_secondary_mat(false), material(mat), s_material(NULL), backup(NULL) {
@@ -12,6 +13,7 @@ SceneObject::SceneObject(BSPPolygonMaterial* mat, int s_id, bool transp)
   id = n_objects;
 }
 
+// Creates a new SceneObject with a texture-id.
 SceneObject::SceneObject(BSPPolygonMaterial* mat, int s_id, int t_id, bool transp) 
   : component_count(0), selection_id(s_id), texture_id(t_id), transparent(transp),
     use_secondary_mat(false), material(mat), s_material(NULL), backup(NULL) {
@@ -19,6 +21,8 @@ SceneObject::SceneObject(BSPPolygonMaterial* mat, int s_id, int t_id, bool trans
   id = n_objects;
 }
 
+// Creates a new SceneObject with a secondary material, but without a
+// texture-id.
 SceneObject::SceneObject(BSPPolygonMaterial* mat, BSPPolygonMaterial *s_mat,
 			 int s_id, bool transp)
   : component_count(0), selection_id(s_id), texture_id(0),
@@ -28,6 +32,7 @@ SceneObject::SceneObject(BSPPolygonMaterial* mat, BSPPolygonMaterial *s_mat,
   id = n_objects;
 }
 
+// Creates a new SceneObject with a secondary material and a texture-id.
 SceneObject::SceneObject(BSPPolygonMaterial* mat, BSPPolygonMaterial *s_mat,
 			 int s_id, int t_id, bool transp) 
   : component_count(0), selection_id(s_id), texture_id(t_id),
@@ -37,18 +42,25 @@ SceneObject::SceneObject(BSPPolygonMaterial* mat, BSPPolygonMaterial *s_mat,
   id = n_objects;
 }
 
+// Returns the integer id of the object.
 int SceneObject::getId() const{
   return id;
 }
 
+// Returns the integer id of the material.
 int SceneObject::getMaterialId() const{
   return material->getId();
 }
 
+// Returns the id for selection.
 int SceneObject::getSelectionId() const {
   return selection_id;
 }
 
+// Sets the material of the object. Static
+// variables are used to avoid setting
+// the same material and texture many times in
+// a row.
 void SceneObject::setMaterial() const{
   static int last_material = -1;
   int id = material->getId();
@@ -75,12 +87,6 @@ void SceneObject::setMaterial() const{
     last_texture = texture_id;
   }
   
-  /*if(texture_id != 0 && texture_id != last_texture) {
-    //glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, texture_id);
-    last_texture = texture_id;
-    }*/
-
 }
 
 int SceneObject::getComponentCount() const{

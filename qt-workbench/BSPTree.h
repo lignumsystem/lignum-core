@@ -3,7 +3,6 @@
 
 #include <BSPPolygon.h>
 #include <Point.h>
-#include <CylinderVolume.h>
 
 using namespace cxxadt;
 
@@ -20,6 +19,7 @@ divider(NULL), front(NULL), back(NULL){ }
   int countComponents() const;
   int getDepth() const;
   int getNodeCount() const;
+
 private:
   BSPPolygon *divider;
   BSPPolygonSet opaquePolygons;
