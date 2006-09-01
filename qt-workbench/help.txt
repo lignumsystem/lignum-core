@@ -1,0 +1,152 @@
+This help will briefly describe the aspects of Lignum
+Workbench component by component:
+
+- Main window
+   
+  This window holds inside all the components of the program with
+  the exception of function editor, which has a main window of it's
+  own. Otherwise every component is a child of main window, and is
+  closed when the main window closes.   
+
+  Main window has the following components:
+
+     * Menu bar, which has three different menus, "File", "Options"
+       and "Tools".
+
+       From "File" menu it's possible to load a tree to visualization
+       and quit the program. Note that loading tree from the menu
+       bypasses the XML-viewer, which is the main method for loading
+       trees for visualization. 
+
+       From "Options" menu the settings for visualization and the
+       working directory of the program can be changed.
+       Note that changing the working directory affects every part
+       of the program which needs the current working directory.
+       Settings of the visualization are described with more detail
+       in it's own section below. 
+       
+     * Toolbar, from which the control mode of the visualization
+       can be changed.
+
+       Default value is "Orbit" which acts as if the camera is always
+       focused to a fixed point in space. Loading a tree to
+       visualization changes the point to the central point of the
+       tree main axis. By holding mouse's left button down while
+       moving it causes the camera to rotate around the focus point.
+       Holding down the right button while moving the mouse up and down
+       changes the distance of the camera from the point. 
+
+       The focus point can be moved by clicking the toolbar item
+       "Move center" and moving the mouse while holding down one of
+       it's buttons (right down moves the point in xz-plane, and left
+       moves in direction parallel to y-axis).
+       
+       Clicking "Free roam" from toolbar changes the control mode
+       to give camera the freedom to move anywhere. Moving the mouse
+       while holding the left button changes the direction of the camera.
+       It can be moved forward (backward) by moving the mouse forward
+       (backward) while holding it's right button down.
+
+       Menubar has also item "Show object types" , which causes the
+       tree segments and buds to be colored based on their LGAtype
+       attribute value. 
+              
+     * Visualization area. 
+
+       The visualization of trees are drawn to this part of the screen,
+       which covers the majority of the window. Rendering is done in
+       OpenGL.
+
+- Console
+
+  The console is displayed at the bottom of the main window, and
+  it can be detached from window as it's a dock widget. While detached
+  it can be resized and moved around. It can also be closed, and brought
+  back from main window's menu bar item "Tools->Console...".
+
+  From console it's possible to start external programs (i.e. run Lignum
+  growth simulation) by writing the commands to the command line and
+  clicking "Run"-button or pressing enter. The console will report whether
+  the operation were succesfull or not, and it displays the text output of
+  the external process in it's text window. The started process can also
+  be stopped by clicking "Kill program"-button, but it's not quaranteed to
+  work without problems.
+
+- XML-viewer
+
+  The XML-viewer displays the a tree-like view of the loaded tree. It
+  can display multiple trees and the components of the tree can be
+  browsed by expanding the items, which appear after loading the tree file
+  to the viewer.  
+
+  Loading happens by clicking the "Load tree..."-button and selecting
+  the file to loaded for the viewer. The loading can take a while especially
+  on older machines, and the GUI of the main window gets blocked while
+  the file is loaded.
+
+  Trees can be loaded to the visualization from the viewer by selecting
+  wanted trees from the viewer and clicking the "Visualize selected"-button.
+  The loading should take a while depending on the size of the tree, but
+  it shouldn't block the main window from functioning while it processes
+  the tree. Note that loading trees to visualization clears the previous
+  visualization.
+
+  After the trees have been loaded selecting item from the viewer paints
+  the corresponding objects in the visualization with red color. The
+  camera also focuses on the last object in the selection if the tracking
+  is set on (see the check button in the bottom of the viewer). 
+
+  Trees can also be removed from the viewer by selecting the wanted
+  trees and clicking the "Remove selected"-button.
+
+- Function editor
+  
+  With function editor it's possible to create and edit ASCII-files,
+  but the main function of it is to paint functions consisting of
+  2D-points. Values between each point is linearly interpolated,
+  so a line is drawn between each adjacant point.
+  
+  The points in files are separated from each by black character, and
+  comments can be written by starting a line with "#"-character.
+  Note that all comments must in the beginning of the file, or it
+  won't function correclty. The pointer gets updated automatically
+  as user inserts (or updates existing) new points to file.
+
+  The view of the painter can be adjusted by the spinboxes located
+  on the bottom of the editor.
+
+- Visualization settings
+
+  By adjusting the parameters correctly in the visualization settings
+  has an major impact on the performance of the visualization.
+  The default settings should be OK for most systems and tree types,
+  but they need some tweaking on low-end systems and some tree species.
+
+  General principle is as follows: every parameter with word "detail"
+  in it slow the performance as the value increases, but the objects
+  with high detail look better than objects with low detail. So, it's
+  practical to test the trees first with low detail, and then, if the
+  performance is doable, increase some of them. Loading times also
+  increase with high detail. Best values can be found by testing
+  different values by self as every system is different. 
+
+  Buds take a considerable amount of polygons to be rendered so by
+  disabling them (clicking "Use buds"-button) can increase the
+  performace noticably. Disabling leaves also has the same effect.
+
+  Also the size of buds and the radius of petioles need some adjusting
+  on some tree types as the Lignum model doesn't contain information
+  about those attributes.
+
+  The textures for segments, leaves and foliage can also be changed
+  from the setting to suit the tree type to be visualized. If the
+  leaves are rendered using textures (or the scene contains other
+  transparent surfaces i.e. foliage), the output isn't correct if the
+  BSP (Binary Space Partitioning) technique isn't set on. The BSP can
+  slow the performance of the rendering depending on the geometry of
+  the transparent surfaces. Usually hardwood trees aren't slowed down
+  noticably, but trees with foliage are a bit. On the other hand the
+  error of not using the BSP is most noticable on trees with foliage.
+    
+  Lighting, wiremodel and texturing can also be set on/off from the
+  settings. 
