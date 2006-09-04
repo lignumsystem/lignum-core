@@ -48,8 +48,8 @@ inline T minimum(T A, T B)
 
 //constant functions used in RMatrix and in HRMatrix
 //for the rotations in 3D space.
-inline RADIAN fn_1(RADIAN angle){return 1.0;}
-inline RADIAN fn_0(RADIAN angle){return 0.0;}
+inline RADIAN fn_1(RADIAN angle){angle=1.0; return angle;}  //angle used to avoid warning
+inline RADIAN fn_0(RADIAN angle){angle=0.0; return angle;}
 inline RADIAN neg_sin(RADIAN angle){return (RADIAN) -sin(angle);}
 inline RADIAN neg_cos(RADIAN angle){return (RADIAN) -cos(angle);}
 
