@@ -17,6 +17,7 @@ namespace Lignum{
 
   class AxisAttributes{
   public:
+    AxisAttributes():state(ALIVE){}
     AxisAttributes(LGMdouble s):state(s){}
     LGMdouble state; //LIVE or DEAD 
   };
