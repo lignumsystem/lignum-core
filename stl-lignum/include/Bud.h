@@ -39,6 +39,7 @@ namespace Lignum{
   public:
     Bud();
     Bud(const Point& p, const PositionVector& d, const LGMdouble omega, Tree<TS,BUD>* tree);
+    Bud(Tree<TS,BUD>* tree):TreeCompartment<TS,BUD>(tree) { }
     TS& createTreeSegment()const;
     Bud<TS,BUD>& createBud()const;
     BranchingPoint<TS,BUD>& createBranchingPoint()const;

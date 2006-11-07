@@ -82,6 +82,8 @@ public:
   TreeSegment();
   TreeSegment(const Point& p, const PositionVector& d, const LGMdouble go,
 	      const METER l, const METER r, const METER rh, Tree<TS,BUD>* t);
+  TreeSegment(Tree<TS,BUD>* t):TreeCompartment<TS,BUD>(t) {  }
+
   LGMdouble GetTranspiration(LGMdouble time);
   void SetYearCircles();
   TreeSegmentAttributes& getTsa(){return tsa;}

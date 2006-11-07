@@ -17,9 +17,8 @@ namespace Lignum{
 
   class AxisAttributes{
   public:
-    AxisAttributes():state(ALIVE){}
-    AxisAttributes(LGMdouble s):state(s){}
-    LGMdouble state; //LIVE or DEAD 
+    AxisAttributes(LGMdouble s):state(s){ }
+      LGMdouble state; //ALIVE or DEAD 
   };
 
 template <class TS,class BUD=DefaultBud<TS> >
@@ -58,6 +57,7 @@ public:
   virtual ~Axis();
   Axis();
   Axis(const Point& p, const PositionVector& d, Tree<TS,BUD>* t);
+  Axis(Tree<TS,BUD>* t):TreeCompartment<TS,BUD>(t),aa(ALIVE) { }
 protected: 
   AxisAttributes aa;
   list<TreeCompartment<TS,BUD>*> tc_ls;

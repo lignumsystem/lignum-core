@@ -42,6 +42,7 @@ public:
   BranchingPoint(const Point& p, const PositionVector& d, Tree<TS,BUD>* t);
   //Initiate type to -1.0
   BranchingPoint(const Point& p, const PositionVector& d, LGMdouble go,Tree<TS,BUD>* t);
+  BranchingPoint(Tree<TS,BUD>* t):TreeCompartment<TS,BUD>(t) { }
   virtual ~BranchingPoint();
 private:
   list<Axis<TS,BUD>*> axis_ls;

@@ -133,6 +133,7 @@ namespace Lignum{
   public:
     TreeCompartment();
     TreeCompartment(const Point& p, const PositionVector& d, Tree<TS,BUD>* t);
+    TreeCompartment(Tree<TS,BUD>* t) { tree = t; }
     virtual ~TreeCompartment();
     virtual void photosynthesis() { /* Default: do nothing */ }
     virtual void respiration() {}
