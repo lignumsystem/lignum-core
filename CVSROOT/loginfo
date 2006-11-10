@@ -50,3 +50,4 @@
 ^Cowberry Mail -s %s  risto.sievanen@metla.fi jari.perttunen@metla.fi
 ^XMLTree Mail -s %s  risto.sievanen@metla.fi jari.perttunen@metla.fi jmjharti@cc.hut.fi
 ^qt-workbench Mail  -s %s  risto.sievanen@metla.fi jari.perttunen@metla.fi jmjharti@cc.hut.fi
+^DataRoot Mail -s %s risto.sievanen@metla.fi jari.perttunen@metla.fi
