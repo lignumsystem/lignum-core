@@ -53,6 +53,8 @@ namespace Lignum{
   public:
     CfTreeSegment(const Point& p,const PositionVector& pv,const LGMdouble go,const METER l,
 		  const METER r,const METER rh,Tree<TS,BUD>* tree);
+    CfTreeSegment(Tree<TS,BUD>* tree):TreeSegment<TS,BUD>(tree) { }
+
     void photosynthesis();
     void respiration();
     void aging();
