@@ -40,6 +40,22 @@
 // Tree<SugarMapleSegment, SugarMapleBud> maple(Point(0,0,0), PositionVector(0,0,0));
 // XMLDomTreeReader<SugarMapleSegment, SugarMapleBud> reader;
 // reader.readXMLToTree(maple, "maple.xml");
+// 
+// IMPORTANT NOTICE:
+// When dealing with broadleaved trees one should always explicitely express the leaf type
+//
+// Tree<SugarMapleSegment, SugarMapleBud,Ellipse> maple(Point(0,0,0), PositionVector(0,0,0));
+// Tree<PoplarSegment,PoplarBud,Triangle> poplar(Point(0,0,0), PositionVector(0,0,0));
+//
+// XMLDomTreeReader<SugarMapleSegment, SugarMapleBud,Ellipse> >reader;
+// XMLDomTreeReader<Tree<PoplarSegment,PoplarBud,Triangle> >reader;
+// XMLDomTreeWriter<SugarMapleSegment, SugarMapleBud,Ellipse> > writer;
+// XMLDomTreeWriter<Tree<PoplarSegment,PoplarBud,Triangle> > writer;
+//
+// The default value is Ellipse so the the reader example for e.g. sugar maple works
+// but other leaf forms like Triangle MUST BE explicitely expressed. Otherwise
+// XMLDomTreeWriter will generate 'Generic' segmentswithout attribute values. The tree 
+// is consequently useless.
  
 
 #endif
