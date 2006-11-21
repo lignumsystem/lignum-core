@@ -39,6 +39,7 @@ public:
 
 private:
   BSPPolygonSet*  makeCylinder(double radius,
+			       double radius_top,
 			       double height,
 			       Point point,
 			       PositionVector direction,

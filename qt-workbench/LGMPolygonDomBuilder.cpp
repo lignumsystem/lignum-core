@@ -137,9 +137,10 @@ void LGMPolygonDomBuilder::parseTreeSegmentElement(const QDomElement& element, c
   while (!child.isNull()) {
     if(child.tagName() == "TreeSegmentAttributes") {
       QDomElement child2 = child.firstChildElement();
-      double radius;
-      double length;
-      double x, y, z;
+      double radius=0.0;
+      double radius_top=0.0;
+      double length=0.0;
+      double x, y, z;x=y=z=0.0;
       Point point;
       PositionVector direction;
       BSPPolygonMaterial *secondary = NULL;
@@ -148,6 +149,9 @@ void LGMPolygonDomBuilder::parseTreeSegmentElement(const QDomElement& element, c
       while(!child2.isNull()) {
 	if(child2.tagName() == "LGAR") {
 	  radius = child2.text().toDouble();
+	}
+	else if (child2.tagName() == "LGARTop") {
+	  radius_top =  child2.text().toDouble();
 	}
 	else if(child2.tagName() == "LGAL") {
 	  length = child2.text().toDouble();
@@ -193,7 +197,7 @@ void LGMPolygonDomBuilder::parseTreeSegmentElement(const QDomElement& element, c
       }
       SceneObject* object = new SceneObject(parameters.getMaterial(), secondary, object_index, parameters.getSegmentTexture(), false);
       sceneObjects->insert(object_index, object);
-      BSPPolygonSet* cyl = makeCylinder(radius, length, Point(point.getX(), point.getY(), point.getZ()),
+      BSPPolygonSet* cyl = makeCylinder(radius, radius_top,length, Point(point.getX(), point.getY(), point.getZ()),
 				      PositionVector(direction.getX(), direction.getY(), direction.getZ()),
 				      true, true, object,
 				      parameters.getSegmentRDetail(), parameters.getSegmentHDetail());
@@ -457,14 +461,15 @@ void LGMPolygonDomBuilder::parseBroadLeafElement(const QDomElement& element, con
 
 }
 
-BSPPolygonSet* LGMPolygonDomBuilder::makeCylinder(double radius, double height, Point point, PositionVector direction, bool drawBottom, bool drawTop, SceneObject* object, int r_detail, int y_detail) const  {
+BSPPolygonSet* LGMPolygonDomBuilder::makeCylinder(double radius, double radius_top, double height, Point point, PositionVector direction, bool drawBottom, bool drawTop, SceneObject* object, int r_detail, int y_detail) const  {
   double PI = 3.14159265;
   double sine, cosine, sine_next, cosine_next, y, y_next;
   BSPPolygonSet* polygons = new BSPPolygonSet();
 
   if(radius == 0)
     return polygons;
-
+  if (fabs(radius_top) < R_EPSILON)//probably not defined radius top of the cylinder
+    radius_top=radius;
   PositionVector dir(direction.normalize().getX()/2.0,
 		     (1+direction.normalize().getY())/2.0,
 		     direction.normalize().getZ()/2.0);
@@ -496,7 +501,7 @@ BSPPolygonSet* LGMPolygonDomBuilder::makeCylinder(double radius, double height, 
       y_next = (j+1) / (double)y_detail * height;
       
       PositionVector v1(sine, y, cosine);
-      PositionVector v2(sine, y_next, cosine);
+      PositionVector v2(sine*(radius_top/radius), y_next, cosine*(radius_top/radius));
       PositionVector v3(sine_next, y, cosine_next);
       v1 = v1.rotate(origo, dir, PI);
       v2 = v2.rotate(origo, dir, PI);
@@ -511,8 +516,8 @@ BSPPolygonSet* LGMPolygonDomBuilder::makeCylinder(double radius, double height, 
 					  object));
       
       v1 = PositionVector(sine_next, y, cosine_next);
-      v2 = PositionVector(sine, y_next, cosine);
-      v3 = PositionVector(sine_next, y_next, cosine_next);
+      v2 = PositionVector(sine*(radius_top/radius), y_next, cosine*(radius_top/radius));
+      v3 = PositionVector(sine_next*(radius_top/radius), y_next, cosine_next*(radius_top/radius));
       v1 = v1.rotate(origo, dir, PI);
       v2 = v2.rotate(origo, dir, PI);
       v3 = v3.rotate(origo, dir, PI);
@@ -527,9 +532,9 @@ BSPPolygonSet* LGMPolygonDomBuilder::makeCylinder(double radius, double height, 
     }
   
     if(drawTop) {
-      v1 = PositionVector(sine, height, cosine);
+      v1 = PositionVector(sine*(radius_top/radius), height, cosine*(radius_top/radius));
       v2 = PositionVector(0, height, 0);
-      v3 = PositionVector(sine_next, height, cosine_next);
+      v3 = PositionVector(sine_next*(radius_top/radius), height, cosine_next*(radius_top/radius));
       
       v1 = v1.rotate(origo, dir, PI);
       v2 = v2.rotate(origo, dir, PI);
@@ -662,7 +667,7 @@ BSPPolygonSet* LGMPolygonDomBuilder::makeFoliage(double radius, double height, P
 
 BSPPolygonSet* LGMPolygonDomBuilder::makePetiole(Point sp, Point ep, int detail, double radius, SceneObject* object) const {
   
-  BSPPolygonSet* polygons = makeCylinder(radius, PositionVector(sp-ep).length(), sp, PositionVector(ep-sp), false, false, object, detail, 1);
+  BSPPolygonSet* polygons = makeCylinder(radius, radius, PositionVector(sp-ep).length(), sp, PositionVector(ep-sp), false, false, object, detail, 1);
 
   return polygons;
 }
