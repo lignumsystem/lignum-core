@@ -35,7 +35,6 @@ Turtle& Turtle::pitch(const RADIAN angle)
   Point o(0,0,0);
   u.rotate(o,l,angle);
   h.rotate(o,l,angle);
-  
   return *this;
 }
 
@@ -45,8 +44,7 @@ Turtle& Turtle::roll(const RADIAN angle)
   Point o(0,0,0);
   u.rotate(o,h,angle);
   l.rotate(o,h,angle);
-   
-   return *this;
+  return *this;
 }
 
 //Rotation round Heading axis so that
@@ -58,7 +56,6 @@ Turtle& Turtle::hroll()
   if (new_l.length() > R_EPSILON){
     l = Cross(up,h); //left becomes horizontal 
     l.normalize();
-
     u = Cross(h,l);  //adjust up
     u.normalize();
   }
@@ -79,10 +76,17 @@ Turtle& Turtle::hrz()
     //angle to horizontal
     angle = PI_VALUE/2.0 - angle;
     PositionVector horizontal = Cross(up,h);
-    horizontal.normalize();
-    h.rotate(o,horizontal,angle);
-    l.rotate(o,horizontal,angle);
-    u.rotate(o,horizontal,angle);
+    //Check that 'up' and 'h' not both up
+    if (horizontal.length() > R_EPSILON){
+      horizontal.normalize();
+      h.rotate(o,horizontal,angle);
+      l.rotate(o,horizontal,angle);
+      u.rotate(o,horizontal,angle);
+    }
+    //If 'up' and 'h' both up then pitch(PI_VALUE/2.0)
+    else{
+      pitch(PI_VALUE/2.0);
+    }
   }
   return *this;
 }
