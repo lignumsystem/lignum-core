@@ -52,3 +52,4 @@
 ^qt-workbench Mail  -s %s  risto.sievanen@metla.fi jari.perttunen@metla.fi jmjharti@cc.hut.fi
 ^DigitalTree Mail  -s %s  risto.sievanen@metla.fi jari.perttunen@metla.fi pekka.kaitaniemi@helsinki.fi
 ^DataRoot Mail -s %s risto.sievanen@metla.fi jari.perttunen@metla.fi
+^FracRoot Mail -s %s risto.sievanen@metla.fi jari.perttunen@metla.fi tuomo.kalliokoski@metla.fi
