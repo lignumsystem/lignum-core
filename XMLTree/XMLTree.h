@@ -5,7 +5,21 @@
 #include <XMLDomTreeReader.h>
 #include <XMLDomTreeWriter.h>
 
-
+//Helper function to write the tree to an xml file
+template <class TS,class BUD>
+void WriteTreeToXML(int argc, char* argv[],Tree<TS,BUD>& t)
+{
+  string xmlfile;
+  ParseCommandLine(argc,argv,"-xml",xmlfile);
+  if (!xmlfile.empty()){
+    XMLDomTreeWriter<TS,BUD> writer;
+    writer.writeTreeToXML(t, xmlfile);
+    cout << "Roots written to a file " << xmlfile <<endl;
+  }
+  else{
+    cout <<  "WriteTreeToXML: no output file" <<endl;
+  }
+}
 // XML WRITING USAGE:
 //   
 // In order to write a Tree-object to a XML-file one must
