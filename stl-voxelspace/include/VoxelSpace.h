@@ -47,14 +47,18 @@ namespace Lignum {
     //VoxelBox::update Value  accesses private data  members--> friend 
     //declaration needed due to lack of access methods/functions
     friend class VoxelBox;
+    
     template <class TS,class BUD>
-    friend void DumpCfTree(VoxelSpace &s, Tree<TS, BUD> &ts,int num_parts);
+      friend void DumpCfTree(VoxelSpace &s, Tree<TS, BUD> &tree,int num_parts);
 
     template <class TS,class BUD>
-    friend void DumpCfTreeSegment(VoxelSpace &s, CfTreeSegment<TS, BUD> &ts,double num_parts);
+      friend void DumpCfTree(VoxelSpace &s, Tree<TS, BUD> &tree,int num_parts, bool wood);
+
+    template <class TS,class BUD>
+      friend void DumpCfTreeSegment(VoxelSpace &s, CfTreeSegment<TS, BUD> &ts,double num_parts);
 
     template <class TS>
-    friend void InsertVoxelObject(VoxelSpace& s, const TS& ts, 
+      friend void InsertVoxelObject(VoxelSpace& s, const TS& ts, 
 				  const PositionVector& dir, 
 				  double t,double beam_start,
 				  int segment_parts);
@@ -224,10 +228,11 @@ namespace Lignum {
   class DumpCfTreeFunctor
   {
   public:
-    DumpCfTreeFunctor(int n):num_parts(n){}
+    DumpCfTreeFunctor(int n, bool wood):num_parts(n), dumpWood(wood) {}
     TreeCompartment<TS,BUD>* operator ()(TreeCompartment<TS,BUD>* tc)const;
     mutable VoxelSpace *space;
     double num_parts;
+    bool dumpWood;
   };
 
   template <class TS,class BUD>

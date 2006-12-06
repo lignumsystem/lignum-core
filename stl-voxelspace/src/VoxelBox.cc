@@ -40,6 +40,9 @@ namespace Lignum {
       delete *it;//delete wrapper
     }
     objects.clear();
+
+    woodMass = 0.0;
+    woodArea = 0.0;
   }
   
 void VoxelBox::init()
@@ -298,7 +301,8 @@ ostream& operator << (ostream& os, VoxelBox &b)
 	
   os << "Qabs: " <<  b.Q_abs << " Q_in: " << b.Q_in 
      << " star: " << b.star << " needleArea: " << b.needleArea 
-     << " leafArea: " << b.leafArea << " : ";
+     << " leafArea: " << b.leafArea << " woodMass: " << b.woodMass
+     << " woodArea: " << b.woodArea <<  " : ";
 	
 	return os;
 }

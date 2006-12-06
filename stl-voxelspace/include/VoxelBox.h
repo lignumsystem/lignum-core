@@ -22,7 +22,10 @@ namespace Lignum {
     template <class TS,class BUD>
     friend void DumpSegment(VoxelBox &b, const CfTreeSegment<TS,BUD>& ts, 
 			    int num_parts);
- 
+
+    template <class TS,class BUD>
+      friend void DumpSegmentWood(VoxelBox &b, const TreeSegment<TS,BUD>& ts,
+				  int num_parts);
     template <class OBJ>
     friend void InsertVoxelObject(VoxelBox& b, OBJ* obj);
 
@@ -66,6 +69,8 @@ namespace Lignum {
     LGMdouble getLeafArea()const{return leafArea;}
     LGMdouble getFoliageMass()const{return needleMass + leafMass;}
     LGMdouble getFoliageArea()const{return needleArea+leafArea;}
+    LGMdouble getWoodMass() {return woodMass; }
+    LGMdouble getWoodArea() {return woodArea; }
     PositionVector getBigLeafNormal(){return big_leaf_normal.normalize();}
     LGMdouble getWeight()const{return weight;}
     LGMdouble getQ_inStdDiff()const{ return Q_inStdDiffuse; }
@@ -84,6 +89,8 @@ namespace Lignum {
     void addQabs(LGMdouble val) { Q_abs += val; }
     void addInterceptedRadiation(LGMdouble rad) { interceptedRadiation += rad; }
     void addStarSum(LGMdouble starmean){starSum += starmean;}
+    void addWoodMass(LGMdouble mass) {woodMass += mass; }
+    void addWoodArea(LGMdouble area) {woodArea += area; }
     void addWeight(LGMdouble w){weight += w;}
     void increaseNumberOfSegments(){number_of_segments++;}
     void addOneLeaf() {number_of_leaves++;}
@@ -129,6 +136,9 @@ namespace Lignum {
     VoxelSpace *space;
     vector<VoxelObject*> objects;//vector     of     photosynthesising
 				 //elements in the box
+
+    LGMdouble woodMass;
+    LGMdouble woodArea;         //surface area of segments (woody part) in box
   };
 
 } //namespace Lignum

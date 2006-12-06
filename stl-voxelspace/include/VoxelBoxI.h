@@ -36,6 +36,25 @@ namespace Lignum {
       b.number_of_segments++;
     }
   
+  //  Woody part
+  //
+  //    Dumps wood information to the VoxelBox given as a parameter.
+  // 
+  //
+  template <class TS,class BUD>
+    void DumpSegmentWood(VoxelBox &b, const TreeSegment<TS,BUD>& ts,
+                     int num_parts)
+    {   
+      LGMdouble r = GetValue(ts, LGAR);
+      LGMdouble length = GetValue(ts, LGAL) / num_parts;
+      LGMdouble mass = GetValue(ts, LGAWood) / num_parts;
+      LGMdouble area = 2.0*PI_VALUE*r*length;
+      b.addWoodMass(mass);
+      b.addWoodArea(area);
+    }
+
+
+
   template <class OBJ>
   void InsertVoxelObject(VoxelBox& b, OBJ* obj)
   {

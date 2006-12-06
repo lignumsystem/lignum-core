@@ -8,13 +8,31 @@ namespace Lignum {
     }
   //First CfTree & CfTreeSegment==========================
 
+    //Two versions of function DumpCfTree: 
+    //1) Only foliage information is transferred to VoxelSpace
+    //2) Also information on woody parts (mass, surface area) is
+    //dumped; this version of the function has an extra argument. 
+    //These two versions of function make it possible retain the old
+    //interface in case only foliage is dumped.
+
   template <class TS,class BUD>
-    void DumpCfTree(VoxelSpace &s, Tree<TS, BUD> &tree,int num_parts)
+    void DumpCfTree(VoxelSpace &s, Tree<TS, BUD> &tree, int num_parts)
     {
-      DumpCfTreeFunctor<TS,BUD> f(num_parts);
+      bool wood = false;
+      DumpCfTreeFunctor<TS,BUD> f(num_parts,wood);
       f.space = &s;
       ForEach(tree, f);
     }
+
+  template <class TS,class BUD>
+    void DumpCfTree(VoxelSpace &s, Tree<TS, BUD> &tree,int num_parts, bool wood)
+    {
+      //Note that in case wood == false, wood variables are not set
+      DumpCfTreeFunctor<TS,BUD> f(num_parts,wood);
+      f.space = &s;
+      ForEach(tree, f);
+    }
+
 
   template <class TS, class BUD>
     TreeCompartment<TS,BUD>* DumpCfTreeFunctor<TS,BUD>::
@@ -22,7 +40,9 @@ namespace Lignum {
     {
       if (TS* cfts = dynamic_cast<TS*>(tc))
 	{
-	  DumpCfTreeSegment(*space,*cfts,num_parts);
+	  DumpCfTreeSegment(*space,*cfts, num_parts);
+	  if(dumpWood)
+	    DumpSegmentWood(*space, *cfts, num_parts);
 	} 
       return tc;
     }
@@ -41,6 +61,23 @@ namespace Lignum {
       }
   }
   
+  template <class TS,class BUD>
+  void DumpSegmentWood(VoxelSpace &s, TreeSegment<TS, BUD> &ts,double num_parts)
+  {
+    Point p = GetPoint(ts);
+    PositionVector pv = GetDirection(ts);
+    LGMdouble length = GetValue(ts, LGAL);
+
+    for (int i=1; i<(num_parts+1.0); i++)
+      {
+        Point p1 = p + (Point)(length * (i/(num_parts+1.0)) * pv);
+        DumpSegmentWood(s.getVoxelBox(p1), ts, num_parts);
+      }
+  }
+
+
+
+
   template <class TS,class BUD>
     void SetCfTreeQabs(VoxelSpace &s, Tree<TS, BUD> &tree, int num_parts)
     {
