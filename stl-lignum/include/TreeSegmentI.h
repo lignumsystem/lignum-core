@@ -321,6 +321,10 @@ LGMdouble GetValue(const TreeSegment<TS,BUD>& ts, const LGMAD name)
     LGMdouble v1 = GetValue(ts,LGAVh);
     return GetValue(GetTree(ts),LGPrhoW) * v1;
   }
+  else if (name == LGAWood) {
+    LGMdouble v1 = GetValue(ts, LGAV);
+    return GetValue(GetTree(ts), LGPrhoW) * v1;
+  }
   else
     return GetValue(dynamic_cast<const TreeCompartment<TS,BUD>&>(ts), name);
 }
