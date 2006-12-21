@@ -48,8 +48,13 @@ using namespace std;
 //                      ls.sort(sorter);
 //   CrownVolume
 //   MainAxisVolume: Usage MainAxisVolume vol; double v = vol(tree);
-
-//Functors-functions below used in LIGNUM WorkBench are not listed. 
+//   SetRTopToR: Set LGARTop to LGAR: SetValue(ts,LGARTop, GetValue(*ts,LGAR)). 
+//               Usage: ForEach(tree, SetRTopToR<TS,BUD>()).  
+//               There is  LGARTop that used in  visualiztion.  It may
+//               or may not  have the desired value. In  most cases in
+//               growth simulations only LGAR  is used.  This may have
+//               unwanted results in visualization.
+//  Functors-functions below used in LIGNUM WorkBench are not listed.
 
 namespace Lignum{
 
@@ -664,6 +669,16 @@ namespace Lignum{
       list<TreeCompartment<TS,BUD>*>& tc_ls = GetTreeCompartmentList(axis);
       double vol = accumulate(tc_ls.begin(),tc_ls.end(),0.0,AccumulateAxisVolume<TS,BUD>());
       return vol;
+    }
+  };
+
+  template <class TS,class BUD>
+  class SetRTopToR{
+  public:
+    void operator()(TreeCompartment<TS,BUD>* tc)const{
+      if (TS* ts = dynamic_cast<TS*>(tc)){
+	SetValue(*ts,LGARTop, GetValue(*ts,LGAR));
+      }
     }
   };
 
