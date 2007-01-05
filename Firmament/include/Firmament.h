@@ -108,9 +108,9 @@ using namespace cxxadt;
 13.   MJ diffuseBallSensor(void)
        Intensity of diffuse radiation as recorded by a ball sensor.
 
-14.A. MJ diffuseForestRegionRadiationSum(int n, float z, float x,  float la, float ke,
-                                                       float H, float Hc,
-                                               vector<double>& direction)
+14.   MJ diffuseForestRegionRadiationSum(int n, float z, float x,  float la, float ke,
+                                         float H, float Hc,vector<double>& direction,
+                                         double density)
        As 9. but the point where the radiation is coming to is in a forest.
        INPUT:
           n        number of region
@@ -120,9 +120,7 @@ using namespace cxxadt;
 	  ke       extinction cofficient  (= 0.14 for Scots pine),  unitless
 	  H        height of tree (h. of stand),  m
 	  Hc       height of the crown base of the tree (stand), m
-          additionally, method reads from file "density.fun" the density of
-          the stand (trees/ha), density = 1 if file does not exist.
-
+          density  Density of the stand (trees/ha)
         OUTPUT:
          The annual radiation sum (MJ) from the nth region of the
          firmament as shaded by the neighboring stand
@@ -130,11 +128,6 @@ using namespace cxxadt;
          If n < 0 or n > total number of regions - 1, return -1.0
         (see comments in program code for more information about this method)
 
-14.B. MJ diffuseForestRegionRadiationSum(int n, float z, float x,  float la, float ke,
-                                         float H, float Hc,vector<double>& direction,
-                                         double density)
-      Like above 14.A., but but the forest density  (trees/ha) is the last argument 'density'
- 
 15.  void outDiff()
        Prints out ( cout << ) the diffuse radiation intensity sector by sector.
 
@@ -181,10 +174,6 @@ public:
   MJ directHalfRegionRadiationSum(vector<double>& direction);
   MJ diffusePlaneSensor(void) { return diffuseRadPlane; }
   MJ diffuseBallSensor(void) { return diffuseRadBall; }
-  MJ diffuseForestRegionRadiationSum(int n, float z, float x,  float la, float ke,
-				     float H, float Hc,
-				     vector<double>& direction);
-  //Like above,  but the forest density (trees/ha) is the last argument 'density'
   MJ diffuseForestRegionRadiationSum(int n, float z, float x,  float la, float ke,
 				     float H, float Hc,
 				     vector<double>& direction,double density);
@@ -251,6 +240,7 @@ protected:
   double thetZ;
   int numOfSectors;
   double deltaIncl, halfDeltaIncl;
+  double standDensity;
 };
 
 }//closing namespace sky

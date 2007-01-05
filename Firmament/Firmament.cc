@@ -452,13 +452,9 @@ MJ Firmament::diffuseHalfRegionRadiationSum(int n, vector<double>& direction)
 
 }
 
-
-
-
 MJ Firmament::diffuseForestRegionRadiationSum(int n, float z, float x, float la,
 					      float ke, float H, float Hc,
-					      vector<double>& direction)
-
+					      vector<double>& direction,double dens)
 //  INPUT:
 //    n        number of region
 //    z        height of the point from ground, m
@@ -467,8 +463,7 @@ MJ Firmament::diffuseForestRegionRadiationSum(int n, float z, float x, float la,
 //    ke       extinction cofficient  (= 0.14 for Scots pine),  unitless
 //    H        height of tree (h. of stand),  m
 //    Hc       height of the crown base of the tree (stand), m
-//            additionally, method reads from file "density.fun" the density of
-//            the stand (trees/ha), density = 1 if file does not exist.
+//    dens     Density of the stand (trees/ha)
 
 //  OUTPUT:
 //    The annual radiation sum (MJ) from the nth region of the
@@ -507,86 +502,6 @@ MJ Firmament::diffuseForestRegionRadiationSum(int n, float z, float x, float la,
 // 0.35*(x/r)^2.5), where r is the radius of the circle and x is the
 // distance of the point from center of the circle (0 <= x <= r).
 
-// Obs. density is read from file (if exists) "density.fun"
-
-{
-// When this method is called first time it reads density (dens,
-// trees/ha) from the file density.fun. If this file does not exist
-// default density 1 tree/ha is used.
-
-  static bool first_time = true;
-  static float dens = 1.0;
-
-  if(first_time) {
-    first_time = false;
-    ifstream densfun("density.fun");
-    if(densfun) {
-      densfun >> dens;
-      if(dens < 1.0) dens = 1.0;
-      if(dens > 100000.0) dens = 100000.0;
-      densfun.close();
-    }
-    else 
-      dens = 1.0;
-  }
-
-  //Check for suitable segment number
-
-  if(n < 0 || n > numOfSectors - 1) return (MJ) -1.0;
-
-  // Get first unshaded radiation coming from the sector
-
-  float Qunshaded = diffuseRegionRadiationSum(n, direction);
-
-  // Inclination angle of the direction (from horizon),
-  // length of direction = 1, hence z coordinate = sin(alpha)
-
-  float sin_alpha = (float) direction[2];
-  float tan_alpha;
-  if(maximum(1.0-sin_alpha,sin_alpha-1.0) < R_EPSILON)
-    return Qunshaded;
-  else
-    tan_alpha = tan(asin(sin_alpha));
-    
-
-  // Area (m2) occupied by one tree = 10000/dens => radius of the opening that is
-  // occupied by one tree
-
-  float r_tree = (float) sqrt((double) ((10000.0/dens) / (float)PI_VALUE));
-
-  // The beam hits the mantle of the cylinder that is occupied by the tree at height Hh,
-  // the distance of the point from the stem is considered too,
-  // as mean for different directions, see explanation at the beginning
-  // Obs the segment cannot be outside the cylinder
-
-  float xcheck = minimum(x, r_tree);
-  float avdist = r_tree * (1.0 - 0.35 * (float)pow((double)(xcheck/r_tree), 2.5));
-  float Hh = z + tan_alpha * avdist;
-
-  // If Hh < Hc the beam goes through the whole canopy, otherwise not
-
-  if(Hh < Hc)  Hh = Hc;
-
-  float leaf_dens = dens * la / 10000.0 / (H - Hc);
-
-  float distance, shading;
-
-  if(Hh < H)
-    distance = (H - Hh) / sin_alpha;
-  else
-    distance = 0.0;
-
-  shading = (float) exp((double)(-ke * distance * leaf_dens));
-
-  return shading * Qunshaded;
-}
-
-
-//As diffuseForestRegionRadiationSum  above but the  forest density is
-//the last argument
-MJ Firmament::diffuseForestRegionRadiationSum(int n, float z, float x, float la,
-					      float ke, float H, float Hc,
-					      vector<double>& direction,double dens)
 {
   //Check for suitable segment number
 
@@ -638,6 +553,8 @@ MJ Firmament::diffuseForestRegionRadiationSum(int n, float z, float x, float la,
 
   return shading * Qunshaded;
 }
+
+
 
 void Firmament:: setDiffuseRadiation(const double rad)
 
