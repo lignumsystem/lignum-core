@@ -96,8 +96,10 @@ LGMdouble SetValue(CfTreeSegment<TS,BUD>& ts, const LGMAD name, const LGMdouble 
   else if (name == LGAQabs)
     ts.cftsa.Qabs = value;
 
-  else if (name == LGARf)
+  else if (name == LGARf){
     ts.cftsa.Rf = value;
+    SetValue(ts,LGAHf,max(ts.cftsa.Rf-GetValue(ts,LGAR),0.0));
+  }
 
   else if (name == LGAstarm)
     ts.cftsa.starm = value;

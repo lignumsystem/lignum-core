@@ -47,20 +47,6 @@ void HwTreeSegment<TS,BUD, S>::aging()
 {
   //Add age (see foliage senescence below)
   SetValue(*this,LGAage,GetValue(*this,LGAage)+1.0);
-
-   //Sapwood senescence
-  LGMdouble dAs = GetValue(GetTree(*this),LGPss) * GetValue(*this,LGAAs);
-  LGMdouble Ah_new =  dAs + GetValue(*this, LGAAh);
-  LGMdouble Rh_new = sqrt(Ah_new/PI_VALUE);
-  // SetValue(*this,LGAAh,Ah_new);
-  //SetValue(*this,LGARh,Rh_new);  
-
-  
-   //Foliage senescence
-   const ParametricCurve& fm = GetFunction(GetTree(*this),LGMFM);
-   //This implementation assumes declining function of age from 1 to 0.
-   // LGMdouble Wf_new = fm(GetValue(*this,LGAage))*GetValue(*this,LGAWf);
-   // SetValue(*this,LGAWf,Wf_new);  
 }
 
 

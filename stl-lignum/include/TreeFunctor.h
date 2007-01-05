@@ -140,8 +140,6 @@ namespace Lignum{
 	LGMdouble sum_Qabs;         // Absorbed radiation
 	LGMdouble max_Qin;         // Max Incoming radiation
 	LGMdouble sum_Qin;         // Incoming radiation for mean value calc.
-	LGMdouble sum_br_As;
-	LGMdouble sum_br_Ac; 
 	int num_buds;
 	int num_segments;
 	LGMdouble tHeight;         //Tree height = highest point from ground
@@ -153,6 +151,8 @@ namespace Lignum{
 	int num_br_d;               //number of branches dead
 	LGMdouble sum_br_len;       //total length of branches, living
 	LGMdouble sum_br_len_d;     //total length of branches, dead
+	LGMdouble sum_br_As;
+	LGMdouble sum_br_Ac; 
 	vector<LGMdouble> taper_rad;
 	vector<LGMdouble> taper_hei;
 	vector<LGMdouble> taper_radhw;
