@@ -45,4 +45,18 @@ bool XMLDomTreeWriter<TS,BUD>::writeTreeToXML(Tree<TS, BUD>& tree, const string&
   
 }
 
+template <class TS,class BUD>
+void WriteTreeToXML(int argc, char* argv[],Tree<TS,BUD>& t)
+{
+  string xmlfile;
+  ParseCommandLine(argc,argv,"-xml",xmlfile);
+  if (!xmlfile.empty()){
+    XMLDomTreeWriter<TS,BUD> writer;
+    writer.writeTreeToXML(t, xmlfile);
+    cout << "Roots written to a file " << xmlfile <<endl;
+  }
+  else{
+    cout <<  "WriteTreeToXML: no output file" <<endl;
+  }
+}
 #endif

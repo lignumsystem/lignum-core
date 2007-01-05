@@ -41,6 +41,9 @@ void ProductionProto::Generate() const
 	case eInterpretation:
 		fprintf(fOut, "void _I%d(", _id);
 		break;
+	case eDecomposition:
+	  fprintf(stderr,"eDecomposition not implemented");
+	  break;
 	}
 	int count = 0;
 	if (NULL != _pLCntxt)
@@ -70,6 +73,9 @@ void ProductionProto::GenerateCaller() const
 	case eInterpretation:
 		fprintf(fOut, "\nvoid _IC%d(const CallerData* pCD)\n", _id);
 		break;
+	case eDecomposition:
+	  fprintf(stderr,"eDecomposition not implemented");
+	  break;
 	}
 
 	fprintf(fOut, "{\n");
@@ -187,6 +193,9 @@ void ProductionProto::GenerateCaller() const
 	case eInterpretation:
 		fprintf(fOut, "_I%d(", _id);
 		break;
+	case eDecomposition:
+	  fprintf(stderr,"eDecomposition not implemented");
+	  break;
         }
 
 
@@ -249,6 +258,9 @@ void ProductionProto::GenerateProtoEntry() const
         case eInterpretation:
 		fprintf(fOut, "\t\t},\n\t\t_IC%d\n\t}", _id);
                 break;
+	case eDecomposition:
+	  fprintf(stderr,"eDecomposition not implemented");
+	  break;
         }
 }
 

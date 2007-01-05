@@ -876,7 +876,7 @@ void XMLDomTreeBuilder<TS,BUD,S>::addBroadLeafAttributeNode(QDomElement& node, Q
   
   if(rv.size() >= 1) {
     tmp = QString("%1").arg(rv[0]);
-    for(int i = 1; i < rv.size(); i++) {
+    for(unsigned int i = 1; i < rv.size(); i++) {
       tmp.append(QString(" %1").arg(rv[i]));
     }
     attrib = m_doc.createElement("RadiationVector");
