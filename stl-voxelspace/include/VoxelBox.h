@@ -110,14 +110,16 @@ namespace Lignum {
     LGMdouble SAc(LGMdouble phi, LGMdouble r, LGMdouble l);
     LGMdouble K(LGMdouble phi);
 
+    M2 needleArea;
+    M2 leafArea;
+    LGMdouble Q_in;
+    LGMdouble Q_abs;
     LGMdouble star;
     LGMdouble starSum;
     LGMdouble weight; //weighted starSum, e.g. foliage area
-    M2 leafArea;
-    M2 needleArea;
+    
     LGMdouble Q_inStdDiffuse;
-    LGMdouble Q_in;
-    LGMdouble Q_abs;
+
     // Q_absbox
     LGMdouble interceptedRadiation;
     LGMdouble needleMass;

@@ -3,7 +3,11 @@
 
 namespace Lignum {
     inline 
-    LGMdouble GetValue(const VoxelSpace& s,VAD LGAkb){
+    LGMdouble GetValue(const VoxelSpace& s,VAD name){
+      if (name == LGAkb) 
+	return s.k_b;
+      else
+	cerr << "GetValue(vs,name) unknown name " << name <<endl;
       return s.k_b;
     }
   //First CfTree & CfTreeSegment==========================

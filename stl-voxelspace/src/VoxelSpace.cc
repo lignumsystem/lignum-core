@@ -17,14 +17,6 @@ namespace Lignum {
 
 
 
-  // 
-  //	Default constructor
-  //
-  VoxelSpace::VoxelSpace():voxboxes(10,10,10),Xn(10),Yn(10),Zn(10),k_b(0.50)
-  {
-     sky = NULL;
-  }
-
 
   //
   // Constructor
@@ -38,7 +30,7 @@ namespace Lignum {
   //	f		: Firmament
   //
   VoxelSpace::VoxelSpace(Point c1, Point c2, int xn, int yn, int zn, Firmament &f)
-    :corner1(c1),corner2(c2),voxboxes(xn,yn,zn),Xn(xn),Yn(yn),Zn(zn),k_b(0.50)
+    :Xn(xn),Yn(yn),Zn(zn),voxboxes(xn,yn,zn),corner1(c1),corner2(c2),k_b(0.50)
   {
 
     Xbox = (corner2-corner1).getX()/static_cast<int>(Xn);
@@ -67,8 +59,8 @@ namespace Lignum {
 			 double xsize, double ysize, double zsize,
 			 int xn, int yn, int zn, 
 			 Firmament &f, LGMdouble kb)
-    :corner1(c1),corner2(c2),Xbox(xsize),Ybox(ysize),Zbox(zsize),
-     voxboxes(xn,yn,zn),Xn(xn),Yn(yn),Zn(zn),k_b(kb)
+    :Xbox(xsize),Ybox(ysize),Zbox(zsize),
+     Xn(xn),Yn(yn),Zn(zn),voxboxes(xn,yn,zn),corner1(c1),corner2(c2),k_b(kb)
   {    cout<<"cornerx: "<<corner1.getX()<<"y: "<<corner1.getY()<<"z: "<<corner1.getZ()<<endl;
     for(int i1=0; i1<Xn; i1++)
       for(int i2=0; i2<Yn; i2++)
@@ -918,10 +910,11 @@ namespace Lignum {
 		      }// if size>1
 		      if (a==-1 && flag<2)
 			{double result;
-			
-			  LGMdouble leaf_area=voxboxes[i1][i2][i3].getLeafArea();
+			  //This leaf_area is unused variable
+			  //LGMdouble leaf_area=voxboxes[i1][i2][i3].getLeafArea();
 			  // cout<<"leafArea in current voxel: "<<leafArea<<endl;
-                          double p=min(leaf_area/(0.2*0.2), 1.0); //0.3 is the size of voxelbox in Bounding box   
+			  //This p is unused variable!!
+                          //double p=min(leaf_area/(0.2*0.2), 1.0); //0.3 is the size of voxelbox in Bounding box   
 			 
 			  result=1.0; //result=ber(p, seed);	//result=1.0;  
   			  if (result>0.5)
@@ -1004,9 +997,10 @@ namespace Lignum {
 		   
 		      if (a==-1 && flag<2)
 			{double result;
-                         
-			  LGMdouble leafArea=voxboxes[i1][i2][i3].getLeafArea();
-                          double p=min(leafArea/(0.2*0.2), 0.7);    
+			  //This leafArea is unused variable!!
+			  //LGMdouble leafArea=voxboxes[i1][i2][i3].getLeafArea();
+			  //This p is unused variable!!
+                          //double p=min(leafArea/(0.2*0.2), 0.7);    
 			
 			  result=1.0;   //result=ber(p, seed);   //  result=1.0;			  
   			  if (result>0.5)

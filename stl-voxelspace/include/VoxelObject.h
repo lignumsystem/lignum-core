@@ -9,6 +9,7 @@ class VoxelObject{
 public: 
   VoxelObject(const VoxelObject& vo):tag(vo.tag){}
   VoxelObject(int t):hit_self(false),tag(t){}
+  virtual ~VoxelObject(){}
   virtual int getRoute(const Point& p, const PositionVector& dir,
 		       LGMdouble& length)const=0;
   virtual LGMdouble getExtinction(const Point& p, const PositionVector& dir,
