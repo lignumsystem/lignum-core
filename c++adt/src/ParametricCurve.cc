@@ -20,6 +20,7 @@ ParametricCurve::ParametricCurve(const string& file_name)
 
 ParametricCurve::ParametricCurve(const string& values, int dummy)
 {
+  dummy = 0;
   double value = 0.0;
   stringstream v_stream(values,stringstream::in);
   char buffer[100];

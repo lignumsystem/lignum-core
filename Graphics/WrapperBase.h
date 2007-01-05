@@ -15,8 +15,11 @@ class WrapperBase
 public:
   WrapperBase(): intStemTexture(0),intFoliageTexture(0),intDisplaylistStem(0),
 		 intDisplaylistFoliage(0){}
+  virtual ~WrapperBase(){}
   virtual void VisualizeTree(){cout << "WrapperBase::VisualizeTree()" << endl;}
-  virtual void VisualizeFoliage(int &active_texture){cout << "VisualizeFoliage not found" << endl;} 
+  virtual void VisualizeFoliage(int &active_texture){
+    cout << "VisualizeFoliage not found " << active_texture <<endl;
+  } 
   virtual void VisualizeStem(int &active_texture)=0;
   virtual void VisualizeWireModel()=0;
   virtual void MakeDisplayLists(bool orderfoliage)=0;

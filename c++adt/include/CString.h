@@ -82,8 +82,10 @@ inline CString& CString::toLower()
 {
   char *ptr = string;
   
-  while ((*ptr++) = tolower(*ptr))
-    ;
+  while (*ptr){
+    *ptr = tolower(*ptr);
+    ptr++;
+  }
 
   return *this;
 }

@@ -22,12 +22,13 @@ void HwWrapper<TS,BUD,SHAPE>::GetTreeMetrics(Point &pos, LGMdouble &h)
 template <class TS, class BUD>
 void CfWrapper<TS,BUD>::VisualizeStem(int &active_texture)
 {
-	
+  cout << "CfWrapper<TS,BUD>::VisualizeStem not implemented " << active_texture <<endl;
 }
 
 template <class TS, class BUD>
 void CfWrapper<TS,BUD>::VisualizeFoliage(int &active_texture)
 {
+  active_texture=active_texture;
     // cout << "lehti tekstuuri " << intFoliageTexture << endl;
     glEnable(GL_BLEND);
     glEnable(GL_TEXTURE_2D);
@@ -316,7 +317,7 @@ template <class TS, class BUD>
 void CfWrapper<TS,BUD>::DrawTree(float x, float y, float z)
 {
     //   cout << " drawing cftree " << endl;
-    
+  x=x;y=y;z=z;
     GLfloat mat_amb[] = { 0.2, 0.3, 0.4, 1.0 }; 
     GLfloat mat_dif[] = { 0.2, 0.4, 0.4, 1.0 }; 
     

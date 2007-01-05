@@ -6,7 +6,7 @@
 namespace sky{
 
   FirmamentWithMask::FirmamentWithMask(int no_incl,int no_azim)
-    :drp_orig(0.0),Firmament(no_incl,no_azim)
+    :Firmament(no_incl,no_azim),drp_orig(0.0)
   {
     /*empty*/
   }

@@ -4,9 +4,7 @@
 namespace cxxadt {
   class Shape {
   public:
-    virtual ~Shape(){};
-  
-  private:
+    virtual ~Shape(){};  
   };
 }
  

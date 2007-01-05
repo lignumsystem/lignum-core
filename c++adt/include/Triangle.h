@@ -19,7 +19,7 @@ namespace cxxadt{
     Triangle(const Point& leftcorner, const Point& rightcorner, 
 	     const Point& apexcorner);
     Triangle(const Triangle& t)
-      :leftcorner(t.leftcorner),rightcorner(t.rightcorner),
+      :Shape(Triangle::Shape()),leftcorner(t.leftcorner),rightcorner(t.rightcorner),
       apexcorner(t.apexcorner){}
     Triangle& operator=(const Triangle& t);
     Point  getLeftCorner() const { return leftcorner;};
