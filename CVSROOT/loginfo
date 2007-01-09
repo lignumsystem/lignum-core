@@ -17,15 +17,15 @@
 #
 # For example:
 #DEFAULT		(echo ""; who am i; echo %s; date; cat) >> $CVSROOT/CVSROOT/commitlog
-^smvisual Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi eero.nikinmaa@helsinki.fi c1344@er.uqam.ca mika.lehtonen@metla.fi
-^sugar-maple Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi eero.nikinmaa@helsinki.fi c1344@er.uqam.ca mika.lehtonen@metla.fi
+^smvisual Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi eero.nikinmaa@helsinki.fi  mika.lehtonen@metla.fi
+^sugar-maple Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi eero.nikinmaa@helsinki.fi  mika.lehtonen@metla.fi
 ^watervisual Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  mika.lehtonen@metla.fi
 ^file-reader  Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  mika.lehtonen@metla.fi
 ^converter  Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  mika.lehtonen@metla.fi 
-^stl-lignum Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi mika.lehtonen@metla.fi eero.nikinmaa@helsinki.fi   ahkrc@mizzou.edu
-^stl-voxelspace Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi mika.lehtonen@metla.fi   ahkrc@mizzou.edu
-^c\+\+adt  Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi mika.lehtonen@metla.fi eero.nikinmaa@helsinki.fi   c1344@er.uqam.ca  
-^Firmament Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi   mika.lehtonen@metla.fi eero.nikinmaa@helsinki.fi c1344@er.uqam.ca  ahkrc@mizzou.edu
+^stl-lignum Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi mika.lehtonen@metla.fi eero.nikinmaa@helsinki.fi
+^stl-voxelspace Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi mika.lehtonen@metla.fi
+^c\+\+adt  Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi mika.lehtonen@metla.fi eero.nikinmaa@helsinki.fi     
+^Firmament Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi   mika.lehtonen@metla.fi eero.nikinmaa@helsinki.fi
 ^ScotsPine  Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  mika.lehtonen@metla.fi  
 ^ScotsPineVisual  Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  mika.lehtonen@metla.fi  
 ^references Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi eero.nikinmaa@helsinki.fi 
@@ -33,13 +33,13 @@
 ^stl-gliricidia Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi mika.lehtonen@metla.fi 
 ^BetulaTortuosa Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi mika.lehtonen@metla.fi
 ^LEngine/doc Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi 
-^LEngine Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi   ahkrc@mizzou.edu
-^Graphics Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi mika.lehtonen@metla.fi  c1344@er.uqam.ca  ahkrc@mizzou.edu
+^LEngine Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi
+^Graphics Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi mika.lehtonen@metla.fi
 ^CityTree Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  mika.lehtonen@metla.fi minna.terho@metla.fi
 ^poplar Mail -s %s jari.perttunen@metla.fi 
 ^LPine Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi 
-^Lig-Crobas Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  mika.lehtonen@metla.fi  ahkrc@mizzou.edu
-^Pine -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  mika.lehtonen@metla.fi ahkrc@mizzou.edu
+^Lig-Crobas Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  mika.lehtonen@metla.fi
+^Pine -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  mika.lehtonen@metla.fi
 ^ctree Mail -s %s jari.perttunen@metla.fi theikura@cc.hut.fi
 ^SugarMaple Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi eero.nikinmaa@helsinki.fi delagrange.sylvain@courrier.uqam.ca
 ^YellowBirch Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi eero.nikinmaa@helsinki.fi  
