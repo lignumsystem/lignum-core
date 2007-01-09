@@ -66,7 +66,7 @@ TreeSegment<TS,BUD>::TreeSegment(const Point& p, const PositionVector& d, const 
   SetValue(*this,LGAL,l);
   SetValue(*this,LGAR,r);
   SetValue(*this,LGARh,rh);
-  SetValue(*this,LGARTop,r);
+  SetValue(*this,LGARTop,0.0);
   
   //the first annual ring
   tsa.annual_rings.push_back(r);
