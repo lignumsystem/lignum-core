@@ -106,8 +106,8 @@ class PineBudData{
 public:
   //A  couple of  constructors to  initialize members.  Recommended in
   //general.
-  PineBudData():state(ALIVE),fm(0.0),ip(1.0){}
-  PineBudData(double s, double fol, double rl):state(s),fm(fol),ip(rl){}
+  PineBudData():state(ALIVE),fm(0.0),ip(1.0),x(0.0),y(0.0),z(0.0){}
+    PineBudData(double s, double fol, double rl):state(s),fm(fol),ip(rl),x(0.0),y(0.0),z(0.0){}
   PineBudData(const PineBudData& pbd)
     :state(pbd.state),fm(pbd.fm),ip(pbd.ip),x(pbd.x),y(pbd.y),z(pbd.z){}
   double state; //ALIVE,DEAD, FLOWER, etc
