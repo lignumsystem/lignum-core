@@ -219,7 +219,7 @@ LGMdouble VoxelBox::getAreaDensity()
 	if (tmp_tau == 0.0){//wood
 	  tau = 0.0;
 	  space->hitw = space->hitw + 1;
-	  break;
+	  break;//sector blocked
 	}
 	else if (tmp_tau == 1.0){//no hit
 	  space->nohit = space->nohit + 1;
