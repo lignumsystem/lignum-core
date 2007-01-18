@@ -47,21 +47,28 @@ namespace Lignum {
     //VoxelBox::update Value  accesses private data  members--> friend 
     //declaration needed due to lack of access methods/functions
     friend class VoxelBox;
-    
-    template <class TS,class BUD>
-      friend void DumpCfTree(VoxelSpace &s, Tree<TS, BUD> &tree,int num_parts);
+    friend class InsertHwEllipse;
 
     template <class TS,class BUD>
-      friend void DumpCfTree(VoxelSpace &s, Tree<TS, BUD> &tree,int num_parts, bool wood);
+    friend void DumpCfTree(VoxelSpace &s, Tree<TS, BUD> &tree,int num_parts);
 
     template <class TS,class BUD>
-      friend void DumpCfTreeSegment(VoxelSpace &s, CfTreeSegment<TS, BUD> &ts,double num_parts);
+    friend void DumpCfTree(VoxelSpace &s, Tree<TS, BUD> &tree,int num_parts, bool wood);
 
+    template <class TS,class BUD>
+    friend void DumpCfTreeSegment(VoxelSpace &s, CfTreeSegment<TS, BUD> &ts,double num_parts);
+
+    //Conifers
     template <class TS>
-      friend void InsertVoxelObject(VoxelSpace& s, const TS& ts, 
+    friend void InsertVoxelObject(VoxelSpace& s, const TS& ts, 
 				  const PositionVector& dir, 
 				  double t,double beam_start,
 				  int segment_parts);
+    //Broadleaved trees with ellipse leaf model
+    template <class TS, class BUD>
+    friend void InsertVoxelObject(VoxelSpace& s, const HwTreeSegment<TS,BUD,Ellipse>& ts, 
+				  const PositionVector& d, 
+				  double t,int parts);
 
     template <class TS,class BUD>
     friend void SetCfTreeQabs(VoxelSpace &s, Tree<TS, BUD> &tree,int num_parts);
@@ -267,4 +274,4 @@ namespace Lignum {
 
 #endif
 #include "VoxelSpaceI.h"
-
+#include "VoxelSpaceRadiationI.h"

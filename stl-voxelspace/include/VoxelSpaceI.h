@@ -195,7 +195,99 @@ namespace Lignum {
     s.sgmnt = s.sgmnt + 1;
   }
 
-    
+  //Insert HwEllipse voxel  objects for the leaves in  the segments ts
+  //(c.f. InsertVoxelObject for conifercylinder)
+  class InsertHwEllipse{
+  public:
+    InsertHwEllipse(VoxelSpace& s1, const PositionVector& d1, 
+		    double t1, double beam_start1, int parts1)
+      :s(s1),d(d1),t(t1),parts(parts1){beam_start1=beam_start1;}
+    void operator()(BroadLeaf<Ellipse>* l)
+    {
+      int x1,y1,z1,x2,y2,z2;
+      x1=y1=z1=0;x2=y2=z2=-INT_MAX;
+      //Unique id for the HwEllipse objects denoting the same real leaf
+      int tag = s.book_keeper.newTag();
+      //We need the ellipse for the ray-ellipse intersection
+      Ellipse e(GetShape(*l));
+      //The new center point where  the HwEllipse voxel object will be
+      //inserted
+      PositionVector d0 = PositionVector(e.getCenterPoint())+t*d;
+      e.setCenterPoint(Point(d0));
+      x1 = s.getXindex(d0.getX());
+      y1 = s.getYindex(d0.getY());
+      z1 = s.getZindex(d0.getZ());
+      //Check for voxel space boundaries
+      if (x1 >= s.Xn || y1 >= s.Yn || z1 >= s.Zn){
+	cerr << "HwEllipse Ignoring element " << d0 << " " 
+	     << x1 << " " << y1 << " " << z1 <<endl;
+	return;
+      }
+      HwEllipse* hwe = new HwEllipse(e,GetValue(*l,LGAdof),
+				     GetValue(*l,LGAtauL),tag);
+      InsertVoxelObject(s.voxboxes[x1][y1][z1],hwe);
+ 
+      vector<Point> v;
+      e.getVertexVector(v,parts);
+      x2=x1;y2=y1;z2=z1;
+      for (unsigned int i = 0; i < v.size(); i++){
+	Point p = v[i];
+	x1 = s.getXindex(p.getX());
+	y1 = s.getYindex(p.getY());
+	z1 = s.getZindex(p.getZ());
+	//Check for voxel space boundaries
+	if (x1 >= s.Xn || y1 >= s.Yn || z1 >= s.Zn){
+	  cerr << "HwEllipse Ignoring element " << p << " " 
+	       << x1 << " " << y1 << " " << z1 <<endl;
+	  return;
+	}
+	//Check if still in the same box as in the previous case
+	if (!(x1==x2 && y1==y2 && z1==z2)){
+	  HwEllipse* hwe = new HwEllipse(e,GetValue(*l,LGAdof),
+					 GetValue(*l,LGAtauL),tag);
+	  InsertVoxelObject(s.voxboxes[x1][y1][z1],hwe);
+	}
+	x2=x1;y2=y1;z2=z1;
+      }
+      //Update  forest  descriptor.  Descriptive  data  for Leaf  Area
+      //Index.   Recall  after last  insertion  to  call updateLAI  to
+      //calculate  LAI as  Aftot/Avs  (foliage area  divided by  voxel
+      //space area 
+      //Foliage area in voxel space, take the true area of the leaf
+      SetValue(s.forest_descriptor,LGAAfb,
+	       GetValue(s.forest_descriptor,LGAAfb)+GetValue(*l,LGAA));
+      //Crown limit,take the center point of the leaf ellipse
+      SetValue(s.forest_descriptor,LGAcbase,e.getCenterPoint().getZ());
+      //Crown height,take the center point of the leaf ellipse
+      SetValue(s.forest_descriptor,LGAcbase,e.getCenterPoint().getZ());     
+      return;
+    }      
+  private:
+    VoxelSpace& s;//voxel space
+    const PositionVector& d;//direction to the location of the leaf
+    double t; //distance to the location of the leaf
+    int parts;//number of points on the  edge of ellipse user wants to
+	      //use when inserting the leaf into space
+  };
+
+
+  //Insert Ellipse leaves into  voxel space as HwEllipse voxel objects
+  //'d': the direction  to the new location, NOTE  it is assumed |d|=1
+  //'t': the distance to  the new location 
+  //'beam_start':  for  broadleaf  trees  this  is  dummy, needed  to
+  //               maintain  the overloaded interface with conifers.
+  //parts: for broadleaf trees the number of points on the boundary of
+  //the ellipse checked
+  template <class TS, class BUD>
+  void InsertVoxelObject(VoxelSpace& s, const HwTreeSegment<TS,BUD,Ellipse>& ts, 
+			 const PositionVector& d, 
+			 double t,double beam_start,int parts)
+  {
+    beam_start = beam_start;
+    for_each(GetLeafList(ts).begin(),GetLeafList(ts).end(),
+	     InsertHwEllipse(s,d,t,parts));
+  }
+
   template <class TS,class BUD>
     void DumpHwTree(VoxelSpace &s, Tree<TS, BUD> &tree)
   {
