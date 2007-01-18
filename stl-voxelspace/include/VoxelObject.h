@@ -105,4 +105,52 @@ private:
 	    //point of the segment)
 };
 
+class HwEllipse: public VoxelObject{
+public:
+  HwEllipse(const Ellipse& e1, double dof1, double tauL1, int tag1)
+    :VoxelObject(tag1),e(e1),dof(dof1),tauL(tauL1){}
+  HwEllipse(const HwEllipse& hwe)
+    :VoxelObject(hwe.getTag()),e(hwe.e),dof(hwe.dof),tauL(hwe.tauL){}
+  //Check if the beam hits the ellipse
+  //p: start point of the beam
+  //d: direction of the light beam
+  //length: returns the length light beam travels in foliage
+  //getRoute is virtual and for hardwood species 'length' is set to zero
+  int getRoute(const Point& p, const PositionVector& d,double& length)const
+  {
+    length = 0.0;
+    //Check for self hit
+    if (fabs(e.getCenterPoint() || p) < R_EPSILON){
+      return 0;//self hit
+      hit_self = true;
+    }
+    else if (e.intersectShape(p,d)){
+      return 1;//hit
+    }
+    else{
+      return 0;//no hit
+    }
+  }
+  //Calculate the extinction for this  leaf 
+  //p: start point of the beam
+  //d:  direction  of  the  light  beam 
+  //K:  Extinction  for conifers,  getExtinction  is  virtual and  for
+  //hardwood species K is not used
+  LGMdouble getExtinction(const Point& p, const PositionVector& d,
+			  const ParametricCurve& K)const
+  {
+    K(0.0);
+    double vp = 1.0;//clear sector
+    double length = 0.0;
+    int result = getRoute(p,d,length);
+    if (result == 1){
+      vp = 1.0-dof+dof*tauL;//extinction if hit
+    }
+    return vp;
+  }
+private:
+  Ellipse e;//Leaf ellipse
+  double dof;//Degree of filling of the leaf shape model
+  double tauL;//Extinction coefficient if beam hits the leaf shape
+};
 #endif
