@@ -355,7 +355,7 @@ void SetFunction(Tree<TS,BUD>& tree, ParametricCurve& f, LGMF name)
   }
 
   else if (name == LGMNB){
-    tree.tf.nb;
+    tree.tf.nb = f;
   }
 
   else if (name == LGMLONB){
