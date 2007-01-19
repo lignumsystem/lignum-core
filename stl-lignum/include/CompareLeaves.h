@@ -65,6 +65,39 @@ namespace Lignum{
     Firmament& f;
   };
 
+  //Given the sky, the  vector of radiation attenuation, calculate the
+  //Qabs  for the  leaf. This  is as  in LeafComputeQabs,  but  in the
+  //pairwise     comparison     there     is     first     call     to
+  //ForEachLeafComputeAttenuation.   There are now  many possibilities
+  //to calculate  the attenuation.  So I  thought it might  be good to
+  //separate this  Qabs to  its own functor.  NOTE that the  vrad must
+  //contain Qin from each sector (not just the attenuation coefficients)
+  template <class SH>
+  class LeafQabs{
+  public:
+    double calculateLeafQabs(const Firmament& f,vector<double>& vrad, BroadLeaf<SH>& leaf)const{
+      for (int i = 0; i < f.numberOfRegions();i++){
+	//'v' direction of the light beam
+	//'Io' radiant intensity from the sector 'i'
+	vector<double> v(3); 
+	//Take the direction to the i'th sector 
+	f.diffuseRegionRadiationSum(i,v);
+	//Leaf normal
+	const PositionVector& n1 = GetLeafNormal(leaf);
+	//The light beam direction
+	const PositionVector d1(v[0],v[1],v[2]);
+	//The lengths of the vectors n1 and d1 are 1.
+	//fabs: take the accute angle.
+	LGMdouble alpha = acos(fabs(Dot(n1,d1)));
+	//Qabs
+	vrad[i] = vrad[i]*cos(alpha)*GetValue(leaf,LGAA);
+      }
+      //Store values of Qabs of the leaf
+      LGMdouble QabsSum = accumulate(vrad.begin(),vrad.end(),0.0);
+      SetValue(leaf, LGAQabs, QabsSum);
+      return QabsSum;
+    }
+  };
 
   //Implementation of function operators of the functors follows
 
