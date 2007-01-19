@@ -36,19 +36,18 @@ namespace Lignum{
     int& CountCompartments<TS,BUD>::
     operator()(int& n,TreeCompartment<TS,BUD>* tc)const
     {
-      if (Axis<TS,BUD>* myaxis =  dynamic_cast<Axis<TS,BUD>*>(tc)){
+      if (dynamic_cast<Axis<TS,BUD>*>(tc)){
 	cout << "Hello, I'm Axis ";
       }
 
-      else if (BranchingPoint<TS,BUD>* mybp =
-	       dynamic_cast<BranchingPoint<TS,BUD>*>(tc)){
+      else if (dynamic_cast<BranchingPoint<TS,BUD>*>(tc)){
 	cout << "Hello, I'm BranchingPoint ";
       }
 
-      else if (TS* myts = dynamic_cast<TS*>(tc))
+      else if (dynamic_cast<TS*>(tc))
 	cout << "Hello, I'm TreeSegment ";
 
-      else if (Bud<TS,BUD>* mybud =  dynamic_cast<Bud<TS,BUD>*>(tc))
+      else if (dynamic_cast<Bud<TS,BUD>*>(tc))
 	cout << "Hello, I'm Bud ";
 
       else
@@ -64,19 +63,18 @@ namespace Lignum{
     int& CountCompartmentsReverse<TS,BUD>::
     operator()(int& n, TreeCompartment<TS,BUD>* tc)const
     {
-      if (Axis<TS,BUD>* myaxis =  dynamic_cast<Axis<TS,BUD>*>(tc)){
+      if (dynamic_cast<Axis<TS,BUD>*>(tc)){
 	cout << "Hello, I'm Axis ";
       }
 
-      else if (BranchingPoint<TS,BUD>* mybp =
-	       dynamic_cast<BranchingPoint<TS,BUD>*>(tc)){
+      else if (dynamic_cast<BranchingPoint<TS,BUD>*>(tc)){
 	cout << "Hello, I'm BranchingPoint ";
       }
 
-      else if (TS* myts = dynamic_cast<TS*>(tc))
+      else if (dynamic_cast<TS*>(tc))
 	cout << "Hello, I'm TreeSegment ";
 
-      else if (Bud<TS,BUD>* mybud =  dynamic_cast<Bud<TS,BUD>*>(tc))
+      else if (dynamic_cast<Bud<TS,BUD>*>(tc))
 	cout << "Hello, I'm Bud ";
 
       else
@@ -265,7 +263,7 @@ namespace Lignum{
       out << "Mean len of dead branches:         " << 0.0 << endl;
 
     out << "   Height, m    Diameter, cm,   HwDiameter, cm" << endl;
-    for(int i1 = 0; i1 < values.taper_hei.size(); i1++) {
+    for(unsigned int i1 = 0; i1 < values.taper_hei.size(); i1++) {
       out << "     " << values.taper_hei[i1] << "          " <<
 	200.0*values.taper_rad[i1]<< "          " <<
 	200.0*values.taper_radhw[i1] << endl;
@@ -275,7 +273,7 @@ namespace Lignum{
     out << "H of whorl, m     Mean branch l, m" << endl;
     out.setf(ios_base::fixed,ios_base::floatfield);
     out.precision(2);
-    for(int i1 = 0; i1 < values.mean_br_h.size(); i1++) {
+    for(unsigned int i1 = 0; i1 < values.mean_br_h.size(); i1++) {
       out << "     " << values.mean_br_h[i1] << "          " <<
 	values.mean_brl[i1] << endl;
 
@@ -305,7 +303,8 @@ namespace Lignum{
     LGMdouble d13hw = GetValue(tr,LGADbh);
     if(d13 < R_EPSILON) d13 = 0.0;
     if(d13 < R_EPSILON) d13hw = 0.0;
-    LGMdouble  dbhw= GetValue(tr, LGADbaseHw);
+    //Unused variable dbhw
+    //LGMdouble  dbhw= GetValue(tr, LGADbaseHw);
     LGMdouble  db= GetValue(tr, LGADbase);
 
     int noSeg0 = 0;
@@ -356,7 +355,7 @@ namespace Lignum{
 	list<Axis<TS,BUD>*>& axis_ls = GetAxisList(*mybp);
 	typename list<Axis<TS,BUD>*>::iterator first = axis_ls.begin();
 	typename list<Axis<TS,BUD>*>::iterator last = axis_ls.end();
-	for (int i = 0; i <axis_ls.size(); i++){
+	for (unsigned int i = 0; i <axis_ls.size(); i++){
 	  DisplayStructure(*first++);
 	}
 	//the end of the branching point
@@ -364,13 +363,13 @@ namespace Lignum{
 	cout << "}," << flush; 
       }
 
-      else if (TS* myts = dynamic_cast<TS*>(tc)){
+      else if (dynamic_cast<TS*>(tc)){
 	//the comma is because we know that a branching point will follow 
 	cout << "TS," << flush;
     
       }
 
-      else if (Bud<TS,BUD>* mybud =  dynamic_cast<Bud<TS,BUD>*>(tc)){
+      else if (dynamic_cast<Bud<TS,BUD>*>(tc)){
 	cout << "B" << flush;
       }
     }
@@ -598,7 +597,8 @@ namespace Lignum{
 	stru.num_segments++;
 	LGMdouble r_ = GetValue(*ts, LGAR);
 	LGMdouble l_ = GetValue(*ts, LGAL);
-	LGMdouble rh_ = GetValue(*ts, LGARh);
+	//Unused variable
+	//LGMdouble rh_ = GetValue(*ts, LGARh);
 	
 	Point ep = GetEndPoint(*ts);
 	if (stru.tHeight < ep.getZ())
@@ -638,7 +638,7 @@ namespace Lignum{
 	  stru.sum_Wb += GetValue(*ts,LGAWs)+GetValue(*ts,LGAWh);
 		
       }
-    else if (Bud<TS,BUD>* bud = dynamic_cast<Bud<TS,BUD>*>(tc))
+    else if (dynamic_cast<Bud<TS,BUD>*>(tc))
       {
 	stru.num_buds++;
       }

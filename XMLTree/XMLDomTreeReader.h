@@ -266,7 +266,6 @@ void XMLDomTreeReader<TS,BUD,S>::parseRootAxis(QDomNode& axisNode, Axis<TS, BUD>
   QDomNode child;
   QString tmp;
   double x, y, z;
-  bool nodeFound;
 
   while(!node.isNull()) {
     if(node.isElement()) {
@@ -1550,7 +1549,7 @@ void XMLDomTreeReader<TS,BUD,S>::parseEllipseBroadLeafAttributes(QDomNode& node,
       if(child.nodeName() == "RadiationVector") {
 	vector<double> rv(GetRadiationVector(*leaf).size());
 	tmp = child.toElement().text();
-	for(int i = 0; i < rv.size() ; i++) {
+	for(unsigned int i = 0; i < rv.size() ; i++) {
 	  rv[i] = tmp.section(' ', i, i).toDouble();
 	}
 	SetRadiationVector(*leaf, rv);
