@@ -9,7 +9,11 @@ CfTreeSegment<TS,BUD>::CfTreeSegment(const Point& p, const PositionVector& d,
 				     const METER rh, Tree<TS,BUD>* t)
   :TreeSegment<TS,BUD>(p,d,go,l,r,rh,t)
   {
+    //Specific leaf area, us tree level parameter by default
+    SetValue(*this,LGAsf,GetValue(*t,LGPsf));  
+    //Height of the foliage cylinder
     SetValue(*this,LGAHf,GetValue(*t,LGPnl)*sin(GetValue(*t,LGPna)));
+    //Radius to foliage limit
     SetValue(*this,LGARf,GetValue(*this,LGAR)+GetValue(*this,LGAHf));
     //compute the initial mass of the foliage
     //1. compute the surface area (Sa) of the segment cylinder
@@ -19,7 +23,6 @@ CfTreeSegment<TS,BUD>::CfTreeSegment(const Point& p, const PositionVector& d,
     //Remember original sapwood area As0 and foliage mass Wf0
     SetValue(*this,LGAAs0,GetValue(*this,LGAAs));
     SetValue(*this,LGAWf0,GetValue(*this,LGAWf));
-    
   }
 
 
@@ -29,7 +32,7 @@ LGMdouble GetValue(const CfTreeSegment<TS,BUD>& ts, const LGMAD name)
   if (name == LGAAf){
     //Given Wf use sf to compute foliage area: sf*Wf ((m2/kg)*kg) 
     //see also parameter af
-    return GetValue(GetTree(ts),LGPsf)*GetValue(ts,LGAWf);
+    return GetValue(ts,LGAsf)*GetValue(ts,LGAWf);
   }
   else if (name == LGAHf)
     return ts.cftsa.Hf;
@@ -52,9 +55,13 @@ LGMdouble GetValue(const CfTreeSegment<TS,BUD>& ts, const LGMAD name)
     else
       return GetValue(ts,LGAR);
   }
+
   else if (name == LGASa)
     //Wrap out the segment cylinder
     return 2.0*PI_VALUE*GetValue(ts,LGAR)*GetValue(ts,LGAL);
+
+  else if (name == LGAsf)
+    return ts.cftsa.sf;
 
   else if (name == LGAstarm)
     return ts.cftsa.starm;
@@ -100,6 +107,9 @@ LGMdouble SetValue(CfTreeSegment<TS,BUD>& ts, const LGMAD name, const LGMdouble 
     ts.cftsa.Rf = value;
     SetValue(ts,LGAHf,max(ts.cftsa.Rf-GetValue(ts,LGAR),0.0));
   }
+
+  else if (name == LGAsf)
+    ts.cftsa.sf = value;
 
   else if (name == LGAstarm)
     ts.cftsa.starm = value;

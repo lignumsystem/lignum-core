@@ -22,6 +22,9 @@ namespace Lignum{
     LGMdouble Qin;  //Irradiance of incoming radiation (MJ/m2)
     LGMdouble Qabs; //Amount of absorbed radiation (MJ) (during time step)
     METER Rf;       //Radius to foliage limit
+    LGMdouble sf;   //Specific  leaf area  m2/kgC.  Use  the  LGPsf as
+		    //default     in    the     constructors.    Other
+		    //implementations (e.g. sf= f(ip)) may follow)
     LGMdouble starm;//Star mean for the coniferous segment
     KGC Wf;         //Foliage mass of the tree segment
     KGC Wf0;        //Initial foliage mass of the tree segment
