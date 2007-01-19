@@ -1,6 +1,6 @@
 #ifndef VOXELSPACERADIATION_H
 #define VOXELSPACERADIATION_H
-
+#include <CompareLeaves.h>
 //The    multiplicative     extinction    coeffiecients.    Used    in
 //DiffuseVoxelSpaceRadiation.
 class AccumulateExtinction{
@@ -23,10 +23,10 @@ public:
 };
 
 
-template <class TS>
+template <class TS,class BUD>
 class AbsorbedRadiation{
 public:
-  double calculateAbsorbedCfRadiation(const TS& ts, const Firmament& f,
+  double calculateAbsorbedCfRadiation(const CfTreeSegment<TS,BUD>& ts, const Firmament& f,
 				      vector<double>&s, const ParametricCurve& K)const
   {
     vector<double> d(3,0.0);//the direction of the i'th sector
@@ -89,7 +89,7 @@ public:
 //height  of the crown  base, La  is leaf  area (sf*Wf)  and K  is the
 //extinction from Kelllomaki (K(0.2) is somewhat good approximate).
 template <class TS,class BUD>
-class DiffuseForestRadiation:public AbsorbedRadiation<TS>{
+class DiffuseForestRadiation:public AbsorbedRadiation<TS,BUD>{
 public:
   DiffuseForestRadiation(VoxelSpace& voxel_space,double Hc,double La, 
 			 const ParametricCurve& k,double dens,double start_point)
@@ -172,15 +172,46 @@ private:
 //is not used  but this same class can be used  for both. The incoming
 //light part is the same for both, but the 
 template <class TS,class BUD, class S=Ellipse>
-class PairwiseVoxelSpaceRadiation: public AbsorbedRadiation<TS>{
+class PairwiseVoxelSpaceRadiation: public AbsorbedRadiation<TS,BUD>{
 public:
   //Update 'star' and 'val_c' and 'val_b' for extinction in voxel boxes 
   PairwiseVoxelSpaceRadiation(VoxelSpace& voxel_space,const ParametricCurve& kfun,
 			      double start_point)
     :vs(voxel_space),K(kfun),sp(start_point){}
+  PairwiseVoxelSpaceRadiation(const PairwiseVoxelSpaceRadiation& r)
+    :vs(r.vs),K(r.K),sp(r.sp){}
+  //f: the sky
+  //sp: start point of the beam
+  //s: vector to contain Qin sector by sector
+  void calculatePairwiseQin(const Firmament& f,const Point& sp,vector<double>& s)const{
+    vector<double> d(3,0.0);//drection of the i'th sector
+    for (int i = 0; i < f.numberOfRegions(); i++){
+      vector<VoxelMovement> vm;
+      //The potential Qin (brightness of the sky sector)
+      s[i] = f.diffuseRegionRadiationSum(i,d);
+      PositionVector d1(d[0],d[1],d[2]);
+      //Reset the vector of voxel object tags to denote the beam has
+      //not hit any segment.
+      vs.getBookKeeper().resetVector();
+      //Lengths  of  the  light  beam  in different  boxes  and  the
+      //extinction coeffient. First, the border stand extinction
+      double tau = vs.getBorderStandExtinction(sp,d1);
+      if (tau > R_EPSILON){
+	//Do not bother  to traverse the voxels for  each sky sector
+	//if no light
+	vs.getRoute(vm,sp,d1,K,true);
+	//calculate the extinction coeffient
+	tau = tau*accumulate(vm.begin(),vm.end(),1.0,
+			     AccumulatePairwiseExtinction());
+      }
+      s[i] = s[i]*tau;//the Qin from one sector
+    }    
+  }
+  //For each segment compute the Qabs  
   void operator()(TreeCompartment<TS,BUD>* tc)const
   {
-    if (TS* ts = dynamic_cast<TS*>(tc)){
+    Firmament& f = GetFirmament(GetTree(*tc));
+    if (CfTreeSegment<TS,BUD>* ts = dynamic_cast<CfTreeSegment<TS,BUD>*>(tc)){
       SetValue(*ts, LGAQin, 0.0);
       SetValue(*ts, LGAQabs, 0.0);
       //Radiation  conditions are not  evaluated if  the segment  has no
@@ -189,48 +220,35 @@ public:
       if (GetValue(*ts, LGAWf) < R_EPSILON || GetValue(*ts, LGAL) < R_EPSILON){
 	return;
       }
-      //1) Calculate Qin, incoming radiation
-      Firmament& f = GetFirmament(GetTree(*ts));
-      vector<double> d(3,0.0);//the direction of the i'th sector
       //s contains Qin sector by sector
       vector<double> s(f.numberOfRegions(),0.0);
       Point p1 = GetPoint(*ts,sp);//start point of the beam on the segment
-      //the Qin sector by sector
-      for (int i = 0; i < f.numberOfRegions(); i++){
-	vector<VoxelMovement> vm;
-	s[i] = f.diffuseRegionRadiationSum(i,d);
-	PositionVector d1(d[0],d[1],d[2]);
-	//Reset the vector of voxel object tags to denote the beam has
-	//not hit any segment.
-	vs.getBookKeeper().resetVector();
-	//Lengths  of  the  light  beam  in different  boxes  and  the
-	//extinction coeffient. First, the border stand extinction
-	double tau = vs.getBorderStandExtinction(p1,d1);
-	if (tau > R_EPSILON){
-	  //Do not bother  to traverse the voxels for  each sky sector
-	  //if no light
-	  vs.getRoute(vm,p1,d1,K,true);
-	  //calculate the extinction coeffient
-	  tau = tau*accumulate(vm.begin(),vm.end(),1.0,
-			       AccumulatePairwiseExtinction());
-	}
-	s[i] = s[i]*tau;//the Qin from one sector
-      }
+      //1. the Qin sector by sector
+      calculatePairwiseQin(f,p1,s);
       MJ Qin = accumulate(s.begin(),s.end(),0.0);
       //Qin is needed in calculateAbsorbedRadiation
       SetValue(*ts, LGAQin, Qin);
       //2. Calculate now how much segment absorbs from incoming radation.
-      //2.1. Conifer part
-      if (dynamic_cast<CfTreeSegment<TS,BUD>*>(tc)){
-	MJ Qabs = calculateAbsorbedCfRadiation(*ts,f,s,K);
-	SetValue(*ts, LGAQabs, Qabs);
+      MJ Qabs = calculateAbsorbedCfRadiation(*ts,f,s,K);
+      SetValue(*ts, LGAQabs, Qabs);
+    }//end if (CfTreeSegment<TS,BUD>...
+    //For hardwood species compute Qabs for each leaf
+    else if (HwTreeSegment<TS,BUD,S>* ts = dynamic_cast<HwTreeSegment<TS,BUD,S>*>(tc)){
+      list<BroadLeaf<S>*>& ls = GetLeafList(*ts);
+      LeafQabs<S> lqabs;//From CompareLeaves.h
+      typename list<BroadLeaf<S>*>::iterator it=ls.begin();
+       for (it = ls.begin(); it != ls.end(); it++){
+	//s contains Qin sector by sector
+	vector<double> s(f.numberOfRegions(),0.0);
+	BroadLeaf<S>* l = *it;
+	Point p1 = GetCenterPoint(*l);//start point of the beam on the segment
+	//the Qin sector by sector
+	calculatePairwiseQin(f,p1,s);
+	MJ Qin = accumulate(s.begin(),s.end(),0.0);
+	SetValue(*l,LGAQin,Qin);
+	lqabs.calculateLeafQabs(f,s,*l);
       }
-      //2.2. Hardwood part
-      else{
-	cout << "Hardwood part here" <<endl;
-      }
-    }//end if TS
-    return;
+     }//end if ((HwTreeSegment<TS,BUD,S>*
   }//end operator
 private:
   VoxelSpace& vs;
@@ -254,7 +272,7 @@ private:
 //homogenous layer  of foliage  in canopy (implemented  in Firmament).
 //Usage: ForEach(tree,DiffuseVoxelSpaceRadiation(voxel_space,K));
 template <class TS,class BUD>
-class DiffuseVoxelSpaceRadiation: public AbsorbedRadiation<TS>{
+class DiffuseVoxelSpaceRadiation: public AbsorbedRadiation<TS,BUD>{
 public:
   //Update 'star' and 'val_c' and 'val_b' for extinction in voxel boxes 
   DiffuseVoxelSpaceRadiation(VoxelSpace& voxel_space,const ParametricCurve& kfun,
