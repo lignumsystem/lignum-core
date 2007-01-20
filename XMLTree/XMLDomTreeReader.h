@@ -338,7 +338,7 @@ Axis<TS, BUD>* XMLDomTreeReader<TS,BUD,S>::parseAxis(QDomNode& axisNode, Tree<TS
   PositionVector v;
   QString tmp;
   double x, y, z;
-  Axis<TS,BUD>* axis;
+  Axis<TS,BUD>* axis=NULL;
   
   // Search the axis attributes in the XML-document.
   while(!node.isNull()) {
@@ -419,11 +419,12 @@ Axis<TS, BUD>* XMLDomTreeReader<TS,BUD,S>::parseAxis(QDomNode& axisNode, Tree<TS
  */
 template <class TS, class BUD, class S>
 TS* XMLDomTreeReader<TS,BUD,S>::parseTreeSegment(QDomNode& node, Tree<TS,BUD>& tree) {
-  TS* ts;
+  TS* ts=NULL;
   QDomNode node2 = node.firstChild();
   Point p;
   PositionVector v;
   double x, y, z, go, l, r, rh;
+  x=y=z=go=l=r=rh=0.0;
   QString tmp;
 
   // Search the attribute node of the tree segment
@@ -520,7 +521,7 @@ BranchingPoint<TS,BUD>* XMLDomTreeReader<TS,BUD,S>::parseBranchingPoint(QDomNode
   PositionVector v;
   QString tmp;
   double x, y, z;
-  BranchingPoint<TS,BUD>* bpoint;
+  BranchingPoint<TS,BUD>* bpoint=NULL;
 
   // Search the attribute node.
   while(!node.isNull()) {
@@ -587,7 +588,8 @@ BUD* XMLDomTreeReader<TS,BUD,S>::parseBud(QDomNode& bNode, Tree<TS,BUD>& tree) {
   PositionVector v;
   QString tmp;
   double x, y, z, omega;
-  BUD* bud;
+  x=y=z=omega=0.0;
+  BUD* bud=NULL;
 
   // Search the attribute node
   while(!node.isNull()) {
@@ -766,11 +768,12 @@ BroadLeaf<Triangle>* XMLDomTreeReader<TS,BUD,S>::parseTriangleBroadLeaf(QDomNode
 
 template <class TS, class BUD, class S>
 BroadLeaf<cxxadt::Ellipse>* XMLDomTreeReader<TS,BUD,S>::parseEllipseBroadLeaf(QDomNode& leafNode) {
-  BroadLeaf<cxxadt::Ellipse>* leaf;
+  BroadLeaf<cxxadt::Ellipse>* leaf=NULL;
   QDomNode node = leafNode.firstChild();
   QDomNode child;
   double sf, tauL, dof, x, y, z, eminor, emajor;
-  int number_of_sectors;
+  sf=tauL=dof=x=y=z=eminor=emajor=0.0;
+  int number_of_sectors=0;
   Point pstart;
   Point pend;
   
