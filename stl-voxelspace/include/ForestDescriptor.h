@@ -37,7 +37,7 @@ inline double SetValue(ForestDescriptor& fd, LGMAD name, double value)
   if (name == LGAAfb){
     fd.afb = value;
   }
-  if (name == LGAAfc){
+  else if (name == LGAAfc){
     fd.afc = value;
   }
   //The lowest segment having foliage
@@ -45,7 +45,7 @@ inline double SetValue(ForestDescriptor& fd, LGMAD name, double value)
     if (value < fd.cbase)
       fd.cbase = value;
   }
-   else if (name == LGAH){
+  else if (name == LGAH){
     if (value > fd.h)
       fd.h = value;
   }
