@@ -60,15 +60,15 @@ namespace Lignum {
 
     //Conifers
     template <class TS>
-    friend void InsertVoxelObject(VoxelSpace& s, const TS& ts, 
-				  const PositionVector& dir, 
-				  double t,double beam_start,
-				  int segment_parts);
+    friend void InsertCfVoxelObject(VoxelSpace& s, const TS& ts, 
+				    const PositionVector& dir, 
+				    double t,double beam_start,
+				    int segment_parts);
     //Broadleaved trees with ellipse leaf model
-    template <class TS, class BUD>
-    friend void InsertVoxelObject(VoxelSpace& s, const HwTreeSegment<TS,BUD,Ellipse>& ts, 
-				  const PositionVector& d, 
-				  double t,int parts);
+    template <class TS, class BUD,class S>
+    friend void InsertHwVoxelObject(VoxelSpace& s, HwTreeSegment<TS,BUD,S>& ts, 
+				    const PositionVector& d, 
+				    double t,int parts);
 
     template <class TS,class BUD>
     friend void SetCfTreeQabs(VoxelSpace &s, Tree<TS, BUD> &tree,int num_parts);

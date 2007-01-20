@@ -135,9 +135,9 @@ namespace Lignum {
   //              itself)
   //parts: number of parts the segment will be divived  
   template <class TS>
-  void InsertVoxelObject(VoxelSpace& s, const TS& ts, 
-			 const PositionVector& d, 
-			 double t, double beam_start, int parts)
+  void InsertCfVoxelObject(VoxelSpace& s, const TS& ts, 
+			   const PositionVector& d, 
+			   double t, double beam_start, int parts)
   {
     //If the  user wants 1  part, we take  the mid point of the  segment. 
     //2 parts means 1/3 and 2/3. 3 parts means 1/4, 2/4 and 3/4 etc.
@@ -200,8 +200,8 @@ namespace Lignum {
   class InsertHwEllipse{
   public:
     InsertHwEllipse(VoxelSpace& s1, const PositionVector& d1, 
-		    double t1, double beam_start1, int parts1)
-      :s(s1),d(d1),t(t1),parts(parts1){beam_start1=beam_start1;}
+		    double t1, int parts1)
+      :s(s1),d(d1),t(t1),parts(parts1){}
     void operator()(BroadLeaf<Ellipse>* l)
     {
       int x1,y1,z1,x2,y2,z2;
@@ -217,8 +217,9 @@ namespace Lignum {
       x1 = s.getXindex(d0.getX());
       y1 = s.getYindex(d0.getY());
       z1 = s.getZindex(d0.getZ());
+      cout << x1 << " " << y1 << " "  << z1 << endl;
       //Check for voxel space boundaries
-      if (x1 >= s.Xn || y1 >= s.Yn || z1 >= s.Zn){
+      if (x1 >= s.Xn || y1 >= s.Yn || z1 >= s.Zn || x1 < 0 || y1 < 0 || z1 < 0){
 	cerr << "HwEllipse Ignoring element " << d0 << " " 
 	     << x1 << " " << y1 << " " << z1 <<endl;
 	return;
@@ -226,7 +227,6 @@ namespace Lignum {
       HwEllipse* hwe = new HwEllipse(e,GetValue(*l,LGAdof),
 				     GetValue(*l,LGAtauL),tag);
       InsertVoxelObject(s.voxboxes[x1][y1][z1],hwe);
- 
       vector<Point> v;
       e.getVertexVector(v,parts);
       x2=x1;y2=y1;z2=z1;
@@ -235,8 +235,9 @@ namespace Lignum {
 	x1 = s.getXindex(p.getX());
 	y1 = s.getYindex(p.getY());
 	z1 = s.getZindex(p.getZ());
+	cout << x1 << " "  << y1 << " "  <<z1 <<endl;
 	//Check for voxel space boundaries
-	if (x1 >= s.Xn || y1 >= s.Yn || z1 >= s.Zn){
+	if (x1 >= s.Xn || y1 >= s.Yn || z1 >= s.Zn|| x1 < 0 || y1 < 0 || z1 < 0 ){
 	  cerr << "HwEllipse Ignoring element " << p << " " 
 	       << x1 << " " << y1 << " " << z1 <<endl;
 	  return;
@@ -259,7 +260,7 @@ namespace Lignum {
       //Crown limit,take the center point of the leaf ellipse
       SetValue(s.forest_descriptor,LGAcbase,e.getCenterPoint().getZ());
       //Crown height,take the center point of the leaf ellipse
-      SetValue(s.forest_descriptor,LGAcbase,e.getCenterPoint().getZ());     
+      SetValue(s.forest_descriptor,LGAH,e.getCenterPoint().getZ()); 
       return;
     }      
   private:
@@ -278,16 +279,15 @@ namespace Lignum {
   //               maintain  the overloaded interface with conifers.
   //parts: for broadleaf trees the number of points on the boundary of
   //the ellipse checked
-  template <class TS, class BUD>
-  void InsertVoxelObject(VoxelSpace& s, const HwTreeSegment<TS,BUD,Ellipse>& ts, 
-			 const PositionVector& d, 
-			 double t,double beam_start,int parts)
+  template <class TS,class BUD,class S>
+  void InsertHwVoxelObject(VoxelSpace& s,HwTreeSegment<TS,BUD,S>& ts, 
+			   const PositionVector& d, 
+			   double t,int parts)
   {
-    beam_start = beam_start;
     for_each(GetLeafList(ts).begin(),GetLeafList(ts).end(),
 	     InsertHwEllipse(s,d,t,parts));
   }
-
+  
   template <class TS,class BUD>
     void DumpHwTree(VoxelSpace &s, Tree<TS, BUD> &tree)
   {

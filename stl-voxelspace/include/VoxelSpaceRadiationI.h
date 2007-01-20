@@ -170,11 +170,13 @@ private:
 //comparing only to the shading objects on path of the light ray.  For
 //hardwood the leaf shape is  by default is Ellipse. For conifers this
 //is not used  but this same class can be used  for both. The incoming
-//light part is the same for both, but the 
+//light part is the same for both, but the Qabs part is different.
 template <class TS,class BUD, class S=Ellipse>
 class PairwiseVoxelSpaceRadiation: public AbsorbedRadiation<TS,BUD>{
 public:
-  //Update 'star' and 'val_c' and 'val_b' for extinction in voxel boxes 
+  //Constructor for harwoods, K not needed, beam_start center of the leaf
+  PairwiseVoxelSpaceRadiation(VoxelSpace& voxel_space):vs(voxel_space),K(0.14),sp(0.5){}
+  //Constructor for conifers (K extinction, beam start_point [0:1] on the segment
   PairwiseVoxelSpaceRadiation(VoxelSpace& voxel_space,const ParametricCurve& kfun,
 			      double start_point)
     :vs(voxel_space),K(kfun),sp(start_point){}
@@ -328,19 +330,19 @@ private:
   double sp;//Start point [0:1] of the light beam on the segment
 };
 
-template <class TS, class BUD>
-class InsertVoxelObjects{
+template <class TS,class BUD>
+class InsertCfVoxelObjects{
 public:
-  InsertVoxelObjects(const InsertVoxelObjects& ivo):
+  InsertCfVoxelObjects(const InsertCfVoxelObjects& ivo):
     vs(ivo.vs),d(ivo.d),dist(ivo.dist),sp(ivo.sp),parts(ivo.parts){}			    
-  InsertVoxelObjects(VoxelSpace& space, const PositionVector& dir, double distance, 
+  InsertCfVoxelObjects(VoxelSpace& space, const PositionVector& dir, double distance, 
 		     double beam_start, int num_parts)
     :vs(space),d(dir),dist(distance),sp(beam_start),parts(num_parts){}
   void operator()(TreeCompartment<TS,BUD>* tc)const
   {
     if (TS* ts = dynamic_cast<TS*>(tc)){
-      if (GetValue(*ts,LGAWf) > R_EPSILON) 
-        InsertVoxelObject(vs,*ts,d,dist,sp,parts);
+	if (GetValue(*ts,LGAWf) > R_EPSILON) 
+	  InsertCfVoxelObject(vs,*ts,d,dist,sp,parts);
     }
     return;
   }
@@ -353,4 +355,51 @@ private:
   int parts;//number of segment parts
 };
 
+template <class TS,class BUD,class S>
+class InsertHwVoxelObjects{
+public:
+  InsertHwVoxelObjects(const InsertHwVoxelObjects& ivo):
+    vs(ivo.vs),d(ivo.d),dist(ivo.dist),parts(ivo.parts){}			    
+  InsertHwVoxelObjects(VoxelSpace& space, const PositionVector& dir, double distance, 
+		       int num_parts)
+    :vs(space),d(dir),dist(distance),parts(num_parts){}
+  void operator()(TreeCompartment<TS,BUD>* tc)const
+  {
+    if (HwTreeSegment<TS,BUD,S>* ts = dynamic_cast<HwTreeSegment<TS,BUD,S>*>(tc)){
+      InsertHwVoxelObject(vs,*ts,d,dist,parts);
+    }
+    return;
+  }
+private:
+  VoxelSpace& vs;
+  const PositionVector d;//direction to insert
+  double dist;//distance where to insert
+  int parts;//number of points on the ellipse
+};
+
+template <class TS, class BUD, class S=Ellipse> 
+class InsertVoxelObjects{
+public:
+  InsertVoxelObjects(VoxelSpace& vs1, const PositionVector& d1,
+		     double t1,double sp1,double parts1)
+    :vs(vs1),d(d1),t(t1),sp(sp1),parts(parts1){}
+  InsertVoxelObjects(const InsertVoxelObjects& ivo)
+    :vs(ivo.vs),d(ivo.d),t(ivo.t),sp(ivo.sp),parts(ivo.parts){}
+  void operator()(TreeCompartment<TS,BUD>* tc)const{
+    if (HwTreeSegment<TS,BUD,S>* ts = dynamic_cast<HwTreeSegment<TS,BUD,S>*>(tc)){
+      InsertHwVoxelObject(vs,*ts,d,t,parts);
+    }
+    else if (TS* ts = dynamic_cast<TS*>(tc)){
+      if (GetValue(*ts,LGAWf) > R_EPSILON) 
+	InsertCfVoxelObject(vs,*ts,d,t,sp,parts);
+    }
+  }
+private:
+  VoxelSpace& vs;
+  const PositionVector& d;
+  double t;
+  double sp;
+  double parts;
+};
+  
 #endif
