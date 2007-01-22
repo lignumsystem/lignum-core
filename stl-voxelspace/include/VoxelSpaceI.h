@@ -206,8 +206,7 @@ namespace Lignum {
     {
       int x1,y1,z1,x2,y2,z2;
       x1=y1=z1=0;x2=y2=z2=-INT_MAX;
-      //Unique id for the HwEllipse objects denoting the same real leaf
-      int tag = s.book_keeper.newTag();
+ 
       //We need the ellipse for the ray-ellipse intersection
       Ellipse e(GetShape(*l));
       //The new center point where  the HwEllipse voxel object will be
@@ -217,13 +216,14 @@ namespace Lignum {
       x1 = s.getXindex(d0.getX());
       y1 = s.getYindex(d0.getY());
       z1 = s.getZindex(d0.getZ());
-      cout << x1 << " " << y1 << " "  << z1 << endl;
       //Check for voxel space boundaries
       if (x1 >= s.Xn || y1 >= s.Yn || z1 >= s.Zn || x1 < 0 || y1 < 0 || z1 < 0){
 	cerr << "HwEllipse Ignoring element " << d0 << " " 
 	     << x1 << " " << y1 << " " << z1 <<endl;
 	return;
       }
+      //Unique id for the HwEllipse objects denoting the same real leaf
+      int tag = s.book_keeper.newTag(); 
       HwEllipse* hwe = new HwEllipse(e,GetValue(*l,LGAdof),
 				     GetValue(*l,LGAtauL),tag);
       InsertVoxelObject(s.voxboxes[x1][y1][z1],hwe);
