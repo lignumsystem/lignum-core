@@ -46,6 +46,9 @@ using namespace std;
 //               Usage: Point p(0,0,0);
 //                      SortLeaves<SH> sorter(p);
 //                      ls.sort(sorter);
+//   SortLeavesHeight: sort leaves (returned by CollectLeaves) in height, smallest midpoint 'z' first
+//               Usage: SortLeaves<SH> sorter(p);
+//                      ls.sort(sorter);
 //   CrownVolume
 //   MainAxisVolume: Usage MainAxisVolume vol; double v = vol(tree);
 //   SetRTopToR: Set LGARTop to LGAR: SetValue(ts,LGARTop, GetValue(*ts,LGAR)). 
@@ -616,7 +619,17 @@ namespace Lignum{
     Point p;
   };
 
-
+  //Sort leaves, leaf with smallest midpoint 'z' first
+  template <class SH>
+  class SortLeavesHeight{
+  public:
+    bool operator()(const BroadLeaf<SH>* l1, const BroadLeaf<SH>* l2){
+      const Point& p1 = GetCenterPoint(*l1);
+      const Point& p2 = GetCenterPoint(*l2);
+      return p1.getZ() <= p2.getZ();
+    }
+  };
+  
 //   CrownVolume
 // For explanation how it works, look for TreeFunctorI.h
 
