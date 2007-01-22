@@ -1060,13 +1060,9 @@ namespace Lignum {
 		    vector<VoxelMovement> vec;		
 		    getRoute(vec, i1, i2, i3, radiation_direction);
 		    int size = vec.size();
-                    cout<<"size: "<<size<<endl;
-                   
+                                       
 		    //other boxes
 		    if (size>1){
-		      if (i == 4){
-			cout << "Rdir " <<  radiation_direction << endl;
-		      }
 		      for (int a=1; a<size; a++)
 			{
 			  VoxelMovement v1 = vec[a-1];
