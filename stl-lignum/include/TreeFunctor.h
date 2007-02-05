@@ -46,9 +46,15 @@ using namespace std;
 //               Usage: Point p(0,0,0);
 //                      SortLeaves<SH> sorter(p);
 //                      ls.sort(sorter);
-//   SortLeavesHeight: sort leaves (returned by CollectLeaves) in height, smallest midpoint 'z' first
-//               Usage: SortLeaves<SH> sorter(p);
-//                      ls.sort(sorter);
+//   SortLeavesHeight:  sort  leaves  (returned by  CollectLeaves)  in
+//               height defined by BinaryPredicate (see STL)
+//             Usage:
+//               SortLeavesHeight<SH,BinaryPredicate>           sorter; 
+//               ls.sort(sorter);
+//             To sort in descending order (lowest leaf first)
+//               SortLeavesHeight<Ellipse,less_equal<double> > sorter;
+//             To sort in ascending order
+//               SortLeavesHeight<Ellipse,greater_equal<double> > sorter;
 //   CrownVolume
 //   MainAxisVolume: Usage MainAxisVolume vol; double v = vol(tree);
 //   SetRTopToR: Set LGARTop to LGAR: SetValue(ts,LGARTop, GetValue(*ts,LGAR)). 
@@ -620,14 +626,17 @@ namespace Lignum{
   };
 
   //Sort leaves, leaf with smallest midpoint 'z' first
-  template <class SH>
+  template <class SH,class BinaryPredicate>
   class SortLeavesHeight{
   public:
+    SortLeavesHeight():f(BinaryPredicate()){}
     bool operator()(const BroadLeaf<SH>* l1, const BroadLeaf<SH>* l2){
       const Point& p1 = GetCenterPoint(*l1);
       const Point& p2 = GetCenterPoint(*l2);
-      return p1.getZ() <= p2.getZ();
+      return f(p1.getZ(),p2.getZ());
     }
+  private:
+    const BinaryPredicate f;
   };
   
 //   CrownVolume
