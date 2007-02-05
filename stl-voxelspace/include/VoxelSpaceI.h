@@ -200,8 +200,8 @@ namespace Lignum {
   class InsertHwEllipse{
   public:
     InsertHwEllipse(VoxelSpace& s1, const PositionVector& d1, 
-		    double t1, int parts1)
-      :s(s1),d(d1),t(t1),parts(parts1){}
+		    double t1, int parts1, bool leaf1)
+      :s(s1),d(d1),t(t1),parts(parts1),leaf(leaf1){}
     void operator()(BroadLeaf<Ellipse>* l)
     {
       int x1,y1,z1,x2,y2,z2;
@@ -224,8 +224,15 @@ namespace Lignum {
       }
       //Unique id for the HwEllipse objects denoting the same real leaf
       int tag = s.book_keeper.newTag(); 
-      HwEllipse* hwe = new HwEllipse(e,GetValue(*l,LGAdof),
-				     GetValue(*l,LGAtauL),tag);
+      HwEllipse* hwe = NULL;
+      if (leaf){
+	hwe = new HwEllipse(e,GetValue(*l,LGAdof),
+			    GetValue(*l,LGAtauL),tag,l);
+      }
+      else{
+	hwe = new HwEllipse(e,GetValue(*l,LGAdof),
+			    GetValue(*l,LGAtauL),tag,NULL);
+      }
       InsertVoxelObject(s.voxboxes[x1][y1][z1],hwe);
       vector<Point> v;
       e.getVertexVector(v,parts);
@@ -244,8 +251,14 @@ namespace Lignum {
 	}
 	//Check if still in the same box as in the previous case
 	if (!(x1==x2 && y1==y2 && z1==z2)){
-	  HwEllipse* hwe = new HwEllipse(e,GetValue(*l,LGAdof),
-					 GetValue(*l,LGAtauL),tag);
+	  if (leaf){//use the leaf itself
+	    hwe = new HwEllipse(e,GetValue(*l,LGAdof),
+				GetValue(*l,LGAtauL),tag,l);
+	  }
+	  else{//use only the geometric information
+	    hwe = new HwEllipse(e,GetValue(*l,LGAdof),
+				GetValue(*l,LGAtauL),tag,NULL);
+	  }
 	  InsertVoxelObject(s.voxboxes[x1][y1][z1],hwe);
 	}
 	x2=x1;y2=y1;z2=z1;
@@ -269,6 +282,7 @@ namespace Lignum {
     double t; //distance to the location of the leaf
     int parts;//number of points on the  edge of ellipse user wants to
 	      //use when inserting the leaf into space
+    bool leaf;//insert the leaf itself too
   };
 
 
@@ -279,13 +293,17 @@ namespace Lignum {
   //               maintain  the overloaded interface with conifers.
   //parts: for broadleaf trees the number of points on the boundary of
   //the ellipse checked
+  //leaf: insert the leaf itself too
   template <class TS,class BUD,class S>
   void InsertHwVoxelObject(VoxelSpace& s,HwTreeSegment<TS,BUD,S>& ts, 
 			   const PositionVector& d, 
-			   double t,int parts)
+			   double t,int parts, bool leaf)
   {
+    //To expand to Triangle leaves, take out the first leaf. Check its
+    //type (Triangle  or Ellipse)  and call either  InsertHwEllipse or
+    //InsertHwTriangle)
     for_each(GetLeafList(ts).begin(),GetLeafList(ts).end(),
-	     InsertHwEllipse(s,d,t,parts));
+	     InsertHwEllipse(s,d,t,parts,leaf));
   }
   
   template <class TS,class BUD>
