@@ -107,10 +107,10 @@ private:
 
 class HwEllipse: public VoxelObject{
 public:
-  HwEllipse(const Ellipse& e1, double dof1, double tauL1, int tag1)
-    :VoxelObject(tag1),e(e1),dof(dof1),tauL(tauL1){}
+  HwEllipse(const Ellipse& e1, double dof1, double tauL1, int tag1, BroadLeaf<Ellipse>* leaf1)
+    :VoxelObject(tag1),e(e1),dof(dof1),tauL(tauL1),leaf(leaf1){}
   HwEllipse(const HwEllipse& hwe)
-    :VoxelObject(hwe.getTag()),e(hwe.e),dof(hwe.dof),tauL(hwe.tauL){}
+    :VoxelObject(hwe.getTag()),e(hwe.e),dof(hwe.dof),tauL(hwe.tauL),leaf(hwe.leaf){}
   //Check if the beam hits the ellipse
   //p: start point of the beam
   //d: direction of the light beam
@@ -119,12 +119,18 @@ public:
   int getRoute(const Point& p, const PositionVector& d,double& length)const
   {
     length = 0.0;
-    //Check for self hit
-    if (fabs(e.getCenterPoint() || p) < R_EPSILON){
-      return 0;//self hit
-      hit_self = true;
+    //Use the geometric information
+    Ellipse ellipse(e);
+    //Use the leaf itself
+    if (leaf){
+      ellipse = GetShape(*leaf);
     }
-    else if (e.intersectShape(p,d)){
+    //Check for self hit    
+    if (fabs(ellipse.getCenterPoint() || p) < R_EPSILON){
+      hit_self = true;
+      return 0;//self hit
+    }
+    else if (ellipse.intersectShape(p,d)){
       return 1;//hit
     }
     else{
@@ -152,5 +158,6 @@ private:
   Ellipse e;//Leaf ellipse
   double dof;//Degree of filling of the leaf shape model
   double tauL;//Extinction coefficient if beam hits the leaf shape
+  BroadLeaf<Ellipse>* leaf;//the leaf itself
 };
 #endif
