@@ -92,6 +92,7 @@ public:
 	    const PositionVector& leaf_normal);
   BroadLeaf(const  SHAPE& shape, const Petiole& petiole, 
 	    const PositionVector& leaf_normal, int sky_sectors);
+  BroadLeaf(const BroadLeaf& bl):bla(bl.bla) {}
   void photosynthesis(const LGMdouble& p0);
 private:
   BroadLeafAttributes<SHAPE> bla;
