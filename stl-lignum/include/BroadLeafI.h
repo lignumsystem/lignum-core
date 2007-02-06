@@ -2,6 +2,13 @@
 #define BROADLEAFI_H
 
 namespace Lignum{
+  template <class SHAPE>
+  BroadLeafAttributes<SHAPE>::BroadLeafAttributes(const BroadLeafAttributes& bla)
+    :degree_of_filling(bla.degree_of_filling),sf(bla.sf),tauL(bla.tauL),
+     P(bla.P),M(bla.M),Qin(bla.Qin),Qabs(bla.Qabs),petiole(petiole),
+     leaf_normal(bla.leaf_normal),shape(bla.shape),sv(bla.sv)
+  {
+  }
 
 template <class SHAPE>  
 BroadLeaf<SHAPE>::BroadLeaf(LGMdouble sf,LGMdouble tauL,LGMdouble dof,int number_of_sectors,

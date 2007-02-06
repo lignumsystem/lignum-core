@@ -17,6 +17,7 @@ class Petiole{
   friend void SetEndPoint(Petiole& p, const Point& pnt);
   friend PositionVector GetDirection(const Petiole& p);
 public:
+  Petiole(const Petiole& p);
   Petiole(const Point& begin, const Point& end);
 private:
   Point begin;
@@ -26,6 +27,7 @@ private:
 template <class SHAPE>
 class BroadLeafAttributes{
 public:
+  BroadLeafAttributes(const BroadLeafAttributes& bla);
   BroadLeafAttributes(double sf1,double tauL1,double dof1, const Petiole& petiole1,
 		      const PositionVector& leaf_normal, const SHAPE& shape1, 
 		      int number_of_sectors);
