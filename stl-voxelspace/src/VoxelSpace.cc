@@ -723,9 +723,10 @@ namespace Lignum {
     double tdist = R_HUGE;
     if (it == v.end()){
       cerr << "No Exit point from voxel space (All t < 0). Error!!!" << endl;
-      cout << d0 <<endl;
-      cout << dir <<endl;
-      copy(v.begin(),v.end(),ostream_iterator<double>(cout," "));
+      cerr << "Start point " << d0 <<endl;
+      cerr << "Beam direction " << dir <<endl;
+      cerr << "t1,....,t6 " << flush;
+      copy(v.begin(),v.end(),ostream_iterator<double>(cerr," "));
       cerr << endl;
     }
     else{
