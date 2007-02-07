@@ -28,6 +28,11 @@ void VOBookKeeper::reset()
   tag = 0;
 }
 
+void VOBookKeeper::init()
+{
+  initVector();
+}
+
 void VOBookKeeper::initVector()
 {
   v.resize(tag,false);

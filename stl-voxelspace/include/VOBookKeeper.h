@@ -14,6 +14,7 @@ public:
   void resetVector();//Call before each light beam (v[i] must be false)
   void reset(); //Call  before InsertVoxelObjects  (v.size() ==  0 and
 		//tag = 0)
+  void init();//Call after InsertVoxelObjects
   void initVector();//Call after InsertVoxelObjects (v.size() == tag
 		    //and v[i] == false
 private:
