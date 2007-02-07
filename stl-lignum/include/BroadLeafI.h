@@ -213,6 +213,15 @@ void SetLeafPosition(BroadLeaf<SHAPE>& bl, const Point& p)
 }
 
 
+template <class SHAPE>  
+void Roll(const BroadLeaf<SHAPE>& bl, const double& angle)
+{
+  return bl.bla.shape.roll(angle);
+}
+
+
+
+
 }//closing namespace Lignum
 
 #endif
