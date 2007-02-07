@@ -39,7 +39,8 @@ namespace cxxadt{
     void   setSemimajorAxis( const double& semimajoraxis0)
                  {semimajoraxis=semimajoraxis0;}
     void   setSemiminorAxis( const double& semiminoraxis0)
-                 {semiminoraxis=semiminoraxis0;} ;
+                 {semiminoraxis=semiminoraxis0;};
+
                                       
                                   //the ellipse area calculation
     double getArea()const{return semimajoraxis*semiminoraxis*PI_VALUE;}; 
@@ -72,8 +73,16 @@ namespace cxxadt{
     PositionVector x1u()const; //unit vector x-axis in the ellipse plane
 
     PositionVector y1u()const;     //unit vector y-axis in the ellipse plane
+ 
+    //Rotate ellipse around major axis by angle angle
+    void roll(const double& angle);
 
-   
+    //Rotate ellipse around minor axis by angle angle
+    //    void pitch(const double& angle);
+
+    //Rotate ellipse around normal by angle angle
+    // void turn(const double& angle);
+
 
   private:
     Point center;

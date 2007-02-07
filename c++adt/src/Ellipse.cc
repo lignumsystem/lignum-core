@@ -108,6 +108,16 @@ namespace cxxadt{
   }
 
 
+  void Ellipse::roll(const double& angle)
+  {
+    Point p(0.0,0.0,0.0);
+    normal.rotate(p,xdir,angle);
+    ydir.rotate(p,xdir,angle);
+
+}
+
+
+
 //getting the ellipse points using the ellipse equation
 //X=Center + a*cos(t)*X1u +b*sin(t)*Y1u
 //where t:[0,2pi] and the step=[2*pi/n];
