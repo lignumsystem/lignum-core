@@ -857,8 +857,10 @@ BroadLeaf<cxxadt::Ellipse>* XMLDomTreeReader<TS,BUD,S>::parseEllipseBroadLeaf(QD
 	    }
 	    if (child.nodeName() == "EllipseSMinorA") {
 	      eminor = element.text().toDouble();
-	      leaf = new BroadLeaf<cxxadt::Ellipse>(sf, tauL, dof, number_of_sectors, Petiole(pstart, pend),
-				  normal, cxxadt::Ellipse(pend, PositionVector(pend-pstart), normal, emajor, eminor));
+	      leaf = new BroadLeaf<cxxadt::Ellipse>(sf, tauL, dof, number_of_sectors,
+						    Petiole(pstart, pend),
+						    cxxadt::Ellipse(pend, PositionVector(pend-pstart),
+								    normal, emajor, eminor));
 	      child = child.nextSibling();
 	      break;
 	    }
