@@ -28,8 +28,7 @@ template <class SHAPE>
 class BroadLeafAttributes{
 public:
   BroadLeafAttributes(const BroadLeafAttributes& bla);
-  BroadLeafAttributes(double sf1,double tauL1,double dof1, const Petiole& petiole1,
-		      const PositionVector& leaf_normal, const SHAPE& shape1, 
+  BroadLeafAttributes(double sf1,double tauL1,double dof1, const Petiole& petiole1, const SHAPE& shape1, 
 		      int number_of_sectors);
   double degree_of_filling; //The real leaf is only  part of the shape
   double sf;                //specific leaf area
@@ -39,7 +38,6 @@ public:
   KGC Qin;                  //incoming radiation
   KGC Qabs;                 //absorbed radiation
   Petiole petiole;          //leaf is at the end of petiole in 3D space
-  PositionVector leaf_normal;    //the leaf normal in 3D space
   SHAPE shape;           //the form  of the  leaf is modelled  as some
 			 //SHAPE, see e.g Triangle and Ellipse 
   //vector for shading (must be synchronized with firmament)
@@ -65,9 +63,6 @@ class BroadLeaf{
   friend const PositionVector& GetLeafNormal(const BroadLeaf<S>& bl);
 
   template <class S>
-  friend void SetLeafNormal(BroadLeaf<S>& bl, 
-			    const PositionVector& n);
-  template <class S>
   friend const Petiole& GetPetiole(const BroadLeaf<S>& bl);
 
   template <class S>
@@ -86,16 +81,20 @@ class BroadLeaf{
   friend void SetLeafPosition(BroadLeaf<S>& bl, const Point& p);
 
   template <class S>
-  friend void Roll(BroadLeaf<S>& bl, const double& angle);
+    friend void Roll(BroadLeaf<S>& bl, const double& angle) {bl.bla.shape.roll(angle);}
+
+  template <class S>
+  friend void Pitch(BroadLeaf<S>& bl, const double& angle) {bl.bla.shape.pitch(angle);}
+
+  template <class S>
+  friend void Turn(BroadLeaf<S>& bl, const double& angle) {bl.bla.shape.turn(angle);}
+
 
 public:
   BroadLeaf(LGMdouble sf,LGMdouble tauL,LGMdouble dof,int number_of_sectors,
-	    const Petiole& petiole, const PositionVector& leaf_normal,
-	    const SHAPE& shape);
-  BroadLeaf(const SHAPE& shape, const Petiole& petiole, 
-	    const PositionVector& leaf_normal);
-  BroadLeaf(const  SHAPE& shape, const Petiole& petiole, 
-	    const PositionVector& leaf_normal, int sky_sectors);
+	    const Petiole& petiole,const SHAPE& shape);
+  BroadLeaf(const SHAPE& shape, const Petiole& petiole);
+  BroadLeaf(const  SHAPE& shape, const Petiole& petiole, int sky_sectors);
   BroadLeaf(const BroadLeaf& bl):bla(bl.bla) {}
   void photosynthesis(const LGMdouble& p0);
 private:

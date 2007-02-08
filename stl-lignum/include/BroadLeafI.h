@@ -6,31 +6,29 @@ namespace Lignum{
   BroadLeafAttributes<SHAPE>::BroadLeafAttributes(const BroadLeafAttributes& bla)
     :degree_of_filling(bla.degree_of_filling),sf(bla.sf),tauL(bla.tauL),
      P(bla.P),M(bla.M),Qin(bla.Qin),Qabs(bla.Qabs),petiole(petiole),
-     leaf_normal(bla.leaf_normal),shape(bla.shape),sv(bla.sv)
+     shape(bla.shape),sv(bla.sv)
   {
   }
 
 template <class SHAPE>  
 BroadLeaf<SHAPE>::BroadLeaf(LGMdouble sf,LGMdouble tauL,LGMdouble dof,int number_of_sectors,
-			    const Petiole& petiole,const PositionVector& leaf_normal,const SHAPE& shape)
-  :bla(sf,tauL,dof,petiole,leaf_normal,shape,number_of_sectors)
+			    const Petiole& petiole,const SHAPE& shape)
+  :bla(sf,tauL,dof,petiole,shape,number_of_sectors)
 {
 
 }
 
 template <class SHAPE>  
-BroadLeaf<SHAPE>::BroadLeaf(const SHAPE& shape, const Petiole& petiole, 
-			    const PositionVector& leaf_normal)
-  :bla(1.0,1.0,1.0,petiole,leaf_normal,shape,10)
+BroadLeaf<SHAPE>::BroadLeaf(const SHAPE& shape, const Petiole& petiole)
+  :bla(1.0,1.0,1.0,petiole,shape,10)
 {
-
 }
 
  
 template <class SHAPE>  
 BroadLeaf<SHAPE>::BroadLeaf(const SHAPE& shape, const Petiole& petiole, 
-			    const PositionVector& leaf_normal, int sky_sectors)
-  :bla(1.0,1.0,1.0,petiole,leaf_normal,shape,sky_sectors)
+			    int sky_sectors)
+  :bla(1.0,1.0,1.0,petiole,shape,sky_sectors)
 {
 
 }
@@ -38,13 +36,12 @@ BroadLeaf<SHAPE>::BroadLeaf(const SHAPE& shape, const Petiole& petiole,
 template <class SHAPE>  
 BroadLeafAttributes<SHAPE>::BroadLeafAttributes(double sf1, double tauL1, 
 						double dof1, const Petiole& petiole1,
-						const PositionVector& leaf_normal1, 
 						const SHAPE& shape1,
 						int number_of_sectors)
   :degree_of_filling(dof1),sf(sf1),tauL(tauL1),P(0.0),M(0.0),Qin(0.0),Qabs(0.0),
-     petiole(petiole1),leaf_normal(leaf_normal1),shape(shape1),sv(number_of_sectors)
+     petiole(petiole1),shape(shape1),sv(number_of_sectors)
 {
-  leaf_normal.normalize();
+
 }
 
 template <class SHAPE>  
@@ -140,15 +137,7 @@ const Point GetCenterPoint(const BroadLeaf<SHAPE>& bl)
 template <class SHAPE>  
 const PositionVector& GetLeafNormal(const BroadLeaf<SHAPE>& bl)
 {
-  return bl.bla.leaf_normal;
-}
-
-template <class SHAPE>  
-void SetLeafNormal(BroadLeaf<SHAPE>& bl, const PositionVector& n)
-{
-  bl.bla.leaf_normal = n;
-  //normalize the normal to unit vector. 
-  bl.bla.leaf_normal.normalize();
+  return bl.bla.shape.getNormal();
 }
 
 template <class SHAPE>  
@@ -211,15 +200,6 @@ void SetLeafPosition(BroadLeaf<SHAPE>& bl, const Point& p)
 
   TranslateLeaf(bl, transvct);
 }
-
-
-template <class SHAPE>  
-void Roll(const BroadLeaf<SHAPE>& bl, const double& angle)
-{
-  return bl.bla.shape.roll(angle);
-}
-
-
 
 
 }//closing namespace Lignum
