@@ -30,7 +30,7 @@ namespace cxxadt{
     Ellipse(const Ellipse& e);
     Ellipse& operator=(const Ellipse& e);
     const Point&  getCenterPoint() const { return center;};
-    PositionVector getNormal()const { return normal;};
+    const PositionVector& getNormal()const { return normal;};
     double getSemimajorAxis()const{ return semimajoraxis;};
     Point  getSemimajorAxisPoint()const;
     double getSemiminorAxis()const{return semiminoraxis;};
@@ -40,7 +40,6 @@ namespace cxxadt{
                  {semimajoraxis=semimajoraxis0;}
     void   setSemiminorAxis( const double& semiminoraxis0)
                  {semiminoraxis=semiminoraxis0;};
-
                                       
                                   //the ellipse area calculation
     double getArea()const{return semimajoraxis*semiminoraxis*PI_VALUE;}; 
@@ -78,10 +77,12 @@ namespace cxxadt{
     void roll(const double& angle);
 
     //Rotate ellipse around minor axis by angle angle
-    //    void pitch(const double& angle);
+    //Axis of rotation is at end of petiole (at intersection of perimeter and major axis)
+    void pitch(const double& angle);
 
     //Rotate ellipse around normal by angle angle
-    // void turn(const double& angle);
+    //Axis of rotation is at end of petiole (at intersection of perimeter and major axis)
+    void turn(const double& angle);
 
 
   private:

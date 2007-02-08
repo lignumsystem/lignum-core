@@ -113,10 +113,54 @@ namespace cxxadt{
     Point p(0.0,0.0,0.0);
     normal.rotate(p,xdir,angle);
     ydir.rotate(p,xdir,angle);
+}
 
+  void Ellipse::pitch(const double& angle)
+  {
+
+    //rotation around axis that goes through point where major axis
+    //intersects with perimeter ( -semimajoraxis*xdir = end of
+    //petiole, presumably) and is parallel with semiminoraxis =>
+    //center of ellipse is changed.
+    // Normal, xdir are just rotated
+ 
+    //Position of point of rotation at perimeter
+    Point start = center - semimajoraxis*Point(xdir);
+
+    //vector pointing from axis of rotation to center
+    PositionVector cc = PositionVector(center-start);
+
+    Point p(0.0,0.0,0.0);
+
+    normal.rotate(p,ydir,angle);
+    xdir.rotate(p,ydir,angle);
+    cc.rotate(p,ydir,angle);
+
+    center = start + Point(cc);  
 }
 
 
+ void Ellipse::turn(const double& angle)
+ {
+    //rotation around axis that goes through point where major axis
+    //intersects with perimeter ( -semimajoraxis*xdir = end of
+    //petiole, presumably) and is parallel with normal =>
+    //center of ellipse is changed
+    // xdir, ydir are just rotated
+ 
+    //Position of point of rotation at perimeter
+    Point start = center - semimajoraxis*Point(xdir);
+
+    //vector pointing from axis of rotation to center
+    PositionVector cc = PositionVector(center-start);
+
+    Point p(0.0,0.0,0.0);
+    xdir.rotate(p,normal,angle);
+    ydir.rotate(p,normal,angle);
+    cc.rotate(p,normal,angle);
+
+    center = start + Point(cc);
+ }
 
 //getting the ellipse points using the ellipse equation
 //X=Center + a*cos(t)*X1u +b*sin(t)*Y1u
