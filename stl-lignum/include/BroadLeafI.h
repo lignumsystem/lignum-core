@@ -5,7 +5,7 @@ namespace Lignum{
   template <class SHAPE>
   BroadLeafAttributes<SHAPE>::BroadLeafAttributes(const BroadLeafAttributes& bla)
     :degree_of_filling(bla.degree_of_filling),sf(bla.sf),tauL(bla.tauL),
-     P(bla.P),M(bla.M),Qin(bla.Qin),Qabs(bla.Qabs),petiole(petiole),
+     P(bla.P),M(bla.M),Qin(bla.Qin),Qabs(bla.Qabs),petiole(bla.petiole),
      shape(bla.shape),sv(bla.sv)
   {
   }
@@ -89,12 +89,11 @@ LGMdouble SetValue(BroadLeaf<SHAPE>& bl, const LGMAD name, const LGMdouble value
 {
   LGMdouble old_value= GetValue(bl,name);
 
-  if (name == LGAA)
+  if (name == LGAA) 
     //Given the true area of the leaf, set the shape area, the scaling
     //center is the petiole end
-    bl.bla.shape.setArea(value/GetValue(bl,LGAdof), 
+     bl.bla.shape.setArea(value/GetValue(bl,LGAdof), 
 			 GetEndPoint(GetPetiole(bl)));  
-
   else if (name == LGAdof)
     bl.bla.degree_of_filling = value;
 
