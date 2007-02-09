@@ -689,6 +689,20 @@ double Firmament::getAzimuth(int n)
   return zoneAzims[nIncl][nAzim];
 }  
 
+PositionVector Firmament::getDirection(int n)const
+
+// Input: # of region
+// PositionVector pointing to the midpoint of the region.
+//	 x-axis is pointing to south, y-axis to east and z -axis to zenith.
+//	 If n < 0 or n > numOfSectors returns PositionVector(0,0,0)
+
+{
+  if(n < 0 || n > numOfSectors - 1)
+    return PositionVector(0.0,0.0,0.0);
+  else
+    return PositionVector(dir_x[n], dir_y[n], dir_z[n]);
+}
+           
 
 
 

@@ -9,6 +9,7 @@
 #include <TMatrix.h>
 #include <ParametricCurve.h>
 #include <LGMUnits.h>
+#include <Positionvector.h>
 
 namespace sky{
 using namespace Lignum;
@@ -155,6 +156,9 @@ using namespace cxxadt;
 
 22. int getNoOfInclinations()
     Returns number of inclination classes.
+
+23. PositionVector getDirection(int n)const
+    Returns direction to sector n
 =====================================================================================
 */
 
@@ -216,6 +220,7 @@ public:
 
   int getNoOfAzimuths() { return num_of_azim; }
   int getNoOfInclinations() { return num_of_incl; }
+  PositionVector getDirection(int n)const;
 
 protected:
   int num_of_incl;
