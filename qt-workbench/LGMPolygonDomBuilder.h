@@ -50,7 +50,8 @@ private:
 			       int y_detail) const;
   
   BSPPolygonSet* makeFoliage(double radius, double height, Point point, PositionVector direction,
-			     int f_detail, int s_detail, double fmass, double spacing, SceneObject* object) const;
+			     int f_detail, int s_detail, double foliage_height, double spacing, 
+			     SceneObject* object) const;
   BSPPolygonSet* makePetiole(Point sp, Point ep, int detail, double radius, SceneObject* object) const;
   BSPPolygonSet* makeTriangleLeaf(Point lc, Point rc, Point ac, bool use_tex, SceneObject* object) const;
   BSPPolygonSet* makeEllipseLeaf(cxxadt::Ellipse ellipse, int detail, bool use_tex, SceneObject* object) const;

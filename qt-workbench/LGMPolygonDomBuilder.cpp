@@ -137,6 +137,7 @@ void LGMPolygonDomBuilder::parseTreeSegmentElement(const QDomElement& element, c
   while (!child.isNull()) {
     if(child.tagName() == "TreeSegmentAttributes") {
       QDomElement child2 = child.firstChildElement();
+      double foliage_height = 0.0;
       double radius=0.0;
       double radius_top=0.0;
       double length=0.0;
@@ -147,6 +148,9 @@ void LGMPolygonDomBuilder::parseTreeSegmentElement(const QDomElement& element, c
       int object_index = element.attribute("ObjectIndex").toInt();
       
       while(!child2.isNull()) {
+	if (child2.tagName() == "LGAHf"){
+	  foliage_height = child2.text().toDouble();
+	}
 	if(child2.tagName() == "LGAR") {
 	  radius = child2.text().toDouble();
 	}
@@ -182,13 +186,14 @@ void LGMPolygonDomBuilder::parseTreeSegmentElement(const QDomElement& element, c
 	    secondary = parameters.getShootAboveMaterial();  
 	}
 	else if(child2.tagName() == "LGAWf") {
-	  double fmass = child2.text().toDouble();
-	  if(fmass > R_EPSILON) {
+	  double f_mass = child2.text().toDouble();
+	  if(f_mass > R_EPSILON) {
 	    SceneObject *object = new SceneObject(parameters.getMaterial(), object_index,
-				     parameters.getFoliageTexture(), parameters.useBSP());
+						  parameters.getFoliageTexture(), parameters.useBSP());
 	    sceneObjects->insert(object_index, object);
 	    BSPPolygonSet* foliage = makeFoliage(radius, length, point, direction, parameters.getFoliageDetail(),
-						 parameters.getSegmentRDetail(), fmass, parameters.getFoliageSpacing(), object);
+						 parameters.getSegmentRDetail(), foliage_height, 
+						 parameters.getFoliageSpacing(), object);
 	    polygons->addPolygons(foliage);
 	    delete foliage;
 	  }
@@ -567,7 +572,8 @@ BSPPolygonSet* LGMPolygonDomBuilder::makeCylinder(double radius, double radius_t
 }
 
 BSPPolygonSet* LGMPolygonDomBuilder::makeFoliage(double radius, double height, Point point, PositionVector direction,
-							   int f_detail, int s_detail, double fmass, double spacing, SceneObject* object) const {
+						 int f_detail, int s_detail, double foliage_height, 
+						 double spacing, SceneObject* object) const {
   BSPPolygonSet* polygons = new BSPPolygonSet();
   if(f_detail == 0 || s_detail == 0)
     return polygons;
@@ -575,7 +581,7 @@ BSPPolygonSet* LGMPolygonDomBuilder::makeFoliage(double radius, double height, P
   double sine, cosine, sine_next, cosine_next;
   double y, y_next;
   double PI = 3.14159265;
-  double needle_length = 11*fmass;
+  double needle_length = foliage_height;
 
   LGMdouble tex_len = 0.1;
   LGMdouble tex_per_plane = height / tex_len;
