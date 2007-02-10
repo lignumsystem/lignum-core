@@ -60,7 +60,7 @@ class BroadLeaf{
   friend void SetCenterPoint(BroadLeaf<S>& bl, const Point& p);
 
   template <class S>
-  friend const PositionVector& GetLeafNormal(const BroadLeaf<S>& bl);
+  friend const PositionVector GetLeafNormal(const BroadLeaf<S>& bl);
 
   template <class S>
   friend const Petiole& GetPetiole(const BroadLeaf<S>& bl);
@@ -81,13 +81,13 @@ class BroadLeaf{
   friend void SetLeafPosition(BroadLeaf<S>& bl, const Point& p);
 
   template <class S>
-    friend void Roll(BroadLeaf<S>& bl, const double& angle) {bl.bla.shape.roll(angle);}
+  friend void Roll(BroadLeaf<S>& bl, const double& angle);
 
   template <class S>
-  friend void Pitch(BroadLeaf<S>& bl, const double& angle) {bl.bla.shape.pitch(angle);}
+  friend void Pitch(BroadLeaf<S>& bl, const double& angle);
 
   template <class S>
-  friend void Turn(BroadLeaf<S>& bl, const double& angle) {bl.bla.shape.turn(angle);}
+  friend void Turn(BroadLeaf<S>& bl, const double& angle);
 
 
 public:

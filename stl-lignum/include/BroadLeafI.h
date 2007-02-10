@@ -188,6 +188,23 @@ void TranslateLeaf(BroadLeaf<SHAPE>& bl, const PositionVector& t)
   
 }
 
+template <class S>
+void Roll(BroadLeaf<S>& bl, const double& angle) 
+{
+  bl.bla.shape.roll(angle);
+}
+
+template <class S>
+void Pitch(BroadLeaf<S>& bl, const double& angle) 
+{
+  bl.bla.shape.pitch(angle);
+}
+
+template <class S>
+void Turn(BroadLeaf<S>& bl, const double& angle) 
+{
+  bl.bla.shape.turn(angle);
+}
 //Moves leaf from its current position to position where
 //the starting point of the petiole is p.
 //Orientation does not change
