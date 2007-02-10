@@ -4,8 +4,7 @@
 namespace Lignum{
   template <class SHAPE>
   BroadLeafAttributes<SHAPE>::BroadLeafAttributes(const BroadLeafAttributes& bla)
-    :degree_of_filling(bla.degree_of_filling),sf(bla.sf),tauL(bla.tauL),
-     P(bla.P),M(bla.M),Qin(bla.Qin),Qabs(bla.Qabs),petiole(bla.petiole),
+    :P(bla.P),M(bla.M),Qin(bla.Qin),Qabs(bla.Qabs),petiole(bla.petiole),
      shape(bla.shape),sv(bla.sv)
   {
   }
@@ -134,7 +133,7 @@ const Point GetCenterPoint(const BroadLeaf<SHAPE>& bl)
 }
 
 template <class SHAPE>  
-const PositionVector& GetLeafNormal(const BroadLeaf<SHAPE>& bl)
+const PositionVector GetLeafNormal(const BroadLeaf<SHAPE>& bl)
 {
   return bl.bla.shape.getNormal();
 }
