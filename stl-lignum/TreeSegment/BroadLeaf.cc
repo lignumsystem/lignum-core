@@ -4,12 +4,6 @@
 namespace Lignum{
 
 
-
-  Petiole::Petiole(const Petiole& p)
-    :begin(p.begin),end(p.end)
-  {
-  }
-
 Petiole::Petiole(const Point& b, const Point& e)
   :begin(b),end(e)
 {

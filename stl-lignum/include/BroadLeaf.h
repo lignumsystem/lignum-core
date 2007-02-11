@@ -17,7 +17,8 @@ class Petiole{
   friend void SetEndPoint(Petiole& p, const Point& pnt);
   friend PositionVector GetDirection(const Petiole& p);
 public:
-  Petiole(const Petiole& p);
+  Petiole(const Petiole& p)
+    :begin(p.begin),end(p.end){}
   Petiole(const Point& begin, const Point& end);
 private:
   Point begin;
