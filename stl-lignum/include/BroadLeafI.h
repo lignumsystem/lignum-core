@@ -92,8 +92,7 @@ LGMdouble SetValue(BroadLeaf<SHAPE>& bl, const LGMAD name, const LGMdouble value
   if (name == LGAA) 
     //Given the true area of the leaf, set the shape area, the scaling
     //center is the petiole end
-     bl.bla.shape.setArea(value/GetValue(bl,LGAdof), 
-			 GetEndPoint(GetPetiole(bl)));  
+     bl.bla.shape.setArea(value/GetValue(bl,LGAdof),GetEndPoint(GetPetiole(bl)));
   else if (name == LGAdof)
     bl.bla.degree_of_filling = value;
 
@@ -116,10 +115,12 @@ LGMdouble SetValue(BroadLeaf<SHAPE>& bl, const LGMAD name, const LGMdouble value
     bl.bla.sf = value;
 
   else if (name == LGAWf)
-    //Given the Wf, set the shape area using SLA: 
+    //Given the Wf, set the area of leaf to correspond to:
     //LeafA = SLA*Wf, i.e m2 = (m2/kgC)*kgC
-    //ShapeA = LeafA/dof
-    bl.bla.shape.setArea(GetValue(bl,LGAsf)*value/GetValue(bl,LGAdof));
+    //where LeafA is _actual_ leaf area (effect of dof is taken into
+   // consideration in GetValue(*,LGAA), SetValue(*,LGAA, value)
+    //bl.bla.shape.setArea(GetValue(bl,LGAsf)*value/GetValue(bl,LGAdof));
+      SetValue(bl,LGAA, GetValue(bl,LGAsf)*value);
   else 
     cout << "BroadLeaf SetValue uknown attribute: " << name << "returning: "
 	 << old_value << endl;
