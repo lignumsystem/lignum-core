@@ -4,7 +4,8 @@
 namespace Lignum{
   template <class SHAPE>
   BroadLeafAttributes<SHAPE>::BroadLeafAttributes(const BroadLeafAttributes& bla)
-    :P(bla.P),M(bla.M),Qin(bla.Qin),Qabs(bla.Qabs),petiole(bla.petiole),
+    :degree_of_filling(bla.degree_of_filling),sf(bla.sf),tauL(bla.tauL),
+     P(bla.P),M(bla.M),Qin(bla.Qin),Qabs(bla.Qabs),petiole(bla.petiole),
      shape(bla.shape),sv(bla.sv)
   {
   }
