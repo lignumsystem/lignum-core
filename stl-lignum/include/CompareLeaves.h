@@ -142,10 +142,10 @@ namespace Lignum{
       //the second parameter - the light beam
       const PositionVector d1(v[0],v[1],v[2]);
       //The lengths of the vectors n1 and d1 are 1.
-      //fabs: take the accute angle.
-      LGMdouble alpha = acos(fabs(Dot(n1,d1)));
+      //fabs: both sides of leaf absorb radiation 
+      LGMdouble cos_alpha = fabs(Dot(n1,d1));
       //Qabs
-      vrad[i] = vrad[i]*cos(alpha)*GetValue(*leaf,LGAA);
+      vrad[i] = vrad[i]*cos_alpha*GetValue(*leaf,LGAA);
     }
     //Store values of Qin and Qabs of the leaf
     LGMdouble QabsSum = accumulate(vrad.begin(),vrad.end(),0.0);
