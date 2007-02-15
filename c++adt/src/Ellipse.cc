@@ -54,9 +54,6 @@ namespace cxxadt{
     PositionVector petiolecenter(xdir*semimajoraxis);
     PositionVector center0=p+petiolecenter;
     center=Point(center0);
-    vector<Point> v;
-    getVertexVector(v,100);
-    Point c = PolygonCentroid(v);
   }
     
     
