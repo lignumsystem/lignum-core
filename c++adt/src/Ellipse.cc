@@ -112,7 +112,9 @@ namespace cxxadt{
   {
     Point p(0.0,0.0,0.0);
     normal.rotate(p,xdir,angle);
+    normal.normalize();
     ydir.rotate(p,xdir,angle);
+    ydir.normalize();
 }
 
   void Ellipse::pitch(const double& angle)
@@ -134,6 +136,8 @@ namespace cxxadt{
 
     normal.rotate(p,ydir,angle);
     xdir.rotate(p,ydir,angle);
+    normal.normalize();
+    xdir.normalize();
     cc.rotate(p,ydir,angle);
 
     center = start + Point(cc);  
@@ -157,6 +161,8 @@ namespace cxxadt{
     Point p(0.0,0.0,0.0);
     xdir.rotate(p,normal,angle);
     ydir.rotate(p,normal,angle);
+    xdir.normalize();
+    ydir.normalize();
     cc.rotate(p,normal,angle);
 
     center = start + Point(cc);
