@@ -699,8 +699,10 @@ PositionVector Firmament::getDirection(int n)const
 {
   if(n < 0 || n > numOfSectors - 1)
     return PositionVector(0.0,0.0,0.0);
-  else
+  else if(n < numOfSectors -1)
     return PositionVector(dir_x[n], dir_y[n], dir_z[n]);
+  else
+    return PositionVector(0.0,0.0,1.0);
 }
            
 
