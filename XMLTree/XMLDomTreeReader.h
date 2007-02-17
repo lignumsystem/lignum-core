@@ -777,7 +777,7 @@ BroadLeaf<cxxadt::Ellipse>* XMLDomTreeReader<TS,BUD,S>::parseEllipseBroadLeaf(QD
   Point pstart;
   Point pend;
   
-  PositionVector normal;
+  PositionVector normal,x1u,y1u;
   QString tmp;
 
   while(!node.isNull()) {
@@ -848,6 +848,28 @@ BroadLeaf<cxxadt::Ellipse>* XMLDomTreeReader<TS,BUD,S>::parseEllipseBroadLeaf(QD
 		break;
 	      element = child.toElement();
 	    }
+	    if(child.nodeName() == "xdir") {
+	      tmp = element.text();
+	      x = tmp.section(' ', 0, 0).toDouble();
+	      y = tmp.section(' ', 1, 1).toDouble();
+	      z = tmp.section(' ', 2, 2).toDouble();
+	      x1u = PositionVector(x, y, z);
+	      child = child.nextSibling();
+	      if(child.isNull() || !child.isElement())
+		break;
+	      element = child.toElement();
+	    }
+	    if(child.nodeName() == "ydir") {
+	      tmp = element.text();
+	      x = tmp.section(' ', 0, 0).toDouble();
+	      y = tmp.section(' ', 1, 1).toDouble();
+	      z = tmp.section(' ', 2, 2).toDouble();
+	      y1u = PositionVector(x, y, z);
+	      child = child.nextSibling();
+	      if(child.isNull() || !child.isElement())
+		break;
+	      element = child.toElement();
+	    }
 	    if (child.nodeName() == "EllipseSMajorA") {
 	      emajor = element.text().toDouble();
 	      child = child.nextSibling();
@@ -859,8 +881,8 @@ BroadLeaf<cxxadt::Ellipse>* XMLDomTreeReader<TS,BUD,S>::parseEllipseBroadLeaf(QD
 	      eminor = element.text().toDouble();
 	      leaf = new BroadLeaf<cxxadt::Ellipse>(sf, tauL, dof, number_of_sectors,
 						    Petiole(pstart, pend),
-						    cxxadt::Ellipse(pend, PositionVector(pend-pstart),
-								    normal, emajor, eminor));
+						    cxxadt::Ellipse(pend,normal,x1u,y1u,emajor, eminor));
+							      
 	      child = child.nextSibling();
 	      break;
 	    }

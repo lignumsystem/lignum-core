@@ -830,6 +830,19 @@ void XMLDomTreeBuilder<TS,BUD,S>::addBroadLeafAttributeNode(QDomElement& node, Q
       m_root.setAttribute("LeafType", "Ellipse");
     }
     const cxxadt::Ellipse& e = dynamic_cast<const cxxadt::Ellipse&>(s);
+    //direction of the length of the leaf
+    attrib = m_doc.createElement("xdir"); 
+    PositionVector x1u = e.x1u();
+    tmp = QString("%1 %2 %3").arg(x1u.getX()).arg(x1u.getY()).arg(x1u.getZ());
+    attrib.appendChild(m_doc.createTextNode(tmp));
+    rootNode.appendChild(attrib);    
+
+    //direction of the width of the leaf 
+    attrib = m_doc.createElement("ydir"); 
+    PositionVector y1u = e.y1u();
+    tmp = QString("%1 %2 %3").arg(y1u.getX()).arg(y1u.getY()).arg(y1u.getZ());
+    attrib.appendChild(m_doc.createTextNode(tmp));
+    rootNode.appendChild(attrib);   
 
     attrib = m_doc.createElement("EllipseSMajorA");
     tmp = QString("%1").arg(e.getSemimajorAxis());
