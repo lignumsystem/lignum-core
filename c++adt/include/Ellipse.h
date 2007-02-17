@@ -27,6 +27,13 @@ namespace cxxadt{
 	    const PositionVector& x1u, 
 	    const double& semimajoraxis0,  
 	    const double& semiminoraxis0);
+    //Used in XMLTree.h and in LGMPolygonDomBuilder.cpp
+    Ellipse(const Point& petiole_end,
+	    const PositionVector& leaf_normal, 
+	    const PositionVector& xdir,
+	    const PositionVector& ydir,
+	    const double& semimajoraxis,  
+	    const double& semiminoraxis);
     Ellipse(const Ellipse& e);
     Ellipse& operator=(const Ellipse& e);
     const Point&  getCenterPoint() const { return center;};

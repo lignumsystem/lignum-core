@@ -39,6 +39,21 @@ namespace cxxadt{
     ydir = y1;
   }
   
+  Ellipse::Ellipse(const Point& petiole_end,
+		   const PositionVector& normal0, 
+		   const PositionVector& xdir0,
+		   const PositionVector& ydir0,
+		   const double& semimajoraxis0,  
+		   const double& semiminoraxis0)
+    :normal(normal0),xdir(xdir0),ydir(ydir0),semimajoraxis(semimajoraxis0),
+     semiminoraxis(semiminoraxis0)
+  {
+
+    PositionVector petiolecenter(xdir*semimajoraxis0);
+    PositionVector center0=PositionVector(petiole_end)+petiolecenter;
+    center=Point(center0);
+  }
+
   Ellipse::Ellipse(const PositionVector& p,
 		   const PositionVector& n,
 		   const PositionVector& x1, 
