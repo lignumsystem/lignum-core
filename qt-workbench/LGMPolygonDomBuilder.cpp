@@ -313,7 +313,7 @@ void LGMPolygonDomBuilder::parseBroadLeafElement(const QDomElement& element, con
       double x, y, z;
       Point pstart;
       Point pend;
-      PositionVector normal;
+      PositionVector normal,x1u,y1u;
       double major, minor;
 
       int object_index = element.attribute(QString("ObjectIndex")).toInt();
@@ -341,6 +341,20 @@ void LGMPolygonDomBuilder::parseBroadLeafElement(const QDomElement& element, con
 	  z = temp.section(' ', 2, 2).toDouble();
 	  normal = PositionVector(x, y, z);
 	}
+	else if(child2.tagName() == "xdir") {
+	  QString temp = child2.text();
+	  x = temp.section(' ', 0, 0).toDouble();
+	  y = temp.section(' ', 1, 1).toDouble();
+	  z = temp.section(' ', 2, 2).toDouble();
+	  x1u = PositionVector(x, y, z);
+	}
+	else if(child2.tagName() == "ydir") {
+	  QString temp = child2.text();
+	  x = temp.section(' ', 0, 0).toDouble();
+	  y = temp.section(' ', 1, 1).toDouble();
+	  z = temp.section(' ', 2, 2).toDouble();
+	  y1u = PositionVector(x, y, z);
+	}
 	else if(child2.tagName() == "EllipseSMajorA") {
 	  major = child2.text().toDouble();
 	}
@@ -357,8 +371,9 @@ void LGMPolygonDomBuilder::parseBroadLeafElement(const QDomElement& element, con
 	object = new SceneObject(parameters.getLeafMaterial(), object_index, 0, false);
       sceneObjects->insert(object_index, object);
       
-      BSPPolygonSet* leaf = makeEllipseLeaf(cxxadt::Ellipse(pend, PositionVector(pend-pstart), normal, major, minor),
-					    parameters.getLeafDetail(), parameters.useLeafTextures(), 
+      BSPPolygonSet* leaf = makeEllipseLeaf(cxxadt::Ellipse(pend,normal,x1u,y1u,major, minor), 
+					    parameters.getLeafDetail(), 
+					    parameters.useLeafTextures(), 		    
 					    object);
       polygons->addPolygons(leaf);
       delete leaf;
@@ -737,14 +752,14 @@ BSPPolygonSet* LGMPolygonDomBuilder::makeEllipseLeaf(cxxadt::Ellipse ellipse, in
 	     Point(ellipse.getSemiminorAxis()*ellipse.y1u()));
 
     polygons->addPolygon(new BSPPolygon(p1, p2, p3,
-					Point(1, 1, 0), Point(0, 1, 0), Point(1, 0, 0), object));
+					Point(1, 1, 0), Point(0, 1, 0), Point(1, 0, 0),object));
     polygons->addPolygon(new BSPPolygon(p3, p2, p4,
-					Point(1, 0, 0), Point(0, 1, 0), Point(0, 0, 0), object));
+					Point(1, 0, 0), Point(0, 1, 0), Point(0, 0, 0),object));
 
     polygons->addPolygon(new BSPPolygon(p4, p2, p3,
-					Point(0, 0, 0), Point(0, 1, 0), Point(1, 0, 0), object));
+					Point(0, 0, 0), Point(0, 1, 0), Point(1, 0, 0),object));
     polygons->addPolygon(new BSPPolygon(p2, p1, p3,
-					Point(0, 1, 0), Point(1, 1, 0), Point(1, 0, 0), object));    
+					Point(0, 1, 0), Point(1, 1, 0), Point(1, 0, 0),object));    
     return polygons;
   }
   // If textures are not used
