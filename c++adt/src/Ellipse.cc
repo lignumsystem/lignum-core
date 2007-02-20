@@ -269,58 +269,98 @@ namespace cxxadt{
   //and direction B(B - the second parameter the method).
 
   
- bool Ellipse::intersectShape(const Point& O,
-			      const PositionVector& B0)const{
-   double t;
-   double cosangleBCXu,angleBCXu;
+  bool Ellipse::intersectShape(const Point& O,
+			       const PositionVector& B0)const{
 
-   PositionVector o(O);           //the view point on the light beam
-                                  //(the pyramid apex)
-   PositionVector beam=B0;        //the light beam vector
-
-   beam = beam - o; //the vector from O to B0
-
-   PositionVector B;
-   PositionVector c(center);
+    //If the beam (starting from Point p0 with direction v) hits
+    //the ellipsis?
+    //It has its center at Point ps
+    //other properties are defined by BroadLeaf leaf, PosVector petiole
 
 
-   //Looking for the crossing point B on the ellipse plane with
-   // the beam.
-   
+    bool NO_HIT = false;
+    bool HIT_THE_FOLIAGE = true;
 
-   if ( ( Dot(normal,o)-Dot(normal,c) ) != 0 
-        && Dot(normal,beam) !=0 )
-   {
-     t=-( Dot(normal,o)-Dot(normal,c)) /
-         Dot(normal,beam) ;
-     B=o+beam*t;
+    //  Point pc =  GetCenterPoint(leaf);
+    Point pc = center;
+    Point p0 = O;
+    const PositionVector v = B0;
 
-   }
-   else
-     return false;
-                                 
-   PositionVector CB=c-B;
+    //    1.      Rough testing, if point p0 is higher (z-axis=height) than
+    //      pc + max width of the ellipsis, the beam
+    //      cannot hit the ellipsis
+    //   double a;
+    //   a = (double)GetShape(leaf).getSemimajorAxis();
+    double a = semimajoraxis;
+    if( p0.getZ() > pc.getZ() + 2.0*a) {
+      return NO_HIT;
+    }
+
+    //  PositionVector n  = GetShape(leaf).getNormal();
+    PositionVector n = normal;
+
+    //    2. Where does line starting at p0 and having direction b intersect the plane
+    //       that contains the ellipsis leaf
+
+    double vn = Dot(v, n);
 
 
-   if ( (CB.length()*x1u().length()) !=0 )
-     cosangleBCXu=Dot(CB,x1u())/(CB.length()*x1u().length());
-   else{
-     cosangleBCXu=1; 
-   };
+    if( maximum(vn, -vn) < R_EPSILON ) {
+      return NO_HIT;
+    }           // if v * n = 0 => beam parallel with the plane; cannot
+    // we forget here the possibility that the beam is in the plane
+
+  
+    // 3. Calculate the point where beam hits the plane (=vector pointing to this point)
+
+    // 3.2 Calculate the hit point
+
+    double u;
+    u = (Dot(n, PositionVector( pc  - p0 )) ) / vn;
+
+    //If u < 0 the hit point is in the opposite dirction to that where the sky
+    //sector is (it is pointed by v)
+
+    if(u <= 0.0)
+      return NO_HIT;
+
+    PositionVector hit(3);
+    hit = PositionVector(p0) + u * v;
+
+
+    // 4. Test if the hit point is inside the ellipse
+
+    double coord_a, coord_b;
+    PositionVector diff(3);
+
+
+    //  double b = (double)GetShape(leaf).getSemiminorAxis();
+    double b = semiminoraxis;
+    diff = hit - PositionVector(pc);
+    //  Point pend = GetEndPoint(GetPetiole(leaf));
+    //  coord_b = Dot(PositionVector(pend - pc), diff);
+    coord_b = Dot(diff,ydir);                //len of ydir == 1
+    // coord_b /= b;            
+    //  if(maximum(coord_b, -coord_b) > b) {
+    if(abs(coord_b) > b) {
+      return NO_HIT;
+    }
+
+
+    coord_a = sqrt( Dot(diff, diff) - coord_b * coord_b );
+
+    // if(maximum(coord_a, -coord_a) > a) {
+    if(abs(coord_a) > a) {
+      return NO_HIT;
+    }
+
+    if(pow(coord_a/a, 2.0) +
+       pow(coord_b/b, 2.0) > 1.0)
+      return NO_HIT;
+    else
+      return HIT_THE_FOLIAGE;
  
-   angleBCXu = acos(cosangleBCXu);
-
-   if (semimajoraxis == 0 || semiminoraxis ==0)
-     return false;
-   
-   if (pow(CB.length()*cos(angleBCXu)/semimajoraxis,2.0)+
-	 pow(CB.length()*sin(angleBCXu)/semiminoraxis,2.0) <= 1)
-       return true;
-   else 
-     return false;
-  
- }
-  
+  }
 
 
 }//closing namespace cxxadt
