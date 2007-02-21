@@ -28,7 +28,7 @@ ostream &operator << (ostream& os, BranchingPoint<TS,BUD>& ts)
 template <class TS,class BUD>
 BranchingPoint<TS,BUD>::BranchingPoint(const Point& p, const PositionVector& d,
 				       Tree<TS,BUD>* t)
-  :TreeCompartment<TS,BUD>(p,d,t),maxd(0.0),omega(0.0),type(-1.0)
+  :TreeCompartment<TS,BUD>(p,d,t),maxd(0.0),omega(0.0),type(-1.0),state(ALIVE)
 {
 }
 
