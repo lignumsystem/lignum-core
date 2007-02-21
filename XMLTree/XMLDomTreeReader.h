@@ -882,22 +882,19 @@ BroadLeaf<cxxadt::Ellipse>* XMLDomTreeReader<TS,BUD,S>::parseEllipseBroadLeaf(QD
 	      leaf = new BroadLeaf<cxxadt::Ellipse>(sf, tauL, dof, number_of_sectors,
 						    Petiole(pstart, pend),
 						    cxxadt::Ellipse(pend,normal,x1u,y1u,emajor, eminor));
-							      
+	      //Parse ellipse broadleaf attributes here 
+	      parseEllipseBroadLeafAttributes(child, leaf);
 	      child = child.nextSibling();
 	      break;
 	    }
-
 	  }
 	  break;
 	}
-	parseEllipseBroadLeafAttributes(child, leaf);
-	
 	break;
       }
     }
     node = node.nextSibling();
   }
-  
   return leaf;
 }
 
@@ -1533,7 +1530,6 @@ template <class TS, class BUD, class S>
 void XMLDomTreeReader<TS,BUD,S>::parseEllipseBroadLeafAttributes(QDomNode& node, BroadLeaf<cxxadt::Ellipse>* leaf) {
   QDomNode child = node;
   QString tmp;
-
   while(true) {
     if(!child.isNull() && child.isElement()) {
        if(child.nodeName() == "LGAA") {
