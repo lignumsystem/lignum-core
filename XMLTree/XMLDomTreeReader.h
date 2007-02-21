@@ -748,6 +748,7 @@ BroadLeaf<Triangle>* XMLDomTreeReader<TS,BUD,S>::parseTriangleBroadLeaf(QDomNode
 	      triangleAC = Point(x, y, z);
 	      leaf = new BroadLeaf<Triangle>(sf, tauL, dof, number_of_sectors, Petiole(pstart, pend),
 				      normal, Triangle(triangleLC, triangleRC, triangleAC));
+	      parseTriangleBroadLeafAttributes(child, leaf);
 	      child = child.nextSibling();
 	      break;
 	    }
@@ -755,8 +756,6 @@ BroadLeaf<Triangle>* XMLDomTreeReader<TS,BUD,S>::parseTriangleBroadLeaf(QDomNode
 	  }
 	  break;
 	}
-      
-	parseTriangleBroadLeafAttributes(child, leaf);
 	break;
       }
     }
