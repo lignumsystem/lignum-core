@@ -1255,9 +1255,8 @@ void XMLDomTreeReader<TS,BUD,S>::parseCfTreeSegmentAttributes(QDomNode& node, Cf
 	child = child.nextSibling();
 	if(child.isNull() || !child.isElement())
 	  break;
-      }
+      }//There is no SetValue for LGAVf (LGAVf was accidentally set to LGAstarm)
       if(child.nodeName() == "LGAVf") {
-	SetValue(*ts, LGAstarm, child.toElement().text().toDouble());
 	child = child.nextSibling();
 	if(child.isNull() || !child.isElement())
 	  break;
@@ -1384,38 +1383,26 @@ void XMLDomTreeReader<TS,BUD,S>::insertLeaf(QDomNode& node, HwTreeSegment<TS,BUD
 template <class TS, class BUD, class S>
 void XMLDomTreeReader<TS,BUD,S>::parseBranchingPointAttributes(QDomNode& node, BranchingPoint<TS,BUD>* bpoint) {
   QDomNode child = node;
-  
-  while(true) {
-    if(!child.isNull() && child.isElement()) {
+  while(!child.isNull()) {
+    if(child.isElement()) {
       if(child.nodeName() == "LGAMaxD") {
 	SetValue(*bpoint, LGAMaxD, child.toElement().text().toDouble());
-	child = child.nextSibling();
-	if(child.isNull() || child.isElement())
-	  break;
       }
-      if(child.nodeName() == "LGAage") {
+      else if(child.nodeName() == "LGAage") {
 	SetValue(*bpoint, LGAage, child.toElement().text().toDouble());
-	child = child.nextSibling();
-	if(child.isNull() || child.isElement())
-	  break;
       }
-      if(child.nodeName() == "LGAomega") {
+      else if(child.nodeName() == "LGAomega") {
 	SetValue(*bpoint, LGAomega, child.toElement().text().toDouble());
-	child = child.nextSibling();
-	if(child.isNull() || child.isElement())
-	  break;
       }
-      if(child.nodeName() == "LGAstate") {
+      else if(child.nodeName() == "LGAstate") {
 	SetValue(*bpoint, LGAstate, child.toElement().text().toDouble());
-	child = child.nextSibling();
-	if(child.isNull() || child.isElement())
-	  break;
       }
-      if(child.nodeName() == "LGAtype") {
+      //The last attribute, break after it
+      else if(child.nodeName() == "LGAtype") {
 	SetValue(*bpoint, LGAtype, child.toElement().text().toDouble());
       }
     }
-    break;
+    child = child.nextSibling();
   }
  
 }
