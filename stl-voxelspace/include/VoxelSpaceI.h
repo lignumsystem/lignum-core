@@ -218,8 +218,11 @@ namespace Lignum {
       z1 = s.getZindex(d0.getZ());
       //Check for voxel space boundaries
       if (x1 >= s.Xn || y1 >= s.Yn || z1 >= s.Zn || x1 < 0 || y1 < 0 || z1 < 0){
-	cerr << "HwEllipse Ignoring element " << d0 << " " 
-	     << x1 << " " << y1 << " " << z1 <<endl;
+	cerr <<"HwEllipse Ignoring element" << endl
+	     <<"Center " << e.getCenterPoint() 
+	     <<"Dir " << d0 << endl 
+	     <<"X    " << x1 <<   " Y    " << y1 <<   " Z    " << z1 <<endl
+	     <<"s.Xn " << s.Xn << " s.Yn " << s.Yn << " s.Zn " << s.Zn <<endl;
 	return;
       }
       //Unique id for the HwEllipse objects denoting the same real leaf
