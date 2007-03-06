@@ -1069,9 +1069,6 @@ namespace Lignum {
 			  VoxelMovement v1 = vec[a-1];
 			  VoxelMovement v2 = vec[a];	 		  
 			  LGMdouble ext = voxboxes[v1.x][v1.y][v1.z].extinction(v2.l); 
-			  if (i==4){
-			    cout << v1.x << " " << v1.y << " " << v1.z << " " << v1.l <<endl;
-			  }
 			  iop = iop * ext;
 			}
 		    }
