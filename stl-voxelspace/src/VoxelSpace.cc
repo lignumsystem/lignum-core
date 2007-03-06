@@ -61,7 +61,7 @@ namespace Lignum {
 			 Firmament &f, LGMdouble kb)
     :Xbox(xsize),Ybox(ysize),Zbox(zsize),
      Xn(xn),Yn(yn),Zn(zn),voxboxes(xn,yn,zn),corner1(c1),corner2(c2),k_b(kb)
-  {    cout<<"cornerx: "<<corner1.getX()<<"y: "<<corner1.getY()<<"z: "<<corner1.getZ()<<endl;
+  {    
     for(int i1=0; i1<Xn; i1++)
       for(int i2=0; i2<Yn; i2++)
 	for(int i3=0; i3<Zn; i3++)
