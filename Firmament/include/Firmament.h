@@ -9,7 +9,7 @@
 #include <TMatrix.h>
 #include <ParametricCurve.h>
 #include <LGMUnits.h>
-#include <Positionvector.h>
+#include <PositionVector.h>
 
 namespace sky{
 using namespace Lignum;
