@@ -254,7 +254,7 @@ public:
   }//end operator
 private:
   VoxelSpace& vs;
-  const ParametricCurve& K;//extinction as function of inclination (from Kellomaki) 
+  const ParametricCurve K;//extinction as function of inclination (from Kellomaki) 
   double sp;//The start point [0:1] of the light beam on the segment 
 };
 
