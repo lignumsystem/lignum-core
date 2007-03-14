@@ -222,30 +222,14 @@ namespace Lignum {
     
   }
 
-
-  // 
-  // Converts a global point to local point of the VoxelSpace
-  //
-  // parametres:
-  //	p : global point
-  //	return : local point
-  //
-  Point VoxelSpace::getLocalPoint(const Point& p)const
-  {
-    return p - corner1;
-  }
-
-
-
-
   //
   // Returns indicates the x-index of the VoxBox including
   // then x-coordinate given as parameter
   //
   int VoxelSpace::getXindex(LGMdouble local_xcoord)const
   {
-    return (int)(local_xcoord/Xbox);
-  }
+    return (int)((local_xcoord-corner1.getX())/Xbox);
+   }
 
 
   //
@@ -254,7 +238,7 @@ namespace Lignum {
   //
   int VoxelSpace::getYindex(LGMdouble local_ycoord)const
   {
-    return (int)(local_ycoord/Ybox);
+     return (int)((local_ycoord-corner1.getY())/Ybox);
   }
 
 
@@ -264,7 +248,7 @@ namespace Lignum {
   //
   int VoxelSpace::getZindex(LGMdouble local_zcoord)const
   {
-    return (int)(local_zcoord/Zbox);
+   return (int)((local_zcoord-corner1.getZ())/Zbox);
   }
 
 
