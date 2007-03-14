@@ -12,7 +12,6 @@
 //   PrintTreeInformation2
 //   DisplayStructure
 //   CheckCoordinates
-//   GetBoundingBox     ****is this obsolete?
 //   FindCfBoundingBox
 //   FindHwBoundingBox
 //   CollectFoliageMass
@@ -456,76 +455,6 @@ namespace Lignum{
     }
 
 
-
-
-  template <class TS, class BUD>
-    Point GetBoundingBox(Tree<TS,BUD> &tree, Point &p)
-    {
-      return GetBoundingBox(GetAxis(tree), p);
-    }
-
-
-
-
-  template <class TS, class BUD>
-    Point GetBoundingBox(Axis<TS,BUD> &ax, Point &p)
-    {
-      std::list<TreeCompartment<TS, BUD>*>& ls = GetTreeCompartmentList(ax);
-      typename std::list<TreeCompartment<TS, BUD>*>::iterator I = ls.begin();
-
-        
-        
-      while(I != ls.end())
-	{                   
-	  TreeSegment<TS, BUD>* myts = dynamic_cast<TreeSegment<TS, BUD>*>(*I);   
-      
-	  if (TreeSegment<TS, BUD>* myts = dynamic_cast<TreeSegment<TS, BUD>*>(*I))
-	    {  
-	      Point pp = GetPoint(*myts);     
-	      PositionVector dir = GetDirection(*myts);
-	      LGMdouble l = GetValue(*myts, LGAL);
-			
-	      pp = pp + Point(dir.getX()*l, dir.getY()*l, dir.getZ()*l);
-	  
-	      double x = pp.getX();
-	      double y = pp.getY();
-	      double z = pp.getZ();
-	  
-	      x = sqrt(x*x);
-	      y = sqrt(y*y);
-	      z = sqrt(z*z);
-	  
-	      if (x > p.getX())
-		p += Point(x - p.getX(),0,0);
-	  
-	      if (y > p.getY())
-		p += Point(0, y - p.getY(), 0);
-	  
-	      if (z > p.getZ())
-		p += Point(0, 0, z - p.getZ());
-	    } 
-      
-	  if (BranchingPoint<TS, BUD>* mybp = dynamic_cast<BranchingPoint<TS, BUD>*>(*I))
-	    { 
-	      std::list<Axis<TS, BUD>*>& axis_ls = GetAxisList(*mybp);          
-	      typename std::list<Axis<TS, BUD>*>::iterator II = axis_ls.begin();
-	  
-	  
-	      while(II != axis_ls.end())
-		{
-		  Axis<TS,BUD> *axis = *II;       
-		  p = GetBoundingBox(*axis, p);                     
-		  II++;   
-		}
-	  
-	    }
-	  I++;
-	}
-      return p;
-    }
-
-
-
   //Find the boundig box for a tree, i.e. inside which the tree lies
   //Only those segments that carry foliage are considered. This has to
   //be checked separately for coniferous (CfTreeSegment) and deciduous
@@ -539,19 +468,19 @@ namespace Lignum{
       if(TS* ts = dynamic_cast<TS*>(tc)){
 	Point base = GetPoint(*ts);
 	Point top = GetEndPoint(*ts);
-	
-	if(b_box.getMin().getX() > base.getX()) b_box.setMinX(base.getX());
-	if(b_box.getMin().getY() > base.getY()) b_box.setMinY(base.getY());
-	if(b_box.getMin().getZ() > base.getZ()) b_box.setMinZ(base.getZ());
-	if(b_box.getMin().getX() > top.getX()) b_box.setMinX(top.getX());
-	if(b_box.getMin().getY() > top.getY()) b_box.setMinY(top.getY());
-	if(b_box.getMin().getZ() > top.getZ()) b_box.setMinZ(top.getZ());
-	if(b_box.getMax().getX() < base.getX()) b_box.setMaxX(base.getX());
-	if(b_box.getMax().getY() < base.getY()) b_box.setMaxY(base.getY());
-	if(b_box.getMax().getZ() < base.getZ()) b_box.setMaxZ(base.getZ());
-	if(b_box.getMax().getX() < top.getX()) b_box.setMaxX(top.getX());
-	if(b_box.getMax().getY() < top.getY()) b_box.setMaxY(top.getY());
-	if(b_box.getMax().getZ() < top.getZ()) b_box.setMaxZ(top.getZ());
+	double rSh = GetValue(*ts,LGARf); //max dist of needle tip from woody part	
+	if(b_box.getMin().getX() > base.getX()-rSh) b_box.setMinX(base.getX()-rSh);
+	if(b_box.getMin().getY() > base.getY()-rSh) b_box.setMinY(base.getY()-rSh);
+	if(b_box.getMin().getZ() > base.getZ()-rSh) b_box.setMinZ(base.getZ()-rSh);
+	if(b_box.getMin().getX() > top.getX()-rSh) b_box.setMinX(top.getX()-rSh);
+	if(b_box.getMin().getY() > top.getY()-rSh) b_box.setMinY(top.getY()-rSh);
+	if(b_box.getMin().getZ() > top.getZ()-rSh) b_box.setMinZ(top.getZ()-rSh);
+	if(b_box.getMax().getX() < base.getX()+rSh) b_box.setMaxX(base.getX()+rSh);
+	if(b_box.getMax().getY() < base.getY()+rSh) b_box.setMaxY(base.getY()+rSh);
+	if(b_box.getMax().getZ() < base.getZ()+rSh) b_box.setMaxZ(base.getZ()+rSh);
+	if(b_box.getMax().getX() < top.getX()+rSh) b_box.setMaxX(top.getX()+rSh);
+	if(b_box.getMax().getY() < top.getY()+rSh) b_box.setMaxY(top.getY()+rSh);
+	if(b_box.getMax().getZ() < top.getZ()+rSh) b_box.setMaxZ(top.getZ()+rSh);
       }
 
       return b_box;
@@ -569,13 +498,17 @@ namespace Lignum{
 	  typename list<BroadLeaf<SHAPE>*>::iterator I;
 	  for(I = leaf_list.begin(); I != leaf_list.end(); I++) {
 	    Point p = GetCenterPoint(**I);
+	    double A = GetValue(**I, LGAA);
+	    double d = sqrt(A/(0.5*PI_VALUE));
+	    //max distance from center of leaf is approximated by
+            //assuming it is an ellipse with minor axis half of length of major axis
 	    
-	    if(b_box.getMin().getX() > p.getX()) b_box.setMinX(p.getX());
-	    if(b_box.getMin().getY() > p.getY()) b_box.setMinY(p.getY());
-	    if(b_box.getMin().getZ() > p.getZ()) b_box.setMinZ(p.getZ());
-	    if(b_box.getMax().getX() < p.getX()) b_box.setMaxX(p.getX());
-	    if(b_box.getMax().getY() < p.getY()) b_box.setMaxY(p.getY());
-	    if(b_box.getMax().getZ() < p.getZ()) b_box.setMaxZ(p.getZ());
+	    if(b_box.getMin().getX() > p.getX()-d) b_box.setMinX(p.getX()-d);
+	    if(b_box.getMin().getY() > p.getY()-d) b_box.setMinY(p.getY()-d);
+	    if(b_box.getMin().getZ() > p.getZ()-d) b_box.setMinZ(p.getZ()-d);
+	    if(b_box.getMax().getX() < p.getX()+d) b_box.setMaxX(p.getX()+d);
+	    if(b_box.getMax().getY() < p.getY()+d) b_box.setMaxY(p.getY()+d);
+	    if(b_box.getMax().getZ() < p.getZ()+d) b_box.setMaxZ(p.getZ()+d);
 	  }
 	}
       }

@@ -26,7 +26,6 @@ using namespace std;
 //   CountCompartmentsReverse
 //   DisplayStructure
 //   CheckCoordinates
-//   GetBoundingBox     ****is this obsolete?
 //   FindCfBoundingBox
 //   FindHwBoundingBox
 //   CollectFoliageMass
@@ -279,15 +278,6 @@ namespace Lignum{
       double epsilon;
 
     };
-
-
-  template <class TS, class BUD>
-    Point GetBoundingBox(Tree<TS,BUD> &tree, Point &p);  ///****obsolete???
-
-
-  template <class TS, class BUD>
-    Point GetBoundingBox(Axis<TS,BUD> &ax, Point &p); ///****obsolete???
-
 
 
   //This class holds the values of the coordinates that define box that
