@@ -22,10 +22,10 @@
 ^watervisual Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  mika.lehtonen@metla.fi
 ^file-reader  Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  mika.lehtonen@metla.fi
 ^converter  Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  mika.lehtonen@metla.fi 
-^stl-lignum Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi mika.lehtonen@metla.fi delagrange.sylvain@courrier.uqam.ca juan_posada@mac.com
+^stl-lignum Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi mika.lehtonen@metla.fi sdelagrange@iqaff.qc.ca juan_posada@mac.com
 ^stl-voxelspace Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi mika.lehtonen@metla.fi
-^c\+\+adt  Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi mika.lehtonen@metla.fi  delagrange.sylvain@courrier.uqam.ca juan_posada@mac.com   
-^Firmament Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi   mika.lehtonen@metla.fi delagrange.sylvain@courrier.uqam.ca juan_posada@mac.com
+^c\+\+adt  Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi mika.lehtonen@metla.fi  sdelagrange@iqaff.qc.ca juan_posada@mac.com   
+^Firmament Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi   mika.lehtonen@metla.fi sdelagrange@iqaff.qc.ca juan_posada@mac.com
 ^ScotsPine  Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  mika.lehtonen@metla.fi  
 ^ScotsPineVisual  Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  mika.lehtonen@metla.fi  
 ^references Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  
@@ -33,7 +33,7 @@
 ^stl-gliricidia Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi mika.lehtonen@metla.fi 
 ^BetulaTortuosa Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi mika.lehtonen@metla.fi
 ^LEngine/doc Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi 
-^LEngine Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi delagrange.sylvain@courrier.uqam.ca juan_posada@mac.com
+^LEngine Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi sdelagrange@iqaff.qc.ca juan_posada@mac.com
 ^Graphics Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi mika.lehtonen@metla.fi
 ^CityTree Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  mika.lehtonen@metla.fi minna.terho@metla.fi
 ^poplar Mail -s %s jari.perttunen@metla.fi 
@@ -41,7 +41,7 @@
 ^Lig-Crobas Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  mika.lehtonen@metla.fi
 ^Pine -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  mika.lehtonen@metla.fi
 ^ctree Mail -s %s jari.perttunen@metla.fi theikura@cc.hut.fi
-^SugarMaple Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  delagrange.sylvain@courrier.uqam.ca
+^SugarMaple Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  sdelagrange@iqaff.qc.ca
 ^YellowBirch Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi   
 ^Gliricidia Mail -s %s risto.sievanen@metla.fi jari.perttunen@metla.fi
 ^decay Mail -s %s theikura@cc.hut.fi jari.perttunen@metla.fi
