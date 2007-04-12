@@ -17,36 +17,36 @@
 #
 # For example:
 #DEFAULT		(echo ""; who am i; echo %s; date; cat) >> $CVSROOT/CVSROOT/commitlog
-^smvisual Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi   mika.lehtonen@metla.fi
-^sugar-maple Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi   mika.lehtonen@metla.fi
-^watervisual Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  mika.lehtonen@metla.fi
-^file-reader  Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  mika.lehtonen@metla.fi
-^converter  Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  mika.lehtonen@metla.fi 
-^stl-lignum Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi mika.lehtonen@metla.fi sdelagrange@iqaff.qc.ca juan_posada@mac.com
-^stl-voxelspace Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi mika.lehtonen@metla.fi
-^c\+\+adt  Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi mika.lehtonen@metla.fi  sdelagrange@iqaff.qc.ca juan_posada@mac.com   
-^Firmament Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi   mika.lehtonen@metla.fi sdelagrange@iqaff.qc.ca juan_posada@mac.com
-^ScotsPine  Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  mika.lehtonen@metla.fi  
-^ScotsPineVisual  Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  mika.lehtonen@metla.fi  
+^smvisual Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi
+^sugar-maple Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi
+^watervisual Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi
+^file-reader  Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi
+^converter  Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi 
+^stl-lignum Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi sdelagrange@iqaff.qc.ca juan_posada@mac.com
+^stl-voxelspace Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi
+^c\+\+adt  Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi sdelagrange@iqaff.qc.ca juan_posada@mac.com   
+^Firmament Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi sdelagrange@iqaff.qc.ca juan_posada@mac.com
+^ScotsPine  Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  
+^ScotsPineVisual  Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  
 ^references Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  
 ^lignum-presentations Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  
-^stl-gliricidia Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi mika.lehtonen@metla.fi 
-^BetulaTortuosa Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi mika.lehtonen@metla.fi
+^stl-gliricidia Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi 
+^BetulaTortuosa Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi
 ^LEngine/doc Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi 
 ^LEngine Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi sdelagrange@iqaff.qc.ca juan_posada@mac.com
-^Graphics Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi mika.lehtonen@metla.fi
-^CityTree Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  mika.lehtonen@metla.fi minna.terho@metla.fi
+^Graphics Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi
+^CityTree Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi minna.terho@metla.fi
 ^poplar Mail -s %s jari.perttunen@metla.fi 
 ^LPine Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi 
-^Lig-Crobas Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  mika.lehtonen@metla.fi
-^Pine -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  mika.lehtonen@metla.fi
+^Lig-Crobas Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi
+^Pine -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi
 ^ctree Mail -s %s jari.perttunen@metla.fi theikura@cc.hut.fi
 ^SugarMaple Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  sdelagrange@iqaff.qc.ca
 ^YellowBirch Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi   
 ^Gliricidia Mail -s %s risto.sievanen@metla.fi jari.perttunen@metla.fi
 ^decay Mail -s %s theikura@cc.hut.fi jari.perttunen@metla.fi
 ^XCode mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi
-^DataTree Mail -s %s  risto.sievanen@metla.fi jari.perttunen@metla.fi mika.lehtonen@metla.fi
+^DataTree Mail -s %s  risto.sievanen@metla.fi jari.perttunen@metla.fi
 ^Cowberry Mail -s %s  risto.sievanen@metla.fi jari.perttunen@metla.fi
 ^XMLTree Mail -s %s  risto.sievanen@metla.fi jari.perttunen@metla.fi jmjharti@cc.hut.fi
 ^qt-workbench Mail  -s %s  risto.sievanen@metla.fi jari.perttunen@metla.fi jmjharti@cc.hut.fi
