@@ -35,7 +35,7 @@ BranchingPoint<TS,BUD>::BranchingPoint(const Point& p, const PositionVector& d,
 template <class TS,class BUD>
 BranchingPoint<TS,BUD>::BranchingPoint(const Point& p, const PositionVector& d, LGMdouble go,
 				       Tree<TS,BUD>* t)
-  :TreeCompartment<TS,BUD>(p,d,t),maxd(0.0),omega(go),type(-1.0)
+  :TreeCompartment<TS,BUD>(p,d,t),maxd(0.0),omega(go),type(-1.0),state(ALIVE)
 {
 }
 
