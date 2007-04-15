@@ -23,8 +23,7 @@ string ParseCommandLine(int argc, char *argv[],const string& flag)
       break;
     }
     else
-      i++;   //jump to next
-    i++;     //command line option
+      i++;   //jump to next command line item
   }
   return clarg;
 }
