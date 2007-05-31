@@ -19,6 +19,12 @@ Turtle::Turtle(const Turtle& t)
 {
 }
 
+//Constructor specifying position & direction of heading and left
+Turtle::Turtle(const Point& p, const PositionVector& h, const PositionVector& l):
+ p(p), h(h), l(l)
+{u = Cross(h,l);}
+
+
 //Rotation round Up axis
 Turtle& Turtle::turn(const RADIAN angle)
 {

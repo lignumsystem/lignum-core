@@ -48,6 +48,7 @@ class Turtle{
   Turtle();       //Initial turtle heading up at point (0,0,0)
   Turtle(const Point& p);
   Turtle(const Turtle& t);
+  Turtle(const Point& po, const PositionVector& heading, const PositionVector& left);
   Turtle& turn(const RADIAN a);//Turn(): rotation round up
   Turtle& pitch(const RADIAN a);//Pitch(): rotation round left
   Turtle& roll(const RADIAN a);//Roll(): rotation round heding
