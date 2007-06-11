@@ -269,7 +269,9 @@ int GLDrawer::loadTexture(std::string fileName) {
 
 void GLDrawer::initializeGL()
 {  
-  glClearColor(0.9, 0.9, 0.9, 0.9);
+  //Background color for the window where the tree or shrub is visualized
+  //glClearColor(0.9, 0.9, 0.9, 0.9);
+  glClearColor(1.0, 1.0, 1.0, 1.0);
   glEnable(GL_DEPTH_TEST);
   glFrontFace(GL_CCW);
   glEnable(GL_CULL_FACE);
