@@ -367,7 +367,7 @@ public:
     VisualizationConfig->setWindowTitle(QApplication::translate("VisualizationConfig", "Visualization settings", 0, QApplication::UnicodeUTF8));
     segmentButton->setText(QApplication::translate("VisualizationConfig", "Segment texture...", 0, QApplication::UnicodeUTF8));
     leafButton->setText(QApplication::translate("VisualizationConfig", "Leaf texture...", 0, QApplication::UnicodeUTF8));
-    foliageButton->setText(QApplication::translate("VisualizationConfig", "Foliage texture...", 0, QApplication::UnicodeUTF8));
+    foliageButton->setText(QApplication::translate("VisualizationConfig", "Needle texture...", 0, QApplication::UnicodeUTF8));
     bspBox->setText(QApplication::translate("VisualizationConfig", "Use BSP-tree", 0, QApplication::UnicodeUTF8));
     leaftexBox->setText(QApplication::translate("VisualizationConfig", "Use texture in leafs", 0, QApplication::UnicodeUTF8));
     leafBox->setText(QApplication::translate("VisualizationConfig", "Show leaves", 0, QApplication::UnicodeUTF8));
@@ -381,8 +381,8 @@ public:
     label->setText(QApplication::translate("VisualizationConfig", "Bud longitude detail", 0, QApplication::UnicodeUTF8));
     label_2->setText(QApplication::translate("VisualizationConfig", "Bud latitude detail", 0, QApplication::UnicodeUTF8));
     label_8->setText(QApplication::translate("VisualizationConfig", "Bud size", 0, QApplication::UnicodeUTF8));
-    foliageLabe->setText(QApplication::translate("VisualizationConfig", "Folige detail", 0, QApplication::UnicodeUTF8));
-    label_7->setText(QApplication::translate("VisualizationConfig", "Foliage spacing", 0, QApplication::UnicodeUTF8));
+    foliageLabe->setText(QApplication::translate("VisualizationConfig", "Needle detail", 0, QApplication::UnicodeUTF8));
+    label_7->setText(QApplication::translate("VisualizationConfig", "Needle spacing", 0, QApplication::UnicodeUTF8));
     label_3->setText(QApplication::translate("VisualizationConfig", "Petiole detail", 0, QApplication::UnicodeUTF8));
     label_9->setText(QApplication::translate("VisualizationConfig", "Petiole radius", 0, QApplication::UnicodeUTF8));
     okButton->setText(QApplication::translate("VisualizationConfig", "OK", 0, QApplication::UnicodeUTF8));

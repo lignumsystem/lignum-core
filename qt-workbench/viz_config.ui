@@ -63,7 +63,7 @@
          <item>
           <widget class="QPushButton" name="foliageButton" >
            <property name="text" >
-            <string>Foliage texture...</string>
+            <string>Needle texture...</string>
            </property>
           </widget>
          </item>
@@ -291,7 +291,7 @@
              <item>
               <widget class="QLabel" name="label_7" >
                <property name="text" >
-                <string>Foliage spacing</string>
+                <string>Needle spacing</string>
                </property>
               </widget>
              </item>
