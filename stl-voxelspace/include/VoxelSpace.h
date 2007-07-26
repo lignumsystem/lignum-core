@@ -151,11 +151,11 @@ namespace Lignum {
     //              pairwise if true use the voxel objects in voxels to 
     //                       calculate extinction, if false calculate only the 
     //                       path lengths in voxels 
-    vector<VoxelMovement>& VoxelSpace::getRoute(vector<VoxelMovement> &vec,
-						const Point& p0,
-						const PositionVector& dir, 
-						const ParametricCurve& K,
-						bool pairwise)const;
+    vector<VoxelMovement>& getRoute(vector<VoxelMovement> &vec,
+				    const Point& p0,
+				    const PositionVector& dir, 
+				    const ParametricCurve& K,
+				    bool pairwise)const;
     //Return the extinction caused by the border stand
     //Input: p0   start point of the light beam
     //       dir  direction of the light beam, |dir| == 1 (!!!)
