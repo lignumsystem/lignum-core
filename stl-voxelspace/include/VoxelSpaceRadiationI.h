@@ -385,7 +385,7 @@ public:
 		     double t1,double sp1,int parts1)
     :vs(vs1),d(d1),t(t1),sp(sp1),parts(parts1),leaf(false){}
   InsertVoxelObjects(VoxelSpace& vs1, const PositionVector& d1,
-		     double t1,double sp1,double parts1,bool leaf1)
+		     double t1,double sp1,int parts1,bool leaf1)
     :vs(vs1),d(d1),t(t1),sp(sp1),parts(parts1),leaf(leaf1){}
   InsertVoxelObjects(const InsertVoxelObjects& ivo)
     :vs(ivo.vs),d(ivo.d),t(ivo.t),sp(ivo.sp),parts(ivo.parts),leaf(ivo.leaf){}
