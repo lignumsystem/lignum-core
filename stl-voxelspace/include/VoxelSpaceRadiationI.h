@@ -382,7 +382,7 @@ template <class TS, class BUD, class S=Ellipse>
 class InsertVoxelObjects{
 public:
   InsertVoxelObjects(VoxelSpace& vs1, const PositionVector& d1,
-		     double t1,double sp1,double parts1)
+		     double t1,double sp1,int parts1)
     :vs(vs1),d(d1),t(t1),sp(sp1),parts(parts1),leaf(false){}
   InsertVoxelObjects(VoxelSpace& vs1, const PositionVector& d1,
 		     double t1,double sp1,double parts1,bool leaf1)
