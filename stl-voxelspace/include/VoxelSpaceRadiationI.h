@@ -404,7 +404,7 @@ private:
   double t;//distance from the original object where to insert
   double sp;//start point  of the light  beam on the  segment (conifer
 	    //only)
-  double parts;//number of parts to consider
+  int parts;//number of parts to consider
   bool leaf;//Insert  the  leaf  itself   too  into  the  voxel  box
 	      //(hartwood only)
 };
