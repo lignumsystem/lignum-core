@@ -31,6 +31,9 @@ using namespace std;
 //   CollectFoliageMass
 //   CollectFoliageArea
 //   CollectSapwoodMass
+//   CollectNewSegmentSapwoodMass (LGAage == 0.0)
+//   CollectOldSegmentSapwoodMass (LGAage > 0.0)
+//   CollectNewFoliageMass        (LGAage == 0.0)
 //   CollectQabs
 //   GetQinMax
 //   MoveTree
@@ -351,6 +354,24 @@ namespace Lignum{
     public:
       LGMdouble& operator()(LGMdouble &sum, TreeCompartment<TS,BUD>* tc)const;
     };
+
+  template <class TS,class BUD>
+  class CollectNewSegmentSapwoodMass{ 
+  public:
+    LGMdouble& operator()(LGMdouble &sum, TreeCompartment<TS,BUD>* tc)const;
+  };
+
+  template <class TS,class BUD>
+  class CollectOldSegmentSapwoodMass{ 
+  public:
+    LGMdouble& operator()(LGMdouble &sum, TreeCompartment<TS,BUD>* tc)const;
+  };
+
+  template <class TS,class BUD>
+  class CollectNewFoliageMass{
+  public:
+    LGMdouble& operator()(LGMdouble& wf, TreeCompartment<TS,BUD>* tc)const;
+  };
 
   //This sums up absorbed radiation for tree
   template <class TS,class BUD>

@@ -17,6 +17,9 @@
 //   CollectFoliageMass
 //   CollectFoliageArea
 //   CollectSapwoodMass
+//   CollectNewSegmentSapwoodMass (LGAage == 0.0)
+//   CollectOldSegmentSapwoodMass (LGAage > 0.0)
+//   CollectNewFoliageMass        (LGAage == 0.0)
 //   CollectQabs
 //   MoveTree
 //   DeleteDeadBranches
@@ -696,6 +699,43 @@ namespace Lignum{
     }
     return sum;
   }
+
+  template <class TS, class BUD>
+  LGMdouble& CollectNewSegmentSapwoodMass<TS,BUD>::
+  operator()(LGMdouble &sum, TreeCompartment<TS,BUD>* tc)const
+  {
+    if(TS *segment = dynamic_cast<TS *>(tc)){
+      if (GetValue(*segment,LGAage) == 0.0){
+	sum += GetValue(*segment, LGAWs);
+      }
+    }
+    return sum;
+  }
+
+  template <class TS, class BUD>
+  LGMdouble& CollectOldSegmentSapwoodMass<TS,BUD>::
+  operator()(LGMdouble &sum, TreeCompartment<TS,BUD>* tc)const
+  {
+    if(TS *segment = dynamic_cast<TS *>(tc)){
+      if (GetValue(*segment,LGAage) > 0.0){
+	sum += GetValue(*segment, LGAWs);
+      }
+    }
+    return sum;
+  }
+
+  template <class TS,class BUD>
+  LGMdouble& CollectNewFoliageMass<TS,BUD>::
+  operator()(LGMdouble& wf,TreeCompartment<TS,BUD>* tc)const
+  {
+    if (TS* ts = dynamic_cast<TS*>(tc)){
+      if (GetValue(*ts,LGAage) == 0.0){
+	wf += GetValue(*ts,LGAWf);
+      }
+    }
+    return wf;
+  }
+
 
   template <class TS, class BUD>
     LGMdouble& CollectQabs<TS,BUD>::
