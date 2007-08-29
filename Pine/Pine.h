@@ -342,19 +342,8 @@ public:
   }
 };
 
-template <class TS,class BUD>
-class CollectNewFoliage{
-public:
-  LGMdouble& operator()(LGMdouble& wf, TreeCompartment<TS,BUD>* tc)const
-  {
-    if (TS* ts = dynamic_cast<TS*>(tc)){
-      if (GetValue(*ts,LGAage) == 0.0){
-	wf += GetValue(*ts,LGAWf);
-      }
-    }
-    return wf;
-  }
-};
+
+
 
 template <class TS,class BUD>
 class PrintAxis{
