@@ -99,7 +99,7 @@ int LSystem<TS,BUD,T,F>::lignum2Lstring(list<TreeCompartment<TS,BUD>*>& ls,
   //The symbol F means a tree segment
   else if (strcmp(name,"F") == 0){
     if (ls.empty()){
-      cerr << "Axis error 3 list empty structres should match" << endl;
+      cerr << "Axis error 3: list empty, structures should match" << endl;
     }
     //If the current tree compartment is a tree segment,
     //udate iterators
@@ -121,6 +121,42 @@ int LSystem<TS,BUD,T,F>::lignum2Lstring(list<TreeCompartment<TS,BUD>*>& ls,
     }
     else{
       cerr << "Axis error 5  L file does not generate Lignum " << endl;
+      //If control comes here it is an error
+    }
+  }
+  //The symbol Fd(l,r,rtop) means tree segment with length l, segment
+  //radius r and top radius rtop
+  else if (strcmp(name,"Fd") == 0){
+    if (ls.empty()){
+      cerr << "lignum2lstring Axis error in Fd, list empty, structures should match" << endl;
+    }
+    else if (TS* ts = dynamic_cast<TS*> (*current)){
+      //Get the values for turtle Fd(l,r,rtop) 
+      LGMdouble arg1 = GetValue(*ts,LGAL);
+      LGMdouble arg2 = GetValue(*ts,LGAR);
+      LGMdouble arg3 = GetValue(*ts,LGARTop);
+      caller_data.Reset();
+      caller_data.Strct.AddModuleAddr(ltr.Ptr());
+      const char* pArg = caller_data.Strct.pArg(0);
+      //Update length in L string
+      memcpy(const_cast<char*>(pArg),&arg1,sizeof(double));
+      pArg += sizeof(double);
+      //Uodate R in L string
+      memcpy(const_cast<char*>(pArg),&arg2,sizeof(double));
+      pArg += sizeof(double);
+      //Update RTop in L string
+      memcpy(const_cast<char*>(pArg),&arg3,sizeof(double));
+      //Update iterators 
+      ltr++;
+      current++;
+    }
+    //Current tree compartment is bud but the symbol is "F" --> new tree segment
+    else if (Bud<TS,BUD>* bud = dynamic_cast<Bud<TS,BUD>*> (*current)){
+      cerr << "lignum2lstring Axis error in Fd:  current symbol is Bud with omega: " 
+	   << GetValue(*bud,LGAomega) << " structures should match" << endl;
+    }
+    else{
+      cerr << "lignum2lstring Axis error in Fd:  L file does not generate Lignum " << endl;
       //If control comes here it is an error
     }
   }
@@ -393,6 +429,78 @@ int LSystem<TS,BUD,T,F>::lstring2Lignum(list<TreeCompartment<TS,BUD>*>& ls,
     }
     else{
       cerr << "Axis error 2  L file does not generate Lignum " << endl;
+      //If control comes here it is an error
+    }
+  }
+  //The symbol Fd(l,r,rtop)  means a tree segment length  l, radius r
+  //and top radius rtop
+  else if (strcmp(name,"Fd") == 0){
+    //Get the arguments of "Fd" to move the turtle and for the segment
+    //dimensions
+    double arg1 = 0.0;
+    double arg2 = 0.0;
+    double arg3 = 0.0;
+    caller_data.Reset();
+    caller_data.Strct.AddModuleAddr(ltr.Ptr());
+    const char* pArg = caller_data.Strct.pArg(0);
+    memcpy((char*)&arg1,pArg,sizeof(double));
+    pArg += sizeof(double);
+    memcpy((char*)&arg2,pArg,sizeof(double));
+    pArg += sizeof(double);
+    memcpy((char*)&arg3,pArg,sizeof(double));
+    //If the list is empty, we may have had in the previous step a symbol that
+    //was ignored, but has now created segments and  buds. See for example 
+    //symbodial.l. We give a chance and create a bud now, return  to this
+    //algorithm and try again create the tree compartments.  
+    if (ls.empty()){
+      BUD* bud = new BUD(GetPoint(turtle_stack.top()),
+			 GetHeading(turtle_stack.top()),
+			 turtle_stack.size(),&tree);
+      //We will update this bud when its possible (matching bud in the string)
+      ls.insert(ls.begin(),bud);
+      //Initialize current!!
+      current = ls.begin();
+      //Do not update Lstring iterator 
+    }
+    //If the current tree compartment is a tree segment,
+    //no new structure but update turtle and iterators
+    else if (TS* ts = dynamic_cast<TS*> (*current)){
+      //Update point and direction
+      SetPoint(*ts,GetPoint(turtle_stack.top()));
+      SetDirection(*ts,GetHeading(turtle_stack.top()));
+      //Should we update the length may be a matter of discussion
+      //But when the turtle is 'in charge' we should (c.f symbodial growth) 
+      SetValue(*ts,LGAL,arg1);
+      SetValue(*ts,LGAR,arg2);
+      SetValue(*ts,LGARTop,arg3);
+      //Move the turtle
+      turtle_stack.top().forward(arg1);
+      //Update iterators 
+      ltr++;
+      current++;
+    }
+    //Current tree compartment is bud but the symbol is "F" --> new tree segment
+    else if (BUD* bud = dynamic_cast<BUD*> (*current)){
+      //Lstring tells only the structure, use initial dimensions
+      //and the gravelius order of the terminating bud
+      TS* ts = new TS(GetPoint(turtle_stack.top()),
+		      GetHeading(turtle_stack.top()),
+		      turtle_stack.size(),arg1,GetValue(tree,LGPlr)*arg1,
+		      0.0,&tree);
+      //Set radius
+      SetValue(*ts,LGAR,arg2);
+      //Set top radius
+      SetValue(*ts,LGARTop,arg3);
+      ls.insert(current,ts);
+      //Update turtle
+      turtle_stack.top().forward(arg1);
+      //Update the position of the bud to the end point of the segment
+      SetPoint(*bud,GetEndPoint(*ts));
+      //Update Lstring iterator 
+      ltr++;
+    }
+    else{
+      cerr << "lstring2lignum Axis error Fd,  L file does not generate Lignum " << endl;
       //If control comes here it is an error
     }
   }
