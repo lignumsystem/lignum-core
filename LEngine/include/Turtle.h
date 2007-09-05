@@ -36,6 +36,17 @@ using namespace cxxadt;
 //                Note that  lstringToLignum updates the  arguments of
 //                H,L,U. After  derive arguments have  values they are
 //                given or undefined.
+//    MoveTo(x,y,z) set turtle to given position Point(x,y,z), orientation not changed
+//    SetHead(hx,hy,hz,ux,uy,uz) 
+//                  set turtle heading to PositionVector(hx,hy,hz) and
+//                  turtle up to PositionVector(ux,uy,uz). The vectors
+//                  need  not  be   normalized  (they  are  normalized
+//                  here). Turtle left is defined as Cross(up,heading).
+//                  The turtle position is not changed.
+//                  The module is ignored if
+//                  1.  the angle  between heading  and up  is  not 90
+//                  degrees (Dot product > R_EPSILON)
+//                  2. the length of either of the two vectors is less than R_EPSILON
 
 
 //See also LsysteI.h for the implementation of the symbols
@@ -44,6 +55,9 @@ class Turtle{
   friend const PositionVector& GetHeading(const Turtle& t);
   friend const PositionVector& GetLeft(const Turtle& t);
   friend const PositionVector& GetUp(const Turtle& t);
+  friend void SetHeading(Turtle& t, const PositionVector& h);
+  friend void SetLeft(Turtle& t, const PositionVector& l);
+  friend void SetUp(Turtle& t, const PositionVector& u);
   friend const Point& GetPoint(const Turtle& t);
   friend void SetPoint(Turtle& t, const Point& p);
  public:
@@ -51,6 +65,7 @@ class Turtle{
   Turtle(const Point& p);
   Turtle(const Turtle& t);
   Turtle(const Point& po, const PositionVector& heading, const PositionVector& left);
+  Turtle& operator=(const Turtle& t);
   Turtle& turn(const RADIAN a);//Turn(): rotation round up
   Turtle& pitch(const RADIAN a);//Pitch(): rotation round left
   Turtle& roll(const RADIAN a);//Roll(): rotation round heding

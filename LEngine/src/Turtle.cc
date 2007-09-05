@@ -24,6 +24,15 @@ Turtle::Turtle(const Point& p, const PositionVector& h, const PositionVector& l)
   h(h), l(l),p(p)
 {u = Cross(h,l);}
 
+//Assignment
+Turtle& Turtle::operator=(const Turtle& t)
+{
+  h = t.h;
+  l = t.l;
+  u = t.u;
+  p = t.p;
+  return *this;
+}
 
 //Rotation round Up axis
 Turtle& Turtle::turn(const RADIAN angle)
@@ -196,6 +205,21 @@ const PositionVector& GetLeft(const Turtle& t)
 const PositionVector& GetUp(const Turtle& t)
 {
   return t.u;
+}
+
+void SetHeading(Turtle& t, const PositionVector& h)
+{
+  t.h = h;
+}
+
+void SetLeft(Turtle& t, const PositionVector& l)
+{
+  t.l = l;
+}
+
+void SetUp(Turtle& t, const PositionVector& u)
+{
+  t.u = u;
 }
 
 const Point& GetPoint(const Turtle& t)
