@@ -680,6 +680,62 @@ int LSystem<TS,BUD,T,F>::lstring2Lignum(list<TreeCompartment<TS,BUD>*>& ls,
     memcpy(const_cast<char*>(pArg),&z,sizeof(double));
     ltr++;
   }
+  //MoveTo(x,y,z): set turtle to given position Point(x,y,z)
+  else if (strcmp(name,"MoveTo")){
+    double x,y,z;
+    x=y=z=0.0;
+    caller_data.Reset();
+    caller_data.Strct.AddModuleAddr(ltr.Ptr());
+    const char* pArg = caller_data.Strct.pArg(0);
+    memcpy(&x,pArg,sizeof(double));
+    pArg += sizeof(double);
+    memcpy(&y,pArg,sizeof(double));
+    pArg += sizeof(double);
+    memcpy(&z,pArg,sizeof(double));
+    SetPoint(turtle_stack.top(),Point(z,y,z));
+    ltr++;
+  }
+  //SetHead(hx,hy,hz,ux,uy,uz): set turtle heading to PositionVector(hx,hy,hz)
+  //and turtle up to PositionVector(ux,uy,uz). The vectors need not be normalized
+  //(they are normalized here). Turtle left is defined as Cross(up,heading).
+  //The module is ignored if 
+  //1. the angle between heading and up is not 90 degrees (Dot product > R_EPSILON)
+  //2. the length of the two vectors is less than R_EPSILON
+  else if (strcmp(name,"SetHead")){
+    double hx,hy,hz,ux,uy,uz;
+    hx=hy=hz=ux=uy=uz=0.0;
+    caller_data.Reset();
+    caller_data.Strct.AddModuleAddr(ltr.Ptr());
+    const char* pArg = caller_data.Strct.pArg(0);
+    memcpy(&hx,pArg,sizeof(double));
+    pArg += sizeof(double);
+    memcpy(&hy,pArg,sizeof(double));
+    pArg += sizeof(double);
+    memcpy(&hz,pArg,sizeof(double));
+    pArg += sizeof(double);
+    memcpy(&ux,pArg,sizeof(double));
+    pArg += sizeof(double);
+    memcpy(&uy,pArg,sizeof(double));
+    pArg += sizeof(double);
+    memcpy(&uz,pArg,sizeof(double));
+    PositionVector h(hx,hy,hz);//heading
+    PositionVector u(ux,uy,uz);//up
+    h.normalize();
+    u.normalize();
+    double dot = Dot(h,u);
+    if (h.length() < R_EPSILON || u.length() < R_EPSILON || dot > R_EPSILON){
+      ltr++;
+    }
+    else{
+      //left should have some length because h and u have
+      PositionVector l = Cross(u,h);
+      l.normalize();
+      SetHeading(turtle_stack.top(),h);
+      SetUp(turtle_stack.top(),u);
+      SetLeft(turtle_stack.top(),l);
+      ltr++;
+    }
+  }
   //Ignore  other symbols, go forward in the string
   else{
     ltr++;

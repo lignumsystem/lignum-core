@@ -10,7 +10,6 @@
  *********************************************************************/
 #include <lsys.h>
 
-
 ProdCaller  ContextMatch(const LstringIterator& pos,CallerData& caller_data,int& prod);
 
 //The succstrg, the temporary  expanded string or 'storage', is common
