@@ -23,6 +23,7 @@ public:
   ParametricCurve(const vector<double>& v);
   ParametricCurve(const ParametricCurve& pc);
   ParametricCurve(const double c);
+  ParametricCurve& operator=(const ParametricCurve& f);
   double operator()(double x)const{return eval(x);} 
   bool install(const string& file_name);
   bool ok()const;

@@ -75,6 +75,15 @@ ParametricCurve::ParametricCurve(const double c)
   num_of_elements = v.size();
 }
 
+  ParametricCurve& ParametricCurve::operator=(const ParametricCurve& pc)
+  {
+    v.clear();
+    v = pc.v;
+    file = pc.file;
+    num_of_elements = pc.num_of_elements;
+    return *this;
+  }
+
 bool ParametricCurve::install(const string& file_name)
 {
   read_xy_file(file_name.c_str());
