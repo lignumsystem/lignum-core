@@ -700,7 +700,7 @@ int LSystem<TS,BUD,T,F>::lstring2Lignum(list<TreeCompartment<TS,BUD>*>& ls,
   //(they are normalized here). Turtle left is defined as Cross(up,heading).
   //The module is ignored if 
   //1. the angle between heading and up is not 90 degrees (Dot product > R_EPSILON)
-  //2. the length of the two vectors is less than R_EPSILON
+  //2. the length of either of the two vectors is less than R_EPSILON
   else if (strcmp(name,"SetHead")){
     double hx,hy,hz,ux,uy,uz;
     hx=hy=hz=ux=uy=uz=0.0;
@@ -723,7 +723,8 @@ int LSystem<TS,BUD,T,F>::lstring2Lignum(list<TreeCompartment<TS,BUD>*>& ls,
     h.normalize();
     u.normalize();
     double dot = Dot(h,u);
-    if (h.length() < R_EPSILON || u.length() < R_EPSILON || dot > R_EPSILON){
+    //ignore the symbol if h or u are of length 0 or not perpendicular.
+    if (h.length() < R_EPSILON || u.length() < R_EPSILON || fabs(dot) > R_EPSILON){
       ltr++;
     }
     else{
