@@ -16,7 +16,9 @@
 //   FindHwBoundingBox
 //   CollectFoliageMass
 //   CollectFoliageArea
+//   CollectWoodMass
 //   CollectSapwoodMass
+//   CollectHeartwoodMass
 //   CollectNewSegmentSapwoodMass (LGAage == 0.0)
 //   CollectOldSegmentSapwoodMass (LGAage > 0.0)
 //   CollectNewFoliageMass        (LGAage == 0.0)
@@ -691,6 +693,16 @@ namespace Lignum{
     }
 
   template <class TS, class BUD>
+  LGMdouble& CollectWoodMass<TS,BUD>::
+  operator()(LGMdouble &sum, TreeCompartment<TS,BUD>* tc)const
+  {
+    if(TS *segment = dynamic_cast<TS *>(tc)){
+	  sum += GetValue(*segment, LGAWood);
+    }
+    return sum;
+  }
+
+  template <class TS, class BUD>
   LGMdouble& CollectSapwoodMass<TS,BUD>::
   operator()(LGMdouble &sum, TreeCompartment<TS,BUD>* tc)const
   {
@@ -700,6 +712,16 @@ namespace Lignum{
     return sum;
   }
 
+  template <class TS, class BUD>
+  LGMdouble& CollectHeartwoodMass<TS,BUD>::
+  operator()(LGMdouble &sum, TreeCompartment<TS,BUD>* tc)const
+  {
+    if(TS *segment = dynamic_cast<TS *>(tc)){
+	  sum += GetValue(*segment, LGAWh);
+    }
+    return sum;
+  }
+  
   template <class TS, class BUD>
   LGMdouble& CollectNewSegmentSapwoodMass<TS,BUD>::
   operator()(LGMdouble &sum, TreeCompartment<TS,BUD>* tc)const
