@@ -459,6 +459,17 @@ LGMdouble GetValue(const Tree<TS,BUD>& tree, const LGMAD name)
     else
       return 0.0;
   }
+  else if (name == LGAAbase){
+    LGMdouble rbase = GetValue(tree,LGADbase)/2.0;
+    return PI_VALUE*pow(rbase,2.0);
+  }
+  else if (name == LGAAhwbase){
+    LGMdouble rhwbase = GetValue(tree,LGADbaseHw)/2.0;
+    return PI_VALUE*pow(rhwbase,2.0);
+  }
+  else if (name == LGAAsbase){
+    return GetValue(tree,LGAAbase) - GetValue(tree,LGAAhwbase);
+  }
   else if (name == LGADbh){
     Axis<TS,BUD>& axis = GetAxis(const_cast<Tree<TS,BUD>&>(tree));
     list<TreeCompartment<TS,BUD>*>& ls = GetTreeCompartmentList(axis);
@@ -478,6 +489,13 @@ LGMdouble GetValue(const Tree<TS,BUD>& tree, const LGMAD name)
     //dbh >= 1.3 will assign its diameter to Dbh and Hw diam at BH
     d13 =  accumulate(ls.rbegin(),ls.rend(),d13,dbh);
     return d13.second;
+  }
+  else if (name == LGAWstem){
+    Axis<TS,BUD>& axis = GetAxis(const_cast<Tree<TS,BUD>&>(tree));
+    list<TreeCompartment<TS,BUD>*>& ls = GetTreeCompartmentList(axis);
+    double wstem = 0.0;
+    accumulate(ls.begin(),ls.end(),wstem,CollectWoodMass<TS,BUD>());
+    return wstem;
   }
   else
     cout << "Tree GetValue unknown attribute: " << name << endl;
