@@ -81,9 +81,9 @@ namespace Lignum{
   class DCLData{
     friend class AddBranchWf;
   public:
-    DCLData():DCL(0.0),BWf(0.0),HCB(0.0){}
+    DCLData():DCL(0.0),BWf(0.0),HCB(0.0),DHWCB(0.0){}
     DCLData(const DCLData& dcl):
-      DCL(dcl.DCL),BWf(dcl.BWf),HCB(dcl.HCB){}
+      DCL(dcl.DCL),BWf(dcl.BWf),HCB(dcl.HCB),DHWCB(dcl.DHWCB){}
     double DCrownBase(){return DCL;}
     double HCrownBase(){return HCB;} 
     double DHWCrownBase() {return DHWCB;}
@@ -94,9 +94,13 @@ namespace Lignum{
     double BranchWf(){return BWf;} 
     void BranchWf(double wf){BWf = wf;}
     void AddBranchWf(double wf){BWf += wf;}
+    //Total, sapwood and heartwood areas at crown base
+    double ACrownBase(){return PI_VALUE*pow(DCL/2.0,2.0);}
+    double AHwCrownBase(){return PI_VALUE*pow(DHWCB/2.0,2.0);}
+    double ASwCrownBase(){return ACrownBase() - AHwCrownBase();}
   private: 
     double DCL;  //diameter at crown limit
-    double BWf ; //folige mass in a branch
+    double BWf; //folige mass in a branch
     double HCB;  //height of the crown base
     double DHWCB;  //Diameter of heartwood at crown base
   };
