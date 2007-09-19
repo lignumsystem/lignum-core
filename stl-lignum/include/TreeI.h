@@ -494,7 +494,7 @@ LGMdouble GetValue(const Tree<TS,BUD>& tree, const LGMAD name)
     Axis<TS,BUD>& axis = GetAxis(const_cast<Tree<TS,BUD>&>(tree));
     list<TreeCompartment<TS,BUD>*>& ls = GetTreeCompartmentList(axis);
     double wstem = 0.0;
-    accumulate(ls.begin(),ls.end(),wstem,CollectWoodMass<TS,BUD>());
+    wstem = accumulate(ls.begin(),ls.end(),wstem,CollectWoodMass<TS,BUD>());
     return wstem;
   }
   else
