@@ -681,7 +681,7 @@ int LSystem<TS,BUD,T,F>::lstring2Lignum(list<TreeCompartment<TS,BUD>*>& ls,
     ltr++;
   }
   //MoveTo(x,y,z): set turtle to given position Point(x,y,z)
-  else if (strcmp(name,"MoveTo")){
+  else if (strcmp(name,"MoveTo") == 0){
     double x,y,z;
     x=y=z=0.0;
     caller_data.Reset();
@@ -701,7 +701,7 @@ int LSystem<TS,BUD,T,F>::lstring2Lignum(list<TreeCompartment<TS,BUD>*>& ls,
   //The module is ignored if 
   //1. the angle between heading and up is not 90 degrees (Dot product > R_EPSILON)
   //2. the length of either of the two vectors is less than R_EPSILON
-  else if (strcmp(name,"SetHead")){
+  else if (strcmp(name,"SetHead") == 0){
     double hx,hy,hz,ux,uy,uz;
     hx=hy=hz=ux=uy=uz=0.0;
     caller_data.Reset();
