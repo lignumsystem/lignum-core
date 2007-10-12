@@ -32,6 +32,7 @@ using namespace std;
 //   CollectFoliageArea
 //   CollectWoodMass
 //   CollectSapwoodMass
+//   CollectStemSapwoodMass
 //   CollectHeartwoodMass
 //   CollectNewSegmentSapwoodMass (LGAage == 0.0)
 //   CollectOldSegmentSapwoodMass (LGAage > 0.0)
@@ -359,6 +360,13 @@ namespace Lignum{
 
   template <class TS,class BUD>
     class CollectSapwoodMass
+    { 
+    public:
+      LGMdouble& operator()(LGMdouble &sum, TreeCompartment<TS,BUD>* tc)const;
+    };
+
+  template <class TS,class BUD>
+    class CollectStemSapwoodMass
     { 
     public:
       LGMdouble& operator()(LGMdouble &sum, TreeCompartment<TS,BUD>* tc)const;
