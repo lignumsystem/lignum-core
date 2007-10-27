@@ -43,15 +43,6 @@ namespace Lignum {
     //currently star and k_b hard-coded!!
     void updateValues();
     LGMdouble extinction(LGMdouble l)const;
-
-    //reset  the  box to  0,  clear  the  vector of  photosynthesising
-    //objects (not the objects though!!!)
-    void reset();
-     
-    //Reset Qin, Qabs and  intercepedRadiation to 0, this is necessary
-    //in  short time  steps, where  structural update  is  slower than
-    //changing light environment.
-    void resetQinQabs(){Q_in = 0.0; Q_abs = 0.0;interceptedRadiation = 0.0;}
     bool isEmpty()const;
     const vector<VoxelObject*>& getObjects()const{return objects;}
     Point getCenterPoint()const;
@@ -61,6 +52,8 @@ namespace Lignum {
     LGMdouble getAreaDensity();
     LGMdouble getQabs()const{ return Q_abs; }
     LGMdouble getQin()const{ return Q_in; }
+    LGMdouble getQabsMean()const{return Qabs_mean;}
+    LGMdouble getQinMean()const{return Qin_mean;}
     LGMdouble getStarSum()const{ return starSum; }
     LGMdouble getStar()const{ return star; }
     LGMdouble getNeedleMass()const{return needleMass;}
@@ -87,6 +80,9 @@ namespace Lignum {
     void addLeafArea(M2 larea) { leafArea += larea; }
     void addLeafMass(LGMdouble lmass) {leafMass += lmass; }
     void addQabs(LGMdouble val) { Q_abs += val; }
+    void addQin(LGMdouble val){Q_in += val;}
+    void setQinMean(LGMdouble val){Qin_mean= val;}
+    void setQabsMean(LGMdouble val){Qabs_mean= val;}
     void addInterceptedRadiation(LGMdouble rad) { interceptedRadiation += rad; }
     void addStarSum(LGMdouble starmean){starSum += starmean;}
     void addWoodMass(LGMdouble mass) {woodMass += mass; }
@@ -96,6 +92,15 @@ namespace Lignum {
     void addOneLeaf() {number_of_leaves++;}
     LGMdouble S(LGMdouble phi, LGMdouble sf, LGMdouble Wf,
 		LGMdouble r, LGMdouble l);
+    //reset  the  box to  0,  clear  the  vector of  photosynthesising
+    //objects (not the objects though!!!)
+    void reset();
+     
+    //Reset Qin, Qabs and  intercepedRadiation to 0, this is necessary
+    //in  short time  steps, where  structural update  is  slower than
+    //changing light environment.
+    void resetQinQabs(){Q_in = 0.0; Q_abs = 0.0;interceptedRadiation = 0.0;
+      Qin_mean = 0.0; Qabs_mean = 0.0;}
  
   protected:
     void resetCfData(){
@@ -114,6 +119,8 @@ namespace Lignum {
     M2 leafArea;
     LGMdouble Q_in;
     LGMdouble Q_abs;
+    LGMdouble Qin_mean;
+    LGMdouble Qabs_mean;
     LGMdouble star;
     LGMdouble starSum;
     LGMdouble weight; //weighted starSum, e.g. foliage area

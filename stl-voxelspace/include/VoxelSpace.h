@@ -196,7 +196,7 @@ namespace Lignum {
     void writeVoxelSpaceContents();
     void writeStarMean();
     double getMeanFoliageAreaDensity();     
-
+    void calculateMeanQabsQin();
     LGMdouble Xbox, Ybox, Zbox;
     int Xn, Yn, Zn;
     TMatrix3D<VoxelBox> voxboxes;
