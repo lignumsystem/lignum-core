@@ -1015,11 +1015,9 @@ namespace Lignum {
   //
   //	The function calculates the Qin and Qabs-values to every VoxelBox.
   //    self_shading determines if the box shades itself or not   
-  LGMdouble VoxelSpace::calculateTurbidLight
-(bool self_shading)
+  LGMdouble VoxelSpace::calculateTurbidLight(bool self_shading)
   {
     updateStar();
-
     for(int i1=0; i1<Xn; i1++)
       for(int i2=0; i2<Yn; i2++)
 	for(int i3=0; i3<Zn; i3++)
@@ -1040,7 +1038,7 @@ namespace Lignum {
 		    PositionVector
 		      radiation_direction(rad_direction[0],
 					  rad_direction[1], rad_direction[2]);
-
+		    double ext = getBorderStandExtinction(voxboxes[i1][i2][i3].getCenterPoint(),radiation_direction);
 		    radiation_direction.normalize();
 		    vector<VoxelMovement> vec;		
 		    getRoute(vec, i1, i2, i3, radiation_direction);
@@ -1052,7 +1050,7 @@ namespace Lignum {
 			{
 			  VoxelMovement v1 = vec[a-1];
 			  VoxelMovement v2 = vec[a];	 		  
-			  LGMdouble ext = voxboxes[v1.x][v1.y][v1.z].extinction(v2.l); 
+			  ext = voxboxes[v1.x][v1.y][v1.z].extinction(v2.l); 
 			  iop = iop * ext;
 			}
 		    }
@@ -1076,7 +1074,6 @@ namespace Lignum {
 
 			//and attenuation inside the VoxBox
 			voxboxes[i1][i2][i3].addQabs(qin - qout);
-							
 			//Now we calculate only to the mid point; the
 			//radiation the VoxBox receives is the one at
 			//the mid point.
@@ -1255,7 +1252,7 @@ namespace Lignum {
     file << endl << endl << "Sum of Qabs " << sumQabs << endl;
   }
 
-  //Write Qabs, Qin and foliage mass to a GnuPlot file
+  //Write voxels  to a GnuPlot file
   void  VoxelSpace::writeVoxelBoxesToGnuPlotFile(const string& filename, const string& sep)
   {
     ofstream file(filename.c_str());
@@ -1264,7 +1261,7 @@ namespace Lignum {
       for(int i2=0; i2<Yn; i2++)
 	for(int i3=0; i3<Zn; i3++){
 	    if ( voxboxes[i1][i2][i3].getFoliageMass() > R_EPSILON){
-	      file << "left" << setfill(' ')
+	      file << left << setfill(' ')
 		   << setw(4) << i1 << sep 
 		   << setw(4) << i2 << sep 
 		   << setw(4) << i3 << sep
@@ -1281,12 +1278,32 @@ namespace Lignum {
 		   << setw(4)  << voxboxes[i1][i2][i3].getNumSegments() << sep
 		   << setw(4)  << voxboxes[i1][i2][i3].getNumLeaves() << sep
 		   << setw(11) << voxboxes[i1][i2][i3].getStar() << sep
-		   << setw(11) << voxboxes[i1][i2][i3].getStarSum() << sep << endl;
+		   << setw(11) << voxboxes[i1][i2][i3].getStarSum() << sep 
+		   << setw(11) << voxboxes[i1][i2][i3].getQabsMean() << sep
+		   << setw(11) << voxboxes[i1][i2][i3].getQinMean() << endl;
 	    }
 	}
     file.close();
   }
 
+  //Calculate mean Qabs and Qin
+  void VoxelSpace::calculateMeanQabsQin()
+  {
+    for(int i1=0; i1<Xn; i1++){
+       for(int i2=0; i2<Yn; i2++){
+	for(int i3=0; i3<Zn; i3++){
+	  if (voxboxes[i1][i2][i3].getNumSegments() > 0){
+	    double qabs_mean = 
+	      voxboxes[i1][i2][i3].getQabs()/voxboxes[i1][i2][i3].getNumSegments();
+	    double qin_mean = 
+	      voxboxes[i1][i2][i3].getQin()/voxboxes[i1][i2][i3].getNumSegments();
+	    voxboxes[i1][i2][i3].setQabsMean(qabs_mean);
+	    voxboxes[i1][i2][i3].setQinMean(qin_mean);
+	  }
+	}
+       }
+    }
+  }
 
   //Calculate some key variables of VoxelSpace contetnts and output to
   //console
