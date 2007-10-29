@@ -593,6 +593,7 @@ namespace Lignum {
 	vm.x = startx;
 	vm.y = starty;
 	vm.z = startz;
+	vm.tau = 1.0;//Initalize tau to 1 so we do not exit with DiffuseVoxelSpaceRadiation
 	//Set foliage area,  needle area + leaf area
 	vm.af = voxboxes[vm.x][vm.y][vm.z].getFoliageArea(); 
 	//Get extinction  caused by objects  in the box Avoid  the box
@@ -634,8 +635,10 @@ namespace Lignum {
 	    vec.push_back(vm);
 	  }
 	//break the voxel traversal if wood hit
-	if (vm.tau == 0.0)
+	if (vm.tau == 0.0 && !pairwise){
+	  cout << "vm.tau should not be 0 in DiffuseVoxelSpace Radiation " << vm.tau <<endl;;
 	  return vec;
+	}
       }
     return vec;
   }
@@ -1038,8 +1041,8 @@ namespace Lignum {
 		    PositionVector
 		      radiation_direction(rad_direction[0],
 					  rad_direction[1], rad_direction[2]);
-		    double ext = getBorderStandExtinction(voxboxes[i1][i2][i3].getCenterPoint(),radiation_direction);
 		    radiation_direction.normalize();
+		    double ext = getBorderStandExtinction(voxboxes[i1][i2][i3].getCenterPoint(),radiation_direction);
 		    vector<VoxelMovement> vec;		
 		    getRoute(vec, i1, i2, i3, radiation_direction);
 		    int size = vec.size();
