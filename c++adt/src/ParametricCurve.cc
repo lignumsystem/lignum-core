@@ -23,14 +23,14 @@ ParametricCurve::ParametricCurve(const string& values, int dummy)
   dummy = 0;
   double value = 0.0;
   stringstream v_stream(values,stringstream::in);
-  char buffer[100];
+  //char buffer[100];
   
   //Skip the comments. A line beginning with '#' is a comment 
-  v_stream >> ws;//Skip white space
-  while (v_stream.peek() == '#'){
-    v_stream.getline(buffer,100);
-    v_stream >> ws; //skip white space
-  }
+//   v_stream >> ws;//Skip white space
+//   while (v_stream.peek() == '#'){
+//     v_stream.getline(buffer,100);
+//     v_stream >> ws; //skip white space
+//   }
  
   //clear the previous function 
   v.clear();
@@ -40,9 +40,9 @@ ParametricCurve::ParametricCurve(const string& values, int dummy)
   v_stream.setf(ios::fixed,ios::floatfield);
 
   while (v_stream >> value){
+    cout << "Inserting " << value <<endl;
     v.insert(v.end(),value);
   }
-
   //mark the end of (x,y) value pairs with FLT_MAX 
   //FLT_MAX should be defined in <float.h>
   v.insert(v.end(),FLT_MAX);
@@ -75,7 +75,7 @@ ParametricCurve::ParametricCurve(const double c)
   num_of_elements = v.size();
 }
 
-  ParametricCurve& ParametricCurve::operator=(const ParametricCurve& pc)
+ParametricCurve& ParametricCurve::operator=(const ParametricCurve& pc)
   {
     v.clear();
     v = pc.v;
