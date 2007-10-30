@@ -40,7 +40,7 @@ ParametricCurve::ParametricCurve(const string& values, int dummy)
   v_stream.setf(ios::fixed,ios::floatfield);
 
   while (v_stream >> value){
-    cout << "Inserting " << value <<endl;
+    //cout << "Inserting " << value <<endl;
     v.insert(v.end(),value);
   }
   //mark the end of (x,y) value pairs with FLT_MAX 
