@@ -413,7 +413,7 @@ MJ Firmament::diffuseRegionRadiationSum(int n, vector<double>& direction)const
 }
 
 
-MJ Firmament::diffuseHalfRegionRadiationSum(int n, vector<double>& direction)
+MJ Firmament::diffuseHalfRegionRadiationSum(int n, vector<double>& direction)const
 
 // As regionRadiationSum but regions having azimuth between
 // 0 and PI radiate nothing and for these halfRegionRadiationSum = 0

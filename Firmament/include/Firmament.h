@@ -174,7 +174,7 @@ public:
   MJ diffuseRadiationSum( const vector<double>& v);
   int numberOfRegions() const { return numOfSectors; }
   MJ diffuseRegionRadiationSum(int n, vector<double>& direction)const;
-  MJ diffuseHalfRegionRadiationSum(int n, vector<double>& direction);
+  MJ diffuseHalfRegionRadiationSum(int n, vector<double>& direction)const;
   MJ directHalfRegionRadiationSum(vector<double>& direction);
   MJ diffusePlaneSensor(void) { return diffuseRadPlane; }
   MJ diffuseBallSensor(void) { return diffuseRadBall; }
