@@ -38,6 +38,7 @@ using namespace std;
 //   CollectOldSegmentSapwoodMass (LGAage > 0.0)
 //   CollectNewFoliageMass        (LGAage == 0.0)
 //   CollectQabs
+//   CollectQin
 //   GetQinMax
 //   MoveTree
 //   DeleteDeadBranches
@@ -404,6 +405,13 @@ namespace Lignum{
       LGMdouble& operator()(LGMdouble &sum, TreeCompartment<TS,BUD>* tc)const;
     };
 
+  //This sums up Qin for the tree
+  template <class TS,class BUD>
+    class CollectQin
+    { 
+    public:
+      LGMdouble& operator()(LGMdouble &sum, TreeCompartment<TS,BUD>* tc)const;
+    };
 
   //This fuctor evaluates the maximum Qin of all TreeSegments in a Tree
 

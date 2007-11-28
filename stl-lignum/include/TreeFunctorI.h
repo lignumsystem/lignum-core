@@ -776,13 +776,29 @@ namespace Lignum{
     LGMdouble& CollectQabs<TS,BUD>::
     operator()(LGMdouble &sum,TreeCompartment<TS,BUD>* tc)const
     {
-      if(TS *segment = dynamic_cast<TS *>(tc))
+      if(TS *ts = dynamic_cast<TS *>(tc))
 	{
-	  sum += GetValue(*segment, LGAQabs);
+	  sum += GetValue(*ts, LGAQabs);
+	  if (GetValue(*ts, LGAQabs) < 0.0){
+	    cerr << "CollectQabs Qabs < 0.0 " << GetValue(*ts, LGAQabs) <<endl;
+	  }
 	}
       return sum;
     }
 
+ template <class TS, class BUD>
+    LGMdouble& CollectQin<TS,BUD>::
+    operator()(LGMdouble &sum,TreeCompartment<TS,BUD>* tc)const
+    {
+      if(TS *ts = dynamic_cast<TS *>(tc))
+	{
+	  sum += GetValue(*ts, LGAQin);
+	  if (GetValue(*ts, LGAQin) < 0.0){
+	    cerr << "CollectQin Qin < 0.0 " << GetValue(*ts, LGAQin) <<endl;
+	  }
+	}
+      return sum;
+    }
 
  /*********************************************************************
  The functor to delete axes (branches)  in the tree.  Axis: If an axis
