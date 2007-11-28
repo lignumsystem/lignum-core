@@ -1265,25 +1265,25 @@ namespace Lignum {
 	for(int i3=0; i3<Zn; i3++){
 	    if ( voxboxes[i1][i2][i3].getFoliageMass() > R_EPSILON){
 	      file << left << setfill(' ')
-		   << setw(4) << i1 << sep 
-		   << setw(4) << i2 << sep 
-		   << setw(4) << i3 << sep
-		   << setw(11) << voxboxes[i1][i2][i3].getCenterPoint().getX() << sep
-		   << setw(11) << voxboxes[i1][i2][i3].getCenterPoint().getY() << sep
-		   << setw(11) << voxboxes[i1][i2][i3].getCenterPoint().getZ() << sep
-		   << setw(11) << voxboxes[i1][i2][i3].getQabs() << sep 
-		   << setw(11) << voxboxes[i1][i2][i3].getQin() << sep 
-		   << setw(11) << voxboxes[i1][i2][i3].getNeedleMass() << sep
-		   << setw(11) << voxboxes[i1][i2][i3].getLeafMass() << sep
-		   << setw(11) << voxboxes[i1][i2][i3].getFoliageMass() << sep
-	           << setw(11) << voxboxes[i1][i2][i3].getNeedleArea() << sep
-		   << setw(11) << voxboxes[i1][i2][i3].getLeafArea() << sep
-		   << setw(4)  << voxboxes[i1][i2][i3].getNumSegments() << sep
-		   << setw(4)  << voxboxes[i1][i2][i3].getNumLeaves() << sep
-		   << setw(11) << voxboxes[i1][i2][i3].getStar() << sep
-		   << setw(11) << voxboxes[i1][i2][i3].getStarSum() << sep 
-		   << setw(11) << voxboxes[i1][i2][i3].getQabsMean() << sep
-		   << setw(11) << voxboxes[i1][i2][i3].getQinMean() << endl;
+		   << /*1*/setw(4) << i1 << sep 
+		   << /*2*/setw(4) << i2 << sep 
+		   << /*3*/setw(4) << i3 << sep
+		   << /*4*/setw(11) << voxboxes[i1][i2][i3].getCenterPoint().getX() << sep
+		   << /*5*/setw(11) << voxboxes[i1][i2][i3].getCenterPoint().getY() << sep
+		   << /*6*/setw(11) << voxboxes[i1][i2][i3].getCenterPoint().getZ() << sep
+		   << /*7*/setw(11) << voxboxes[i1][i2][i3].getQabs() << sep 
+		   << /*8*/setw(11) << voxboxes[i1][i2][i3].getQin() << sep 
+		   << /*9*/setw(11) << voxboxes[i1][i2][i3].getNeedleMass() << sep
+		   << /*10*/setw(11) << voxboxes[i1][i2][i3].getLeafMass() << sep
+		   << /*11*/setw(11) << voxboxes[i1][i2][i3].getFoliageMass() << sep
+	           << /*12*/setw(11) << voxboxes[i1][i2][i3].getNeedleArea() << sep
+		   << /*13*/setw(11) << voxboxes[i1][i2][i3].getLeafArea() << sep
+		   << /*14*/setw(4)  << voxboxes[i1][i2][i3].getNumSegments() << sep
+		   << /*15*/setw(4)  << voxboxes[i1][i2][i3].getNumLeaves() << sep
+		   << /*16*/setw(11) << voxboxes[i1][i2][i3].getStar() << sep
+		   << /*17*/setw(11) << voxboxes[i1][i2][i3].getStarSum() << sep 
+		   << /*18*/setw(11) << voxboxes[i1][i2][i3].getQabsMean() << sep
+		   << /*19*/setw(11) << voxboxes[i1][i2][i3].getQinMean() << endl;
 	    }
 	}
     file.close();
