@@ -37,18 +37,21 @@ using namespace cxxadt;
 //                H,L,U. After  derive arguments have  values they are
 //                given or undefined.
 //    MoveTo(x,y,z) set turtle to given position Point(x,y,z), orientation not changed
-//    SetHead(hx,hy,hz,ux,uy,uz) 
+//    SetHeadUp(hx,hy,hz,ux,uy,uz) 
 //                  set turtle heading to PositionVector(hx,hy,hz) and
 //                  turtle up to PositionVector(ux,uy,uz). The vectors
 //                  need  not  be   normalized  (they  are  normalized
-//                  here). Turtle left is defined as Cross(up,heading).
+//                  here). Turtle left is defined as Cross(turtle_up,heading).
 //                  The turtle position is not changed.
 //                  The module is ignored if
 //                  1.  the angle  between heading  and up  is  not 90
 //                  degrees (Dot product > R_EPSILON)
 //                  2. the length of either of the two vectors is less than R_EPSILON
-
-
+//   SetHead(hx,hy,hz)
+//                  set  turtle  heading to  PositionVector(hx,hy,hz),
+//                  the  turtle left will  be Cross(global_up,heading)
+//                  and the turtle up will be Cross(heading,left)
+//As a reminder U = H x L, L = U x H and H = L x U
 //See also LsysteI.h for the implementation of the symbols
 class Turtle{
   friend ostream& operator << (ostream& os, const Turtle& t);

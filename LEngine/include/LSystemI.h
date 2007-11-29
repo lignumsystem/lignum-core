@@ -695,13 +695,13 @@ int LSystem<TS,BUD,T,F>::lstring2Lignum(list<TreeCompartment<TS,BUD>*>& ls,
     SetPoint(turtle_stack.top(),Point(z,y,z));
     ltr++;
   }
-  //SetHead(hx,hy,hz,ux,uy,uz): set turtle heading to PositionVector(hx,hy,hz)
+  //SetHeadUp(hx,hy,hz,ux,uy,uz): set turtle heading to PositionVector(hx,hy,hz)
   //and turtle up to PositionVector(ux,uy,uz). The vectors need not be normalized
   //(they are normalized here). Turtle left is defined as Cross(up,heading).
   //The module is ignored if 
   //1. the angle between heading and up is not 90 degrees (Dot product > R_EPSILON)
   //2. the length of either of the two vectors is less than R_EPSILON
-  else if (strcmp(name,"SetHead") == 0){
+  else if (strcmp(name,"SetHeadUp") == 0){
     double hx,hy,hz,ux,uy,uz;
     hx=hy=hz=ux=uy=uz=0.0;
     caller_data.Reset();
@@ -736,6 +736,53 @@ int LSystem<TS,BUD,T,F>::lstring2Lignum(list<TreeCompartment<TS,BUD>*>& ls,
       SetLeft(turtle_stack.top(),l);
       ltr++;
     }
+  }
+  //SetHead  sets turtle  heading to  PositionVector(hx,hy,hz), turtle
+  //left   is   Cross(global_up,heading)  and   turtle   up  will   be
+  //Cross(heading,turtle_left)
+  else if (strcmp(name,"SetHead") == 0){
+    double hx,hy,hz;
+    hx=hy=hz=0.0;
+    caller_data.Reset();
+    caller_data.Strct.AddModuleAddr(ltr.Ptr());
+    const char* pArg = caller_data.Strct.pArg(0);
+    memcpy(&hx,pArg,sizeof(double));
+    pArg += sizeof(double);
+    memcpy(&hy,pArg,sizeof(double));
+    pArg += sizeof(double);
+    memcpy(&hz,pArg,sizeof(double));
+    PositionVector turtle_head(hx,hy,hz);//heading
+    turtle_head.normalize();
+    PositionVector global_up(0,0,1);
+    PositionVector turtle_left = Cross(global_up,turtle_head);
+    //Check if turtle heading is not up (0,0,1) or down (0,0,-1) 
+    if (turtle_left.length() > R_EPSILON){
+      turtle_left.normalize();
+      PositionVector turtle_up = Cross(turtle_head,turtle_left);
+      turtle_up.normalize();
+      SetHeading(turtle_stack.top(),turtle_head);
+      SetUp(turtle_stack.top(),turtle_up);
+      SetLeft(turtle_stack.top(),turtle_left);
+    }
+    //Heading  is up  so turtle  left and  turtle up  are  (1,0,0) and
+    //(0,1,0) respectively
+    else if (turtle_head.getZ() > 0.0){
+      SetHeading(turtle_stack.top(),turtle_head);
+      SetUp(turtle_stack.top(),PositionVector(0,1,0));
+      SetLeft(turtle_stack.top(),PositionVector(1,0,0));
+    }
+    //Heading is  down so  turtle left and  turtle up are  (1,0,0) and
+    //(0,-1,0) respectively
+    else if (turtle_head.getZ() < 0.0){
+      SetHeading(turtle_stack.top(),turtle_head);
+      SetUp(turtle_stack.top(),PositionVector(0,-1,0));
+      SetLeft(turtle_stack.top(),PositionVector(1,0,0));
+    }
+    else{
+      cout << "SetHead: cannot use turtle heading" <<endl;
+      cout << turtle_head << endl;
+    }
+    ltr++;
   }
   //Ignore  other symbols, go forward in the string
   else{

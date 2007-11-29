@@ -1,5 +1,5 @@
 #include <Turtle.h>
-
+//As a reminder U = H x L, L = U x H and H = L x U
 //Initial turtle heading up at point (0,0,0)
 Turtle::Turtle()
   :h(0,0,1),l(1,0,0),u(0,1,0),p(0,0,0)
@@ -237,9 +237,9 @@ ostream& operator << (ostream& os, const Turtle& t)
 {
   cout << endl;
   os << "H: " << t.h;
-  os << "L: " << t.l;
-  os << "U: " << t.u;
-  os << "P: " << t.p;
+  os << " L: " << t.l;
+  os << " U: " << t.u;
+  os << " P: " << t.p;
   return os;
 }
 
@@ -249,19 +249,53 @@ ostream& operator << (ostream& os, const Turtle& t)
 
 int main()
 {
+
+  PositionVector h(0,0,1);
+  PositionVector l(1,0,0);
+  PositionVector u(0,1,0);
+
+
+  cout << "H x L: " << Cross(h,l) << endl;
+  cout << "U x H: " << Cross(u,h) << endl;
+  cout << "L x U: " << Cross(l,u) << endl;
+  cout << "H " << h << endl;
+  cout << "L " << l << endl;
+  cout << "U " << u << endl;
+
+  cout << "(0,0,1) x (0,0,-1): " << Cross(PositionVector(0,0,1),PositionVector(0,0,-1)) <<endl;
+
+  cout << "(1,0,0) x (0,0,1): " << Cross(l,h) <<endl;
+
+  cout << "(1,0,0) x (0,-1,0): " << Cross(PositionVector(1,0,0), PositionVector(0,-1,0)) << endl; 
+
+  Turtle t0;
+  t0.pitch(PI_VALUE);
+  cout <<  "After pitch PI : " << t0 << endl;
+  
+  Turtle t1;
+  t1.pitch(-PI_VALUE);
+  cout <<  "After pitch -PI : " << t1 << endl;
+
   Turtle t;
   cout << "Turtle : " << t << endl;
 
   t.forward(1.456);
   cout << "After forward 1.456 : " << t << endl;
 
+  t.roll(-PI_VALUE/2.0);
+  cout <<  "After roll -PI/2 : " << t << endl;
+
+  t.pitch(-PI_VALUE/2.0);
+  cout <<  "After pitch -PI/2 : " << t << endl;
+  
   t.turn(PI_VALUE/2.0);
   cout << "After turn PI/2: " << t << endl;
 
   t.pitch(PI_VALUE/2.0);
   cout <<  "After pitch PI/2 : " << t << endl;
+
   
-  t.roll(I_VALUE/2.0);
+  t.roll(PI_VALUE/2.0);
   cout <<  "After roll PI/2 : " << t << endl;
 
   t.forward(1.0);
