@@ -18,7 +18,7 @@ using namespace cxxadt;
 //    Fd(d,r,rtop)move turtle forward distance 'd', create segment
 //                that has length 'd', radius 'r' and top radius 'rtop'
 //    f(d)        move turtle forward distance 'd', do not create segment
-//    HRoll()     rotation round heading so that heading is horizontal
+//    HRoll()     rotation round heading so that left is horizontal
 //                in world coordinates. Formally:  L = UpxH and U = HxL.
 //    Hrz()       rotations of turtle HLU round horizontal, Hrz = UpxH,
 //                so that turtle heading becomes horizontal in world coordinates.
