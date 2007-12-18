@@ -37,6 +37,7 @@ using namespace cxxadt;
 //                H,L,U. After  derive arguments have  values they are
 //                given or undefined.
 //    MoveTo(x,y,z) set turtle to given position Point(x,y,z), orientation not changed
+//    GetPoint(x,y,z) get the position of the turtle (global coordinates)
 //    SetHeadUp(hx,hy,hz,ux,uy,uz) 
 //                  set turtle heading to PositionVector(hx,hy,hz) and
 //                  turtle up to PositionVector(ux,uy,uz). The vectors
