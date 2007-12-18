@@ -692,7 +692,23 @@ int LSystem<TS,BUD,T,F>::lstring2Lignum(list<TreeCompartment<TS,BUD>*>& ls,
     memcpy(&y,pArg,sizeof(double));
     pArg += sizeof(double);
     memcpy(&z,pArg,sizeof(double));
-    SetPoint(turtle_stack.top(),Point(z,y,z));
+    SetPoint(turtle_stack.top(),Point(x,y,z));
+    ltr++;
+  }
+  else if (strcmp(name,"GetPoint") == 0){
+    Point p = GetPoint(turtle_stack.top());
+    double x,y,z;
+    x=p.getX();
+    y=p.getY();
+    z=p.getZ();
+    caller_data.Reset();
+    caller_data.Strct.AddModuleAddr(ltr.Ptr());
+    const char* pArg = caller_data.Strct.pArg(0);
+    memcpy(const_cast<char*>(pArg),&x,sizeof(double));
+    pArg += sizeof(double);
+    memcpy(const_cast<char*>(pArg),&y,sizeof(double));
+    pArg += sizeof(double);
+    memcpy(const_cast<char*>(pArg),&z,sizeof(double));
     ltr++;
   }
   //SetHeadUp(hx,hy,hz,ux,uy,uz): set turtle heading to PositionVector(hx,hy,hz)
