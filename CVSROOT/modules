@@ -61,7 +61,7 @@ ctree                 -s JariP                ctree
 lignum-core           			      &c++adt &stl-lignum &Firmament
 core-model                                    &c++adt &stl-lignum &Firmament &stl-voxelspace &LEngine &XMLTree &qt-workbench 
 poplar                -s Alice                poplar
-Poplar                -s Alice                &c++adt &stl-lignum &Firmament &LEngine &Graphics &stl-voxelspace &poplar
+PoplarAll                -s Alice                &c++adt &stl-lignum &Firmament &LEngine &Graphics &stl-voxelspace &poplar
 maple                                         &c++adt &stl-lignum &Firmament &LEngine &Graphics &stl-voxelspace &XMLTree &qt-workbench &SugarMaple
 Lignum-Crobas                                 &c++adt &stl-lignum &Firmament &LEngine &Graphics &stl-voxelspace &Pine &ScotsPine &ScotsPineVisual &XMLTree &qt-workbench &Lig-Crobas
 DataTree             -s JariP                 DataTree
