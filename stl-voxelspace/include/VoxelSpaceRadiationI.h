@@ -37,6 +37,8 @@ public:
     Wfk = GetValue(ts, LGAWf); //Foliage mass
     //The specific leaf area, m2/kg, is now function of relative light
     sfk = GetValue(ts,LGAsf);
+    //This is for Risto 3.11.2007
+    //double Qi = accumulate(s.begin(),s.end(),0.0);
     //Loop the sectors
     for (int i = 0; i < f.numberOfRegions(); i++){
       f.diffuseRegionRadiationSum(i,d);//get the direction 'd' of the i'th sector
@@ -121,6 +123,7 @@ public:
       double z = p1.getZ();//height of the segment midpoint.
       double starmean = GetValue(*ts,LGAstarm); //star mean,extinction
 						//coefficient
+      //cout << "STARM "  << starmean << " DENS " << density << endl;
       //the Qin sector by sector
       for (int i = 0; i < f.numberOfRegions(); i++){
 	vector<VoxelMovement> vm;
@@ -130,18 +133,13 @@ public:
 	//Reset the vector of voxel object tags to denote the beam has
 	//not hit any segment.
 	vs.getBookKeeper().resetVector();
-	//Lengths  of  the  light  beam  in different  boxes  and  the
-	//extinction coeffient. First, the border stand extinction
-	double tau = vs.getBorderStandExtinction(p1,d1);
-	if (tau > R_EPSILON){
-	  //Do not bother  to traverse the voxels for  each sky sector
-	  //if no light
-	  vs.getRoute(vm,p1,d1,K,true);
-	  //calculate the extinction coeffient
-	  tau = tau*accumulate(vm.begin(),vm.end(),1.0,
-			       AccumulatePairwiseExtinction());
-	}
+	//Extinction into one direction
+	vs.getRoute(vm,p1,d1,K,true);
+	//calculate the extinction coeffient
+	double tau = accumulate(vm.begin(),vm.end(),1.0,
+				AccumulatePairwiseExtinction());
 	s[i] = s[i]*tau;//the Qin from one sector
+	//cout << "TAU " << tau << " s[i] " << s[i] <<endl;
       }
       MJ Q_in = accumulate(s.begin(),s.end(),0.0);
       //Set Qin, it is now needed in calculateAbsorbedRadiation
