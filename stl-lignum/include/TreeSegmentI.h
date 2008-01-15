@@ -302,6 +302,12 @@ LGMdouble GetValue(const TreeSegment<TS,BUD>& ts, const LGMAD name)
   else if (name == LGAV)
     return  PI_VALUE*pow(GetValue(ts,LGAR),2.0) * GetValue(ts,LGAL);
   
+  else if (name == LGAVfrustum){
+    double rb = GetValue(ts,LGAR);
+    double rt = GetValue(ts,LGARTop);
+    return (PI_VALUE*GetValue(ts,LGAL)*(rb*rb+rb*rt+rt*rt))/3.0;
+  }
+
   else if (name == LGAVh)
     return  PI_VALUE*pow(GetValue(ts,LGARh),2.0) * GetValue(ts,LGAL);
 
