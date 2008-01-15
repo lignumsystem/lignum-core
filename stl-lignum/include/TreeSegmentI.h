@@ -305,7 +305,11 @@ LGMdouble GetValue(const TreeSegment<TS,BUD>& ts, const LGMAD name)
   else if (name == LGAVfrustum){
     double rb = GetValue(ts,LGAR);
     double rt = GetValue(ts,LGARTop);
-    return (PI_VALUE*GetValue(ts,LGAL)*(rb*rb+rb*rt+rt*rt))/3.0;
+    if (rt == 0.0)//LGARTop is not set (default value present)
+      return GetValue(ts,LGAV);//Return segment cylinder volume
+    else
+      //LGARTop set, return the frustum volume
+      return (PI_VALUE*GetValue(ts,LGAL)*(rb*rb+rb*rt+rt*rt))/3.0;
   }
 
   else if (name == LGAVh)
