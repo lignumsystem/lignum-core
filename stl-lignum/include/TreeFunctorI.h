@@ -14,6 +14,7 @@
 //   CheckCoordinates
 //   FindCfBoundingBox
 //   FindHwBoundingBox
+//   CollectFrustumVolume
 //   CollectFoliageMass
 //   CollectFoliageArea
 //   CollectWoodMass
@@ -670,6 +671,16 @@ namespace Lignum{
   }
 
 
+  template <class TS, class BUD>
+  LGMdouble& CollectFrustumVolume<TS,BUD>::
+  operator()(LGMdouble& sum, TreeCompartment<TS,BUD>* tc)const
+  {
+    if(TS *segment = dynamic_cast<TS *>(tc))
+      {
+	sum += GetValue(*segment, LGAVfrustum);
+      }
+    return sum;
+  }
 
   template <class TS, class BUD>
     LGMdouble& CollectFoliageMass<TS,BUD>::

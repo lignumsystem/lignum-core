@@ -28,6 +28,7 @@ using namespace std;
 //   CheckCoordinates
 //   FindCfBoundingBox
 //   FindHwBoundingBox
+//   CollectFrustumVolume
 //   CollectFoliageMass
 //   CollectFoliageArea
 //   CollectWoodMass
@@ -337,6 +338,12 @@ namespace Lignum{
 			     TreeCompartment<TS,BUD>* tc)const;
   };
 
+  template <class TS,class BUD>
+    class CollectFrustumVolume
+    { 
+    public:
+      LGMdouble& operator()(LGMdouble &sum, TreeCompartment<TS,BUD>* tc)const;
+    };
 
   template <class TS,class BUD>
     class CollectFoliageMass
