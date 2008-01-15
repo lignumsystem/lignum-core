@@ -59,8 +59,9 @@ namespace Lignum{
 	      LGAH,LGAHf,LGAHTop,LGAip,LGAL,LGALAIb,LGALAIc,
               LGAM, LGAMaxD,LGAomega,LGAP,LGAQabs,LGAQin,LGAR,LGARf,
               LGARh, LGARhair,LGARTop,LGASa,LGAsf,LGAstarm,LGAstatus, 
-              LGAstate,LGAtauL, LGAtype,LGAV,LGAVf,LGAVh,LGAVhair,LGAvi,LGAVs,
-              LGAWf, LGAWf0, LGAWood, LGAWs, LGAWh,LGAWhair,LGAWstem, LGAT};
+              LGAstate,LGAtauL, LGAtype,LGAV,LGAVf,LGAVfrustum,LGAVh,
+              LGAVhair,LGAvi,LGAVs, LGAWf, LGAWf0, LGAWood, LGAWs, 
+              LGAWh,LGAWhair,LGAWstem, LGAT};
 
 
   //  0 LGAA      Segment base area based on R 
@@ -117,17 +118,18 @@ namespace Lignum{
   //               different types given in LGMUnits.h
   // 45 LGAV      Segment volume based on R and L
   // 46 LGAVf     Volume occupied by the foliage in CfSegment 
-  // 47 LGAVh     Heartwood volume
-  // 48 LGAVhair  Root hair volume
-  // 49 LGAvi     Vigour index
-  // 50 LGAVs     Sapwood volume
-  // 51 LGAWf     Foliage mass (kg C)
-  // 52 LGAWf0    Initial foliage mass (kg C)
-  // 53 LGAWood   Mass of wood (=Wh+Ws)
-  // 54 LGAWs     Mass of sapwood (kg C)
-  // 55 LGAWh     Mass of heartwood (kg C)
-  // 56 LGAWhair  Mass of root hair (kg C)
-  // 57 LGAWstem  Mass in the main axis (Ws+Wh)
+  // 47 LGAVfrustum Volume of the segment frustum when LGAR > LGARTop
+  // 48 LGAVh     Heartwood volume
+  // 49 LGAVhair  Root hair volume
+  // 50 LGAvi     Vigour index
+  // 51 LGAVs     Sapwood volume
+  // 52 LGAWf     Foliage mass (kg C)
+  // 53 LGAWf0    Initial foliage mass (kg C)
+  // 54 LGAWood   Mass of wood (=Wh+Ws)
+  // 55 LGAWs     Mass of sapwood (kg C)
+  // 56 LGAWh     Mass of heartwood (kg C)
+  // 57 LGAWhair  Mass of root hair (kg C)
+  // 58 LGAWstem  Mass in the main axis (Ws+Wh)
 
   // LGMAD = LIGNUM Attribute Double
 
