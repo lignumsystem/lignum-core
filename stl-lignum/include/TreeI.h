@@ -459,15 +459,15 @@ LGMdouble GetValue(const Tree<TS,BUD>& tree, const LGMAD name)
     else
       return 0.0;
   }
-  else if (name == LGAAbase){
+  else if (name == LGAAbase){//Area at base
     LGMdouble rbase = GetValue(tree,LGADbase)/2.0;
     return PI_VALUE*pow(rbase,2.0);
   }
-  else if (name == LGAAhwbase){
+  else if (name == LGAAhwbase){//Heartwood area at base
     LGMdouble rhwbase = GetValue(tree,LGADbaseHw)/2.0;
     return PI_VALUE*pow(rhwbase,2.0);
   }
-  else if (name == LGAAsbase){
+  else if (name == LGAAsbase){//Sapwood area at base
     return GetValue(tree,LGAAbase) - GetValue(tree,LGAAhwbase);
   }
   else if (name == LGADbh){
@@ -489,6 +489,22 @@ LGMdouble GetValue(const Tree<TS,BUD>& tree, const LGMAD name)
     //dbh >= 1.3 will assign its diameter to Dbh and Hw diam at BH
     d13 =  accumulate(ls.rbegin(),ls.rend(),d13,dbh);
     return d13.second;
+  }
+  else if (name == LGAADbh){//Area at D1.3
+    double d13 = GetValue(tree,LGADbh);
+    double ad13 = PI_VALUE*pow(d13,2.0);
+    return ad13;
+  }
+  else if (name == LGAAhwDbh){//Heartwood area at D1.3
+    double hwd13 = GetValue(tree,LGADbhHw);
+    double ahwd13 = PI_VALUE*pow(hwd13,2.0);
+    return ahwd13;
+  }
+  else if (name == LGAAsDbh){//Sapwood area at D1.3
+    double ad13 = GetValue(tree,LGAADbh);//area
+    double ahwd13 = GetValue(tree,LGAAhwDbh);//heartwood area
+    double aswd13 = ad13-ahwd13;//sapwood area
+    return aswd13;
   }
   else if (name == LGAWstem){
     Axis<TS,BUD>& axis = GetAxis(const_cast<Tree<TS,BUD>&>(tree));
