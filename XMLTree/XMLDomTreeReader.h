@@ -490,7 +490,11 @@ TS* XMLDomTreeReader<TS,BUD,S>::parseTreeSegment(QDomNode& node, Tree<TS,BUD>& t
 	child = child.nextSibling();
 	// Object creation
 	ts = new TS(p,v,go,l,r,rh,&tree);
-
+	//Reset  radius and  heartwood radius,  some  constructors may
+	//calculate  these values Implement  constructors that  do not
+	//modify values but construct segments as they are given
+	SetValue(*ts,LGAR,r);
+	SetValue(*ts,LGARh,rh);
 	// Parse the rest of the attributes
 	if(segmentType == "Cf") {
 	  parseCfTreeSegmentAttributes(child, dynamic_cast<CfTreeSegment<TS,BUD>*>(ts));
