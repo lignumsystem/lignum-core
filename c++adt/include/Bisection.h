@@ -1,6 +1,8 @@
 #ifndef BISECTION_H
 #define BISECTION_H
 #include <cmath>
+#include <iostream>
+#include <iomanip>
 #include <mathsym.h>
 using namespace std;
 namespace cxxadt{
@@ -81,7 +83,8 @@ namespace cxxadt{
   }
 
   template <class F>
-  double Bisection(double  a, double b, F f, double acc = R_EPSILON)
+  double Bisection(double  a, double b, const F& f, double acc = R_EPSILON, 
+		   bool verbose = false)
   {
     int i = 0;
     double faorig = f(a);
@@ -105,10 +108,26 @@ namespace cxxadt{
     double c = fa < 0.0 ? a : b;
     double dx = fa < 0.0 ? b - a : a - b;
     double mid = 0;
+    if (verbose){
+      cout << left << setfill(' ') 
+	   << setw(11) << "    L      "
+	   << setw(11) << "    C      "
+	   << setw(11) << " fabs(dx)  "
+	   << setw(11) << "   f(L)    "
+	   << endl;
+    }
     while (i++ < MAX_ITER){
       mid = c + (dx *= 0.5);
       double fb = f(mid);
       if (fb <= 0.0) c = mid;
+      if (verbose){
+	cout << left << setfill(' ') 
+	     << setw(11) << mid 
+	     << setw(11) <<  c 
+	     << setw(11) << fabs(dx) 
+	     << setw(11) << fb 
+	     << endl; 
+      }
       if (fabs(dx) < acc || fb==0.0)return c;
     }
     //Root not found, throw exception
