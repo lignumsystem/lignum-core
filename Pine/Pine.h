@@ -376,14 +376,16 @@ class LPineGrowthFunction{
 public:
   LPineGrowthFunction(Tree<TS,BUD>& tree)
     :t(tree),P(-1.0),M(-1.0){}
-  double operator()(double l);
+  double operator()(double l)const;
   void init();
   double getP()const{return P;}
   double getM()const{return M;}
+  double getL()const{return lambda;}
 private:
   Tree<TS,BUD>& t;
   double P;
   double M;
+  mutable double lambda;//save lambda
 };
 
 
@@ -398,11 +400,11 @@ void LPineGrowthFunction<TS,BUD,L,D>::init()
 } 
 
 template <class TS,class BUD,class L,class D>
-double LPineGrowthFunction<TS,BUD,L,D>::operator()(double l)
+double LPineGrowthFunction<TS,BUD,L,D>::operator()(double l)const
 {
   DiameterGrowthData data;
-  
-
+  //0.Save current value of lambda
+  lambda = l;
   //1.Elongate or shorten segment lengths
   ForEach(t,L(l));
 
@@ -415,7 +417,7 @@ double LPineGrowthFunction<TS,BUD,L,D>::operator()(double l)
   //iWs = sapwood mass: new segments + thickening
   //iWfnew = new foliage
   //iWrnew = new roots = ar*iWfnew
- 
+
   return P - M - GetValue(data,DGWs) - GetValue(data,DGWfnew) - GetValue(t,LGPar)* GetValue(data,DGWfnew);
 }
 
