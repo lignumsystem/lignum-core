@@ -22,10 +22,10 @@
 ^watervisual Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi
 ^file-reader  Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi
 ^converter  Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi 
-^stl-lignum Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  juan_posada@mac.com
-^stl-voxelspace Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi
-^c\+\+adt  Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  juan_posada@mac.com   
-^Firmament Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  juan_posada@mac.com
+^stl-lignum Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi tuomo.kalliokoski@metla.fi juan_posada@mac.com
+^stl-voxelspace Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi tuomo.kalliokoski@metla.fi
+^c\+\+adt  Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi tuomo.kalliokoski@metla.fi juan_posada@mac.com   
+^Firmament Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi tuomo.kalliokoski@metla.fi juan_posada@mac.com
 ^ScotsPine  Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  
 ^ScotsPineVisual  Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  
 ^references Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  
@@ -33,7 +33,7 @@
 ^stl-gliricidia Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi 
 ^BetulaTortuosa Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi
 ^LEngine/doc Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi 
-^LEngine Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  juan_posada@mac.com
+^LEngine Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  juan_posada@mac.com tuomo.kalliokoski@metla.fi
 ^Graphics Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi
 ^CityTree Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi minna.terho@metla.fi
 ^poplar Mail -s %s jari.perttunen@metla.fi 
