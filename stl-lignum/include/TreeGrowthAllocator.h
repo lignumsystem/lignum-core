@@ -56,7 +56,7 @@ namespace Lignum{
   public:
     TreeGrowthAllocator(Tree<TS,BUD>& t)
       :TreeGrowthAllocatorBase<TS,BUD>(t){}
-    double operator()(double l);//The  function operator  called  by a
+    double operator()(double l)const;//The  function operator  called  by a
 				//root        finding        function,
 				//e.g.   Bisection   or   Zbrent,   to
 				//allocate net photosynthates
@@ -70,7 +70,7 @@ namespace Lignum{
   public:
     TreeGrowthAllocatorPropagateUp(Tree<TS,BUD>& t,const T& up1)
       :TreeGrowthAllocatorBase<TS,BUD>(t),up(up1){}
-    double operator()(double l);
+    double operator()(double l)const;
   private:
     const T up;
   };
@@ -93,7 +93,7 @@ namespace Lignum{
   //segments  and the  foliage.   The  root growth  is  assumed to  be
   //propotional to the new foliage mass: Wrnew = LGPar*Wfnew.
   template  <class TS,class BUD,class F1,class F2>
-  double TreeGrowthAllocator<TS,BUD,F1,F2>::operator()(double l)
+  double TreeGrowthAllocator<TS,BUD,F1,F2>::operator()(double l)const
   {
     DiameterGrowthData data;
     
@@ -116,7 +116,7 @@ namespace Lignum{
   //method, but instead of ForEach the  data of type T is passed up in
   //the tree with PropagateUp
   template  <class TS,class BUD,class F1,class F2,class T>
-  double TreeGrowthAllocatorPropagateUp<TS,BUD,F1,F2,T>::operator()(double l)
+  double TreeGrowthAllocatorPropagateUp<TS,BUD,F1,F2,T>::operator()(double l)const
   {
     DiameterGrowthData data;
     //Reinitialize the data to passed up in the tree
