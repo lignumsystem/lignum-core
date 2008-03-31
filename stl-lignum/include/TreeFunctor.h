@@ -261,7 +261,7 @@ namespace Lignum{
   //Sets the Gravelius order of Segments, BranchingPoints and Buds so
   //that these parts belonging to an axis forking off from the present one
   //get order one higher. Use this functor as
-  //PropagateUp(tree,0,SetGraveliusOrder<TS>()), where 0 quarantees
+  //PropagateUp(tree,iniGo,SetGraveliusOrder<TS>()), where iniGo = 0 quarantees
   //that the main stem gets Gravelius order equal to 1. (= LIGNUM convention).
 
 template <class TS,class BUD> 
