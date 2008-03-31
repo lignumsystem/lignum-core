@@ -24,6 +24,7 @@ using namespace std;
 //   PrintTreeInformation2
 //   CountCompartments
 //   CountCompartmentsReverse
+//   SetGraveliusOrder
 //   DisplayStructure
 //   CheckCoordinates
 //   FindCfBoundingBox
@@ -255,6 +256,36 @@ namespace Lignum{
       public:
       int& operator ()(int& id,TreeCompartment<TS,BUD>* ts)const;
     };
+
+
+  //Sets the Gravelius order of Segments, BranchingPoints and Buds so
+  //that these parts belonging to an axis forking off from the present one
+  //get order one higher. Use this functor as
+  //PropagateUp(tree,0,SetGraveliusOrder<TS>()), where 0 quarantees
+  //that the main stem gets Gravelius order equal to 1. (= LIGNUM convention).
+
+template <class TS,class BUD> 
+class SetGraveliusOrder {
+public:
+  int& operator()(int& g_o,TreeCompartment<TS,BUD>* tc)const {
+    
+    if(Axis<TS, BUD>* ax =
+       dynamic_cast<Axis<TS, BUD>*>(tc))
+      g_o++;
+    else if(TS* ts = dynamic_cast<TS*>(tc))
+      SetValue(*ts,LGAomega,(double)g_o);
+    else if(BranchingPoint<TS, BUD>* bp
+	    = dynamic_cast<BranchingPoint<TS, BUD>*>(tc))
+      SetValue(*bp,LGAomega,(double)g_o);
+    else if(BUD* bd = dynamic_cast<BUD*>(tc)) 
+      SetValue(*bd,LGAomega,(double)g_o);
+    else
+      ;
+    
+    return g_o;
+  }
+};
+
 
 
   template <class TS,class BUD> void DisplayStructure(Tree<TS,BUD>& t);
