@@ -53,6 +53,9 @@ class Axis: public TreeCompartment<TS,BUD>{
   template <class TS1,class BUD1>  
   friend LGMdouble GetBranchFoliage(Axis<TS1,BUD1>& axis); 
 
+  template <class TS1,class BUD1>  
+  friend int GetNumberOfCompartments(Axis<TS1,BUD1>& axis); 
+
 public:
   virtual ~Axis();
   Axis();

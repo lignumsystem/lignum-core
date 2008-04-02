@@ -231,6 +231,14 @@ namespace Lignum{
     return w_fol;
   }
   
+
+  template <class TS,class BUD>
+  int GetNumberOfCompartments(Axis<TS,BUD>& axis) {
+    int no = (axis.tc_ls).size();
+    return no;
+}
+
+
   
 }//closing namesapce
 
