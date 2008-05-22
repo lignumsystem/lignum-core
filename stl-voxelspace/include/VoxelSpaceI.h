@@ -165,8 +165,9 @@ namespace Lignum {
       //cout << x1 << " " << y1 << " " << z1 <<endl <<endl;
       //check that the box has changed
       if (x1 >= s.Xn || y1 >= s.Yn || z1 >= s.Zn){
-	cerr << "Ignoring element " << d1 << " " 
-	     << x1 << " " << y1 << " " << z1 <<endl;
+	cerr << "Ignoring element " << d1 << endl
+	     << x1 << " " << y1 << " " << z1 <<endl
+	     << s.Xn << " "  << s.Yn << " " << s.Zn <<endl;
 	return;
       }
       if (!(x1==x2 && y1==y2 && z1==z2)){
