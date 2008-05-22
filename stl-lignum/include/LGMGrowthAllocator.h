@@ -1,5 +1,6 @@
 #ifndef LGMGROWTHALLOCATOR_H
 #define LGMGROWTHALLOCATOR_H
+#include <TreeCompartment.h>
 namespace Lignum{
 //   The  LGMGrowthAllocator  functor   implements  the  allocation  of
 //   photosynthates iteratively, i.e it puts into practice the solution
@@ -95,7 +96,7 @@ namespace Lignum{
     LGMGrowthAllocator(Tree<TS,BUD>& tree)
       :t(tree),P(0.0),M(0.0){init();}
     LGMGrowthAllocator(Tree<TS,BUD>& tree,DATA d)
-      :t(tree),data(d),P(0.0),M(0.0){init();}
+      :t(tree),data(d),data_orig(d),P(0.0),M(0.0){init();}
     void init();
     DATA getData()const{return data;}
     double getP()const{return P;}
@@ -105,6 +106,7 @@ namespace Lignum{
   private:
     Tree<TS,BUD>& t;
     mutable DATA data;
+    DATA data_orig;
     double P;
     double M;
     mutable double lambda;//The lambda in  G = iWs(l) + iWfnew(l) + iWrnew(l)
@@ -121,6 +123,8 @@ namespace Lignum{
   template <class TS,class BUD,class ELONGATION,class DIAMETER_INCREMENT, class DATA>
   double LGMGrowthAllocator<TS,BUD,ELONGATION,DIAMETER_INCREMENT,DATA>::operator()(double l)const
   {
+    //Reset data!!!!
+    DATA data = data_orig;
     //0.Save current value of lambda
     lambda = l;
     //1.Elongate or shorten segment lengths
