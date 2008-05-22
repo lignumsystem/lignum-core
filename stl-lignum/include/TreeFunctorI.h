@@ -122,8 +122,9 @@ namespace Lignum{
 
     //out is either equal to cout or a file
 
-    out.setf(ios_base::fixed,ios_base::floatfield);
     out.precision(2);
+    out.setf(ios_base::right,ios_base::fixed);
+
 
     out << endl;
     out << "age: " << values.age << "  growth cycles" << endl;
@@ -277,7 +278,7 @@ namespace Lignum{
     out << endl;
 
     out << "H of whorl, m     Mean branch l, m" << endl;
-    out.setf(ios_base::fixed,ios_base::floatfield);
+    out.setf(ios_base::right,ios_base::adjustfield);
     out.precision(2);
     for(unsigned int i1 = 0; i1 < values.mean_br_h.size(); i1++) {
       out << "     " << values.mean_br_h[i1] << "          " <<
