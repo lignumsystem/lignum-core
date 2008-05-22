@@ -49,6 +49,8 @@ namespace Lignum{
   enum DGAD {DGWs,DGWf,DGWfnew};
 
   class DiameterGrowthData:public TcData{
+    friend double GetValue(const DiameterGrowthData& dgd, LGMAD name);
+    friend double SetValue(DiameterGrowthData& dgd, LGMAD name,double value);
     friend double GetValue(const DiameterGrowthData& dgd, DGAD name);
     friend double SetValue(DiameterGrowthData& dgd, DGAD name, double value);
   public:
@@ -81,6 +83,30 @@ namespace Lignum{
     double Ws,Wf,Wfnew;//Sapwood, total foliage and new foliage mass. 
   };
 
+  inline double GetValue(const DiameterGrowthData& dgd, LGMAD name)
+  {
+    if (name == LGAiWf)
+      return dgd.Wfnew;
+    else if (name == LGAiWs)
+      return dgd.Ws;
+    else 
+      return GetValue(dynamic_cast<const TcData&>(dgd),name);
+  }
+
+  inline double SetValue(DiameterGrowthData& dgd,LGMAD name,double value)
+  {
+    double old_val = GetValue(dgd,name);
+    if (name == LGAiWf)
+      dgd.Wfnew = value;
+    else if (name == LGAiWs)
+      dgd.Ws = value;
+    else 
+      SetValue(dynamic_cast<TcData&>(dgd),name,value);
+    return old_val;
+  }
+
+
+  
   inline double GetValue(const DiameterGrowthData& dgd, DGAD name)  
   {
     if (name == DGWs)
@@ -90,7 +116,7 @@ namespace Lignum{
     else if (name == DGWfnew)
       return dgd.Wfnew;
     else{
-      cout << " DiameterGrowthData GetValue unknown name:" << endl;
+      cout << " DiameterGrowthData GetValue unknown name:" << name << endl;
       return -1.0;
     }
   }
