@@ -18,6 +18,7 @@ using namespace cxxadt;
 
 #include <LGMdecl.h>
 #include <Algorithms.h>
+#include <LGMGrowthAllocator.h>
 #include <TreeFunctor.h>
 #include <TreeMetaFileParser.h>
 #include <RootSystem.h>
