@@ -99,7 +99,7 @@ template <class TS, class BUD, class T, class F>
     }
     //Current root compartment is bud but the symbol is "SB" --> error
     //(structures should match)
-    else if (RootTip<Tree<TS,BUD> >* rt = dynamic_cast<RootTip<Tree<TS,BUD> >*> (*current)){
+    else if (dynamic_cast<RootTip<Tree<TS,BUD> >*> (*current)){
       cerr << "Axis error 1 current is root tip structures should match" << endl;
     }
     else{
@@ -127,7 +127,7 @@ template <class TS, class BUD, class T, class F>
     }
     //Current tree compartment is bud  but the symbol is "F" --> error
     //(structures should match)
-    else if (RootTip<Tree<TS,BUD> >* rt = dynamic_cast<RootTip<Tree<TS,BUD> >*> (*current)){
+    else if (dynamic_cast<RootTip<Tree<TS,BUD> >*> (*current)){
       cerr << "Axis error 4 current is root tip structures should match" << endl;
     }
     else{
@@ -351,7 +351,7 @@ template <class TS, class BUD, class T, class F>
       current++;
     }
     //Current tree compartment is bud but the symbol is "SB" --> new branching point
-    else if (RootTip<Tree<TS,BUD> >* rt = dynamic_cast<RootTip<Tree<TS,BUD> >*> (*current)){
+    else if (dynamic_cast<RootTip<Tree<TS,BUD> >*> (*current)){
       RootBranchingPoint<Tree<TS,BUD> >* rbp =
 	new RootBranchingPoint<Tree<TS,BUD> >(GetPoint(turtle_stack.top()),
 					      GetHeading(turtle_stack.top()),
