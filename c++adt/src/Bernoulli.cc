@@ -7,8 +7,8 @@
 namespace cxxadt{
 
   //Probability of success is p
-  double Bernoulli::operator()(double p, int seed=1){
-    if (uniform(fabs(seed))<p)
+  double Bernoulli::operator()(double p, int seed){
+    if (uniform(abs(seed))<p)
       return 1.0;
     else
       return 0.0;

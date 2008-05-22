@@ -10,7 +10,7 @@ namespace cxxadt{
   public:
     Bernoulli(int seed = -1):uniform(-fabs(seed)){}
     double init(int seed = -1){return uniform.init(-fabs(seed));}
-    double operator()(double p, int seed);
+    double operator()(double p, int seed=1);
   private:
     Uniform uniform;
   };
