@@ -29,9 +29,9 @@ using namespace std;
 //   CheckCoordinates
 //   FindCfBoundingBox
 //   FindHwBoundingBox
-//   CollectFrustumVolume
-//   CollectFoliageMass
-//   CollectFoliageArea
+//   CollectFrustumVolume 
+//   CollectFoliageMass (Either whole tree or by Gravelius order)
+//   CollectFoliageArea (Either whole tree or by Gravelius order)
 //   CollectWoodMass
 //   CollectSapwoodMass
 //   CollectStemSapwoodMass
@@ -91,7 +91,7 @@ namespace Lignum{
   //Accumulate
 
    //PrintTreeInformation prints either to file or to console. The
-   //stream is given as a template.
+
    //Call constructor basically in two ways:
    //1) PrintTreeInformation<TS,BUD,ostream> print -- prints to cout
    //2) PrintTreeInformation<TS,BUD,ofstream> print(const ofstream&)
@@ -376,18 +376,31 @@ public:
       LGMdouble& operator()(LGMdouble &sum, TreeCompartment<TS,BUD>* tc)const;
     };
 
+  //Either whole tree: construct CollectFoliageMass() or by Gravelius order:
+  // construct CollectFoliageMass(order)
   template <class TS,class BUD>
     class CollectFoliageMass
     { 
     public:
+      CollectFoliageMass():my_order(-1.0) {}
+      CollectFoliageMass(const LGMdouble order):my_order(order){}
       LGMdouble& operator()(LGMdouble &sum, TreeCompartment<TS,BUD>* tc)const;
+    private:
+      LGMdouble my_order;
     };
 
+  //Either whole tree: construct CollectFoliageMass() or by Gravelius order:
+  // construct CollectFoliageMass(order)
   template <class TS,class BUD>
     class CollectFoliageArea
     { 
     public:
+      CollectFoliageArea():my_order(-1.0) {}
+      CollectFoliageArea(const LGMdouble order):my_order(order){}
+
       LGMdouble& operator()(LGMdouble &sum, TreeCompartment<TS,BUD>* tc)const;
+    private:
+      LGMdouble my_order;
     };
 
   template <class TS,class BUD>

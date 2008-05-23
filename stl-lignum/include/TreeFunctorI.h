@@ -683,16 +683,30 @@ namespace Lignum{
     return sum;
   }
 
+
+  //Either whole tree: construct CollectFoliageMass() or by Gravelius order:
+  // construct CollectFoliageMass(order)
+
   template <class TS, class BUD>
     LGMdouble& CollectFoliageMass<TS,BUD>::
     operator()(LGMdouble &sum, TreeCompartment<TS,BUD>* tc)const
     {
       if(TS *segment = dynamic_cast<TS *>(tc))
 	{
-	  sum += GetValue(*segment, LGAWf);
+          if(my_order < 0.0)
+	    sum += GetValue(*segment, LGAWf);
+	  else {
+	    LGMdouble order = GetValue(*segment,LGAomega);
+	    if(order - 0.1 < my_order && order + 0.1 > my_order) 
+	       sum += GetValue(*segment, LGAWf);
+          } 
 	}
       return sum;
     }
+
+
+  //Either whole tree: construct CollectFoliageMass() or by Gravelius order:
+  // construct CollectFoliageMass(order)
 
   template <class TS, class BUD>
   LGMdouble& CollectFoliageArea<TS,BUD>::
@@ -700,7 +714,13 @@ namespace Lignum{
     {
       if(TS *segment = dynamic_cast<TS *>(tc))
 	{
-	  sum += GetValue(*segment, LGAAf);
+	  if(my_order < 0.0)
+	     sum += GetValue(*segment, LGAAf);
+          else {
+            LGMdouble order = GetValue(*segment,LGAomega);
+            if(order - 0.1 < my_order && order + 0.1 > my_order)
+               sum += GetValue(*segment, LGAAf);
+          }
 	}
       return sum;
     }
