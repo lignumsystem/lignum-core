@@ -339,6 +339,8 @@ public:
     maxxyz = Point(-R_HUGE, -R_HUGE, -R_HUGE); }
     Point getMin() { return minxyz; }
     Point getMax() { return maxxyz; }
+    void setMin(const Point& p){minxyz=p;}
+    void setMax(const Point& p){maxxyz=p;}
     void setMinX(const LGMdouble x) { minxyz.setX(x); }
     void setMinY(const LGMdouble y) { minxyz.setY(y); }
     void setMinZ(const LGMdouble z) { minxyz.setZ(z); }
