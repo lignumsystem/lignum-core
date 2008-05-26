@@ -33,6 +33,7 @@ using namespace std;
 //   CollectFoliageMass (Either whole tree or by Gravelius order)
 //   CollectFoliageArea (Either whole tree or by Gravelius order)
 //   CollectWoodMass
+//   CollectStemWoodMass
 //   CollectSapwoodMass
 //   CollectStemSapwoodMass
 //   CollectHeartwoodMass
@@ -405,6 +406,13 @@ public:
 
   template <class TS,class BUD>
     class CollectWoodMass
+    { 
+    public:
+      LGMdouble& operator()(LGMdouble &sum, TreeCompartment<TS,BUD>* tc)const;
+    };
+
+  template <class TS,class BUD>
+    class CollectStemWoodMass
     { 
     public:
       LGMdouble& operator()(LGMdouble &sum, TreeCompartment<TS,BUD>* tc)const;

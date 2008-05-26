@@ -18,6 +18,7 @@
 //   CollectFoliageMass
 //   CollectFoliageArea
 //   CollectWoodMass
+//   CollectStemWoodMass
 //   CollectSapwoodMass
 //   CollectStemSapwoodMass
 //   CollectHeartwoodMass
@@ -731,6 +732,17 @@ namespace Lignum{
   {
     if(TS *segment = dynamic_cast<TS *>(tc)){
 	  sum += GetValue(*segment, LGAWood);
+    }
+    return sum;
+  }
+
+  template <class TS, class BUD>
+  LGMdouble& CollectStemWoodMass<TS,BUD>::
+  operator()(LGMdouble &sum, TreeCompartment<TS,BUD>* tc)const
+  {
+    if(TS *segment = dynamic_cast<TS *>(tc)){
+      if(GetValue(*segment, LGAomega) == 1.0) 
+	sum += GetValue(*segment, LGAWood);
     }
     return sum;
   }
