@@ -118,6 +118,7 @@ namespace Lignum{
 	return value;
 	}
       else if (name == LGAQin){
+	//Return maximum of the Qin values of the leaves attached to this segment
 	std::list<BroadLeaf<S>*>& leaf_list = GetLeafList(const_cast<HwTreeSegment<TS,BUD,S>&>(ts));
 	typename std::list<BroadLeaf<S>*>::iterator I;
 	for(I = leaf_list.begin(); I != leaf_list.end(); I++)
@@ -125,6 +126,7 @@ namespace Lignum{
 	return value;
       }
       else if (name == LGAQabs){
+	//Return the sum of the Qabs values of the leaves attached to this segment 
 	std::list<BroadLeaf<S>*>& leaf_list = GetLeafList(const_cast<HwTreeSegment<TS,BUD,S>&>(ts));
 	typename std::list<BroadLeaf<S>*>::iterator I;
 	for(I = leaf_list.begin(); I != leaf_list.end(); I++)
