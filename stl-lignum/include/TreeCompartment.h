@@ -54,7 +54,7 @@ namespace Lignum{
     friend double GetValue(const DiameterGrowthData& dgd, DGAD name);
     friend double SetValue(DiameterGrowthData& dgd, DGAD name, double value);
   public:
-    DiameterGrowthData():Ws(0.0),Wf(0.0),Wfnew(0.0){}
+    DiameterGrowthData():Ws(0.0),Wf(0.0),Wfnew(0.0),go(0.0){}
     DiameterGrowthData& operator=(TcData& tcd)
     {
       DiameterGrowthData& dgd = dynamic_cast<DiameterGrowthData&>(tcd);
@@ -62,8 +62,10 @@ namespace Lignum{
       SetValue(*this,DGWs,GetValue(dgd,DGWs));
       SetValue(*this,DGWf,GetValue(dgd,DGWf));
       SetValue(*this,DGWfnew,GetValue(dgd,DGWfnew));
+      SetValue(*this,LGAomega,GetValue(dgd,LGAomega));
       return *this;
     }
+
     DiameterGrowthData& operator+=(TcData& tcd)
     {
       DiameterGrowthData& dgd = dynamic_cast<DiameterGrowthData&>(tcd);
@@ -71,6 +73,8 @@ namespace Lignum{
       SetValue(*this,DGWs,GetValue(*this,DGWs)+GetValue(dgd,DGWs));
       SetValue(*this,DGWf,GetValue(*this,DGWf)+GetValue(dgd,DGWf));
       SetValue(*this,DGWfnew,GetValue(*this,DGWfnew)+GetValue(dgd,DGWfnew));
+      //Recall to pass down gravelius order
+      SetValue(*this,LGAomega,GetValue(dgd,LGAomega));
       return *this;
     }
     void clear(){
@@ -81,6 +85,7 @@ namespace Lignum{
     }
   private:
     double Ws,Wf,Wfnew;//Sapwood, total foliage and new foliage mass. 
+    double go; //Graveliusorder
   };
 
   inline double GetValue(const DiameterGrowthData& dgd, LGMAD name)
@@ -89,7 +94,9 @@ namespace Lignum{
       return dgd.Wfnew;
     else if (name == LGAiWs)
       return dgd.Ws;
-    else 
+    else if (name == LGAomega)
+      return dgd.go;
+    else  
       return GetValue(dynamic_cast<const TcData&>(dgd),name);
   }
 
@@ -100,7 +107,9 @@ namespace Lignum{
       dgd.Wfnew = value;
     else if (name == LGAiWs)
       dgd.Ws = value;
-    else 
+    else if (name == LGAomega)
+      dgd.go = value;
+    else
       SetValue(dynamic_cast<TcData&>(dgd),name,value);
     return old_val;
   }
