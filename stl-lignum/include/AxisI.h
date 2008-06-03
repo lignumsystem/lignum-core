@@ -180,6 +180,39 @@ namespace Lignum{
 	}
 	return w_f;
       }
+      else if (name == LGAWs) {
+	std::list<TreeCompartment<TS, BUD>*>& ls = ax.tc_ls;
+	typename std::list<TreeCompartment<TS, BUD>*>::iterator I = ls.begin();
+	LGMdouble w_s = 0.0;
+	while(I != ls.end()) {
+	  if (TS* ts = dynamic_cast<TS*>(*I))
+	    w_s += GetValue(*ts, LGAWs);
+	  I++;
+	}
+	return w_s;
+      }
+      else if (name == LGAWh) {
+	std::list<TreeCompartment<TS, BUD>*>& ls = ax.tc_ls;
+	typename std::list<TreeCompartment<TS, BUD>*>::iterator I = ls.begin();
+	LGMdouble w_h = 0.0;
+	while(I != ls.end()) {
+	  if (TS* ts = dynamic_cast<TS*>(*I))
+	    w_h += GetValue(*ts, LGAWh);
+	  I++;
+	}
+	return w_h;
+      }
+      else if (name == LGAWood) {
+	std::list<TreeCompartment<TS, BUD>*>& ls = ax.tc_ls;
+	typename std::list<TreeCompartment<TS, BUD>*>::iterator I = ls.begin();
+	LGMdouble w = 0.0;
+	while(I != ls.end()) {
+	  if (TS* ts = dynamic_cast<TS*>(*I))
+	    w += GetValue(*ts, LGAWood);
+	  I++;
+	}
+	return w;
+      }
       else
 	cout << "Axis: Unknown attribute: " << name  << endl;
       
@@ -210,9 +243,7 @@ namespace Lignum{
       if (TS* ts = dynamic_cast<TS*>(*I)) {
 	w_fol += GetValue(*ts, LGAWf);
       }
-      
-      
-      if(BranchingPoint<TS, BUD>* bp = dynamic_cast<BranchingPoint<TS,
+       if(BranchingPoint<TS, BUD>* bp = dynamic_cast<BranchingPoint<TS,
 	 BUD>*>(*I)) { 
 	std::list<Axis<TS, BUD>*>& axis_ls = GetAxisList(*bp);          
 	typename std::list<Axis<TS, BUD>*>::iterator II = axis_ls.begin();
@@ -222,15 +253,93 @@ namespace Lignum{
 	  w_fol += GetBranchFoliage(*axis);                     
 	  II++;   
 	}
-	
       }
-      
       I++;
     }
-    
     return w_fol;
   }
-  
+
+
+  template <class TS,class BUD>
+    LGMdouble GetBranchSapwoodMass(Axis<TS,BUD>& ax) {
+    
+    LGMdouble w_s = 0.0;
+    std::list<TreeCompartment<TS, BUD>*>& ls = ax.tc_ls;
+    typename std::list<TreeCompartment<TS, BUD>*>::iterator I = ls.begin();
+    while(I != ls.end()) {
+      if (TS* ts = dynamic_cast<TS*>(*I)) {
+	w_s += GetValue(*ts, LGAWs);
+      }
+      if(BranchingPoint<TS, BUD>* bp = dynamic_cast<BranchingPoint<TS,
+	 BUD>*>(*I)) { 
+	std::list<Axis<TS, BUD>*>& axis_ls = GetAxisList(*bp);          
+	typename std::list<Axis<TS, BUD>*>::iterator II = axis_ls.begin();
+	
+	while(II != axis_ls.end()) {
+	  Axis<TS,BUD> *axis = *II;       
+	  w_s += GetBranchSapwoodMass(*axis);                     
+	  II++;   
+	}
+      }
+      I++;
+    }
+    return w_s;
+  }
+
+
+  template <class TS,class BUD>
+    LGMdouble GetBranchHeartwoodMass(Axis<TS,BUD>& ax) {
+    
+    LGMdouble w_h = 0.0;
+     std::list<TreeCompartment<TS, BUD>*>& ls = ax.tc_ls;
+    typename std::list<TreeCompartment<TS, BUD>*>::iterator I = ls.begin();
+    while(I != ls.end()) {
+      if (TS* ts = dynamic_cast<TS*>(*I)) {
+	w_h += GetValue(*ts, LGAWh);
+      }
+      if(BranchingPoint<TS, BUD>* bp = dynamic_cast<BranchingPoint<TS,
+	 BUD>*>(*I)) { 
+	std::list<Axis<TS, BUD>*>& axis_ls = GetAxisList(*bp);          
+	typename std::list<Axis<TS, BUD>*>::iterator II = axis_ls.begin();
+	
+	while(II != axis_ls.end()) {
+	  Axis<TS,BUD> *axis = *II;       
+	  w_h += GetBranchHeartwoodMass(*axis);                     
+	  II++;   
+	}
+      }
+      I++;
+    }
+    return w_h;
+  }
+
+
+  template <class TS,class BUD>
+    LGMdouble GetBranchWoodMass(Axis<TS,BUD>& ax) {
+    
+    LGMdouble w_w = 0.0;
+    std::list<TreeCompartment<TS, BUD>*>& ls = ax.tc_ls;
+    typename std::list<TreeCompartment<TS, BUD>*>::iterator I = ls.begin();
+    while(I != ls.end()) {
+      if (TS* ts = dynamic_cast<TS*>(*I)) {
+	w_w += GetValue(*ts, LGAWood);
+      }
+       if(BranchingPoint<TS, BUD>* bp = dynamic_cast<BranchingPoint<TS,
+	 BUD>*>(*I)) { 
+	std::list<Axis<TS, BUD>*>& axis_ls = GetAxisList(*bp);          
+	typename std::list<Axis<TS, BUD>*>::iterator II = axis_ls.begin();
+	
+	while(II != axis_ls.end()) {
+	  Axis<TS,BUD> *axis = *II;       
+	  w_w += GetBranchWoodMass(*axis);                     
+	  II++;   
+	}
+      }
+      I++;
+    }
+    return w_w;
+  }
+
 
   template <class TS,class BUD>
   int GetNumberOfCompartments(Axis<TS,BUD>& axis) {

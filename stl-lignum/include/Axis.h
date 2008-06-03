@@ -43,18 +43,20 @@ class Axis: public TreeCompartment<TS,BUD>{
   friend LGMdouble GetSumValue(Axis<TS1,BUD1>& axis, LGMAD name, int Age);
   template <class TS1,class BUD1>
   friend void Delete2ndLastTreeCompartment(Axis<TS1,BUD1>& axis);
-
   template <class TS1,class BUD1>
   friend LGMdouble GetValue(Axis<TS1,BUD1>& axis, LGMAD name);
-
   template <class TS1,class BUD1>
   friend LGMdouble SetValue(Axis<TS1,BUD1>& axis, LGMAD name, const LGMdouble value);
-
   template <class TS1,class BUD1>  
   friend LGMdouble GetBranchFoliage(Axis<TS1,BUD1>& axis); 
-
   template <class TS1,class BUD1>  
   friend int GetNumberOfCompartments(Axis<TS1,BUD1>& axis); 
+  template <class TS1,class BUD1>  
+  friend LGMdouble GetBranchSapwoodMass(Axis<TS1,BUD1>& axis); 
+  template <class TS1,class BUD1>  
+  friend LGMdouble GetBranchHeartwoodMass(Axis<TS1,BUD1>& axis); 
+  template <class TS1,class BUD1>  
+  friend LGMdouble GetBranchWoodMass(Axis<TS1,BUD1>& axis); 
 
 public:
   virtual ~Axis();
