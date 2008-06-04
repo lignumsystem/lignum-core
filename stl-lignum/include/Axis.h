@@ -57,6 +57,10 @@ class Axis: public TreeCompartment<TS,BUD>{
   friend LGMdouble GetBranchHeartwoodMass(Axis<TS1,BUD1>& axis); 
   template <class TS1,class BUD1>  
   friend LGMdouble GetBranchWoodMass(Axis<TS1,BUD1>& axis); 
+  template <class TS1,class BUD1>  
+  friend LGMdouble GetBranchPhotosynthesis(Axis<TS1,BUD1>& axis); 
+  template <class TS1,class BUD1>  
+  friend LGMdouble GetBranchRespiration(Axis<TS1,BUD1>& axis); 
 
 public:
   virtual ~Axis();

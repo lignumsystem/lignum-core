@@ -340,6 +340,58 @@ namespace Lignum{
     return w_w;
   }
 
+  template <class TS,class BUD>
+    LGMdouble GetBranchPhotosynthesis(Axis<TS,BUD>& ax) {
+    
+    LGMdouble pp = 0.0;
+    std::list<TreeCompartment<TS, BUD>*>& ls = ax.tc_ls;
+    typename std::list<TreeCompartment<TS, BUD>*>::iterator I = ls.begin();
+    while(I != ls.end()) {
+      if (TS* ts = dynamic_cast<TS*>(*I)) {
+	pp += GetValue(*ts, LGAP);
+      }
+       if(BranchingPoint<TS, BUD>* bp = dynamic_cast<BranchingPoint<TS,
+	 BUD>*>(*I)) { 
+	std::list<Axis<TS, BUD>*>& axis_ls = GetAxisList(*bp);          
+	typename std::list<Axis<TS, BUD>*>::iterator II = axis_ls.begin();
+	
+	while(II != axis_ls.end()) {
+	  Axis<TS,BUD> *axis = *II;       
+	  pp += GetBranchPhotosynthesis(*axis);                     
+	  II++;   
+	}
+      }
+      I++;
+    }
+    return pp;
+  }
+
+  template <class TS,class BUD>
+    LGMdouble GetBranchRespiration(Axis<TS,BUD>& ax) {
+    
+    LGMdouble rr = 0.0;
+    std::list<TreeCompartment<TS, BUD>*>& ls = ax.tc_ls;
+    typename std::list<TreeCompartment<TS, BUD>*>::iterator I = ls.begin();
+    while(I != ls.end()) {
+      if (TS* ts = dynamic_cast<TS*>(*I)) {
+	rr += GetValue(*ts, LGAM);
+      }
+       if(BranchingPoint<TS, BUD>* bp = dynamic_cast<BranchingPoint<TS,
+	 BUD>*>(*I)) { 
+	std::list<Axis<TS, BUD>*>& axis_ls = GetAxisList(*bp);          
+	typename std::list<Axis<TS, BUD>*>::iterator II = axis_ls.begin();
+	
+	while(II != axis_ls.end()) {
+	  Axis<TS,BUD> *axis = *II;       
+	  rr += GetBranchRespiration(*axis);                     
+	  II++;   
+	}
+      }
+      I++;
+    }
+    return rr;
+  }
+
 
   template <class TS,class BUD>
   int GetNumberOfCompartments(Axis<TS,BUD>& axis) {
