@@ -132,9 +132,8 @@ namespace Lignum{
     //iWs = sapwood mass: new segments + thickening
     //iWfnew = new foliage
     //iWrnew = new roots = ar*iWfnew
-    //  return (0.875*(this->P - this->M) - GetValue(data,DGWs) - GetValue(data,DGWfnew)- GetValue(this->tree,LGPar)* GetValue(data,DGWfnew));
-    //  return (0.875*(this->P - this->M) - GetValue(data,DGWs) - GetValue(data,DGWfnew)- (0.3*(GetValue(data,DGWs)+GetValue(this->tree, LGAWs))-GetValue((this->tree), TreeWr)));
-    return (0.875*(this->P - this->M) - GetValue(data,DGWs) - GetValue(data,DGWfnew)- 0.3 * GetValue(data,DGWs));
+    return this->P - this->M - GetValue(data,DGWs) - GetValue(data,DGWfnew)- 
+      GetValue(this->tree,LGPar)* GetValue(data,DGWfnew);
 
   }
   
