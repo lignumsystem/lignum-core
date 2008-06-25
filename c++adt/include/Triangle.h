@@ -55,6 +55,9 @@ namespace cxxadt{
                                    // o - the observer position
                                    // b - the vector beam 
     bool   intersectShape(const Point& o,const PositionVector& beam)const; 
+    
+    //rotate apex round the base of the triangle by alpha
+    void pitch(const double alpha);
                                             
   private:
     Point leftcorner,rightcorner,apexcorner;//the triangle corners

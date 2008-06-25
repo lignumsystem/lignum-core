@@ -313,16 +313,41 @@ double Triangle::setArea(double area, const Point& base )
      return true;
  }
 
-
+//Rotate apex point around the base of the triangle by alpha
+void Triangle::pitch(const double alpha)
+{
+  PositionVector v1(leftcorner);
+  PositionVector v2(rightcorner);
+  PositionVector v3(apexcorner);
+  //Axis of rotation is the base
+  PositionVector base(v1-v2);
+  //Right edge of the triangle
+  PositionVector right_edge(v3-v2);
+  base.normalize();
+  right_edge.normalize();
+  //The angle between those two
+  double cosalpha = Dot(base,right_edge);
+  //Find the the  point of rotation: the point  of the triangle height
+  //on the base
+  double s = rightcorner || apexcorner;
+  //cosalpha = l/s --> l = s*cosalpha
+  double l = s*cosalpha;
+  //The point of rotation: the point of triangle height at the base
+  PositionVector p1 = v2 + l*base;
+  //Rotate the apex round p1
+  v3.rotate(Point(p1),base,alpha);
+  //reset apex corner
+  apexcorner = Point(v3.getX(),v3.getY(),v3.getZ());
+}
 
 
 }//closing namespace cxxadt
 
+//To compile: g++ -DTRIANGLE RMatrix.cc PositionVector.cc Triangle.cc -I../include 
 #ifdef TRIANGLE
 #include <iostream>
 #include <stdlib.h>
 using namespace cxxadt;
-
 
 void printing(const  Point& p){
   
@@ -394,8 +419,85 @@ int main()
   else
     cout<<" does not cross the triangle "<<endl<<endl;
 
+  Point lc(-1,0.0);
+  Point rc(1,0,0);
+  Point ac(0,1,0);
+  Triangle t2(lc,rc,ac);
 
-  exit(0);
+  cout << "Pitching Triangle A " << 180*(-PI_VALUE/2.0)/PI_VALUE << endl;
+  cout << "Area before " << t2.getArea()<<endl;
+  cout  << t2.getLeftCorner() << t2.getRightCorner() << t2.getApexCorner()<<endl;
+  t2.pitch(-PI_VALUE/2.0);
+  cout  << t2.getLeftCorner() << t2.getRightCorner() << t2.getApexCorner();
+  cout << "Area after " << t2.getArea() <<endl <<endl;
+  cout << "Pitching A back" << 180*(PI_VALUE/2.0)/PI_VALUE << endl;
+  t2.pitch(PI_VALUE/2.0);
+  cout  << t2.getLeftCorner() << t2.getRightCorner() << t2.getApexCorner();
+  cout << "Area after " << t2.getArea() <<endl<<endl;;
+
+  Point lc1(-1,0.0);
+  Point rc1(1,0,0);
+  Point ac1(1,1,0);
+  Triangle t3(lc1,rc1,ac1);
+
+  cout << "Pitching triangle B " << 180*(-PI_VALUE/2.0)/PI_VALUE<< endl;
+  cout << "Area before " << t3.getArea() <<endl;
+  cout  << t3.getLeftCorner() << t3.getRightCorner() << t3.getApexCorner()<<endl;
+  t3.pitch(-PI_VALUE/2.0);
+  cout  << t3.getLeftCorner() << t3.getRightCorner() << t3.getApexCorner() ;
+  cout << "Area after " << t3.getArea() <<endl <<endl;
+  cout << "Pitching B back " << 180*(PI_VALUE/2.0)/PI_VALUE<< endl;
+  t3.pitch(PI_VALUE/2.0);
+  cout  << t3.getLeftCorner() << t3.getRightCorner() << t3.getApexCorner() ;
+  cout << "Area after " << t3.getArea() <<endl<<endl;
+
+  Point lc2(0,1,0);
+  Point rc2(1,0,0);
+  Point ac2(1,1,0);
+  Triangle t4(lc2,rc2,ac2);
+
+  cout << "Pitching triangle C " << 180*(-PI_VALUE/2.0)/PI_VALUE<< endl;
+  cout << "Area before " << t4.getArea() <<endl;
+  cout  << t4.getLeftCorner() << t4.getRightCorner() << t4.getApexCorner()<<endl;
+  t4.pitch(-PI_VALUE/2.0);
+  cout  << t4.getLeftCorner() << t4.getRightCorner() << t4.getApexCorner() ;
+  cout << "Area after " << t4.getArea() <<endl <<endl;
+  cout << "Pitching C back " << 180*(PI_VALUE/2.0)/PI_VALUE<< endl;
+  t4.pitch(PI_VALUE/2.0);
+  cout  << t4.getLeftCorner() << t4.getRightCorner() << t4.getApexCorner() ;
+  cout << "Area after " << t4.getArea() <<endl <<endl;
+
+  Point lc3(-1,1,0);
+  Point rc3(1,-1,0);
+  Point ac3(2,2,0);
+  Triangle t5(lc3,rc3,ac3);
+  cout << "Pitching triangle D " << 180*(-PI_VALUE/2.0)/PI_VALUE<< endl;
+  cout << "Area before " << t5.getArea() <<endl;
+  cout  << t5.getLeftCorner() << t5.getRightCorner() << t5.getApexCorner()<<endl;
+  t5.pitch(-PI_VALUE/2.0);
+  cout  << t5.getLeftCorner() << t5.getRightCorner() << t5.getApexCorner() ;
+  cout << "Area after " << t5.getArea() <<endl <<endl;
+  cout << "Pitching D back " << 180*(PI_VALUE/2.0)/PI_VALUE<< endl;
+  t5.pitch(PI_VALUE/2.0);
+  cout  << t5.getLeftCorner() << t5.getRightCorner() << t5.getApexCorner() ;
+  cout << "Area after " << t5.getArea() <<endl <<endl;
+
+  Point lc4(-4,2,0);
+  Point rc4(-1,-1,0);
+  Point ac4(2,2,0);
+  Triangle t6(lc4,rc4,ac4);
+  cout << "Pitching triangle E " << 180*(-PI_VALUE/2.0)/PI_VALUE<< endl;
+  cout << "Area before " << t6.getArea() <<endl;
+  cout  << t6.getLeftCorner() << t6.getRightCorner() << t6.getApexCorner()<<endl;
+  t6.pitch(-PI_VALUE/2.0);
+  cout  << t6.getLeftCorner() << t6.getRightCorner() << t6.getApexCorner() ;
+  cout << "Area after " << t6.getArea() <<endl <<endl;
+  cout << "Pitching E back " << 180*(PI_VALUE/2.0)/PI_VALUE<< endl;
+  t6.pitch(PI_VALUE/2.0);
+  cout  << t6.getLeftCorner() << t6.getRightCorner() << t6.getApexCorner() ;
+  cout << "Area after " << t6.getArea() <<endl;
+  cout << "Dist Apex and Right in E " << (ac4 || rc4) <<endl;
+
 }
 
 
