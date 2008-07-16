@@ -83,6 +83,27 @@ int main(int argc, char* argv[])
 
   cout << "Mean: " << accumulate(v.begin(),v.end(),0.0)/n << endl;
 
+  //Testing how to map uniform [0:1] to uniform [0:359], representing degrees
+  Uniform u(-1);
+  vector<int> v2(361,0);
+  for (int i = 0; i < 1000000;i++){
+    int r = static_cast<int>(u(1)*360.0);
+    //cout << "Degree " << r << endl;
+    v2[r] = v2[r]+1;
+  }
+  for (int i = 0; i < v2.size(); i++){
+    cout << "D " << i << " N " << v2[i] <<endl;
+  }
+
+  Uniform u2(-1);
+  vector<int> v3(361,0);
+  for (int i = 0; i < 1000000;i++){
+    int r = static_cast<int>(u2(1)*360.0);
+    //cout << "Degree " << r << endl;
+    v3[r] = v3[r]+r;
+  }
+  cout << "Mean " << accumulate(v3.begin(),v3.end(),0)/1000000.0<<endl;
+
   return 0;
 }
 
