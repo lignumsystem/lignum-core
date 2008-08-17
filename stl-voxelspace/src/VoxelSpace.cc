@@ -307,7 +307,9 @@ namespace Lignum {
 	  starty<Yn && startz<Zn)
       {
 	VoxelMovement vm;
-
+	vm.x = startx;
+	vm.y = starty;
+	vm.z = startz;
 	if (next_x <= next_y && next_x<= next_z)
 	  {
 	    startx = startx + x_jump;
@@ -335,9 +337,9 @@ namespace Lignum {
 	if (startx>=-1 && starty>=-1 && startz>=-1 && startx<Xn+1 &&
 	    starty<Yn+1 && startz<Zn+1)
 	  {
-	    vm.x = startx;
-	    vm.y = starty;
-	    vm.z = startz;
+	    //vm.x = startx;
+	    //vm.y = starty;
+	    //vm.z = startz;
 	    vec.push_back(vm);
 	  }
       }
@@ -797,219 +799,166 @@ namespace Lignum {
     int Xi = static_cast<int>(localP.getX()/Xbox);
     int Yi = static_cast<int>(localP.getY()/Ybox);
     int Zi = static_cast<int>(localP.getZ()/Zbox);
-    
     if (Xi < 0 || Yi < 0 || Zi < 0 || Xi >= Xn || Yi >= Yn || Zi >= Zn){
+      cout << "getVoxelBox for " << p << flush;
+      cout << "voxel " << Point(Xi,Yi,Zi) << flush;
+      cout << "voxel space " << Point(Xn,Yn,Zn) << flush;
       throw OutOfVoxelSpaceException(Point(Xi,Yi,Zi),p);
     } 
 
     return voxboxes[Xi][Yi][Zi]; 
   }
 
- //
+  //
   //	for Poplar: The function calculates the Qin and Qabs-values to
   //	every VoxelBox.
   //
   LGMdouble VoxelSpace::calculatePoplarLight(LGMdouble diffuse, LGMdouble structureFlag)      
   {
-     updateStar();
-    int vnumber=0, validvn=0;
+    //intialize the sequence with some negative number
+    int bernoulli_seed = -1;
+    //produce the next number from sequence
+    int bernoulli_sequence = 1;
+    Bernoulli ber(bernoulli_seed);
+    updateStar();
     for(int i1=0; i1<Xn; i1++)
       for(int i2=0; i2<Yn; i2++)
 	for(int i3=0; i3<Zn; i3++)
 	  {
-	    // srand(time(NULL));
-	    int seed = -rand();
-	    Bernoulli ber(seed); 
-	    //cout<<"Xi: "<<i1<<" Yi: "<<i2<<" Zi: "<<i3<<endl;
-	    // cout<<"diffuse: "<<diffuse<<" lastdiffuse: "<<lastdiffuse<<endl;
-	    vnumber++;
 	    int num_dirs = sky->numberOfRegions();
-
 	    if (voxboxes[i1][i2][i3].isEmpty() == false)
-	      {//	 cout<<"voxelbox not empty. "<<num_dirs<<endl;
-		validvn++;
-		PositionVector big_leaf_normal=voxboxes[i1][i2][i3].getBigLeafNormal();
+	      {
+		//Calculate diffuse light only once during the short time step model
 	        if(structureFlag<=0)
-	       {
-	         double totaliop=0;
-		voxboxes[i1][i2][i3].updateValues();
-		
-		for(int i = 0; i < num_dirs; i++)
-		  {	
-		    vector<double> rad_direction(3);
-		   
-		    LGMdouble iop = 
-		      sky->diffuseRegionRadiationSum(i,rad_direction);
-		    
-		    PositionVector radiation_direction(rad_direction[0], rad_direction[1], rad_direction[2]);		    
-		    radiation_direction.normalize();
-		    LGMdouble maximum_box_project_area= abs(Xbox*Ybox*radiation_direction.getZ())
-                                                   +abs(Xbox*Zbox*radiation_direction.getY()) 
-                                                  + abs(Zbox*Ybox*radiation_direction.getX());
-		                        
-		    vector<VoxelMovement> vec;		
-		    getRoute(vec, i1, i2, i3, radiation_direction);
-		    int size = vec.size();
-		    // cout<<"diffuse test rand: "<<rand()<<" another: "<<rand()<<" size: "<<size;   
-		    int a=-1;
-		    int flag=0;
+		  {
+		    voxboxes[i1][i2][i3].updateValues();
+		    for(int i = 0; i < num_dirs; i++)
+		      {	
+			vector<double> rad_direction(3);
+			LGMdouble iop = 
+			  sky->diffuseRegionRadiationSum(i,rad_direction);
+			PositionVector rd(rad_direction[0], rad_direction[1], rad_direction[2]);		    
+			rd.normalize();
+			LGMdouble maximum_box_project_area= fabs(Xbox*Ybox*rd.getZ())+fabs(Xbox*Zbox*rd.getY())+ fabs(Zbox*Ybox*rd.getX());
+			vector<VoxelMovement> vec;		
+			getRoute(vec, i1, i2, i3, rd);
+			//Trace the  path from one  sector towards the
+			//tree (getRoute follows the light beam from a
+			//leaf towards a sector)
+			int hits=0;
 
-		    if (size>1)
-		      {			
-                      a=size-2;
-		      flag=0;
-		     
-                      double result=0;
-                     
-                      while (a>=0 && flag<2)
-			{	
-			  result=0;	  
-			  VoxelMovement v1 = vec[a];
-			 
-			  LGMdouble leaf_area=voxboxes[v1.x][v1.y][v1.z].getLeafArea();	
-			  
-			  if(leaf_area>0)
-			    {
-			  LGMdouble projected_leaf_area=leaf_area*abs(
-				   big_leaf_normal.getX()*radiation_direction.getX()
-				   + big_leaf_normal.getY()*radiation_direction.getY()
-				   + big_leaf_normal.getZ()*radiation_direction.getZ());
-			  projected_leaf_area /= maximum_box_project_area;
-			  if(projected_leaf_area>0.2 && projected_leaf_area<=0.8)
-			    projected_leaf_area = 0.51*projected_leaf_area +0.1;
-			  else if(projected_leaf_area>0.8)
-			    projected_leaf_area = 0.7*projected_leaf_area/
-			      (projected_leaf_area+exp(1-2.63*projected_leaf_area));
+			//stop conition i > 0 means no self shading
+			for (int i = vec.size()-1; i > 0; i--){ 
+			  VoxelMovement& vm = vec[i];
+			  //cout << "VM " << i << " x " << vm.x << " y " << vm.y << " z "  << vm.z << endl;
+			  //cout << "Xn " << Xn << " Yn " << Yn << " Zn " << Zn << endl; 
+			  LGMdouble leaf_area = voxboxes[vm.x][vm.y][vm.z].getLeafArea();
+			  PositionVector big_leaf_normal=voxboxes[vm.x][vm.y][vm.z].getBigLeafNormal();
+			  LGMdouble projected_leaf_area=leaf_area*fabs(big_leaf_normal.getX()*rd.getX()
+								       + big_leaf_normal.getY()*rd.getY()
+								       + big_leaf_normal.getZ()*rd.getZ());
+			  double area_ratio = projected_leaf_area/maximum_box_project_area;
+			  if (area_ratio>0.2 && area_ratio<=0.8)
+			    area_ratio = 0.51*area_ratio +0.1;
+			  else if (area_ratio>0.8)
+			    area_ratio = 0.7*area_ratio/(area_ratio+exp(1-2.63*area_ratio));
+			  //if projected leaf area > maximum_box_project_area then several layers
+			  if (area_ratio){
+			    //there is foliage (area_ratio > 0), so if
+			    //layers == 0 after the cast to int then 1
+			    //layer, if  1 then 2 layers, if  2 then 3
+			    //layers
+			    int layers = static_cast<int>(projected_leaf_area / maximum_box_project_area) + 1; 
+			    //probability 'p' to hit one or several layers is determined by area_ratio.
+			    double p=min(area_ratio, 1.0);
+			    //....comes from the bernoulli distribution
+			    double s=ber(p,bernoulli_sequence);
+			    //cout <<  "leaf_area " << leaf_area << " area_ratio " << area_ratio 
+			    //   << " p " << p << " s " << s << endl;
+			    //there was a hit
+			    if (s == 1)
+			      hits = hits + layers;
+			    if (hits == 3)
+			      //third hit will extinguish the beam completely
+			      break;
+			  }
+			}//for (int = v.size()-1
+			//assume free path
+			double percent = 1.0;
+			if (hits == 1)
+			  //10 percent received by this focal voxel MS: section 2.3.3
+			  percent = 10.0/100.0;
+			else if (hits == 2)
+			  //1 percent received by this focal voxel if two layers of foliage
+			  percent = (10.0/100.0)*(10.0/100.0);
+			else if (hits > 2)
+			  //three layers completely shades the focal voxel
+			  percent = 0.0;
+			//set the incoming radiation from one sector;
+			//cout << "hits " << hits <<  " % " << percent << " iop " << iop <<endl<<endl;
+			//if (hits)
+			//cout << "Hits " << hits << " % "  << percent << " iop " << iop << " " 
+			//     << " Qin " << percent*iop <<endl;
+			voxboxes[i1][i2][i3].addRadiation(percent*iop);
+		      }//for (int = 0; i < num_dirs; i++)
+		  }//if (structureFlag <= 0)
+	      }//if (voxboxes[i1][i2][i3].isEmpty() == false)
+	    //cout << "Qin diffuse voxel " << i1 << " "  << i2 << " "  << i3 << " Qin " << voxboxes[i1][i2][i3].getQin() <<endl; 
 
-
-			  // cout<<"leafArea in previous voxel: "<<leafArea<<endl;
-                          double p=min(projected_leaf_area, 1.0);     
-			  seed=-rand();
-			  result=ber(p, seed);
-			  // cout<<"leaf area: "<<leaf_area<<" in diffuse voxel, p: "<<p<<" seed: "<<seed<<" result: "<<result<<endl;
-			    }
-			  else 
-			    result=0;
-			 
-  			  if (result>0.5)
-			    flag+=1;  
-                          a--;
-			} //while vec
-		      }// if size>1
-		      if (a==-1 && flag<2)
-			{double result;
-			  //This leaf_area is unused variable
-			  //LGMdouble leaf_area=voxboxes[i1][i2][i3].getLeafArea();
-			  // cout<<"leafArea in current voxel: "<<leafArea<<endl;
-			  //This p is unused variable!!
-                          //double p=min(leaf_area/(0.2*0.2), 1.0); //0.3 is the size of voxelbox in Bounding box   
-			 
-			  result=1.0; //result=ber(p, seed);	//result=1.0;  
-  			  if (result>0.5)
-			     flag+=1;			                          
-                          double persent;
-			  // cout<<"flag value: "<<flag<<endl;
-			  if (flag==1)
-			    persent=0.8;
-			  else if (flag==2)
-			    persent=0.08;
-                          else
-                            persent=0;			  
-                          voxboxes[i1][i2][i3].addRadiation(persent*iop*1200/2055.35);//diffuse/1200 *1200/2055.35	
-			  totaliop+= persent*iop*1200/2055.35;  
-		        }
-	     		     
-		  }//num_dirs for diffuse
-		voxboxes[i1][i2][i3].setQ_inStdDiff(voxboxes[i1][i2][i3].getQin());
-                resetQinQabs();
-	        // cout <<"total iop for diffuse: "<< totaliop << endl;
-	      }
-	   
-		LGMdouble Qin=voxboxes[i1][i2][i3].getQ_inStdDiff()*diffuse/1200;
-		voxboxes[i1][i2][i3].addRadiation(Qin);
-		//cout<<diffuse<<" Qin in diffuse light cal: "<<voxboxes[i1][i2][i3].getQin()<<endl;
-		
-		//calculate the light for direct beam
-		vector<double> direct_direction(3);
-		LGMdouble iop= sky->directRadiation(direct_direction); 
-		//cout <<"iop for direct: "<< iop << endl;
-                 vector<VoxelMovement> vec;
-		  getRoute(vec, i1, i2, i3, direct_direction);
-		  PositionVector radiation_direction(direct_direction[0], direct_direction[1], direct_direction[2]);
-	          int size = vec.size();
-		     
-		    int a=-1;
-		    int flag=0;
-		    if (size>1)
-		      {			
-                      a=size-2;
-		      flag=0;
-		      double result;
-		     
-		      LGMdouble maximum_box_project_area= abs(Xbox*Ybox*radiation_direction.getZ())+abs(Xbox*Zbox*radiation_direction.getY()) + abs(Zbox*Ybox*radiation_direction.getX());
-                      while (a>=0 && flag<2)
-			{	
-			  	  
-			  VoxelMovement v1 = vec[a];
-			 
-			  LGMdouble leaf_area=0;		      
-			  leaf_area=voxboxes[v1.x][v1.y][v1.z].getLeafArea(); 
-			  
-			  if(leaf_area>0) 
-			    {     
-			  LGMdouble projected_leaf_area=leaf_area*abs(
-				   big_leaf_normal.getX()*radiation_direction.getX()
-				   + big_leaf_normal.getY()*radiation_direction.getY()
-				   + big_leaf_normal.getZ()*radiation_direction.getZ());
-			  projected_leaf_area /= maximum_box_project_area;
-			  if(projected_leaf_area>0.2 && projected_leaf_area<=0.8)
-			    projected_leaf_area = 0.51*projected_leaf_area +0.1;
-			  else if(projected_leaf_area>0.8)
-			    projected_leaf_area = 0.7*projected_leaf_area/
-			      (projected_leaf_area+exp(1-2.63*projected_leaf_area));
-
-                          double p=min(projected_leaf_area, 1.0);  
-			  seed = -rand();			 
-			  result=ber(p, seed);
-			  //  cout<<"total leaf area: "<<leaf_area<<" in direct,  p: "<<p<<" seed: "<<seed<<" result: "<<result<<endl;
-			    }
-			  else 
-			    result=0; 
-			 
-  			  if (result>0.5)
-			    flag+=1;
-			  
-                          a--;
-			}
-		      }
-		   
-		      if (a==-1 && flag<2)
-			{double result;
-			  //This leafArea is unused variable!!
-			  //LGMdouble leafArea=voxboxes[i1][i2][i3].getLeafArea();
-			  //This p is unused variable!!
-                          //double p=min(leafArea/(0.2*0.2), 0.7);    
-			
-			  result=1.0;   //result=ber(p, seed);   //  result=1.0;			  
-  			  if (result>0.5)
-			     flag+=1;
-			                          
-                          double persent;
-			  if (flag==1)
-			    persent=0.9;
-			  else if (flag==2)
-			    persent=0.1;
-                          else
-                            persent=0;
-			  
-                           voxboxes[i1][i2][i3].addRadiation(persent*iop);
-			   // cout<<"direct radiation added into voxboxes: "<<persent*iop<<endl; 
-		        }
-
-	              }             	      
-	  }   
-    // file.close();
-    //  cout<<" vnumber: "<<vnumber<<" validvn: "<<validvn<<endl;    
+	    //Calculate the light for direct beam, this is exactly the
+	    //same as  for diffuse light  but computed each  time step
+	    //during the short time step
+	    vector<double> direct_direction(3);
+	    LGMdouble iop= sky->directRadiation(direct_direction); 
+	    PositionVector dr(direct_direction[0],direct_direction[1],direct_direction[2]);
+	    dr.normalize();
+	    LGMdouble maximum_box_project_area= fabs(Xbox*Ybox*dr.getZ())+fabs(Xbox*Zbox*dr.getY())+ fabs(Zbox*Ybox*dr.getX());
+	    vector<VoxelMovement> vec;
+	    getRoute(vec, i1, i2, i3,dr);
+	    //Trace the  path from one  sector towards the
+	    //tree (getRoute follows the light beam from a
+	    //leaf towards a sector)
+	    int hits=0;
+	    //stop condition i > 0 means no self shading
+	    for (int i = vec.size()-1; i > 0; i--){ 
+	      VoxelMovement vm = vec[i];
+	      LGMdouble leaf_area = voxboxes[vm.x][vm.y][vm.z].getLeafArea();
+	      PositionVector big_leaf_normal=voxboxes[vm.x][vm.y][vm.z].getBigLeafNormal();
+	      LGMdouble projected_leaf_area=leaf_area*fabs(big_leaf_normal.getX()*dr.getX()
+							   + big_leaf_normal.getY()*dr.getY()
+							   + big_leaf_normal.getZ()*dr.getZ());
+	      double area_ratio = projected_leaf_area/maximum_box_project_area;
+	      if (area_ratio>0.2 && area_ratio<=0.8)
+		area_ratio = 0.51*area_ratio +0.1;
+	      else if (area_ratio>0.8)
+		area_ratio = 0.7*area_ratio/(area_ratio+exp(1-2.63*area_ratio));
+	      //probability 'p' to hit a leaf....
+	      double p=min(area_ratio, 1.0);
+	      //....comes from the bernoulli distribution
+	      double s=ber(p,bernoulli_sequence);
+	      //cout <<  "Qin direct leaf_area " << leaf_area << " area_ratio " << area_ratio 
+	      //	   << " p " << p << " s " << s << endl;
+	      if (s == 1)
+		hits = hits + 1;
+	      if (hits == 3)
+		break;
+	    }//for (int = vec.size()-1
+	    //assume free path
+	    double percent = 1.0;
+	    if (hits == 1)
+	      //10 percent received by this focal voxel MS: section 2.3.3
+	      percent = 10.0/100.0;
+	    else if (hits == 2)
+	      //1 percent received by this focal voxel if two layers of foliage
+	      percent = (10.0/100.0)*(10.0/100.0);
+	    else if (hits > 2) 
+	      //three layers completely shades the focal voxel
+	      percent = 0.0;
+	    //set the incoming direct radiation from one sector;
+	    //cout << "hits " << hits <<  " % " << percent << " iop " << iop <<endl<<endl;
+	    voxboxes[i1][i2][i3].addRadiation(percent*iop);
+	    //cout << "Qin diffuse + direct voxel " << i1 << " "  << i2 << " "  << i3 << " Qin " << voxboxes[i1][i2][i3].getQin() <<endl;
+	  }//for (int i3=0; i3 < Zn; i3++)
     return 0;
   }
 
@@ -1259,7 +1208,6 @@ namespace Lignum {
   void  VoxelSpace::writeVoxelBoxesToGnuPlotFile(const string& filename, const string& sep)
   {
     ofstream file(filename.c_str());
-
     for(int i1=0; i1<Xn; i1++)
       for(int i2=0; i2<Yn; i2++)
 	for(int i3=0; i3<Zn; i3++){
