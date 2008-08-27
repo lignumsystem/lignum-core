@@ -102,7 +102,6 @@ SOURCES += Axis/AxisFriend.cc \
            BranchingPoint/BranchingPointFriend.cc \
            Bud/Bud.cc \
            Bud/BudFriend.cc \
-           Tree/Tree.cc \
            Tree/TreeFriend.cc \
            TreeCompartment/TreeCompartmentFriend.cc \
            TreeMetaFileParser/TreeMetaFileParser.cc\
