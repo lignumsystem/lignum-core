@@ -108,14 +108,17 @@ LGMdouble GetValue(const Tree<TS,BUD>& tree, const LGMPD name)
     return tree.tp.apical;
 
   else if (name == LGPar)
-     return tree.tp.ar;
+    return tree.tp.ar;
 
   else if (name == LGPdof)
-     return tree.tp.dof;
+    return tree.tp.dof;
 
   else if (name == LGPLmin)
-     return tree.tp.Lmin;
-
+    return tree.tp.Lmin;
+  
+  else if (name == LGPlen_random)
+    return tree.tp.lenRandom;
+ 
   else if (name == LGPlr)
     return tree.tp.lr;		 
   
@@ -201,6 +204,9 @@ LGMdouble SetValue(Tree<TS,BUD>& tree, const LGMPD name, const LGMdouble value)
 
   else if (name == LGPLmin)
     tree.tp.Lmin = value;
+
+  else if (name == LGPlen_random)
+    tree.tp.lenRandom = value;
 
   else if (name == LGPlr)
     tree.tp.lr = value;
