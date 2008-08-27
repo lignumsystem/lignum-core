@@ -30,7 +30,7 @@ namespace Lignum{
     lgmpd["LGPyc"] = LGPyc;
     lgmpd["LGPzbrentEpsilon"] = LGPzbrentEpsilon;
     lgmpd["LGPapical"] = LGPapical;
-    lgmpd["LGPlenRandom"] = LGPlenRandom;
+    lgmpd["LGPlen_random"] = LGPlen_random;
   }
 
 

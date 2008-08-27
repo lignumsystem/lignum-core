@@ -158,7 +158,7 @@ namespace Lignum{
   enum LGMPD {LGPaf, LGPaleafmax, LGPapical, LGPar, LGPdof, LGPLmin, 
 	      LGPlr, LGPmf, LGPmr, LGPms,
 	      LGPna, LGPnl, LGPpr, LGPq, LGPrhoW, LGPrho_hair, LGPrho_root,
-	      LGPsf, LGPsr, LGPss, LGPtauL,LGPxi, LGPyc,LGPzbrentEpsilon, LGPlenRandom};
+	      LGPsf, LGPsr, LGPss, LGPtauL,LGPxi, LGPyc,LGPzbrentEpsilon, LGPlen_random};
 
   // 0  LGPaf  Needle mass - tree segment area (kgC/m^2)relationship
   // 1  LGPaleafmax  Maximum size of a leaf (m2)
@@ -189,7 +189,7 @@ namespace Lignum{
   // 22 LGPyc	     Foliage mass (kgC) supported by 1 m^2 of sapwood
   // 23 LGPzbrentEpsilon  Accuracy in numerical computation in root finding
   //              (see Zbrent)
-  // 24 LGPlenRandom Parameter controlling random variation in lengths of new segments.
+  // 24 LGPlen_random Parameter controlling random variation in lengths of new segments.
   //                 Realization may differ with tree species; see e.g.
   //                 Lig-Crobas/include/ScotsPine.h
 
