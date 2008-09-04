@@ -400,6 +400,19 @@ namespace Lignum{
 }
 
 
+  template <class TS,class BUD>  
+    int GetAxisNumber(Axis<TS,BUD>& axis) {
+    return axis.axis_number;
+  }
+
+  template <class TS,class BUD>  
+    int SetAxisNumber(Axis<TS,BUD>& axis, int number) {
+    int previous = axis.axis_number;
+    axis.axis_number = number;
+    return previous;
+  }
+
+
   
 }//closing namesapce
 

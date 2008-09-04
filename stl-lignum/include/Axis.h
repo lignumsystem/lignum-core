@@ -61,15 +61,20 @@ class Axis: public TreeCompartment<TS,BUD>{
   friend LGMdouble GetBranchPhotosynthesis(Axis<TS1,BUD1>& axis); 
   template <class TS1,class BUD1>  
   friend LGMdouble GetBranchRespiration(Axis<TS1,BUD1>& axis); 
+  template <class TS1,class BUD1>  
+  friend int GetAxisNumber(Axis<TS1,BUD1>& axis); 
+  template <class TS1,class BUD1>  
+  friend int SetAxisNumber(Axis<TS1,BUD1>& axis, int number); 
 
 public:
   virtual ~Axis();
   Axis();
   Axis(const Point& p, const PositionVector& d, Tree<TS,BUD>* t);
-  Axis(Tree<TS,BUD>* t):TreeCompartment<TS,BUD>(t),aa(ALIVE) { }
+  Axis(Tree<TS,BUD>* t):TreeCompartment<TS,BUD>(t),aa(ALIVE), axis_number(0){ }
 protected: 
   AxisAttributes aa;
   list<TreeCompartment<TS,BUD>*> tc_ls;
+  int axis_number;
 };
 
 
