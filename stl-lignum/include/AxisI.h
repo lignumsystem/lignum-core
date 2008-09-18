@@ -95,7 +95,10 @@ namespace Lignum{
   template <class TS, class BUD>
     Bud<TS,BUD>* GetTerminatingBud(const Axis<TS,BUD>& axis)
     {
-      return (Bud<TS,BUD>*) axis.tc_ls.back();
+      if (axis.tc_ls.size() == 0)
+	return NULL;
+      else
+	return (Bud<TS,BUD>*) axis.tc_ls.back();
     }
   
   
@@ -111,7 +114,10 @@ namespace Lignum{
   template <class TS,class BUD>
     TreeCompartment<TS,BUD>* GetFirstTreeCompartment(Axis<TS,BUD>& axis)
     {
-      return axis.tc_ls.front();
+      if (axis.tc_ls.size() == 0)
+	return NULL;
+      else
+	return axis.tc_ls.front();
     }
   
   template <class TS,class BUD,class S>
