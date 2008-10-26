@@ -46,7 +46,8 @@ HEADERS += include/Bernoulli.h \
            include/TMatrix3DI.h \
            include/TMatrixI.h \
            include/Triangle.h \
-           include/Uniform.h
+           include/Uniform.h \
+           include/InvNorm.h
 SOURCES += src/Bernoulli.cc \
            src/Bisection.cc \
            src/CString.cc \
@@ -65,4 +66,5 @@ SOURCES += src/Bernoulli.cc \
            src/rand3.cc \
            src/RMatrix.cc \
            src/Triangle.cc \
-           src/Uniform.cc
+           src/Uniform.cc \
+           src/InvNorm.cc
