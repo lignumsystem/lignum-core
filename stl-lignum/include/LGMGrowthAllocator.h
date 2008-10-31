@@ -209,9 +209,96 @@ namespace Lignum{
     //iWs = sapwood mass: new segments + thickening
     //iWfnew = new foliage
     //iWrnew = new roots = ar*iWfnew
-
+ 
     return P - M - GetValue(data,LGAiWs) - GetValue(data,LGAiWf) - GetValue(t,LGPar)* GetValue(data,LGAiWf);
+ 
   }
+
+  // ----------------------------------------------------------------------------------------------
+  //   Here is LGMGrowthAllocator3 that realizes allocation to fine- and coarse roots
+  //   accorngt to ~/Riston-D/E/LIGNUM/SSCS/Tuomo/LIGNUM-juuret/Lignum-roots.tex
+  //   Now the equation is: P-M-G=0 where G =  iWs(l) + iWf(l) + iWfr(l) + Wfr_senecence + 
+  //   iWcr(l) + Wcr_senecence
+
+  template <class TS,class BUD,class ELONGATION,class ADD_ASSIGN,class DIAMETER_INCREMENT, class DATA>
+  class LGMGrowthAllocator3{
+  public:
+    LGMGrowthAllocator3(Tree<TS,BUD>& tree)
+      :t(tree),P(0.0),M(0.0){init();}
+    LGMGrowthAllocator3(Tree<TS,BUD>& tree,DATA d, ADD_ASSIGN functor)
+      :t(tree),data(d),data_orig(d),f(functor),P(0.0),M(0.0){init();}
+    void init();
+    DATA getData()const{return data;}
+    double getP()const{return P;}
+    double getM()const{return M;}
+    double getL() const{return lambda;}
+    double operator()(double l) const;
+  private:
+    Tree<TS,BUD>& t;
+    mutable DATA data;
+    DATA data_orig;
+    ADD_ASSIGN f;
+    double P;
+    double M;
+    mutable double lambda;//The lambda in  G = iWs(l) + iWfnew(l) + iWrnew(l)
+  };
+
+  template <class TS,class BUD,class ELONGATION,class ADD_ASSIGN,class DIAMETER_INCREMENT, class DATA>
+  void LGMGrowthAllocator3<TS,BUD,ELONGATION,ADD_ASSIGN,DIAMETER_INCREMENT,DATA>::init()
+  {
+    P = GetValue(t,TreeP);
+    M = GetValue(t,TreeM);
+  }
+
+  //This method, overloaded function operator, implements P-M-G=0
+  template <class TS,class BUD,class ELONGATION,class ADD_ASSIGN,class DIAMETER_INCREMENT, class DATA>
+  double LGMGrowthAllocator3<TS,BUD,ELONGATION,ADD_ASSIGN,DIAMETER_INCREMENT,DATA>::operator()(double l)const
+  {
+    //Reset data!!!!
+    DATA data = data_orig;
+    //0.Save current value of lambda
+    lambda = l;
+    //1.Elongate or shorten segment lengths
+    ForEach(t,ELONGATION(l));
+
+    //2. Simulate  diameter  growth  and  collect  sapwood  and  foliage
+    //masses.
+    data = AccumulateDown(t,data,f,DIAMETER_INCREMENT(LGMALLOCATE));   
+  
+    //3. return P-M-G=0 where G = iWs(l) + iWfnew(l) + iWrnew(l)
+    //iWs = sapwood mass: new segments + thickening
+    //iWfnew = new foliage
+    //iWrnew = new roots = ar*iWfnew
+ 
+    //return P - M - GetValue(data,LGAiWs) - GetValue(data,LGAiWf) - GetValue(t,LGPar)* GetValue(data,LGAiWf);
+
+    Axis<TS,BUD>& axis = GetAxis(t);
+    TreeSegment<TS, BUD>* ts = GetFirstTreeSegment(axis);
+    LGMdouble Rh = GetValue(*ts, LGARh);
+    LGMdouble As = GetValue(data, LGAAs);
+    LGMdouble Rnew = sqrt(As/PI_VALUE+Rh*Rh);
+    LGMdouble Rold = GetValue(*ts, LGAR);
+    Rnew = max(Rnew,Rold);
+    LGMdouble Wcr = 170.0*pow(Rold,2.4);
+    LGMdouble sWcr = 0.018*Wcr;
+    LGMdouble iWcr = 170.0*pow(Rnew,2.4)-Wcr;
+    LGMdouble iWfr= GetValue(t,LGPar)* GetValue(data,LGAiWf);
+    //LGMdouble Wf = 100.0*PI_VALUE*Rold*Rold;  //This is an approximation
+    LGMdouble Wf = GetValue(data, DGWf);
+    LGMdouble sWfr = 0.5*GetValue(t,LGPar)*Wf;
+
+
+/*     cout << "P M iWs iWf iWcr sWcr iWfr sWfr Wf ar Rold Rnew " << P << " " << M << " " << */
+/*       GetValue(data,LGAiWs) << " " << GetValue(data,LGAiWf) << " " << iWcr << " " << sWcr << " " */
+/* 	 << iWfr << " " << sWfr << " " << Wf << " " << GetValue(t,LGPar) << " " << Rold */
+/* 	 << " " << Rnew << endl; */
+
+
+    return P - M - GetValue(data,LGAiWs) - GetValue(data,LGAiWf) - iWcr - sWcr - iWfr - sWfr;
+
+ 
+  }
+
 
 }
 #endif
