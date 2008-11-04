@@ -19,6 +19,8 @@ using namespace std;
 //please update this list.
 
 //   CountTreeSegments
+//   CountCfTreeSegmentsWithFoliage
+//   CountHwTreeSegmentsWithFoliage
 //   ForwardQin (for coniferous)
 //   PrintTreeInformation
 //   PrintTreeInformation2
@@ -83,6 +85,30 @@ namespace Lignum{
        {
 	 if (dynamic_cast<TS*>(tc)!=NULL)
 	   n+=1;
+	 return n;
+       }
+   };
+
+   template <class TS,class BUD>
+     class CountCfTreeSegmentsWithFoliage {
+     public:
+     int& operator()(int& n,TreeCompartment<TS,BUD>* tc)const
+       {
+	 if(CfTreeSegment<TS,BUD>* ts = dynamic_cast<CfTreeSegment<TS,BUD>*>(tc))
+	   if(GetValue(*ts,LGAWf)>R_EPSILON)
+	     n+=1;
+	 return n;
+       }
+   };
+
+   template <class TS,class BUD, class SHAPE>
+     class CountHwTreeSegmentsWithFoliage {
+     public:
+     int& operator()(int& n,TreeCompartment<TS,BUD>* tc)const
+       {
+	 if(HwTreeSegment<TS,BUD,SHAPE>* ts = dynamic_cast<HwTreeSegment<TS,BUD,SHAPE>*>(tc))
+	   if(GetValue(*ts,LGAWf)>R_EPSILON)
+	     n+=1;
 	 return n;
        }
    };
