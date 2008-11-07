@@ -392,8 +392,7 @@ public:
       InsertHwVoxelObject(vs,*ts,d,t,parts,leaf);
     }//conifer part
     else if (TS* ts = dynamic_cast<TS*>(tc)){
-      if (GetValue(*ts,LGAWf) > R_EPSILON) 
-	InsertCfVoxelObject(vs,*ts,d,t,sp,parts);
+      InsertCfVoxelObject(vs,*ts,d,t,sp,parts);
     }
   }
 private:
