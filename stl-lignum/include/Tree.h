@@ -172,8 +172,8 @@ namespace Lignum{
       template <class TS1,class BUD1>
       friend const ParametricCurve& GetFunction(const Tree<TS1,BUD1>& tree, LGMF name);
 
-    template <class TS1,class BUD1>
-    friend void SetFunction(Tree<TS1,BUD1>& tree, ParametricCurve& f,LGMF name);
+      template <class TS1,class BUD1>
+      friend void SetFunction(Tree<TS1,BUD1>& tree, ParametricCurve& f,LGMF name);
 
       template <class TS1, class BUD1, class F>
       friend void EvaluateRadiationForTree(Tree<TS1,BUD1>& tree, const F& f);
@@ -183,6 +183,11 @@ namespace Lignum{
       Tree(const Point& p, const PositionVector& d);
       Tree(const Point& p, const PositionVector& d, 
 	   LGMdouble len, LGMdouble rad, int num_buds);
+      //This constructor is for making algorithms (ForEach etc) available also for parts
+      //of a tree (=Axis, e.g. branch or subbranch). Make a Tree out of an Axis
+      //and you can run ForEach etc.  BE AWARE: After this tree has disappeared (e.g. outside
+      //of a block) the axis given as argument in the constructor disappears also
+      Tree(Axis<TS,BUD>& ax) : axis(ax), root_axis(*this) {}
 
       void photosynthesis();
       void respiration();

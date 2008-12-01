@@ -17,6 +17,7 @@ namespace Lignum{
 
   class AxisAttributes{
   public:
+    AxisAttributes(AxisAttributes& aa) : state(aa.state) {}
     AxisAttributes(LGMdouble s):state(s){ }
       LGMdouble state; //ALIVE or DEAD 
   };
@@ -71,6 +72,8 @@ public:
   Axis();
   Axis(const Point& p, const PositionVector& d, Tree<TS,BUD>* t);
   Axis(Tree<TS,BUD>* t):TreeCompartment<TS,BUD>(t),aa(ALIVE), axis_number(0){ }
+  //Copy constructor (for making a Tree out of an Axis - see comments in Tree.h)
+  Axis(Axis<TS,BUD>& ax) : aa(ax.aa), tc_ls(ax.tc_ls), axis_number(ax.axis_number) {}
 protected: 
   AxisAttributes aa;
   list<TreeCompartment<TS,BUD>*> tc_ls;

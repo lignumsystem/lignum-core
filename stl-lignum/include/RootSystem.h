@@ -1,3 +1,4 @@
+
 #ifndef ROOTSYSTEM_H
 #define ROOTSYSTEM_H
 
@@ -46,6 +47,8 @@ namespace Lignum {
     virtual ~RootCompartment(){};
     RootCompartment(const Point& point, const PositionVector& dir, 
 		    const TREE& tree):p(point),d(dir),t(tree) {}
+    RootCompartment(const TREE& tree):t(tree) {}
+
   protected:
     Point p;
     PositionVector d;
@@ -61,6 +64,7 @@ namespace Lignum {
 				      const RootCompartment<TREE1>* rpb);
   public:
     virtual ~RootAxis();
+    RootAxis(const TREE& tr ) : RootCompartment<TREE>(tr) {}
     RootAxis(const Point& p, const PositionVector& d, const TREE& t):
     RootCompartment<TREE>(p,d,t) {}
   private:
