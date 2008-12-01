@@ -21,8 +21,6 @@ using namespace cxxadt;
 #include <LGMGrowthAllocator.h>
 #include <TreeFunctor.h>
 #include <TreeMetaFileParser.h>
-#include <RootSystem.h>
-#include <RootAlgorithms.h>
 #include <Bud.h>
 #include <DefaultBud.h>
 #include <BranchingPoint.h>
@@ -144,9 +142,6 @@ namespace Lignum{
       friend Axis<TS1,BUD1>& GetAxis(Tree<TS1,BUD1>& t);
 
       template <class TS1,class BUD1>
-      friend RootAxis<Tree<TS1,BUD1> >& GetRootAxis(Tree<TS1,BUD1>& t);
-
-      template <class TS1,class BUD1>
       friend LGMdouble GetValue(const Tree<TS1,BUD1>& tree, const LGMTAD name);
 
       template <class TS1,class BUD1>
@@ -186,8 +181,8 @@ namespace Lignum{
       //This constructor is for making algorithms (ForEach etc) available also for parts
       //of a tree (=Axis, e.g. branch or subbranch). Make a Tree out of an Axis
       //and you can run ForEach etc.  BE AWARE: After this tree has disappeared (e.g. outside
-      //of a block) the axis given as argument in the constructor disappears also
-      Tree(Axis<TS,BUD>& ax) : axis(ax), root_axis(*this) {}
+      //of a block) the axis given as argument in the constructor disappears also. 
+      Tree(Axis<TS,BUD>& ax) : axis(ax) {}
 
       void photosynthesis();
       void respiration();
@@ -201,7 +196,6 @@ namespace Lignum{
       TreeInitializationFiles tif;
       FirmamentWithMask f;
       Axis<TS,BUD> axis;
-      RootAxis<Tree<TS,BUD> > root_axis;
     };
 
 

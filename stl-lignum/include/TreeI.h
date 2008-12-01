@@ -10,7 +10,6 @@ namespace Lignum{
 
 template <class TS,class BUD>
 Tree<TS,BUD>::Tree()
-  :root_axis(Point(0,0,0),PositionVector(0,0,-1),*this)
 {
   this->tree = NULL;
 }
@@ -19,13 +18,12 @@ Tree<TS,BUD>::Tree()
 //with one terminating bud in the main axis
 template <class TS,class BUD>
 Tree<TS,BUD>::Tree(const Point& p, const PositionVector& d)
-  :TreeCompartment<TS,BUD>(p,d,this),f(5,5),axis(p,d,this),
-  root_axis(p,d,*this){ }
+  :TreeCompartment<TS,BUD>(p,d,this),f(5,5),axis(p,d,this) { }
 
 
 template <class TS,class BUD>
-Tree<TS,BUD>::Tree(const Point& p, const PositionVector& d, LGMdouble len, LGMdouble rad, int num_buds) :TreeCompartment<TS,BUD>(p,d,this),f(5,5),axis(p,d,this),
-    root_axis(p,d,*this)
+Tree<TS,BUD>::Tree(const Point& p, const PositionVector& d, LGMdouble len, LGMdouble rad, int num_buds) :
+                                                 TreeCompartment<TS,BUD>(p,d,this),f(5,5),axis(p,d,this)
 {
   //force the instantiation of BranchingPoint
   BranchingPoint<TS,BUD>(p,d,this);
@@ -298,11 +296,6 @@ Axis<TS,BUD>& GetAxis(Tree<TS,BUD>& t)
   return t.axis;
 }
 
-template <class TS,class BUD>
-RootAxis<Tree<TS,BUD> >& GetRootAxis(Tree<TS,BUD>& t)
-{
-  return t.root_axis;
-}
 
 //Return a tree function as a ParametricCurve
 template<class TS, class BUD>
