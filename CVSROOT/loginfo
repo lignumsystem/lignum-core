@@ -39,13 +39,13 @@
 ^poplar Mail -s %s jari.perttunen@metla.fi 
 ^LPine Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi 
 ^Lig-Crobas Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi
-^Pine Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi
-^OptimiTuotto Mail -s %s jari.perttunen@metla.fi tero.kokkila@helsinki.fi annikki.makela@helsinki.fi olli.tahvonen@metla.fi sami.niinimaki@metla.fi
-^ctree Mail -s %s jari.perttunen@metla.fi theikura@cc.hut.fi
+^Pine -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi
+^ctree Mail -s %s jari.perttunen@metla.fi theikura@iki.fi
+^OptimiTuotto Mail -s %s jari.perttunen@metla.fi tero.kokkila@helsinki.fi olli.tahvonen@metla.fi sami.niinimaki@metla.fi
 ^SugarMaple Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi  
 ^YellowBirch Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi   
 ^Gliricidia Mail -s %s risto.sievanen@metla.fi jari.perttunen@metla.fi
-^decay Mail -s %s theikura@cc.hut.fi jari.perttunen@metla.fi
+^decay Mail -s %s theikura@iki.fi jari.perttunen@metla.fi
 ^XCode mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi
 ^DataTree Mail -s %s  risto.sievanen@metla.fi jari.perttunen@metla.fi
 ^Cowberry Mail -s %s  risto.sievanen@metla.fi jari.perttunen@metla.fi
