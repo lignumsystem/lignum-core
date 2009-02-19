@@ -133,7 +133,7 @@ namespace Lignum{
 	    dcl.DCrownBase(2.0*GetValue(*ts,LGAR));
 	    dcl.DHWCrownBase(2.0*GetValue(*ts,LGARh));
 	    //set the segment height to the crown base
-	    dcl.HCrownBase(GetPoint(*ts).getZ());
+	    dcl.HCrownBase(GetPoint(*ts).getZ()+GetValue(*ts,LGAL));
 	    //reset  foliage  so  if  the branches  in  the  immediate
 	    //branching  point  below don't  have  foliage, this  will
 	    //remain the diameter and height in the crown base.
