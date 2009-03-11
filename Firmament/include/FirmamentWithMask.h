@@ -46,6 +46,7 @@ namespace sky{
 class FirmamentWithMask:public Firmament{
 public: 
   FirmamentWithMask(int no_incl = NUM_OF_INCL/*9*/, int no_azim = NUM_OF_AZIM /*24*/);
+  void resize(int no_incl,int no_azim, double rad);
   void configure(const string& file);
   void configure(int iter, bool verbose = false);
   void readAllMasks(const string& file);
