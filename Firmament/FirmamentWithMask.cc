@@ -11,6 +11,14 @@ namespace sky{
     /*empty*/
   }
 
+  //Resize the firmament. To use the masks correctly save the original
+  //radiation to plane. See the method configure.
+  void FirmamentWithMask::resize(int no_incl,int no_azim,double rad_plane)
+  {
+    drp_orig = rad;
+    Firmament::resize(no_incl,no_azim,rad);
+  }
+
   //Intializing the firmament from a file that contains
   //size (inclinations and azimuths), radiation intensity
   //and an optional mask for the firmament
