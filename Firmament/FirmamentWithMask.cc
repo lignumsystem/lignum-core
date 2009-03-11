@@ -15,8 +15,8 @@ namespace sky{
   //radiation to plane. See the method configure.
   void FirmamentWithMask::resize(int no_incl,int no_azim,double rad_plane)
   {
-    drp_orig = rad;
-    Firmament::resize(no_incl,no_azim,rad);
+    drp_orig = rad_plane;
+    Firmament::resize(no_incl,no_azim,rad_plane);
   }
 
   //Intializing the firmament from a file that contains
