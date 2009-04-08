@@ -84,6 +84,7 @@ namespace Lignum{
     DCLData():DCL(0.0),BWf(0.0),HCB(0.0),DHWCB(0.0){}
     DCLData(const DCLData& dcl):
       DCL(dcl.DCL),BWf(dcl.BWf),HCB(dcl.HCB),DHWCB(dcl.DHWCB){}
+    void clear(){DCL=BWf=HCB=DHWCB=0.0;}
     double DCrownBase(){return DCL;}
     double HCrownBase(){return HCB;} 
     double DHWCrownBase() {return DHWCB;}
