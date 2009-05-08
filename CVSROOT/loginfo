@@ -55,3 +55,4 @@
 ^DataRoot Mail -s %s risto.sievanen@metla.fi jari.perttunen@metla.fi tuomo.kalliokoski@metla.fi
 ^FracRoot Mail -s %s risto.sievanen@metla.fi jari.perttunen@metla.fi tuomo.kalliokoski@metla.fi
 ^OptimalTree Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi juan_posada@mac.com
+^LignumForest Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi
