@@ -130,6 +130,8 @@ namespace Lignum {
     VOBookKeeper& getBookKeeper(){return book_keeper;}
     ForestDescriptor& getForestDescriptor(){return forest_descriptor;}
     double getArea()const{return (Xn*Xbox)*(Yn*Ybox);}
+    Point getLowerLeftCorner()const{return corner1;}
+    Point getUpperRightCorner()const{return corner2;}
     int getNumberOfBoxes()const{ return Xn*Yn*Zn; }
     int getNumberOfFilledBoxes()const;
     int getNumberOfTreeSegments()const;
