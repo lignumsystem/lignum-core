@@ -76,20 +76,11 @@ public:
     //The angle between the light beam and the segment
     LGMdouble a_dot_b = Dot(d,dir);
     LGMdouble phi = 0.0;
-    //Recall the K function has domain [0:pi/2]. We must use the acute
-    //angle
-    if (a_dot_b < 0.0)//obtuse angle-->take the acute angle
-      phi = PI_VALUE - acos(a_dot_b);
-    else
-      phi = acos(a_dot_b);
+
+    phi = PI_DIV_2 - acos(fabs(a_dot_b));
     
-    if (vf > R_EPSILON)
-      tau = exp(-K(phi)*length*af/vf);
-    else{//If there is no foliage Rf==R and Vf is 0, CylinderBeamShading returns then as if a hit to foliage
-      //cerr << "Vf < R_EPSILON: " << vf << " Af: " << af << " Rf: " << rf 
-      //     << " R: " << rw << " Rf-R " << rf-rw << " L: " << length << endl;
-      tau = 0.0; //Sector blocked
-    }
+    tau = exp(-K(phi)*length*af/vf);
+
     return tau;
   }
 private:
