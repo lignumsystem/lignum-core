@@ -211,8 +211,7 @@ TreeCompartment<TS,BUD>* EvaluateRadiationForCfTreeSegment<TS,BUD>::operator() (
 	s[i] = Iop*exp(-s[i]);
       }
     }
-
-    //Total incoming radiation  
+   //Total incoming radiation  
     MJ Q_in = accumulate(s.begin(),s.end(),0.0);
 
     //s contains now incoming radiation from each sector. Evaluate how
@@ -265,10 +264,6 @@ TreeCompartment<TS,BUD>* ShadingEffectOfCfTreeSegment<TS,BUD>::operator()(TreeCo
     if (ts == shaded_s)
       return tc;
 
-    //Don't compare to lower segment
-    if (GetPoint(*ts).getZ() < GetPoint(*shaded_s).getZ())
-      return tc;
-
     //Now go on computing shading
     int i = 0, number_of_sectors = 0, result = NO_HIT;
     double distance = 0.0;
@@ -282,9 +277,13 @@ TreeCompartment<TS,BUD>* ShadingEffectOfCfTreeSegment<TS,BUD>::operator()(TreeCo
 
     //Foliage density: Foliage area divided by  volume. Perhaps a good idea to
     //implement it as GetValue?
-    LGMdouble fol_dens = GetValue(*ts,LGAAf)/
-      (PI_VALUE*(pow(GetValue(*ts,LGARf),2.0)-pow(GetValue(*ts,LGAR),2.0))
+    LGMdouble af = GetValue(*ts,LGAAf);
+    LGMdouble fol_dens;
+    if(af > R_EPSILON)
+      fol_dens = af/(PI_VALUE*(pow(GetValue(*ts,LGARf),2.0)-pow(GetValue(*ts,LGAR),2.0))
        *GetValue(*ts,LGAL));
+    else
+      fol_dens = 0.0;
 
     for (i = 0; i < number_of_sectors; i++) {
       //If the sector is blocked by another shoot
@@ -298,6 +297,7 @@ TreeCompartment<TS,BUD>* ShadingEffectOfCfTreeSegment<TS,BUD>::operator()(TreeCo
       Point r_0 =  GetPoint(*shaded_s)+0.5*GetValue(*shaded_s,LGAL)*
 	(Point)GetDirection(*shaded_s);        //Midpoint of shaded seg
 
+
       result = CylinderBeamShading(r_0,
 				   radiation_direction,
 				   GetPoint(*ts),
@@ -306,7 +306,6 @@ TreeCompartment<TS,BUD>* ShadingEffectOfCfTreeSegment<TS,BUD>::operator()(TreeCo
 				   GetValue(*ts, LGAR),
 				   GetValue(*ts, LGAL),
 				   distance);
-
 
       if (result == HIT_THE_WOOD){
 	//mark the sector blocked 
