@@ -111,7 +111,7 @@ int EllipseBeamShading(Point& p0,
 ////////////////////////////////////////////////////////
 
 //If the beam (starting from 'r0' with direction 'b') hits the shoot
-//(radius 'Rs', length 'L', position 'rs' and direction 'a'), 
+//(radius indluding foliage 'Rs', length 'L', position 'rs' and direction 'a'), 
 //but not the woody part (radius 'Rw'), 
 //beamShading returns +1 and the distance (m) of the beam traversed
 //in the shoot in the variable distance.
@@ -208,6 +208,7 @@ int CylinderBeamShading(const Point& r0_1, const PositionVector& b,
   if(discriminantOver4 < 0.0)	
     return NO_HIT;			// Does not hit
 
+
   //	4. Check here in between if the beam hits the wood cylinder inside
   //	the shoot. First check if hits the cylinder extending to infinity
   //	and then if the hit point is inside the shoot.
@@ -226,25 +227,31 @@ int CylinderBeamShading(const Point& r0_1, const PositionVector& b,
       (pow(ab, 2) - 1.0);
     rw1 = r0 + p1 * b;
     rd = rw1 - rs;
-    any = Dot(a, rd) / sqrt( Dot(rd, rd) );
+    any = Dot(a, rd);
+  
     if(any > 0.0 && any < L)
       return  HIT_THE_WOOD;	// First hit point in the wood cylinder
 
     p2 = ( rdiffa * ab - rdiffb - sqrt(discriminantOver4w) ) /
       (pow(ab, 2) - 1.0);
+ 
     rw2 = r0 + p2 * b;
     rd = rw2 - rs;
-    any = Dot(a, rd) / sqrt( Dot(rd, rd) );
+    any = Dot(a, rd);
+ 
     if(any > 0.0 && any < L)
       return  HIT_THE_WOOD;	//2nd hit point in the wood cylinder
   }
+
 
   // 5	Continue with: Beam hits the cylinder extending to infinity
 
   p1 = ( rdiffa * ab - rdiffb + sqrt(discriminantOver4) ) /
     (pow(ab, 2) - 1.0);
+ 
   p2 = ( rdiffa * ab - rdiffb - sqrt(discriminantOver4) ) /
     (pow(ab, 2) - 1.0);
+ 
   if( p1 < 0.0 && p2 < 0.0) 
     return NO_HIT;	// In this case p0 outside the cylinder, cannot hit
   // the shoot cylinder in positive direction of b
@@ -263,6 +270,7 @@ int CylinderBeamShading(const Point& r0_1, const PositionVector& b,
   rd = r2 - rs;
   any = Dot(a, rd);
   if(any > 0.0 && any < L) secondHits = true;
+
 
   //	6. One member of Cartesian product 
   //	{mantle, end disk} x {mantle, end disk} or no hit possible 
