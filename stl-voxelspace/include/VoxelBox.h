@@ -76,7 +76,9 @@ namespace Lignum {
     void setQ_inStdDiff(LGMdouble val){Q_inStdDiffuse = val;}
     void addRadiation(LGMdouble r);
     void addNeedleArea(M2 narea) { needleArea += narea; }
+    void subtractNeedleArea(M2 narea) { needleArea -= narea; }
     void addNeedleMass(M2 nmass) { needleMass += nmass; }
+    void subtractNeeeldeMass(M2 nmass) { needleMass -= nmass; }
     void addLeafArea(M2 larea) { leafArea += larea; }
     void addLeafMass(LGMdouble lmass) {leafMass += lmass; }
     void addQabs(LGMdouble val) { Q_abs += val; }
@@ -85,10 +87,13 @@ namespace Lignum {
     void setQabsMean(LGMdouble val){Qabs_mean= val;}
     void addInterceptedRadiation(LGMdouble rad) { interceptedRadiation += rad; }
     void addStarSum(LGMdouble starmean){starSum += starmean;}
+    void subtractStarSum(LGMdouble starmean){starSum -= starmean;}
     void addWoodMass(LGMdouble mass) {woodMass += mass; }
     void addWoodArea(LGMdouble area) {woodArea += area; }
     void addWeight(LGMdouble w){weight += w;}
+    void subtractWeight(LGMdouble w){weight -= w;}
     void increaseNumberOfSegments(){number_of_segments++;}
+    void decreaseNumberOfSegments(){{number_of_segments--;}
     void addOneLeaf() {number_of_leaves++;}
     LGMdouble S(LGMdouble phi, LGMdouble sf, LGMdouble Wf,
 		LGMdouble r, LGMdouble l);
