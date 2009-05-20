@@ -299,8 +299,14 @@ LGMdouble GetValue(const TreeSegment<TS,BUD>& ts, const LGMAD name)
   else if(name == LGAvi)
     return ts.tsa.vigour;
 
-  else if (name == LGAV)
-    return  PI_VALUE*pow(GetValue(ts,LGAR),2.0) * GetValue(ts,LGAL);
+  else if (name == LGAV){          //Now claculates as frustum volume if Rtop present
+    double rb = GetValue(ts,LGAR);
+    double rt = GetValue(ts,LGARTop);
+    if (rt == 0.0)//LGARTop is not set (default value present)
+      return  PI_VALUE*rb*rb *GetValue(ts,LGAL);
+    else
+      return (PI_VALUE*GetValue(ts,LGAL)*(rb*rb+rb*rt+rt*rt))/3.0;    
+  }
   
   else if (name == LGAVfrustum){
     double rb = GetValue(ts,LGAR);
@@ -312,8 +318,17 @@ LGMdouble GetValue(const TreeSegment<TS,BUD>& ts, const LGMAD name)
       return (PI_VALUE*GetValue(ts,LGAL)*(rb*rb+rb*rt+rt*rt))/3.0;
   }
 
-  else if (name == LGAVh)
-    return  PI_VALUE*pow(GetValue(ts,LGARh),2.0) * GetValue(ts,LGAL);
+  else if (name == LGAVh) {           //Calculated assuming same taper as the whole segment
+    double rt = GetValue(ts,LGARTop); //if Rtop present 
+    if(rt == 0)
+      return  PI_VALUE*pow(GetValue(ts,LGARh),2.0) * GetValue(ts,LGAL);
+    else {
+      double rh = GetValue(ts,LGARh);
+      double rh_t = (rh/GetValue(ts,LGAR))*rt;
+      return (PI_VALUE*GetValue(ts,LGAL)*(rh*rh+rh*rh_t+rh_t*rh_t))/3.0; 
+    }
+    
+  }
 
   else if (name == LGAVs)
     return GetValue(ts,LGAV) - GetValue(ts,LGAVh);
@@ -332,7 +347,7 @@ LGMdouble GetValue(const TreeSegment<TS,BUD>& ts, const LGMAD name)
     return GetValue(GetTree(ts),LGPrhoW) * v1;
   }
   else if (name == LGAWood) {
-    LGMdouble v1 = GetValue(ts, LGAV);
+    LGMdouble v1 = GetValue(ts, LGAVfrustum);
     return GetValue(GetTree(ts), LGPrhoW) * v1;
   }
   else
