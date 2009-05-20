@@ -13,6 +13,9 @@ extern float cam_x;  //camera position
 extern float cam_y;
 extern float cam_z;
 
+//used in sensitivity analysis for calculatePoplarLight
+//extern int gradseed;
+
 namespace Lignum {
 
 
@@ -32,11 +35,9 @@ namespace Lignum {
   VoxelSpace::VoxelSpace(Point c1, Point c2, int xn, int yn, int zn, Firmament &f)
     :Xn(xn),Yn(yn),Zn(zn),voxboxes(xn,yn,zn),corner1(c1),corner2(c2),k_b(0.50)
   {
-
     Xbox = (corner2-corner1).getX()/static_cast<int>(Xn);
     Ybox = (corner2-corner1).getY()/static_cast<int>(Yn);
     Zbox = (corner2-corner1).getZ()/static_cast<int>(Zn);
-    
     for(int i1=0; i1<Xn; i1++)
       for(int i2=0; i2<Yn; i2++)
 	for(int i3=0; i3<Zn; i3++)
@@ -164,38 +165,38 @@ namespace Lignum {
 
     void VoxelSpace::resize(LGMdouble lX, LGMdouble lY, LGMdouble lZ,
 			    int nX, int nY, int nZ )
-    {cout<<"nX: "<<nX<<" "<<nY<<" "<<nZ<<endl;
-    if(nX < 1) nX = 1;
-    if(nY < 1) nY = 1;
-    if(nZ < 1) nZ = 1;
-    if(lX < R_EPSILON) lX = 1.0;
-    if(lY < R_EPSILON) lY = 1.0;
-    if(lZ < R_EPSILON) lZ = 1.0;
-   
-    Xn = nX, Yn = nY, Zn = nZ;
-    voxboxes.resize(Xn, Yn, Zn);
+    {
+      if(nX < 1) nX = 1;
+      if(nY < 1) nY = 1;
+      if(nZ < 1) nZ = 1;
+      if(lX < R_EPSILON) lX = 1.0;
+      if(lY < R_EPSILON) lY = 1.0;
+      if(lZ < R_EPSILON) lZ = 1.0;
+      
+      Xn = nX, Yn = nY, Zn = nZ;
+      voxboxes.resize(Xn, Yn, Zn);
 
-    Xbox = lX, Ybox = lY, Zbox = lZ;
+      Xbox = lX, Ybox = lY, Zbox = lZ;
 
-    //Update the other corner. Lover left corner1 = origo,
-    //corner2 is the opposite corner.It may have changed slightly.
-
-    corner2 = corner1 + Point((LGMdouble)Xn*Xbox, (LGMdouble)Yn*Ybox,
+      //Update the other corner. Lover left corner1 = origo,
+      //corner2 is the opposite corner.It may have changed slightly.
+      
+      corner2 = corner1 + Point((LGMdouble)Xn*Xbox, (LGMdouble)Yn*Ybox,
 			      (LGMdouble)Zn*Zbox);
 
  
-   //The coordinates (=lower left corners) of the VoxelBoxes have to
-    //be set and also the Voxelspace
-    for(int i1=0; i1<Xn; i1++)
-      for(int i2=0; i2<Yn; i2++)
-	for(int i3=0; i3<Zn; i3++)
-	  {
-	    Point corner = corner1 +
-	      Point((LGMdouble)i1*Xbox, (LGMdouble)i2*Ybox,
-		    (LGMdouble)i3*Zbox); 
-	    voxboxes[i1][i2][i3].setVoxelSpace(this, corner); 
-	  }
-
+      //The coordinates (=lower left corners) of the VoxelBoxes have to
+      //be set and also the Voxelspace
+      for(int i1=0; i1<Xn; i1++)
+	for(int i2=0; i2<Yn; i2++)
+	  for(int i3=0; i3<Zn; i3++)
+	    {
+	      Point corner = corner1 +
+		Point((LGMdouble)i1*Xbox, (LGMdouble)i2*Ybox,
+		      (LGMdouble)i3*Zbox); 
+	      voxboxes[i1][i2][i3].setVoxelSpace(this, corner); 
+	    }
+      
     }
 
   //Move Voxelspace so that its lower left corner is set at corner
@@ -816,7 +817,7 @@ namespace Lignum {
   LGMdouble VoxelSpace::calculatePoplarLight(LGMdouble diffuse, LGMdouble structureFlag)      
   {
     //intialize the sequence with some negative number
-    int bernoulli_seed = -1;
+    int bernoulli_seed = -1;//gradseed;//-1;
     //produce the next number from sequence
     int bernoulli_sequence = 1;
     Bernoulli ber(bernoulli_seed);
