@@ -50,6 +50,7 @@ using namespace std;
 //   PrintTreeSegmentInformationToFile
 //   PrintTreeSegmentInformationToFileByAxis
 //   DropAllLeaves
+//   ResetQinQabs
 //   CollectLeaves: return a 'list<BroadLeaf<SH>*> ls' of leaves in a tree
 //                  Usage: Accumulate(t,ls,CollectLeaves<TS,BUD,SH>());
 //   SortLeaves: sort leaves (returned by CollectLeaves), leaves closest to the 
@@ -832,6 +833,19 @@ public:
       }
     }
   };
+
+  template <class TS, class BUD> 
+  class ResetQinQabs{
+  public:
+    TreeCompartment<TS,BUD>* operator()(TreeCompartment<TS,BUD>* tc)const{
+      if (TS* ts = dynamic_cast<TS*>(tc)){
+	SetValue(*ts,LGAQin,0.0);
+	SetValue(*ts,LGAQabs,0.0);
+      }
+      return tc;
+    }
+  };
+    
 
 }//closing namespace Lignum
 #include <TreeFunctorI.h>
