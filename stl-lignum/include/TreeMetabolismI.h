@@ -13,6 +13,10 @@ template <class TS,class BUD>
 void Tree<TS,BUD>::photosynthesis()
 {
 
+  cout << "Design of LIGNUM gears towards the use of functors" <<endl
+       << "Tree<TS,BUD>::photosynthesis() is depricated" << endl
+       << "Consider the use of functors  TreePhotosynthesis and  SumTreePhotosynthesis" <<endl;
+
   //Have TreeCompartments to do photosynthesis
   ForEach(*this, TreePhotosynthesis<TS,BUD>());
   
@@ -30,6 +34,9 @@ void Tree<TS,BUD>::photosynthesis()
 template <class TS,class BUD>
 void Tree<TS,BUD>::respiration()
 {
+  cout << "Design of LIGNUM gears towards the use of functors" <<endl
+       << "Tree<TS,BUD>::respiration() is depricated" << endl
+       << "Consider the use of functors  TreeRespiration and  SumTreeRespiration" <<endl;
   //Have TreeCompartments to do photosynthesis
   ForEach(*this, TreeRespiration<TS,BUD>());
   
