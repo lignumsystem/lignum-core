@@ -212,8 +212,6 @@ public:
   {
     Firmament& f = GetFirmament(GetTree(*tc));
     if (CfTreeSegment<TS,BUD>* ts = dynamic_cast<CfTreeSegment<TS,BUD>*>(tc)){
-      SetValue(*ts, LGAQin, 0.0);
-      SetValue(*ts, LGAQabs, 0.0);
       //Radiation  conditions are not  evaluated if  the segment  has no
       //foliage (in practice  there would be division by  0 in computing
       //absorbed radiation, see below)
