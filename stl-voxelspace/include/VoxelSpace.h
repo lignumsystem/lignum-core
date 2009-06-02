@@ -124,6 +124,13 @@ namespace Lignum {
 				    //VoxelSpace changes. Contents are
 				    //lost.
 
+    void resize(const Point lower_left, const Point upper_right); 
+                                    //Change physical dimensions of
+                                    // voxelspace (i.e. extent, i.e. opposite corners)
+				    // The number of VoxelBoxes may change
+				    //Contents are lost (because TMatrix3D resize
+                                    //destroys contents)
+
     void move(const Point corner1); //Move Voxelspace so that its
 				    //lower left corner is set at
 				    //corner1

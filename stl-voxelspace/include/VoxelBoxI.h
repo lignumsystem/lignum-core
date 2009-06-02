@@ -17,7 +17,7 @@ namespace Lignum {
       LGMdouble S_f = GetValue(GetTree(ts), LGPsf);
       LGMdouble fmass = GetValue(ts, LGAWf) / num_parts;
 
-      if (GetValue(GetTree(ts), LGPsf) == 0)
+      if (S_f == 0)
 	S_f = 28;
 
       LGMdouble farea = S_f * fmass;	

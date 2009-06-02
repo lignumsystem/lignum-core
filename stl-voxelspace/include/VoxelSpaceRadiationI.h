@@ -189,6 +189,7 @@ public:
       vector<VoxelMovement> vm;
       //The potential Qin (brightness of the sky sector)
       s[i] = f.diffuseRegionRadiationSum(i,d);
+
       PositionVector d1(d[0],d[1],d[2]);
       //Reset the vector of voxel object tags to denote the beam has
       //not hit any segment.
@@ -196,6 +197,7 @@ public:
       //Lengths  of  the  light  beam  in different  boxes  and  the
       //extinction coeffient. First, the border stand extinction
       double tau = vs.getBorderStandExtinction(sp,d1);
+      tau = 1.0;                       //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
       if (tau > R_EPSILON){
 	//Do not bother  to traverse the voxels for  each sky sector
 	//if no light
@@ -205,7 +207,7 @@ public:
 			     AccumulatePairwiseExtinction());
       }
       s[i] = s[i]*tau;//the Qin from one sector
-    }    
+    }
   }
   //For each segment compute the Qabs  
   void operator()(TreeCompartment<TS,BUD>* tc)const
@@ -300,6 +302,7 @@ public:
 	PositionVector d1(d[0],d[1],d[2]);
 	//Border stand extinction
 	double tau = vs.getBorderStandExtinction(p1,d1);
+
 	//Check if radiation
 	if (tau > R_EPSILON){
 	  //Lengths of the light beam in boxes
