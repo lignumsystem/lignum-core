@@ -364,8 +364,22 @@ public:
   public:
     BoundingBox() { minxyz = Point(R_HUGE, R_HUGE, R_HUGE); 
     maxxyz = Point(-R_HUGE, -R_HUGE, -R_HUGE); }
-    Point getMin() { return minxyz; }
-    Point getMax() { return maxxyz; }
+
+    //Addition of a BoundingBox to this. It finds the (smallest) big one containing
+    //both of them (mathematically: intersection of all BoundingBoxes that contain
+    //this and the other BoundingBox).
+    BoundingBox& operator += (const BoundingBox& add_this) {
+      minxyz.setX(min(minxyz.getX(),add_this.getMin().getX()));
+      minxyz.setY(min(minxyz.getY(),add_this.getMin().getY()));
+      minxyz.setZ(min(minxyz.getZ(),add_this.getMin().getZ()));
+      maxxyz.setX(max(maxxyz.getX(),add_this.getMax().getX()));
+      maxxyz.setY(max(maxxyz.getY(),add_this.getMax().getY()));
+      maxxyz.setZ(max(maxxyz.getZ(),add_this.getMax().getZ()));
+      return *this;
+   }
+
+    Point getMin() const { return minxyz; }
+    Point getMax() const { return maxxyz; }
     void setMin(const Point& p){minxyz=p;}
     void setMax(const Point& p){maxxyz=p;}
     void setMinX(const LGMdouble x) { minxyz.setX(x); }
