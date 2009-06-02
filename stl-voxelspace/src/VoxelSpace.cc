@@ -45,7 +45,7 @@ namespace Lignum {
 	    Point corner = corner1 +
 	      Point((LGMdouble)i1*Xbox,(LGMdouble)i2*Ybox,
 		    (LGMdouble)i3*Zbox); 
-	    voxboxes[i1][i2][i3].setVoxelSpace(this, corner); 
+	    voxboxes[i1][i2][i3].setVoxelSpace(this, corner);
 	  }
     sky = &f;
   }
@@ -62,7 +62,7 @@ namespace Lignum {
 			 Firmament &f, LGMdouble kb)
     :Xbox(xsize),Ybox(ysize),Zbox(zsize),
      Xn(xn),Yn(yn),Zn(zn),voxboxes(xn,yn,zn),corner1(c1),corner2(c2),k_b(kb)
-  {    
+  {   
     for(int i1=0; i1<Xn; i1++)
       for(int i2=0; i2<Yn; i2++)
 	for(int i3=0; i3<Zn; i3++)
@@ -198,6 +198,44 @@ namespace Lignum {
 	    }
       
     }
+
+  //Change physical dimensions of voxelspace (i.e. extent, i.e. opposite
+  //corners) The number of VoxelBoxes may change, their dimensions
+  //remain the same. Contents are lost (because TMatrix3D resize
+  //destroys contents). Note that upper right corner of the resized
+  //voxelspace is the same as the given corner; it is adjusted to match
+  //number of voxboxes.
+
+  void VoxelSpace::resize(const Point lower_left, const Point upper_right)
+  {
+    corner1 = lower_left;
+
+    Xn = static_cast<int>((upper_right.getX()-lower_left.getX())/Xbox) + 1;
+    Yn = static_cast<int>((upper_right.getY()-lower_left.getY())/Ybox) + 1;
+    Zn = static_cast<int>((upper_right.getZ()-lower_left.getZ())/Zbox) + 1;
+
+    voxboxes.resize(Xn, Yn, Zn);
+
+    corner2 = Point(corner1.getX()+(LGMdouble)Xn*Xbox, corner1.getY()+(LGMdouble)Yn*Ybox,
+		    corner1.getZ()+(LGMdouble)Zn*Zbox);
+
+
+    //The coordinates (=lower left corners) of the VoxelBoxes have to
+    //be set and also the Voxelspace
+    for(int i1=0; i1<Xn; i1++)
+      for(int i2=0; i2<Yn; i2++)
+	for(int i3=0; i3<Zn; i3++)
+	  {
+	    Point corner = corner1 +
+	      Point((LGMdouble)i1*Xbox, (LGMdouble)i2*Ybox,
+		    (LGMdouble)i3*Zbox); 
+	    voxboxes[i1][i2][i3].setVoxelSpace(this, corner); 
+	  }
+      
+  }
+
+
+
 
   //Move Voxelspace so that its lower left corner is set at corner
 
@@ -585,8 +623,8 @@ namespace Lignum {
     //next_x, next_y  and next_z contains  the minimum t that  the ray
     //can travel in the box 
     
-    //cout << t1 << " "  << t2 << " " << t3 << " " <<  t4 << " " << t5
-    //<< " " << t6 <<endl;
+    // cout << "T: " << t1 << " "  << t2 << " " << t3 << " " <<  t4 << " " << t5  //!!!!!!!!!!!!!!!!!!!!!!!!
+    //  << " " << t6 <<endl;
     LGMdouble dist = 0.0;
     //cout << "P: " << p0 << dir <<endl;
     while(startx>=0 && starty>=0 && startz>=0 && startx<Xn &&
@@ -596,6 +634,9 @@ namespace Lignum {
 	vm.x = startx;
 	vm.y = starty;
 	vm.z = startz;
+	//	cout << "index: " << vm.x << " " << vm.y << " " << vm.z << endl;  //!!!!!!!!!!!!!!!!!!!!!!
+	//	cout << "Next: " << next_x << " " << next_y << " " << next_z << endl;
+       
 	vm.tau = 1.0;//Initalize tau to 1 so we do not exit with DiffuseVoxelSpaceRadiation
 	//Set foliage area,  needle area + leaf area
 	vm.af = voxboxes[vm.x][vm.y][vm.z].getFoliageArea(); 
