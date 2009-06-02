@@ -197,7 +197,7 @@ public:
       //Lengths  of  the  light  beam  in different  boxes  and  the
       //extinction coeffient. First, the border stand extinction
       double tau = vs.getBorderStandExtinction(sp,d1);
-      tau = 1.0;                       //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
       if (tau > R_EPSILON){
 	//Do not bother  to traverse the voxels for  each sky sector
 	//if no light
