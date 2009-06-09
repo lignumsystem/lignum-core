@@ -142,6 +142,7 @@ namespace Lignum {
     int getNumberOfBoxes()const{ return Xn*Yn*Zn; }
     int getNumberOfFilledBoxes()const;
     int getNumberOfTreeSegments()const;
+    LGMdouble getBoxVolume(){ return Xbox*Ybox*Zbox; }
     LGMdouble getQabs()const;
     LGMdouble getQin()const;
     pair<double,double> getMinMaxNeedleMass()const;
