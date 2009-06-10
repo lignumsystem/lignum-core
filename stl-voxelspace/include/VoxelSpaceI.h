@@ -61,7 +61,7 @@ namespace Lignum {
     for (int i=1; i<(num_parts+1.0); i++)
       {
 	Point p1 = p + (Point)(length * (i/(num_parts+1.0)) * pv);
-	DumpSegment(s.getVoxelBox(p1), ts, num_parts);
+	DumpCfSegmentFoliage(s.getVoxelBox(p1), ts, num_parts);
       }
   }
   

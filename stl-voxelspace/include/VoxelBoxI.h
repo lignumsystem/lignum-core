@@ -9,18 +9,15 @@ namespace Lignum {
   //	Updates also the star value 
   //
   template <class TS,class BUD>
-    void DumpSegment(VoxelBox &b, const CfTreeSegment<TS,BUD>& ts,
+    void DumpCfSegmentFoliage(VoxelBox &b, const CfTreeSegment<TS,BUD>& ts,
 		     int num_parts)
     {	
       LGMdouble r_f = GetValue(ts, LGARf);
       LGMdouble lenght = GetValue(ts, LGAL) / num_parts;
       LGMdouble S_f = GetValue(GetTree(ts), LGPsf);
-      LGMdouble fmass = GetValue(ts, LGAWf) / num_parts;
+      LGMdouble fmass = GetValue(ts, LGAWf) / (double)num_parts;
 
-      if (S_f == 0)
-	S_f = 28;
-
-      LGMdouble farea = S_f * fmass;	
+      LGMdouble farea = GetValue(ts, LGAAf) / (double)num_parts;	
       b.addNeedleArea(farea);
       b.addNeedleMass(fmass);
 
@@ -46,8 +43,8 @@ namespace Lignum {
                      int num_parts)
     {   
       LGMdouble r = GetValue(ts, LGAR);
-      LGMdouble length = GetValue(ts, LGAL) / num_parts;
-      LGMdouble mass = GetValue(ts, LGAWood) / num_parts;
+      LGMdouble length = GetValue(ts, LGAL) / (double)num_parts;
+      LGMdouble mass = GetValue(ts, LGAWood) / (double)num_parts;
       LGMdouble area = 2.0*PI_VALUE*r*length;
       b.addWoodMass(mass);
       b.addWoodArea(area);

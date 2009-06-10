@@ -20,8 +20,8 @@ namespace Lignum {
   {
 	
     template <class TS,class BUD>
-    friend void DumpSegment(VoxelBox &b, const CfTreeSegment<TS,BUD>& ts, 
-			    int num_parts);
+    friend void DumpCfSegmentFoliage(VoxelBox &b, const CfTreeSegment<TS,BUD>& ts, 
+			    int num_parts );
 
     template <class TS,class BUD>
       friend void DumpSegmentWood(VoxelBox &b, const TreeSegment<TS,BUD>& ts,
