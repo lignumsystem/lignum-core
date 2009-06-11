@@ -90,6 +90,8 @@ namespace Lignum {
     void subtractStarSum(LGMdouble starmean){starSum -= starmean;}
     void addWoodMass(LGMdouble mass) {woodMass += mass; }
     void addWoodArea(LGMdouble area) {woodArea += area; }
+    void subtractWoodMass(LGMdouble mass) {woodMass -= mass; }
+    void subtractWoodArea(LGMdouble area) {woodArea -= area; }
     void addWeight(LGMdouble w){weight += w;}
     void subtractWeight(LGMdouble w){weight -= w;}
     void increaseNumberOfSegments(){number_of_segments++;}

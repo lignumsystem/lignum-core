@@ -22,6 +22,15 @@ public:
   }
 };
 
+/* class AccumulateAfTimesL{ */
+/*  public: */
+/*   double operator()(double al,VoxelMovement& vm){ */
+/*     al += vm.af * vm.l; */
+/*     return al; */
+/*   } */
+/* }; */
+
+
 
 template <class TS,class BUD>
 class AbsorbedRadiation{
@@ -197,7 +206,7 @@ public:
       //Lengths  of  the  light  beam  in different  boxes  and  the
       //extinction coeffient. First, the border stand extinction
       double tau = vs.getBorderStandExtinction(sp,d1);
-
+      tau = 1.0;         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
       if (tau > R_EPSILON){
 	//Do not bother  to traverse the voxels for  each sky sector
 	//if no light
@@ -302,8 +311,8 @@ public:
 	PositionVector d1(d[0],d[1],d[2]);
 	//Border stand extinction
 	double tau = vs.getBorderStandExtinction(p1,d1);
-
-	//Check if radiation
+      tau = 1.0;         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ 	//Check if radiation
 	if (tau > R_EPSILON){
 	  //Lengths of the light beam in boxes
 	  vs.getRoute(vm,p1,d1,K,false);

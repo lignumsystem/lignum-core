@@ -55,9 +55,6 @@ namespace Lignum {
     template <class TS,class BUD>
     friend void DumpCfTree(VoxelSpace &s, Tree<TS, BUD> &tree,int num_parts, bool wood);
 
-    template <class TS,class BUD>
-    friend void DumpCfTreeSegment(VoxelSpace &s, CfTreeSegment<TS, BUD> &ts,double num_parts);
-
     //Conifers
     template <class TS>
     friend void InsertCfVoxelObject(VoxelSpace& s, const TS& ts, 

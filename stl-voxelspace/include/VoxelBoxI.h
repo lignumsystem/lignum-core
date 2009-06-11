@@ -10,28 +10,33 @@ namespace Lignum {
   //
   template <class TS,class BUD>
     void DumpCfSegmentFoliage(VoxelBox &b, const CfTreeSegment<TS,BUD>& ts,
-		     int num_parts)
-    {	
-      LGMdouble r_f = GetValue(ts, LGARf);
-      LGMdouble lenght = GetValue(ts, LGAL) / num_parts;
-      LGMdouble S_f = GetValue(GetTree(ts), LGPsf);
-      LGMdouble fmass = GetValue(ts, LGAWf) / (double)num_parts;
-
-      LGMdouble farea = GetValue(ts, LGAAf) / (double)num_parts;	
-      b.addNeedleArea(farea);
-      b.addNeedleMass(fmass);
-
-      LGMdouble needle_rad = GetValue(ts, LGARf);
+			      int num_parts)
+  {
+    LGMdouble fmass = GetValue(ts, LGAWf) / (double)num_parts;
 	
-     
-      //Tarkistettu että for-looppi ajetaan tasan 8 kertaa (mika).
-      for (double phi=0; phi<PI_VALUE/2.0; phi+=PI_VALUE/16)
-	{		
-	  b.starSum += b.S(phi, S_f, fmass, needle_rad, lenght)/8.0;
-	}
+    LGMdouble r_f = GetValue(ts, LGARf);
+    LGMdouble lenght = GetValue(ts, LGAL) / num_parts;
 
-      b.number_of_segments++;
-    }
+    LGMdouble farea = GetValue(ts, LGAAf) / (double)num_parts;	
+    b.addNeedleArea(farea);
+    b.addNeedleMass(fmass);
+
+    LGMdouble needle_rad = GetValue(ts, LGARf);
+    LGMdouble S_f;
+    if(fmass > R_EPSILON)
+      S_f = farea/fmass;
+    else
+      S_f = 28.0;
+      
+    //Tarkistettu että for-looppi ajetaan tasan 8 kertaa (mika).
+    for (double phi=0; phi<PI_VALUE/2.0; phi+=PI_VALUE/16)
+      {		
+	b.starSum += b.S(phi, S_f, fmass, needle_rad, lenght)/8.0;
+      }
+
+    b.number_of_segments++;
+
+  }
   
   //  Woody part
   //

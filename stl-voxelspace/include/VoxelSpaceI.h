@@ -42,44 +42,30 @@ namespace Lignum {
     TreeCompartment<TS,BUD>* DumpCfTreeFunctor<TS,BUD>::
     operator ()(TreeCompartment<TS,BUD>* tc)const
     {
-      if (TS* cfts = dynamic_cast<TS*>(tc))
-	{
-	  DumpCfTreeSegment(*space,*cfts, num_parts);
-	  if(dumpWood)
-	    DumpSegmentWood(*space, *cfts, num_parts);
-	} 
+      if (TS* cfts = dynamic_cast<TS*>(tc))  {
+	bool foliage = false;
+	if(GetValue(*cfts,LGAWf) > R_EPSILON)
+	  foliage = true;
+	  
+	if(foliage || dumpWood) {
+	  Point p = GetPoint(*cfts);
+	  PositionVector pv = GetDirection(*cfts);
+	  LGMdouble length = GetValue(*cfts, LGAL);
+
+	  for (int i=1; i<(num_parts+1.0); i++)
+	    {
+	      Point p1 = p + (Point)(length * ((double)i/((double)num_parts+1.0)) * pv);
+	      VoxelBox& this_box = space->getVoxelBox(p1);
+	      if(foliage)
+		DumpCfSegmentFoliage(this_box, *cfts, num_parts);
+	      if(dumpWood) 
+		DumpSegmentWood(this_box, *cfts, num_parts);
+ 	    }
+
+	} //if(foliage || ...
+      }
       return tc;
     }
-
-  template <class TS,class BUD>
-  void DumpCfTreeSegment(VoxelSpace &s, CfTreeSegment<TS, BUD> &ts,double num_parts)
-  {
-    Point p = GetPoint(ts);
-    PositionVector pv = GetDirection(ts);
-    LGMdouble length = GetValue(ts, LGAL);
-
-    for (int i=1; i<(num_parts+1.0); i++)
-      {
-	Point p1 = p + (Point)(length * (i/(num_parts+1.0)) * pv);
-	DumpCfSegmentFoliage(s.getVoxelBox(p1), ts, num_parts);
-      }
-  }
-  
-  template <class TS,class BUD>
-  void DumpSegmentWood(VoxelSpace &s, TreeSegment<TS, BUD> &ts,double num_parts)
-  {
-    Point p = GetPoint(ts);
-    PositionVector pv = GetDirection(ts);
-    LGMdouble length = GetValue(ts, LGAL);
-
-    for (int i=1; i<(num_parts+1.0); i++)
-      {
-        Point p1 = p + (Point)(length * (i/(num_parts+1.0)) * pv);
-        DumpSegmentWood(s.getVoxelBox(p1), ts, num_parts);
-      }
-  }
-
-
 
 
   template <class TS,class BUD>
