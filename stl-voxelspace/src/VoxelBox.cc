@@ -221,6 +221,7 @@ LGMdouble VoxelBox::getAreaDensity()
 	if (tmp_tau == 0.0){//wood
 	  tau = 0.0;
 	  space->hitw = space->hitw + 1;
+	  //	  cout << "BLOCKED" << endl;
 	  break;//sector blocked
 	}
 	else if (tmp_tau == 1.0){//no hit
@@ -301,10 +302,13 @@ ostream& operator << (ostream& os, VoxelBox &b)
 {
   //os << "Qabs(Intercepted ratiation)" <<  "    Qin " << "     star " << "   needleArea " << "     leafArea " << endl;
 	
-  os << "Qabs: " <<  b.Q_abs << " Q_in: " << b.Q_in 
-     << " star: " << b.star << " needleArea: " << b.needleArea 
-     << " leafArea: " << b.leafArea << " woodMass: " << b.woodMass
-     << " woodArea: " << b.woodArea <<  " : ";
+  os << b.getCornerPoint().getX() << " " << b.getCornerPoint().getY() << " "
+     << b.getCornerPoint().getZ() << " " <<  (b.Q_abs > R_EPSILON ? b.Q_abs : 0.0) << " "
+     << (b.Q_in > R_EPSILON ? b.Q_in : 0.0) << " " << (b.star > R_EPSILON ?  b.star : 0.0)
+     << " " << (b.needleArea > R_EPSILON ? b.needleArea : 0.0)
+     << " " << (b.leafArea > R_EPSILON ? b.leafArea : 0.0)
+     << " " << (b.woodMass > R_EPSILON ? b.woodMass : 0.0)
+     << " " << (b.woodArea > R_EPSILON ? b.woodArea : 0.0);
 	
 	return os;
 }

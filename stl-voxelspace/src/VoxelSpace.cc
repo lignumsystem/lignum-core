@@ -439,18 +439,19 @@ namespace Lignum {
     //PositionVector n4(-1,0,0);//normal of the back face of the box
     //PositionVector n5(0,-1,0);//normal of the right face of the box
     //PositionVector n6(0,0,-1);//normal of the top face of the box
-    LGMdouble boxx0 = startx*Xbox;//corner coordinates (not indices) of the box 
-    LGMdouble boxy0 = starty*Ybox;//global   coordinates:
+//    LGMdouble boxx0 = startx*Xbox;//corner coordinates (not indices) of the box
+  //  LGMdouble boxy0 = starty*Ybox;//global   coordinates:
                                   //e.g. (3.7 div 2)*2 =1*2  =  2, 
                                   //(3.7  div 0.5)*0.5=7*0.5=3.5
-    LGMdouble boxz0 = startz*Zbox;
+//    LGMdouble boxz0 = startz*Zbox;
     //origo of the box in global (segment) coordinates, i.e. the point
     //on the front, left and bottom faces of the box
-    Point p1(boxx0,boxy0,boxz0);
+//    Point p1(boxx0,boxy0,boxz0);
+    Point p1 = voxboxes[startx][starty][startz].getCornerPoint();
     //opposite point  to origo  in global (segment)  coordinates, i.e.
     //the point on the back, right and top faces of the box
-    Point p2(boxx0+Xbox,boxy0+Ybox,boxz0+Zbox);
-
+//    Point p2(boxx0+Xbox,boxy0+Ybox,boxz0+Zbox);
+    Point p2(p1.getX()+Xbox,p1.getY()+Ybox,p1.getZ()+Zbox);
     LGMdouble xmove=R_HUGE;
     LGMdouble ymove=R_HUGE;
     LGMdouble zmove=R_HUGE;
@@ -1181,17 +1182,18 @@ namespace Lignum {
   {
     ofstream file(filename.c_str());
     file << "Vokselien koko " << Xbox << " " << Ybox << " " << Zbox << endl;
+    file << " Xn Yn Zn  x y z  Qabs  Q_in  star  needleArea leafArea woodMass woodArea" << endl;
 
     for(int i1=0; i1<Xn; i1++)
       for(int i2=0; i2<Yn; i2++)
 	for(int i3=0; i3<Zn; i3++)
 	  {
 	    if (all){
-	      file << "[" << i1 << "," << i2 << "," << i3 << "]   ";
+	      file << i1 << " " << i2 << " " << i3 << " ";
 	      file << voxboxes[i1][i2][i3] << endl;
 	    }
 	    else if (voxboxes[i1][i2][i3].getFoliageMass() > R_EPSILON){
-	      file << "[" << i1 << "," << i2 << "," << i3 << "]   ";
+	      file << i1 << " " << i2 << " " << i3 << " ";
 	      file << voxboxes[i1][i2][i3] << endl;
 	    }
 	  }
