@@ -416,7 +416,7 @@ namespace Lignum {
 					
   { 
     PositionVector d0(p0);
-    
+
     int x_jump = +1;
     int y_jump = +1;
     int z_jump = +1;
@@ -458,11 +458,11 @@ namespace Lignum {
 
     //Calculate  the distances  one has  to  move to  cross voxel  box
     //boundaries in x,y and z directions
-    if (dir.getX() > R_EPSILON)
+    if (fabs(dir.getX()) > R_EPSILON)
       xmove = fabs(Xbox / dir.getX());
-    if (dir.getY() > R_EPSILON)
+    if (fabs(dir.getY()) > R_EPSILON)
       ymove = fabs(Ybox / dir.getY());
-    if (dir.getZ() > R_EPSILON)
+    if (fabs(dir.getZ()) > R_EPSILON)
       zmove = fabs(Zbox / dir.getZ());
 
     //Initialize: calculate the distances light beam can travel before
