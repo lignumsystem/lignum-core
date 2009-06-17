@@ -1339,7 +1339,39 @@ namespace Lignum {
     return ret;
   }
 
-
+  LGMdouble VoxelSpace::getNeedleArea(void)
+  {
+    LGMdouble ret = 0.0;
+    for(int i1=0; i1<Xn; i1++)
+      for(int i2=0; i2<Yn; i2++)
+	for(int i3=0; i3<Zn; i3++)
+	  {
+	    ret += voxboxes[i1][i2][i3].getNeedleArea();
+	  }
+    return ret;
+  }
+  LGMdouble VoxelSpace::getLeafArea(void)
+  {
+    LGMdouble ret = 0.0;
+    for(int i1=0; i1<Xn; i1++)
+      for(int i2=0; i2<Yn; i2++)
+	for(int i3=0; i3<Zn; i3++)
+	  {
+	    ret += voxboxes[i1][i2][i3].getLeafArea();
+	  }
+    return ret;
+  }
+  LGMdouble VoxelSpace::getFoliageArea(void)
+  {
+    LGMdouble ret = 0.0;
+    for(int i1=0; i1<Xn; i1++)
+      for(int i2=0; i2<Yn; i2++)
+	for(int i3=0; i3<Zn; i3++)
+	  {
+	    ret += voxboxes[i1][i2][i3].getFoliageArea();
+	  }
+    return ret;
+  }
 
 
   int VoxelSpace::getNumberOfFilledBoxes()const

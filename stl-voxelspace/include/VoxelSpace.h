@@ -204,6 +204,9 @@ namespace Lignum {
     void writeStarMean();
     double getMeanFoliageAreaDensity();     
     void calculateMeanQabsQin();
+    LGMdouble getNeedleArea();      //Returns sum of needle area in voxelboxes
+    LGMdouble getLeafArea();        //Returns sum of leaf area in voxelboxes
+    LGMdouble getFoliageArea();     //Returns sum of needle + leaf area in voxelboxes
     LGMdouble Xbox, Ybox, Zbox;
     int Xn, Yn, Zn;
     TMatrix3D<VoxelBox> voxboxes;
