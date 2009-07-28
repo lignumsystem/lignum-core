@@ -38,8 +38,8 @@ lignum		      			      lignum
 lignum-presentations  			      lignum-presentations  	    
 LEngine		      -s JariP		      LEngine			    
 LPine                 -s JariP                LPine
-MottiFor          -s MikaL		      MottiFor		      	    
-MottiPas          -s MikaL		      MottiFor		      	    
+MottiPas          -s MikaL		      MottiPas		      	    
+MottiFor/SMA          -s MikaL		  SMA		      	    
 opengl		      -s MikaL		      opengl		      	    
 references	      			      references	      	    
 smvisual	      			      smvisual	      		    
