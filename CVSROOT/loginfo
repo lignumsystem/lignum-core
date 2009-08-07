@@ -49,8 +49,8 @@
 ^XCode mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi
 ^DataTree Mail -s %s  risto.sievanen@metla.fi jari.perttunen@metla.fi
 ^Cowberry Mail -s %s  risto.sievanen@metla.fi jari.perttunen@metla.fi
-^XMLTree Mail -s %s  risto.sievanen@metla.fi jari.perttunen@metla.fi jmjharti@cc.hut.fi
-^qt-workbench Mail  -s %s  risto.sievanen@metla.fi jari.perttunen@metla.fi jmjharti@cc.hut.fi
+^XMLTree Mail -s %s  risto.sievanen@metla.fi jari.perttunen@metla.fi
+^qt-workbench Mail  -s %s  risto.sievanen@metla.fi jari.perttunen@metla.fi
 ^DigitalTree Mail  -s %s  risto.sievanen@metla.fi jari.perttunen@metla.fi Pekka.J.Kaitaniemi@helsinki.fi
 ^DataRoot Mail -s %s risto.sievanen@metla.fi jari.perttunen@metla.fi tuomo.kalliokoski@metla.fi
 ^FracRoot Mail -s %s risto.sievanen@metla.fi jari.perttunen@metla.fi tuomo.kalliokoski@metla.fi
