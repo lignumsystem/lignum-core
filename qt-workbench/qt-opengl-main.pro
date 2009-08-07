@@ -14,5 +14,6 @@ INCLUDEPATH += . ../stl-lignum/include ../c++adt/include ../Firmament/include ..
 RESOURCES = resources.qrc
 CONFIG += qt warn_off no-exceptions
 QT += opengl xml 
+macx: RC_FILE = LignumWb.icns
 LIBS	+= -L../c++adt/lib -L../stl-lignum/lib -L../Firmament/lib -L../LEngine/lib -lL -lsky -lLGM  -lcxxadt
 
