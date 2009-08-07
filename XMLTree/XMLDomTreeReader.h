@@ -1277,6 +1277,12 @@ void XMLDomTreeReader<TS,BUD,S>::parseCfTreeSegmentAttributes(QDomNode& node, Cf
 	if(child.isNull() || !child.isElement())
 	  break;
       }
+      if(child.nodeName() == "LGAsf") {
+	SetValue(*ts, LGAsf, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() || !child.isElement())
+	  break;
+      }
 
       /*else if(child.nodeName() == "LGAomega") {
 	SetValue(*ts, LGAomega, child.toElement().text().toDouble());

@@ -571,6 +571,11 @@ void XMLDomTreeBuilder<TS,BUD,S>::addCfTreeSegmentAttributeNode(QDomElement& nod
   attrib.appendChild(m_doc.createTextNode(tmp));
   rootNode.appendChild(attrib);
 
+  attrib = m_doc.createElement("LGAsf");
+  tmp = QString("%1").arg(GetValue(*ts, LGAsf));
+  attrib.appendChild(m_doc.createTextNode(tmp));
+  rootNode.appendChild(attrib);
+
   node.setAttribute("ObjectIndex", object_index);
   object_index++;
   node.appendChild(rootNode);
