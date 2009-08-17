@@ -116,6 +116,7 @@ namespace cxxadt{
 	   << setw(11) << "   f(L)    "
 	   << endl;
     }
+    //cout << "MAX_ITER " << MAX_ITER << endl;
     while (i++ < MAX_ITER){
       mid = c + (dx *= 0.5);
       double fb = f(mid);
@@ -131,6 +132,7 @@ namespace cxxadt{
       if (fabs(dx) < acc || fb==0.0)return c;
     }
     //Root not found, throw exception
+    cout << MAX_ITER << endl;
     throw BisectionMaxIterationException(faorig,fborig,fb,aorig,borig,mid);
   }
 #undef MAX_ITER
