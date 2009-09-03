@@ -39,7 +39,10 @@ lignum-presentations  			      lignum-presentations
 LEngine		      -s JariP		      LEngine			    
 LPine                 -s JariP                LPine
 Motti              -s MikaL		      Motti		      	    
-MottiFor/SMA          -s MikaL		  MottiFor/SMA		      	    
+MottiFor/SMA          -s HannuS		  MottiFor/SMA		      	    
+MottiFor/Pikaika          -s HannuS		  MottiFor/Pikaia		      	    
+MottiFor/UNCON          -s HannuS		  MottiFor/UNCON		      	    
+MottiDLL              -s HannuS		  MottiDLL		      	    
 opengl		      -s MikaL		      opengl		      	    
 references	      			      references	      	    
 smvisual	      			      smvisual	      		    
