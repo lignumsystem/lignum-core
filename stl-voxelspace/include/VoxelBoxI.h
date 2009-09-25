@@ -12,14 +12,14 @@ namespace Lignum {
     void DumpCfSegmentFoliage(VoxelBox &b, const CfTreeSegment<TS,BUD>& ts,
 			      int num_parts)
   {
-    LGMdouble fmass = GetValue(ts, LGAWf) / (double)num_parts;
+    LGMdouble fmass = GetValue(ts, LGAWf);
 	
     LGMdouble r_f = GetValue(ts, LGARf);
-    LGMdouble lenght = GetValue(ts, LGAL) / num_parts;
+    LGMdouble lenght = GetValue(ts, LGAL);
 
-    LGMdouble farea = GetValue(ts, LGAAf) / (double)num_parts;	
-    b.addNeedleArea(farea);
-    b.addNeedleMass(fmass);
+    LGMdouble farea = GetValue(ts, LGAAf);	
+    b.addNeedleArea(farea/(double)num_parts);
+    b.addNeedleMass(fmass/(double)num_parts);
 
     LGMdouble needle_rad = GetValue(ts, LGARf);
     LGMdouble S_f;
@@ -28,14 +28,19 @@ namespace Lignum {
     else
       S_f = 28.0;
       
+    LGMdouble starS = 0.0;
     //Tarkistettu että for-looppi ajetaan tasan 8 kertaa (mika).
     for (double phi=0; phi<PI_VALUE/2.0; phi+=PI_VALUE/16)
       {		
-	b.starSum += b.S(phi, S_f, fmass, needle_rad, lenght)/8.0;
+	starS += b.S(phi, S_f, fmass, needle_rad, lenght);
       }
-
-    b.number_of_segments++;
-
+    starS /= 8.0;
+    b.addStarSum(starS * farea/(double)num_parts);  //Note: weighted by needle area 
+                                               //of the part of seg that is in question.
+    b.addWeight(farea/(double)num_parts);
+   
+    b.increaseNumberOfSegments();  //This is a bit problematic with num_parts
+    
   }
   
   //  Woody part

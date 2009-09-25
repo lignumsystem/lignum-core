@@ -11,7 +11,7 @@ namespace Lignum {
     needleArea(0.0),leafArea(0.0), Q_in(0.0), Q_abs(0.0), Qin_mean(0.0),Qabs_mean(0.0),star(0.0),
     starSum(0.0),weight(0.0),Q_inStdDiffuse(0.0),interceptedRadiation(0.0),
     needleMass(0.0),leafMass(0.0),number_of_segments(0),number_of_leaves(0),
-    big_leaf_normal(0,0,0)
+    big_leaf_normal(0,0,0),val_c(0.0),val_b(0.0),woodMass(0.0),woodArea(0.0)
   { 
     space = s;
   }
@@ -24,7 +24,7 @@ namespace Lignum {
     needleArea(0.0),leafArea(0.0),Q_in(0.0),Q_abs(0.0),Qin_mean(0.0),Qabs_mean(0.0),star(0.0),
     starSum(0.0),weight(0.0),Q_inStdDiffuse(0.0),interceptedRadiation(0.0),
     needleMass(0.0), leafMass(0.0),number_of_segments(0),number_of_leaves(0), 
-    big_leaf_normal(0,0,0)
+    big_leaf_normal(0,0,0),val_c(0.0),val_b(0.0),woodMass(0.0),woodArea(0.0)
   { 
     space = NULL; 
   }
@@ -98,8 +98,7 @@ void VoxelBox::updateValues()
 	    //weighted star mean
 	    star = getStarSum() / getWeight();
 	  else
-	    //the arithmetic mean of starSum
-	    star = getStarSum() / getNumSegments();
+	    star = 0.0;
 	}
         //It might be good enough to use star 0.14
         //star = 0.14;
