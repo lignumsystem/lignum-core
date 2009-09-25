@@ -852,6 +852,25 @@ namespace Lignum {
     return voxboxes[Xi][Yi][Zi]; 
   }
 
+
+  //
+  // Returns the indexes of box  where the global Point p belongs
+  //
+  vector<int> VoxelSpace::getBoxIndexes(const Point& p)
+  {
+    Point localP = p - corner1;
+    int Xi = static_cast<int>(localP.getX()/Xbox);
+    int Yi = static_cast<int>(localP.getY()/Ybox);
+    int Zi = static_cast<int>(localP.getZ()/Zbox);
+
+    vector<int> vec(3);
+    vec[0] = Xi;
+    vec[1] = Yi;
+    vec[2] = Zi;
+    return vec;
+  }
+
+
   //
   //	for Poplar: The function calculates the Qin and Qabs-values to
   //	every VoxelBox.

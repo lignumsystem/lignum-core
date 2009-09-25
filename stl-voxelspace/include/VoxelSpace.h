@@ -147,6 +147,7 @@ namespace Lignum {
     // the VoxelSpace
     LGMdouble getFoliageMass(void);
     VoxelBox& getVoxelBox(const Point& p);
+    vector<int> getBoxIndexes(const Point& p);
     vector<VoxelMovement>& getRoute(vector<VoxelMovement> &vec, int startx, 
 				    int starty, int startz, PositionVector dir)const;
     //The method  calculates the route through the  voxel space from
