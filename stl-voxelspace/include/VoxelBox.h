@@ -48,6 +48,7 @@ namespace Lignum {
     Point getCenterPoint()const;
     Point getCornerPoint()const;
     int getNumSegments()const{ return number_of_segments; }
+    LGMdouble getNumSegmentsReal()const{ return number_of_segments_real; }
     int getNumLeaves()const{ return number_of_leaves; }
     LGMdouble getAreaDensity();
     LGMdouble getQabs()const{ return Q_abs; }
@@ -96,6 +97,7 @@ namespace Lignum {
     void subtractWeight(LGMdouble w){weight -= w;}
     void increaseNumberOfSegments(){number_of_segments++;}
     void decreaseNumberOfSegments(){number_of_segments--;}
+    void addNumberOfSegmentsReal(LGMdouble inc){number_of_segments_real += inc;}
     void addOneLeaf() {number_of_leaves++;}
     LGMdouble S(LGMdouble phi, LGMdouble sf, LGMdouble Wf,
 		LGMdouble r, LGMdouble l);
@@ -113,6 +115,7 @@ namespace Lignum {
     void resetCfData(){
       star = 0; starSum = 0.0; needleArea = 0.0;needleMass = 0.0;
       number_of_segments = 0; val_c = 0.0; weight = 0.0;
+      number_of_segments_real = 0.0;
     }
     void resetHwData(){
       leafArea = 0.0;leafMass = 0.0;number_of_leaves = 0;
@@ -155,6 +158,9 @@ namespace Lignum {
 
     LGMdouble woodMass;
     LGMdouble woodArea;         //surface area of segments (woody part) in box
+    LGMdouble number_of_segments_real;   //this is the correct number of segments
+                                    //considering consiering dumping of segs in
+                                    // parts (num_parts)
   };
 
 } //namespace Lignum

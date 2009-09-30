@@ -40,7 +40,7 @@ namespace Lignum {
     b.addWeight(farea/(double)num_parts);
    
     b.increaseNumberOfSegments();  //This is a bit problematic with num_parts
-    
+    b.addNumberOfSegmentsReal(1.0/(double)num_parts); 
   }
   
   //  Woody part

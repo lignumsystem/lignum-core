@@ -15,7 +15,8 @@ namespace Lignum {
 
   struct VoxelMovement
   {
-    VoxelMovement():x(0),y(0),z(0),l(0.0),af(0.0),tau(0.0){}
+    VoxelMovement():x(0),y(0),z(0),l(0.0),af(0.0),tau(0.0),
+		    STAR_mean(0.0){}
     int x;//box indices
     int y;
     int z;
@@ -23,6 +24,8 @@ namespace Lignum {
     LGMdouble af;//Foliage area in the box
     LGMdouble tau;//the  extinction  caused  by  objects  in  the  box
 		  //(pairwise comparison)
+    LGMdouble STAR_mean;
+    LGMdouble n_segs_real;
   };
 
   //The value for 'kb'  (angle of incidence, c.f.star mean for coniferous)
@@ -140,6 +143,9 @@ namespace Lignum {
     int getNumberOfFilledBoxes()const;
     int getNumberOfTreeSegments()const;
     LGMdouble getBoxVolume(){ return Xbox*Ybox*Zbox; }
+    LGMdouble getXSideLength(){ return Xbox; }
+    LGMdouble getYSideLength(){ return Ybox; }
+    LGMdouble getZSideLength(){ return Zbox; }
     LGMdouble getQabs()const;
     LGMdouble getQin()const;
     pair<double,double> getMinMaxNeedleMass()const;

@@ -635,6 +635,10 @@ namespace Lignum {
 	vm.x = startx;
 	vm.y = starty;
 	vm.z = startz;
+
+	vm.STAR_mean = voxboxes[vm.x][vm.y][vm.z].getStar();
+	vm.n_segs_real = voxboxes[vm.x][vm.y][vm.z].getNumSegmentsReal();
+
 	//	cout << "index: " << vm.x << " " << vm.y << " " << vm.z << endl;  //!!!!!!!!!!!!!!!!!!!!!!
 	//	cout << "Next: " << next_x << " " << next_y << " " << next_z << endl;
        
