@@ -176,7 +176,7 @@ namespace Lignum {
     double getBorderStandExtinction(const Point& p0, const PositionVector& dir)const;
     //Given a point 'p' in global coordinate system, return a point in
     //VoxelSpace coordinate system
-    void updateStar();
+    void updateBoxValues();  //Runs updateValues() of voxelboxes (whatever it does)
     LGMdouble calculateTurbidLight(bool self_shading = true);
     //diffuse is to calcluate the real diffuse from standard 1200, structureFlag is used to indicate if it is the first time light calculation after structure update
     LGMdouble calculatePoplarLight(LGMdouble diffuse, LGMdouble structureFlag);

@@ -886,7 +886,7 @@ namespace Lignum {
     //produce the next number from sequence
     int bernoulli_sequence = 1;
     Bernoulli ber(bernoulli_seed);
-    updateStar();
+    updateBoxValues();
     for(int i1=0; i1<Xn; i1++)
       for(int i2=0; i2<Yn; i2++)
 	for(int i3=0; i3<Zn; i3++)
@@ -1035,7 +1035,7 @@ namespace Lignum {
   //    self_shading determines if the box shades itself or not   
   LGMdouble VoxelSpace::calculateTurbidLight(bool self_shading)
   {
-    updateStar();
+    updateBoxValues();
     for(int i1=0; i1<Xn; i1++)
       for(int i2=0; i2<Yn; i2++)
 	for(int i3=0; i3<Zn; i3++)
@@ -1107,7 +1107,7 @@ namespace Lignum {
     return 0;
   }
 
-  void VoxelSpace::updateStar()
+  void VoxelSpace::updateBoxValues()
   {
     for(int i1=0; i1<Xn; i1++){
       for(int i2=0; i2<Yn; i2++){
