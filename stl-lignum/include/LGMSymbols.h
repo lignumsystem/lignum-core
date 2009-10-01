@@ -55,8 +55,8 @@ namespace Lignum{
 
   enum LGMAD {LGAA,LGAAbase,LGAAf,LGAAfb,LGAAfc,LGAAh, LGAAhair,LGAAhwbase,LGAAs,
               LGAAs0,LGAADbh,LGAAhwDbh,LGAAsDbh,LGAAsbase,LGAage,LGAcbase,LGAcollision,
-              LGADbase, LGADbaseHw,LGADbh,LGADbhHw,LGAdof, LGAdR,
-	      LGAH,LGAHf,LGAHTop,LGAip,LGAiWf,LGAiWs,LGAL,LGALAIb,LGALAIc,
+              LGADbase, LGADbaseHw,LGADbh,LGADbhHw,LGADcb,LGAdof, LGAdR,
+	      LGAH,LGAHcb,LGAHf,LGAHTop,LGAip,LGAiWf,LGAiWs,LGAL,LGALAIb,LGALAIc,
               LGAM, LGAMaxD,LGAomega,LGAP,LGAQabs,LGAQin,LGAR,LGARf,
               LGARh, LGARhair,LGARTop,LGASa,LGAsf,LGAstarm,LGAstatus, 
               LGAstate,LGAtauL, LGAtype,LGAV,LGAVf,LGAVfrustum,LGAVh,
@@ -86,55 +86,57 @@ namespace Lignum{
   // 18 LGADbaseHw  Diameter of heart wood at base (tree)
   // 19 LGADbh    Diameter at breast height (tree)
   // 20 LGADbhHw    Diameter of heart wood at breast height (tree)
-  // 21 LGAdof    Degree of filling of leaf
-  // 22 LGAdR     Change in radius (=difference of two growth rings)
-  // 23 LGAH      Height of tree, also the Z coordinate at the segment base 
-  // 24 LGAHf     Height (thickness) of cylindrical layer of foliage 
-  //               in a segment, e.g. Hf = Lneedle*sin(needle_angle) 
-  // 25 LGAHTop   Max height from ground of the tree, segment, etc.
-  // 26 LGAip     Degree of interaction
-  // 27 LGAiWf    New foliage in a tree
-  // 28 LGAiWs    New sapwood in a tree
-  // 29 LGAL      Length of segment
-  // 30 LGALAIb   Leaf area index, broad leaved (see ForestDescriptor in stl-voxelspace)
-  // 31 LGALAIc   Leaf area index, conifers (see ForestDescriptor in stl-voxelspace)
-  // 32 LGAM      Rate of respiration (= amount of r. during the time step)
-  // 33 LGAMaxD   Maximum diameter of the segments 
+  // 21 LGADcb    Diameter at crown base
+  // 22 LGAdof    Degree of filling of leaf
+  // 23 LGAdR     Change in radius (=difference of two growth rings)
+  // 24 LGAH      Height of tree, also the Z coordinate at the segment base 
+  // 25 LGAHcb    Height of crown base
+  // 26 LGAHf     Height (thickness) of cylindrical layer of foliage 
+  //             in a segment, e.g. Hf = Lneedle*sin(needle_angle) 
+  // 27 LGAHTop   Max height from ground of the tree, segment, etc.
+  // 28 LGAip     Degree of interaction
+  // 29 LGAiWf    New foliage in a tree
+  // 30 LGAiWs    New sapwood in a tree
+  // 31 LGAL      Length of segment
+  // 32 LGALAIb   Leaf area index, broad leaved (see ForestDescriptor in stl-voxelspace)
+  // 33 LGALAIc   Leaf area index, conifers (see ForestDescriptor in stl-voxelspace)
+  // 34 LGAM      Rate of respiration (= amount of r. during the time step)
+  // 35 LGAMaxD   Maximum diameter of the segments 
   //               forking off and the segment above a 
   //               branching point. Needed to calculate LGAvi 
-  // 34 LGAomega  Gravelius order
-  // 35 LGAP      Photosynthetic rate (= amount of p. during time step)
-  // 36 LGAQabs   Amount of absorbed radiation
-  // 37 LGAQin    Incoming radiant flux
-  // 38 LGAR      Radius of segment (wood)
-  // 39 LGARf     Radius of segment cylinder including also foliage (conifers)
-  // 40 LGARh     Radius of heartwood
-  // 41 LGARhair  Radius including root hair 
-  // 42 LGARTop   Radius of segment at upper end
-  // 43 LGASa     Surface area of the segment cylinder: 2*PI*R*L
-  // 44 LGAsf     Specific leaf area (=leaf area/ leaf weight)
-  // 45 LGAstarm  Star mean for a confiferous segment
-  // 46 LGAstatus General counter to control e.g. bud burst.  
-  // 47 LGAstate  Bud state can be dead, alive, dormant etc., see LGMUnits.h
-  // 48 LGAtauL   Transmission coefficient of leaf (in direction of
+  // 36 LGAomega  Gravelius order
+  // 37 LGAP      Photosynthetic rate (= amount of p. during time step)
+  // 38 LGAQabs   Amount of absorbed radiation
+  // 39 LGAQin    Incoming radiant flux
+  // 40 LGAR      Radius of segment (wood)
+  // 41 LGARf     Radius of segment cylinder including also foliage (conifers)
+  // 42 LGARh     Radius of heartwood
+  // 43 LGARhair  Radius including root hair 
+  // 44 LGARTop   Radius of segment at upper end
+  // 45 LGASa     Surface area of the segment cylinder: 2*PI*R*L
+  // 46 LGAsf     Specific leaf area (=leaf area/ leaf weight)
+  // 47 LGAstarm  Star mean for a confiferous segment
+  // 48 LGAstatus General counter to control e.g. bud burst.  
+  // 49 LGAstate  Bud state can be dead, alive, dormant etc., see LGMUnits.h
+  // 50 LGAtauL   Transmission coefficient of leaf (in direction of
   //               the ray of light) 
-  // 49 LGAtype   General type specifier, e.g. Bud:dominant, apical,
+  // 51 LGAtype   General type specifier, e.g. Bud:dominant, apical,
   //               lateral etc. The numerical values and their symbols of
   //               different types given in LGMUnits.h
-  // 50 LGAV      Segment volume based on R and L
-  // 51 LGAVf     Volume occupied by the foliage in CfSegment 
-  // 52 LGAVfrustum Volume of the segment frustum when LGAR > LGARTop
-  // 53 LGAVh     Heartwood volume
-  // 54 LGAVhair  Root hair volume
-  // 55 LGAvi     Vigour index
-  // 56 LGAVs     Sapwood volume
-  // 57 LGAWf     Foliage mass (kg C)
-  // 58 LGAWf0    Initial foliage mass (kg C)
-  // 59 LGAWood   Mass of wood (=Wh+Ws)
-  // 60 LGAWs     Mass of sapwood (kg C)
-  // 61 LGAWh     Mass of heartwood (kg C)
-  // 62 LGAWhair  Mass of root hair (kg C)
-  // 63 LGAWstem  Mass in the main axis (Ws+Wh)
+  // 52 LGAV      Segment volume based on R and L
+  // 53 LGAVf     Volume occupied by the foliage in CfSegment 
+  // 54 LGAVfrustum Volume of the segment frustum when LGAR > LGARTop
+  // 55 LGAVh     Heartwood volume
+  // 56 LGAVhair  Root hair volume
+  // 57 LGAvi     Vigour index
+  // 58 LGAVs     Sapwood volume
+  // 59 LGAWf     Foliage mass (kg C)
+  // 60 LGAWf0    Initial foliage mass (kg C)
+  // 61 LGAWood   Mass of wood (=Wh+Ws)
+  // 62 LGAWs     Mass of sapwood (kg C)
+  // 63 LGAWh     Mass of heartwood (kg C)
+  // 64 LGAWhair  Mass of root hair (kg C)
+  // 65 LGAWstem  Mass in the main axis (Ws+Wh)
 
   // LGMAD = LIGNUM Attribute Double
 
