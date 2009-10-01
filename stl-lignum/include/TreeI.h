@@ -512,6 +512,26 @@ LGMdouble GetValue(const Tree<TS,BUD>& tree, const LGMAD name)
     wstem = accumulate(ls.begin(),ls.end(),wstem,CollectWoodMass<TS,BUD>());
     return wstem;
   }
+/*   else if (name == LGAHcb){ */
+/*     DCLData dcl; */
+/*     AccumulateDown(tree,dcl,AddBranchWf(),DiameterCrownBase<TS,BUD>()); */
+/*     return dcl.HCrownBase(); */
+/*   } */
+/*   else if (name == LGADcb){ */
+/*     DCLData dcl; */
+/*     AccumulateDown(tree,dcl,AddBranchWf(),DiameterCrownBase<TS,BUD>()); */
+/*     return dcl.DCrownBase(); */
+/*   } */
+/*   else if (name == LGAWf){ */
+/*     LGMdouble wf = 0.0; */
+/*     wf = Accumulate(tree, wf, CollectFoliageMass<TS,BUD>()); */
+/*     return wf; */
+/*   } */
+/*   else if (name == LGAAf){ */
+/*     LGMdouble af = 0.0; */
+/*     af = Accumulate(tree, af, CollectFoliageArea<TS,BUD>()); */
+/*     return af; */
+/*   } */
   else
     cout << "Tree GetValue unknown attribute: " << name << endl;
   return 0.0;
