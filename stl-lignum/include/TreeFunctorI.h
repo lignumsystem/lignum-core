@@ -94,6 +94,35 @@ namespace Lignum{
     }
 
 
+  //This functor searches longest distance to stem in four quadrants
+  //(they are in vector in counterclockwise order)
+
+  template <class TS,class BUD>
+    vector<LGMdouble>& CrownGroundArea<TS,BUD>::operator ()(vector<LGMdouble>& v,TreeCompartment<TS,BUD>* tc) const {
+    if (Bud<TS,BUD>* bd = dynamic_cast<Bud<TS,BUD>*>(tc)) {
+      Point pos = GetPoint(*bd) - stem_point;
+      LGMdouble x = pos.getX();
+      LGMdouble y = pos.getY();
+      LGMdouble r = sqrt(x*x + y*y);
+      int quadrant = 0;
+      if(x > 0.0)
+	if(y > 0.0)
+	  quadrant = 0;
+	else
+	  quadrant = 3;
+      else
+	if(y > 0.0)
+	  quadrant = 1;
+	else
+	  quadrant = 2;
+
+      if(r > v[quadrant])
+	v[quadrant] = r;
+
+    }
+
+    return v;
+  }
 
 
 

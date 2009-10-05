@@ -26,6 +26,7 @@ using namespace std;
 //   PrintTreeInformation2
 //   CountCompartments
 //   CountCompartmentsReverse
+//   CrownGroundArea
 //   SetGraveliusOrder
 //   DisplayStructure
 //   CheckCoordinates
@@ -283,6 +284,25 @@ namespace Lignum{
     class CountCompartmentsReverse{
       public:
       int& operator ()(int& id,TreeCompartment<TS,BUD>* ts)const;
+    };
+
+
+  //This functor searches shortest distance to stem in four quadrants
+  //(they are in vector in counterclockwise order)
+  //NOTE that the tree is given as argument in constructor
+  //NOTE that the initial values of vector elements must be = 0.0
+
+  template <class TS,class BUD=DefaultBud<TS> >
+    class CrownGroundArea{
+      public:
+      CrownGroundArea(Tree<TS,BUD>& tree) {
+	Axis<TS,BUD>& my_ax = GetAxis(tree);
+	stem_point = GetPoint(*GetFirstTreeCompartment(my_ax));
+      }
+
+      vector<LGMdouble>& operator ()(vector<LGMdouble>& ,TreeCompartment<TS,BUD>* tc)const;
+      private:
+      Point stem_point;
     };
 
 
