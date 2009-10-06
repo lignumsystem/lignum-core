@@ -197,9 +197,6 @@ namespace Lignum {
     }
  
     void dumpTrees();
-
-    void resetCfDataInBoxes();
-
  
     //Write voxel  boxes to file. If  'all' is true  write all boxes
     //else write only  boxes with foliage. By default  'all' is true
