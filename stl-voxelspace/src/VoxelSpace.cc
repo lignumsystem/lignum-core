@@ -76,6 +76,16 @@ namespace Lignum {
   }
 
 
+  void VoxelSpace::resetCfDataInBoxes() {
+    for (int i = 0; i < Xn; i++){
+      for (int j = 0; j < Yn; j++){
+	for (int k = 0; k < Zn; k++){
+	  voxboxes[i][j][k].resetCfData();
+	}
+      }
+    }
+  }
+
   void PrintVoxelObjectLocations(const VoxelSpace& s, const string& fname)
   {
     cout << "PrintVoxelObjectLocations" <<endl;
