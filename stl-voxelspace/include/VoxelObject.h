@@ -1,4 +1,4 @@
-#ifndef VOXELOBJEXT_H
+#ifndef VOXELOBJECT_H
 #define VOXELOBJECT_H
 #include <vector>
 #include <Point.h>
