@@ -90,6 +90,10 @@ namespace Lignum {
     friend LGMdouble GetValue(const VoxelSpace& s,VAD LGAkb);
     friend void PrintVoxelObjectLocations(const VoxelSpace& s,const 
 					  string& fname);
+
+    friend void PrintBoxCfData(const VoxelSpace& s,const 
+			       string& fname, bool empty);
+
   public:
 
     VoxelSpace(); 
@@ -142,7 +146,7 @@ namespace Lignum {
     int getNumberOfBoxes()const{ return Xn*Yn*Zn; }
     int getNumberOfFilledBoxes()const;
     int getNumberOfTreeSegments()const;
-    LGMdouble getBoxVolume(){ return Xbox*Ybox*Zbox; }
+    LGMdouble getBoxVolume()const{ return Xbox*Ybox*Zbox; }
     LGMdouble getXSideLength(){ return Xbox; }
     LGMdouble getYSideLength(){ return Ybox; }
     LGMdouble getZSideLength(){ return Zbox; }

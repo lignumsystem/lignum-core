@@ -91,6 +91,29 @@ namespace Lignum {
     }
   }
 
+  void PrintBoxCfData(const VoxelSpace& s, const string& fname, bool empty = false)
+  {
+    cout << "PrintBoxCfData" <<endl;
+    ofstream f(fname.c_str());
+    f << "i j k Center_x y z Af Wf BoxVol STAR_mean No_segs" << endl;
+    for (int i = 0; i < s.Xn; i++){
+      for (int j = 0; j < s.Yn; j++){
+	for (int k = 0; k < s.Zn; k++){
+	  if(s.voxboxes[i][j][k].getNumSegmentsReal() > 0.0 || empty) {
+	  Point c = s.voxboxes[i][j][k].getCenterPoint();
+	  LGMdouble b_vol = s.getBoxVolume();
+	  f << i << " " << j << " " << k << " " << c.getX() << " " << c.getY()
+	    << " " << c.getZ() << " "  << s.voxboxes[i][j][k].getNeedleArea() << " "
+	    << s.voxboxes[i][j][k].getNeedleMass() << " " << b_vol << " "
+	    <<  s.voxboxes[i][j][k].getStar() << " " << s.voxboxes[i][j][k].getNumSegmentsReal()
+	    << endl;
+	  }
+	}
+      }
+    }
+  }
+
+
  //Change number (=input) of VoxelBoxes in x, y, and z-directions. The whole
  //VoxelSpace, that is, the big box from corner1 to corner2 retains
  //its size => size of VoxelBox changes.
