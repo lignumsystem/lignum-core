@@ -18,14 +18,33 @@
 //       Hbot z-coordinate of bottom of voxel space, m
 //       LAIc LAI of conifers (total needle area)
 //       LAIb LAI of broadleaves (one-sided leaf area)
+//       k_conifer Extinction coefficient of conifer foliage area (total)
+//       k_decidious Extinction coefficient of deciduous foliage area (one-sided)
 
 //NOTE: It is assumed that direction is normalized, i.e. ||direction|| = 1
 
 //Output: proportion  left of radiant intensity  after passing through
 //surrounding forest (i.e. no shading = 1)
 
+
+extern int lage;
+
+
+//This is for some applications that that call NearbyShading withoout values for
+//extincion coefficients (and assume these values for them)
 double NearbyShading(const Point& out, const PositionVector& direction, double Htop,
 		     double Hbot, double LAIc, double LAIb) {
+
+  double k_conifer = 0.14;
+  double k_deciduous = 0.5;
+
+  double r_turn = NearbyShading(out, direction, Htop, Hbot, LAIc, LAIb, k_conifer, k_deciduous);
+  return r_turn;
+}
+
+
+double NearbyShading(const Point& out, const PositionVector& direction, double Htop,
+		     double Hbot, double LAIc, double LAIb, double k_conifer, double k_deciduous) {
 
   if(out.getZ() >= Htop - R_EPSILON)
     return 1.0;    //no shading if out from ceiling
@@ -50,12 +69,15 @@ double NearbyShading(const Point& out, const PositionVector& direction, double H
   double dens_c  = LAIc/(Htop-Hbot);
   double dens_b  = LAIb/(Htop-Hbot);
 
-  double optTh = (0.14*dens_c + 0.5*dens_b)*distance;
+  double optTh = (k_conifer*dens_c + k_deciduous*dens_b)*distance;
   double ext;
   if(optTh < R_HUGE)
     ext = exp(-optTh);
   else
     ext = 0.0;
 
-  return ext;
+  // if(lage > 18)
+  // return 1.0;
+  //else 
+      return ext;
 }
