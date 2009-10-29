@@ -91,8 +91,8 @@ inline void LstringIterator::operator++(int)
 
   assert
     (
-    (eForward == _lstring._direction) && (_currentPos<=_lstring._lastByte) ||
-    (eBackward == _lstring._direction) && (_currentPos<=_lstring._size)
+     ((eForward == _lstring._direction) && (_currentPos<=_lstring._lastByte)) ||
+     ((eBackward == _lstring._direction) && (_currentPos<=_lstring._size))
     );
 
   if (!AtEnd())
@@ -104,13 +104,13 @@ inline void LstringIterator::Dump()
   while (!AtEnd())
   {
     ModuleIdType mid = GetModuleId();
-    if (GetModuleName(mid) == "F")
+    if (string(GetModuleName(mid)) == string("F"))
       cout << GetModuleName(mid) << ' ';
-    if (GetModuleName(mid) == "B")
+    if (string(GetModuleName(mid)) == string("B"))
       cout << GetModuleName(mid) << ' ';
-    if (GetModuleName(mid) == "SB")
+    if (string(GetModuleName(mid)) == string("SB"))
       cout << GetModuleName(mid) << ' ';
-    if (GetModuleName(mid) == "EB")
+    if (string(GetModuleName(mid)) == string("EB"))
       cout << GetModuleName(mid) << ' ';
     (*this)++;
   }
@@ -153,8 +153,8 @@ inline void LstringIterator::operator--(int)
     _currentPos -= Size + sizeof(ModuleIdType);
   assert
     (
-    (eForward == _lstring._direction) && (_currentPos>=0) ||
-    (eBackward == _lstring._direction) && (_currentPos>=_lstring._lastByte)
+     ((eForward == _lstring._direction) && (_currentPos>=0)) ||
+     ((eBackward == _lstring._direction) && (_currentPos>=_lstring._lastByte))
     );
 }
 
