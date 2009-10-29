@@ -3,10 +3,10 @@
 
 
 
-#include <string>
+#include <cstring>
 #include <DList.h>
 #include <fstream>
-
+#include <cstdlib>
 
 
 using namespace std;

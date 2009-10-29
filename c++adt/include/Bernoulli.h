@@ -4,6 +4,7 @@
 #include <Uniform.h>
 #include <numeric>
 #include <cmath>
+#include <cstdlib>
 using namespace std;
 namespace cxxadt{
   //Implement Bernoulli distribution: Pr(X=1) = 1 - Pr(X=0) = 1 - q = p
