@@ -62,6 +62,7 @@ Firmament::Firmament(int no_incl, int no_azim)
   azimDivisions.resize(num_of_incl);
 
   int i, im;
+  i=im=0;
 
   for(i = 0; i < num_of_incl; i++)
     inclinations[i] = (double)i * deltaIncl + halfDeltaIncl;
@@ -211,7 +212,7 @@ void Firmament::resize(int no_incl, int no_azim, double diffuse_rad_plane)
   azimDivisions.resize(num_of_incl);
 
   int i, im;
-
+  i=im=0; 
   for(i = 0; i < num_of_incl; i++)
     inclinations[i] = (double)i * deltaIncl + halfDeltaIncl;
 
