@@ -2,7 +2,6 @@
 #define XMLDOMTREEREADER_H
 
 #include <XMLTree.h>
-
 #include <list>
 #include <QDomDocument>
 #include <Lignum.h>
@@ -751,7 +750,7 @@ BroadLeaf<Triangle>* XMLDomTreeReader<TS,BUD,S>::parseTriangleBroadLeaf(QDomNode
 	      z = tmp.section(' ', 2, 2).toDouble();
 	      triangleAC = Point(x, y, z);
 	      leaf = new BroadLeaf<Triangle>(sf, tauL, dof, number_of_sectors, Petiole(pstart, pend),
-				      normal, Triangle(triangleLC, triangleRC, triangleAC));
+	   			             Triangle(triangleLC, triangleRC, triangleAC));
 	      parseTriangleBroadLeafAttributes(child, leaf);
 	      child = child.nextSibling();
 	      break;
