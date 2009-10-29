@@ -327,9 +327,10 @@ public:
       SetValue(*bp,LGAomega,(double)g_o);
     else if(BUD* bd = dynamic_cast<BUD*>(tc)) 
       SetValue(*bd,LGAomega,(double)g_o);
-    else
+    else{
+      //Empty statement
       ;
-    
+    }
     return g_o;
   }
 };
