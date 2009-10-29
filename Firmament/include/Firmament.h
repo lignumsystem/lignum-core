@@ -10,6 +10,7 @@
 #include <ParametricCurve.h>
 #include <LGMUnits.h>
 #include <PositionVector.h>
+#include <algorithm>
 
 namespace sky{
 using namespace Lignum;
