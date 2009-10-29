@@ -1,12 +1,13 @@
 #include "stdafx.h"
-#include <math.h>
-#include <stdlib.h>
+#include <cmath>
+#include <cstdlib>
 
 #include <VoxelBox.h>
 #include <VoxelSpace.h>
 #include <Bernoulli.h>
 
 #include <fstream>
+#include <iterator>
 #include <iomanip>
 
 extern float cam_x;  //camera position
