@@ -14,7 +14,7 @@ namespace Lignum {
   {
     LGMdouble fmass = GetValue(ts, LGAWf);
 	
-    LGMdouble r_f = GetValue(ts, LGARf);
+    //LGMdouble r_f = GetValue(ts, LGARf);
     LGMdouble lenght = GetValue(ts, LGAL);
 
     LGMdouble farea = GetValue(ts, LGAAf);	
