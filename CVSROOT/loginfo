@@ -40,7 +40,7 @@
 ^LPine Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi 
 ^Lig-Crobas Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi
 ^Pine Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi
-^OptimiTuotto Mail -s %s jari.perttunen@metla.fi tapio.linkosalo@metla.fi annikki.makela@helsinki.fi olli.tahvonen@metla.fi sami.niinimaki@metla.fi
+^OptimiTuotto Mail -s %s jari.perttunen@metla.fi tapio.linkosalo@metla.fi annikki.makela@helsinki.fi olli.tahvonen@metla.fi minna.pulkkinen@helsinki.fi sami.niinimaki@metla.fi
 ^ctree Mail -s %s jari.perttunen@metla.fi theikura@cc.hut.fi
 ^SugarMaple Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi sdelagrange@iqaff.qc.ca  
 ^YellowBirch Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi   
