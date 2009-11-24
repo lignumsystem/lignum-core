@@ -36,7 +36,7 @@ bool XMLDomTreeWriter<TS,BUD>::writeTreeToXML(Tree<TS, BUD>& tree, const string&
   QFile file(fname);
   if(!file.open(QIODevice::WriteOnly)){
     cerr << "XMLDomTreeWriter::writeTreeToXML error in opening file" << endl;
-    cerr << "Returning false, no output file"
+    cerr << "Returning false, no output for file " << fileName <<endl;
     return false;
   }
   
