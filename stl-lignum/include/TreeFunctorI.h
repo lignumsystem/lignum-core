@@ -499,31 +499,36 @@ namespace Lignum{
   //(HwTreeSegment) segments.
 
   template <class TS,class BUD>
-  BoundingBox&
-  FindCfBoundingBox<TS,BUD>::operator ()(BoundingBox& b_box,
-					 TreeCompartment<TS,BUD>* tc)const
-  {
-    if(TS* ts = dynamic_cast<TS*>(tc)){
-      Point base = GetPoint(*ts);
-      Point top = GetEndPoint(*ts);
-      double rSh = GetValue(*ts,LGARf); //max dist of needle tip from woody part	
-      if(b_box.getMin().getX() > base.getX()-rSh) b_box.setMinX(base.getX()-rSh);
-      if(b_box.getMin().getY() > base.getY()-rSh) b_box.setMinY(base.getY()-rSh);
-      if(b_box.getMin().getZ() > base.getZ()-rSh) b_box.setMinZ(base.getZ()-rSh);
-      if(b_box.getMin().getX() > top.getX()-rSh) b_box.setMinX(top.getX()-rSh);
-      if(b_box.getMin().getY() > top.getY()-rSh) b_box.setMinY(top.getY()-rSh);
-      if(b_box.getMin().getZ() > top.getZ()-rSh) b_box.setMinZ(top.getZ()-rSh);
-      if(b_box.getMax().getX() < base.getX()+rSh) b_box.setMaxX(base.getX()+rSh);
-      if(b_box.getMax().getY() < base.getY()+rSh) b_box.setMaxY(base.getY()+rSh);
-      if(b_box.getMax().getZ() < base.getZ()+rSh) b_box.setMaxZ(base.getZ()+rSh);
-      if(b_box.getMax().getX() < top.getX()+rSh) b_box.setMaxX(top.getX()+rSh);
-      if(b_box.getMax().getY() < top.getY()+rSh) b_box.setMaxY(top.getY()+rSh);
-      if(b_box.getMax().getZ() < top.getZ()+rSh) b_box.setMaxZ(top.getZ()+rSh);
-    }
-
-    return b_box;
+    BoundingBox&
+    FindCfBoundingBox<TS,BUD>::operator ()(BoundingBox& b_box,
+					   TreeCompartment<TS,BUD>* tc)const
+    {
+      if(TS* ts = dynamic_cast<TS*>(tc)){
+	if(foliage) {
+	  if(GetValue(*ts, LGAWf) < R_EPSILON)
+	    return b_box;
+	}
       
-  }
+	Point base = GetPoint(*ts);
+	Point top = GetEndPoint(*ts);
+	double rSh = GetValue(*ts,LGARf); //max dist of needle tip from woody part	
+	if(b_box.getMin().getX() > base.getX()-rSh) b_box.setMinX(base.getX()-rSh);
+	if(b_box.getMin().getY() > base.getY()-rSh) b_box.setMinY(base.getY()-rSh);
+	if(b_box.getMin().getZ() > base.getZ()-rSh) b_box.setMinZ(base.getZ()-rSh);
+	if(b_box.getMin().getX() > top.getX()-rSh) b_box.setMinX(top.getX()-rSh);
+	if(b_box.getMin().getY() > top.getY()-rSh) b_box.setMinY(top.getY()-rSh);
+	if(b_box.getMin().getZ() > top.getZ()-rSh) b_box.setMinZ(top.getZ()-rSh);
+	if(b_box.getMax().getX() < base.getX()+rSh) b_box.setMaxX(base.getX()+rSh);
+	if(b_box.getMax().getY() < base.getY()+rSh) b_box.setMaxY(base.getY()+rSh);
+	if(b_box.getMax().getZ() < base.getZ()+rSh) b_box.setMaxZ(base.getZ()+rSh);
+	if(b_box.getMax().getX() < top.getX()+rSh) b_box.setMaxX(top.getX()+rSh);
+	if(b_box.getMax().getY() < top.getY()+rSh) b_box.setMaxY(top.getY()+rSh);
+	if(b_box.getMax().getZ() < top.getZ()+rSh) b_box.setMaxZ(top.getZ()+rSh);
+      }
+
+      return b_box;
+      
+    }
 
   template <class TS,class BUD,class SHAPE>
   BoundingBox&

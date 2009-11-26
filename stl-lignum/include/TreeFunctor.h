@@ -423,8 +423,12 @@ public:
   template <class TS,class BUD>
     class FindCfBoundingBox{
     public:
+    FindCfBoundingBox() : foliage(false) {}
+    FindCfBoundingBox(bool fol) : foliage(fol) {}
     BoundingBox& operator ()(BoundingBox& b_box,
 			     TreeCompartment<TS,BUD>* tc)const;
+  private:
+    bool foliage;
   };
 
   template<class TS, class BUD, class SHAPE>
