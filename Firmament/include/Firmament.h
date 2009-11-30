@@ -160,6 +160,12 @@ using namespace cxxadt;
 
 23. PositionVector getDirection(int n)const
     Returns direction to sector n
+
+24. void outInclinations()
+    Prints out inclinations of inclination classes
+
+25. vector<pair<double,double> > getIncAz()
+    Returnn inclinations and azimuths of all sectors
 =====================================================================================
 */
 
@@ -222,6 +228,29 @@ public:
   int getNoOfAzimuths() { return num_of_azim; }
   int getNoOfInclinations() { return num_of_incl; }
   PositionVector getDirection(int n)const;
+
+  void outInclinations() {
+    int line = 1;
+    for(int i = 0; i < num_of_incl; i++) {
+      cout << inclinations[i] << " ";
+      line++;
+      if(line == 10) {
+	cout << endl;
+	line = 1;
+      }
+    }
+    if(line != 1)
+      cout << endl;
+  }
+
+  vector<pair<double,double> > getIncAz() {
+    vector<pair<double,double> > result(numOfSectors);
+    for(int i = 0; i < numOfSectors; i++) {
+      pair<double,double> p(getInclination(i),getAzimuth(i));
+      result[i] = p;
+    }
+    return result;
+  }
 
 protected:
   int num_of_incl;

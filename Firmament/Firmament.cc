@@ -110,14 +110,17 @@ Firmament::Firmament(int no_incl, int no_azim)
     diffuseRad.resize(num_of_incl, im);
 
     //Update azimuths and radiant intensity of sectors
-    for(i = 0; i < num_of_incl; i++)
+    //shift creates variation in startin points of azimuths
+    for(i = 0; i < num_of_incl; i++) {
+      double shift = ((double)i)/3.0 -(double)(i/3);
       for(j = 0; j < azimDivisions[i]; j++) {
-	zoneAzims[i][j] = ((double)j + 0.5) * 2.0 * PI_VALUE/(double)azimDivisions[i];
+	zoneAzims[i][j] = ((double)j + shift) * 2.0 * PI_VALUE/(double)azimDivisions[i];
 	diffuseRad[i][j] = diffuseRadPlane * 
 	                   (6.0 * (1.0 + 2.0*sin(inclinations[i]))/7.0) *
 			  (sin(inclinations[i]+halfDeltaIncl)-
 			 sin(inclinations[i]-halfDeltaIncl))/(double)azimDivisions[i];
       }
+    }
 
     //Diffuse radiation from zenith sector
     diffuseRadZenith = diffuseRadPlane *(6.0 * (1.0 + 2.0)/7.0) *
@@ -259,15 +262,17 @@ void Firmament::resize(int no_incl, int no_azim, double diffuse_rad_plane)
     diffuseRad.resize(num_of_incl, im);
 
     //Update azimuths and radiant intensity of sectors
-    for(i = 0; i < num_of_incl; i++)
+    //shift creates variation in startin points of azimuths
+    for(i = 0; i < num_of_incl; i++) {
       for(j = 0; j < azimDivisions[i]; j++) {
-	zoneAzims[i][j] = ((double)j + 0.5) * 2.0 * PI_VALUE/(double)azimDivisions[i];
+	double shift = ((double)i)/3.0 -(double)(i/3);
+	zoneAzims[i][j] = ((double)j + shift) * 2.0 * PI_VALUE/(double)azimDivisions[i];
 	diffuseRad[i][j] = diffuseRadPlane * 
-	                   (6.0 * (1.0 + 2.0*sin(inclinations[i]))/7.0) *
-			  (sin(inclinations[i]+halfDeltaIncl)-
-			 sin(inclinations[i]-halfDeltaIncl))/(double)azimDivisions[i];
+	  (6.0 * (1.0 + 2.0*sin(inclinations[i]))/7.0) *
+	  (sin(inclinations[i]+halfDeltaIncl)-
+	   sin(inclinations[i]-halfDeltaIncl))/(double)azimDivisions[i];
       }
-
+    }
     //Diffuse radiation from zenith sector
     diffuseRadZenith = diffuseRadPlane *(6.0 * (1.0 + 2.0)/7.0) *
 			  (1 - cos(thetZ));
