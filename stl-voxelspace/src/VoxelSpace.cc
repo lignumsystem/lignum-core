@@ -36,9 +36,9 @@ namespace Lignum {
   VoxelSpace::VoxelSpace(Point c1, Point c2, int xn, int yn, int zn, Firmament &f)
     :Xn(xn),Yn(yn),Zn(zn),voxboxes(xn,yn,zn),corner1(c1),corner2(c2),k_b(0.50)
   {
-    Xbox = (corner2-corner1).getX()/static_cast<int>(Xn);
-    Ybox = (corner2-corner1).getY()/static_cast<int>(Yn);
-    Zbox = (corner2-corner1).getZ()/static_cast<int>(Zn);
+    Xbox = (corner2-corner1).getX()/static_cast<double>(Xn);
+    Ybox = (corner2-corner1).getY()/static_cast<double>(Yn);
+    Zbox = (corner2-corner1).getZ()/static_cast<double>(Zn);
     for(int i1=0; i1<Xn; i1++)
       for(int i2=0; i2<Yn; i2++)
 	for(int i3=0; i3<Zn; i3++)
@@ -1502,6 +1502,33 @@ namespace Lignum {
     else
       return 0.0;
   }
+
+
+  //Evaluate needle area of every (horizontal) layer of voxelboxes and return them in a vector
+  //specifying height of the layer center and needle area index in that layer.
+  //First element of vector = lowest layer.
+  //Unit = leaf area / ground area (thus unitless, LAI = sum of vector)
+  //Hmax and Hmin give the top and bottom of the space and n is no. of boxes in z direction
+  void VoxelSpace::evaluateVerticalNeedleAreaDensity(LGMdouble& Hmax, LGMdouble& Hmin, 
+						     int& n, vector<pair<LGMdouble,LGMdouble> >& NAD){
+
+
+    LGMdouble area = (double)Xn * (double)Yn * Xbox * Ybox;
+    Hmax = corner2.getZ();
+    Hmin = corner1.getZ();
+    n = Zn;
+
+    for(int i1=Zn-1; i1>=0; i1--){
+      LGMdouble na_sum = 0.0;
+      for(int i2=0; i2<Xn; i2++)
+	for(int i3=0; i3<Yn; i3++)
+	  na_sum += voxboxes[i2][i3][i1].getNeedleArea();
+
+      na_sum /= area;
+      NAD.push_back(pair<LGMdouble,LGMdouble>(voxboxes[0][0][i1].getCenterPoint().getZ(),na_sum));
+
+    }
+}
 
   
 

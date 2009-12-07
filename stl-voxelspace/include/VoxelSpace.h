@@ -95,6 +95,7 @@ namespace Lignum {
     friend void PrintBoxCfData(const VoxelSpace& s,const 
 			       string& fname, bool empty);
 
+    
   public:
 
     VoxelSpace(); 
@@ -219,6 +220,11 @@ namespace Lignum {
     LGMdouble getNeedleArea();      //Returns sum of needle area in voxelboxes
     LGMdouble getLeafArea();        //Returns sum of leaf area in voxelboxes
     LGMdouble getFoliageArea();     //Returns sum of needle + leaf area in voxelboxes
+
+    void evaluateVerticalNeedleAreaDensity(LGMdouble& Hmax, LGMdouble& Hmin, int& n,
+					   vector<pair<LGMdouble,LGMdouble> >& NAD);
+
+
     LGMdouble Xbox, Ybox, Zbox;
     int Xn, Yn, Zn;
     TMatrix3D<VoxelBox> voxboxes;
