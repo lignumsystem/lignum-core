@@ -71,6 +71,7 @@ namespace Lignum {
     //Return the extinction of the objects in the box
     LGMdouble getExtinction(const Point& p1, const PositionVector& d, 
 			    const ParametricCurve& K)const;
+    PositionVector getMeanDirection()const {return mean_direction;}
 
     void setArea( M2 needleA, M2 leafA);
     void setVoxelSpace(VoxelSpace *s, Point c);
@@ -99,6 +100,8 @@ namespace Lignum {
     void decreaseNumberOfSegments(){number_of_segments--;}
     void addNumberOfSegmentsReal(LGMdouble inc){number_of_segments_real += inc;}
     void addOneLeaf() {number_of_leaves++;}
+    void addVector(PositionVector v) {mean_direction = PositionVector(mean_direction+v);}
+    
     LGMdouble S(LGMdouble phi, LGMdouble sf, LGMdouble Wf,
 		LGMdouble r, LGMdouble l);
     //reset  the  box to  0,  clear  the  vector of  photosynthesising
@@ -115,7 +118,7 @@ namespace Lignum {
     void resetCfData(){
       star = 0; starSum = 0.0; needleArea = 0.0;needleMass = 0.0;
       number_of_segments = 0; val_c = 0.0; weight = 0.0;
-      number_of_segments_real = 0.0;
+      number_of_segments_real = 0.0; mean_direction = PositionVector(0.0,0.0,0.0);
     }
     void resetHwData(){
       leafArea = 0.0;leafMass = 0.0;number_of_leaves = 0;
@@ -161,6 +164,8 @@ namespace Lignum {
     LGMdouble number_of_segments_real;   //this is the correct number of segments
                                     //considering consiering dumping of segs in
                                     // parts (num_parts)
+ 
+    PositionVector mean_direction;
   };
 
 } //namespace Lignum

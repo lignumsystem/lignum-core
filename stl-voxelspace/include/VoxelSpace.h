@@ -27,6 +27,7 @@ namespace Lignum {
 		  //(pairwise comparison)
     LGMdouble STAR_mean;
     LGMdouble n_segs_real;
+    PositionVector  mean_direction;
   };
 
   //The value for 'kb'  (angle of incidence, c.f.star mean for coniferous)
@@ -215,6 +216,8 @@ namespace Lignum {
 				      const string& sep=" ");
     void writeVoxelSpaceContents();
     void writeStarMean();
+    void writeMeanDirection();
+
     double getMeanFoliageAreaDensity();     
     void calculateMeanQabsQin();
     LGMdouble getNeedleArea();      //Returns sum of needle area in voxelboxes

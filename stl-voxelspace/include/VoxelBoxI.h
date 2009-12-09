@@ -41,6 +41,8 @@ namespace Lignum {
    
     b.increaseNumberOfSegments();  //This is a bit problematic with num_parts
     b.addNumberOfSegmentsReal(1.0/(double)num_parts); 
+
+    b.addVector((farea/(double)num_parts)*GetDirection(ts));
   }
   
   //  Woody part

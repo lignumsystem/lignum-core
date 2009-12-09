@@ -662,6 +662,7 @@ namespace Lignum {
 
 	vm.STAR_mean = voxboxes[vm.x][vm.y][vm.z].getStar();
 	vm.n_segs_real = voxboxes[vm.x][vm.y][vm.z].getNumSegmentsReal();
+	vm.mean_direction = voxboxes[vm.x][vm.y][vm.z].getMeanDirection();
 
 	//	cout << "index: " << vm.x << " " << vm.y << " " << vm.z << endl;  //!!!!!!!!!!!!!!!!!!!!!!
 	//	cout << "Next: " << next_x << " " << next_y << " " << next_z << endl;
@@ -1477,6 +1478,19 @@ namespace Lignum {
     }
   }
 
+  void VoxelSpace::writeMeanDirection()
+  {
+    for(int i1=0; i1<Xn; i1++){
+      for(int i2=0; i2<Yn; i2++){
+	for(int i3=0; i3<Zn; i3++){
+	  if(voxboxes[i1][i2][i3].getNumSegments() > 0){
+	    cout << "d " << voxboxes[i1][i2][i3].getMeanDirection()
+		 << " p " <<  voxboxes[i1][i2][i3].getCornerPoint();
+	  }
+	}
+      }
+    }
+  }
 
 
 
