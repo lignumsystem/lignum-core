@@ -112,6 +112,7 @@ namespace Lignum {
 	}
       }
     }
+    f.close();
   }
 
 
