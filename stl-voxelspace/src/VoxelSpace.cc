@@ -94,9 +94,9 @@ namespace Lignum {
 
   void PrintBoxCfData(const VoxelSpace& s, const string& fname, bool empty = false)
   {
-    cout << "PrintBoxCfData" <<endl;
+    cout << "PrintBoxCfData to file " <<  fname << endl;
     ofstream f(fname.c_str());
-    f << "i j k Center_x y z Af Wf BoxVol STAR_mean No_segs" << endl;
+    f << "i j k Center_x y z Af Wf BoxVol STAR_mean No_segs n_x n_y n_z" << endl;
     for (int i = 0; i < s.Xn; i++){
       for (int j = 0; j < s.Yn; j++){
 	for (int k = 0; k < s.Zn; k++){
@@ -107,7 +107,7 @@ namespace Lignum {
 	    << " " << c.getZ() << " "  << s.voxboxes[i][j][k].getNeedleArea() << " "
 	    << s.voxboxes[i][j][k].getNeedleMass() << " " << b_vol << " "
 	    <<  s.voxboxes[i][j][k].getStar() << " " << s.voxboxes[i][j][k].getNumSegmentsReal()
-	    << endl;
+	    << s.voxboxes[i][j][k].getMeanDirection() << endl;
 	  }
 	}
       }
