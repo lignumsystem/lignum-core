@@ -110,11 +110,11 @@ void VoxelBox::updateValues()
 				      space->Zbox));
 	val_b = k_b * (leafArea / (space->Xbox * space->Ybox * space->Zbox));
 
-	//mean direction of segments
-	if(mean_direction.length() > R_EPSILON)
-	  mean_direction.normalize();
-	else
-	  mean_direction = PositionVector(0.0,0.0,1.0);    //arbitrary direction
+	//Note that mean_direction is not normalized
+//	if(mean_direction.length() > R_EPSILON)
+//	  mean_direction.normalize();
+//	else
+//	  mean_direction = PositionVector(0.0,0.0,1.0);    //arbitrary direction
 }
 
 
