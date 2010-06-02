@@ -57,11 +57,11 @@
 ^OptimalTree Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi juan_posada@mac.com
 ^LignumForest Mail -s %s jari.perttunen@metla.fi risto.sievanen@metla.fi
 ^Y07 Mail -s %s hannu.salminen@metla.fi risto.sievanen@metla.fi
-^MottiFor/CO2  Mail -s %s hannu.salminen@metla.fi
-^MottiFor/death Mail -s %s hannu.salminen@metla.fi
-^MottiFor/EiPuut Mail -s %s hannu.salminen@metla.fi
-^MottiFor/heath340 Mail -s %s hannu.salminen@metla.fi
-^MottiFor/korjuu Mail -s %s hannu.salminen@metla.fi
-^MottiFor/Ohjaus Mail -s %s hannu.salminen@metla.fi
-^MottiFor/perusole Mail -s %s hannu.salminen@metla.fi
-^MottiFor/regenver3 Mail -s %s hannu.salminen@metla.fi
+^CO2  Mail -s %s hannu.salminen@metla.fi
+^death Mail -s %s hannu.salminen@metla.fi
+^EiPuut Mail -s %s hannu.salminen@metla.fi
+^heath340 Mail -s %s hannu.salminen@metla.fi
+^korjuu Mail -s %s hannu.salminen@metla.fi
+^Ohjaus Mail -s %s hannu.salminen@metla.fi
+^perusole Mail -s %s hannu.salminen@metla.fi
+^regenver3 Mail -s %s hannu.salminen@metla.fi
