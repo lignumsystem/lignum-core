@@ -1463,14 +1463,20 @@ namespace Lignum {
 	    LGMdouble sm = 0.0;
 	    if (voxboxes[i1][i2][i3].getWeight() > 0.0){
 	      sm = voxboxes[i1][i2][i3].getStarSum()/voxboxes[i1][i2][i3].getWeight();
-	      cerr << "Weighted starm: " << sm << " StarSum: " << voxboxes[i1][i2][i3].getStarSum() 
+	      cout << "Box corner: " << voxboxes[i1][i2][i3].getCornerPoint().getX() << " "
+		   << voxboxes[i1][i2][i3].getCornerPoint().getY() << " "
+		   << voxboxes[i1][i2][i3].getCornerPoint().getZ()
+		   << " Weighted starm: " << sm << " StarSum: " << voxboxes[i1][i2][i3].getStarSum() 
 		   << " WeightsSum: " << voxboxes[i1][i2][i3].getWeight() 
-		   << " NumSegments: " << voxboxes[i1][i2][i3].getNumSegments() << endl;
+		   << " NumSegments: " << voxboxes[i1][i2][i3].getNumSegmentsReal() << endl;
 	    }
 	    else{
 	      sm = voxboxes[i1][i2][i3].getStarSum()/voxboxes[i1][i2][i3].getNumSegments();
-	      cerr << "Arithmetic starm: " << sm << " StarSum: " << voxboxes[i1][i2][i3].getStarSum()
-		   << " NumSegments: " << voxboxes[i1][i2][i3].getNumSegments() << endl;
+	      cout << "Box corner: " << voxboxes[i1][i2][i3].getCornerPoint().getX() << " "
+		   << voxboxes[i1][i2][i3].getCornerPoint().getY() << " "
+		   << voxboxes[i1][i2][i3].getCornerPoint().getZ()
+		   << " Arithmetic starm: " << sm << " StarSum: " << voxboxes[i1][i2][i3].getStarSum()
+		   << " NumSegments: " << voxboxes[i1][i2][i3].getNumSegmentsReal() << endl;
 	    }
 
 	  }
