@@ -106,13 +106,15 @@ class PineBudData{
 public:
   //A  couple of  constructors to  initialize members.  Recommended in
   //general.
-  PineBudData():state(ALIVE),fm(0.0),ip(1.0),x(0.0),y(0.0),z(0.0){}
-    PineBudData(double s, double fol, double rl):state(s),fm(fol),ip(rl),x(0.0),y(0.0),z(0.0){}
+ PineBudData():state(ALIVE),fm(0.0),ip(1.0),x(0.0),y(0.0),z(0.0),length(0.0){}
+ PineBudData(double s, double fol, double rl, double len):state(s),fm(fol),ip(rl),x(0.0),y(0.0),z(0.0),
+    length(len) {}
   PineBudData(const PineBudData& pbd)
-    :state(pbd.state),fm(pbd.fm),ip(pbd.ip),x(pbd.x),y(pbd.y),z(pbd.z){}
+    :state(pbd.state),fm(pbd.fm),ip(pbd.ip),x(pbd.x),y(pbd.y),z(pbd.z),length(pbd.length){}
   double state; //ALIVE,DEAD, FLOWER, etc
   double fm;//foliage mass (of the mother segment)
   double ip;//qin/TreeQinMax, i.e. relative light
+  double length; //length of the mother segment
   //Direction   is   PositionVector(x,y,z).    Note  you   can't   use
   //PositionVector  here, because  internally it  has  implemented the
   //(x,y,z)  as an  stl-vector.  During  passing the  information from
@@ -137,6 +139,7 @@ class PineBud: public Bud<TS,BUD>{
     SetValue(b,LGAstate,data.state);
     SetValue(b,LGAip,data.ip);
     b.fm_mother_segment = data.fm;
+    b.length_mother_segment = data.length;
     //Do not update  the direction, it would override  the work of the
     //turtle in L-system
     return old_data;
@@ -148,6 +151,7 @@ class PineBud: public Bud<TS,BUD>{
       pbdata.state = GetValue(b,LGAstate);
       pbdata.fm = b.fm_mother_segment;
       pbdata.ip = GetValue(b,LGAip);
+      pbdata.length = b.length_mother_segment;
       //Pass the direction to  L-system, user can access the direction
       //easily by calling GetDirection.
       pbdata.x = GetDirection(b).getX();
@@ -162,9 +166,10 @@ class PineBud: public Bud<TS,BUD>{
 public:
   PineBud(const Point& p, const PositionVector& d, 
 	  const LGMdouble go, Tree<TS,BUD>* tree)
-    :Bud<TS,BUD>(p,d,go,tree),fm_mother_segment(0.0){}
+    :Bud<TS,BUD>(p,d,go,tree),fm_mother_segment(0.0),length_mother_segment(0.0){}
 private:
   LGMdouble fm_mother_segment;
+  LGMdouble length_mother_segment;
 };
 
 //Prints Qin, Qabs, P, R, Wf, As and LGAAh
@@ -438,6 +443,22 @@ public:
   }
 };
 
+template <class TS, class BUD>
+class ForwardSegLen{
+public:
+  double& operator()(double& len, TreeCompartment<TS,BUD>* tc)const
+  {
+    if (TS* ts = dynamic_cast<TS*>(tc)){
+      len = GetValue(*ts,LGAL);
+    }
+    else if (BUD* bud = dynamic_cast<BUD*>(tc)){
+      PineBudData data = GetValue(*bud,PBDATA);
+      data.length = len;
+      SetValue(*bud,PBDATA,data);
+    }
+    return len;
+  }
+};
 
 template <class TS, class BUD>
 class IncrementAgeDown{
