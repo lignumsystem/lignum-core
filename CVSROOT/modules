@@ -78,7 +78,7 @@ XMLTree                                       XMLTree
 CityTree              -s JariP                CityTree
 ctree                 -s JariP                ctree
 lignum-core           			      &c++adt &stl-lignum &Firmament
-core-model                                    &c++adt &stl-lignum &Firmament &stl-voxelspace &LEngine &XMLTree &qt-workbench 
+core-model                                    &c++adt &stl-lignum &Firmament &stl-voxelspace &LEngine &Pine &XMLTree &Graphics &qt-workbench 
 poplar                -s Alice                poplar
 PoplarAll                -s Alice             &c++adt &stl-lignum &Firmament &LEngine &Graphics &XMLTree &stl-voxelspace &poplar
 maple                                         &c++adt &stl-lignum &Firmament &LEngine &Graphics &stl-voxelspace &XMLTree &qt-workbench &SugarMaple
