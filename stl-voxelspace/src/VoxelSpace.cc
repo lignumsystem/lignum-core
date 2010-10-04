@@ -408,8 +408,6 @@ namespace Lignum {
 	  }
       }
 
-
-
     return vec;
   }
 
@@ -1107,7 +1105,7 @@ namespace Lignum {
 			//The distance the beam travels inside this
 			//VoxelBox (from surface to middle)
 
-			LGMdouble inner_length = vec[0].l*2;
+			LGMdouble inner_length = vec[0].l;
 
 			//extinction coefficient on the way through VoxBox
 			LGMdouble ext2 = voxboxes[i1][i2][i3].extinction(inner_length);
