@@ -72,17 +72,23 @@ PositionVector::operator Point () const
 
 double PositionVector::alpha()const
 {
-  return acos(Dot(PositionVector(1,0,0),*this));
+  PositionVector d(*this);
+  d.normalize();
+  return acos(Dot(PositionVector(1,0,0),d));
 }
 
 double PositionVector::beta()const
 {
-  return acos(Dot(PositionVector(0,1,0),*this));
+  PositionVector d(*this);
+  d.normalize();
+  return acos(Dot(PositionVector(0,1,0),d));
 }
 
 double PositionVector::gamma()const
 {
-  return acos(Dot(PositionVector(0,0,1),*this));
+  PositionVector d(*this);
+  d.normalize();
+  return acos(Dot(PositionVector(0,0,1),d));
 }
 
 PositionVector& PositionVector::rotate(ROTATION direction, RADIAN angle)
