@@ -70,6 +70,11 @@ PositionVector::operator Point () const
   return Point(v[0], v[1], v[2]); 
 }
 
+//alpha, beta and gamma compute the  angle between the vector and X, Y
+//and Z respectively.  Note that  the COPY of the vector is normalized
+//(the  vector itself  remains  unmodified in  the computations).  The
+//naming notation  is from Anton.  H.  1987  Elementary Linear Algebra
+//5e. But see any text book about linear algerbra.
 double PositionVector::alpha()const
 {
   PositionVector d(*this);
