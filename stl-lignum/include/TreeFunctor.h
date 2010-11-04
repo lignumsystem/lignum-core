@@ -18,6 +18,7 @@ using namespace std;
 //functors etc. are not specified. If you add a functor-function
 //please update this list.
 
+//   ConnectTree
 //   CountTreeSegments
 //   CountCfTreeSegmentsWithFoliage
 //   CountHwTreeSegmentsWithFoliage
@@ -79,6 +80,30 @@ using namespace std;
 //  Functors-functions below used in LIGNUM WorkBench are not listed.
 
 namespace Lignum{
+
+
+  //Sets coordinates so that the base of the next = base_previous + length * direction
+  //Run this with propagate up
+  template <class TS, class BUD>
+    class ConnectTree{
+  public:
+    Point& 
+      operator()(Point& p, TreeCompartment<TS,BUD>* tc)const
+      {
+	if(TS* ts = dynamic_cast<TS*>(tc)) {
+	  SetPoint(*ts, p);
+	  LGMdouble l = GetValue(*ts, LGAL);
+	  PositionVector direction = GetDirection(*ts);
+	  Point end = p + Point(l*direction);
+	  p = end;
+	}
+	else
+	  SetPoint(*tc, p);
+
+	return p;
+      }
+  };
+
 
    template <class TS,class BUD>
      class CountTreeSegments {
