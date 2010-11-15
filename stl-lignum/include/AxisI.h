@@ -55,7 +55,7 @@ namespace Lignum{
   //default constructor
   template <class TS,class BUD>
     Axis<TS,BUD>::Axis()
-    :aa(ALIVE)
+    :aa(ALIVE),axis_number(0)
     {
       this->tree = NULL;
     }
@@ -66,7 +66,7 @@ namespace Lignum{
   template <class TS,class BUD>
     Axis<TS,BUD>::Axis(const Point& p, const PositionVector& d,
 		       Tree<TS,BUD>* t)
-    :TreeCompartment<TS,BUD>(p,d,t),aa(ALIVE)
+    :TreeCompartment<TS,BUD>(p,d,t),aa(ALIVE),axis_number(0)
     {
     }
  
