@@ -43,9 +43,10 @@ MottiDLL              -s HannuS		  MottiDLL
 MottiFor/BMass          -s RistoO		  MottiFor/BMass
 MottiFor/CheckSOLMU -s JouniS         MottiFor/CheckSOLMU
 MottiFor/CO2          -s HannuS		  MottiFor/CO2		      	    
+MottiFor/costs         -s HannuS		  MottiFor/costs
 MottiFor/death          -s RistoO		  MottiFor/death
 MottiFor/EiPuut          -s RistoO		  MottiFor/EiPuut
-MottiFor/GNosuudet           -s RistoO            MottiFor/GNosuudet
+MottiFor/GHosuudet          -s RistoO		  MottiFor/GNosuudet
 MottiFor/heath340          -s RistoO		  MottiFor/heath340
 MottiFor/jakaumat08          -s RistoO		  MottiFor/jakaumat08
 MottiFor/korjuu          -s RistoO		  MottiFor/korjuu
