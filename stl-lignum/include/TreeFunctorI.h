@@ -740,8 +740,8 @@ namespace Lignum{
   }
 
 
-  //Either whole tree: construct CollectFoliageMass() or by Gravelius order:
-  // construct CollectFoliageMass(order)
+  //Either whole tree: construct CollectFoliageArea() or by Gravelius order:
+  // construct CollectFoliageArea(order)
 
   template <class TS, class BUD>
   LGMdouble& CollectFoliageArea<TS,BUD>::
