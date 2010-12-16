@@ -22,6 +22,7 @@ using namespace std;
 //   CountTreeSegments
 //   CountCfTreeSegmentsWithFoliage
 //   CountHwTreeSegmentsWithFoliage
+//   CountLeavesHw
 //   ForwardQin (for coniferous)
 //   PrintTreeInformation
 //   PrintTreeInformation2
@@ -139,6 +140,21 @@ namespace Lignum{
 	 return n;
        }
    };
+
+   template <class TS,class BUD, class SHAPE>
+     class CountLeavesHw {
+     public:
+     int& operator()(int& n,TreeCompartment<TS,BUD>* tc)const
+       {
+	 if(HwTreeSegment<TS,BUD,SHAPE>* ts = dynamic_cast<HwTreeSegment<TS,BUD,SHAPE>*>(tc)) {
+	   list<BroadLeaf<SHAPE>*>& leaf_list = 
+	     GetLeafList(*ts);
+	   n += static_cast<int>(leaf_list.size());
+	 }
+	 return n;
+       }
+   };
+
 
   //PrintTreeInformation collects and prints out information about the
   //tree. It uses functor TreeData to collect the information with
