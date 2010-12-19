@@ -114,7 +114,6 @@ public:
   double state; //ALIVE,DEAD, FLOWER, etc
   double fm;//foliage mass (of the mother segment)
   double ip;//qin/TreeQinMax, i.e. relative light
-  double length; //length of the mother segment
   //Direction   is   PositionVector(x,y,z).    Note  you   can't   use
   //PositionVector  here, because  internally it  has  implemented the
   //(x,y,z)  as an  stl-vector.  During  passing the  information from
@@ -128,6 +127,7 @@ public:
   double x;
   double y;
   double z;
+  double length; //length of the mother segment
 };
 
 template <class TS, class BUD>
