@@ -23,6 +23,18 @@ namespace cxxadt{
     return *this;
   }
 
+  //member function uses the same logic (add a vector, i.e. Point)
+  //as MoveTree in TreeFunctor.h (stl-lignum)
+  //This friend function is used by MoveHwTree (through friend Move of BroadLeaf)
+  void Triangle::move(const Point& mov) {
+    Point tmp = leftcorner + mov;
+    leftcorner = tmp;
+    tmp = rightcorner + mov;
+    rightcorner = tmp;
+    tmp = apexcorner + mov;
+    apexcorner = tmp;
+  }
+
 
 
 vector<Point>& Triangle::getVertexVector(vector<Point>& points)const

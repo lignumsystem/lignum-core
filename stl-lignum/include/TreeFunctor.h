@@ -48,6 +48,7 @@ using namespace std;
 //   CollectQabs
 //   CollectQin
 //   GetQinMax
+//   MoveHwTree (does MoveTree + moves leaves also)
 //   MoveTree
 //   DeleteDeadBranches
 //   PrintTreeSegmentInformationToFile
@@ -596,35 +597,99 @@ public:
 
   };
 
+  //This functor is used (ForEach) to move a hardwood tree (=all its
+  //TreeCompartments) and leaves to a new location. 
+  //See MoveTree for conifers.
+  //Note that a vector (Point) is added to the current position
+  //(vector, i.e. Point). Hence, if you want to move a tree from
+  //location (Point) b, you should call the constructor
+  //of MoveTree with argument b - a, where a is the current
+  //position of the tree. 
+
+  template <class TS, class BUD, class S>
+    class MoveHwTree{
+  public:
+  MoveHwTree(const MoveHwTree& move, Tree<TS,BUD>& t)
+  :move_to(move.move_to){SetPoint(t,GetPoint(t)+move_to);}
+  MoveHwTree(const MoveHwTree& move):move_to(move.move_to){}
+  //This   constructor  ensures   that  also   the   tree  itself,
+  //i.e. GetPoint(tree), is moved.
+  MoveHwTree(const Point& point,Tree<TS,BUD>& t)
+  :move_to(point){SetPoint(t,GetPoint(t)+move_to);} 
+  MoveHwTree(const Point& point):move_to(point) {} 
+  Point& setPoint(const Point& new_point) {
+    Point tmp = move_to;
+    move_to = new_point;
+    return tmp;
+  }
+  TreeCompartment<TS,BUD>* operator()(TreeCompartment<TS,BUD>* tc)const
+    {
+      //Move first the compartment and if it is a TS also its leaves
+      SetPoint(*tc, GetPoint(*tc)+move_to);
+
+      if(TS* ts = dynamic_cast<TS*>(tc)){
+	list<BroadLeaf<S>*>& leaf_list = GetLeafList(*ts);
+	typename list<BroadLeaf<S>*>::iterator I;
+	for(I = leaf_list.begin(); I != leaf_list.end(); I++) {
+/* 	  cout << "Left " << (GetShape(**I)).getLeftCorner(); */
+/* 	  cout << "move_to " << move_to << endl; */
+/* 	  //	  TranslateLeaf(**I, PositionVector(move_to)); */
+/* 	  //	  Point tmp = (GetShape(**I)).getLeftCorner() + move_to; */
+/* 	  cout << "Center " << (GetShape(**I)).getCenterPoint(); */
+/* 	  cout << "Pet " << GetStartPoint(GetPetiole(**I)); */
+
+	  (**I).move(move_to);
+/* 	  cout << "Left " << (GetShape(**I)).getLeftCorner(); */
+/* 	  cout << "Center " << (GetShape(**I)).getCenterPoint(); */
+/* 	  cout << "Pet " << GetStartPoint(GetPetiole(**I)); */
+/* 	  exit(0); */
+	}
+      }
+      return tc;
+    }
+
+  private:
+  const Point& move_to;
+  };
+
+
+
+  //IMPLEMENTATION is in TreeFunctorI.h
+
 
   //This functor is used (ForEach) to move a tree (=all its
   //TreeCompartments) to a new location.
+  //Note that a vector (Point) is added to the current position
+  //(vector, i.e. Point). Hence, if you want to move a tree from
+  //location (Point) b, you should call the constructor
+  //of MoveTree with argument b - a, where a is the current
+  //position of the tree. 
 
   template <class TS,class BUD=DefaultBud<TS> >
     class MoveTree{
-      public:
-      MoveTree(const MoveTree& move, Tree<TS,BUD>& t)
-      :move_to(move.move_to){SetPoint(t,GetPoint(t)+move_to);}
-      MoveTree(const MoveTree& move):move_to(move.move_to){}
-      //This   constructor  ensures   that  also   the   tree  itself,
-      //i.e. GetPoint(tree), is moved.
-      MoveTree(const Point& point,Tree<TS,BUD>& t)
-	:move_to(point){SetPoint(t,GetPoint(t)+move_to);} 
-      MoveTree(const Point& point):move_to(point) {} 
-      Point& setPoint(const Point& new_point) {
-	Point tmp = move_to;
-	move_to = new_point;
-	return tmp;
-      }
-      TreeCompartment<TS,BUD>* operator()(TreeCompartment<TS,BUD>* tc)const
-      {
-	SetPoint(*tc, GetPoint(*tc)+move_to);
-	return tc;
-      }
+  public:
+  MoveTree(const MoveTree& move, Tree<TS,BUD>& t)
+  :move_to(move.move_to){SetPoint(t,GetPoint(t)+move_to);}
+  MoveTree(const MoveTree& move):move_to(move.move_to){}
+  //This   constructor  ensures   that  also   the   tree  itself,
+  //i.e. GetPoint(tree), is moved.
+  MoveTree(const Point& point,Tree<TS,BUD>& t)
+  :move_to(point){SetPoint(t,GetPoint(t)+move_to);} 
+  MoveTree(const Point& point):move_to(point) {} 
+  Point& setPoint(const Point& new_point) {
+    Point tmp = move_to;
+    move_to = new_point;
+    return tmp;
+  }
+  TreeCompartment<TS,BUD>* operator()(TreeCompartment<TS,BUD>* tc)const
+  {
+    SetPoint(*tc, GetPoint(*tc)+move_to);
+    return tc;
+  }
   
-      private:
-      const Point& move_to;
-    };
+  private:
+  const Point& move_to;
+  };
 
 
   template <class TS, class BUD=DefaultBud<TS> >

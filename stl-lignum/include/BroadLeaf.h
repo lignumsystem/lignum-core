@@ -20,6 +20,11 @@ public:
   Petiole(const Petiole& p)
     :begin(p.begin),end(p.end){}
   Petiole(const Point& begin, const Point& end);
+  void setBegin(const Point& b) {begin = b;}
+  void setEnd(const Point& e) {end = e;}
+  Point getBegin() {return begin;}
+  Point getEnd() {return end;}
+
 private:
   Point begin;
   Point end;
@@ -90,6 +95,18 @@ class BroadLeaf{
   template <class S>
   friend void Turn(BroadLeaf<S>& bl, const double& angle);
 
+/*   This friend function uses the same logic (add a vector, i.e. Point) */
+/*   as MoveTree in TreeFunctor.h (stl-lignum) */
+/*   This friend function is used by MoveHwTree */
+/*   template <class S> */
+/*     friend void Move(BroadLeaf<S>& bl, const Point& mov) { */
+/*     Point tmp = (bla.petiole).getBegin() + mov; */
+/*     bla.petiole.setBegin(tmp); */
+/*     tmp  = (bla.petiole).getEnd() + mov; */
+/*     bla.petiole.setEnd(tmp); */
+/*     (bla.shape).move(mov); */
+/*   } */
+
 
 public:
   BroadLeaf(LGMdouble sf,LGMdouble tauL,LGMdouble dof,int number_of_sectors,
@@ -98,6 +115,13 @@ public:
   BroadLeaf(const  SHAPE& shape, const Petiole& petiole, int sky_sectors);
   BroadLeaf(const BroadLeaf& bl):bla(bl.bla) {}
   void photosynthesis(const LGMdouble& p0);
+  void move(const Point& mov) {
+    Point tmp = (bla.petiole).getBegin() + mov;
+    bla.petiole.setBegin(tmp);
+    tmp = (bla.petiole).getEnd() + mov;
+    bla.petiole.setEnd(tmp);
+    bla.shape.move(mov);
+  }
 private:
   BroadLeafAttributes<SHAPE> bla;
 };
@@ -109,6 +133,8 @@ void BroadLeaf<S>::photosynthesis(const LGMdouble& p0)
 
   bla.P = p0 * bla.Qabs;
 }
+
+
 
 
 }//closing namespace Lignum 

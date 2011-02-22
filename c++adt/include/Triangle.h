@@ -58,6 +58,7 @@ namespace cxxadt{
     
     //rotate apex round the base of the triangle by alpha
     void pitch(const double alpha);
+    void move(const Point& mov);
                                             
   private:
     Point leftcorner,rightcorner,apexcorner;//the triangle corners
