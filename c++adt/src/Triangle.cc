@@ -66,10 +66,6 @@ Point Triangle::getCenterPoint()const
   center.setY(sum.getY()/3.0);
   center.setZ(sum.getZ()/3.0);
 
-//    center.setX( ( (Point)points[i] ).getX() /3);
-//    center.setY( ( (Point)points[i] ).getY() /3);
-//    center.setZ( ( (Point)points[i] ).getZ() /3);
-//  }
   return center ;
 }
 
@@ -86,7 +82,7 @@ PositionVector Triangle::getNormal()const
  PositionVector p12=p1-p2;
  PositionVector p13=p1-p3;
  PositionVector normal= Cross(p12,p13);
- //Let's assume that normal points to upper hemisphere
+ //Normal points always to upper hemisphere
  if(normal.getZ() < 0.0)
    normal = -1.0*normal;
 
