@@ -56,11 +56,20 @@ Point Triangle::getCenterPoint()const
   vector<Point> points;
   points=getVertexVector(points);
 
+  Point sum(0.0,0.0,0.0);
+  Point tmp;
   for(int i=0; i<3; i++){
-   center.setX( ( (Point)points[i] ).getX() /3);
-   center.setY( ( (Point)points[i] ).getY() /3);
-   center.setZ( ( (Point)points[i] ).getZ() /3);
+    tmp = sum + points[i];
+    sum = tmp;
   }
+  center.setX(sum.getX()/3.0);
+  center.setY(sum.getY()/3.0);
+  center.setZ(sum.getZ()/3.0);
+
+//    center.setX( ( (Point)points[i] ).getX() /3);
+//    center.setY( ( (Point)points[i] ).getY() /3);
+//    center.setZ( ( (Point)points[i] ).getZ() /3);
+//  }
   return center ;
 }
 
@@ -68,8 +77,6 @@ Point Triangle::getCenterPoint()const
 
 PositionVector Triangle::getNormal()const
 {
-
-  
   PositionVector p1(leftcorner);
   PositionVector p2(rightcorner);
   PositionVector p3(apexcorner);
@@ -79,11 +86,14 @@ PositionVector Triangle::getNormal()const
  PositionVector p12=p1-p2;
  PositionVector p13=p1-p3;
  PositionVector normal= Cross(p12,p13);
- if (normal.length()!= 0)
-   normal=normal*(1/normal.length());
+ //Let's assume that normal points to upper hemisphere
+ if(normal.getZ() < 0.0)
+   normal = -1.0*normal;
+
+ if (normal.length()!= 0.0)
+   normal.normalize();
  
  return ( normal  );
-
 } 
 
 //set up the triangle center point
