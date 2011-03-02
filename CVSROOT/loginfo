@@ -67,3 +67,5 @@
 ^regenver3 Mail -s %s hannu.salminen@metla.fi
 ^BirchDigital Mail -s %s risto.sievanen@metla.fi anna.lintunen@helsinki.fi Pekka.J.Kaitaniemi@helsinki.fi
 ^CrownDensity Mail -s %s risto.sievanen@metla.fi eero.nikinmaa@helsinki.fi pekka.nygren@helsinki.fi strukova@mappi.helsinki.fi hannele.airola@helsinki.fi
+^MixedLight Mail -s %s risto.sievanen@metla.fi anna.lintunen@helsinki.fi Pekka.J.Kaitaniemi@helsinki.fi
+
