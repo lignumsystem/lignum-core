@@ -50,6 +50,35 @@ private:
   const ParametricCurve& K;
 };
 
+//Is just like EvaluateRadiationForCfTreeSegment but uses instead of
+//Firmaments diffuseRegionRadiationSum diffuseForestRegionRadiationSum,
+//that is, the tree is surrounded by identical trees that are taken
+//care with Lambert-Beer extinction.
+//The tree level input parameters for diffuseForestRegionRadiationSum
+//(needle area, extinction coefficient, tree height, height of
+//crown base, stand density, and location of tree (for calculation of
+// distance from tree stem)) are specified in the constructor.
+
+template <class TS, class BUD>
+class EvaluateRadiationForCfTreeSegmentForest {
+public:
+ EvaluateRadiationForCfTreeSegmentForest(const ParametricCurve& k, const LGMdouble& NA,
+					 const LGMdouble& for_k, const LGMdouble& tree_h, const LGMdouble& Hcb,
+					 const LGMdouble& dens, const Point& x0): K(k), needle_area(NA),
+    forest_k(for_k), tree_height(tree_h), crownbase_height(Hcb),
+    density(dens), stem_loc(x0) {}
+  TreeCompartment<TS,BUD>* operator()(TreeCompartment<TS,BUD>* tc)const;
+private:
+  const ParametricCurve& K;
+  LGMdouble needle_area;
+  LGMdouble forest_k;
+  LGMdouble tree_height;
+  LGMdouble crownbase_height;
+  LGMdouble density;
+  Point stem_loc;
+};
+
+
 
 //This functor ShadingEffectOfCfTreeSegment<TS,BUD> evaluates shading caused
 //by a conifer segment on this conifer segment (shaded_s)
@@ -71,6 +100,54 @@ private:
   vector<double>& S;
 };
 
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+//Shading by woody parts only
+//Two versions:
+//1) ShadingEffectOfWoodyPartsSelf that can and should be used to check self-shading by
+//woody parts: this takes the target_segment (in the constructor) and checks that comparison
+//is not made itself as a shading TreeSegment. Consequently, the shading tree must be consisting of
+//similar TreeSegments and Buds (<TS,BUD>) as the target one. Can thus be used for self-
+//wood shading and wood-shading by other similar trees.
+//2) ShadingEffectOfWoodyParts that takes a Point (e.g. Midpoint of a TreeSegment) in the
+//constructor and makes comparisons for that. No checking is made (is not possible) whether the
+//shading TreeSegment is the object (e.g. TreeSegment) for which evaluation is made. Can
+//thus not be used to evaluate self wood shading in a tree.
+
+//NOTE: Assumes that all trees have the same firmament, thus
+//GetFirmamentWithMask(GetTree(*shaded_s) == GetFirmamentWithMask(GetTree(*ts))
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+
+template <class TS,class BUD>
+class ShadingEffectOfWoodyPartsSelf {
+public:
+  ShadingEffectOfWoodyPartsSelf(CfTreeSegment<TS,BUD>* ts, 
+			       vector<double>& sectors)
+    :shaded_s(ts), S(sectors){}
+  //ForEach functor to compute shadiness
+  TreeCompartment<TS,BUD>*  operator()(TreeCompartment<TS,BUD>* tc)const;
+  //Get vector for S (shadiness) 
+  vector<double>& getS(){return S;}
+private:
+  CfTreeSegment<TS,BUD>* shaded_s;
+  vector<double>& S;
+};
+
+template <class TS,class BUD>
+class ShadingEffectOfWoodyParts {
+public:
+  ShadingEffectOfWoodyParts(Point tl, 
+			       vector<double>& sectors)
+    :target_location(tl), S(sectors){}
+  //ForEach functor to compute shadiness
+  TreeCompartment<TS,BUD>*  operator()(TreeCompartment<TS,BUD>* tc)const;
+  //Get vector for S (shadiness) 
+  vector<double>& getS(){return S;}
+private:
+  Point target_location;
+  vector<double>& S;
+};
 
 
 }     //END OF NAMESPACE LIGNUM
