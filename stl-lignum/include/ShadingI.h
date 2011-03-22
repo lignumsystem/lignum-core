@@ -158,7 +158,7 @@ vector<LGMdouble>& ShadingEffectOfLeaf<TS,BUD,S>::operator()(vector<LGMdouble>& 
   }
   return v;
 
-} 
+}
 
 
 
@@ -332,6 +332,107 @@ TreeCompartment<TS,BUD>* ShadingEffectOfCfTreeSegment<TS,BUD>::operator()(TreeCo
   }
   return tc;
 }
+
+//========================================================================================
+
+//Is just like EvaluateRadiationForCfTreeSegment but uses instead of
+//Firmaments diffuseRegionRadiationSum diffuseForestRegionRadiationSum,
+//that is, the tree is surrounded by identical trees that are taken
+//care with Lambert-Beer extinction.
+//The tree level input parameters for diffuseForestRegionRadiationSum
+//(needle area, extinction coefficient, tree height, height of
+//crown base, stand density, and location of tree (for calculation of
+// distance from tree stem)) are specified in the constructor.
+
+//Note that this uses ShadingEffectOfCfTreeSegment (not Forest!) since it uses only directions
+//from Firmament and they are just the same in diffuseRegionRadiationSum
+//and diffuseForestRegionRadiationSum.
+
+template <class TS, class BUD>
+TreeCompartment<TS,BUD>* EvaluateRadiationForCfTreeSegmentForest<TS,BUD>::operator() (TreeCompartment<TS, BUD>* tc)const
+{
+  if (TS* ts = dynamic_cast<TS*>(tc)){
+    SetValue(*ts, LGAQin, 0.0);
+    SetValue(*ts, LGAQabs, 0.0);
+    //Radiation  conditions are not  evaluated if  the segment  has no
+    //foliage (in practice  there would be division by  0 in computing
+    //absorbed radiation)
+    if (GetValue(*ts, LGAWf) < R_EPSILON){
+	return tc;
+    }
+
+    Tree<TS,BUD>& tt = GetTree(*ts);
+    FirmamentWithMask& firmament = GetFirmament(tt);
+    int number_of_sectors = firmament.numberOfRegions();
+    double a_dot_b = 0.0;
+    vector<double> radiation_direction(3);
+
+    vector<double> v(number_of_sectors,0.0); 
+    ShadingEffectOfCfTreeSegment<TS,BUD> s_e(ts,K,v);
+    //This  goes  through  the  tree  and computes  shading  based  on
+    //1)distance  light beam traverses  in foliage,  2)foliage density
+    //and 3) inclination light beam hits the segment.
+    ForEach(tt,s_e);
+    
+    //This is the first difference to EvaluateRadiationForCfTreeSegment!
+    Point mp = GetMidPoint(*ts);
+    LGMdouble z = mp.getZ();
+    LGMdouble dist = sqrt(pow(mp.getX()-stem_loc.getX(),2.0)+pow(mp.getY()-stem_loc.getY(),2.0));
+
+    //implement  "Ip  =  Iope^(-Vp)",  s[i] =  radiation  coming  from
+    //direction i after this
+    vector<double>& s = s_e.getS();
+    for (int i = 0; i < number_of_sectors; i++){
+      if (s[i] == HIT_THE_WOOD){
+	s[i] = 0.0;
+      }
+      else {
+	//this is the second difference to EvaluateRadiationForCfTreeSegment!
+	MJ Iop = firmament.diffuseForestRegionRadiationSum
+	  (i,z,dist,needle_area,forest_k,tree_height,crownbase_height,radiation_direction,density);
+	s[i] = Iop*exp(-s[i]);
+      }
+    }
+   //Total incoming radiation  
+    MJ Q_in = accumulate(s.begin(),s.end(),0.0);
+
+    //s contains now incoming radiation from each sector. Evaluate how
+    //much segment absorbs from incoming radation.
+    LGMdouble Lk, inclination, Rfk, Ack, extinction, sfk, Ask, Wfk;
+    Lk = Rfk = Ack =  extinction = sfk = Ask = Wfk = 0.0;
+    Lk = GetValue(*ts, LGAL);   //length is > 0.0, otherwise we would not bee here
+    Rfk = GetValue(*ts, LGARf);  //Radius to foliage limit 
+    Wfk = GetValue(*ts, LGAWf); //Foliage mass
+    sfk  = GetValue(tt, LGPsf); //Foliage m2/kg from tree
+
+
+    for (int i = 0; i < number_of_sectors; i++){
+      firmament.diffuseRegionRadiationSum(i,radiation_direction);
+      a_dot_b = Dot(GetDirection(*ts), PositionVector(radiation_direction));
+      inclination = PI_DIV_2 - acos(fabs(a_dot_b));
+
+      Ack = 2.0*Lk*Rfk*cos(inclination) + PI_VALUE*pow(Rfk,2.0)*sin(inclination);
+      extinction = (double)K(inclination);
+
+      if (Ack == 0.0){
+	cout << "ERROR EvaluateRadiationForCfTreeSegment: Ack == 0 (division by 0)"
+	     << endl;
+      }
+
+      //implement I(k)p = Ip*Ask, Note  Ack must be greater than 0 (it
+      //should if there is any foliage)
+      Ask = (1.0 - exp(-extinction*((sfk*Wfk)/Ack)))*Ack;
+      s[i] *= Ask;
+    }
+    MJ Q_abs = accumulate(s.begin(),s.end(),0.0);
+    SetValue(*ts, LGAQabs, Q_abs);
+    SetValue(*ts, LGAQin, Q_in);
+  }
+  return tc;
+}
+
+
+
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 //Shading by woody parts only
