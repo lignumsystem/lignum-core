@@ -5,7 +5,6 @@
 
 namespace Lignum {
 
-
 //This functor EvaluateRadiationForHwTreeSegment evaluates shading
 //caused by all other leaves to all leaves of this hardwood
 //segment. This functor uses functor ShadingEffectOfLeaf<TS,BUD> to

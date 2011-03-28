@@ -462,7 +462,6 @@ TreeCompartment<TS,BUD>* EvaluateRadiationForCfTreeSegmentForest<TS,BUD>::operat
 //GetFirmamentWithMask(GetTree(*shaded_s) == GetFirmamentWithMask(GetTree(*ts))
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-
 template <class TS,class BUD>
   TreeCompartment<TS,BUD>* ShadingEffectOfWoodyPartsSelf<TS,BUD>::
   operator()(TreeCompartment<TS,BUD>* tc)const {
