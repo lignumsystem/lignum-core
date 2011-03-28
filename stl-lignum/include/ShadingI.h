@@ -432,20 +432,31 @@ TreeCompartment<TS,BUD>* EvaluateRadiationForCfTreeSegmentForest<TS,BUD>::operat
 }
 
 
-
-
 //////////////////////////////////////////////////////////////////////////////////////////////
 //Shading by woody parts only
-//Two versions:
+//Four  versions:
 //1) ShadingEffectOfWoodyPartsSelf that can and should be used to check self-shading by
 //woody parts: this takes the target_segment (in the constructor) and checks that comparison
 //is not made itself as a shading TreeSegment. Consequently, the shading tree must be consisting of
 //similar TreeSegments and Buds (<TS,BUD>) as the target one. Can thus be used for self-
-//wood shading and wood-shading by other similar trees.
-//2) ShadingEffectOfWoodyParts that takes a Point (e.g. Midpoint of a TreeSegment) in the
+//wood shading and wood-shading by other similar trees. This can be used both for decidious and
+//conifer trees. DOES NOT check if the shading segment has foliage: may give erroneous results for
+//conifers since woody shading is (usually) included in foliage shading.
+
+//2) ShadingEffectOfWoodyPartsSelfConifer is just as ShadingEffectOfWoodyPartsSelf but skips
+//shading segments that have foliage. Suits for the usual confer case in which the woody part
+//is includen is hading by foliage.
+
+//3) ShadingEffectOfWoodyParts that takes a Point (e.g. Midpoint of a TreeSegment) in the
 //constructor and makes comparisons for that. No checking is made (is not possible) whether the
 //shading TreeSegment is the object (e.g. TreeSegment) for which evaluation is made. Can
-//thus not be used to evaluate self wood shading in a tree.
+//thus not be used to evaluate self wood shading in a tree. This can be used both for decidious and
+//conifer trees. DOES NOT check if the shading segment has foliage: may give erroneous results for
+//conifers since woody shading is (usually) included in foliage shading.
+
+//4) ShadingEffectOfWoodyPartsConifer is just as ShadingEffectOfWoodyParts but skips
+//shading segments that have foliage. Suits for the usual confer case in which the woody part
+//is includen is hading by foliage.
 
 //NOTE: Assumes that all trees have the same firmament, thus
 //GetFirmamentWithMask(GetTree(*shaded_s) == GetFirmamentWithMask(GetTree(*ts))
@@ -453,7 +464,8 @@ TreeCompartment<TS,BUD>* EvaluateRadiationForCfTreeSegmentForest<TS,BUD>::operat
 
 
 template <class TS,class BUD>
-  TreeCompartment<TS,BUD>* ShadingEffectOfWoodyPartsSelf<TS,BUD>::operator()(TreeCompartment<TS,BUD>* tc)const {
+  TreeCompartment<TS,BUD>* ShadingEffectOfWoodyPartsSelf<TS,BUD>::
+  operator()(TreeCompartment<TS,BUD>* tc)const {
 
   if (TreeSegment<TS,BUD>* ts = dynamic_cast<TreeSegment<TS,BUD>*>(tc)) {
     //Don't compare to yourself
@@ -511,11 +523,140 @@ template <class TS,class BUD>
   return tc;
 }
 
+template <class TS,class BUD>
+  TreeCompartment<TS,BUD>* ShadingEffectOfWoodyPartsSelfConifer<TS,BUD>::
+  operator()(TreeCompartment<TS,BUD>* tc)const {
+
+  if (CfTreeSegment<TS,BUD>* ts = dynamic_cast<CfTreeSegment<TS,BUD>*>(tc)) {
+    //Don't compare to yourself
+    if (ts == shaded_s){
+      return tc;
+    }
+
+    //Don't compare if shading conifer segment has foliage (taken care of
+    //in foliage shading)
+    if(GetValue(*ts, LGAWf) > R_EPSILON) {
+      return tc;
+
+    }
+    //Now go on computing shading
+    int i = 0, number_of_sectors = 0, result = NO_HIT;
+    vector<double> radiation_direction(3);
+
+    Tree<TS,BUD>& tt = GetTree(*shaded_s);
+    
+    FirmamentWithMask& firmament = GetFirmament(tt);
+    
+    number_of_sectors = firmament.numberOfRegions();
+
+    Point r_0 =  GetMidPoint(*shaded_s);
+    LGMdouble distance;
+    LGMdouble r_shading = GetValue(*ts, LGAR);
+
+    for (i = 0; i < number_of_sectors; i++) {
+      //If the sector is blocked by another shoot
+      //do not make computations, check the next sector instead
+      if (S[i] == HIT_THE_WOOD) { 
+	continue;
+      }
+      //The radiation and its direction of sector i. We need the direction
+      firmament.diffuseRegionRadiationSum(i,radiation_direction);
+      result = CylinderBeamShading(r_0,
+				   radiation_direction,
+				   GetPoint(*ts),
+				   GetDirection(*ts),
+				   r_shading,
+				   r_shading,
+				   GetValue(*ts, LGAL),
+				   distance);
+
+      if (result == HIT_THE_WOOD){
+	S[i] =  HIT_THE_WOOD;
+      }
+ 
+      else if (result == HIT_THE_FOLIAGE){
+	cout << "Should not be in HIT_THE_FOLIAGE, r_0" << r_0;
+	cout << "rDir " << PositionVector(radiation_direction) << endl;
+	cout << "rs " << GetPoint(*ts);
+	cout << "Dir " << GetDirection(*ts) << endl;
+	cout << "R " << r_shading << " L " << GetValue(*ts, LGAL) << endl;
+	cout << "Something wrong in ShadingEffectOfWoodyPartsSelf" << endl;
+	exit(0);
+      }
+    } //  for (i = 0, i < number_of_sectors; ...
+
+  }
+  return tc;
+}
+
 
 template <class TS,class BUD>
-  TreeCompartment<TS,BUD>* ShadingEffectOfWoodyParts<TS,BUD>::operator()(TreeCompartment<TS,BUD>* tc)const {
+  TreeCompartment<TS,BUD>* ShadingEffectOfWoodyParts<TS,BUD>::
+  operator()(TreeCompartment<TS,BUD>* tc)const {
 
  if (TreeSegment<TS,BUD>* ts = dynamic_cast<TreeSegment<TS,BUD>*>(tc)) {
+
+
+    int i = 0, number_of_sectors = 0, result = NO_HIT;
+    vector<double> radiation_direction(3);
+
+    Tree<TS,BUD>& tt = GetTree(*ts);
+    
+    FirmamentWithMask& firmament = GetFirmament(tt);
+    
+    number_of_sectors = firmament.numberOfRegions();
+
+    LGMdouble distance;
+    LGMdouble r_shading = GetValue(*ts, LGAR);
+
+    for (i = 0; i < number_of_sectors; i++) {
+      //If the sector is blocked by another shoot
+      //do not make computations, check the next sector instead
+      if (S[i] == HIT_THE_WOOD) { 
+	continue;
+      }
+      //The radiation and its direction of sector i. We need the direction
+      firmament.diffuseRegionRadiationSum(i,radiation_direction);
+      result = CylinderBeamShading(target_location,
+				   radiation_direction,
+				   GetPoint(*ts),
+				   GetDirection(*ts),
+				   r_shading,
+				   r_shading,
+				   GetValue(*ts, LGAL),
+				   distance);
+
+      if (result == HIT_THE_WOOD){
+	S[i] =  HIT_THE_WOOD;
+      }
+ 
+      else if (result == HIT_THE_FOLIAGE){
+	cout << "Should not be in HIT_THE_FOLIAGE, r_0" << target_location;
+	cout << "rDir " << PositionVector(radiation_direction) << endl;
+	cout << "rs " << GetPoint(*ts);
+	cout << "Dir " << GetDirection(*ts) << endl;
+	cout << "R " << r_shading << " L " << GetValue(*ts, LGAL) << endl;
+	cout << "Something wrong in ShadingEffectOfWoodyParts" << endl;
+	exit(0);
+      }
+    } //  for (i = 0, i < number_of_sectors; ...
+
+ }
+  return tc;
+}
+
+
+template <class TS,class BUD>
+  TreeCompartment<TS,BUD>* ShadingEffectOfWoodyPartsConifer<TS,BUD>::
+  operator()(TreeCompartment<TS,BUD>* tc)const {
+
+ if (CfTreeSegment<TS,BUD>* ts = dynamic_cast<CfTreeSegment<TS,BUD>*>(tc)) {
+   
+    //Don't compare if shading conifer segment has foliage (taken care of
+    //in foliage shading)
+   if(GetValue(*ts, LGAWf) > R_EPSILON) {
+      return tc;
+   }
 
     int i = 0, number_of_sectors = 0, result = NO_HIT;
     vector<double> radiation_direction(3);

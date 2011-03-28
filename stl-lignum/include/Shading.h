@@ -122,7 +122,8 @@ private:
 template <class TS,class BUD>
 class ShadingEffectOfWoodyPartsSelf {
 public:
-  ShadingEffectOfWoodyPartsSelf(CfTreeSegment<TS,BUD>* ts, 
+  ShadingEffectOfWoodyPartsSelf(
+TreeSegment<TS,BUD>* ts, 
 			       vector<double>& sectors)
     :shaded_s(ts), S(sectors){}
   //ForEach functor to compute shadiness
@@ -130,7 +131,22 @@ public:
   //Get vector for S (shadiness) 
   vector<double>& getS(){return S;}
 private:
-  CfTreeSegment<TS,BUD>* shaded_s;
+  TreeSegment<TS,BUD>* shaded_s;
+  vector<double>& S;
+};
+
+template <class TS,class BUD>
+class ShadingEffectOfWoodyPartsSelfConifer {
+public:
+  ShadingEffectOfWoodyPartsSelfConifer(TreeSegment<TS,BUD>* ts, 
+			       vector<double>& sectors)
+    :shaded_s(ts), S(sectors){}
+  //ForEach functor to compute shadiness
+  TreeCompartment<TS,BUD>*  operator()(TreeCompartment<TS,BUD>* tc)const;
+  //Get vector for S (shadiness) 
+  vector<double>& getS(){return S;}
+private:
+  TreeSegment<TS,BUD>* shaded_s;
   vector<double>& S;
 };
 
@@ -148,6 +164,23 @@ private:
   Point target_location;
   vector<double>& S;
 };
+
+template <class TS,class BUD>
+class ShadingEffectOfWoodyPartsConifer {
+public:
+  ShadingEffectOfWoodyPartsConifer(Point tl, 
+			       vector<double>& sectors)
+    :target_location(tl), S(sectors){}
+  //ForEach functor to compute shadiness
+  TreeCompartment<TS,BUD>*  operator()(TreeCompartment<TS,BUD>* tc)const;
+  //Get vector for S (shadiness) 
+  vector<double>& getS(){return S;}
+private:
+  Point target_location;
+  vector<double>& S;
+};
+
+
 
 
 }     //END OF NAMESPACE LIGNUM
