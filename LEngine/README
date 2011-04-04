@@ -1,34 +1,10 @@
-LEngine implements the  L-systems in LIGNUM using the  language L with
-extension allowing several tree species and multiple trees in the same
-program.  The  include directory contains all  necessary header files,
-the  lib  directory the  libL.a  library  and  the bin  directory  the
-compiler l2c  that takes L-system  definition file and compiles  it to
-C++.   To compile  LEngine project  for your  use type  "make lengine"
-(SGI/CC) or "make gnu" (GNU g++).
-
-
-L2Lignum shows how to integrate L-systems with LIGNUM.  To compile and
-run the sample program go to L2Lignum and type: 
-
-	SGI/CC  7.3.1 or higher	GNU g++ 3.04 or higher
-	======================= ======================
-	make distclean		make distclean
-	make depend		make "CCC=g++" depend
-	make l2lignum		make gnu
-	./l2lignum		./l2lignum
-
-
-The L2Lignum  contains a  simple program in  main.cc that  creates two
-species bearberry  and Scots pine  defined in lsys in  bearberry.L and
-pine9bp.L respectively. 
-
 Typically in  your (main) program  you first include Lignum.h  for the
 core  model of  LIGNUM and  your refinement  of tree  segment  and bud.
 After that  include lengine.h  that declares necessary  (system) files
 for L-system  implementation. Finally include  LSystem.h that provides
 the application programming interface  for rewriting process.  If your
 program  contains  several species  include  LSystem.h  once for  each
-species wrapped in a namespace. See main.cc for details.
+species wrapped in a namespace.
 
 In  your L-system  definition file  include first  lengine.h  and then
 lsystem.h  that implements  the  rewriting process.   After that  your
@@ -89,8 +65,8 @@ exact  definition   of  these  modules   and  what  they   exactly  do
 (rewrite). The name of the module tells how to move the turtle and the
 first parameter how much.
 
-If you are planning to simulate  a small forest you probably will come
-up an idea to create and store trees and L-systems in vectors. You can
-do so  but remember to  carefully initialize these  vectors. Otherwise
-you will get very strange runtime errors. See forest.cc in L2Lignum as
-an example.
+Bison and Flex compiler examples
+
+flex  -Pl --noline  --outfile=lex_l.cpp l2c.l
+bison -d --no-lines --debug -p l -o l2c_tab.cpp l2c.y
+
