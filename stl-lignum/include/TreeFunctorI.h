@@ -1570,26 +1570,89 @@ namespace Lignum{
 
 
   // Helper functor for CrownVolume
+  //It tests if either base or top of segment with foliage is in the
+  //quadrant of a slice and determines whichever is farthest from the
+  //stem, and if > R, updates R.
   template <class TS, class BUD>
   double& findRFunctor<TS,BUD>::operator ()
     (double& R, TreeCompartment<TS,BUD>* tc)const {
     if (TS* ts = dynamic_cast<TS*>(tc)){
       if(GetValue(*ts, LGAWf) < R_EPSILON) return R;
       Point base = GetPoint(*ts);
-      Point top = GetEndPoint(*ts);
-      Point midP(base + 0.5 *(top-base));
-      if(midP.getZ() > minH && midP.getZ() < maxH) {
+       //      Point midP(base + 0.5 *(top-base));
+      if(base.getZ() > minH && base.getZ() < maxH) {
 	//note that treeBase is a PositionVector that has only x- and y-components
-	PositionVector r = PositionVector(midP.getX(),midP.getY(),0.0)
+	PositionVector r = PositionVector(base.getX(),base.getY(),0.0)
 	  - treeBase;
 	PositionVector middle(cos(dir+angle/2.0),sin(dir+angle/2.0),0.0);
 	if(Dot(r,middle)/r.length() > cos(angle/2.0)) {
 	  if(r.length() > R) R = r.length();
 	}
       }
+
+     Point top = GetEndPoint(*ts);
+      if(top.getZ() > minH && top.getZ() < maxH) {
+	//note that treeBase is a PositionVector that has only x- and y-components
+	PositionVector r = PositionVector(top.getX(),top.getY(),0.0)
+	  - treeBase;
+	PositionVector middle(cos(dir+angle/2.0),sin(dir+angle/2.0),0.0);
+	if(Dot(r,middle)/r.length() > cos(angle/2.0)) {
+	  if(r.length() > R) R = r.length();
+	}
+      }
+
     }
     return R;
   }
+
+  //CrownExtension
+  //Works like CrownVolume but returns crown extensions in quadrants of slices
+  //Here end point of segment with foliage is used instead of midpoint.
+
+  
+
+  template <class TS, class BUD>
+    void CrownExtension<TS,BUD>::operator ()(Tree<TS,BUD>&  tr,
+					     vector<pair<double,double> >& ext)const 
+  {
+    Point ex_point(0.0,0.0,R_HUGE);
+    ex_point = Accumulate(tr,ex_point,LowestCfSegmentWithFoliage<TS,BUD>());
+    LGMdouble H_low = ex_point.getZ();
+    ex_point = Point(0.0,0.0,-R_HUGE);
+    ex_point = Accumulate(tr,ex_point,HighestCfSegmentWithFoliage<TS,BUD>());
+    LGMdouble H_high = ex_point.getZ();
+
+    if(H_low >= H_high)
+      return;
+
+    LGMdouble dist = H_high - H_low;
+
+    int layers = (int)(dist/step) + 1;
+
+    ext.resize(layers);
+
+    Axis<TS,BUD>& ax = GetAxis(tr);
+    Point treeBase = GetPoint(*GetFirstTreeCompartment(ax));
+
+    for(int i = 0; i < layers; i++) {
+      double minH = (double)i * step + H_low;
+      double maxH = minH + step;
+      double angle = PI_VALUE / 2.0;
+      double r_sum = 0.0;
+      for(int j = 0; j < 4; j++) {
+	double dir = (double)j * angle;
+	findRFunctor<TS,BUD>  findR(minH, maxH, dir, angle,
+				    treeBase);
+	double R = 0.0;
+	r_sum += Accumulate(tr, R, findR);
+      }
+      ext[i].first = (minH + maxH)/2.0;
+      ext[i].second = r_sum/4.0;
+    }
+
+    return;
+  }
+
 
 }//closing namespace Lignum
 

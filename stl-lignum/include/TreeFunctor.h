@@ -79,7 +79,25 @@ using namespace std;
 //               or may not  have the desired value. In  most cases in
 //               growth simulations only LGAR  is used.  This may have
 //               unwanted results in visualization.
+
+//  CrownExtension: Works like CrownVolume but returns instead of volume
+//               mean distance crown surface from stem in different heights
+//
+//  LowestSegmentExcludingStem
+//  LowestCfSegmentWithFoliage
+//  HighestSegment
+//  HighestCfSegmentWithFoliage
+
+//              These functors return start or end point (whichever
+//              is higher or lower) of segments. With foliage for conifers. Useful, since
+//              there may be segments higher than tree top or lower than crown
+//              base, which are evaluated on the basis on the main axis (stem).
+//              NOTE that in the case of LowestSegmentExcludingStem stem segments are NOT
+//              considered since the lowest segment is by definition the first in the
+//              main axis (stem). In other functors stem is also included.
+
 //  Functors-functions below used in LIGNUM WorkBench are not listed.
+
 
 namespace Lignum{
 
@@ -943,6 +961,103 @@ public:
     double operator()(Tree<TS,BUD>&  tr)const;
     private:
     double step;
+  };
+
+
+  template <class TS, class BUD> 
+    class CrownExtension { 
+    public: 
+    CrownExtension(double hstep = 0.2): step(hstep) {;}
+    void operator()(Tree<TS,BUD>&  tr, vector<pair<double,double> >& ext)const;
+    private:
+    double step;
+  };
+
+//  LowestSegmentExcludingStem
+//  LowestCfSegmentWithFoliage
+//  HighestSegment
+//  HighestCfSegmentWithFoliage
+
+  template <class TS, class BUD>
+    class LowestSegmentExcludingStem {
+  public:
+    Point&  operator()(Point& extreme, TreeCompartment<TS,BUD>* tc)const
+      {
+	if(TS* ts = dynamic_cast<TS*>(tc)){
+	  if(GetValue(*ts, LGAomega) > 1.0) {
+	    Point p = GetEndPoint(*ts);
+	    LGMdouble z = p.getZ();
+	    if(z < extreme.getZ())
+	      extreme = p;
+	    p = GetPoint(*ts);
+	    z = p.getZ();
+	    if(z < extreme.getZ())
+	      extreme = p;
+	  }
+	}
+	return extreme;
+      }
+  };
+
+  template <class TS, class BUD>
+    class LowestCfSegmentWithFoliage {
+  public:
+    Point&  operator()(Point& extreme, TreeCompartment<TS,BUD>* tc)const
+      {
+	if(TS* ts = dynamic_cast<TS*>(tc)) {
+	  if(GetValue(*ts,LGAWf) > R_EPSILON) {
+	    Point p = GetEndPoint(*ts);
+	    LGMdouble z = p.getZ();
+	    if(z < extreme.getZ())
+	      extreme = p;
+	    p = GetPoint(*ts);
+	    z = p.getZ();
+	    if(z < extreme.getZ())
+	      extreme = p;
+	  }
+	}
+	return extreme;
+      }
+  };
+
+  template <class TS, class BUD>
+    class HighestSegment {
+  public:
+    Point&  operator()(Point& extreme, TreeCompartment<TS,BUD>* tc)const
+      {
+	if(TS* ts = dynamic_cast<TS*>(tc)){
+	  Point p = GetEndPoint(*ts);
+	  LGMdouble z = p.getZ();
+	  if(z > extreme.getZ())
+	    extreme = p;
+	  p = GetPoint(*ts);
+	  z = p.getZ();
+	  if(z > extreme.getZ())
+	    extreme = p;
+	}
+	return extreme;
+      }
+  };
+
+  template <class TS, class BUD>
+    class HighestCfSegmentWithFoliage {
+  public:
+    Point&  operator()(Point& extreme, TreeCompartment<TS,BUD>* tc)const
+      {
+	if(TS* ts = dynamic_cast<TS*>(tc)){
+	  if(GetValue(*ts,LGAWf) > R_EPSILON) {
+	    Point p = GetEndPoint(*ts);
+	    LGMdouble z = p.getZ();
+	    if(z > extreme.getZ())
+	      extreme = p;
+	    p = GetPoint(*ts);
+	    z = p.getZ();
+	    if(z > extreme.getZ())
+	      extreme = p;
+	  }
+	}
+	return extreme;
+      }
   };
 
   template <class TS,class BUD>
