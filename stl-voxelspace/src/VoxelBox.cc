@@ -95,7 +95,7 @@ void VoxelBox::updateValues()
 	//Check DumpScotsPineSegment (or any DumpCfSegment) that there
 	//the star mean is weighted  with foliage area of the segment:
 	//e.g. b.addStarSum(GetValue(ts,LGAstarm)*farea);
-	if (getNumSegments() > 0.0){
+	if (getNumSegmentsReal() > 0.0){
 	  if (getWeight() > 0.0)
 	    //weighted star mean
 	    star = getStarSum() / getWeight();

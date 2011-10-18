@@ -35,6 +35,7 @@ namespace Lignum {
       DumpCfTreeFunctor<TS,BUD> f(num_parts,wood);
       f.space = &s;
       ForEach(tree, f);
+      s.updateBoxValues();
     }
 
 
