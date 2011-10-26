@@ -485,8 +485,8 @@ int LSystem<TS,BUD,T,F>::lstring2Lignum(list<TreeCompartment<TS,BUD>*>& ls,
       //and the gravelius order of the terminating bud
       TS* ts = new TS(GetPoint(turtle_stack.top()),
 		      GetHeading(turtle_stack.top()),
-		      turtle_stack.size(),arg1,GetValue(tree,LGPlr)*arg1,
-		      0.0,&tree);
+		      turtle_stack.size(),arg1,arg2,
+		      arg3,&tree);
       //Set radius
       SetValue(*ts,LGAR,arg2);
       //Set top radius
