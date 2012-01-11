@@ -1,3 +1,5 @@
+//GL Utility Library 
+#include <glu.h>
 // Qt includes
 #include <QtGui>
 #include <QtOpenGL>
