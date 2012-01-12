@@ -178,7 +178,7 @@ inline void LSystem<TS,BUD,N,F>::print(bool arg)
     cout << name;
     //fprintf(stdout,"%s",name);
     //print the argument value of f.
-    if (arg = true){ 
+    if (arg == true){ 
       if (strcmp(name,"F") == 0||strcmp(name,"f") == 0 || 
 	  strcmp(name,"Turn") == 0 || strcmp(name,"Pitch") == 0 ||
 	  strcmp(name,"Roll") == 0 || strcmp(name,"HDir") == 0||
