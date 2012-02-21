@@ -7,9 +7,9 @@ SOURCES += GLDrawer.cpp main.cpp BSPPolygon.cpp BSPTree.cpp SceneObject.cpp BSPP
 
 #../SugarMaple/src/SugarMapleSegmentMetabolism.cc
 
-DEPENDPATH += . ../stl-lignum/include ../c++adt/include ../Firmament/include ../XMLTree ../LEngine/include
+DEPENDPATH += . ../stl-lignum/include ../c++adt/include ../Firmament/include ../XMLTree ../LEngine/include /usr/include/GL
 
-INCLUDEPATH += . ../stl-lignum/include ../c++adt/include ../Firmament/include ../XMLTree ../LEngine/include
+INCLUDEPATH += . ../stl-lignum/include ../c++adt/include ../Firmament/include ../XMLTree ../LEngine/include /usr/include/GL
 
 RESOURCES = resources.qrc
 CONFIG += qt warn_off no-exceptions
