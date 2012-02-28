@@ -8,6 +8,9 @@ namespace cxxadt{
 #define PI_DIV_2 1.57079632679489661923
 #define PI_DIV_4 0.78539816339744830962
 
+//Standard  gravity,  conventional  standard value  for  gravitational
+//acceleration on earth
+#define G0_VALUE  9.80665
 
 #define EPS       3.0e-8
 #define R_EPSILON 1.0e-20
