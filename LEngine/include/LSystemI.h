@@ -483,10 +483,11 @@ int LSystem<TS,BUD,T,F>::lstring2Lignum(list<TreeCompartment<TS,BUD>*>& ls,
     else if (BUD* bud = dynamic_cast<BUD*> (*current)){
       //Lstring tells only the structure, use initial dimensions
       //and the gravelius order of the terminating bud
+      //Set LGARh to 0 in a new born segment
       TS* ts = new TS(GetPoint(turtle_stack.top()),
 		      GetHeading(turtle_stack.top()),
 		      turtle_stack.size(),arg1,arg2,
-		      arg3,&tree);
+		      0.0,&tree);
       //Set radius
       SetValue(*ts,LGAR,arg2);
       //Set top radius
