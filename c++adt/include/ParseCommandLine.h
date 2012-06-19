@@ -1,7 +1,8 @@
 
 #ifndef PARSECOMMANDLINE_H
 #define PARSECOMMANDLINE_H
-
+#include <string>
+using namespace std;
 //This asumes that an argument follows the flag and returns it in its body
 string ParseCommandLine(int argc, char *argv[],const string& flag);
 

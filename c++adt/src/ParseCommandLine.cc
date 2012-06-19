@@ -1,7 +1,7 @@
 //Return argument of a flag from the command line as a string
 
 //Note: ParseCommadLine declared in ../include/ParseCommandLine.h
-
+#include <ParseCommandLine.h>
 #include <string>
 
 using namespace std;
