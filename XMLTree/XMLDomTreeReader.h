@@ -1510,7 +1510,7 @@ void XMLDomTreeReader<TS,BUD,S>::parseTriangleBroadLeafAttributes(QDomNode& node
 	vector<double> rv(GetRadiationVector(*leaf).size());
 	tmp = child.toElement().text();
 
-	for(int i = 0; i < rv.size(); i++) {
+	for(int i = 0; i < static_cast<int>(rv.size()); i++) {
 	  rv[i] = tmp.section(' ', i, i).toDouble();
 	}
 	SetRadiationVector(*leaf, rv);
