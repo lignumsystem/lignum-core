@@ -635,7 +635,7 @@ public:
   MoveHwTree(const Point& point,Tree<TS,BUD>& t)
   :move_to(point){SetPoint(t,GetPoint(t)+move_to);} 
   MoveHwTree(const Point& point):move_to(point) {} 
-  Point& setPoint(const Point& new_point) {
+  Point setPoint(const Point& new_point) {
     Point tmp = move_to;
     move_to = new_point;
     return tmp;
@@ -694,7 +694,7 @@ public:
   MoveTree(const Point& point,Tree<TS,BUD>& t)
   :move_to(point){SetPoint(t,GetPoint(t)+move_to);} 
   MoveTree(const Point& point):move_to(point) {} 
-  Point& setPoint(const Point& new_point) {
+  Point setPoint(const Point& new_point) {
     Point tmp = move_to;
     move_to = new_point;
     return tmp;
