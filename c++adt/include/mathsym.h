@@ -11,7 +11,8 @@ namespace cxxadt{
 //Standard  gravity,  conventional  standard value  for  gravitational
 //acceleration on earth
 #define G0_VALUE  9.80665
-
+//The density of ice kg/m3
+#define Rho_ICE   916.7
 #define EPS       3.0e-8
 #define R_EPSILON 1.0e-20
 #define EPS1      1.0e-10
