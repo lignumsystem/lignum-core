@@ -7,13 +7,13 @@ SOURCES += GLDrawer.cpp main.cpp BSPPolygon.cpp BSPTree.cpp SceneObject.cpp BSPP
 
 #../SugarMaple/src/SugarMapleSegmentMetabolism.cc
 
-DEPENDPATH += . ../stl-lignum/include ../c++adt/include ../Firmament/include ../XMLTree ../LEngine/include /usr/include/GL
-
 INCLUDEPATH += . ../stl-lignum/include ../c++adt/include ../Firmament/include ../XMLTree ../LEngine/include /usr/include/GL
+win32: INCLUDEPATH += -I:C\prog\QtSDK\mingw\include\GL
+DEPENDPATH = $$INCLUDEPATH
 
 RESOURCES = resources.qrc
-CONFIG += qt warn_off no-exceptions
-QT += opengl xml 
+CONFIG += qt warn_off no-exceptions 
+QT += opengl xml  
 macx: RC_FILE = LignumWb.icns
 LIBS	+= -L../c++adt/lib -L../stl-lignum/lib -L../Firmament/lib -L../LEngine/lib -lL -lsky -lLGM  -lcxxadt
 
