@@ -8,7 +8,7 @@ SOURCES += GLDrawer.cpp main.cpp BSPPolygon.cpp BSPTree.cpp SceneObject.cpp BSPP
 #../SugarMaple/src/SugarMapleSegmentMetabolism.cc
 
 INCLUDEPATH += . ../stl-lignum/include ../c++adt/include ../Firmament/include ../XMLTree ../LEngine/include /usr/include/GL
-win32: INCLUDEPATH += -I:C\prog\QtSDK\mingw\include\GL
+win32: INCLUDEPATH += C:\prog\QtSDK\mingw\include\GL
 DEPENDPATH = $$INCLUDEPATH
 
 RESOURCES = resources.qrc
