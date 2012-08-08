@@ -1299,7 +1299,7 @@ namespace Lignum{
     file << "height: " << values.height << endl;
     file << "bottom_rad: " << values.bottom_rad << endl << endl;
     file << "Height, m    Radius, cm,   HwRadius, cm" << endl;
-    for(int i1 = 0; i1 < values.taper_hei.size(); i1++) {
+    for(int i1 = 0; i1 < static_cast<int>(values.taper_hei.size()); i1++) {
       file << values.taper_hei[i1] << " " <<
 	100.0*values.taper_rad[i1]<< " " <<
 	100.0*values.taper_radh[i1] << endl;
@@ -1382,7 +1382,7 @@ namespace Lignum{
     }
 
     os << "Height, m    Diameter, cm,   HwDiameter, cm" << endl;
-    for(int i1 = 0; i1 < values.taper_hei.size(); i1++) {
+    for(int i1 = 0; i1 < static_cast<int>(values.taper_hei.size()); i1++) {
       os << values.taper_hei[i1] << " " <<
 	200.0*values.taper_rad[i1]<< " " <<
 	200.0*values.taper_radhw[i1] << endl;
@@ -1390,7 +1390,7 @@ namespace Lignum{
     os << endl;
 
     os << "Height of whorl, m     Mean branch length, m" << endl;
-    for(int i1 = 0; i1 < values.mean_br_h.size(); i1++) {
+    for(int i1 = 0; i1 < static_cast<int>(values.mean_br_h.size()); i1++) {
       os << values.mean_br_h[i1] << " " <<
 	values.mean_brl[i1] << endl;
 
