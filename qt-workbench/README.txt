@@ -1,7 +1,7 @@
 To avoid problems  in compiling LignumWb, make sure  you have done the
 following
 
-1. Download and install Qt SDK from qt.nokia.com for your platform.
+1. Download and install Qt SDK from qt-project.org for your platform.
 
 2. For  Windows operating  system use the  command line of  Dos window
 provided by  Qt (locate  this window  in the Qt  SDK menu  by browsing
