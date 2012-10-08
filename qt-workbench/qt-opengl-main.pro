@@ -8,6 +8,7 @@ SOURCES += GLDrawer.cpp main.cpp BSPPolygon.cpp BSPTree.cpp SceneObject.cpp BSPP
 #../SugarMaple/src/SugarMapleSegmentMetabolism.cc
 
 INCLUDEPATH += . ../stl-lignum/include ../c++adt/include ../Firmament/include ../XMLTree ../LEngine/include /usr/include/GL
+#This path musst be set to begin with the QtSDK installation directory on Windows 
 win32: INCLUDEPATH += C:\prog\QtSDK\mingw\include\GL
 DEPENDPATH = $$INCLUDEPATH
 
@@ -16,4 +17,5 @@ CONFIG += qt warn_off no-exceptions
 QT += opengl xml  
 macx: RC_FILE = LignumWb.icns
 LIBS	+= -L../c++adt/lib -L../stl-lignum/lib -L../Firmament/lib -L../LEngine/lib -lL -lsky -lLGM  -lcxxadt
+#This path must be set to begin with the QtSDK installation directory on Windows
 win32: LIBS += -LC:\prog\QtSDK\mingw\lib -lglu32
