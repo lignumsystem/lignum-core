@@ -53,6 +53,11 @@ will set paths to Qt tools SDK tools and libraries.
 Note 3: On Windows the  LignumWb binary is generated either into debug
 or release subdirectory depending on the CONFIG option to qmake.  This
 is the default behaviour with Qt compilation tools on Windows.
+
+Note 4: You  may need to update paths to GLU  (GL utility) library and
+glu.h header  file depending the Qt  installation directory. Currently
+the  path  to  Qt  installation  directoy is  assumed  to  begin  with
+C:\prog\QtSDK.
           
 Linux Notes
 
