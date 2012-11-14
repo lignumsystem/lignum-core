@@ -1181,6 +1181,7 @@ public:
 	  cout << "      vertex " << ce_prev.getX() << " " << ce_prev.getY() << " " << ce_prev.getZ() << endl;
 	  cout << scientific << "   endloop" << endl;
 	  cout << scientific << "endfacet" << endl;
+	  cout.setf(ios_base::fmtflags(0), ios_base::floatfield);
 
 	  cb_prev = cb_next;
 	  ce_prev = ce_next;
