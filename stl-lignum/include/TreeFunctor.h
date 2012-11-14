@@ -95,6 +95,10 @@ using namespace std;
 //              NOTE that in the case of LowestSegmentExcludingStem stem segments are NOT
 //              considered since the lowest segment is by definition the first in the
 //              main axis (stem). In other functors stem is also included.
+//
+//
+//  Triangularize Dump tree (woody parts) to STL format (writes to the console).
+
 
 //  Functors-functions below used in LIGNUM WorkBench are not listed.
 
@@ -1104,6 +1108,90 @@ public:
       }
       return tc;
     }
+  };
+
+  //This functor writes to the console the tree (the woody parts) in the STL format
+  //(set of triangles). "STL files describe only the surface geometry of a three dimensional
+  //object without any representation of color, texture or other common CAD model attributes.
+  //The functor treats TreeSegments cylinders as consisting of rectangles (facets). One rectangle
+  //consists of two triangles. The number of facets and the minimum length of a TreeSegment
+  //that is considered are the optional parameters. Default values are 6 and 0.001 m. 
+
+  template <class TS,class BUD>
+  class Triangularize{
+  public:
+  Triangularize(int n_rot = 6, LGMdouble mL = 0.001) : n_rotation(n_rot),
+      minL(mL) {}
+
+    TreeCompartment<TS,BUD>* operator()(TreeCompartment<TS,BUD>* tc)const{
+      if (TS* ts = dynamic_cast<TS*>(tc)){
+	LGMdouble length = GetValue(*ts,LGAL);
+	if(length < minL)
+	  return tc;
+
+	LGMdouble R = GetValue(*ts, LGAR);
+	LGMdouble Rt = GetValue(*ts, LGARTop);
+	if(Rt < 1.0e-10)
+	  Rt = R;
+
+	PositionVector dir = GetDirection(*ts);
+	dir.normalize();
+	PositionVector u;
+	PositionVector up(0.0,0.0,1.0);
+	if((dir == up) || ((PositionVector(0.0,0.0,0.0)-dir) == up))
+	  u = PositionVector(0.0,1.0,0.0);
+	else
+	  u = up;
+
+	PositionVector pointer = Cross(dir,u);
+	pointer.normalize();
+	
+
+	LGMdouble r_angle = 2.0*PI_VALUE/(double)n_rotation;
+
+	Point p_b = GetPoint(*ts);
+	Point p_e = GetEndPoint(*ts);
+
+	Point cb_prev = Point(PositionVector(p_b) + R*pointer);
+	Point ce_prev = Point(PositionVector(p_e) + Rt*pointer);
+	PositionVector pointer_prev = pointer;
+
+	for(int i = 0; i < n_rotation; i++) {
+	  pointer.rotate(p_b,dir,r_angle);
+	  pointer.normalize();
+
+	  Point cb_next =  Point(PositionVector(p_b) + R*pointer);
+	  Point ce_next =  Point(PositionVector(p_e) + Rt*pointer);
+	  PositionVector norm = pointer_prev + pointer;
+	  norm.normalize();
+
+	  cout.setf(ios_base::scientific, ios_base::floatfield);
+	  cout << "facet normal " << norm.getX() << " " << norm.getY() << " " << norm.getZ() << endl;
+	  cout << "   outer loop" << endl;
+	  cout << "      vertex " << cb_prev.getX() << " " << cb_prev.getY() << " " << cb_prev.getZ() << endl;
+	  cout << "      vertex " << cb_next.getX() << " " << cb_next.getY() << " " << cb_next.getZ() << endl;
+	  cout << "      vertex " << ce_prev.getX() << " " << ce_prev.getY() << " " << ce_prev.getZ() << endl;
+	  cout << scientific << "   endloop" << endl;
+	  cout << scientific << "endfacet" << endl;
+
+	  cout << "facet normal " << norm.getX() << " " << norm.getY() << " " << norm.getZ() << endl;
+	  cout << "   outer loop" << endl;
+	  cout << "      vertex " << cb_next.getX() << " " << cb_next.getY() << " " << cb_next.getZ() << endl;
+	  cout << "      vertex " << ce_next.getX() << " " << ce_next.getY() << " " << ce_next.getZ() << endl;
+	  cout << "      vertex " << ce_prev.getX() << " " << ce_prev.getY() << " " << ce_prev.getZ() << endl;
+	  cout << scientific << "   endloop" << endl;
+	  cout << scientific << "endfacet" << endl;
+
+	  cb_prev = cb_next;
+	  ce_prev = ce_next;
+	  pointer_prev = pointer;
+	}
+      }   //if (TS* ts = dynamic_cast<TS
+      return tc;
+    }
+  private:
+    int n_rotation;
+    LGMdouble minL;          //segments shorter than minimum length are not triangularized
   };
     
 
