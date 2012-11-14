@@ -1136,6 +1136,7 @@ public:
 
 	PositionVector dir = GetDirection(*ts);
 	dir.normalize();
+
 	PositionVector u;
 	PositionVector up(0.0,0.0,1.0);
 	if((dir == up) || ((PositionVector(0.0,0.0,0.0)-dir) == up))
@@ -1146,7 +1147,6 @@ public:
 	PositionVector pointer = Cross(dir,u);
 	pointer.normalize();
 	
-
 	LGMdouble r_angle = 2.0*PI_VALUE/(double)n_rotation;
 
 	Point p_b = GetPoint(*ts);
@@ -1155,9 +1155,10 @@ public:
 	Point cb_prev = Point(PositionVector(p_b) + R*pointer);
 	Point ce_prev = Point(PositionVector(p_e) + Rt*pointer);
 	PositionVector pointer_prev = pointer;
+	PositionVector zero(0.0,0.0,0.0);
 
 	for(int i = 0; i < n_rotation; i++) {
-	  pointer.rotate(p_b,dir,r_angle);
+	  pointer.rotate(zero,dir,r_angle);
 	  pointer.normalize();
 
 	  Point cb_next =  Point(PositionVector(p_b) + R*pointer);
