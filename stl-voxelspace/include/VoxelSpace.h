@@ -17,7 +17,8 @@ namespace Lignum {
   struct VoxelMovement
   {
     VoxelMovement():x(0),y(0),z(0),l(0.0),af(0.0),tau(0.0),
-		    STAR_mean(0.0){}
+      STAR_mean(0.0),n_segs_real(0.0),mean_direction(PositionVector(0,0,1)),
+      wood_area(0.0){}
     int x;//box indices
     int y;
     int z;
@@ -28,6 +29,8 @@ namespace Lignum {
     LGMdouble STAR_mean;
     LGMdouble n_segs_real;
     PositionVector  mean_direction;
+    LGMdouble wood_area; //Surface area of segments
+                         //Area of those that do not have needles in conifers
   };
 
   //The value for 'kb'  (angle of incidence, c.f.star mean for coniferous)
@@ -153,6 +156,9 @@ namespace Lignum {
     LGMdouble getXSideLength(){ return Xbox; }
     LGMdouble getYSideLength(){ return Ybox; }
     LGMdouble getZSideLength(){ return Zbox; }
+    int getNoBoxX() {return Xn;}
+    int getNoBoxY() {return Yn;}
+    int getNoBoxZ() {return Zn;}
     LGMdouble getQabs()const;
     LGMdouble getQin()const;
     pair<double,double> getMinMaxNeedleMass()const;
@@ -160,7 +166,24 @@ namespace Lignum {
     // the VoxelSpace
     LGMdouble getFoliageMass(void);
     VoxelBox& getVoxelBox(const Point& p);
+    //Given a point 'p' in global coordinate system, return a point in
+    //VoxelSpace coordinate system (=indexes)
+    //returns the indexes in a vector: v[0] = Xindex, v[1] = Yindex, v[2] = Zindex
     vector<int> getBoxIndexes(const Point& p);
+    //Returns indexes of boxes that are within distance dist from point p.
+    //(May work even if p is outside VoxelSpace but be careful).
+    //Within distance = if any point of box may be closer than dist.
+    //Indexes in a vector: v[0] = Xindex, v[1] = Yindex, v[2] = Zindex
+    //If permissive = true  returns the VoxelBoxes in the big box, that is
+    // p +- dist along all coordinate axes. If permissive = false,
+    //it is checked whether any corner of the VoxelBox
+    //is within distance dist, and if not, box is not included. This
+    //may discard some boxes in the corners of the "big" box but may fail
+    //to notice that part of the ball with radius dist around p intersect the
+    //VoxelBox.
+    list<vector<int> > getBoxesAroundPoint(const Point& p, const double& dist,
+					   const bool permissive = true);
+
     vector<VoxelMovement>& getRoute(vector<VoxelMovement> &vec, int startx, 
 				    int starty, int startz, PositionVector dir)const;
     //The method  calculates the route through the  voxel space from
@@ -181,8 +204,6 @@ namespace Lignum {
     //Input: p0   start point of the light beam
     //       dir  direction of the light beam, |dir| == 1 (!!!)
     double getBorderStandExtinction(const Point& p0, const PositionVector& dir)const;
-    //Given a point 'p' in global coordinate system, return a point in
-    //VoxelSpace coordinate system
     void updateBoxValues();  //Runs updateValues() of voxelboxes (whatever it does)
     LGMdouble calculateTurbidLight(bool self_shading = true);
     //diffuse is to calcluate the real diffuse from standard 1200, structureFlag is used to indicate if it is the first time light calculation after structure update
@@ -226,7 +247,10 @@ namespace Lignum {
 
     void evaluateVerticalNeedleAreaDensity(LGMdouble& Hmax, LGMdouble& Hmin, int& n,
 					   vector<pair<LGMdouble,LGMdouble> >& NAD);
+    LGMdouble evaluateLacunarityNeedles();
 
+
+    //==========================================================
 
     LGMdouble Xbox, Ybox, Zbox;
     int Xn, Yn, Zn;

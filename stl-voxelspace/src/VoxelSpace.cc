@@ -1544,17 +1544,17 @@ namespace Lignum {
     }
   }
 
-
-  //returns indexes of boxes that are within distance dist from point p
-  //Within distance = if any point of box is closer than distance
-  //Indexes in a vector: v[0] = Xindex, v[1] = Yindex, v[2] = Zindex
-  //If permissive = false  returns the VoxelBoxes in the big box, that is
-  // p +- dist along all coordinate axes. If permissive = false,
-  //it is checked whether any corner of the VoxelBox
-  //is within distance dist, and if not, box is not included. This
-  //may discard some boxes in the corners of the "big" box but may fail
-  //to notice that part of the ball with radius dist around p intersect the
-  //VoxelBox.
+//   Returns indexes of boxes that are within distance dist from point p.
+//   (May work even if p is outside VoxelSpace but be careful).
+//   Within distance = if any point of box may be closer than dist.
+//   Indexes in a vector: v[0] = Xindex, v[1] = Yindex, v[2] = Zindex
+//   If permissive = true  returns the VoxelBoxes in the big box, that is
+//   p +- dist along all coordinate axes. If permissive = false,
+//   it is checked whether any corner of the VoxelBox
+//   is within distance dist, and if not, box is not included. This
+//   may discard some boxes in the corners of the "big" box but may fail
+//   to notice that part of the ball with radius dist around p intersect the
+//   VoxelBox.
 
   list<vector<int> > VoxelSpace::getBoxesAroundPoint(const Point& p, const double& distance,
 						     const bool permissive) {
