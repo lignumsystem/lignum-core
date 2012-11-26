@@ -13,7 +13,7 @@ namespace cxxadt{
 #define G0_VALUE  9.80665
 //The density of ice kg/m3
 #define Rho_ICE   916.7
-#define EPS       3.0e-8
+#define EPS8       1.0e-8
 #define R_EPSILON 1.0e-20
 #define EPS1      1.0e-10
 #define R_HUGE 1.0e+20
