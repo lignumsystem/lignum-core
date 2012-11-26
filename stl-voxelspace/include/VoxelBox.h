@@ -46,7 +46,8 @@ namespace Lignum {
     bool isEmpty()const;
     const vector<VoxelObject*>& getObjects()const{return objects;}
     Point getCenterPoint()const;
-    Point getCornerPoint()const;
+    Point getCornerPoint()const;  //= lower left
+    Point getUpperRightPoint()const;
     int getNumSegments()const{ return number_of_segments; }
     LGMdouble getNumSegmentsReal()const{ return number_of_segments_real; }
     int getNumLeaves()const{ return number_of_leaves; }

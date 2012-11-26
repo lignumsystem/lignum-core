@@ -19,10 +19,6 @@ extern float cam_z;
 
 namespace Lignum {
 
-
-
-
-  //
   // Constructor
   //
   // parametres
@@ -256,10 +252,7 @@ namespace Lignum {
 		    (LGMdouble)i3*Zbox); 
 	    voxboxes[i1][i2][i3].setVoxelSpace(this, corner); 
 	  }
-      
   }
-
-
 
 
   //Move Voxelspace so that its lower left corner is set at corner
@@ -411,8 +404,6 @@ namespace Lignum {
     return vec;
   }
 
-
-
   //
   // The function  calculates the route  through the voxel  space from
   // the start point  to the direction given as  parameter.  The route
@@ -437,7 +428,7 @@ namespace Lignum {
 					      const ParametricCurve& K,
 					      bool pairwise)const
 					
-  { 
+  {
     PositionVector d0(p0);
 
     int x_jump = +1;
@@ -448,6 +439,7 @@ namespace Lignum {
     int startx = getXindex(p0.getX());
     int starty = getYindex(p0.getY());
     int startz = getZindex(p0.getZ());
+
 
     if (dir.getX()<0)
       x_jump = -1;
@@ -470,7 +462,9 @@ namespace Lignum {
     //origo of the box in global (segment) coordinates, i.e. the point
     //on the front, left and bottom faces of the box
 //    Point p1(boxx0,boxy0,boxz0);
+
     Point p1 = voxboxes[startx][starty][startz].getCornerPoint();
+
     //opposite point  to origo  in global (segment)  coordinates, i.e.
     //the point on the back, right and top faces of the box
 //    Point p2(boxx0+Xbox,boxy0+Ybox,boxz0+Zbox);
@@ -487,6 +481,7 @@ namespace Lignum {
       ymove = fabs(Ybox / dir.getY());
     if (fabs(dir.getZ()) > R_EPSILON)
       zmove = fabs(Zbox / dir.getZ());
+
 
     //Initialize: calculate the distances light beam can travel before
     //crossing the box in x,y and z directions. This is the problem of
@@ -668,7 +663,8 @@ namespace Lignum {
        
 	vm.tau = 1.0;//Initalize tau to 1 so we do not exit with DiffuseVoxelSpaceRadiation
 	//Set foliage area,  needle area + leaf area
-	vm.af = voxboxes[vm.x][vm.y][vm.z].getFoliageArea(); 
+	vm.af = voxboxes[vm.x][vm.y][vm.z].getFoliageArea();
+	vm.wood_area = voxboxes[vm.x][vm.y][vm.z].getWoodArea();
 	//Get extinction  caused by objects  in the box Avoid  the box
 	//where the shaded segment is cout << vm.x << " " << vm.y << "
 	//" << vm.z << " " <<endl << next_x << " " << next_y << " " <<
@@ -722,8 +718,8 @@ namespace Lignum {
   //Calculate the  point where  the light beam  exits the  voxel space
   //(there  must be  one). NearByShading  then returns  the extinction
   //coeffcient
-  double VoxelSpace::getBorderStandExtinction(const Point& p0, const PositionVector& dir)const
-  {
+  double VoxelSpace::getBorderStandExtinction(const Point& p0, 
+					      const PositionVector& dir)const {
     //Start point of the light beam
     PositionVector d0(p0);
     //Normals to the faces of the voxel space
@@ -737,7 +733,7 @@ namespace Lignum {
     //i.e. the point on the front,  left and bottom faces of the voxel
     //space
     Point p1(corner1);
-    //opposite point  to origo  in global (segment)  coordinates, i.e.
+   //opposite point  to origo  in global (segment)  coordinates, i.e.
     //the point on the back, right and top faces of the voxel space
     Point p2(corner2);
     //Calculate the  distances light  beam can travel  before crossing
@@ -771,7 +767,7 @@ namespace Lignum {
       t3 = -(d0.getZ() + (-p1.getZ()))/(dir.getZ());//bottom face
       t6 = -(d0.getZ() + (-p2.getZ()))/(dir.getZ());//top face
     }
-    vector<double> v(6,0.0);
+  vector<double> v(6,0.0);
     v[0] = t1; v[1] = t2; v[2] = t3; v[3] = t4; 
     v[4] = t5; v[5] = t6;
     //Sort in ascending order
@@ -801,8 +797,8 @@ namespace Lignum {
 			       GetValue(forest_descriptor,LGALAIb));
     return tau;
   }
-    
-  //
+  
+//
   // A function used to fill all the VoxBoxes with a initial
   // value
   //
@@ -1543,14 +1539,91 @@ namespace Lignum {
 	for(int i3=0; i3<Yn; i3++)
 	  na_sum += voxboxes[i2][i3][i1].getNeedleArea();
 
-      na_sum /= area;
+      na_sum /= (10000.0/area);
       NAD.push_back(pair<LGMdouble,LGMdouble>(voxboxes[0][0][i1].getCenterPoint().getZ(),na_sum));
-
     }
-}
+  }
 
-  
 
-}  // closing namespace Lignum
+  //returns indexes of boxes that are within distance dist from point p
+  //Within distance = if any point of box is closer than distance
+  //Indexes in a vector: v[0] = Xindex, v[1] = Yindex, v[2] = Zindex
+  //If permissive = false  returns the VoxelBoxes in the big box, that is
+  // p +- dist along all coordinate axes. If permissive = false,
+  //it is checked whether any corner of the VoxelBox
+  //is within distance dist, and if not, box is not included. This
+  //may discard some boxes in the corners of the "big" box but may fail
+  //to notice that part of the ball with radius dist around p intersect the
+  //VoxelBox.
+
+  list<vector<int> > VoxelSpace::getBoxesAroundPoint(const Point& p, const double& distance,
+						     const bool permissive) {
+
+    // 1) Get box indexes of boxes at distance distance from p in x, y and z directions
+
+    vector<int> v = getBoxIndexes(p + Point(distance,0.0,0.0));
+    int nx_max = v[0];
+    if(nx_max > Xn) nx_max = Xn;
+    if(nx_max < 1) nx_max = 0;
+    v = getBoxIndexes(p + Point((-distance),0.0,0.0));
+    int nx_min = v[0];
+    if(nx_min > Xn) nx_min = Xn;
+    if(nx_min < 1) nx_min = 0;
+
+    v = getBoxIndexes(p + Point(0.0,distance,0.0));
+    int ny_max = v[1];
+    if(ny_max > Yn) ny_max = Yn;
+    if(ny_max < 1) ny_max = 0;
+    v = getBoxIndexes(p + Point(0.0,(-distance),0.0));
+    int ny_min = v[1];
+    if(ny_min > Yn) ny_min = Yn;
+    if(ny_min < 1) ny_min = 0;
+
+    v = getBoxIndexes(p + Point(0.0,0.0,distance));
+    int nz_max = v[2];
+    if(nz_max > Zn) nz_max = Zn;
+    if(nz_max < 1) nz_max = 0;
+    v = getBoxIndexes(p + Point(0.0,0.0,(-distance)));
+    int nz_min = v[2];
+    if(nz_min > Zn) nz_min = Zn;
+    if(nz_min < 1) nz_min = 0;
+
+    list<vector<int> > boxes;
+    for(int i = nx_min; i <= nx_max; i++)
+      for(int j = ny_min; j <= ny_max; j++)
+	for(int k = nz_min; k <= nz_max; k++) {
+	  if(!permissive) {
+	    Point ll = voxboxes[i][j][k].getCornerPoint();  //lower left
+	    Point ur = voxboxes[i][j][k].getUpperRightPoint(); 
+	    bool box_yes = false;
+	    if( (ll || p) <= distance)
+	      box_yes = true;
+	    else if(((ll+Point(Xbox,0.0,0.0))||p) <= distance)
+	      box_yes = true;
+	    else if(((ll+Point(0.0,Ybox,0.0))||p) <= distance)
+	      box_yes = true;
+	    else if(((ll+Point(Xbox,Ybox,0.0))||p) <= distance)
+	      box_yes = true;
+	    else if((ur || p) <= distance)
+	      box_yes = true;
+	    else if(((ur-Point(Xbox,0.0,0.0))||p) <= distance)
+	      box_yes = true;
+	    else if(((ur-Point(0.0,Ybox,0.0))||p) <= distance)
+	      box_yes = true;
+	    else if(((ur-Point(Xbox,Ybox,0.0))||p) <= distance)
+	      box_yes = true;
+	    else
+	      ;
+	    if(!box_yes) 
+	      continue;
+	  }
+	  vector<int> v(3);
+	  v[0] = i; v[1] = j; v[2] = k;
+	  boxes.push_back(v);
+	}
+    return boxes;
+  }
+
+}// closing namespace Lignum
 
 
