@@ -33,7 +33,7 @@ namespace cxxadt{
     Point  getCenterPoint()const;     //getting the triangle center 
 
                                  //getting the triangle normal vector
-    PositionVector getNormal()const;
+    virtual PositionVector getNormal()const;
                                  //set up the triangle center point
                                  //end change the triangle corners
                                  //according the center point 
@@ -59,6 +59,9 @@ namespace cxxadt{
     //rotate apex round the base of the triangle by alpha
     void pitch(const double alpha);
     void move(const Point& mov);
+
+    //rotate amount angle around axis defined by p0 and dir
+    void rotate(const Point& p0, const PositionVector& dir, RADIAN angle);
                                             
   private:
     Point leftcorner,rightcorner,apexcorner;//the triangle corners

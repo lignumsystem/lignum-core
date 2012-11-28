@@ -359,6 +359,22 @@ void Triangle::pitch(const double alpha)
 }
 
 
+    //rotate amount angle around axis defined by p0 and dir
+void Triangle::rotate(const Point& p0, const PositionVector& dir, RADIAN angle) {
+
+  PositionVector new_point(leftcorner);
+  new_point.rotate(p0,dir,angle);
+  leftcorner = Point(new_point);
+
+  new_point = PositionVector(rightcorner);
+  new_point.rotate(p0,dir,angle);
+  rightcorner = Point(new_point);
+
+  new_point = PositionVector(apexcorner);
+  new_point.rotate(p0,dir,angle);
+  apexcorner = Point(new_point);
+}
+
 }//closing namespace cxxadt
 
 //To compile: g++ -DTRIANGLE RMatrix.cc PositionVector.cc Triangle.cc -I../include 
