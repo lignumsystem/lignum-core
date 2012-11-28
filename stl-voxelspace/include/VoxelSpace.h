@@ -101,8 +101,6 @@ namespace Lignum {
 
     
   public:
-
-    VoxelSpace(); 
     VoxelSpace(Point corner1, Point corner2, 
 	       int xn, int yn, int zn,
 	       Firmament& f);
