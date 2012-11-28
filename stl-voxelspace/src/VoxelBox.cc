@@ -178,18 +178,22 @@ Point VoxelBox::getCenterPoint()const
 }
 
 
-
-
 //
-// Returns the corner point of the VoxelBox
+// Returns the corner  point (=lower left) of the VoxelBox
 //
 Point VoxelBox::getCornerPoint()const
 {
 	return corner1;
 }
 
-
-
+//
+// Returns the upper right corner point of the VoxelBox
+//
+Point VoxelBox::getUpperRightPoint()const
+{
+ 	Point point = corner1 + Point(space->Xbox, space->Ybox, space->Zbox);
+	return point;
+}
 
 //
 // returns the area density of the VoxelBox
