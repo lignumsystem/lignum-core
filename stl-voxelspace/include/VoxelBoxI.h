@@ -109,12 +109,6 @@ namespace Lignum {
     }
 
 
-    template<class VOXELOBJECT>
-      vector<VOXELOBJECT*>& GetVoxelObjects(VoxelBox &b) {
-      return  b.objects; 
-    }
-
-
 
   //Accumulate (multiply) the extinctions of the objects in the voxel
   class AccumulateObjectExtinction{
