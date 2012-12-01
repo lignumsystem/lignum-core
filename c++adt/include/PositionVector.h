@@ -54,6 +54,8 @@ public:
   double getX()const { return v[0]; }
   double getY()const { return v[1]; }
   double getZ()const { return v[2]; }
+  double getLength()const{ return sqrt(pow(v[0],2.0)
+                          +pow(v[1],2.0)+pow(v[2],2.0)); }
 private:
   vector<double> v;
 };

@@ -42,6 +42,7 @@ namespace cxxadt{
       double getX()const{ return x;}
       double getY()const{ return y;}
       double getZ()const{ return z;}
+      double getLength()const{ return sqrt(x*x+y*y+z*z); }
       Point& setX(const double new_x){x = new_x; return *this;}
       Point& setY(const double new_y){y = new_y; return *this;}
       Point& setZ(const double new_z){z = new_z; return *this;}
