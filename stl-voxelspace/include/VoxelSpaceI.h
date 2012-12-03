@@ -59,8 +59,9 @@ namespace Lignum {
 	      VoxelBox& this_box = space->getVoxelBox(p1);
 	      if(foliage)
 		DumpCfSegmentFoliage(this_box, *cfts, num_parts);
-	      if(dumpWood) 
+	      else if(dumpWood) {
 		DumpSegmentWood(this_box, *cfts, num_parts);
+	      }
  	    }
 
 	} //if(foliage || ...
@@ -315,6 +316,16 @@ namespace Lignum {
 	} 
       return tc;
     }
+
+
+  template <class TS>
+    void InsertTreeSegmentAsVoxelObject(VoxelSpace& s, TS& ts) {
+    Point my_point = GetMidPoint(ts);
+    VoxelBox box = s.getVoxelBox(my_point);
+    InsertVoxelObject(box,&ts);
+  }
+
+
 
   //Deciduous TreeSegments are dumped to VoxelBoxes differently than
   //coniferous TreeSegments: all leaves of the segment are considered

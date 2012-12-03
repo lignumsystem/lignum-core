@@ -75,6 +75,9 @@ namespace Lignum {
 				    const PositionVector& d, 
 				    double t,int parts);
 
+    template <class TS>
+    friend void InsertTreeSegmentAsVoxelObject(VoxelSpace& s, TS& ts);
+
     template <class TS,class BUD>
     friend void SetCfTreeQabs(VoxelSpace &s, Tree<TS, BUD> &tree,int num_parts);
      
@@ -177,7 +180,7 @@ namespace Lignum {
     //it is checked whether any corner of the VoxelBox
     //is within distance dist, and if not, box is not included. This
     //may discard some boxes in the corners of the "big" box but may fail
-    //to notice that part of the ball with radius dist around p intersect the
+    //to notice that part of the ball with radius dist around p intersects the
     //VoxelBox.
     list<vector<int> > getBoxesAroundPoint(const Point& p, const double& dist,
 					   const bool permissive = true);
