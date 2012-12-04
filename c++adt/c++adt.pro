@@ -1,6 +1,6 @@
 #Manually inserted to define static library, no qt, the library name 
 #and its destination directory 
-CONFIG+=staticlib
+CONFIG+= staticlib  
 CONFIG -= qt
 TEMPLATE = lib
 DESTDIR = lib
@@ -48,7 +48,8 @@ HEADERS += include/Bernoulli.h \
            include/Triangle.h \
            include/Uniform.h \
            include/InvNorm.h \
-	   include/Poisson.h
+	   include/Poisson.h \
+           include/LGMGeometry.h
 SOURCES += src/Bernoulli.cc \
            src/Bisection.cc \
            src/CString.cc \
@@ -69,4 +70,5 @@ SOURCES += src/Bernoulli.cc \
            src/Triangle.cc \
            src/Uniform.cc \
            src/InvNorm.cc \
-	   src/Poisson.cc
+	   src/Poisson.cc \
+           src/LGMGeometry.cc
