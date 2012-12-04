@@ -63,6 +63,8 @@ namespace Lignum {
     template <class TS,class BUD>
     friend void DumpCfTree(VoxelSpace &s, Tree<TS, BUD> &tree,int num_parts, bool wood);
 
+    //Insert whole segment to a voxel. 
+
     //Conifers
     template <class TS>
     friend void InsertCfVoxelObject(VoxelSpace& s, const TS& ts, 
@@ -325,6 +327,19 @@ namespace Lignum {
       mutable VoxelSpace *space;
     };
   
+  //Insert all tree segments as voxel objects
+  //Usage:
+  //VoxelSpace vs;
+  //ForEach(tree,InsertTreeAsVoxelObjects(vs))
+  template <class TS, class BUD>
+  class InsertTreeAsVoxelObjects{
+  public:
+    InsertTreeAsVoxelObjects(VoxelSpace& vs1):vs(vs1){}
+    void operator ()(TreeCompartment<TS,BUD>* tc)const;
+  private:
+    VoxelSpace& vs;
+  };
+
 } // namespace Lignum
 
 #endif

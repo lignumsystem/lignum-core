@@ -394,7 +394,14 @@ namespace Lignum {
 	SetValue(**I, LGAQin, bQin);
       }
     }
+  
 
+  template <class TS, class BUD>
+  void InsertTreeAsVoxelObjects<TS,BUD>::operator()(TreeCompartment<TS,BUD>* tc)const{
+    if (TS* ts = dynamic_cast<TS*>(tc)){
+      InsertTreeSegmentAsVoxelObject(vs,*ts);
+    }
+  }
 } //End of namespace Lignum
 
 #endif
