@@ -321,7 +321,7 @@ namespace Lignum {
   template <class TS>
     void InsertTreeSegmentAsVoxelObject(VoxelSpace& s, TS& ts) {
     Point my_point = GetMidPoint(ts);
-    VoxelBox box = s.getVoxelBox(my_point);
+    VoxelBox& box = s.getVoxelBox(my_point);
     InsertVoxelObject(box,&ts);
   }
 
