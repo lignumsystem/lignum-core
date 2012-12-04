@@ -35,8 +35,6 @@ namespace Lignum {
     template <class TS,class BUD>
     friend void SetSegmentQabs(VoxelBox &b, CfTreeSegment<TS,BUD>& ts, 
 			       double num_parts);
-    friend  vector<VoxelObject*>& GetVoxelObjects(VoxelBox b){return b.objects;}
-
     friend ostream &operator << (ostream& os, VoxelBox &b);
   public:
     VoxelBox(VoxelSpace *s); 
