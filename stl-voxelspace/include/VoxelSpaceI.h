@@ -402,6 +402,12 @@ namespace Lignum {
       InsertTreeSegmentAsVoxelObject(vs,*ts);
     }
   }
+
+  template <class TREE, class TS, class BUD>
+  void InsertForestAsVoxelObjects<TREE,TS,BUD>::operator()(TREE* t)const{
+    ForEach(*t,InsertTreeAsVoxelObjects<TS,BUD>(vs));
+  }
+
 } //End of namespace Lignum
 
 #endif

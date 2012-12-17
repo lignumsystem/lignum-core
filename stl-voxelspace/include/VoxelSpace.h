@@ -340,6 +340,18 @@ namespace Lignum {
     VoxelSpace& vs;
   };
 
+  //InsertForestAsVoxelObjects
+  //Inserts a vector of trees into a voxel space
+  //VoxelSpace must have proper size to contain the trees
+  //Usage: for_each(treels.begin(),treels.end(),InsertForestAsVoxelObjects(vs))
+  template <class TREE, class TS, class BUD>
+  class InsertForestAsVoxelObjects{
+  public:
+    InsertForestAsVoxelObjects(VoxelSpace& vs1):vs(vs1){}
+    void operator()(TREE* t)const;
+  private:
+    VoxelSpace& vs;
+  };
 } // namespace Lignum
 
 #endif
