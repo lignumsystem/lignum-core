@@ -48,8 +48,10 @@ HEADERS += include/Bernoulli.h \
            include/Triangle.h \
            include/Uniform.h \
            include/InvNorm.h \
-	   include/Poisson.h \
-           include/LGMGeometry.h
+	   include/Poisson.h \ 
+	   include/LGMGeometry.h \
+           include/LGMHistogram.h
+
 SOURCES += src/Bernoulli.cc \
            src/Bisection.cc \
            src/CString.cc \
@@ -71,4 +73,6 @@ SOURCES += src/Bernoulli.cc \
            src/Uniform.cc \
            src/InvNorm.cc \
 	   src/Poisson.cc \
-           src/LGMGeometry.cc
+           src/LGMGeometry.cc \
+           src/LGMHistogram.cc
+
