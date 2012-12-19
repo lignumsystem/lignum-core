@@ -15,16 +15,17 @@ namespace sky{
 //If we know the irradiance on the horizontal plane, Q, we have thus the brightness of
 //the sky as Q * d(inc)
 //
-//Constructor, define the division of the sky into sectors (see Firmament.h for
-//the principle of division) and calculate the diffuse radiation coming from each sector.
-//The diffuse radiation is initialize so that its irradiance on hozontal pla is
-//equal to 1200 MJ/m2 . This corresponds to the radiation sum (direct+diffuse) during
-//the growing period in southern Finland (Stenberg).
-//Update also other radiation variables.
-//Sun's radiation is initialized as 0.
+//Constructor,  define  the division  of  the  sky  into sectors  (see
+//Firmament.h for the principle of division) and calculate the diffuse
+//radiation  coming  from  each  sector.   The  diffuse  radiation  is
+//initialize  so that  its  irradiance  on hozontal  pla  is equal  to
+//rad_plane and  by default  is 1200 MJ/m2  . This corresponds  to the
+//radiation sum (direct+diffuse) during the growing period in southern
+//Finland (Stenberg).   Update also other  radiation variables.  Sun's
+//radiation is initialized as 0.
 
 
-Firmament::Firmament(int no_incl, int no_azim)
+Firmament::Firmament(int no_incl, int no_azim, double rad_plane)
   :sunPosition(3),inclinations(no_incl),azimDivisions(no_incl),
   inclinationIndex(no_incl*no_azim),azimuthIndex(no_incl*no_azim),
   dir_x(no_incl*no_azim),dir_y(no_incl*no_azim),dir_z(no_incl*no_azim)
@@ -40,7 +41,7 @@ Firmament::Firmament(int no_incl, int no_azim)
   //growing period in Finland according to Stenberg 1996
   //directRadPlane = 0
 
-  diffuseRadPlane = 1200.0;
+  diffuseRadPlane = rad_plane;
   directRadPlane = 0.0;
   diffuseRadBall = 0.0;
   sunPosition.resize(3);

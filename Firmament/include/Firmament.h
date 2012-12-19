@@ -70,6 +70,8 @@ using namespace cxxadt;
      Arguments: 
      in: 'no_incl', number of sectors dividing the sky horizontally.
          'no_azim', number of sectors dividing the sky vertically.
+         'rad_plane=1200' 1200 MJ (PAR)/m2 equal to radiation sum (direct+diffuse) 
+                          during the growing peariod in Southern Finlandxs 
 
 2.   void setDiffuseRadiation(const double rad)
      Set the diffuse radiation (rad = radiation coming to horiz. plane)
@@ -171,7 +173,7 @@ using namespace cxxadt;
 
 class Firmament{
 public:
-  Firmament(int no_incl = NUM_OF_INCL/*9*/, int no_azim = NUM_OF_AZIM /*24*/);
+  Firmament(int no_incl = NUM_OF_INCL/*9*/, int no_azim = NUM_OF_AZIM /*24*/,double rad_plane=1200.0);
   void resize(int no_incl, int no_azim, double diffuse_rad_plane);
   void setDiffuseRadiation(const double rad);
   void setDirectRadiation(const double rad) { directRadPlane = rad; }

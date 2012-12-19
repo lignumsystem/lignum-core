@@ -45,7 +45,7 @@ namespace sky{
 //   100% means gap, less than 100% means obstacle.
 class FirmamentWithMask:public Firmament{
 public: 
-  FirmamentWithMask(int no_incl = NUM_OF_INCL/*9*/, int no_azim = NUM_OF_AZIM /*24*/);
+  FirmamentWithMask(int no_incl = NUM_OF_INCL/*9*/, int no_azim = NUM_OF_AZIM /*24*/,double rad_plane=1200.0);
   void resize(int no_incl,int no_azim, double rad);
   void configure(const string& file);
   void configure(int iter, bool verbose = false);
