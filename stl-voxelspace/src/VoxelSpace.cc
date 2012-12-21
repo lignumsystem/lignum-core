@@ -1563,25 +1563,25 @@ namespace Lignum {
 
     vector<int> v = getBoxIndexes(p + Point(distance,0.0,0.0));
     int nx_max = v[0];
-    if(nx_max > Xn) nx_max = Xn - 1;
+    if(nx_max >= Xn) nx_max = Xn - 1;
     if(nx_max < 1) nx_max = 0;
     v = getBoxIndexes(p + Point((-distance),0.0,0.0));
     int nx_min = v[0];
-    if(nx_min > Xn) nx_min = Xn - 1;
+    if(nx_min >= Xn) nx_min = Xn - 1;
     if(nx_min < 1) nx_min = 0;
 
     v = getBoxIndexes(p + Point(0.0,distance,0.0));
     int ny_max = v[1];
-    if(ny_max > Yn) ny_max = Yn - 1;
+    if(ny_max >= Yn) ny_max = Yn - 1;
     if(ny_max < 1) ny_max = 0;
     v = getBoxIndexes(p + Point(0.0,(-distance),0.0));
     int ny_min = v[1];
-    if(ny_min > Yn) ny_min = Yn - 1;
+    if(ny_min >= Yn) ny_min = Yn - 1;
     if(ny_min < 1) ny_min = 0;
 
     v = getBoxIndexes(p + Point(0.0,0.0,distance));
     int nz_max = v[2];
-    if(nz_max > Zn) nz_max = Zn - 1;
+    if(nz_max >= Zn) nz_max = Zn - 1;
     if(nz_max < 1) nz_max = 0;
     v = getBoxIndexes(p + Point(0.0,0.0,(-distance)));
     int nz_min = v[2];
