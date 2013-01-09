@@ -98,7 +98,8 @@ using namespace std;
 //
 //
 //  Triangularize Dump tree (woody parts) to STL format (writes to the console).
-
+//  DaVinciTaperCurve  Implements the taper curve according to Da Vinci rule
+//                     Needs 1) Radius of the first segments 2) The exponent 
 
 //  Functors-functions below used in LIGNUM WorkBench are not listed.
 
@@ -1195,8 +1196,22 @@ public:
     int n_rotation;
     LGMdouble minL;          //segments shorter than minimum length are not triangularized
   };
-    
 
+  //Implements Da Vinci rule tapering: R_base^exp = R_1^exp+R_2^exp+...+R_n^exp
+  //Usually the exponent is 2.0.
+  //Usage: AccumulateDown(tree,0.0,DaVinciTaperCurve(init_radius,exponent))
+  template <class TS, class BUD>     
+  class DaVinciTaperCurve{
+  public:
+    DaVinciTaperCurve(const DaVinciTaperCurve& dv)
+      :init_radius(dv.init_radius),exponent(dv.exponent){}
+    DaVinciTaperCurve(double r, double e)
+      :init_radius(r),exponent(e){}
+    double operator()(double radius_e, TreeCompartment<TS,BUD>* tc)const;
+  private:
+    mutable double init_radius;//The initial radius for the first segments
+    double exponent;//The exponent defining tapering, usually 2.0
+  };
 }//closing namespace Lignum
 #include <TreeFunctorI.h>
 

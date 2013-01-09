@@ -32,7 +32,7 @@
 //   PrintTreeSegmentInformationToFileByAxis
 //   DropAllLeaves
 //   CrownVolume
-
+//   DaVinciTaperCurve
 
 
 //Functors-functions below used in LIGNUM WorkBench are not listed. 
@@ -499,16 +499,17 @@ namespace Lignum{
   //(HwTreeSegment) segments.
 
   template <class TS,class BUD>
-    BoundingBox&
-    FindCfBoundingBox<TS,BUD>::operator ()(BoundingBox& b_box,
+  BoundingBox&
+  FindCfBoundingBox<TS,BUD>::operator ()(BoundingBox& b_box,
 					   TreeCompartment<TS,BUD>* tc)const
-    {
-      if(TS* ts = dynamic_cast<TS*>(tc)){
+  { 
+    if(TS* ts = dynamic_cast<TS*>(tc)){
+    
 	if(foliage) {
 	  if(GetValue(*ts, LGAWf) < R_EPSILON)
+	    cout << "No foliage" <<endl;
 	    return b_box;
 	}
-      
 	Point base = GetPoint(*ts);
 	Point top = GetEndPoint(*ts);
 	double rSh = GetValue(*ts,LGARf); //max dist of needle tip from woody part	
@@ -1653,7 +1654,31 @@ namespace Lignum{
     return;
   }
 
-
+  template <class TS, class BUD>
+  double DaVinciTaperCurve<TS,BUD>::operator()(double radius_exp,TreeCompartment<TS,BUD>* tc)const
+  {
+    if (TS* ts = dynamic_cast<TS*>(tc)){
+      //If the first segment at a tip of a branch
+      if (radius_exp == 0.0){
+	//Set the radius
+	SetValue(*ts,LGAR,init_radius);
+	//Return the radius raised to the exponent 
+	//cout << "Radius A " << init_radius << endl;
+	radius_exp = pow(init_radius,exponent);
+      }
+      else{
+	//The radius_e is the sum of the radii of the segments above.
+	//The sum is calculated by the AccumulateDown in each branching point
+	double r = pow(radius_exp,1.0/exponent);
+	//cout << "Radius B " << r << endl; 
+	SetValue(*ts,LGAR,r);
+      }
+      //Return the radius raised to the exponent 
+      double r = GetValue(*ts,LGAR);
+      radius_exp = pow(r,exponent);
+    }
+    return radius_exp;
+  }
 }//closing namespace Lignum
 
 #endif
