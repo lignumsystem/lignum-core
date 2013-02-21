@@ -766,7 +766,13 @@ namespace Lignum{
   operator()(LGMdouble &sum, TreeCompartment<TS,BUD>* tc)const
   {
     if(TS *segment = dynamic_cast<TS *>(tc)){
-      sum += GetValue(*segment, LGAWood);
+	if(my_order < 0.0)
+	  sum += GetValue(*segment, LGAWood);
+	else {
+	  LGMdouble order = GetValue(*segment,LGAomega);
+	  if(order - 0.1 < my_order && order + 0.1 > my_order)
+	    sum += GetValue(*segment, LGAWood);
+	}
     }
     return sum;
   }
@@ -1629,7 +1635,6 @@ namespace Lignum{
     LGMdouble dist = H_high - H_low;
 
     int layers = (int)(dist/step) + 1;
-
     ext.resize(layers);
 
     Axis<TS,BUD>& ax = GetAxis(tr);
