@@ -65,6 +65,7 @@ Note   1:  The   LignumWb   binary  is   created   into  the   current
 (i.e. qt-workbench)  directory. This is the default  behaviour with Qt
 compilation tools on Linux.
 
+Note 2: To compile under Ubuntu (and derivatives), it may be necessary
+to add -LGLU to the libraries in qt-opengl-main.pro (line 19):
 
-
-
+  LIBS	+= -L../c++adt/lib -L../stl-lignum/lib -L../Firmament/lib -L../LEngine/lib -lL -lsky -lLGM  -lcxxadt -lGLU
