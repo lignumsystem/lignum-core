@@ -40,7 +40,7 @@ public:
   void addBroadLeafAttributeNode(QDomElement&, QDomDocument&, BroadLeaf<S>*)const;
 private:
   mutable int object_index;
-  mutable Tree<TS,BUD>& m_tree;
+  Tree<TS,BUD>& m_tree;
   mutable QDomDocument m_doc;
   mutable QDomElement m_root;
   mutable QString segmentType;
