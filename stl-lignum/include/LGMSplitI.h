@@ -50,7 +50,7 @@ void split_axis(Axis<TS,BUD>& axis, METER l, METER l_min)
 	list<TreeCompartment<TS,BUD>*>& tc_ls = GetTreeCompartmentList(axis);
 	typename list<TreeCompartment<TS,BUD>*>::iterator it = tc_ls.begin();
 	for(it = tc_ls.begin(); it != tc_ls.end(); ++it) {
-		while(cut(tc_ls, it, l, l_min));
+	  while(cut(tc_ls, it, l, l_min)){/*empty block*/};
 	}
 }
 
