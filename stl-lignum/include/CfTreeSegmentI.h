@@ -2,14 +2,40 @@
 #define CF_TREE_SEGMENTI_H
 
 namespace Lignum{
-
+  //Construct   CfTreeSegment   by   giving  all   needed   attributes
+  //and parameters explicitely in the constructor.
+  template <class TS, class BUD> 
+  CfTreeSegment<TS,BUD>::CfTreeSegment(const Point& p, const PositionVector& d, 
+				       const LGMdouble go, const METER l, const METER r, 
+				       const METER rh, const LGMdouble sf, const LGMdouble af, 
+				       const LGMdouble nl, const LGMdouble na, Tree<TS,BUD>* t)
+    :TreeSegment<TS,BUD>(p,d,go,l,r,rh,t)
+  {
+    SetValue(*this,LGAsf,sf);
+    //Foliage height = needle length * sin(needle angle)
+    SetValue(*this,LGAHf,nl*sin(na));
+    //Radius to foliage height
+    SetValue(*this,LGARf,GetValue(*this,LGAR)+GetValue(*this,LGAHf));
+    //Foliage mass = needle area density * surface area of the segment cylinder
+    SetValue(*this,LGAWf,af*GetValue(*this,LGASa));
+    //Remember original sapwood area
+    SetValue(*this,LGAAs0,GetValue(*this,LGAAs));
+    //Rememebr original foliage mass
+    SetValue(*this,LGAWf0,GetValue(*this,LGAWf));
+  }
+  //Construct CfTreeSegment  given point, direction,  gravelius order,
+  //length, radius, heartwood radius and the tree. The foliage is then
+  //calculated   based   on   parameter   files  given   in   a   file
+  //(Tree.txt). These  foliage parameters must  include: Specific leaf
+  //area LGPsf (m2/kgC), needle area density LGPaf (kgC/m2), needle angle
+  //(radians).
 template <class TS,class BUD>
 CfTreeSegment<TS,BUD>::CfTreeSegment(const Point& p, const PositionVector& d, 
 				     const LGMdouble go, const METER l, const METER r, 
 				     const METER rh, Tree<TS,BUD>* t)
   :TreeSegment<TS,BUD>(p,d,go,l,r,rh,t)
   {
-    //Specific leaf area, us tree level parameter by default
+    //Specific leaf area, use tree level parameter by default
     SetValue(*this,LGAsf,GetValue(*t,LGPsf));  
     //Height of the foliage cylinder
     SetValue(*this,LGAHf,GetValue(*t,LGPnl)*sin(GetValue(*t,LGPna)));

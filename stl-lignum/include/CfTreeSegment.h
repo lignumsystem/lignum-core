@@ -54,6 +54,15 @@ namespace Lignum{
     friend LGMdouble SetValue(CfTreeSegment<TS1,BUD1>& ts, const LGMAD name,
 			      const LGMdouble);
   public:
+    //Construct   CfTreeSegment   by   giving  all   needed   attributes
+    //and parameters explicitely in the constructor.
+    CfTreeSegment(const Point& p, const PositionVector& d, 
+		  const LGMdouble go, const METER l, const METER r, 
+		  const METER rh, const LGMdouble sf, const LGMdouble af, 
+		  const LGMdouble nl, const LGMdouble na, Tree<TS,BUD>* t);
+    //Construct CfTreeSegment by using  tree level (i.e. common to all
+    //segments)  foliage/needle parameters,  usually given  in  a file
+    //(Tree.txt)
     CfTreeSegment(const Point& p,const PositionVector& pv,const LGMdouble go,const METER l,
 		  const METER r,const METER rh,Tree<TS,BUD>* tree);
     CfTreeSegment(Tree<TS,BUD>* tree):TreeSegment<TS,BUD>(tree) { }
