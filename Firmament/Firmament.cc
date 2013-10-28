@@ -289,16 +289,21 @@ void Firmament::resize(int no_incl, int no_azim, double diffuse_rad_plane)
 
     rsum += diffuseRadZenith;
 
-    
-    diffuseRadBall = 0.0;
-    for(i = 0; i < num_of_incl; i++)
-      for(j = 0; j < azimDivisions[i]; j++) {
-	diffuseRad[i][j] *= diffuseRadPlane / rsum;
-	diffuseRadBall += diffuseRad[i][j];
-      }
+    if(rsum > R_EPSILON) {    //Brightness of sky may be == 0 (i.e. night)
+      diffuseRadBall = 0.0;
+      for(i = 0; i < num_of_incl; i++)
+	for(j = 0; j < azimDivisions[i]; j++) {
+	  diffuseRad[i][j] *= diffuseRadPlane / rsum;
+	  diffuseRadBall += diffuseRad[i][j];
+	}
 
-    diffuseRadZenith  *= diffuseRadPlane / rsum;
-    diffuseRadBall += diffuseRadZenith;
+      diffuseRadZenith  *= diffuseRadPlane / rsum;
+      diffuseRadBall += diffuseRadZenith;
+    }
+    else {
+      diffuseRadBall = 0.0;
+      diffuseRadZenith = 0.0;
+    }
     //store here the inclination and azimuth indexes as a function of
     //number of the sector
 
