@@ -16,6 +16,6 @@ RESOURCES = resources.qrc
 CONFIG += qt warn_off no-exceptions 
 QT += opengl xml  
 macx: RC_FILE = LignumWb.icns
-LIBS	+= -L../c++adt/lib -L../stl-lignum/lib -L../Firmament/lib -L../LEngine/lib -lL -lsky -lLGM  -lcxxadt
+LIBS	+= -L../c++adt/lib -L../stl-lignum/lib -L../Firmament/lib -L../LEngine/lib -lL -lsky -lLGM  -lcxxadt -lGLU
 #This path must be set to begin with the QtSDK installation directory on Windows
 win32: LIBS += -LC:\prog\QtSDK\mingw\lib -lglu32
