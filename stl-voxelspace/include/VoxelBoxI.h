@@ -29,7 +29,7 @@ namespace Lignum {
       S_f = 28.0;
       
     LGMdouble starS = 0.0;
-    //Tarkistettu että for-looppi ajetaan tasan 8 kertaa (mika).
+    //This for loop is executed 8 times!!!!
     for (double phi=0; phi<PI_VALUE/2.0; phi+=PI_VALUE/16)
       {		
 	starS += b.S(phi, S_f, fmass, needle_rad, lenght);
