@@ -1129,13 +1129,16 @@ namespace Lignum {
 
   void VoxelSpace::updateBoxValues()
   {
-    for(int i1=0; i1<Xn; i1++){
-      for(int i2=0; i2<Yn; i2++){
-	for(int i3=0; i3<Zn; i3++){
-	    voxboxes[i1][i2][i3].updateValues(); 
-	}
+      cout<<"IM inside updateBoxValues";
+      for(int i1=0; i1<Xn; i1++){
+          for(int i2=0; i2<Yn; i2++){
+              for(int i3=0; i3<Zn; i3++){
+                  voxboxes[i1][i2][i3].updateValues();
+                  voxboxes[i1][i2][i3].updateValuesDirectionalStar(); //This does not work. Something needs
+                                                                       //to be done here so that the program knows when to call it.
+              }
+          }
       }
-    }
   }
 
   void VoxelSpace::reset()

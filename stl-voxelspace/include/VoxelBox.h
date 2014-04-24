@@ -42,6 +42,7 @@ namespace Lignum {
     //Recalculate star and val_c,  k_b and val_b
     //currently star and k_b hard-coded!!
     void updateValues();
+    void updateValuesDirectionalStar();
     LGMdouble extinction(LGMdouble l)const;
     bool isEmpty()const;
     const vector<VoxelObject*>& getObjects()const{return objects;}
@@ -58,6 +59,7 @@ namespace Lignum {
     LGMdouble getQinMean()const{return Qin_mean;}
     LGMdouble getStarSum()const{ return starSum; }
     LGMdouble getStar()const{ return star; }
+    vector<LGMdouble> getDirStarSum()const{ return starDirSum; }  // star sum for directional vector implementaiton
     LGMdouble getNeedleMass()const{return needleMass;}
     LGMdouble getNeedleArea()const{return needleArea;}
     LGMdouble getLeafMass()const{return leafMass;}
@@ -90,6 +92,8 @@ namespace Lignum {
     void setQabsMean(LGMdouble val){Qabs_mean= val;}
     void addInterceptedRadiation(LGMdouble rad) { interceptedRadiation += rad; }
     void addStarSum(LGMdouble starmean){starSum += starmean;}
+    void addDirectionalStarSum(vector<LGMdouble> stardirmean){starDirSum.resize(8);
+                                                              std::transform (stardirmean.begin(),stardirmean.end(),stardirmean.begin(),starDirSum.begin(),plus<LGMdouble>());}
     void subtractStarSum(LGMdouble starmean){starSum -= starmean;}
     void addWoodMass(LGMdouble mass) {woodMass += mass; }
     void addWoodArea(LGMdouble area) {woodArea += area; }
@@ -118,6 +122,9 @@ namespace Lignum {
   protected:
     void resetCfData(){
       star = 0; starSum = 0.0; needleArea = 0.0;needleMass = 0.0;
+      vector<LGMdouble>starDirSum;vector<LGMdouble>starDir; // here i initialise the vectors with 8 of the values to zero.
+      starDirSum.resize(8); starDir.resize(8);
+      starDirSum[8] = 0.0; starDir[8] = 0.0;
       number_of_segments = 0; val_c = 0.0; weight = 0.0;
       number_of_segments_real = 0.0; mean_direction = PositionVector(0.0,0.0,0.0);
     }
@@ -137,6 +144,8 @@ namespace Lignum {
     LGMdouble Qabs_mean;
     LGMdouble star;
     LGMdouble starSum;
+    vector<LGMdouble> starDirSum;    // Added for vector calculations
+    vector<LGMdouble>starDir;        // Added as a simple Star vector
     LGMdouble weight; //weighted starSum, e.g. foliage area
     
     LGMdouble Q_inStdDiffuse;
