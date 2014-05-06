@@ -18,7 +18,7 @@ namespace Lignum {
   {
     VoxelMovement():x(0),y(0),z(0),l(0.0),af(0.0),tau(0.0),
       STAR_mean(0.0),n_segs_real(0.0),mean_direction(PositionVector(0,0,1)),
-      wood_area(0.0){}
+        wood_area(0.0),starDir(8,0.0){}
     int x;//box indices
     int y;
     int z;
@@ -31,6 +31,7 @@ namespace Lignum {
     PositionVector  mean_direction;
     LGMdouble wood_area; //Surface area of segments
                          //Area of those that do not have needles in conifers
+    vector<LGMdouble>  starDir; // Vector to record STAR values in all the inclination angles.
   };
 
   //The value for 'kb'  (angle of incidence, c.f.star mean for coniferous)
@@ -202,7 +203,7 @@ namespace Lignum {
 				    const Point& p0,
 				    const PositionVector& dir, 
 				    const ParametricCurve& K,
-				    bool pairwise)const;
+                    bool pairwise, bool dir_star)const;
     //Return the extinction caused by the border stand
     //Input: p0   start point of the light beam
     //       dir  direction of the light beam, |dir| == 1 (!!!)
