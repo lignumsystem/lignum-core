@@ -417,6 +417,8 @@ namespace Lignum {
   // pairwise: if true calcuate the extinction using pairwise comparison 
   //           to voxel objects, if false calculate only the path lengths 
   //           in voxels  
+  // dir_star : if true collect the STAR values for all directions else use
+  //            the mean star values.
   // returns : the route stored in a vector, 
   //           extinction of the objects in the voxels 
   //
@@ -426,8 +428,9 @@ namespace Lignum {
 					      const Point& p0,
 					      const PositionVector& dir,
 					      const ParametricCurve& K,
-					      bool pairwise)const
-					
+                          bool pairwise,
+                          bool calculateDirectionalStar)const
+
   {
     PositionVector d0(p0);
 
@@ -654,8 +657,26 @@ namespace Lignum {
 	vm.y = starty;
 	vm.z = startz;
 
-	vm.STAR_mean = voxboxes[vm.x][vm.y][vm.z].getStar();
-	vm.n_segs_real = voxboxes[vm.x][vm.y][vm.z].getNumSegmentsReal();
+    // Code changed in case of Star data for inclination is given then this satements are executed.
+    if(calculateDirectionalStar ){
+        vm.starDir = voxboxes[vm.x][vm.y][vm.z].getDirectionalStar();
+      //   vm.STAR_mean = voxboxes[vm.x][vm.y][vm.z].getStar();
+
+        // cout<<"STAR_mean"<<vm.STAR_mean <<endl;
+
+      //  for(int x = 0; x<=7;x++){cout<<"IN calculateDirectionalStar"<<vm.starDir[x]<<endl;}
+
+
+      //  vm.starDir = voxboxes[vm.x][vm.y][vm.z].getDirStarSum();
+
+    }
+        else{
+
+        vm.STAR_mean = voxboxes[vm.x][vm.y][vm.z].getStar();
+        }
+
+
+    vm.n_segs_real = voxboxes[vm.x][vm.y][vm.z].getNumSegmentsReal();
 	vm.mean_direction = voxboxes[vm.x][vm.y][vm.z].getMeanDirection();
 
 	//	cout << "index: " << vm.x << " " << vm.y << " " << vm.z << endl;  //!!!!!!!!!!!!!!!!!!!!!!
@@ -1000,7 +1021,7 @@ namespace Lignum {
 	    dr.normalize();
 	    LGMdouble maximum_box_project_area= fabs(Xbox*Ybox*dr.getZ())+fabs(Xbox*Zbox*dr.getY())+ fabs(Zbox*Ybox*dr.getX());
 	    vector<VoxelMovement> vec;
-	    getRoute(vec, i1, i2, i3,dr);
+        getRoute(vec, i1, i2, i3,dr);
 	    //Trace the  path from one  sector towards the
 	    //tree (getRoute follows the light beam from a
 	    //leaf towards a sector)
@@ -1012,7 +1033,7 @@ namespace Lignum {
 	      PositionVector big_leaf_normal=voxboxes[vm.x][vm.y][vm.z].getBigLeafNormal();
 	      LGMdouble projected_leaf_area=leaf_area*fabs(big_leaf_normal.getX()*dr.getX()
 							   + big_leaf_normal.getY()*dr.getY()
-							   + big_leaf_normal.getZ()*dr.getZ());
+                               + big_leaf_normal.getZ()*dr.getZ());
 	      double area_ratio = projected_leaf_area/maximum_box_project_area;
 	      if (area_ratio>0.2 && area_ratio<=0.8)
 		area_ratio = 0.51*area_ratio +0.1;
@@ -1129,15 +1150,16 @@ namespace Lignum {
 
   void VoxelSpace::updateBoxValues()
   {
-      cout<<"IM inside updateBoxValues";
+
       for(int i1=0; i1<Xn; i1++){
           for(int i2=0; i2<Yn; i2++){
               for(int i3=0; i3<Zn; i3++){
                   voxboxes[i1][i2][i3].updateValues();
-                  voxboxes[i1][i2][i3].updateValuesDirectionalStar(); //This does not work. Something needs
+                //  voxboxes[i1][i2][i3].updateValuesDirectionalStar(); //This does not work. Something needs
                                                                        //to be done here so that the program knows when to call it.
               }
           }
+
       }
   }
 

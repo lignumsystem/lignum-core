@@ -20,8 +20,7 @@ void DumpCfSegmentFoliage(VoxelBox &b, const CfTreeSegment<TS,BUD>& ts,
     LGMdouble farea = GetValue(ts, LGAAf);
     b.addNeedleArea(farea/(double)num_parts);
     b.addNeedleMass(fmass/(double)num_parts);
-
-    vector<LGMdouble> starDirectional(8);
+    vector<LGMdouble>  starDir(8);  
     LGMdouble needle_rad = GetValue(ts, LGARf);
     LGMdouble S_f;
     LGMdouble weight;
@@ -39,6 +38,9 @@ void DumpCfSegmentFoliage(VoxelBox &b, const CfTreeSegment<TS,BUD>& ts,
 
 
     starS /= 8.0;
+    cout<<"starS "<<starS<<endl;
+    b.addStarSum(starS * farea/(double)num_parts);  //Note: weighted by needle area
+    //of the part of seg that is in question.
     b.addStarSum(starS * farea/(double)num_parts);  //Note: weighted by needle area
     //of the part of seg that is in question.
     b.addWeight(farea/(double)num_parts);
@@ -46,20 +48,27 @@ void DumpCfSegmentFoliage(VoxelBox &b, const CfTreeSegment<TS,BUD>& ts,
     b.increaseNumberOfSegments();  //This is a bit problematic with num_parts
     b.addNumberOfSegmentsReal(1.0/(double)num_parts);
     b.addVector((farea/(double)num_parts)*GetDirection(ts));
-    //Code added by KV************************************************************************************
+    //************************Code added by KV***************************************************************
     //To get the directions of the shoot and the incident rays. A vector is generated as a result using the
     //function CalcDirectionalStar and stored for the different 8 values.
 
     weight = farea/(double)num_parts;  // weight is used to get the weighted part of the calulcation
-    starDirectional= calcDirectionalStar(b,ts,fmass,lenght,needle_rad,S_f);
-    std::transform(starDirectional.begin(),starDirectional.end(),starDirectional.begin(),std::bind1st(std::multiplies<LGMdouble>(),weight));//multiply the vector with the weighted foliage
+    cout<<"weight "<<weight<<endl;
+    starDir= calcDirectionalStar(b,ts,fmass,lenght,needle_rad,S_f);
+    std::transform( starDir.begin(), starDir.end(), starDir.begin(),std::bind1st(std::multiplies<LGMdouble>(),weight));//multiply the vector with the weighted foliage
     //area and use to add up all the vectors
-    b.addDirectionalStarSum( starDirectional);
+    b.addDirectionalStarSum(starDir);
     //********************************************************************************************************
+    double sum=0;
+    for(int ii = 0;ii<=7;ii++){
+    cout<<"starDir  "<<starDir[ii]<< " " << starS << endl;
+        sum += starDir[ii];
+    }
+    cout << sum/8.0 << endl;
+    cout << Point(GetDirection(ts));
+    exit(0);
 }
 
-// This converts the entire starS to a vector STL class and gives out the vector class.
-// Written : K.V.Gopalkrishnan
 
 template <class TS,class BUD>
 std::vector<LGMdouble> calcDirectionalStar(VoxelBox &b,const CfTreeSegment<TS,BUD> &ts,
@@ -72,11 +81,6 @@ std::vector<LGMdouble> calcDirectionalStar(VoxelBox &b,const CfTreeSegment<TS,BU
     LGMdouble inclination;
     vector<LGMdouble>directionalStar(8);
     int counter = 0;
-
-    fmass = 0.00151205;
-    lenght = 0.18 ;
-    needle_rad = 0.017;
-    S_f = 25 ;
 
 
     //    ********************************************************************************************************

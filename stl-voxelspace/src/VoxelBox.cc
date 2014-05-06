@@ -12,7 +12,7 @@ namespace Lignum {
     starSum(0.0),weight(0.0),Q_inStdDiffuse(0.0),interceptedRadiation(0.0),
     needleMass(0.0),leafMass(0.0),number_of_segments(0),number_of_leaves(0),
     big_leaf_normal(0,0,0),val_c(0.0),val_b(0.0),woodMass(0.0),woodArea(0.0),
-    number_of_segments_real(0.0)
+    number_of_segments_real(0.0),starDirSum(8,0.0),starDir(8,0.0)
   { 
     space = s;
   }
@@ -26,7 +26,7 @@ namespace Lignum {
     starSum(0.0),weight(0.0),Q_inStdDiffuse(0.0),interceptedRadiation(0.0),
     needleMass(0.0), leafMass(0.0),number_of_segments(0),number_of_leaves(0), 
     big_leaf_normal(0,0,0),val_c(0.0),val_b(0.0),woodMass(0.0),woodArea(0.0),
-    number_of_segments_real(0.0)
+    number_of_segments_real(0.0), starDirSum(8,0.0),starDir(8,0.0)
   { 
     space = NULL; 
   }
@@ -49,6 +49,41 @@ namespace Lignum {
   
 void VoxelBox::init()
 { 
+        needleArea = 0.0;
+        leafArea = 0.0;
+        Q_in = 0.0;
+        Q_abs = 0.0;
+        Qin_mean = 0.0;
+        Qabs_mean = 0.0;
+        star = 0.0;
+        starSum = 0.0;
+        needleMass = 0.0;
+        starDir[0] = 0.0;
+        starDir[1] = 0.0;
+        starDir[2] = 0.0;
+        starDir[3] = 0.0;
+        starDir[4] = 0.0;
+        starDir[5] = 0.0;
+        starDir[6] = 0.0;
+        starDir[7] = 0.0;
+
+        starDirSum[0] = 0.0;
+        starDirSum[1] = 0.0;
+        starDirSum[2] = 0.0;
+        starDirSum[3] = 0.0;
+        starDirSum[4] = 0.0;
+        starDirSum[5] = 0.0;
+        starDirSum[6] = 0.0;
+        starDirSum[7] = 0.0;
+
+
+        number_of_segments = 0;
+        number_of_leaves = 0;
+        interceptedRadiation = 0.0;
+        weight = 0.0;
+        objects.clear();
+        big_leaf_normal = PositionVector(0,0,0);
+
         needleArea = 0.0;
         leafArea = 0.0;
         Q_in = 0.0;
@@ -106,6 +141,7 @@ void VoxelBox::updateValues()
         //star = 0.14;
         LGMdouble k_b = GetValue(*space,LGAkb);
 
+
         //star  for needles
         val_c = star * (needleArea / (space->Xbox * space->Ybox *
                                       space->Zbox));
@@ -116,6 +152,8 @@ void VoxelBox::updateValues()
 //        mean_direction.normalize();
 //      else
 //        mean_direction = PositionVector(0.0,0.0,1.0);    //arbitrary direction
+
+        updateValuesDirectionalStar();
 }
 
 
@@ -134,7 +172,6 @@ void VoxelBox::updateValuesDirectionalStar()
     LGMdouble coeff;
     LGMdouble coeff2;   // Not sure if needleArea and Xbox and Ybox and Zbox are scalars
     //  LGMdouble coeff3;   // Similarly not sure that leafArea and Xbox and Ybox and Zbox are scalars
-
 
     starDir[0] = 0.0;
     starDir[1] = 0.0;
@@ -156,6 +193,8 @@ void VoxelBox::updateValuesDirectionalStar()
             wtsum = getDirStarSum();
             std::transform(wtsum.begin(),wtsum.end(),wtsum.begin(),std::bind1st(std::multiplies<LGMdouble>(),coeff));
             starDir = wtsum;
+           // cout<<"Sometimes comes here " << wtsum[0] << endl;
+
         }
         else
         {
@@ -178,6 +217,8 @@ void VoxelBox::updateValuesDirectionalStar()
     std::transform(starDir.begin(),starDir.end(),starDir.begin(),std::bind1st(std::multiplies<LGMdouble>(),coeff2));
     val_b = k_b * (leafArea / (space->Xbox * space->Ybox * space->Zbox));
     val_c = starDir;
+
+
     // Questions based on the above function
 
     //1). What are Xbox,Ybox and Zbox? i.e. what type are they?
@@ -191,7 +232,10 @@ void VoxelBox::updateValuesDirectionalStar()
 ////**************************************/***********************************************************************
 
 
-//
+
+
+//*********************************************************************************************************
+
 //      Returns the extinction of the light traveling distance l inside
 //      this VoxelBox.
 //

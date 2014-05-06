@@ -37,7 +37,7 @@ namespace Lignum {
 			       double num_parts);
     friend ostream &operator << (ostream& os, VoxelBox &b);
   public:
-    VoxelBox(VoxelSpace *s); 
+    VoxelBox(VoxelSpace *s);
     VoxelBox();
     //Recalculate star and val_c,  k_b and val_b
     //currently star and k_b hard-coded!!
@@ -59,6 +59,7 @@ namespace Lignum {
     LGMdouble getQinMean()const{return Qin_mean;}
     LGMdouble getStarSum()const{ return starSum; }
     LGMdouble getStar()const{ return star; }
+    vector<LGMdouble> getDirectionalStar() const{ return starDir; for (int x = 0;x<=7;x++){cout<<"StarDir inside getDir"<<starDir[x]<<endl;}exit(0);} // returns the vector having directional star to the function
     vector<LGMdouble> getDirStarSum()const{ return starDirSum; }  // star sum for directional vector implementaiton
     LGMdouble getNeedleMass()const{return needleMass;}
     LGMdouble getNeedleArea()const{return needleArea;}
@@ -92,8 +93,7 @@ namespace Lignum {
     void setQabsMean(LGMdouble val){Qabs_mean= val;}
     void addInterceptedRadiation(LGMdouble rad) { interceptedRadiation += rad; }
     void addStarSum(LGMdouble starmean){starSum += starmean;}
-    void addDirectionalStarSum(vector<LGMdouble> stardirmean){starDirSum.resize(8);
-                                                              std::transform (stardirmean.begin(),stardirmean.end(),stardirmean.begin(),starDirSum.begin(),plus<LGMdouble>());}
+    void addDirectionalStarSum(vector<LGMdouble> stardirmean){std::transform (stardirmean.begin(),stardirmean.end(),stardirmean.begin(),starDirSum.begin(),plus<LGMdouble>());}
     void subtractStarSum(LGMdouble starmean){starSum -= starmean;}
     void addWoodMass(LGMdouble mass) {woodMass += mass; }
     void addWoodArea(LGMdouble area) {woodArea += area; }
@@ -110,7 +110,7 @@ namespace Lignum {
     LGMdouble S(LGMdouble phi, LGMdouble sf, LGMdouble Wf,
 		LGMdouble r, LGMdouble l);
     //reset  the  box to  0,  clear  the  vector of  photosynthesising
-    //objects (not the objects though!!!)
+    //objects (not the objects though!!!) vector<LGMdouble>starDirSum(8,0.0);vector<LGMdouble>starDir(8,0.0); // here i initialise the vectors with 8 of the values to zero.
     void reset();
      
     //Reset Qin, Qabs and  intercepedRadiation to 0, this is necessary
@@ -122,9 +122,7 @@ namespace Lignum {
   protected:
     void resetCfData(){
       star = 0; starSum = 0.0; needleArea = 0.0;needleMass = 0.0;
-      vector<LGMdouble>starDirSum;vector<LGMdouble>starDir; // here i initialise the vectors with 8 of the values to zero.
-      starDirSum.resize(8); starDir.resize(8);
-      starDirSum[8] = 0.0; starDir[8] = 0.0;
+      vector<LGMdouble>starDirSum(8,0.0);vector<LGMdouble>starDir(8,0.0); // here i initialise the vectors with 8 of the values to zero.
       number_of_segments = 0; val_c = 0.0; weight = 0.0;
       number_of_segments_real = 0.0; mean_direction = PositionVector(0.0,0.0,0.0);
     }
