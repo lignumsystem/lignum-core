@@ -18,7 +18,7 @@ namespace Lignum {
   {
     VoxelMovement():x(0),y(0),z(0),l(0.0),af(0.0),tau(0.0),
       STAR_mean(0.0),n_segs_real(0.0),mean_direction(PositionVector(0,0,1)),
-        wood_area(0.0),starDir(8,0.0){}
+        wood_area(0.0),starDir(7,0.0){}
     int x;//box indices
     int y;
     int z;

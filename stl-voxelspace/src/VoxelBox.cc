@@ -12,7 +12,7 @@ namespace Lignum {
     starSum(0.0),weight(0.0),Q_inStdDiffuse(0.0),interceptedRadiation(0.0),
     needleMass(0.0),leafMass(0.0),number_of_segments(0),number_of_leaves(0),
     big_leaf_normal(0,0,0),val_c(0.0),val_b(0.0),woodMass(0.0),woodArea(0.0),
-    number_of_segments_real(0.0),starDirSum(8,0.0),starDir(8,0.0)
+    number_of_segments_real(0.0),starDirSum(7,0.0),starDir(7,0.0)
   { 
     space = s;
   }
@@ -26,7 +26,7 @@ namespace Lignum {
     starSum(0.0),weight(0.0),Q_inStdDiffuse(0.0),interceptedRadiation(0.0),
     needleMass(0.0), leafMass(0.0),number_of_segments(0),number_of_leaves(0), 
     big_leaf_normal(0,0,0),val_c(0.0),val_b(0.0),woodMass(0.0),woodArea(0.0),
-    number_of_segments_real(0.0), starDirSum(8,0.0),starDir(8,0.0)
+    number_of_segments_real(0.0), starDirSum(7,0.0),starDir(7,0.0)
   { 
     space = NULL; 
   }
@@ -65,7 +65,7 @@ void VoxelBox::init()
         starDir[4] = 0.0;
         starDir[5] = 0.0;
         starDir[6] = 0.0;
-        starDir[7] = 0.0;
+
 
         starDirSum[0] = 0.0;
         starDirSum[1] = 0.0;
@@ -74,7 +74,6 @@ void VoxelBox::init()
         starDirSum[4] = 0.0;
         starDirSum[5] = 0.0;
         starDirSum[6] = 0.0;
-        starDirSum[7] = 0.0;
 
 
         number_of_segments = 0;
@@ -127,6 +126,8 @@ void VoxelBox::updateValues()
         LGMassert(space->Zbox>0);
 
         star = 0.0;
+
+
         //Check DumpScotsPineSegment (or any DumpCfSegment) that there
         //the star mean is weighted  with foliage area of the segment:
         //e.g. b.addStarSum(GetValue(ts,LGAstarm)*farea);
@@ -164,23 +165,14 @@ void VoxelBox::updateValues()
 
 void VoxelBox::updateValuesDirectionalStar()
 {
-    vector<LGMdouble> starDir(8);
-    vector<LGMdouble> wtsum;
-    vector<LGMdouble> val_c;
+    vector<LGMdouble> starDir(7,0.0);
+    vector<LGMdouble> wtsum(7,0.0);
+    vector<LGMdouble> val_c(7);
     //vector<LGMdouble> val_b;
     LGMdouble val_b;
     LGMdouble coeff;
     LGMdouble coeff2;   // Not sure if needleArea and Xbox and Ybox and Zbox are scalars
     //  LGMdouble coeff3;   // Similarly not sure that leafArea and Xbox and Ybox and Zbox are scalars
-
-    starDir[0] = 0.0;
-    starDir[1] = 0.0;
-    starDir[2] = 0.0;
-    starDir[3] = 0.0;
-    starDir[4] = 0.0;
-    starDir[5] = 0.0;
-    starDir[6] = 0.0;
-    starDir[7] = 0.0;
 
     LGMassert(space->Xbox>0);
     LGMassert(space->Ybox>0);
@@ -188,12 +180,19 @@ void VoxelBox::updateValuesDirectionalStar()
     if (getNumSegmentsReal() > 0.0){
         if (getWeight() > 0.0)
         {
-            //weighted star mean
+             //weighted star mean
             coeff = 1/getWeight();
             wtsum = getDirStarSum();
+//            for(int x= 0;x<=7;x++){
+//            cout<<"wtsum inside "<<wtsum[x]<<endl;
+//            }
+
             std::transform(wtsum.begin(),wtsum.end(),wtsum.begin(),std::bind1st(std::multiplies<LGMdouble>(),coeff));
             starDir = wtsum;
-           // cout<<"Sometimes comes here " << wtsum[0] << endl;
+//            for(int x= 0;x<=7;x++){
+//            cout<<"starDir inside after multiplication "<<starDir[x]<<endl;
+//            }
+//            exit(0);
 
         }
         else

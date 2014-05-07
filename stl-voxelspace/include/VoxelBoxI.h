@@ -20,8 +20,8 @@ void DumpCfSegmentFoliage(VoxelBox &b, const CfTreeSegment<TS,BUD>& ts,
     LGMdouble farea = GetValue(ts, LGAAf);
     b.addNeedleArea(farea/(double)num_parts);
     b.addNeedleMass(fmass/(double)num_parts);
-    vector<LGMdouble>  starDir(8);
-    vector<LGMdouble>  weightedstarDir(8);
+    vector<LGMdouble>  starDir(7);
+    vector<LGMdouble>  weightedstarDir(7);
 
     LGMdouble needle_rad = GetValue(ts, LGARf);
     LGMdouble S_f;
@@ -32,14 +32,17 @@ void DumpCfSegmentFoliage(VoxelBox &b, const CfTreeSegment<TS,BUD>& ts,
         S_f = 28.0;
 
     LGMdouble starS = 0.0;
-    //This for loop is executed 8 times!!!!
-    for (double phi=0; phi<PI_VALUE/2.0; phi+=PI_VALUE/16)
+
+
+
+    //This for loop is executed for angles 0, 15, .., 90 degrees, that is,
+    // 7 times
+    for (double phi=0;phi<=PI_VALUE/2.0; phi+=PI_VALUE/12.0)
     {
         starS += b.S(phi, S_f, fmass, needle_rad, lenght);
     }
 
-
-    starS /= 8.0;
+    starS /= 7.0;
     b.addStarSum(starS * farea/(double)num_parts);  //Note: weighted by needle area
     //of the part of seg that is in question.
     b.addWeight(farea/(double)num_parts);
@@ -57,17 +60,17 @@ void DumpCfSegmentFoliage(VoxelBox &b, const CfTreeSegment<TS,BUD>& ts,
     // The above statement seems to be the problem here. I think that I misunderstood this part of the problem.Need to ask one doubt?
     //area and use to add up all the vectors
     b.addDirectionalStarSum(weightedstarDir);
-   //********************************************************************************************************
-//*************************************Debugging Statements***************************************************
+    //********************************************************************************************************
+    //*************************************Debugging Statements***************************************************
 //    double sum=0;
 //    for(int ii = 0;ii<=7;ii++){
 //        cout<<"starDir  "<<starDir[ii]<< " " << starS << endl;
 //        sum += starDir[ii];
 //    }
-//    cout << sum/8.0 << endl;
+//    cout << sum/7.0 << endl;
 //    cout << Point(GetDirection(ts));
 //    exit(0);
-//*************************************************************************************************************
+    //*************************************************************************************************************
 }
 
 
@@ -80,16 +83,8 @@ std::vector<LGMdouble> calcDirectionalStar(VoxelBox &b,const CfTreeSegment<TS,BU
     LGMdouble x,y,z;
     LGMdouble a_dot_b;
     LGMdouble inclination;
-    vector<LGMdouble>directionalStar(8);
+    vector<LGMdouble>directionalStar(7,0.0);
     int counter = 0;
-    directionalStar[0]=0.0;
-    directionalStar[1]=0.0;
-    directionalStar[2]=0.0;
-    directionalStar[3]=0.0;
-    directionalStar[4]=0.0;
-    directionalStar[5]=0.0;
-    directionalStar[6]=0.0;
-    directionalStar[7]=0.0;
 
     //    ********************************************************************************************************
     //     phi  is the inclination angle of the shoot and theta is the azimuth angle of the incident ray of light.
@@ -98,9 +93,11 @@ std::vector<LGMdouble> calcDirectionalStar(VoxelBox &b,const CfTreeSegment<TS,BU
     //     that of the azimuth angle goes from 0 to 2*PI with increments of PI/6
     //    ********************************************************************************************************
 
-    for (double phi=0; phi<=PI_VALUE/2.0; phi+=PI_VALUE/14.0)
+    for (double  phi=0;phi<=PI_VALUE/2.0; phi+=PI_VALUE/12.0)
+
     {   newStar =0.0;
-        for(double theta =0; theta<2*PI_VALUE; theta+= PI_VALUE/6.0)
+        //this loop is executed 12 times!
+        for(double theta =0; theta<=2*PI_VALUE; theta+= PI_VALUE/6.0)
         {
             //Spherical Coordinates described
             x           = cos(phi)*cos(theta);
@@ -112,12 +109,15 @@ std::vector<LGMdouble> calcDirectionalStar(VoxelBox &b,const CfTreeSegment<TS,BU
             // inclination angle is calculated with BigPhi = PI/2 - acos(a_dot_b)
             inclination = (PI_VALUE/2.0) - acos(fabs(a_dot_b));
             newStar    += b.S(inclination,S_f,fmass,needle_rad,lenght);
+            //  cout<<"newStar in calcDirectionalStar "<<newStar<<endl;
         }
         directionalStar[counter] = newStar/12.0 ;
-
         counter+=1;
+
     }
+
     return directionalStar;
+
 
 }
 

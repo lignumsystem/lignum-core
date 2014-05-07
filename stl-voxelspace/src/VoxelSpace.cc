@@ -659,17 +659,13 @@ namespace Lignum {
 
     // Code changed in case of Star data for inclination is given then this satements are executed.
     if(calculateDirectionalStar ){
-        vm.starDir = voxboxes[vm.x][vm.y][vm.z].getDirectionalStar();
-      //   vm.STAR_mean = voxboxes[vm.x][vm.y][vm.z].getStar();
+       // vm.starDir = voxboxes[vm.x][vm.y][vm.z].getDirectionalStar();
+        vm.starDir = voxboxes[vm.x][vm.y][vm.z].getDirStarSum();
+       // vm.STAR_mean = voxboxes[vm.x][vm.y][vm.z].getStar();
 
-        // cout<<"STAR_mean"<<vm.STAR_mean <<endl;
+   //      exit(0);
 
-      //  for(int x = 0; x<=7;x++){cout<<"IN calculateDirectionalStar"<<vm.starDir[x]<<endl;}
-
-
-      //  vm.starDir = voxboxes[vm.x][vm.y][vm.z].getDirStarSum();
-
-    }
+        }
         else{
 
         vm.STAR_mean = voxboxes[vm.x][vm.y][vm.z].getStar();
@@ -1155,8 +1151,9 @@ namespace Lignum {
           for(int i2=0; i2<Yn; i2++){
               for(int i3=0; i3<Zn; i3++){
                   voxboxes[i1][i2][i3].updateValues();
-                //  voxboxes[i1][i2][i3].updateValuesDirectionalStar(); //This does not work. Something needs
-                                                                       //to be done here so that the program knows when to call it.
+                  //  voxboxes[i1][i2][i3].updateValuesDirectionalStar(); //This does not work. Something needs
+                  //to be done here so that the program knows when to call it.
+
               }
           }
 
