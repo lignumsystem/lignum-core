@@ -62,14 +62,14 @@ void DumpCfSegmentFoliage(VoxelBox &b, const CfTreeSegment<TS,BUD>& ts,
     b.addDirectionalStarSum(weightedstarDir);
     //********************************************************************************************************
     //*************************************Debugging Statements***************************************************
-//    double sum=0;
-//    for(int ii = 0;ii<=7;ii++){
-//        cout<<"starDir  "<<starDir[ii]<< " " << starS << endl;
-//        sum += starDir[ii];
-//    }
-//    cout << sum/7.0 << endl;
-//    cout << Point(GetDirection(ts));
-//    exit(0);
+    //    double sum=0;
+    //    for(int ii = 0;ii<=7;ii++){
+    //        cout<<"starDir  "<<starDir[ii]<< " " << starS << endl;
+    //        sum += starDir[ii];
+    //    }
+    //    cout << sum/7.0 << endl;
+    //    cout << Point(GetDirection(ts));
+    //    exit(0);
     //*************************************************************************************************************
 }
 

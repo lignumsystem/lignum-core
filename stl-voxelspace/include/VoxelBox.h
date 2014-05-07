@@ -6,26 +6,26 @@
 #include <VoxelObject.h>
 struct VisualCube
 {
-  LGMdouble x,y,z;
-  float dist;
-  float areaden;
-  bool ready;
+    LGMdouble x,y,z;
+    float dist;
+    float areaden;
+    bool ready;
 };
 
 namespace Lignum {
 
-  class VoxelSpace;
+class VoxelSpace;
 
-  class VoxelBox
-  {
-	
-    template <class TS,class BUD>
-    friend void DumpCfSegmentFoliage(VoxelBox &b, const CfTreeSegment<TS,BUD>& ts, 
-			    int num_parts );
+class VoxelBox
+{
 
     template <class TS,class BUD>
-      friend void DumpSegmentWood(VoxelBox &b, const TreeSegment<TS,BUD>& ts,
-				  int num_parts);
+    friend void DumpCfSegmentFoliage(VoxelBox &b, const CfTreeSegment<TS,BUD>& ts,
+                                     int num_parts );
+
+    template <class TS,class BUD>
+    friend void DumpSegmentWood(VoxelBox &b, const TreeSegment<TS,BUD>& ts,
+                                int num_parts);
     template <class OBJ>
     friend void InsertVoxelObject(VoxelBox& b, OBJ* obj);
 
@@ -33,10 +33,10 @@ namespace Lignum {
     friend void DumpLeaf(VoxelBox &b, const BroadLeaf<SH>& leaf);
 
     template <class TS,class BUD>
-    friend void SetSegmentQabs(VoxelBox &b, CfTreeSegment<TS,BUD>& ts, 
-			       double num_parts);
+    friend void SetSegmentQabs(VoxelBox &b, CfTreeSegment<TS,BUD>& ts,
+                               double num_parts);
     friend ostream &operator << (ostream& os, VoxelBox &b);
-  public:
+public:
     VoxelBox(VoxelSpace *s);
     VoxelBox();
     //Recalculate star and val_c,  k_b and val_b
@@ -73,8 +73,8 @@ namespace Lignum {
     LGMdouble getWeight()const{return weight;}
     LGMdouble getQ_inStdDiff()const{ return Q_inStdDiffuse; }
     //Return the extinction of the objects in the box
-    LGMdouble getExtinction(const Point& p1, const PositionVector& d, 
-			    const ParametricCurve& K)const;
+    LGMdouble getExtinction(const Point& p1, const PositionVector& d,
+                            const ParametricCurve& K)const;
     PositionVector getMeanDirection()const {return mean_direction;}
 
     void setArea( M2 needleA, M2 leafA);
@@ -108,28 +108,28 @@ namespace Lignum {
     void addVector(PositionVector v) {mean_direction = PositionVector(mean_direction+v);}
     
     LGMdouble S(LGMdouble phi, LGMdouble sf, LGMdouble Wf,
-		LGMdouble r, LGMdouble l);
+                LGMdouble r, LGMdouble l);
     //reset  the  box to  0,  clear  the  vector of  photosynthesising
     //objects (not the objects though!!!) vector<LGMdouble>starDirSum(7,0.0);vector<LGMdouble>starDir(7,0.0); // here i initialise the vectors with 8 of the values to zero.
     void reset();
-     
+
     //Reset Qin, Qabs and  intercepedRadiation to 0, this is necessary
     //in  short time  steps, where  structural update  is  slower than
     //changing light environment.
     void resetQinQabs(){Q_in = 0.0; Q_abs = 0.0;interceptedRadiation = 0.0;
-      Qin_mean = 0.0; Qabs_mean = 0.0;}
- 
-  protected:
+                        Qin_mean = 0.0; Qabs_mean = 0.0;}
+
+protected:
     void resetCfData(){
-      star = 0; starSum = 0.0; needleArea = 0.0;needleMass = 0.0;
-      vector<LGMdouble>starDirSum(7,0.0);vector<LGMdouble>starDir(7,0.0); // here i initialise the vectors with 8 of the values to zero.
-      number_of_segments = 0; val_c = 0.0; weight = 0.0;
-      number_of_segments_real = 0.0; mean_direction = PositionVector(0.0,0.0,0.0);
+        star = 0; starSum = 0.0; needleArea = 0.0;needleMass = 0.0;
+        vector<LGMdouble>starDirSum(7,0.0);vector<LGMdouble>starDir(7,0.0); // here i initialise the vectors with 8 of the values to zero.
+        number_of_segments = 0; val_c = 0.0; weight = 0.0;
+        number_of_segments_real = 0.0; mean_direction = PositionVector(0.0,0.0,0.0);
     }
     void resetHwData(){
-      leafArea = 0.0;leafMass = 0.0;number_of_leaves = 0;
-      val_b = 0.0; Q_inStdDiffuse = 0;
-      big_leaf_normal = PositionVector(0,0,0);
+        leafArea = 0.0;leafMass = 0.0;number_of_leaves = 0;
+        val_b = 0.0; Q_inStdDiffuse = 0;
+        big_leaf_normal = PositionVector(0,0,0);
     }
     LGMdouble SAc(LGMdouble phi, LGMdouble r, LGMdouble l);
     LGMdouble K(LGMdouble phi);
@@ -155,26 +155,26 @@ namespace Lignum {
     int number_of_segments;
     int number_of_leaves;
     PositionVector big_leaf_normal;//Weighted  sum  of  directions  of
-				   //leaves in a box
+    //leaves in a box
 
-  private:
-    void init();	
+private:
+    void init();
     Point corner1;
 
     LGMdouble val_c; //val_c * l is coniferous extinction
     LGMdouble val_b; //val_b * l is broadleaf  extinction
     VoxelSpace *space;
     vector<VoxelObject*> objects;//vector     of     photosynthesising
-				 //elements in the box
+    //elements in the box
 
     LGMdouble woodMass;
     LGMdouble woodArea;         //surface area of segments (woody part) in box
     LGMdouble number_of_segments_real;   //this is the correct number of segments
-                                    //considering consiering dumping of segs in
-                                    // parts (num_parts)
- 
+    //considering consiering dumping of segs in
+    // parts (num_parts)
+
     PositionVector mean_direction;
-  };
+};
 
 } //namespace Lignum
 
