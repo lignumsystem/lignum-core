@@ -58,8 +58,8 @@ public:
     LGMdouble getQabsMean()const{return Qabs_mean;}
     LGMdouble getQinMean()const{return Qin_mean;}
     LGMdouble getStarSum()const{ return starSum; }
-    LGMdouble getStar()const{ return star; }
-    vector<LGMdouble> getDirectionalStar() const{ return starDir;} // returns the vector having directional star to the function
+    LGMdouble getStar()const{cout<<"star in getstar "<<star<<endl;return star; }
+    vector<LGMdouble> getDirStar() const{return starDir;} // returns the vector having directional star to the function
     vector<LGMdouble> getDirStarSum()const{ return starDirSum; }  // star sum for directional vector implementaiton
     LGMdouble getNeedleMass()const{return needleMass;}
     LGMdouble getNeedleArea()const{return needleArea;}
@@ -143,7 +143,7 @@ protected:
     LGMdouble star;
     LGMdouble starSum;
     vector<LGMdouble> starDirSum;    // Added for vector calculations
-    vector<LGMdouble>starDir;        // Added as a simple Star vector
+    vector<LGMdouble> starDir;        // Added as a simple Star vector
     LGMdouble weight; //weighted starSum, e.g. foliage area
     
     LGMdouble Q_inStdDiffuse;

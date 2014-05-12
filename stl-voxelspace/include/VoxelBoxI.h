@@ -20,8 +20,8 @@ void DumpCfSegmentFoliage(VoxelBox &b, const CfTreeSegment<TS,BUD>& ts,
     LGMdouble farea = GetValue(ts, LGAAf);
     b.addNeedleArea(farea/(double)num_parts);
     b.addNeedleMass(fmass/(double)num_parts);
-    vector<LGMdouble>  starDir(7);
-    vector<LGMdouble>  weightedstarDir(7);
+    vector<LGMdouble>  starDir(7,0.0);
+    vector<LGMdouble>  weightedstarDir(7,0.0);
 
     LGMdouble needle_rad = GetValue(ts, LGARf);
     LGMdouble S_f;
@@ -58,7 +58,11 @@ void DumpCfSegmentFoliage(VoxelBox &b, const CfTreeSegment<TS,BUD>& ts,
     starDir= calcDirectionalStar(b,ts,fmass,lenght,needle_rad,S_f);
     std::transform( starDir.begin(), starDir.end(), weightedstarDir.begin(),std::bind1st(std::multiplies<LGMdouble>(),weight));//multiply the vector with the weighted foliage
     // The above statement seems to be the problem here. I think that I misunderstood this part of the problem.Need to ask one doubt?
-    //area and use to add up all the vectors
+    //area and use to add up all the vectors.
+//    for (int ii = 0;ii<=6;ii++){
+//        cout<<"starDir in Dump "<<starDir[ii]<<endl;
+//    }
+
     b.addDirectionalStarSum(weightedstarDir);
     //********************************************************************************************************
     //*************************************Debugging Statements***************************************************

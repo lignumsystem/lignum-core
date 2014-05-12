@@ -658,17 +658,24 @@ vector<VoxelMovement>& VoxelSpace::getRoute(vector<VoxelMovement> &vec,
         vm.z = startz;
 
         // Code changed in case of Star data for inclination is given then this satements are executed.
-        if(calculateDirectionalStar ){
-            // vm.starDir = voxboxes[vm.x][vm.y][vm.z].getDirectionalStar();
-            vm.starDir = voxboxes[vm.x][vm.y][vm.z].getDirStarSum();
+     //   cout<<"calculateDirectionalStar "<<calculateDirectionalStar<<endl;
+
+        if(calculateDirectionalStar){
+
+          //  cout<<" im inside the vm.getroute calculatedirectionalstar "<<endl;
+
+       //     cout<<"vm.x "<<vm.x<<"vm.y "<<vm.y<<"vm.z "<<vm.z<<endl;
+            //exit(0);
+              vm.starDir = voxboxes[vm.x][vm.y][vm.z].getDirStar();
+           // vm.starDir = voxboxes[vm.x][vm.y][vm.z].getDirStarSum();
             // vm.STAR_mean = voxboxes[vm.x][vm.y][vm.z].getStar();
 
-            //      exit(0);
-
-        }
+           //   for(int t= 0;t<=6;t++){cout<<"This is in the geteroute "<<vm.starDir[t]<<endl;}
+           }
         else{
 
             vm.STAR_mean = voxboxes[vm.x][vm.y][vm.z].getStar();
+            cout<<"vm.STAR_mean "<<vm.STAR_mean<<endl;
         }
 
 
@@ -1151,7 +1158,8 @@ void VoxelSpace::updateBoxValues()
         for(int i2=0; i2<Yn; i2++){
             for(int i3=0; i3<Zn; i3++){
                 voxboxes[i1][i2][i3].updateValues();
-                //  voxboxes[i1][i2][i3].updateValuesDirectionalStar(); //This does not work. Something needs
+
+                 //  voxboxes[i1][i2][i3].updateValuesDirectionalStar(); //This does not work. Something needs
                 //to be done here so that the program knows when to call it.
 
             }

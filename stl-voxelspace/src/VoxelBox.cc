@@ -126,6 +126,7 @@ void VoxelBox::updateValues()
     LGMassert(space->Zbox>0);
 
     star = 0.0;
+    vector<LGMdouble> starDir(7,0.0);
 
 
     //Check DumpScotsPineSegment (or any DumpCfSegment) that there
@@ -155,6 +156,11 @@ void VoxelBox::updateValues()
     //        mean_direction = PositionVector(0.0,0.0,1.0);    //arbitrary direction
 
     updateValuesDirectionalStar();
+    for(int ii = 0;ii<=6;ii++){
+       cout<<" starDir in updateValues "<<starDir[ii]<<endl;
+
+    }
+
 }
 
 
@@ -182,11 +188,10 @@ void VoxelBox::updateValuesDirectionalStar()
             //weighted star mean
             coeff = 1/getWeight();
             wtsum = getDirStarSum();
-            std::transform(wtsum.begin(),wtsum.end(),wtsum.begin(),std::bind1st(std::multiplies<LGMdouble>(),coeff));
-            starDir = wtsum;
-
+            std::transform(wtsum.begin(),wtsum.end(),starDir.begin(),std::bind1st(std::multiplies<LGMdouble>(),coeff));
         }
-        else
+
+       else
         {
             starDir[0] = 0.0;
             starDir[1] = 0.0;
@@ -205,6 +210,15 @@ void VoxelBox::updateValuesDirectionalStar()
     coeff2 = (needleArea / (space->Xbox * space->Ybox * space->Zbox));
     std::transform(starDir.begin(),starDir.end(),val_c.begin(),std::bind1st(std::multiplies<LGMdouble>(),coeff2));
     val_b = k_b * (leafArea / (space->Xbox * space->Ybox * space->Zbox));
+
+    for(int ii = 0;ii<=6;ii++){
+    //    cout<<" starDir in updateValues "<<starDir[ii]<<endl;
+
+    }
+
+
+    //for (int yy = 0;yy<=6;yy++){cout.precision(15); cout<<" starDir in updatevalues: "<<starDir[yy]<<endl;}
+  //  exit(0);
     // Questions based on the above function
 
     //1). What are Xbox,Ybox and Zbox? i.e. what type are they?
