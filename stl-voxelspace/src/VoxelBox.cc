@@ -121,22 +121,29 @@ void VoxelBox::setVoxelSpace(VoxelSpace *s, Point c)
 //
 void VoxelBox::updateValues()
 {
+
+
     LGMassert(space->Xbox>0);
     LGMassert(space->Ybox>0);
     LGMassert(space->Zbox>0);
 
     star = 0.0;
 
+
     //Check DumpScotsPineSegment (or any DumpCfSegment) that there
     //the star mean is weighted  with foliage area of the segment:
     //e.g. b.addStarSum(GetValue(ts,LGAstarm)*farea);
-    if (getNumSegmentsReal() > 0.0){
+    if (number_of_segments_real > 0.0){
         if (weight > 0.0)
-            //weighted star mean
-            star = starSum / weight;
+        //weighted star mean
+         star = starSum / weight;
+
         else
+     {
             star = 0.0;
-    } 
+           }
+
+    }
 
     //It might be good enough to use star 0.14
     //star = 0.14;
@@ -144,8 +151,9 @@ void VoxelBox::updateValues()
 
 
     //star  for needles
-    val_c = star * (needleArea / (space->Xbox * space->Ybox *
-                                  space->Zbox));
+
+
+    val_c = star * (needleArea / (space->Xbox * space->Ybox *space->Zbox));
     val_b = k_b * (leafArea / (space->Xbox * space->Ybox * space->Zbox));
 
     //Note that mean_direction is not normalized
@@ -155,6 +163,8 @@ void VoxelBox::updateValues()
     //        mean_direction = PositionVector(0.0,0.0,1.0);    //arbitrary direction
 
     updateValuesDirectionalStar();
+
+   // for (int i= 0;i<=6;i++){cout<<" starDir in update "<<starDir[i]<<endl;}exit(0);
 }
 
 
@@ -162,8 +172,11 @@ void VoxelBox::updateValues()
 
 //*********************************************************************************************************
 
-  void VoxelBox::updateValuesDirectionalStar()
-  {
+
+
+void VoxelBox::updateValuesDirectionalStar()
+{
+
     vector<LGMdouble> wtsum(7,0.0);
     LGMdouble coeff;
 
