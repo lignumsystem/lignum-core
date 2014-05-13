@@ -39,7 +39,7 @@ Tree<TS,BUD>::Tree(const Point& p, const PositionVector& d, LGMdouble len, LGMdo
     }
   SetValue(*ts, LGARf, rad + 0.02);
 
-  LGMdouble x_i = GetValue(*this, LGPxi);
+  // LGMdouble x_i = GetValue(*this, LGPxi);
   LGMdouble ts_rad = GetValue(*ts, LGAR);
   
   //Sapwood area corresponds to foliage mass

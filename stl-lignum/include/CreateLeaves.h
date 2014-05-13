@@ -159,7 +159,7 @@ namespace Lignum{
           SetValue(*leaf, LGAsf, GetValue(GetTree(*tc), LGPsf));
 
   
-	  double Af = rlsize * 0.08; //GetValue(GetTree(*ts), LGPaleafmax);
+	  //	  double Af = rlsize * 0.08; //GetValue(GetTree(*ts), LGPaleafmax);
 	    //  cout<<"LGPaleafmax value: "<<GetValue(GetTree(*ts), LGPaleafmax)<<endl;
          
 	    SetValue(*leaf, LGAA, 0.1);   //set the leaf area value, which is used in DumpLeaf()
