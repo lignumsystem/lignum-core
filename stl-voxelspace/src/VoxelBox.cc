@@ -111,7 +111,7 @@ void VoxelBox::setVoxelSpace(VoxelSpace *s, Point c)
     space = s;
     corner1 = c;
 
-    updateValues();
+    //    updateValues();
 }
 
 
@@ -126,19 +126,18 @@ void VoxelBox::updateValues()
     LGMassert(space->Zbox>0);
 
     star = 0.0;
-    vector<LGMdouble> starDir(7,0.0);
-
 
     //Check DumpScotsPineSegment (or any DumpCfSegment) that there
     //the star mean is weighted  with foliage area of the segment:
     //e.g. b.addStarSum(GetValue(ts,LGAstarm)*farea);
     if (getNumSegmentsReal() > 0.0){
-        if (getWeight() > 0.0)
+        if (weight > 0.0)
             //weighted star mean
-            star = getStarSum() / getWeight();
+            star = starSum / weight;
         else
             star = 0.0;
-    }
+    } 
+
     //It might be good enough to use star 0.14
     //star = 0.14;
     LGMdouble k_b = GetValue(*space,LGAkb);
@@ -156,11 +155,6 @@ void VoxelBox::updateValues()
     //        mean_direction = PositionVector(0.0,0.0,1.0);    //arbitrary direction
 
     updateValuesDirectionalStar();
-    for(int ii = 0;ii<=6;ii++){
-       cout<<" starDir in updateValues "<<starDir[ii]<<endl;
-
-    }
-
 }
 
 
@@ -168,65 +162,32 @@ void VoxelBox::updateValues()
 
 //*********************************************************************************************************
 
-
-void VoxelBox::updateValuesDirectionalStar()
-{
-    vector<LGMdouble> starDir(7,0.0);
+  void VoxelBox::updateValuesDirectionalStar()
+  {
     vector<LGMdouble> wtsum(7,0.0);
-    vector<LGMdouble> val_c(7);
-    LGMdouble val_b;
     LGMdouble coeff;
-    LGMdouble coeff2;   // Not sure if needleArea and Xbox and Ybox and Zbox are scalars
 
-    LGMassert(space->Xbox>0);
-    LGMassert(space->Ybox>0);
-    LGMassert(space->Zbox>0);
-
-    if (getNumSegmentsReal() > 0.0){
-        if (getWeight() > 0.0)
+    if (number_of_segments_real > 0.0){
+      if (weight > 0.0)
         {
-            //weighted star mean
-            coeff = 1/getWeight();
-            wtsum = getDirStarSum();
-            std::transform(wtsum.begin(),wtsum.end(),starDir.begin(),std::bind1st(std::multiplies<LGMdouble>(),coeff));
+	  coeff = 1/getWeight();
+	  wtsum = starDirSum;
+	  std::transform(wtsum.begin(),wtsum.end(),starDir.begin(),std::bind1st(std::multiplies<LGMdouble>(),coeff));
         }
-
-       else
+      else
         {
-            starDir[0] = 0.0;
-            starDir[1] = 0.0;
-            starDir[2] = 0.0;
-            starDir[3] = 0.0;
-            starDir[4] = 0.0;
-            starDir[5] = 0.0;
-            starDir[6] = 0.0;
+	  starDir[0] = 0.0;
+	  starDir[1] = 0.0;
+	  starDir[2] = 0.0;
+	  starDir[3] = 0.0;
+	  starDir[4] = 0.0;
+	  starDir[5] = 0.0;
+	  starDir[6] = 0.0;
         }
 
     }
 
-    LGMdouble k_b = GetValue(*space,LGAkb);
-    //star for needles and this is where we are going to apply the vectors
-
-    coeff2 = (needleArea / (space->Xbox * space->Ybox * space->Zbox));
-    std::transform(starDir.begin(),starDir.end(),val_c.begin(),std::bind1st(std::multiplies<LGMdouble>(),coeff2));
-    val_b = k_b * (leafArea / (space->Xbox * space->Ybox * space->Zbox));
-
-    for(int ii = 0;ii<=6;ii++){
-    //    cout<<" starDir in updateValues "<<starDir[ii]<<endl;
-
-    }
-
-
-    //for (int yy = 0;yy<=6;yy++){cout.precision(15); cout<<" starDir in updatevalues: "<<starDir[yy]<<endl;}
-  //  exit(0);
-    // Questions based on the above function
-
-    //1). What are Xbox,Ybox and Zbox? i.e. what type are they?
-    //2). How to handle them in the vectors?
-    //3). What would be the pointer *space have should it be treated separately?
-    //4). How to make the function as it is?
-
-} // the end of updateValuesDirectionalStar function
+  } // the end of updateValuesDirectionalStar function
 
 
 ////**************************************/***********************************************************************

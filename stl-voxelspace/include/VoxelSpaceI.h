@@ -58,7 +58,7 @@ operator ()(TreeCompartment<TS,BUD>* tc)const
                 Point p1 = p + (Point)(length * ((double)i/((double)num_parts+1.0)) * pv);
                 VoxelBox& this_box = space->getVoxelBox(p1);
                 if(foliage)
-                    DumpCfSegmentFoliage(this_box, *cfts, num_parts);
+		  DumpCfSegmentFoliage(this_box, *cfts, num_parts);
                 else if(dumpWood) {
                     DumpSegmentWood(this_box, *cfts, num_parts);
                 }

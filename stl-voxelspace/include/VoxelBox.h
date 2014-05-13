@@ -122,7 +122,7 @@ public:
 protected:
     void resetCfData(){
         star = 0; starSum = 0.0; needleArea = 0.0;needleMass = 0.0;
-        vector<LGMdouble>starDirSum(7,0.0);vector<LGMdouble>starDir(7,0.0); // here i initialise the vectors with 8 of the values to zero.
+//        vector<LGMdouble>starDirSum(7,0.0);vector<LGMdouble>starDir(7,0.0); // here i initialise the vectors with 8 of the values to zero.
         number_of_segments = 0; val_c = 0.0; weight = 0.0;
         number_of_segments_real = 0.0; mean_direction = PositionVector(0.0,0.0,0.0);
     }

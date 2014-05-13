@@ -70,6 +70,7 @@ VoxelSpace::VoxelSpace(Point c1, Point c2,
                 voxboxes[i1][i2][i3].setVoxelSpace(this, corner);
             }
     sky = &f;
+
 }
 
 
