@@ -106,11 +106,11 @@ class PineBudData{
 public:
   //A  couple of  constructors to  initialize members.  Recommended in
   //general.
- PineBudData():state(ALIVE),fm(0.0),ip(1.0),x(0.0),y(0.0),z(0.0),length(0.0){}
+ PineBudData():state(ALIVE),fm(0.0),ip(1.0),x(0.0),y(0.0),z(0.0),length(0.0),view(0.0){}
  PineBudData(double s, double fol, double rl, double len):state(s),fm(fol),ip(rl),x(0.0),y(0.0),z(0.0),
-    length(len) {}
+    length(len), view(0.0) {}
   PineBudData(const PineBudData& pbd)
-    :state(pbd.state),fm(pbd.fm),ip(pbd.ip),x(pbd.x),y(pbd.y),z(pbd.z),length(pbd.length){}
+    :state(pbd.state),fm(pbd.fm),ip(pbd.ip),x(pbd.x),y(pbd.y),z(pbd.z),length(pbd.length),view(pbd.view){}
   double state; //ALIVE,DEAD, FLOWER, etc
   double fm;//foliage mass (of the mother segment)
   double ip;//qin/TreeQinMax, i.e. relative light
@@ -128,6 +128,7 @@ public:
   double y;
   double z;
   double length; //length of the mother segment
+  double view;
 };
 
 template <class TS, class BUD>
@@ -142,6 +143,7 @@ class PineBud: public Bud<TS,BUD>{
     b.length_mother_segment = data.length;
     //Do not update  the direction, it would override  the work of the
     //turtle in L-system
+    b.view = data.view;
     return old_data;
   }
   template <class TS1,class BUD1>
@@ -152,6 +154,7 @@ class PineBud: public Bud<TS,BUD>{
       pbdata.fm = b.fm_mother_segment;
       pbdata.ip = GetValue(b,LGAip);
       pbdata.length = b.length_mother_segment;
+      pbdata.view = b.view;
       //Pass the direction to  L-system, user can access the direction
       //easily by calling GetDirection.
       pbdata.x = GetDirection(b).getX();
@@ -166,7 +169,8 @@ class PineBud: public Bud<TS,BUD>{
 public:
   PineBud(const Point& p, const PositionVector& d, 
 	  const LGMdouble go, Tree<TS,BUD>* tree)
-    :Bud<TS,BUD>(p,d,go,tree),fm_mother_segment(0.0),length_mother_segment(0.0){}
+    :Bud<TS,BUD>(p,d,go,tree),view(0.0),fm_mother_segment(0.0),length_mother_segment(0.0){}
+  LGMdouble view;
 private:
   LGMdouble fm_mother_segment;
   LGMdouble length_mother_segment;
@@ -206,7 +210,7 @@ public:
     }
     else if (BUD* b = dynamic_cast<BUD*>(tc)){
       //absloute light
-      Firmament& f = GetFirmament(GetTree(*b));
+      //Firmament& f = GetFirmament(GetTree(*b));
       //double B = f.diffuseBallSensor();
       //Best light in the tree
       double B = GetValue(GetTree(*b),TreeQinMax);
