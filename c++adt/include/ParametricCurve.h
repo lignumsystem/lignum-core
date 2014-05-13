@@ -23,6 +23,8 @@ public:
   ParametricCurve(const vector<double>& v);
   ParametricCurve(const ParametricCurve& pc);
   ParametricCurve(const double c);
+  //Function is defined by vectors containing (x,y) pairs & # of such pairs
+  ParametricCurve(const int n_elem, const vector<double> x, const vector<double> y);
   ParametricCurve& operator=(const ParametricCurve& f);
   double operator()(double x)const{return eval(x);} 
   bool install(const string& file_name);
@@ -30,6 +32,9 @@ public:
   double eval(double x)const;
   string getFile()const{return file;}
   vector<double> getVector()const{return v;}
+  void withXYvectors(const int n, const vector<double> x,
+  const vector<double> y);
+
 private:
   ParametricCurve& read_xy_file(const char *file_name);
   string file;

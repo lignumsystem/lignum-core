@@ -73,6 +73,17 @@ ParametricCurve::ParametricCurve(const double c)
   num_of_elements = v.size();
 }
 
+  //Function is defined by vectors containing (x,y) pairs & # of such pairs
+ParametricCurve::ParametricCurve(const int n_elem, 
+				 const vector<double> x, const vector<double> y){
+  for(int i = 0; i < n_elem; i++) {
+    v.push_back(x[i]);
+    v.push_back(y[i]);
+  }
+  v.push_back(FLT_MAX);
+  num_of_elements = v.size();
+}
+
 ParametricCurve& ParametricCurve::operator=(const ParametricCurve& pc)
   {
     v.clear();
