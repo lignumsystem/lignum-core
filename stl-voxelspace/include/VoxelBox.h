@@ -58,8 +58,8 @@ public:
     LGMdouble getQabsMean()const{return Qabs_mean;}
     LGMdouble getQinMean()const{return Qin_mean;}
     LGMdouble getStarSum()const{ return starSum; }
-    LGMdouble getStar()const{cout<<"star in getstar "<<star<<endl;return star; }
-    vector<LGMdouble> getDirStar() const{for(int ii = 0; ii<=6;ii++){cout<<" this is in getDirStar "<< starDir[ii]<<endl;}exit(0) ;return starDir;} // returns the vector having directional star to the function
+    LGMdouble getStar()const{return star; }
+    vector<LGMdouble> getDirStar() const{ return starDir;}//for(int ii = 0; ii<=6;ii++){cout<<" this is in getDirStar "<< starDir[ii]<<endl;};return starDir;} // returns the vector having directional star to the function
     vector<LGMdouble> getDirStarSum()const{  return starDirSum;}//for(int ii = 0; ii<=6;ii++){cout<<" this is in starDirSum "<< starDirSum[ii]<<endl;}return starDirSum; }  // star sum for directional vector implementaiton
     LGMdouble getNeedleMass()const{return needleMass;}
     LGMdouble getNeedleArea()const{return needleArea;}

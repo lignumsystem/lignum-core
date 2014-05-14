@@ -115,7 +115,7 @@ std::vector<LGMdouble> calcDirectionalStar(VoxelBox &b,const CfTreeSegment<TS,BU
             newStar    += b.S(inclination,S_f,fmass,needle_rad,lenght);
             //  cout<<"newStar in calcDirectionalStar "<<newStar<<endl;
         }
-        directionalStar[counter] = newStar/12.0 ;
+        directionalStar[counter] = newStar/13.0 ;
         counter+=1;
 
     }

@@ -668,15 +668,14 @@ vector<VoxelMovement>& VoxelSpace::getRoute(vector<VoxelMovement> &vec,
           //   vm.STAR_mean = voxboxes[vm.x][vm.y][vm.z].getStar();
 
              // for(int t= 0;t<=6;t++){cout<<"This is in the geteroute "<< vm.starDir[t]<<endl;}
-             // exit(0);
+            // exit(0);
            }
 
         else{
 
             vm.STAR_mean = voxboxes[vm.x][vm.y][vm.z].getStar();
-            cout<<"vm.STAR_mean "<<vm.STAR_mean<<endl;
+           // cout<<"vm.STAR_mean "<<vm.STAR_mean<<endl;
         }
-
         vm.n_segs_real = voxboxes[vm.x][vm.y][vm.z].getNumSegmentsReal();
         vm.mean_direction = voxboxes[vm.x][vm.y][vm.z].getMeanDirection();
 

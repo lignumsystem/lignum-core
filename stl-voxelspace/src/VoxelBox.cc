@@ -135,13 +135,13 @@ void VoxelBox::updateValues()
     //e.g. b.addStarSum(GetValue(ts,LGAstarm)*farea);
     if (number_of_segments_real > 0.0){
         if (weight > 0.0)
-        //weighted star mean
-         star = starSum / weight;
+            //weighted star mean
+            star = starSum / weight;
 
         else
-     {
+        {
             star = 0.0;
-           }
+        }
 
     }
 
@@ -164,7 +164,7 @@ void VoxelBox::updateValues()
 
     updateValuesDirectionalStar();
 
-   // for (int i= 0;i<=6;i++){cout<<" starDir in update "<<starDir[i]<<endl;}exit(0);
+     //for (int i= 0;i<=6;i++){cout<<" starDir in update "<<starDir[i]<<endl;}exit(0);
 }
 
 
@@ -176,39 +176,34 @@ void VoxelBox::updateValues()
 
 void VoxelBox::updateValuesDirectionalStar()
 {
-
-    vector<LGMdouble> wtsum(7,0.0);
-    LGMdouble coeff;
-
     if (number_of_segments_real > 0.0){
-      if (weight > 0.0)
+        if (weight > 0.0)
         {
-	  coeff = 1/getWeight();
-	  wtsum = starDirSum;
-	  std::transform(wtsum.begin(),wtsum.end(),starDir.begin(),std::bind1st(std::multiplies<LGMdouble>(),coeff));
+            LGMdouble coeff = 1/weight;
+            std::transform(starDirSum.begin(),starDirSum.end(),starDir.begin(),std::bind1st(std::multiplies<LGMdouble>(),coeff));
         }
-      else
+        else
         {
-	  starDir[0] = 0.0;
-	  starDir[1] = 0.0;
-	  starDir[2] = 0.0;
-	  starDir[3] = 0.0;
-	  starDir[4] = 0.0;
-	  starDir[5] = 0.0;
-	  starDir[6] = 0.0;
+            starDir[0] = 0.0;
+            starDir[1] = 0.0;
+            starDir[2] = 0.0;
+            starDir[3] = 0.0;
+            starDir[4] = 0.0;
+            starDir[5] = 0.0;
+            starDir[6] = 0.0;
         }
 
     }
 
-  } // the end of updateValuesDirectionalStar function
+} // the end of updateValuesDirectionalStar function
 
 
-////**************************************/***********************************************************************
+////**************************************************************************************************************
 
 
 
 
-//*********************************************************************************************************
+//****************************************************************************************************************
 
 //      Returns the extinction of the light traveling distance l inside
 //      this VoxelBox.
