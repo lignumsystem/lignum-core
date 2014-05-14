@@ -43,6 +43,7 @@ void DumpCfSegmentFoliage(VoxelBox &b, const CfTreeSegment<TS,BUD>& ts,
     }
 
     starS /= 7.0;
+
     b.addStarSum(starS * farea/(double)num_parts);  //Note: weighted by needle area
     //of the part of seg that is in question.
     b.addWeight(farea/(double)num_parts);
@@ -101,7 +102,7 @@ std::vector<LGMdouble> calcDirectionalStar(VoxelBox &b,const CfTreeSegment<TS,BU
 
     {   newStar =0.0;
         //this loop is executed 12 times!
-        for(double theta =0; theta<=2*PI_VALUE; theta+= PI_VALUE/6.0)
+        for(double theta =0; theta < 2*PI_VALUE; theta+= PI_VALUE/6.0)
         {
             //Spherical Coordinates described
             x           = cos(phi)*cos(theta);
@@ -115,9 +116,8 @@ std::vector<LGMdouble> calcDirectionalStar(VoxelBox &b,const CfTreeSegment<TS,BU
             newStar    += b.S(inclination,S_f,fmass,needle_rad,lenght);
             //  cout<<"newStar in calcDirectionalStar "<<newStar<<endl;
         }
-        directionalStar[counter] = newStar/13.0 ;
+        directionalStar[counter] = newStar/12.0 ;
         counter+=1;
-
     }
 
     return directionalStar;
