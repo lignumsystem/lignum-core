@@ -137,12 +137,10 @@ void VoxelBox::updateValues()
         if (weight > 0.0)
             //weighted star mean
             star = starSum / weight;
-
         else
         {
             star = 0.0;
         }
-
     }
 
     //It might be good enough to use star 0.14
@@ -151,8 +149,6 @@ void VoxelBox::updateValues()
 
 
     //star  for needles
-
-
     val_c = star * (needleArea / (space->Xbox * space->Ybox *space->Zbox));
     val_b = k_b * (leafArea / (space->Xbox * space->Ybox * space->Zbox));
 
@@ -163,8 +159,6 @@ void VoxelBox::updateValues()
     //        mean_direction = PositionVector(0.0,0.0,1.0);    //arbitrary direction
 
     updateValuesDirectionalStar();
-
-     //for (int i= 0;i<=6;i++){cout<<" starDir in update "<<starDir[i]<<endl;}exit(0);
 }
 
 

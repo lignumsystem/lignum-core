@@ -25,7 +25,7 @@ void DumpCfSegmentFoliage(VoxelBox &b, const CfTreeSegment<TS,BUD>& ts,
 
     LGMdouble needle_rad = GetValue(ts, LGARf);
     LGMdouble S_f;
-    LGMdouble weight;
+    LGMdouble wht;
     if(fmass > R_EPSILON)
         S_f = farea/fmass;
     else
@@ -43,7 +43,6 @@ void DumpCfSegmentFoliage(VoxelBox &b, const CfTreeSegment<TS,BUD>& ts,
     }
 
     starS /= 7.0;
-
     b.addStarSum(starS * farea/(double)num_parts);  //Note: weighted by needle area
     //of the part of seg that is in question.
     b.addWeight(farea/(double)num_parts);
@@ -55,16 +54,16 @@ void DumpCfSegmentFoliage(VoxelBox &b, const CfTreeSegment<TS,BUD>& ts,
     //************************Code added by KV***************************************************************
     //To get the directions of the shoot and the incident rays. A vector is generated as a result using the
     //function CalcDirectionalStar and stored for the different 8 values.
-    weight = farea/(double)num_parts;  // weight is used to get the weighted part of the calulcation
+    wht = farea/(double)num_parts;  // weight is used to get the weighted part of the calulcation
     starDir= calcDirectionalStar(b,ts,fmass,lenght,needle_rad,S_f);
-    std::transform( starDir.begin(), starDir.end(), weightedstarDir.begin(),std::bind1st(std::multiplies<LGMdouble>(),weight));//multiply the vector with the weighted foliage
-    // The above statement seems to be the problem here. I think that I misunderstood this part of the problem.Need to ask one doubt?
+    std::transform( starDir.begin(), starDir.end(), weightedstarDir.begin(),std::bind1st(std::multiplies<LGMdouble>(),wht));//multiply the vector with the weighted foliage
     //area and use to add up all the vectors.
-//    for (int ii = 0;ii<=6;ii++){
-//        cout<<"starDir in Dump "<<starDir[ii]<<endl;
-//    }
+    vector<LGMdouble> starDirSumTemp(7,0.0);
 
     b.addDirectionalStarSum(weightedstarDir);
+    std::transform (starDirSumTemp.begin(),starDirSumTemp.end(),weightedstarDir.begin(),starDirSumTemp.begin(),plus<LGMdouble>());
+
+
     //********************************************************************************************************
     //*************************************Debugging Statements***************************************************
     //    double sum=0;
@@ -114,12 +113,10 @@ std::vector<LGMdouble> calcDirectionalStar(VoxelBox &b,const CfTreeSegment<TS,BU
             // inclination angle is calculated with BigPhi = PI/2 - acos(a_dot_b)
             inclination = (PI_VALUE/2.0) - acos(fabs(a_dot_b));
             newStar    += b.S(inclination,S_f,fmass,needle_rad,lenght);
-            //  cout<<"newStar in calcDirectionalStar "<<newStar<<endl;
         }
         directionalStar[counter] = newStar/12.0 ;
         counter+=1;
     }
-
     return directionalStar;
 
 

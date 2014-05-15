@@ -59,8 +59,8 @@ public:
     LGMdouble getQinMean()const{return Qin_mean;}
     LGMdouble getStarSum()const{ return starSum; }
     LGMdouble getStar()const{return star; }
-    vector<LGMdouble> getDirStar() const{ return starDir;}//for(int ii = 0; ii<=6;ii++){cout<<" this is in getDirStar "<< starDir[ii]<<endl;};return starDir;} // returns the vector having directional star to the function
-    vector<LGMdouble> getDirStarSum()const{  return starDirSum;}//for(int ii = 0; ii<=6;ii++){cout<<" this is in starDirSum "<< starDirSum[ii]<<endl;}return starDirSum; }  // star sum for directional vector implementaiton
+    vector<LGMdouble> getDirStar() const{ return starDir;}
+    vector<LGMdouble> getDirStarSum()const{  return starDirSum;}
     LGMdouble getNeedleMass()const{return needleMass;}
     LGMdouble getNeedleArea()const{return needleArea;}
     LGMdouble getLeafMass()const{return leafMass;}
@@ -93,7 +93,7 @@ public:
     void setQabsMean(LGMdouble val){Qabs_mean= val;}
     void addInterceptedRadiation(LGMdouble rad) { interceptedRadiation += rad; }
     void addStarSum(LGMdouble starmean){starSum += starmean;}
-    void addDirectionalStarSum(vector<LGMdouble> stardirmean){std::transform (stardirmean.begin(),stardirmean.end(),stardirmean.begin(),starDirSum.begin(),plus<LGMdouble>());}
+    void addDirectionalStarSum(vector<LGMdouble> stardirmean){std::transform (starDirSum.begin(),starDirSum.end(),stardirmean.begin(),starDirSum.begin(),plus<LGMdouble>());}
     void subtractStarSum(LGMdouble starmean){starSum -= starmean;}
     void addWoodMass(LGMdouble mass) {woodMass += mass; }
     void addWoodArea(LGMdouble area) {woodArea += area; }
