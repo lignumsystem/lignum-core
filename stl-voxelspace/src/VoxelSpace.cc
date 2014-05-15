@@ -71,6 +71,8 @@ VoxelSpace::VoxelSpace(Point c1, Point c2,
             }
     sky = &f;
 
+//Set upper right corner that it surely correspdonds to corner1 and # of boxes
+corner2 = corner1 + Point((double)Xn * Xbox, (double)Yn * Ybox, (double)Zn * Zbox); 
 }
 
 
