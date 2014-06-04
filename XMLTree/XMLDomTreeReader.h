@@ -150,15 +150,18 @@ Tree<TS,BUD>& XMLDomTreeReader<TS,BUD,S>::readXMLToTree(Tree<TS,BUD>& tree, cons
   QString fName(fileName.c_str());
  
   m_doc = QDomDocument("LMODEL");
-
+  
   QFile file(fName);
-  if(!file.open(QIODevice::ReadOnly))
-    return tree;
+  if(!file.open(QIODevice::ReadOnly)){
+    cerr << "XMLDomTreeReader::readXMLToTree: Cannot open file" <<endl;
+    cerr << "Exit program" << endl;
+    exit(-1);
+  }
   if(!m_doc.setContent(&file)) {
     file.close();
+    cerr << "XMLDomTreeReader::readXMLToTree: Cannot set XML Dom content" <<endl;
     return tree;
   }
-
   
   QDomNode root = m_doc.firstChild();
 
@@ -206,7 +209,6 @@ template <class TS, class BUD, class S>
 void XMLDomTreeReader<TS,BUD,S>::parseTree(QDomNode& root, Tree<TS,BUD>& tree) {
   QDomNode node = root.firstChild();
   QDomNode attrib, param, functions, axisNode; 
-
   // Find the nodes in the DOM-document
   while(true) {
     if(!node.isNull() && node.isElement()) {
