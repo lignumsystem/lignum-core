@@ -173,21 +173,21 @@ using namespace cxxadt;
 
 class Firmament{
 public:
-  Firmament(int no_incl = NUM_OF_INCL/*9*/, int no_azim = NUM_OF_AZIM /*24*/,double rad_plane=1200.0);
+  Firmament(int no_incl = NUM_OF_INCL/*9*/, int no_azim = NUM_OF_AZIM /*24*/,double rad_plane=1200.0); //parametrised constructor
   void resize(int no_incl, int no_azim, double diffuse_rad_plane);
   void setDiffuseRadiation(const double rad);
   void setDirectRadiation(const double rad) { directRadPlane = rad; }
   void setSunPosition(const vector<double>& v);
   vector<double>  getSunPosition() { return sunPosition; }
-  MJ directRadiation(vector<double>& direction);
-  MJ diffuseRadiationSum( const vector<double>& v);
+  double directRadiation(vector<double>& direction);
+  double diffuseRadiationSum( const vector<double>& v);
   int numberOfRegions() const { return numOfSectors; }
-  MJ diffuseRegionRadiationSum(int n, vector<double>& direction)const;
-  MJ diffuseHalfRegionRadiationSum(int n, vector<double>& direction)const;
-  MJ directHalfRegionRadiationSum(vector<double>& direction);
-  MJ diffusePlaneSensor(void) { return diffuseRadPlane; }
-  MJ diffuseBallSensor(void) { return diffuseRadBall; }
-  MJ diffuseForestRegionRadiationSum(int n, float z, float x,  float la, float ke,
+  double diffuseRegionRadiationSum(int n, vector<double>& direction)const;
+  double diffuseHalfRegionRadiationSum(int n, vector<double>& direction)const;
+  double directHalfRegionRadiationSum(vector<double>& direction);
+  double diffusePlaneSensor(void) { return diffuseRadPlane; }
+  double diffuseBallSensor(void) { return diffuseRadBall; }
+  double diffuseForestRegionRadiationSum(int n, float z, float x,  float la, float ke,
 				     float H, float Hc,
 				     vector<double>& direction,double density);
   void outDiff() {
@@ -254,12 +254,74 @@ public:
     return result;
   }
 
+
+  double getThetZ()
+  {
+   cout<<thetZ<<endl;
+   return thetZ;
+
+  }
+
+
+
+  double getdeltaIncl()
+  {
+   cout<<deltaIncl<<endl;
+   return deltaIncl;
+
+  }
+
+  double  getHalfDeltaIncl()
+  {
+
+   cout<<halfDeltaIncl<<endl;
+   return halfDeltaIncl;
+  }
+
+  PositionVector getDir_x()
+  {
+
+    cout<<dir_x<<endl;
+    return dir_x;
+  }
+
+  PositionVector getDir_y()
+  {
+    cout<<dir_y<<endl;
+    return dir_y;
+  }
+
+  PositionVector getDir_z()
+  {
+    cout<<dir_z<<endl;
+    return dir_z;
+  }
+
+
+  double getStandDensity()
+  {
+   cout<<standDensity<<endl;
+   return standDensity;
+  }
+
+  double getDiffuseRadScale()
+  {
+   cout<<diffuseRadScale<<endl;
+   return diffuseRadScale;
+
+  }
+  double getDiffuseRadZenith()
+  {
+   cout<<diffuseRadZenith<<endl;
+   return diffuseRadZenith;
+  }
+
 protected:
   int num_of_incl;
   int num_of_azim;
   double diffuseRadScale;
-  MJ directRadPlane, diffuseRadPlane, diffuseRadBall;
-  MJ diffuseRadZenith;
+  double directRadPlane, diffuseRadPlane, diffuseRadBall;
+  double diffuseRadZenith;
   vector<double> sunPosition;
 
   TMatrix<double> zoneAzims;

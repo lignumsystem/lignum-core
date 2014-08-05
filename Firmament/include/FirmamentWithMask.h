@@ -6,12 +6,17 @@ using namespace std;
 #include <Firmament.h>
 #include <string>
 #include <Lex.h>
+#include <vector>
+#include<iterator>
+#include<algorithm>
 
 using namespace cxxadt;
 namespace sky{
 
   class FindNextMask{
   public:
+      FindNextMask() {};
+
     FindNextMask(int i):iter(i){}
     bool operator()(const pair<int,string>& p)const{
       if (iter <= p.first)
@@ -51,8 +56,15 @@ public:
   void configure(int iter, bool verbose = false);
   void readAllMasks(const string& file);
   void readMaskFile(const string& file);
+  void getMask(int incl_index,double percentage){return  setMask(incl_index, percentage);}
+  void getreadMask(Lex& file){ return readMask(file);}
   LGMdouble getBallChange() {return  ballChange; }
   LGMdouble getPlaneChange() {return  planeChange; }
+  LGMdouble getDrp_orig() {return  drp_orig; }
+   std::vector<std::pair<int,std::string> > getResultVector() const{
+   std::vector<std::pair<int, std::string> > result( gap_ls.begin(), gap_ls.end() );
+   return result;
+   }
 protected:
   void readMask(Lex& file);
   void setMask(int incl_index,double percentage);
@@ -61,6 +73,8 @@ protected:
   LGMdouble planeChange;   //Change to diffuseRadPlane  caused by SetMask
   LGMdouble drp_orig; //The original plane sensor radiation of the sky 
   list<pair<int,string> > gap_ls; //List of gap files 
+  vector<pair<int,string> > result;
+
 };
 
 }//closing namespace sky
