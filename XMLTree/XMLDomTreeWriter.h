@@ -47,6 +47,7 @@ bool XMLDomTreeWriter<TS,BUD,S>::writeTreeToXML(Tree<TS, BUD>& tree, const strin
   
   QTextStream out(device);
   out << doc.toString();
+  file.close();
   return true;
   
 }
