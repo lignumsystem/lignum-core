@@ -8,9 +8,9 @@
 // returns true if the segment was successfully divided in two,
 // false otherwise.
 template <class TS, class BUD>
-bool cut(list<TreeCompartment<TS,BUD>*> tc_ls,
-         typename list<TreeCompartment<TS,BUD>*>::iterator iter,
-		 METER l_new, METER l_min)
+bool CutSegment<TS,BUD>::operator()(list<TreeCompartment<TS,BUD>*>& tc_ls,
+				    typename list<TreeCompartment<TS,BUD>*>::iterator iter,
+				    METER l_new, METER l_min)
 {
 	if(!dynamic_cast<TS*>(*iter)) {
 		return false;
@@ -44,21 +44,21 @@ bool cut(list<TreeCompartment<TS,BUD>*> tc_ls,
 
 // split repeatedly until the segment is divided into segments of length l,
 // with the exception of the last segment with l_min <= length < l + l_min
-template <class TS, class BUD>
-void split_axis(Axis<TS,BUD>& axis, METER l, METER l_min)
+template <class TS, class BUD, class F>
+void LGMSplit<TS,BUD,F>::split_axis(Axis<TS,BUD>& axis, METER l, METER l_min)const
 {
 	list<TreeCompartment<TS,BUD>*>& tc_ls = GetTreeCompartmentList(axis);
 	typename list<TreeCompartment<TS,BUD>*>::iterator it = tc_ls.begin();
 	for(it = tc_ls.begin(); it != tc_ls.end(); ++it) {
-	  while(cut(tc_ls, it, l, l_min)){/*empty block*/};
+	  while(f(tc_ls, it, l, l_min)){/*empty block*/};
 	}
 }
 
-template <class TS, class BUD>
-void LGMSplit<TS,BUD>::operator()(TreeCompartment<TS,BUD>* tc) const
+template <class TS, class BUD,class F>
+void LGMSplit<TS,BUD,F>::operator()(TreeCompartment<TS,BUD>* tc) const
 {
-	if(Axis<TS,BUD>* myaxis = dynamic_cast<Axis<TS,BUD>*>(tc))
-		split_axis(*myaxis, l, l_min);
+  if(Axis<TS,BUD>* myaxis = dynamic_cast<Axis<TS,BUD>*>(tc))
+    split_axis(*myaxis, l, l_min);
 }
 
 #endif

@@ -20,14 +20,26 @@
 //		HBTree *myt = treels[i];
 //		ForEach(*myt, LGMSplit<HBSegment,HBBud>(0.1));
 //	}
-template <class TS, class BUD>
-class LGMSplit {
-	METER l;     // distance between cuts
-	METER l_min; // minimum segment length. defaults to 0.1mm
+
+//Default functor to cut segments 
+template <class TS,class BUD>
+class CutSegment{
 public:
-	LGMSplit(METER len) : l(len), l_min(0.0001) { }
-	LGMSplit(METER len, METER min) : l(len), l_min(min) { }
-	void operator ()(TreeCompartment<TS,BUD>* tc)const;
+  bool operator()(list<TreeCompartment<TS,BUD>*>& tc_ls,
+		  typename list<TreeCompartment<TS,BUD>*>::iterator iter,
+		  METER l_new, METER l_min);
+};
+
+template <class TS, class BUD, class F=CutSegment<TS,BUD> >
+class LGMSplit {
+public:
+  LGMSplit(METER len, METER l_minimum=0.0001) : l(len), l_min(l_minimum){ }
+  void operator ()(TreeCompartment<TS,BUD>* tc)const;
+  void split_axis(Axis<TS,BUD>& axis, METER l, METER l_min)const;
+private:
+  METER l;     // distance between cuts
+  METER l_min; // minimum segment length. defaults to 0.1mm
+  mutable F f; //The functor that actually splits the segment
 };
 
 #include "LGMSplitI.h"
