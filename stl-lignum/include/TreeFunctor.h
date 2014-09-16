@@ -140,8 +140,13 @@ namespace Lignum{
 	   n+=1;
 	 return n;
        }
+     unsigned int& operator()(unsigned int& n,TreeCompartment<TS,BUD>* tc)const
+     {
+	 if (dynamic_cast<TS*>(tc)!=NULL)
+	   n+=1;
+	 return n;
+     }
    };
-
    template <class TS,class BUD>
      class CountCfTreeSegmentsWithFoliage {
      public:
