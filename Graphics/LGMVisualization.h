@@ -1,6 +1,6 @@
 
-#ifndef LGMVISUALIZATION
-#define LGMVIZUALIZATION
+#ifndef LGMVISUALIZATION_H
+#define LGMVISUALIZATION_H
 
 #include <OpenGLHFiles.h>
 #include <vector>

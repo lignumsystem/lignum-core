@@ -1,6 +1,6 @@
 
-#ifndef LGMVISUALIZATIONI
-#define LGMVIZUALIZATIONI
+#ifndef LGMVISUALIZATIONI_H
+#define LGMVISUALIZATIONI_H
 
 #include <WrapperBase.h>
 #include <CTexture.h>
