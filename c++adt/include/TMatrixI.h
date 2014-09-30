@@ -279,7 +279,7 @@ template <class T>  std::ostream& operator << (std::ostream& os, const TMatrix<T
 template <class T>  
 std::ostream& operator << (std::ostream& os, const std::vector<T>& v1)
 {
-  for (int i = 0; i < v1.size(); i++){
+  for (size_t i = 0; i < v1.size(); i++){
     os << v1[i] << " ";
   }
   os << endl;
