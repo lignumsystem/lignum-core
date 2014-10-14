@@ -5,6 +5,11 @@
 #include <cmath>
 namespace cxxadt{
 
+  //For visualization of ellipse it is necessary that the axes
+  //are specified as vectors (xdir, ydir). This constructor sets
+  //them in a bit arbitrary way (with the aid of position center0).
+  //Prefer other constructors for a better spcification of ellipse
+  //orientation.
   Ellipse::Ellipse(const Point& center0, 
                    const PositionVector& normal0, 
 		   const double& semimajoraxis0,  
@@ -12,7 +17,17 @@ namespace cxxadt{
     :center(center0),normal(normal0),semimajoraxis(semimajoraxis0),
      semiminoraxis(semiminoraxis0)
   {
-    
+    PositionVector v = Cross(normal0,PositionVector(center0));
+    v. normalize();
+    PositionVector x1(normal0);
+    x1.rotate(Point(0,0,0),v,PI_VALUE/2.0);
+    x1.normalize();
+
+    PositionVector y1(Cross(normal,x1));
+    y1.normalize();
+
+    xdir = x1;
+    ydir = y1;
   }
 
   Ellipse::Ellipse(const Point& petiole_end,
