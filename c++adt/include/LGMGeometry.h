@@ -29,7 +29,7 @@ namespace cxxadt{
     Triangle(leftcorner,rightcorner,apexcorner), normal(no) {}
 
 
-    PositionVector getNormal() {return normal;}
+    PositionVector getNormal() const {return normal;}
     void setNormal(const PositionVector& no) {normal = no; normal.normalize();}
 
   private:
