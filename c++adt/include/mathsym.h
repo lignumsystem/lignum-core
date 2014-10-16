@@ -70,6 +70,18 @@ extern double ran3(int *seed);
 //See Numerical Recipes for details.
 extern double gauss(double m, double s, int *seed);
 
+//Change degrees to radian
+inline double LGMRadian(double degrees)
+{
+  return (degrees*PI_VALUE)/180.0;
+}
+
+//Change radian to degrees
+inline double LGMDegrees(double radian)
+{
+  return (radian*180.0)/PI_VALUE;
+}
+
 }//closing namespace cxxadt
 
 #endif
