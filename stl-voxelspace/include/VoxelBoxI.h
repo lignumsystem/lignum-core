@@ -33,16 +33,16 @@ void DumpCfSegmentFoliage(VoxelBox &b, const CfTreeSegment<TS,BUD>& ts,
 
     LGMdouble starS = 0.0;
 
-
-
-    //This for loop is executed for angles 0, 15, .., 90 degrees, that is,
-    // 7 times
+    //This for loop is executed for angles 0, 15, .., 90 degrees, that is, 7 times
+    double sw=0.0;
     for (double phi=0;phi<=PI_VALUE/2.0; phi+=PI_VALUE/12.0)
     {
-        starS += b.S(phi, S_f, fmass, needle_rad, lenght);
+      starS += cos(phi) * b.S(phi, S_f, fmass, needle_rad, lenght);
     }
+    starS /= 4.29788;    //4.29788 = sum(cos(phi), phi = 0,15,30, .., 90 (from previous loop)
+    //Mean STAR value is the spherically averaged
+    //= integ(incl=0,PI, azim=0,2PI) cos(incl)*STAR(incl,azim) dincl dazim (Oker-Blom & Smolander 1988)
 
-    starS /= 7.0;
     b.addStarSum(starS * farea/(double)num_parts);  //Note: weighted by needle area
     //of the part of seg that is in question.
     b.addWeight(farea/(double)num_parts);
@@ -114,9 +114,12 @@ std::vector<LGMdouble> calcDirectionalStar(VoxelBox &b,const CfTreeSegment<TS,BU
             inclination = (PI_VALUE/2.0) - acos(fabs(a_dot_b));
             newStar    += b.S(inclination,S_f,fmass,needle_rad,lenght);
         }
-        directionalStar[counter] = newStar/12.0 ;
+        directionalStar[counter] = cos(phi) * (newStar/12.0) / 4.29788;
+	//4.29788 is because of weighing with cos(phi) (spherically avergaed STAR) see
+	//evaluation of STAR above 
         counter+=1;
     }
+
     return directionalStar;
 
 
