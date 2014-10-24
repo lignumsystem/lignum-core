@@ -114,9 +114,7 @@ std::vector<LGMdouble> calcDirectionalStar(VoxelBox &b,const CfTreeSegment<TS,BU
             inclination = (PI_VALUE/2.0) - acos(fabs(a_dot_b));
             newStar    += b.S(inclination,S_f,fmass,needle_rad,lenght);
         }
-        directionalStar[counter] = cos(phi) * (newStar/12.0) / 4.29788;
-	//4.29788 is because of weighing with cos(phi) (spherically avergaed STAR) see
-	//evaluation of STAR above 
+        directionalStar[counter] = newStar/12.0;
         counter+=1;
     }
 
