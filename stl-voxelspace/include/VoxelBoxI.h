@@ -34,7 +34,6 @@ void DumpCfSegmentFoliage(VoxelBox &b, const CfTreeSegment<TS,BUD>& ts,
     LGMdouble starS = 0.0;
 
     //This for loop is executed for angles 0, 15, .., 90 degrees, that is, 7 times
-    double sw=0.0;
     for (double phi=0;phi<=PI_VALUE/2.0; phi+=PI_VALUE/12.0)
     {
       starS += cos(phi) * b.S(phi, S_f, fmass, needle_rad, lenght);
