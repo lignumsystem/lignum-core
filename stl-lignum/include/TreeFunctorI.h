@@ -32,6 +32,8 @@
 //   PrintTreeSegmentInformationToFileByAxis
 //   DropAllLeaves
 //   CrownVolume
+//   FindRFunctor
+//   CrownExtension
 //   DaVinciTaperCurve
 
 
@@ -507,7 +509,7 @@ namespace Lignum{
     
 	if(foliage) {
 	  if(GetValue(*ts, LGAWf) < R_EPSILON)
-	    cout << "No foliage" <<endl;
+	//    cout << "No foliage" <<endl;
 	    return b_box;
 	}
 	Point base = GetPoint(*ts);
@@ -1558,7 +1560,7 @@ namespace Lignum{
       double angle = PI_VALUE / 2.0;
       for(int j = 0; j < 4; j++) {
 	double dir = (double)j * angle;
-	findRFunctor<TS,BUD>  findR(minH, maxH, dir, angle,
+	FindRFunctor<TS,BUD>  findR(minH, maxH, dir, angle,
 				    treeBase);
 	double R = 0.0;
 	radii[i][j] = Accumulate(tr, R, findR);
@@ -1576,34 +1578,34 @@ namespace Lignum{
   }
 
 
-  // Helper functor for CrownVolume
+  //   FindRFunctor
   //It tests if either base or top of segment with foliage is in the
   //quadrant of a slice and determines whichever is farthest from the
   //stem, and if > R, updates R.
   template <class TS, class BUD>
-  double& findRFunctor<TS,BUD>::operator ()
+  double& FindRFunctor<TS,BUD>::operator ()
     (double& R, TreeCompartment<TS,BUD>* tc)const {
     if (TS* ts = dynamic_cast<TS*>(tc)){
       if(GetValue(*ts, LGAWf) < R_EPSILON) return R;
       Point base = GetPoint(*ts);
        //      Point midP(base + 0.5 *(top-base));
-      if(base.getZ() > minH && base.getZ() < maxH) {
+      if(base.getZ() >= minH && base.getZ() <= maxH) {
 	//note that treeBase is a PositionVector that has only x- and y-components
 	PositionVector r = PositionVector(base.getX(),base.getY(),0.0)
 	  - treeBase;
-	PositionVector middle(cos(dir+angle/2.0),sin(dir+angle/2.0),0.0);
-	if(Dot(r,middle)/r.length() > cos(angle/2.0)) {
+	PositionVector middle=PositionVector(cos(dir+angle/2.0),sin(dir+angle/2.0),0.0);
+	if(Dot(r,middle)/r.length() >= cos(angle/2.0)) {
 	  if(r.length() > R) R = r.length();
 	}
       }
 
      Point top = GetEndPoint(*ts);
-      if(top.getZ() > minH && top.getZ() < maxH) {
+      if(top.getZ() >= minH && top.getZ() <= maxH) {
 	//note that treeBase is a PositionVector that has only x- and y-components
 	PositionVector r = PositionVector(top.getX(),top.getY(),0.0)
 	  - treeBase;
 	PositionVector middle(cos(dir+angle/2.0),sin(dir+angle/2.0),0.0);
-	if(Dot(r,middle)/r.length() > cos(angle/2.0)) {
+	if(Dot(r,middle)/r.length() >= cos(angle/2.0)) {
 	  if(r.length() > R) R = r.length();
 	}
       }
@@ -1615,8 +1617,6 @@ namespace Lignum{
   //CrownExtension
   //Works like CrownVolume but returns crown extensions in quadrants of slices
   //Here end point of segment with foliage is used instead of midpoint.
-
-  
 
   template <class TS, class BUD>
     void CrownExtension<TS,BUD>::operator ()(Tree<TS,BUD>&  tr,
@@ -1647,7 +1647,7 @@ namespace Lignum{
       double r_sum = 0.0;
       for(int j = 0; j < 4; j++) {
 	double dir = (double)j * angle;
-	findRFunctor<TS,BUD>  findR(minH, maxH, dir, angle,
+	FindRFunctor<TS,BUD>  findR(minH, maxH, dir, angle,
 				    treeBase);
 	double R = 0.0;
 	r_sum += Accumulate(tr, R, findR);

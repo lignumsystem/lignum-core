@@ -35,6 +35,8 @@ using namespace std;
 //   CheckCoordinates
 //   FindCfBoundingBox
 //   FindHwBoundingBox
+//   FindRFunctor         find largest distance to stem in a crown slice
+//                        in a quadrant around given direction
 //   CollectFrustumVolume 
 //   CollectFoliageMass (Either whole tree or by Gravelius order)
 //   CollectFoliageArea (Either whole tree or by Gravelius order)
@@ -101,6 +103,9 @@ using namespace std;
 //  Triangularize Dump tree (woody parts) to STL format (writes to the console).
 //  DaVinciTaperCurve  Implements the taper curve according to Da Vinci rule
 //                     Needs 1) Radius of the first segments 2) The exponent 
+
+
+
 
 //  Functors-functions below used in LIGNUM WorkBench are not listed.
 
@@ -952,15 +957,24 @@ public:
     const BinaryPredicate f;
   };
   
-//   CrownVolume
-// For explanation how it works, look for TreeFunctorI.h
 
-// Helper functor for CrownVolume
+  template <class TS, class BUD> 
+    class CrownVolume { 
+    public: 
+    CrownVolume(double hstep = 0.2): step(hstep) {;}
+    double operator()(Tree<TS,BUD>&  tr)const;
+    private:
+    double step;
+  };
+
+
+//   FindRFunctor         find largest distance to stem in a crown slice
+//                        in a quadrant around given direction
 
   template <class TS, class BUD>
-    class findRFunctor {
+    class FindRFunctor {
     public:
-    findRFunctor(const double& miH,const double& maH, const double& dire,
+    FindRFunctor(const double& miH,const double& maH, const double& dire,
 		 const double& ang, const Point& tb):
       minH(miH), maxH(maH), dir(dire), angle(ang)
       {treeBase = PositionVector(tb.getX(),tb.getY(),0.0); }
@@ -973,17 +987,6 @@ public:
   };
 
 
-
-  template <class TS, class BUD> 
-    class CrownVolume { 
-    public: 
-    CrownVolume(double hstep = 0.2): step(hstep) {;}
-    double operator()(Tree<TS,BUD>&  tr)const;
-    private:
-    double step;
-  };
-
-
   template <class TS, class BUD> 
     class CrownExtension { 
     public: 
@@ -992,6 +995,7 @@ public:
     private:
     double step;
   };
+
 
 //  LowestSegmentExcludingStem
 //  LowestCfSegmentWithFoliage
