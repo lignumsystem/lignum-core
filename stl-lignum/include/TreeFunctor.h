@@ -21,9 +21,11 @@ using namespace std;
 
 //   ConnectTree
 //   CountTreeSegments
+//   CountBranchingPoints
 //   CountCfTreeSegmentsWithFoliage
 //   CountHwTreeSegmentsWithFoliage
 //   CountLeavesHw
+//   TotalSegmentLength
 //   ForwardQin (for coniferous)
 //   PrintTreeInformation
 //   PrintTreeInformation2
@@ -152,6 +154,19 @@ namespace Lignum{
 	 return n;
      }
    };
+
+  template <class TS, class BUD>
+  class CountBranchingPoints{
+  public:
+    int operator()(int& n, TreeCompartment<TS,BUD>* tc)const
+    {
+      if (dynamic_cast<BranchingPoint<TS,BUD>*>(tc) != NULL){
+	n = n+1;
+      }
+      return n;
+    }
+  };
+      
    template <class TS,class BUD>
      class CountCfTreeSegmentsWithFoliage {
      public:
@@ -190,7 +205,19 @@ namespace Lignum{
        }
    };
 
-
+  //The sum of the segments in a tree
+  template <class TS, class BUD>
+  class TotalSegmentLength{
+  public:
+    double operator()(double& length,TreeCompartment<TS,BUD>* tc)const
+    {
+      if (TS* ts = dynamic_cast<TS*>(tc)){
+	length = length+GetValue(*ts,LGAL);
+      }
+      return length;
+    }
+  };
+  
   //PrintTreeInformation collects and prints out information about the
   //tree. It uses functor TreeData to collect the information with
   //Accumulate
