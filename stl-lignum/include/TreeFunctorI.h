@@ -32,6 +32,7 @@
 //   PrintTreeSegmentInformationToFileByAxis
 //   DropAllLeaves
 //   CrownVolume
+//   FindLongestDistanceToStem
 //   FindRFunctor
 //   CrownExtension
 //   DaVinciTaperCurve
@@ -1578,17 +1579,51 @@ namespace Lignum{
   }
 
 
+  //This finds longest distance of a conifer shoot with foliage
+  //to stem and its direction with respect of tree stem
+
+/*   template <class TS, class BUD> */
+/*     pair<double,PositionVector>& FindLongestDistanceToStem::operator() */
+/*     (pair<double,PositionVector>& dat, TreeCompartment<TS,BUD>* tc)const { */
+/*     if (TS* ts = dynamic_cast<TS*>(tc)){ */
+/*       cout << "HEP" << endl; */
+/*       if(GetValue(*ts, LGAWf) > R_EPSILON) {  //has foliage */
+/* 	Point base = GetPoint(*ts); */
+/* 	PositionVector d(base.getX()-stem_point.getX(),base.getY()-stem_point.getY(),0.0); */
+/* 	double r = d.length(); */
+/* 	if(r > dat.first) { */
+/* 	  dat.first = r; */
+/* 	  dat.second = d; */
+/* 	} */
+
+/* 	Point top = GetEndPoint(*ts); */
+/* 	d = PositionVector(top.getX()-stem_point.getX(),top.getY()-stem_point.getY(),0.0); */
+/* 	r = d.length(); */
+/* 	if(r > dat.first) { */
+/* 	  dat.first = r; */
+/* 	  dat.second = d; */
+/* 	} */
+/*       }  //has foliage */
+/*     }    //is TreeSegment */
+/*     return dat; */
+/*   } */
+
+
   //   FindRFunctor
-  //It tests if either base or top of segment with foliage is in the
-  //quadrant of a slice and determines whichever is farthest from the
+  //It tests if either base or top of segment with foliage between heights minH and maxH is in
+  //an angle angle around direction and determines whichever is farthest from the
   //stem, and if > R, updates R.
+
   template <class TS, class BUD>
-  double& FindRFunctor<TS,BUD>::operator ()
+    double& FindRFunctor<TS,BUD>::operator ()
     (double& R, TreeCompartment<TS,BUD>* tc)const {
     if (TS* ts = dynamic_cast<TS*>(tc)){
-      if(GetValue(*ts, LGAWf) < R_EPSILON) return R;
+      if(!with_woody_parts) {
+	if(GetValue(*ts, LGAWf) < R_EPSILON)
+	  return R;  //does not have foliage
+      }
       Point base = GetPoint(*ts);
-       //      Point midP(base + 0.5 *(top-base));
+      //      Point midP(base + 0.5 *(top-base));
       if(base.getZ() >= minH && base.getZ() <= maxH) {
 	//note that treeBase is a PositionVector that has only x- and y-components
 	PositionVector r = PositionVector(base.getX(),base.getY(),0.0)
@@ -1599,7 +1634,7 @@ namespace Lignum{
 	}
       }
 
-     Point top = GetEndPoint(*ts);
+      Point top = GetEndPoint(*ts);
       if(top.getZ() >= minH && top.getZ() <= maxH) {
 	//note that treeBase is a PositionVector that has only x- and y-components
 	PositionVector r = PositionVector(top.getX(),top.getY(),0.0)
