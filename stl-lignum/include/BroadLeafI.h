@@ -161,6 +161,8 @@ void SetCenterPoint(BroadLeaf<SHAPE>& bl, const Point& p)
 template <class SHAPE>  
 void SetRadiationVector(BroadLeaf<SHAPE>& bl, const vector<LGMdouble>& v)
 {
+  if(bl.bla.sv.size() != v.size())
+	bl.bla.sv.resize(v.size());
   for(unsigned int i = 0; i < bl.bla.sv.size(); i++)
     bl.bla.sv[i] = v[i];
 }
@@ -217,7 +219,6 @@ void SetLeafPosition(BroadLeaf<SHAPE>& bl, const Point& p)
 
   TranslateLeaf(bl, transvct);
 }
-
 
 }//closing namespace Lignum
 

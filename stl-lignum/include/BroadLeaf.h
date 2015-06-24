@@ -122,6 +122,25 @@ public:
     bla.petiole.setEnd(tmp);
     bla.shape.move(mov);
   }
+  //This is analogous to rotate of PositionVector
+  //Rotation about an arbitrary axis in space according to
+  //Rogers&Adams: mathematical Elements for Computer Graphics p. 121-128
+  void rotate(const Point& p, const PositionVector& ra,
+	      const LGMdouble& an) {
+  Point pos = bla.petiole.getBegin();
+  PositionVector pv(p);
+  pv.rotate(p,ra,an);
+  bla.petiole.setBegin(Point(pv));
+
+  pos = bla.petiole.getEnd();
+  pv = PositionVector(p);
+  pv.rotate(p,ra,an);
+  bla.petiole.setEnd(Point(pv));
+
+  bla.shape.rotate(p,ra,an);
+}
+
+
 private:
   BroadLeafAttributes<SHAPE> bla;
 };
