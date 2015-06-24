@@ -37,6 +37,8 @@ using namespace std;
 //   CheckCoordinates
 //   FindCfBoundingBox
 //   FindHwBoundingBox
+//   FindLongestDistanceToStem      finds longest distance to to stem
+//                                  and its direction
 //   FindRFunctor         find largest distance to stem in a crown slice
 //                        in a quadrant around given direction
 //   CollectFrustumVolume 
@@ -987,30 +989,85 @@ public:
 
   template <class TS, class BUD> 
     class CrownVolume { 
-    public: 
-    CrownVolume(double hstep = 0.2): step(hstep) {;}
+  public: 
+  CrownVolume(double hstep = 0.2): step(hstep) {;}
     double operator()(Tree<TS,BUD>&  tr)const;
-    private:
+  private:
     double step;
   };
 
 
+  //This finds longest distance of a conifer shoot with foliage
+  //to stem and its direction with respect of tree stem
+  //Default is that only TreeSegments  that carry foliage (shoots)
+  //are tested, this can be overruled with the second argument of
+  //constructor.
+
+  template <class TS, class BUD> 
+    class FindLongestDistanceToStem {
+  public:
+  FindLongestDistanceToStem(const Point& st_point, const bool& wwp = false) : 
+    stem_point(st_point), with_woody_parts(wwp) {}
+    pair<double,PositionVector>& operator() (pair<double,PositionVector>& dat,
+					     TreeCompartment<TS,BUD>* tc)const
+      {
+	if (TS* ts = dynamic_cast<TS*>(tc)){
+	  //Exit if no foliage & foliage required 
+	  if(!with_woody_parts) {
+	    if(GetValue(*ts, LGAWf) <= R_EPSILON)
+	      return dat;
+	  }
+  
+	  Point base = GetPoint(*ts);
+	  PositionVector d(base.getX()-stem_point.getX(),base.getY()-stem_point.getY(),0.0);
+	  double r = d.length();
+	  if(r > dat.first) {
+	    dat.first = r;
+	    d.normalize();
+	    dat.second = d;
+	  }
+
+	  Point top = GetEndPoint(*ts);
+	  d = PositionVector(top.getX()-stem_point.getX(),top.getY()-stem_point.getY(),0.0);
+	  r = d.length();
+	  if(r > dat.first) {
+	    dat.first = r;
+	    d.normalize();
+	    dat.second = d;
+	  }
+	}    //is TreeSegment
+	return dat;
+      }
+
+  private:
+    Point stem_point;
+    bool with_woody_parts;  //if distance also with parts that
+                            //don't carry foliage
+  };
+
+
 //   FindRFunctor         find largest distance to stem in a crown slice
-//                        in a quadrant around given direction
+//                        between heights minH and maxH in an angle around
+//                        given direction
+  //Default is that only TreeSegments  that carry foliage (shoots)
+  //are tested, this can be overruled with the last argument of
+  //constructor.
 
   template <class TS, class BUD>
     class FindRFunctor {
     public:
     FindRFunctor(const double& miH,const double& maH, const double& dire,
-		 const double& ang, const Point& tb):
-      minH(miH), maxH(maH), dir(dire), angle(ang)
-      {treeBase = PositionVector(tb.getX(),tb.getY(),0.0); }
+		 const double& ang, const Point& tb, const bool& wwp = false):
+    minH(miH), maxH(maH), dir(dire), angle(ang),  with_woody_parts(wwp)
+      {treeBase = PositionVector(tb.getX(),tb.getY(),0.0);}
       //Center of stem in xy-plane 
     double& operator ()(double& R, TreeCompartment<TS,BUD>* tc)const;
     PositionVector& getTreeBase() {return treeBase;}
     private:
     double minH, maxH, dir, angle;
     PositionVector treeBase;  //Center of stem in xy-plane
+    bool with_woody_parts;  //if distance also with parts that
+                            //don't carry foliage
   };
 
 
