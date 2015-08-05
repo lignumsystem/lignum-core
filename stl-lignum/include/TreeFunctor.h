@@ -693,12 +693,13 @@ public:
 	else {
 	  if((int)GetValue(*ds,LGAomega) < my_order)
 	    return sum;
-	  if(!foliage) {
-	    if(GetValue(*ds,LGAWf) > R_EPSILON)
-	      return sum;
-	  }
 	}
 
+	if(!foliage) {
+	  if(GetValue(*ds,LGAWf) > R_EPSILON)
+	    return sum;
+	}
+ 
 	LGMdouble r = GetValue(*ds, LGAR);
 	LGMdouble rt = GetValue(*ds,LGARTop);
 	if(rt < R_EPSILON) 
@@ -709,6 +710,7 @@ public:
       
 	sum += PI_VALUE*(r + rt)*s;
       }
+
       return sum;
     }
   private:
