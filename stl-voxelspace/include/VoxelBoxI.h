@@ -178,12 +178,8 @@ template <class TS,class BUD>
 void SetSegmentQabs(VoxelBox &b, CfTreeSegment<TS,BUD>& ts, double num_parts)
 {
 
-    LGMdouble S_f = GetValue(GetTree(ts), LGPsf);
-    LGMdouble farea = S_f * GetValue(ts, LGAWf) / num_parts;
-    LGMdouble qabs = 0.0;
-
     //Qabs computetd based on Qin, mean star and foliage area.
-    qabs = b.getQin()*GetValue(ts,LGAstarm)*(GetValue(GetTree(ts), LGPsf)*GetValue(ts, LGAWf));
+    LGMdouble qabs = b.getQin()*GetValue(ts,LGAstarm)*(GetValue(GetTree(ts), LGPsf)*GetValue(ts, LGAWf));
 
     SetValue(ts, LGAQabs, GetValue(ts, LGAQabs)+qabs);
     SetValue(ts, LGAQin, GetValue(ts, LGAQin)+b.getQin()/num_parts);
