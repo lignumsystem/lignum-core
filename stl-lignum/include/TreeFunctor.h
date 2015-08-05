@@ -54,6 +54,7 @@ using namespace std;
 //   CollectNewFoliageMass        (LGAage == 0.0)
 //   CollectQabs
 //   CollectQin
+//   CollectMantleArea
 //   GetQinMax
 //   MoveHwTree (does MoveTree + moves leaves also)
 //   MoveTree
@@ -668,6 +669,54 @@ public:
     }
 
   };
+
+//======================================================================================
+// This functor collects (Accumulate) the surface area of Segments (without end disks).
+// If top diameter > 0 the area is calculated as one of frustum, if top diameter == 0, 
+// Segment is regarded as a cylinder.
+
+//If my_order < 0, the mantle area of only segments that have order == -my_order are collected
+//If my_order <= the mantle area of segments with order >= my_order are collected
+//If foliage == true, also segments with foliage are included, otherwise not
+
+  template <class TS, class BUD>
+    class CollectMantleArea{
+  public:
+  CollectMantleArea(int order, bool w_fol): my_order(order), foliage(w_fol) {}
+    LGMdouble& operator()(LGMdouble& sum, TreeCompartment<TS, BUD>* tc)const{
+
+      if(TS* ds = dynamic_cast<TS*>(tc)) {
+	if(my_order < 0) {
+	  if((int)GetValue(*ds,LGAomega) != -my_order)
+	    return sum;
+	}
+	else {
+	  if((int)GetValue(*ds,LGAomega) < my_order)
+	    return sum;
+	  if(!foliage) {
+	    if(GetValue(*ds,LGAWf) > R_EPSILON)
+	      return sum;
+	  }
+	}
+
+	LGMdouble r = GetValue(*ds, LGAR);
+	LGMdouble rt = GetValue(*ds,LGARTop);
+	if(rt < R_EPSILON) 
+	  rt = r;
+	LGMdouble l = GetValue(*ds,LGAL);
+      
+	LGMdouble s = sqrt(l*l+(r-rt)*(r-rt));
+      
+	sum += PI_VALUE*(r + rt)*s;
+      }
+      return sum;
+    }
+  private:
+    int my_order;
+    bool foliage;
+  };
+
+
 
   //This functor is used (ForEach) to move a hardwood tree (=all its
   //TreeCompartments) and leaves to a new location. 
