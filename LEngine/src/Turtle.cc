@@ -236,7 +236,7 @@ void SetPoint(Turtle& t, const Point& p)
 ostream& operator << (ostream& os, const Turtle& t)
 {
   cout << endl;
-  os << "H: " << t.h;
+  os << " H: " << t.h;
   os << " L: " << t.l;
   os << " U: " << t.u;
   os << " P: " << t.p;
