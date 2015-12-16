@@ -20,8 +20,10 @@ using namespace std;
 //please update this list.
 
 //   ConnectTree
+//   IsConnected
 //   CountTreeSegments
 //   CountBranchingPoints
+//   CountBranches
 //   CountCfTreeSegmentsWithFoliage
 //   CountHwTreeSegmentsWithFoliage
 //   CountLeavesHw
@@ -139,8 +141,34 @@ namespace Lignum{
 	return p;
       }
   };
-
-
+  //Check each tree segment is connected: end point is the start point
+  //Start with the point of the first tree segment
+  template <class TS, class BUD>
+  class IsConnected{
+  public:
+    IsConnected(double accuracy=R_EPSILON):acc(accuracy),connected(true){}
+    Point& operator()(Point& previous, TreeCompartment<TS,BUD>* tc)const
+    {
+      if(TS* ts = dynamic_cast<TS*>(tc)) {
+	Point pcurrent=GetPoint(*ts);
+	if ((pcurrent || previous) > acc){
+	  cout << "Previous point: " << previous.getX() << " " << previous.getY() << " "
+	       << previous.getZ() <<endl;
+	  cout << "Current point:  " << pcurrent.getX() << " " << pcurrent.getY() << " "
+	       << pcurrent.getZ() <<endl;
+	  cout << "Distance: " << (pcurrent || previous)<<endl<<endl;
+	  connected = false;
+	}
+	Point pend = GetEndPoint(*ts);
+	previous = pend;
+      }
+      return previous;
+    }
+  private:
+    double acc;
+    mutable bool connected;
+  };
+  
    template <class TS,class BUD>
      class CountTreeSegments {
      public:
@@ -169,6 +197,20 @@ namespace Lignum{
       return n;
     }
   };
+
+  template <class TS, class BUD>
+  class CountBranches{
+  public:
+    int operator()(int& n, TreeCompartment<TS,BUD>* tc)const
+    {
+      if (BranchingPoint<TS,BUD>*bp = dynamic_cast<BranchingPoint<TS,BUD>*>(tc)){
+	list<Axis<TS,BUD>*>& axisls = GetAxisList(*bp);
+	  n = n+axisls.size();
+      }
+      return n;
+    }
+  };
+
       
    template <class TS,class BUD>
      class CountCfTreeSegmentsWithFoliage {
