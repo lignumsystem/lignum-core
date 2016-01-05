@@ -55,7 +55,7 @@ private:
 
 inline CString::CString(const char *str)
 {
-  str_length = strlen(str);
+  str_length = static_cast<int>(strlen(str));
   string = new char[str_length+1];
   strcpy(string,str);
 }
