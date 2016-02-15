@@ -608,6 +608,8 @@ BSPPolygonSet* LGMPolygonDomBuilder::makeFoliage(double radius, double height, P
 
 
   int y_detail = (int)(height/spacing);
+  if(y_detail == 0)
+    y_detail = 1;
   
   PositionVector dir(direction.normalize().getX()/2.0,
 		     (1+direction.normalize().getY())/2.0,
