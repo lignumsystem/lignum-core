@@ -227,7 +227,7 @@ void VoxelSpace::resize(LGMdouble lX, LGMdouble lY, LGMdouble lZ,
 //corners) The number of VoxelBoxes may change, their dimensions
 //remain the same. Contents are lost (because TMatrix3D resize
 //destroys contents). Note that upper right corner of the resized
-//voxelspace is the same as the given corner; it is adjusted to match
+//voxelspace is _NOT_ the same as the given corner; it is adjusted to match
 //number of voxboxes.
 
 void VoxelSpace::resize(const Point lower_left, const Point upper_right)
