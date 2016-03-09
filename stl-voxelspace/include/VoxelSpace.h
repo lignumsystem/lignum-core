@@ -116,6 +116,11 @@ public:
                double xsize, double ysize, double zsize,
                int xn, int yn, int zn,
                Firmament& f, LGMdouble k_b=0.50);
+
+    //constructor on the basis of lower left corner,  voxel box size, and number of
+    //boxes (size of the matrix) & the sky
+    VoxelSpace(Point cll, double xsize, double ysize, double zsize,
+	       int xn, int yn, int zn, Firmament &f);
     
     void reset();
     void resetQinQabs();

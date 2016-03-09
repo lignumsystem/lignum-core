@@ -75,6 +75,33 @@ VoxelSpace::VoxelSpace(Point c1, Point c2,
 corner2 = corner1 + Point((double)Xn * Xbox, (double)Yn * Ybox, (double)Zn * Zbox); 
 }
 
+//Constructor:
+//cll the lower left corner point
+//xsize, ysize, zsize: voxel box size
+//xn, yn, zn: number of voxel boxes (size of the matrix)
+//f: the firmament
+//This constructor evaluates everything starting from the lower left corner,
+//size of voxelboxes and numbers of boxes
+VoxelSpace::VoxelSpace(Point cll, double xsize, double ysize, double zsize,
+                       int xn, int yn, int zn, Firmament &f)
+    :Xbox(xsize),Ybox(ysize),Zbox(zsize),
+      Xn(xn),Yn(yn),Zn(zn),voxboxes(xn,yn,zn),corner1(cll),k_b(0.5)
+{
+    for(int i1=0; i1<Xn; i1++)
+        for(int i2=0; i2<Yn; i2++)
+            for(int i3=0; i3<Zn; i3++)
+            {
+                Point corner = cll +
+                        Point((LGMdouble)i1*Xbox, (LGMdouble)i2*Ybox,
+                              (LGMdouble)i3*Zbox);
+                voxboxes[i1][i2][i3].setVoxelSpace(this, corner);
+            }
+    sky = &f;
+
+//Set upper right corner with the aid of corner1 and # of boxes & their size
+corner2 = corner1 + Point((double)Xn * Xbox, (double)Yn * Ybox, (double)Zn * Zbox); 
+}
+
 
 void PrintVoxelObjectLocations(const VoxelSpace& s, const string& fname)
 {
