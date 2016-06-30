@@ -20,6 +20,7 @@ using namespace std;
 //please update this list.
 
 //   ConnectTree
+//   CountAxesProper  (no. of axes with at least one TreeSegment)
 //   IsConnected
 //   CountTreeSegments
 //   CountBranchingPoints
@@ -141,6 +142,7 @@ namespace Lignum{
 	return p;
       }
   };
+
   //Check each tree segment is connected: end point is the start point
   //Start with the point of the first tree segment
   template <class TS, class BUD>
@@ -169,6 +171,27 @@ namespace Lignum{
     mutable bool connected;
   };
   
+
+//   CountAxesProper counts Axes that have at least one TreeSegment
+//   Note that Number of Axes (Proper) =  Number of Apexes
+
+   template <class TS,class BUD>
+     class CountAxesProper {
+     public:
+     int& operator()(int& n,TreeCompartment<TS,BUD>* tc)const
+       {
+	 if(Axis<TS,BUD>* ax = dynamic_cast<Axis<TS, BUD>*>(tc)) {
+	     list<TreeCompartment<TS,BUD>*>& lscmp = GetTreeCompartmentList(*ax);
+	     if((int)lscmp.size() >= 3) {  //At least one TreeSegment
+	       n+=1;
+	     }
+	     return n; 
+	 }
+       }
+   };
+
+
+     //CountTreeSegments
    template <class TS,class BUD>
      class CountTreeSegments {
      public:
@@ -1168,7 +1191,7 @@ public:
     class CrownExtension { 
     public: 
     CrownExtension(double hstep = 0.2): step(hstep) {;}
-    void operator()(Tree<TS,BUD>&  tr, vector<pair<double,double> >& ext)const;
+    void operator()(Tree<TS,BUD>&  tr, vector<pair<double,vector<double> > >& ext)const;
     private:
     double step;
   };
