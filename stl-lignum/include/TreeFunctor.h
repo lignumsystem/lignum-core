@@ -580,6 +580,14 @@ public:
     void setMaxX(const LGMdouble x) { maxxyz.setX(x); }
     void setMaxY(const LGMdouble y) { maxxyz.setY(y); }
     void setMaxZ(const LGMdouble z) { maxxyz.setZ(z); }
+    void addPoint(const Point p) {     //if Point is not in BBox, it is enlarged to contain
+      minxyz.setX(min(minxyz.getX(),p.getX()-R_EPSILON)); //R_EPSILON to make sure that
+      minxyz.setY(min(minxyz.getY(),p.getY()-R_EPSILON)); //the enlagement goes over the Point
+      minxyz.setZ(min(minxyz.getZ(),p.getZ()-R_EPSILON));
+      maxxyz.setX(max(maxxyz.getX(),p.getX()+R_EPSILON));
+      maxxyz.setY(max(maxxyz.getY(),p.getY()+R_EPSILON));
+      maxxyz.setZ(max(maxxyz.getZ(),p.getZ()+R_EPSILON));
+    }
   private:
     Point minxyz;
     Point maxxyz;
