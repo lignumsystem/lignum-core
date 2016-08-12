@@ -515,7 +515,7 @@ namespace Lignum{
 	}
 	Point base = GetPoint(*ts);
 	Point top = GetEndPoint(*ts);
-	double rSh = GetValue(*ts,LGARf); //max dist of needle tip from woody part	
+	double rSh = 0.05;/*GetValue(*ts,LGARf);*/ //max dist of needle tip from woody part	
 	if(b_box.getMin().getX() > base.getX()-rSh) b_box.setMinX(base.getX()-rSh);
 	if(b_box.getMin().getY() > base.getY()-rSh) b_box.setMinY(base.getY()-rSh);
 	if(b_box.getMin().getZ() > base.getZ()-rSh) b_box.setMinZ(base.getZ()-rSh);
@@ -1655,7 +1655,7 @@ namespace Lignum{
 
   template <class TS, class BUD>
     void CrownExtension<TS,BUD>::operator ()(Tree<TS,BUD>&  tr,
-					     vector<pair<double,double> >& ext)const 
+					     vector<pair<double,vector<double> > >& ext)const 
   {
     Point ex_point(0.0,0.0,R_HUGE);
     ex_point = Accumulate(tr,ex_point,LowestCfSegmentWithFoliage<TS,BUD>());
@@ -1686,9 +1686,10 @@ namespace Lignum{
 				    treeBase);
 	double R = 0.0;
 	r_sum += Accumulate(tr, R, findR);
+	(ext[i].second).push_back(R);
       }
       ext[i].first = (minH + maxH)/2.0;
-      ext[i].second = r_sum/4.0;
+      //     ext[i].second = r_sum/4.0;
     }
 
     return;
