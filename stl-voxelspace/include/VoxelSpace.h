@@ -124,6 +124,9 @@ public:
     
     void reset();
     void resetQinQabs();
+    void resetOccupied();       //set variable occupied in VoxelBoxes to false
+    void resetOccupiedTry();    //set variable occupied_try in VoxelBoxes to false
+
     void resize(int nX, int nY, int nZ); //change number of VoxelBoxes
     //in x, y, and
     //z-directions. The extent
@@ -258,6 +261,32 @@ public:
                                            vector<pair<LGMdouble,LGMdouble> >& NAD);
     LGMdouble evaluateLacunarityNeedles();
 
+//
+// Returns vector of VoxelBoxes for a end point of vector (specified with the
+// end point, and direction of vector) and neighboring voxelboxes in a positive
+// dierction of the vector. That is, when the indexes of the end point of the 
+// the vector are (0, 0, 0), then in addition to (0,0,0) the voxels 
+// (+1, 0, 0), (0, +1, 0), (0, 0, +1),
+// (+1, +1, 0), (0, +1, +1), (+1, 0, +1), (+1, +1, +1) (8 voxels)
+// are included when all components of the direction vector are positive.
+// When components of the direction vector are negative the corresponding +1
+// is replaced with -1 in the above permutation.
+// It is possible that either the voxel of the end point or the neighboring voxels
+// are outside of VoxelSpace. Nothing is returned from such a "voxel". The length of
+// of returned vector thus varies between 0 and 8, 0 meaning that both the end point
+// and the neighboring "voxels" are outside of VoxelSpace.
+
+vector<VoxelBox> getVoxelBoxPositiveNeighborhood(const Point& p,
+					    const PositionVector& dir);
+
+//
+// Returns vector of VoxelBoxes that are neighbors of a box including a Point
+// (not this box)
+// Only boxes that are inside the voxelspace are returned
+
+vector<VoxelBox> getVoxelBoxNeighborhood(const Point& p);
+
+
 
     //==========================================================
 
@@ -304,6 +333,7 @@ public:
     double num_parts;
     bool dumpWood;
 };
+
 
 template <class TS,class BUD>
 class SetCfTreeQabsFunctor
@@ -358,6 +388,18 @@ public:
 private:
     VoxelSpace& vs;
 };
+
+// This functor checks only if woody part of this TreeSegment occupies a VoxelBox and sets 
+// variable occupied accordingly
+template <class TS, class BUD>
+  class DumpTreeOccupy {
+ public:
+ DumpTreeOccupy(const int& n) : num_parts(n) {}
+  TreeCompartment<TS,BUD>* operator ()(TreeCompartment<TS,BUD>* tc)const;
+  mutable VoxelSpace *space;
+  double num_parts;
+};
+
 } // namespace Lignum
 
 #endif

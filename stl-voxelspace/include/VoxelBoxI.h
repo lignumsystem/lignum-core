@@ -203,6 +203,82 @@ private:
     const ParametricCurve& K;//The extinction function
 };
 
+
+// Checks if the woody part of segment is in the Box and sets 
+// attribute occupy accordingly
+
+template <class TS,class BUD>
+void DumpOccupy(VoxelBox &b, const TreeSegment<TS,BUD>& ts,
+                          int num_parts)
+{
+    LGMdouble fmass = GetValue(ts, LGAWf);
+
+    //LGMdouble r_f = GetValue(ts, LGARf);
+    LGMdouble lenght = GetValue(ts, LGAL);
+
+    LGMdouble farea = GetValue(ts, LGAAf);
+    b.addNeedleArea(farea/(double)num_parts);
+    b.addNeedleMass(fmass/(double)num_parts);
+    vector<LGMdouble>  starDir(7,0.0);
+    vector<LGMdouble>  weightedstarDir(7,0.0);
+
+    LGMdouble needle_rad = GetValue(ts, LGARf);
+    LGMdouble S_f;
+    LGMdouble wht;
+    if(fmass > R_EPSILON)
+        S_f = farea/fmass;
+    else
+        S_f = 28.0;
+
+    LGMdouble starS = 0.0;
+
+    //This for loop is executed for angles 0, 15, .., 90 degrees, that is, 7 times
+    for (double phi=0;phi<=PI_VALUE/2.0; phi+=PI_VALUE/12.0)
+    {
+      starS += cos(phi) * b.S(phi, S_f, fmass, needle_rad, lenght);
+    }
+    starS /= 4.29788;    //4.29788 = sum(cos(phi), phi = 0,15,30, .., 90 (from previous loop)
+    //Mean STAR value is the spherically averaged
+    //= integ(incl=0,PI, azim=0,2PI) cos(incl)*STAR(incl,azim) dincl dazim (Oker-Blom & Smolander 1988)
+
+    b.addStarSum(starS * farea/(double)num_parts);  //Note: weighted by needle area
+    //of the part of seg that is in question.
+    b.addWeight(farea/(double)num_parts);
+
+    b.increaseNumberOfSegments();  //This is a bit problematic with num_parts
+    b.addNumberOfSegmentsReal(1.0/(double)num_parts);
+    b.addVector((farea/(double)num_parts)*GetDirection(ts));
+
+    //************************Code added by KV***************************************************************
+    //To get the directions of the shoot and the incident rays. A vector is generated as a result using the
+    //function CalcDirectionalStar and stored for the different 8 values.
+    wht = farea/(double)num_parts;  // weight is used to get the weighted part of the calulcation
+    starDir= calcDirectionalStar(b,ts,fmass,lenght,needle_rad,S_f);
+    std::transform( starDir.begin(), starDir.end(), weightedstarDir.begin(),std::bind1st(std::multiplies<LGMdouble>(),wht));//multiply the vector with the weighted foliage
+    //area and use to add up all the vectors.
+    vector<LGMdouble> starDirSumTemp(7,0.0);
+
+    b.addDirectionalStarSum(weightedstarDir);
+    std::transform (starDirSumTemp.begin(),starDirSumTemp.end(),weightedstarDir.begin(),starDirSumTemp.begin(),plus<LGMdouble>());
+
+
+    //********************************************************************************************************
+    //*************************************Debugging Statements***************************************************
+    //    double sum=0;
+    //    for(int ii = 0;ii<=7;ii++){
+    //        cout<<"starDir  "<<starDir[ii]<< " " << starS << endl;
+    //        sum += starDir[ii];
+    //    }
+    //    cout << sum/7.0 << endl;
+    //    cout << Point(GetDirection(ts));
+    //    exit(0);
+    //*************************************************************************************************************
+}
+
+
+
+
+
 } //namespace Lignum
 
 

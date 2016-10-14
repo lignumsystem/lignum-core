@@ -912,6 +912,10 @@ VoxelBox& VoxelSpace::getVoxelBox(const Point& p)
         cout << "getVoxelBox for " << p << flush;
         cout << "voxel " << Point(Xi,Yi,Zi) << flush;
         cout << "voxel space " << Point(Xn,Yn,Zn) << flush;
+	cout << "Lower left   of VS " << corner1.getX() << " "
+             << corner1.getY() << " "<< corner1.getZ() << endl;
+        cout << "Upper right  of VS " << corner2.getX() << " " 
+             << corner2.getY() << " "<< corner2.getZ() << endl;
         throw OutOfVoxelSpaceException(Point(Xi,Yi,Zi),p);
     }
 
@@ -1212,6 +1216,29 @@ void VoxelSpace::resetQinQabs()
         }
     }
 }
+
+void VoxelSpace::resetOccupied()
+{
+    for(int i1=0; i1<Xn; i1++){
+        for(int i2=0; i2<Yn; i2++){
+            for(int i3=0; i3<Zn; i3++){
+                voxboxes[i1][i2][i3].setOccupied(false);
+            }
+        }
+    }
+}
+
+void VoxelSpace::resetOccupiedTry()
+{
+    for(int i1=0; i1<Xn; i1++){
+        for(int i2=0; i2<Yn; i2++){
+            for(int i3=0; i3<Zn; i3++){
+                voxboxes[i1][i2][i3].setOccupiedTry(false);
+            }
+        }
+    }
+}
+
 
 LGMdouble VoxelSpace::getQabs()const
 {
@@ -1667,6 +1694,119 @@ list<vector<int> > VoxelSpace::getBoxesAroundPoint(const Point& p, const double&
             }
     return boxes;
 }
+
+
+//
+// Returns vector of VoxelBoxes for a end point of vector (specified with the
+// end point, and direction of vector) and neighboring voxelboxes in a positive
+// dierction of the vector. That is, when the indexes of the end point of the 
+// the vector are (0, 0, 0), then in addition to (0,0,0) the voxels 
+// (+1, 0, 0), (0, +1, 0), (0, 0, +1),
+// (+1, +1, 0), (0, +1, +1), (+1, 0, +1), (+1, +1, +1) (8 voxels)
+// are included when all components of the direction vector are positive.
+// When components of the direction vector are negative the corresponding +1
+// is replaced with -1 in the above permutation.
+// It is possible that either the voxel of the end point or the neighboring voxels
+// are outside of VoxelSpace. Nothing is returned from such a "voxel". The length of
+// of returned vector thus varies between 0 and 8, 0 meaning that both the end point
+// and the neighboring "voxels" are outside of VoxelSpace.
+
+vector<VoxelBox>
+VoxelSpace::getVoxelBoxPositiveNeighborhood(const Point& p,
+					    const PositionVector& dir)
+{
+  int x_inc, y_inc, z_inc;
+  if(dir.getX() > 0.0) {
+    x_inc = 1;
+  } else {
+    x_inc = -1;
+  }
+  if(dir.getY() > 0.0) {
+    y_inc = 1;
+  } else {
+     y_inc = -1;
+  }
+  if(dir.getZ() > 0.0) {
+    z_inc = 1;
+  } else {
+    z_inc = -1;
+  }
+
+  vector<VoxelBox> neighborhood;
+  Point localP = p - corner1;
+
+  int Xi = static_cast<int>(localP.getX()/Xbox);
+  int Yi = static_cast<int>(localP.getY()/Ybox);
+  int Zi = static_cast<int>(localP.getZ()/Zbox);
+
+//   if (!(Xi < 0 || Yi < 0 || Zi < 0 || Xi >= Xn || Yi >= Yn || Zi >= Zn)) {
+//     neighborhood.push_back(voxboxes[Xi][Yi][Zi]);
+//   }
+  list<vector<int> > indexes;
+  vector<int> v(3); 
+  v[0] =Xi+x_inc; v[1] = Yi; v[2] = Zi;
+  indexes.push_back(v);
+  v[0] =Xi; v[1] = Yi+y_inc; v[2] = Zi;
+  indexes.push_back(v);
+  v[0] =Xi; v[1] = Yi; v[2] = Zi+z_inc;
+  indexes.push_back(v);
+  v[0] =Xi+x_inc; v[1] = Yi+y_inc; v[2] = Zi;
+  indexes.push_back(v);
+  v[0] =Xi; v[1] = Yi+y_inc; v[2] = Zi+z_inc;
+  indexes.push_back(v);
+  v[0] =Xi+x_inc; v[1] = Yi; v[2] = Zi+z_inc;
+  indexes.push_back(v);
+  v[0] =Xi+x_inc; v[1] = Yi+y_inc; v[2] = Zi+z_inc;
+  indexes.push_back(v);
+
+  list<vector<int> >::iterator I;
+  for(I = indexes.begin(); I != indexes.end(); I++) {
+    if (!((*I)[0] < 0 || (*I)[1] < 0 || (*I)[2] < 0 || (*I)[0] >= Xn || (*I)[1] >= Yn
+	  || (*I)[2] >= Zn)) {
+      neighborhood.push_back(voxboxes[(*I)[0]][(*I)[1]][(*I)[2]]);
+    }
+  }
+  return neighborhood;
+}
+
+//
+// Returns vector of VoxelBoxes that are neighbors of a box including a Point
+// (not this box)
+// Only boxes that are inside the voxelspace are returned
+
+vector<VoxelBox>
+VoxelSpace::getVoxelBoxNeighborhood(const Point& p)
+{
+
+  vector<VoxelBox> neighborhood;
+  Point localP = p - corner1;
+
+  int Xi = static_cast<int>(localP.getX()/Xbox);
+  int Yi = static_cast<int>(localP.getY()/Ybox);
+  int Zi = static_cast<int>(localP.getZ()/Zbox);
+
+  vector<int> inc(3);
+  inc[1] = -1; inc[1] = 0; inc[2] = 1;
+
+  for(int ix = 0; ix < 3; ix++) {
+    int x = Xi + inc[ix];
+    for(int iy = 0; iy < 3; iy++) {
+      int y = Yi + inc[iy];
+      for(int iz = 0; iz < 3; iz++) {
+	int z = Zi + inc[iz];
+	if (!(ix == 0 && iy == 0 && iz == 0)) {
+	  if (!(x < 0 || y < 0 || z < 0 || x >= Xn || y >= Yn || z >= Zn)) {
+	    neighborhood.push_back(voxboxes[x][y][z]);
+	  }
+	}
+      }
+    }
+  }
+
+  return neighborhood;
+}
+
+
 
 }// closing namespace Lignum
 

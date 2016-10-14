@@ -106,6 +106,10 @@ public:
     void addNumberOfSegmentsReal(LGMdouble inc){number_of_segments_real += inc;}
     void addOneLeaf() {number_of_leaves++;}
     void addVector(PositionVector v) {mean_direction = PositionVector(mean_direction+v);}
+    void setOccupied(const bool& set_value) {occupied = set_value;}
+    bool getOccupied() {return occupied;}
+    void setOccupiedTry(const bool& set_value) {occupied_try = set_value;}
+    bool getOccupiedTry() {return occupied_try;}
     
     LGMdouble S(LGMdouble phi, LGMdouble sf, LGMdouble Wf,
                 LGMdouble r, LGMdouble l);
@@ -174,6 +178,10 @@ private:
     // parts (num_parts)
 
     PositionVector mean_direction;
+
+    bool occupied;      // if you need only to know present/not present
+    bool occupied_try;  // present not present for iterative adjusting of segment length
+                        // in growth allocation 
 };
 
 } //namespace Lignum
