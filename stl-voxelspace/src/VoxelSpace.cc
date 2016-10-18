@@ -909,13 +909,13 @@ VoxelBox& VoxelSpace::getVoxelBox(const Point& p)
     int Yi = static_cast<int>(localP.getY()/Ybox);
     int Zi = static_cast<int>(localP.getZ()/Zbox);
     if (Xi < 0 || Yi < 0 || Zi < 0 || Xi >= Xn || Yi >= Yn || Zi >= Zn){
-        cout << "getVoxelBox for " << p << flush;
-        cout << "voxel " << Point(Xi,Yi,Zi) << flush;
-        cout << "voxel space " << Point(Xn,Yn,Zn) << flush;
-	cout << "Lower left   of VS " << corner1.getX() << " "
-             << corner1.getY() << " "<< corner1.getZ() << endl;
-        cout << "Upper right  of VS " << corner2.getX() << " " 
-             << corner2.getY() << " "<< corner2.getZ() << endl;
+//         cout << "getVoxelBox for " << p << flush;
+//         cout << "voxel " << Point(Xi,Yi,Zi) << flush;
+//         cout << "voxel space " << Point(Xn,Yn,Zn) << flush;
+// 	cout << "Lower left   of VS " << corner1.getX() << " "
+//              << corner1.getY() << " "<< corner1.getZ() << endl;
+//         cout << "Upper right  of VS " << corner2.getX() << " " 
+//              << corner2.getY() << " "<< corner2.getZ() << endl;
         throw OutOfVoxelSpaceException(Point(Xi,Yi,Zi),p);
     }
 
