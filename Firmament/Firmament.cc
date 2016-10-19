@@ -523,6 +523,11 @@ MJ Firmament::diffuseForestRegionRadiationSum(int n, float z, float x, float la,
 
   float Qunshaded = diffuseRegionRadiationSum(n, direction);
 
+  //Check for incorrect input
+  if(Hc >= H) {
+      return Qunshaded;
+  }
+
   // Inclination angle of the direction (from horizon),
   // length of direction = 1, hence z coordinate = sin(alpha)
 
