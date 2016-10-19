@@ -288,12 +288,6 @@ namespace Lignum{
     LGMdouble sWfr = 0.5*GetValue(t,LGPar)*Wf;
 
 
-/*     cout << "P M iWs iWf iWcr sWcr iWfr sWfr Wf ar Rold Rnew " << P << " " << M << " " << */
-/*       GetValue(data,LGAiWs) << " " << GetValue(data,LGAiWf) << " " << iWcr << " " << sWcr << " " */
-/* 	 << iWfr << " " << sWfr << " " << Wf << " " << GetValue(t,LGPar) << " " << Rold */
-/* 	 << " " << Rnew << endl; */
-
-
     return P - M - GetValue(data,LGAiWs) - GetValue(data,LGAiWf) - iWcr - sWcr - iWfr - sWfr;
 
  
