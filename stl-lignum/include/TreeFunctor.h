@@ -48,6 +48,7 @@ using namespace std;
 //   CollectFoliageMass (Either whole tree or by Gravelius order)
 //   CollectFoliageArea (Either whole tree or by Gravelius order)
 //   CollectWoodMass (Either whole tree or by Gravelius order)
+//   CollectSegmentLengths (Either whole tree or by Gravelius order)
 //   CollectStemWoodMass
 //   CollectSapwoodMass
 //   CollectStemSapwoodMass
@@ -666,6 +667,22 @@ public:
     private:
       LGMdouble my_order;
     };
+
+  //Either whole tree: construct CollectSegmentLengths() or by Gravelius order:
+  // construct CollectSegmentLengths(order)
+  template <class TS,class BUD>
+    class CollectSegmentLengths
+    { 
+    public:
+      CollectSegmentLengths():my_order(-1.0) {}
+      CollectSegmentLengths(const LGMdouble order):
+      my_order(static_cast<double>(order)){}
+      LGMdouble& operator()(LGMdouble &sum, TreeCompartment<TS,BUD>* tc)const;
+      void setOrder(const int order) {my_order = static_cast<double>(order);}
+    private:
+      LGMdouble my_order;
+    };
+
 
   template <class TS,class BUD>
     class CollectStemWoodMass
