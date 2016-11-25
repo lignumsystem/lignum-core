@@ -15,7 +15,6 @@ using namespace std;
 #include <ParseCommandLine.h>
 
 using namespace cxxadt;
-
 #include <LGMdecl.h>
 #include <Algorithms.h>
 #include <LGMGrowthAllocator.h>
@@ -34,6 +33,8 @@ using namespace cxxadt;
 #include <TreeRadiation.h>
 #include <TreeBookkeeping.h>
 #include <TreeCharacteristics.h>
+#include <DebugTreeSegment.h>
+
 
 using namespace sky;
 
@@ -173,30 +174,33 @@ namespace Lignum{
       template <class TS1, class BUD1, class F>
       friend void EvaluateRadiationForTree(Tree<TS1,BUD1>& tree, const F& f);
 
-      public:
-      Tree();
-      Tree(const Point& p, const PositionVector& d);
-      Tree(const Point& p, const PositionVector& d, 
-	   LGMdouble len, LGMdouble rad, int num_buds);
-      //This constructor is for making algorithms (ForEach etc) available also for parts
-      //of a tree (=Axis, e.g. branch or subbranch). Make a Tree out of an Axis
-      //and you can run ForEach etc.  BE AWARE: After this tree has disappeared (e.g. outside
-      //of a block) the axis given as argument in the constructor disappears also. 
-      Tree(Axis<TS,BUD>& ax) : axis(ax) {}
+  public:
+    Tree();
+    Tree(const Point& p, const PositionVector& d);
+    Tree(const Point& p, const PositionVector& d, 
+	 LGMdouble len, LGMdouble rad, int num_buds);
+    //Construct a tree from an axis. This can be useful if for example
+    //one wants to construct a tree from a branch 
+    Tree(const Point& p, const PositionVector& d,Axis& axis);
+    //This constructor is for making algorithms (ForEach etc) available also for parts
+    //of a tree (=Axis, e.g. branch or subbranch). Make a Tree out of an Axis
+    //and you can run ForEach etc.  BE AWARE: After this tree has disappeared (e.g. outside
+    //of a block) the axis given as argument in the constructor disappears also. 
+    Tree(Axis<TS,BUD>& ax) : axis(ax) {}
 
-      void photosynthesis();
-      void respiration();
-      TreeFunctions tf;  //cvs update
+    void photosynthesis();
+    void respiration();
+    TreeFunctions tf;  //cvs update
 
 	
-    private:
-      TreeAttributes ta;
-      TreeParameters tp;
-     
-      TreeInitializationFiles tif;
-      FirmamentWithMask f;
-      Axis<TS,BUD> axis;
-    };
+  private:
+    TreeAttributes ta;
+    TreeParameters tp;
+    
+    TreeInitializationFiles tif;
+    FirmamentWithMask f;
+    Axis<TS,BUD> axis;
+  };
 
 
 }//closing namespace Lignum
