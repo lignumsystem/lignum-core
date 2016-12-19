@@ -181,7 +181,7 @@ namespace Lignum{
 	 LGMdouble len, LGMdouble rad, int num_buds);
     //Construct a tree from an axis. This can be useful if for example
     //one wants to construct a tree from a branch 
-    Tree(const Point& p, const PositionVector& d,Axis& axis);
+    Tree(const Point& p, const PositionVector& d,Axis<TS,BUD>& axis);
     //This constructor is for making algorithms (ForEach etc) available also for parts
     //of a tree (=Axis, e.g. branch or subbranch). Make a Tree out of an Axis
     //and you can run ForEach etc.  BE AWARE: After this tree has disappeared (e.g. outside

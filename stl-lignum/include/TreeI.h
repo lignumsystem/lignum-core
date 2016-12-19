@@ -23,7 +23,7 @@ Tree<TS,BUD>::Tree(const Point& p, const PositionVector& d)
 //Construct a tree at a certain position to a certain direction
 //with an axis (from a different tree). 
 template <class TS,class BUD>
-Tree<TS,BUD>::Tree(const Point& p, const PositionVector& d,Axis& a)
+Tree<TS,BUD>::Tree(const Point& p, const PositionVector& d,Axis<TS,BUD>& a)
   :TreeCompartment<TS,BUD>(p,d,this),f(5,5),axis(a) { }
 
 template <class TS,class BUD>
