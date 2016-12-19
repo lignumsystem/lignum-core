@@ -164,9 +164,11 @@ namespace Lignum{
   class LGMGrowthAllocator2{
   public:
     LGMGrowthAllocator2(Tree<TS,BUD>& tree)
-      :t(tree),P(0.0),M(0.0){init();}
+      :t(tree),P(0.0),M(0.0), reduction(0.0){init();}
     LGMGrowthAllocator2(Tree<TS,BUD>& tree,DATA d, ADD_ASSIGN functor)
-      :t(tree),data(d),data_orig(d),f(functor),P(0.0),M(0.0){init();}
+      :t(tree),data(d),data_orig(d),f(functor),P(0.0), M(0.0), reduction(0.0) {init();}
+  LGMGrowthAllocator2(Tree<TS,BUD>& tree,DATA d, ADD_ASSIGN functor, const double red0)
+      :t(tree),data(d),data_orig(d),f(functor),P(0.0), M(0.0), reduction(red0) {init();}
     void init();
     DATA getData()const{return data;}
     double getP()const{return P;}
@@ -181,6 +183,7 @@ namespace Lignum{
     double P;
     double M;
     mutable double lambda;//The lambda in  G = iWs(l) + iWfnew(l) + iWrnew(l)
+    double reduction;     //a factor that can reduce available growth resource, that is, P - M
   };
 
   template <class TS,class BUD,class ELONGATION,class ADD_ASSIGN,class DIAMETER_INCREMENT, class DATA>
@@ -210,8 +213,11 @@ namespace Lignum{
     //iWfnew = new foliage
     //iWrnew = new roots = ar*iWfnew
  
-    return P - M - GetValue(data,LGAiWs) - GetValue(data,LGAiWf) - GetValue(t,LGPar)* GetValue(data,LGAiWf);
- 
+    //cout << "P M iWs iWf iWr reduction  " << P << " " << M << " " << GetValue(data,LGAiWs)
+//	 << " " << GetValue(data,LGAiWf) << " " << GetValue(data,LGAiWf) << " "
+//	 << GetValue(t,LGPar)* GetValue(data,LGAiWf) << " " << reduction << endl; 
+    return P - M - GetValue(data,LGAiWs) - GetValue(data,LGAiWf) - GetValue(t,LGPar)* GetValue(data,LGAiWf)
+      - reduction;
   }
 
   // ----------------------------------------------------------------------------------------------
