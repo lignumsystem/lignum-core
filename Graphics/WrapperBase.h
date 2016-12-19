@@ -78,7 +78,7 @@ public:
   virtual void DrawTreeMetrics();
   virtual void VisualizeStem(int &active_texture);
   virtual void DrawSegmentMetrics(int type){
-    cout << "Hw DrawSegmentMetrics Not Implemented" <<endl;
+    cout << "Hw DrawSegmentMetrics Not Implemented, type is " << type <<endl;
   }
   void DrawOrderedLeaves(float x, float y, float z);
   
