@@ -39,7 +39,7 @@ private:
   ParametricCurve& read_xy_file(const char *file_name);
   string file;
   vector<double> v;
-  int num_of_elements;
+  unsigned long num_of_elements;
 };
 
 } //close namespace cxxadt
