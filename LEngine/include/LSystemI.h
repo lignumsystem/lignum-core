@@ -469,7 +469,8 @@ int LSystem<TS,BUD,T,F>::lstring2Lignum(list<TreeCompartment<TS,BUD>*>& ls,
       SetPoint(*ts,GetPoint(turtle_stack.top()));
       SetDirection(*ts,GetHeading(turtle_stack.top()));
       //Should we update the length may be a matter of discussion
-      //But when the turtle is 'in charge' we should (c.f symbodial growth) 
+      //But when the turtle is 'in charge' we should (c.f symbodial growth)
+      //cout << "lstringToLignum TS Radius: " << arg2 <<endl;
       SetValue(*ts,LGAL,arg1);
       SetValue(*ts,LGAR,arg2);
       SetValue(*ts,LGARTop,arg3);
@@ -489,6 +490,9 @@ int LSystem<TS,BUD,T,F>::lstring2Lignum(list<TreeCompartment<TS,BUD>*>& ls,
 		      turtle_stack.size(),arg1,arg2,
 		      0.0,&tree);
       //Set radius
+      //cout << "lstringToLignum B Radius: " << arg2 <<endl;
+      //cout << GetPoint(*ts);
+      //cout << GetEndPoint(*ts);
       SetValue(*ts,LGAR,arg2);
       //Set top radius
       SetValue(*ts,LGARTop,arg3);
