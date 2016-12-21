@@ -143,7 +143,7 @@ public:
 	//not hit any segment.
 	vs.getBookKeeper().resetVector();
 	//Extinction into one direction
-    vs.getRoute(vm,p1,d1,K,true,true);
+	vs.getRoute(vm,p1,d1,K,true,true);
 	//calculate the extinction coeffient
 	double tau = accumulate(vm.begin(),vm.end(),1.0,
 				AccumulatePairwiseExtinction());
@@ -210,7 +210,7 @@ public:
       if (tau > R_EPSILON){
 	//Do not bother  to traverse the voxels for  each sky sector
 	//if no light
-    vs.getRoute(vm,sp,d1,K,true,true);
+	vs.getRoute(vm,sp,d1,K,true,true);
 	//calculate the extinction coeffient
 	tau = tau*accumulate(vm.begin(),vm.end(),1.0,
 			     AccumulatePairwiseExtinction());
@@ -311,11 +311,11 @@ public:
 	PositionVector d1(d[0],d[1],d[2]);
 	//Border stand extinction
 	double tau = vs.getBorderStandExtinction(p1,d1);
-      tau = 1.0;         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	tau = 1.0;         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
  	//Check if radiation
 	if (tau > R_EPSILON){
 	  //Lengths of the light beam in boxes
-      vs.getRoute(vm,p1,d1,K,false,true);
+	  vs.getRoute(vm,p1,d1,K,false,true);
 	  //calculate the extinction coeffient
 	  tau = tau*accumulate(vm.begin(),vm.end(),1.0,
 			       AccumulateExtinction(vs));
