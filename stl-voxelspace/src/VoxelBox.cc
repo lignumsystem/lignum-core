@@ -294,6 +294,8 @@ LGMdouble VoxelBox::getExtinction(const Point& p0, const PositionVector& d,
     // the computation if wood hit
     double tau = 1.0;
     vector<VoxelObject*>::const_iterator it;
+    //cout << "VoxelBox::getExtinction begin" <<endl;
+    int i = 0;
     for (it=objects.begin(); it != objects.end(); it++){
         long_size tag = (*it)->getTag();
         bool ray_hit = (space->getBookKeeper()).rayHit(tag);
@@ -302,14 +304,14 @@ LGMdouble VoxelBox::getExtinction(const Point& p0, const PositionVector& d,
             double tmp_tau = (*it)->getExtinction(p0,d,Kfun);
             //cout << "VoxelBox::getExtinction loop " << tmp_tau << endl;
             if ((*it)->hit_self == true){
-                //Ray hits self, mark ray hit. A copy may be in another voxel.
-                (space->getBookKeeper()).setRayHit(tag);
-                space->hitself = space->hitself + 1;
+	      //Ray hits self, mark ray hit. A copy may be in another voxel.
+	      (space->getBookKeeper()).setRayHit(tag);
+	      space->hitself = space->hitself + 1;
             }
             if (tmp_tau == 0.0){//wood
                 tau = 0.0;
                 space->hitw = space->hitw + 1;
-                //      cout << "BLOCKED" << endl;
+		//cout << "BLOCKED" << endl;
                 break;//sector blocked
             }
             else if (tmp_tau == 1.0){//no hit
@@ -320,9 +322,11 @@ LGMdouble VoxelBox::getExtinction(const Point& p0, const PositionVector& d,
                 (space->getBookKeeper()).setRayHit(tag);
                 space->hitfol = space->hitfol + 1;
                 tau = tau*tmp_tau;
+		//cout << "Box tau " << tau <<endl;
             }
         }//if (tag == false)
     }
+    //cout << "VoxelBox " <<tau << endl;
     return tau;
 }
 //

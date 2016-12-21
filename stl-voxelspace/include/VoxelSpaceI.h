@@ -195,7 +195,6 @@ public:
     {
         int x1,y1,z1,x2,y2,z2;
         x1=y1=z1=0;x2=y2=z2=-INT_MAX;
-
         //We need the ellipse for the ray-ellipse intersection
         Ellipse e(GetShape(*l));
         //The new center point where  the HwEllipse voxel object will be
@@ -234,7 +233,7 @@ public:
             x1 = s.getXindex(p.getX());
             y1 = s.getYindex(p.getY());
             z1 = s.getZindex(p.getZ());
-            cout << x1 << " "  << y1 << " "  <<z1 <<endl;
+            //cout << x1 << " "  << y1 << " "  <<z1 <<endl;
             //Check for voxel space boundaries
             if (x1 >= s.Xn || y1 >= s.Yn || z1 >= s.Zn|| x1 < 0 || y1 < 0 || z1 < 0 ){
                 cerr << "HwEllipse Ignoring element " << p << " "

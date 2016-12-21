@@ -467,12 +467,11 @@ vector<VoxelMovement>& VoxelSpace::getRoute(vector<VoxelMovement> &vec,
     int x_jump = +1;
     int y_jump = +1;
     int z_jump = +1;
-
+    
     //The x,y,z indices of the box the point belongs to
     int startx = getXindex(p0.getX());
     int starty = getYindex(p0.getY());
     int startz = getZindex(p0.getZ());
-
 
     if (dir.getX()<0)
         x_jump = -1;
@@ -715,7 +714,9 @@ vector<VoxelMovement>& VoxelSpace::getRoute(vector<VoxelMovement> &vec,
         //voxel objects in each box. Otherwise the lengths of the beam
         //paths in voxels is enough
         if (pairwise == true){
-            vm.tau =  voxboxes[vm.x][vm.y][vm.z].getExtinction(p0,dir,K);
+	  //cout << "Box Extinction begin" << vm.x << " " << vm.y << " " << vm.z << endl;
+	  vm.tau =  voxboxes[vm.x][vm.y][vm.z].getExtinction(p0,dir,K);
+	  //cout << "Box Extinction end" <<endl;
         }
         if (next_x <= next_y && next_x<= next_z)
         {
