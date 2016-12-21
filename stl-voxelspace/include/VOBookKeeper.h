@@ -17,6 +17,7 @@ public:
   void init();//Call after InsertVoxelObjects
   void initVector();//Call after InsertVoxelObjects (v.size() == tag
 		    //and v[i] == false
+  vector<bool>& getVector(){return v;}
 private:
   long_size tag;//A tag  for each voxel object. If  two objects denote
 		//the same segment, they  have the same tag. Note that
