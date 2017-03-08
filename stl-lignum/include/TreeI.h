@@ -176,6 +176,12 @@ LGMdouble GetValue(const Tree<TS,BUD>& tree, const LGMPD name)
   else if (name == LGPzbrentEpsilon)
      return tree.tp.zbrentEpsilon;
 
+  else if (name == LGPe1)
+     return tree.tp.e1;
+
+  else if (name == LGPe2)
+     return tree.tp.e2;
+
   else{
     cerr << "Tree::GetValue() uknown parameter: " << name << " returning 0.0" 
 	 << endl;
@@ -264,6 +270,12 @@ LGMdouble SetValue(Tree<TS,BUD>& tree, const LGMPD name, const LGMdouble value)
 
   else if (name == LGPzbrentEpsilon)
     tree.tp.zbrentEpsilon = value;
+
+  else if (name == LGPe1)
+    tree.tp.e1 = value;
+
+  else if (name == LGPe2)
+    tree.tp.e2 = value;
 
   else{
     cerr << "Tree::SetValue unknown parameter: " << name << " returning 0.0" 

@@ -160,7 +160,8 @@ namespace Lignum{
   enum LGMPD {LGPaf, LGPaleafmax, LGPapical, LGPar, LGPdof, LGPLmin, 
 	      LGPlr, LGPmf, LGPmr, LGPms,
 	      LGPna, LGPnl, LGPpr, LGPq, LGPrhoW, LGPrho_hair, LGPrho_root,
-	      LGPsf, LGPsr, LGPss, LGPtauL,LGPxi, LGPyc,LGPzbrentEpsilon, LGPlen_random};
+	      LGPsf, LGPsr, LGPss, LGPtauL,LGPxi, LGPyc,LGPzbrentEpsilon, LGPlen_random,
+              LGPe1, LGPe2};
 
   // 0  LGPaf  Needle mass - tree segment area (kgC/m^2)relationship
   // 1  LGPaleafmax  Maximum size of a leaf (m2)
@@ -194,6 +195,8 @@ namespace Lignum{
   // 24 LGPlen_random Parameter controlling random variation in lengths of new segments.
   //                 Realization may differ with tree species; see e.g.
   //                 Lig-Crobas/include/ScotsPine.h
+  // 25 LGPe1        Parameters in function that links height growth to that of diameter
+  // 26 LGPe2        See Sievanen R 1993 Scand. J. For. Res 8: 28-48.
 
 
   //LGMTAD LIGNUM Tree level attribute double. **************************

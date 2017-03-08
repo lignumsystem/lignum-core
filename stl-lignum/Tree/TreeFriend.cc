@@ -31,6 +31,8 @@ namespace Lignum{
     lgmpd["LGPzbrentEpsilon"] = LGPzbrentEpsilon;
     lgmpd["LGPapical"] = LGPapical;
     lgmpd["LGPlen_random"] = LGPlen_random;
+    lgmpd["LGPe1"] = LGPe1;	
+    lgmpd["LGPe2"] = LGPe2;
   }
 
 

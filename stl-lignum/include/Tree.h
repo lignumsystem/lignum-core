@@ -85,7 +85,8 @@ namespace Lignum{
     LGMdouble lenRandom;     //Parameter controlling random variation in lengths of new segments.
                              //Realization may differ with tree species; see e.g.
                              //Lig-Crobas/include/ScotsPine.h
-
+    LGMdouble e1;            //Parameters in function that links height growth to that of diameter
+    LGMdouble e2;            //See Sievanen R 1993 Scand. J. For. Res 8: 28-48.
   };
  
   //TreeAttributes  are  in a  (long)  vector  indexed by  enumeration
