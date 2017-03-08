@@ -44,6 +44,9 @@ using namespace std;
 //                                  and its direction
 //   FindRFunctor         find largest distance to stem in a crown slice
 //                        in a quadrant around given direction
+//   FindRFunctorF        Find mean by foliage weighted distance to stem in a crown slice
+//                        between heights minH and maxH in an angle around
+//                        given direction
 //   CollectFrustumVolume 
 //   CollectFoliageMass (Either whole tree or by Gravelius order)
 //   CollectFoliageArea (Either whole tree or by Gravelius order)
@@ -1209,6 +1212,26 @@ public:
     PositionVector treeBase;  //Center of stem in xy-plane
     bool with_woody_parts;  //if distance also with parts that
                             //don't carry foliage
+ };
+
+//   FindRFunctorF        Find mean by foliage weighted distance to stem in a crown slice
+//                        between heights minH and maxH in an angle around
+//                        given direction
+//   Is a modification of FindRFunctor
+
+  template <class TS, class BUD>
+    class FindRFunctorF {
+    public:
+    FindRFunctorF(const double& miH,const double& maH, const double& dire,
+		 const double& ang, const Point& tb):
+    minH(miH), maxH(maH), dir(dire), angle(ang)
+      {treeBase = PositionVector(tb.getX(),tb.getY(),0.0);}
+      //Center of stem in xy-plane 
+    pair<double, double>& operator ()(pair<double, double>& sums, TreeCompartment<TS,BUD>* tc)const;
+    PositionVector& getTreeBase() {return treeBase;}
+    private:
+    double minH, maxH, dir, angle;
+    PositionVector treeBase;  //Center of stem in xy-plane
   };
 
 

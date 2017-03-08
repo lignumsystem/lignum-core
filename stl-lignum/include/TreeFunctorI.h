@@ -35,6 +35,9 @@
 //   CrownVolume
 //   FindLongestDistanceToStem
 //   FindRFunctor
+//   FindRFunctorF        Find mean by foliage weighted distance to stem in a crown slice
+//                        between heights minH and maxH in an angle around
+//                        given direction
 //   CrownExtension
 //   DaVinciTaperCurve
 
@@ -1665,6 +1668,35 @@ namespace Lignum{
     }
     return R;
   }
+
+//   FindRFunctorF        Find mean by foliage weighted distance to stem in a crown slice
+//                        between heights minH and maxH in an angle around
+//                        given direction
+
+  template <class TS, class BUD>
+    pair<double, double>& FindRFunctorF<TS,BUD>::operator ()
+    (pair<double, double>& sums, TreeCompartment<TS,BUD>* tc)const {
+    if (TS* ts = dynamic_cast<TS*>(tc)){
+      double Wf = GetValue(*ts, LGAWf);
+      if(Wf < R_EPSILON) {
+	return sums;
+      }
+      Point mid_shoot = GetPoint(*ts) + 0.5*GetValue(*ts,LGAL)*
+	Point(GetDirection(*ts));
+      if(mid_shoot.getZ() >= minH && mid_shoot.getZ() <= maxH) {
+	//note that treeBase is a PositionVector that has only x- and y-components
+	PositionVector r = PositionVector(mid_shoot.getX(),mid_shoot.getY(),0.0)
+	  - treeBase;
+	PositionVector middle=PositionVector(cos(dir+angle/2.0),sin(dir+angle/2.0),0.0);
+	if(Dot(r,middle)/r.length() >= cos(angle/2.0)) {
+	  sums.first += r.length() * Wf;
+	  sums.second += Wf;
+	}
+      }
+    }
+    return sums;
+  }
+
 
   //CrownExtension
   //Works like CrownVolume but returns crown extensions in quadrants of slices
