@@ -11,6 +11,7 @@
 //   PrintTreeInformation
 //   PrintTreeInformation2
 //   DisplayStructure
+//   DisplayStructureAxis
 //   CheckCoordinates
 //   FindCfBoundingBox
 //   FindHwBoundingBox
@@ -460,6 +461,33 @@ namespace Lignum{
     return id;
   }
 
+  template <class TS,class BUD>
+    class DisplayStructureAxis {
+  public:
+    TreeCompartment<TS,BUD>* operator() (TreeCompartment<TS,BUD>* tc)const {
+      if(Axis<TS,BUD>* myaxis =  dynamic_cast<Axis<TS,BUD>*>(tc)){
+	cout << "["; //begin of axis
+	list<TreeCompartment<TS,BUD>*>& tc_ls =
+	  GetTreeCompartmentList(*myaxis);
+	typename list<TreeCompartment<TS,BUD>*>::iterator I;
+
+	for(I = tc_ls.begin(); I!= tc_ls.end(); I++) {
+	  if (TS* ts = dynamic_cast<TS*>(*I)){
+	    cout << "TS ";
+	  }
+	  if (BranchingPoint<TS,BUD>* bp =
+	      dynamic_cast<BranchingPoint<TS,BUD>*>(*I)) {
+	    cout << "BP ";
+	  }
+	  if(Bud<TS,BUD>* bud = dynamic_cast<Bud<TS,BUD>*>(*I)){
+	    cout << "BUD";
+	  }
+	}
+	cout << "]" << endl;
+      }
+      return tc;
+    }
+  };
 
   template <class TS,class BUD>
   CheckCoordinates<TS,BUD>::CheckCoordinates(double e)
