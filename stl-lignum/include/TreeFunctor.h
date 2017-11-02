@@ -20,8 +20,10 @@ using namespace std;
 //please update this list.
 
 //   ConnectTree
+//   CountAxes
 //   CountAxesProper  (no. of axes with at least one TreeSegment)
 //   IsConnected
+//   CountBuds
 //   CountTreeSegments
 //   CountBranchingPoints
 //   CountBranches
@@ -32,7 +34,7 @@ using namespace std;
 //   ForwardQin (for coniferous)
 //   PrintTreeInformation
 //   PrintTreeInformation2
-//   CountCompartments
+//   CountCompartments 
 //   CountCompartmentsReverse
 //   CrownGroundArea
 //   SetGraveliusOrder
@@ -176,6 +178,21 @@ namespace Lignum{
   };
   
 
+//   CountAxes counts all axes
+
+  template <class TS,class BUD>
+    class CountAxes {
+  public:
+    int& operator()(int& n,TreeCompartment<TS,BUD>* tc)const
+    {
+      if(Axis<TS,BUD>* ax = dynamic_cast<Axis<TS, BUD>*>(tc)) {
+	n+=1;
+      }
+      return n; 
+    }
+  };
+
+
 //   CountAxesProper counts Axes that have at least one TreeSegment
 //   Note that Number of Axes (Proper) =  Number of Apexes
 
@@ -192,6 +209,35 @@ namespace Lignum{
 	     return n; 
 	 }
        }
+     unsigned int& operator()(unsigned int& n,TreeCompartment<TS,BUD>* tc)const
+       {
+	 if(Axis<TS,BUD>* ax = dynamic_cast<Axis<TS, BUD>*>(tc)) {
+	     list<TreeCompartment<TS,BUD>*>& lscmp = GetTreeCompartmentList(*ax);
+	     if((int)lscmp.size() >= 3) {  //At least one TreeSegment
+	       n+=1;
+	     }
+	     return n; 
+	 }
+       }
+
+   };
+
+     //CountBUDS
+   template <class TS,class BUD>
+     class CountBuds {
+     public:
+     int& operator()(int& n,TreeCompartment<TS,BUD>* tc)const
+       {
+	 if (dynamic_cast<BUD*>(tc)!=NULL)
+	   n+=1;
+	 return n;
+       }
+     unsigned int& operator()(unsigned int& n,TreeCompartment<TS,BUD>* tc)const
+     {
+	 if (dynamic_cast<BUD*>(tc)!=NULL)
+	   n+=1;
+	 return n;
+     }
    };
 
 
@@ -444,16 +490,12 @@ namespace Lignum{
       }
       
     };
-  
-  
-  
+    
   template <class TS,class BUD=DefaultBud<TS> >
     class CountCompartments{
     public:
     int& operator ()(int& id,TreeCompartment<TS,BUD>* ts)const;
   };
-
-
 
   template <class TS,class BUD=DefaultBud<TS> >
     class CountCompartmentsReverse{
