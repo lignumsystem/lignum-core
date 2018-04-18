@@ -5,10 +5,11 @@
 using namespace std;
 #include <Firmament.h>
 #include <string>
+#include <sstream>
 #include <Lex.h>
 #include <vector>
 #include<iterator>
-#include<algorithm>
+#include<algorithm> 
 
 using namespace cxxadt;
 namespace sky{
@@ -56,6 +57,7 @@ public:
   void configure(int iter, bool verbose = false);
   void readAllMasks(const string& file);
   void readMaskFile(const string& file);
+  void readAzimuthInclinationMaskFile(const string& file);
   void getMask(int incl_index,double percentage){return  setMask(incl_index, percentage);}
   void getreadMask(Lex& file){ return readMask(file);}
   LGMdouble getBallChange() {return  ballChange; }
@@ -68,6 +70,7 @@ public:
 protected:
   void readMask(Lex& file);
   void setMask(int incl_index,double percentage);
+  void setRegionMask(int region,double mask_percentage);
  private:
   LGMdouble ballChange;    //Change to diffuseRadBall caused by SetMask
   LGMdouble planeChange;   //Change to diffuseRadPlane  caused by SetMask

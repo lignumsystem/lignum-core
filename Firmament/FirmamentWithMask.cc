@@ -233,6 +233,83 @@ namespace sky{
     }
   }
 
+  void FirmamentWithMask::readAzimuthInclinationMaskFile(const string& file)
+  {
+    fstream f(file,f.in);
+    PositionVector d_north(0.0,1.0,0.0);
+    PositionVector up(0.0,0.0,1.0);
+    string line;
+    vector<vector<string> > tokenlss;
+    while (getline(f,line)){
+      if (line[0]=='#')
+	continue;
+      stringstream sstr(line);
+      vector<string> tokenls;
+      copy(istream_iterator<string>(sstr),istream_iterator<string>(),back_inserter(tokenls));
+      tokenlss.push_back(tokenls);
+    }
+    //Get number of inclinations, azimuths and total radiation to plane.
+    vector<string> nincl = tokenlss[0];
+    vector<string> nazim = tokenlss[1];
+    vector<string> vmj= tokenlss[2];
+    double incl=stod(nincl[1]);
+    double azim=stod(nazim[1]);
+    double tot_rad_plane=stod(vmj[1]);
+    //Reconfigure the sky
+    resize(incl,azim,tot_rad_plane);
+    //Remove sky configuration data
+    for (unsigned int i=0; i<3; i++){
+      tokenlss.erase(tokenlss.begin());
+    }
+    //Create ParametericCurves that map first azimuth to inclination and inclination to mask
+    vector<double> vazim;
+    vector<double> vincl;
+    vector<double> vmask;
+    for (vector<vector<string> >::iterator first=tokenlss.begin();first!=tokenlss.end();first++){
+      vector<string>& v = *first;
+      vazim.push_back(stod(v[0]));
+      vincl.push_back(stod(v[1]));
+      vmask.push_back(stod(v[2]));
+    }
+    //ParametricCurves themselves
+    ParametricCurve azimtoincl(vazim.size(),vazim,vincl);
+    ParametricCurve incltomask(vincl.size(),vincl,vmask);
+    //Now assign the azim-incl mask file to sky
+    //Map first radiation direction to azim, then to inclination and finally the inclination to mask
+    //Azimuth running [0:360) degrees always maps to some inclination running  [0:90] in the mask file.
+    //If inclination of the radiation direction is less or equal than the inclination value in the mask file,
+    //reduce the radiation of the sector by the mask value.
+    //(azim angle: angle between the "north" (x=0,y=1,z=0) and the projection to xy-plane of the direction vector of the radiation)
+    //(incl angle: angle between z-component of the radiation and the xy-plane)
+    for (int i=0; i<numberOfRegions();i++){
+      vector<double> rdir(3);
+      diffuseRegionRadiationSum(i,rdir);
+      //Projction to xy-plane
+      PositionVector d(rdir[0],rdir[1],0.0);
+      d.normalize();
+      //Check x-coordinate if azimuth angle > 180 degrees.
+      double azim = acos(Dot(d_north,d));
+      if (d.getX() < 0.0) {
+	azim = 2*PI_VALUE-azim;
+      }
+      double degree_azim = azim*180.0/PI_VALUE;
+      PositionVector rad_dir(rdir[0],rdir[1],rdir[2]);
+      //Angle between "up" and the radiation direction
+      double angle_from_up = acos(Dot(up,rad_dir));
+      double degree_angle_from_up = angle_from_up*180.0/PI_VALUE;
+      //Inclination from xy-plane 
+      double degree_incl = 90.0-degree_angle_from_up;
+      double degree_mask_incl=azimtoincl(degree_azim);
+      double mask_percentage = incltomask(degree_mask_incl);
+      //cout << i << " " << d.getX() << " " << d.getY() << " " << d.getZ() << " " << degree_azim <<  " "
+      //     << degree_incl << " " << degree_mask_incl << " " << mask_percentage << endl;
+      //Reduce radiant intensity with mask_percentage
+      if (degree_incl <= degree_mask_incl){
+	//cout<< "Set mask:: " << i << " " << degree_azim << " " << degree_incl << " " << degree_mask_incl << " " <<mask_percentage<< endl;
+	setRegionMask(i,mask_percentage);
+      }
+    }
+  }
   //sets a mask for one inclination by reducing incoming radiation
   //by argument percentage
   void FirmamentWithMask::setMask(int incl_index,double percentage)
@@ -241,10 +318,19 @@ namespace sky{
     for (j = 0; j < azimDivisions[incl_index]; j++){
       diffuseRad[incl_index][j] = diffuseRad[incl_index][j]*((100.0-percentage)/100.0);
     }
-
-
   }
-
+  //Set a mask for a specific sector or region. It is assume region is between [0:nregions-1]
+  void FirmamentWithMask::setRegionMask(int region,double percentage)
+  {
+    //Special case zenith
+    if (region == numberOfRegions()-1){
+      diffuseRadZenith = diffuseRadZenith*((100.0-percentage)/100.0);
+    }
+    //All other regions are in diffuseRad matrix.
+    int nIncl = inclinationIndex[region];
+    int nAzim = azimuthIndex[region];
+    diffuseRad[nIncl][nAzim] = diffuseRad[nIncl][nAzim]*((100.0-percentage)/100.0);
+  }
 } //closing namespace sky
 
 #ifdef FWM
