@@ -312,8 +312,8 @@ public:
   }
   double getDiffuseRadZenith()
   {
-   cout<<diffuseRadZenith<<endl;
-   return diffuseRadZenith;
+    //cout<<diffuseRadZenith<<endl;
+    return diffuseRadZenith;
   }
 
 protected:
