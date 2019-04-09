@@ -64,9 +64,12 @@ namespace Lignum
 		//cout << cube.areaden << endl;
 		
 		
-		double green=0.0;
-		double red=0.0;
-		double blue=0.0;
+		//double green=0.0;
+		//double red=0.0;
+		//double blue=0.0;
+		GLfloat green=0.0;
+		GLfloat red=0.0;
+		GLfloat blue=0.0;
 		if (blackBG)
 		  {
 		    red = 0.0;
