@@ -1,5 +1,9 @@
 //GL Utility Library 
+#ifdef __APPLE__ 
+#include <OpenGL/glu.h>
+#else
 #include <glu.h>
+#endif
 // Qt includes
 #include <QtGui>
 #include <QtOpenGL>
