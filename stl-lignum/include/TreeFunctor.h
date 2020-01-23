@@ -117,6 +117,9 @@ using namespace std;
 //  Triangularize Dump tree (woody parts) to STL format (writes to the console).
 //  DaVinciTaperCurve  Implements the taper curve according to Da Vinci rule
 //                     Needs 1) Radius of the first segments 2) The exponent 
+//
+//  Vertical leaf area disrtribution
+
 
 
 
@@ -206,8 +209,8 @@ namespace Lignum{
 	     if((int)lscmp.size() >= 3) {  //At least one TreeSegment
 	       n+=1;
 	     }
-	     return n; 
 	 }
+	 return n; 
        }
      unsigned int& operator()(unsigned int& n,TreeCompartment<TS,BUD>* tc)const
        {
@@ -216,8 +219,8 @@ namespace Lignum{
 	     if((int)lscmp.size() >= 3) {  //At least one TreeSegment
 	       n+=1;
 	     }
-	     return n; 
 	 }
+	 return n; 
        }
 
    };
@@ -805,36 +808,41 @@ public:
 
   };
 
-//======================================================================================
-// This functor collects (Accumulate) the surface area of Segments (without end disks).
-// If top diameter > 0 the area is calculated as one of frustum, if top diameter == 0, 
-// Segment is regarded as a cylinder.
+  //======================================================================================
+  // This functor collects (Accumulate) the surface area of Segments (without end disks).
+  // If top diameter > 0 the area is calculated as one of frustum, if top diameter == 0, 
+  // Segment is regarded as a cylinder.
 
-//If my_order < 0, the mantle area of only segments that have order == -my_order are collected
-//If my_order <= the mantle area of segments with order >= my_order are collected
-//If foliage == true, also segments with foliage are included, otherwise not
+  //If my_order < 0, the mantle area of only segments that have order == -my_order are collected
+  //If my_order > 0 the mantle area of segments with order >= my_order are collected
+  //If foliage == true, also segments with foliage are included, otherwise not
+  //If crown == true, only segments that are higher than crown base are included
 
   template <class TS, class BUD>
     class CollectMantleArea{
   public:
-  CollectMantleArea(int order, bool w_fol): my_order(order), foliage(w_fol) {}
-    LGMdouble& operator()(LGMdouble& sum, TreeCompartment<TS, BUD>* tc)const{
+  CollectMantleArea(int order, bool w_fol): my_order(order), foliage(w_fol), crown_base(-1.0) {}
+  CollectMantleArea(int order, bool w_fol, const LGMdouble cb): my_order(order), foliage(w_fol),
+      crown_base(cb) {}
 
+    LGMdouble& operator()(LGMdouble& sum, TreeCompartment<TS, BUD>* tc)const{
       if(TS* ds = dynamic_cast<TS*>(tc)) {
-	if(my_order < 0) {
-	  if((int)GetValue(*ds,LGAomega) != -my_order)
-	    return sum;
-	}
-	else {
-	  if((int)GetValue(*ds,LGAomega) < my_order)
-	    return sum;
+
+	if((int)GetValue(*ds,LGAomega) != my_order) {
+	  return sum;
 	}
 
 	if(!foliage) {
 	  if(GetValue(*ds,LGAWf) > R_EPSILON)
 	    return sum;
 	}
- 
+
+	if(crown_base > 0.0) {
+	  LGMdouble z = GetPoint(*tc).getZ();
+	  if(z < crown_base) {
+	    return sum;
+	  }
+	}
 	LGMdouble r = GetValue(*ds, LGAR);
 	LGMdouble rt = GetValue(*ds,LGARTop);
 	if(rt < R_EPSILON) 
@@ -842,15 +850,14 @@ public:
 	LGMdouble l = GetValue(*ds,LGAL);
       
 	LGMdouble s = sqrt(l*l+(r-rt)*(r-rt));
-      
 	sum += PI_VALUE*(r + rt)*s;
       }
-
       return sum;
     }
   private:
     int my_order;
     bool foliage;
+    LGMdouble crown_base;
   };
 
 
@@ -1497,6 +1504,38 @@ public:
     mutable double init_radius;//The initial radius for the first segments
     double exponent;//The exponent defining tapering, usually 2.0
   };
+
+
+//  Vertical leaf area disrtribution
+  template <class TS, class BUD>     
+  class VerticalLeafAreaDistribution{
+  public:
+  VerticalLeafAreaDistribution(const double mi_z, const double ma_z, const double stp):
+    min_z(mi_z), max_z(ma_z), step(stp) {}
+    vector<double>& operator() (vector<double>& distn, TreeCompartment<TS,BUD>* tc)const{
+    if (TS* ts = dynamic_cast<TS*>(tc)){
+      double Af = GetValue(*ts, LGAAf);
+      if(Af > 0) {
+	double z = GetMidPoint(*ts).getZ();
+	if(z < min_z || z > max_z) {
+	  return distn;
+	}
+	int i = static_cast<int>((z-min_z)/step);
+	distn[i] += Af;
+      }
+    }
+    return distn;
+    }
+
+  private:
+    double min_z;
+    double max_z;
+    double step;
+  };
+
+
+
+
 }//closing namespace Lignum
 #include <TreeFunctorI.h>
 

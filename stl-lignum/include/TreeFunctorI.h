@@ -399,8 +399,7 @@ namespace Lignum{
       cout << "{"; //begin of branching point
       list<Axis<TS,BUD>*>& axis_ls = GetAxisList(*mybp);
       typename list<Axis<TS,BUD>*>::iterator first = axis_ls.begin();
-      typename list<Axis<TS,BUD>*>::iterator last = axis_ls.end();
-      for (unsigned int i = 0; i <axis_ls.size(); i++){
+      for (unsigned int i = 0; i < axis_ls.size(); i++){
 	DisplayStructure(*first++);
       }
       //the end of the branching point
@@ -561,7 +560,6 @@ namespace Lignum{
 	if(b_box.getMax().getY() < top.getY()+rSh) b_box.setMaxY(top.getY()+rSh);
 	if(b_box.getMax().getZ() < top.getZ()+rSh) b_box.setMaxZ(top.getZ()+rSh);
       }
-
       return b_box;
       
     }
@@ -1797,6 +1795,26 @@ namespace Lignum{
     }
     return radius_exp;
   }
+
+/*   //  Vertical leaf area disrtribution */
+/*   template <class TS, class BUD>      */
+/*     vector<double>& VerticalLeafAreaDistribution<TS,BUD>::operator() */
+/*     (vector<double>& distn, TreeCompartment<TS,BUD>* tc)const{ */
+/*     if (TS* ts = dynamic_cast<TS*>(tc)){ */
+/*       double Af = GetValue(*ts, LGAAf); */
+/*       if(Af > 0) { */
+/* 	double z = GetPoint(*ts).getZ(); */
+/* 	if(z < min_z || z > max_z) { */
+/* 	  return distn; */
+/* 	} */
+/* 	int i = static_cast<int>(z/step); */
+/* 	distn[i] += Af; */
+/*       } */
+/*     } */
+/*     return distn; */
+/*   } */
+
+
 }//closing namespace Lignum
 
 #endif

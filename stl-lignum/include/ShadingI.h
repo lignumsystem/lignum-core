@@ -15,10 +15,18 @@ using namespace sky;
 
 int EllipseBeamShading(Point& p0, PositionVector& v,
 			BroadLeaf<cxxadt::Ellipse>& leaf);
-int CylinderBeamShading(const Point& r0, const PositionVector& b, 
-			const Point& rs, const PositionVector& a,
-			double Rs, double Rw, double L, 
-			double& distance );
+/* int CylinderBeamShading(const Point& r0, const PositionVector& b,  */
+/* 			const Point& rs, const PositionVector& a, */
+/* 			double Rs, double Rw, double L,  */
+/* 			double& distance ); */
+int CylinderBeamShading(const Point& r0_1, const PositionVector& b, 
+			const Point& rs_1, const PositionVector& a,
+			double Rs, double L, double& distance );
+
+int CylinderBeamShading(const Point& r0_1, const PositionVector& b, 
+			const Point& rs_1, const PositionVector& a,
+			double Rs, double L);
+
 
 
 
@@ -185,7 +193,7 @@ TreeCompartment<TS,BUD>* EvaluateRadiationForCfTreeSegment<TS,BUD>::operator() (
     if (GetValue(*ts, LGAWf) < R_EPSILON){
 	return tc;
     }
-
+    
     Tree<TS,BUD>& tt = GetTree(*ts);
     FirmamentWithMask& firmament = GetFirmament(tt);
     int number_of_sectors = firmament.numberOfRegions();
@@ -221,7 +229,7 @@ TreeCompartment<TS,BUD>* EvaluateRadiationForCfTreeSegment<TS,BUD>::operator() (
     Lk = GetValue(*ts, LGAL);   //length is > 0.0, otherwise we would not bee here
     Rfk = GetValue(*ts, LGARf);  //Radius to foliage limit 
     Wfk = GetValue(*ts, LGAWf); //Foliage mass
-    sfk  = GetValue(tt, LGPsf); //Foliage m2/kg from tree
+    sfk  = GetValue(*ts, LGAsf); //Foliage m2/kg from tree
 
     for (int i = 0; i < number_of_sectors; i++){
       firmament.diffuseRegionRadiationSum(i,radiation_direction);
@@ -299,15 +307,26 @@ TreeCompartment<TS,BUD>* ShadingEffectOfCfTreeSegment<TS,BUD>::operator()(TreeCo
 	(Point)GetDirection(*shaded_s);        //Midpoint of shaded seg
 
 
-      result = CylinderBeamShading(r_0,
-				   radiation_direction,
-				   GetPoint(*ts),
-				   GetDirection(*ts),
-				   GetValue(*ts, LGARf),
-				   GetValue(*ts, LGAR),
-				   GetValue(*ts, LGAL),
-				   distance);
-
+            if(fol_dens == 0.0) {
+                LGMdouble rw = GetValue(*ts, LGAR);
+                result = CylinderBeamShading(r_0,
+                                             radiation_direction,
+                                             GetPoint(*ts),
+                                             GetDirection(*ts),
+                                             rw,
+                                             GetValue(*ts, LGAL));
+            }
+            else {
+	      //If foliage, wood radius = 0
+	      result = CylinderBeamShading(r_0,
+                                             radiation_direction,
+                                             GetPoint(*ts),
+                                             GetDirection(*ts),
+                                             GetValue(*ts, LGARf),
+                                             GetValue(*ts, LGAL),
+                                             distance);
+            }
+    
       if (result == HIT_THE_WOOD){
 	//mark the sector blocked 
 	S[i] = HIT_THE_WOOD;
@@ -326,9 +345,9 @@ TreeCompartment<TS,BUD>* ShadingEffectOfCfTreeSegment<TS,BUD>::operator()(TreeCo
 	//3.Vp = extinction*distance*foliage_density
 	double Vp = extinction *distance*fol_dens;
 	S[i] += Vp;
-      }
-  
-    }
+      } 
+    } // for(i = 0; i < number_...
+      
   }
   return tc;
 }
