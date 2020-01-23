@@ -12,7 +12,7 @@ VoxelBox::VoxelBox(VoxelSpace *s):
     starSum(0.0),weight(0.0),Q_inStdDiffuse(0.0),interceptedRadiation(0.0),
     needleMass(0.0),leafMass(0.0),number_of_segments(0),number_of_leaves(0),
     big_leaf_normal(0,0,0),val_c(0.0),val_b(0.0),woodMass(0.0),woodArea(0.0),
-    number_of_segments_real(0.0),starDirSum(7,0.0),starDir(7,0.0)
+    number_of_segments_real(0.0),starDirSum(7,0.0),starDir(7,0.0),occupied(false)
 {
     space = s;
 }

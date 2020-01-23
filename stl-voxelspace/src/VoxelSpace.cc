@@ -943,6 +943,24 @@ vector<int> VoxelSpace::getBoxIndexes(const Point& p)
 
 
 //
+// Returns if the global Point p belongs the the VoxelSpace
+//
+bool VoxelSpace::inVoxelSpace(const Point& p)
+{
+  Point localP = p - corner1;
+  int Xi = static_cast<int>(localP.getX()/Xbox);
+  int Yi = static_cast<int>(localP.getY()/Ybox);
+  int Zi = static_cast<int>(localP.getZ()/Zbox);
+  if (Xi < 0 || Yi < 0 || Zi < 0 || Xi >= Xn || Yi >= Yn || Zi >= Zn){
+    return false;
+  } else {
+    return true;
+  }
+}
+
+
+
+//
 //	for Poplar: The function calculates the Qin and Qabs-values to
 //	every VoxelBox.
 //

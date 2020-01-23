@@ -47,7 +47,11 @@ public:
       //cout << p << dir << endl << p0 << d << endl << p2 << " " << sp << " " << l << endl<< endl; 
       return 0;
     } 
-    return CylinderBeamShading(p,dir,p0,d,rf,rw,l,length);
+    if(af < R_EPSILON) {
+      return CylinderBeamShading(p,dir,p0,d,rw,l);
+    } else {
+      return CylinderBeamShading(p,dir,p0,d,rf,l,length);
+    }
   }
 
   virtual LGMdouble getExtinction(const Point& p,const PositionVector& dir,

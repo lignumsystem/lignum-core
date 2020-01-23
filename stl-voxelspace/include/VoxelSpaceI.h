@@ -407,9 +407,11 @@ void InsertForestAsVoxelObjects<TREE,TS,BUD>::operator()(TREE* t)const{
     ForEach(*t,InsertTreeAsVoxelObjects<TS,BUD>(vs));
 }
 
+
+
 // This functor checks only if woody part of this TreeSegment occupies a VoxelBox and sets 
 // variable occupied accordingly 
-// Checks only segments that are older than 0 years. This is because this is used between
+// Checks only segments that have foliage and are older than 0 years. This is because this is used between
 // Lsystem and allocation of growth and the new segments (age 0) are already there with provisional
 // dimensions. If they are accounted for, odd results emerge  
 template <class TS, class BUD>
@@ -434,6 +436,27 @@ template <class TS, class BUD>
   }
   return tc;
 }
+
+// This functor checks if the axis of this TreeSegment in a VoxelBox and sets 
+// variable occupied accordingly. Whether TreeSegment has foliage or not does not matter.
+template <class TS, class BUD>
+  TreeCompartment<TS,BUD>* DumpTreeOccupyTreeSegment<TS,BUD>::
+  operator ()(TreeCompartment<TS,BUD>* tc)const
+{
+  if (TS* ts = dynamic_cast<TS*>(tc))  {
+    Point p = GetPoint(*ts);
+    PositionVector pv = GetDirection(*ts);
+    LGMdouble length = GetValue(*ts, LGAL);
+
+    for (int i=1; i<(num_parts+1.0); i++) {
+      Point p1 = p + (Point)(length * ((double)i/((double)num_parts+1.0)) * pv);
+      VoxelBox& this_box = space->getVoxelBox(p1);
+      this_box.setOccupied(true);
+    }
+  }
+  return tc;
+}
+
 
 
 } //End of namespace Lignum

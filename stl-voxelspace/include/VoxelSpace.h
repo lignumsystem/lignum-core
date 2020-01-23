@@ -261,6 +261,8 @@ public:
                                            vector<pair<LGMdouble,LGMdouble> >& NAD);
     LGMdouble evaluateLacunarityNeedles();
 
+    bool inVoxelSpace(const Point& p);
+
 //
 // Returns vector of VoxelBoxes for a end point of vector (specified with the
 // end point, and direction of vector) and neighboring voxelboxes in a positive
@@ -390,7 +392,8 @@ private:
 };
 
 // This functor checks only if woody part of this TreeSegment occupies a VoxelBox and sets 
-// variable occupied accordingly
+// variable occupied accordingly.
+// Checks only segments that have foliage and are older than 0 years. 
 template <class TS, class BUD>
   class DumpTreeOccupy {
  public:
@@ -399,6 +402,20 @@ template <class TS, class BUD>
   mutable VoxelSpace *space;
   double num_parts;
 };
+
+// This functor checks if the axis of this TreeSegment in a VoxelBox and sets 
+// variable occupied accordingly. Whether TreeSegment has foliage or not does not matter.
+template <class TS, class BUD>
+  class DumpTreeOccupyTreeSegment {
+ public:
+ DumpTreeOccupyTreeSegment(const int& n) : num_parts(n) {}
+  TreeCompartment<TS,BUD>* operator ()(TreeCompartment<TS,BUD>* tc)const;
+  mutable VoxelSpace *space;
+  double num_parts;
+};
+
+
+
 
 } // namespace Lignum
 
