@@ -53,6 +53,12 @@ namespace cxxadt{
   list<LGMTriangle> LGMTriangularize(const int& n_facets, const Point& begin,
 				     const PositionVector& dir, const double& L,
 				      const double& R_begin, const double& R_end);
+
+
+  list<LGMTriangle> LGMTriangularizeCircle(const int& n_facets, const Point& center,
+					   const PositionVector& normal, 
+					   const double& R);
+
 }//closing namespace cxxadt
 
 #endif
