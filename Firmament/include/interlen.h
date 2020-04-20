@@ -53,9 +53,9 @@ InterLen<T>::InterLen(T& setLen, PositionVector &v, PositionVector &w)
 
   // -- find main direction
   int n;
-  if(fabsf(d.getX()) > fabsf(d.getY()) && fabsf(d.getX()) > fabsf(d.getZ())) 
+  if(fabs(d.getX()) > fabs(d.getY()) && fabs(d.getX()) > fabs(d.getZ())) 
 	  n = 0;
-  else if(fabsf(d.getY()) > fabsf(d.getZ())) 
+  else if(fabs(d.getY()) > fabs(d.getZ())) 
 	  n = 1;
   else 
 	  n = 2;
@@ -150,7 +150,7 @@ void InterLen<T>::step(T& setLen, float lendelta, float ydelta, float zdelta)
 
   if (vox.getX() >1 || vox.getY() >1 || vox.getZ() >1)
   {
-	int a=1;
+    //int a=1;
   }
 
   if(ypos >= 0 && zpos >= 0) { // go over y- and z-planes
@@ -162,12 +162,12 @@ void InterLen<T>::step(T& setLen, float lendelta, float ydelta, float zdelta)
 	  setLen(vox, lendelta - ylen); // y-plane first
       vox += uy;
 	  if (vox.getX() >1 || vox.getY() >1 || vox.getZ() >1)
-		int a=1;
+	    //int a=1;
 	
       setLen(vox, ylen - zlen);
       vox += uz;
 	  if (vox.getX() >1 || vox.getY() >1 || vox.getZ() >1)
-		int a=1;
+	    //int a=1;
       setLen(vox, zlen);
     }
     else {
