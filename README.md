@@ -17,6 +17,8 @@ System requirements to follow
 
 Detailed documentation to follow. An outline of model structure can be found in the publications listed below.
 
+Doxygen will be used to document software. 
+
 # Publications 
 
 **Core model**:
