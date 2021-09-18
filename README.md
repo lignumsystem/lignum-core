@@ -1,6 +1,6 @@
 # lignum-core
 
-Welcome to the lignum-core repository. The lignum-core implements the ubiquitous classe in The LIGNUM System
+Welcome to the lignum-core repository. The lignum-core implements the ubiquitous classes in The LIGNUM System
 
 + c++adt: basic ubiquitous (abstract) classes
 + Firmamanet: Implementation of the hemisphere
