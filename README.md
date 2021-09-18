@@ -1,6 +1,13 @@
 # lignum-core
 
-Welcome to the lignum-core model repository. The lignum core model is a functional-structural plant model that simulates dynamic 3D plant growth in relation to its environment.
+Welcome to the lignum-core repository. The lignum-core implements the ubiquitous classe in The LIGNUM System
+
++ c++adt: basic ubiquitous (abstract) classes
++ Firmamanet: Implementation of the hemisphere
++ stl-lignum: Implementatetation of the elementry tree units in LIGNUM
++ stl-voxelspace: VoxelSpace implementation
++ LEngine: L-system implementation
++ qt-workbench: The GUI implementation
 
 # Requirements
 
