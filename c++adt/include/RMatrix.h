@@ -33,7 +33,7 @@ public:
   RMatrix& inverse();
 private:
   ROTATION r_direction;
-  RADIAN (*(fn_matrix_table[RMATRIX_SIZE][RMATRIX_SIZE * RMATRIX_SIZE]))(RADIAN);
+  RADIAN (*fn_matrix_table[RMATRIX_SIZE][RMATRIX_SIZE * RMATRIX_SIZE])(RADIAN);
 };
 
 }//close namespace cxxadt
