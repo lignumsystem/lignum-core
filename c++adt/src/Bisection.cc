@@ -1,9 +1,14 @@
+///\file Bisection.cc
+///Examples to test Bisection method
 #include <Bisection.h>
 #include <iostream>
+
 using namespace cxxadt;
+///Linear function, 1st order
 class F1{
 public:
   F1(double a0,double b0):a(a0),b(b0){}
+  ///Example oveloaded function operator for Bisection, single argument 
   double operator()(double x){
     return a*x + b;
   }
@@ -11,9 +16,11 @@ private:
   double a,b;
 };
 
+///Parabolic function, 2nd order
 class F2{
 public:
   F2(double a0,double b0,double c0):a(a0),b(b0),c(c0){}
+  ///Example oveloaded function operator for Bisection, single argument 
   double operator()(double x){
     return a*pow(x,2.0) + b*x + c;
   }
@@ -21,9 +28,11 @@ private:
   double a,b,c;
 };
 
+///Cubic function, 3rd order
 class F3{
 public:
   F3(double a0,double b0,double c0,double d0):a(a0),b(b0),c(c0),d(d0){}
+  ///Example oveloaded function operator for Bisection, single argument 
   double operator()(double x){
     return a*pow(x,3.0) + b*pow(x,2.0) + x*c +d;
   }
@@ -33,6 +42,8 @@ private:
 
 
 //To compile type CC -DBISECTION -I../include -lm
+///\example{lineno} Bisection.cc
+///Examples to test Bisection method with linear, parabolic and cubic functions
 #ifdef BISECTION
 int main()
 {

@@ -1,3 +1,8 @@
+/// \file Bisection.h
+/// \brief Bisection function to find a root of a function.
+///
+/// Can be used when the exact functional form is not known.
+/// For the LIGNUM model find the allocation of photosynthates.
 #ifndef BISECTION_H
 #define BISECTION_H
 #include <cmath>
@@ -8,7 +13,7 @@ using namespace std;
 namespace cxxadt{
 
 #define MAX_ITER 100
-  //Thrown in BracketFunction if bracket fails
+  ///Exception thrown in BracketFunction if bracket fails
   class BracketFunctionException{
   public:
     BracketFunctionException(double fbe,double be)
@@ -16,12 +21,11 @@ namespace cxxadt{
     double getFb()const{return fb;}
     double getB()const{return b;}
   private:
-    double fb;//the last function value  tried in BracketFunction and the
-	      //sign did not change.
-    double b; //the last b, s.t. fb = F(b)
+    double fb;///< The last function value  tried in BracketFunction and the sign did not change.
+    double b; ///< Tthe last b, s.t. fb = F(b)
   };
 
-  //Thrown in Bisection if BracketFunction fails and Bisection cannot be used
+  ///Exception thrown in Bisection if BracketFunction fails and Bisection fails
   class BisectionBracketException{
   public:
     BisectionBracketException(double fa,double fb, double fblast,
@@ -34,16 +38,15 @@ namespace cxxadt{
     double getB()const{return bo;}
     double getBl()const{return bl;}
   private:
-    double fao;//the original fa
-    double fbo;//the original fb
-    double fbl;//the last fb tried
-    double ao; //the original a (fao=F(ao))
-    double bo; //the original b (fbo=F(bo))
-    double bl; //the last b, s.t. fbl = F(bl)
+    double fao;///< The original fa s.t. fa = f(a)
+    double fbo;///< The original fb s.t. fb = f(b)
+    double fbl;///< The last fbl tried s.t. fbl = f(bl)
+    double ao; ///< The original a (fao=F(ao))
+    double bo; ///< The original b (fbo=F(bo))
+    double bl; ///< The last b, s.t. fbl = F(bl)
   };
 
-  //Thrown by Bisection if the root  of the function F not found after
-  //MAX_ITER
+  ///Exception thrown by Bisection if the root  of the function F not found after MAX_ITER
   class BisectionMaxIterationException{
   public:
     BisectionMaxIterationException(double fa, double fb, double fmid,
@@ -56,15 +59,22 @@ namespace cxxadt{
     double getB()const{return bo;}
     double getC()const{return c;}
   private:
-    double fao;//the original fa 
-    double fbo;//the original fb
-    double fc; //the last fc found, fa < fc < fb
-    double ao; //the original a (fao=F(ao))
-    double bo; //the original b (fbo=F(bo))
-    double c;  //the last c, s.t. fc = F(c)
+    double fao;///< The original fa 
+    double fbo;///< The original fb
+    double fc; ///< The last fc found, fa < fc < fb
+    double ao; ///< The original a (fao=F(ao))
+    double bo; ///< The original b (fbo=F(bo))
+    double c;  ///< The last c, s.t. fc = F(c)
   };
 
-
+  ///Bracket the function `f` by increasing the value of `b` by 20% in each iteration
+  ///\param fa The function value fa=f(a)
+  ///\param a The argument s.t. fa=f(a) 
+  ///\param b The argument b > a that eventually f(a)*f(b) < 0
+  ///\param f The function to be bracketed
+  ///\returns fb s.t. fb < 0
+  ///\throw BracketFunctionException After MAX_ITER iterations: No a,b s.t. f(a)*f(b) < 0
+  ///\note For the LIGNUM we can assume f(a) > 0 (i.e. there is net production to allocate)
   template <class F>
   double BracketFunction(double fa, double&  a, double& b, F f)
   {
@@ -82,6 +92,14 @@ namespace cxxadt{
     throw BracketFunctionException(fb,b);
   }
 
+  ///Find the root of a function with Bisection method.
+  ///\param a The argument for the first guess f(a)
+  ///\param b The argument for the second guess f(b)
+  ///\param f The function f to find the root for
+  ///\param acc  Consider a value `e` that when f(`e`) < acc then f(`e`) = 0
+  ///\param verbose Verbose output to standard out
+  ///\throw BisectionBracketException Bracketing: there is no a,b s.t. f(a)*f(b) < 0
+  ///\throw BisectionMaxIterationException After MAX_ITER: there is no `e` s.t. that f(`e`) < acc 
   template <class F>
   double Bisection(double  a, double b, const F& f, double acc = R_EPSILON, 
 		   bool verbose = false)
@@ -95,7 +113,7 @@ namespace cxxadt{
     double fb = fborig;
 
     //if the initial guess did not bracket the funtion
-    //start increasing b. Currently assume f(a) < 0.
+    //start increasing b. 
     if (fa*fb > 0.0){
       try{
 	BracketFunction(fa,a,b,f);
