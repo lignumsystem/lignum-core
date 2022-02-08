@@ -49,6 +49,7 @@ public:
     //computed vor not.
     SetValue(*this, LGAvi,-1.0); 
   }
+  HwTreeSegment(Tree<TS,BUD>* tree):TreeSegment<TS,BUD>(tree) { }
   void photosynthesis();
   void respiration();
   TcData& diameterGrowth(TcData& data);
