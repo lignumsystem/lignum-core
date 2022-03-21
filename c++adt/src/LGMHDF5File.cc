@@ -130,10 +130,10 @@ int main()
   const int ROWS = 30;
   const int COLS = 20;
   /// Initialization syntax for array should be possible also for vectors in C++11
-  array<string,4> n3D = {"a","b","c","abc"};
+  array<string,20> n3D = {"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t"};
   /// Otherwise this traditional vector initialization is needed.
   vector<string> names3D(n3D.begin(),n3D.end());
-  array<string,5> n2D = {"aaa","b","c","abc","ffff"};
+  array<string,20> n2D = {"aa","bbbb","ccc","ddd","e","f","gggg","hhhhhh","i","j","kk","ll","m","n","oooo","p","q","rrr","ss","t"};
   vector<string> names2D(n2D.begin(),n2D.end());
 
    /// Create 10 x 30 x 20  3D array
