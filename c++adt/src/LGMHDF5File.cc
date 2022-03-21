@@ -1,6 +1,6 @@
 #include <array>
 /// \file LGMHDF5File.cc
-/// Implementation with examples to save Lignum simulations to HDF5 file.
+/// \brief LGMHDF5File implementation with examples to save Lignum simulations to HDF5 file.
 #include <LGMHDF5File.h>
 
 
@@ -9,8 +9,6 @@ LGMHDF5File::LGMHDF5File(const string& file_name)
 {
 }
 
-/// Delete dynamically reserved dataspace just in case.
-/// Probably will be deleted when the LGMHDF5File is out of scope.
 LGMHDF5File::~LGMHDF5File()
 {
   hdf5_file.close();
@@ -115,10 +113,14 @@ void LGMHDF5File::close()
 }
 
 /// \example{lineno} LGMHDF5File.cc
-/// Examples to test LGMHDF5File for HDF5 files.
-/// To compile type: h5c++ -I . -DHDF5MAIN  LGMHDF5File.cc -o fileh5
-/// Adjust -I for the location of LGMHDF5File.h
-/// The `fileh5` output will be 2D and 3D matrices "DataArray2D" and "DataArray3D" respectively.
+/// Examples to test LGMHDF5File for HDF5 files. To compile type:
+///
+/// `h5c++ -I . -DHDF5MAIN  LGMHDF5File.cc -o fileh5`
+///
+/// Adjust -I for the location of LGMHDF5File.h. Run `fileh5` without command line parameters.
+/// The output file *HDF5Test.h5* will contain two Datasets: 2D and 3D arrays *DataArray2D* and *DataArray3D* respectively.
+///
+/// To install HDF5 toolkit use for example MacPorts: `sudo port install hdf5`.
 #ifdef HDF5MAIN
 #include <algorithm>
 int main()
