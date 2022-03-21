@@ -113,7 +113,7 @@ void LGMHDF5File::close()
 }
 
 /// \example{lineno} LGMHDF5File.cc
-/// Examples to test LGMHDF5File for HDF5 files. To compile type:
+/// The main() has an example how to use  LGMHDF5File to generate  HDF5 file. To compile type:
 ///
 /// `h5c++ -I . -DHDF5MAIN  LGMHDF5File.cc -o fileh5`
 ///
