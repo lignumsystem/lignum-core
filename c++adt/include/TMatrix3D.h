@@ -5,23 +5,20 @@
 #include <algorithm>
 
 using namespace std;
+///\file TMatrix3D.h
+///\brief TMatrix3D implements 3D matrix where  indexing goes in C style.
+///
+///Given  TMatrix3D<T> m3,  m[x][y][z] gives  the element  T in  a cell
+///indexed by  x,y and  z. The implementation  is inspired  by Breymann
+///(Chapter  9). Indexing is  provided by inheritance as well as with at()
+///method. The  class TMatrix3D<T>  demonstrates the use  of STL, its classes and algorithms,
+///and the  importance  of  clear  understandable  implementations  at  the
+///possible small cost of runtime efficiency. The approach  here can  be easily
+///expanded  to N dimensional  matrices.  To  test the  TMatrix3D class
+///there is a "matrix3d.cc" file in src-directory.                     
 
-/**********************************************************************
- *TMatrix3D implements 3D matrix where  indexing goes in C style. Thus*
- *given  TMatrix3D<T> m3,  m[x][y][z] gives  the element  T in  a cell*
- *indexed by  x,y and  z. The implementation  is inspired  by Breymann*
- *(Chapter  9.). At  first  user  may wonder  where  are the  indexing*
- *operators but  they are  provided by inheritance.   Indexed checking*
- *indexing is provided  by at() method. With the  class TMatrix3D<T> I*
- *want to demonstrate the use  of STL, its classes and algorithms, and*
- *the  importance  of  clear  understandable  implementations  at  the*
- *possible cost of small runtime efficiency. A correct program is more*
- *important  than a  fast program.   The approach  here can  be easily*
- *expanded  to N dimensional  matrices.  To  test the  TMatrix3D class*
- *there is a "matrix3d.cc" file in src-directory.                     *
- *********************************************************************/
 namespace cxxadt{
-
+  ///2D Matrix 
   template <class T>
     class TMatrix2D: public vector<vector<T> >{
     public:
@@ -41,6 +38,7 @@ namespace cxxadt{
     private:
     int xd,yd; //rows and columns
   };
+  ///3D Matrix
   template <class T>
     class TMatrix3D: public vector<TMatrix2D<T> >{
     public:
@@ -59,7 +57,9 @@ namespace cxxadt{
     /// \sa TMarix3D::init
     TMatrix3D<T>& resize(int x, int y, int z);
     private:
-    int xd,yd,zd; //rows (submatrix), columns and z-dimension
+    int xd; ///< Slices to 2D matrices
+    int yd; ///< Rows in 2D matrices
+    int zd; ///< Columns in 2D matrices
   };
 
 }
