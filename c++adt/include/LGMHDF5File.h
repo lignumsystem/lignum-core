@@ -15,10 +15,11 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <TMatrix3D.h>
 #include <H5Cpp.h>
 using namespace H5;
 using namespace std;
-
+using namespace cxxadt; 
 // DataSpace RANKS for 2D and 3D arrays
 const int DSPACE_RANK3 = 3; ///< DataSpace rank 3D array
 const int DSPACE_RANK2 = 2; ///< DataSpace rank 2D array (matrix) 
@@ -43,24 +44,29 @@ public:
   /// \sa hdf5_file
   LGMHDF5File(const string& file_name);
   /// Close the H5File `hdf5_file`. \sa hdf5_file
-  ~LGMHDF5File();  
+  ~LGMHDF5File();
+  int createDataSet(const string& dataset_name, int years, int rows, int cols, const TMatrix3D<double>& data);
   /// Create 3D array DataSet by giving explicitely the 3 dimensions and `data`
+  /// \param dataset_name Name of the dataset
   /// \param years Years dimension
   /// \param rows Rows (trees) dimension
   /// \param cols Columns (data) dimension
   /// \param data The 3D array of type *double*
   /// \return -1 if error 0 otherwise
   /// \exception DataSetIException
-  /// \note Technically 3D arrray `data` must be void*. It will be converted to 3D array of NATIVE_DOUBLE HDF5 dataset of given dimensions. 
+  /// \note Technically 3D arrray `data` must be void*. It will be converted to
+  /// 3D array of NATIVE_DOUBLE HDF5 dataset of given dimensions. 
   /// \sa writeDataSet
   int createDataSet(const string& dataset_name, int years, int rows, int cols, void* data);
   /// Create 2D array DataSet by giving explicitely the 2 dimensions and the `data`
+  /// \param dataset_name Name of the dataset
   /// \param rows Rows dimension
   /// \param cols Columns dimension
   /// \param data The 2D array of type *double*
   /// \return -1 if error 0 otherwise
   /// \exception DataSetIException
-  /// \note Technically 2D arrray `data` must be void*. It will be converted to 2D array of NATIVE_DOUBLE  HDF5 dataset of given dimensions.  
+  /// \note Technically 2D arrray `data` must be void*. It will be converted to
+  /// 2D array of NATIVE_DOUBLE  dataset of given dimensions.  
   /// \sa writeDataSet
   int createDataSet(const string& dataset_name, int rows, int cols, void* data);
   /// Create column names as HDF5 attribute. Column names can be of variable length strings.
@@ -71,6 +77,8 @@ public:
   /// \exception AttributeIException
   /// \note HDF5 C++ interface does not (yet) support dimension scales which would be a more natural way to describe
   /// the meaning of each N dimensional array dimension.
+  /// \warning You can try to use UTF-8 characters in column names (including Scandinavian alphabet) but
+  /// not recommended. HDF5 does not *enforce* UTF-8. May be OK on one platform but not on some others. 
   int createColumnNames(const string& dset_name, const string& attr_name,const vector<string>& col_names);
   /// Retrieve object names known to `hdf5_file`
   /// \return vector of object names 
