@@ -25,14 +25,18 @@ namespace cxxadt{
   template <class T>
     class TMatrix2D: public vector<vector<T> >{
     public:
-    //constructor, dimensions only 
+    ///Default constructor, empty matrix
+    TMatrix2D();
+    ///Constructor, dimensions only 
     TMatrix2D(int x, int y);
-    //constructior, initialize with copies of 't'
+    ///Constructior, initialize with copies of 't'
     TMatrix2D(int x, int y, const T& t);
     int rows()const {return xd;}
     int cols()const {return yd;}
     TMatrix2D<T>& init(const T& t);
-    //resize clears the matrix first-->data is lost
+    /// Resize clears the matrix first, i.e. data will be  lost
+    /// \post No data in the matrix
+    /// \sa TMatrix2D::init
     TMatrix2D<T>& resize(int x, int y);
     private:
     int xd,yd; //rows and columns
@@ -40,22 +44,26 @@ namespace cxxadt{
   template <class T>
     class TMatrix3D: public vector<TMatrix2D<T> >{
     public:
-    //constructor, dimensions only 
+    ///Default constructor, empty 3D array
+    TMatrix3D();
+    ///Constructor, dimensions only 
     TMatrix3D(int x, int y, int z);
-    //constructior, initialize with copies of 't'
+    ///Constructior, initialize with copies of 't'
     TMatrix3D(int x, int y, int z, const T& t);
     int rows()const {return xd;}
     int cols()const {return yd;}
     int zdim()const {return zd;}
     TMatrix3D<T>& init(const T& t);
-    //resize clears the matrix first-->data is lost
+    ///Clear the data first, i.e. data will be lost
+    /// \post No data in the 3D array
+    /// \sa TMarix3D::init
     TMatrix3D<T>& resize(int x, int y, int z);
     private:
     int xd,yd,zd; //rows (submatrix), columns and z-dimension
   };
 
 }
-
+#include <TMatrix3DI.h>
 #endif
 
-#include <TMatrix3DI.h>
+

@@ -3,7 +3,9 @@
 
 
 namespace cxxadt{
-
+  template <class T>
+  TMatrix2D<T>::TMatrix2D()
+    :xd(0),yd(0){}
   template <class T>
     TMatrix2D<T>::TMatrix2D(int x, int y)
     :vector<vector<T> >(x,vector<T>(y)),xd(x),yd(y)
@@ -33,7 +35,10 @@ namespace cxxadt{
       yd = y;
       return *this;
     }
-  
+
+  template <class T>
+  TMatrix3D<T>::TMatrix3D()
+    :xd(0),yd(0),zd(0){}
   template <class T>
     TMatrix3D<T>::TMatrix3D(int x, int y, int z)
     :vector<TMatrix2D<T> >(x,TMatrix2D<T>(y,z)),xd(x),yd(y),zd(z)
