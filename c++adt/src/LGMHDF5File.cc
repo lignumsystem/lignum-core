@@ -129,9 +129,9 @@ void LGMHDF5File::close()
 }
 
 /// \example{lineno} LGMHDF5File.cc
-/// The main() has an example how to use  LGMHDF5File to generate  HDF5 file. To compile type:
+/// The main() has an example how to use  LGMHDF5File to generate  HDF5 file. To compile in this directory type:
 ///
-/// `h5c++ -I . -DHDF5MAIN  LGMHDF5File.cc -o fileh5`
+/// `h5c++ -I../include  -DHDF5MAIN  LGMHDF5File.cc -o fileh5`
 ///
 /// Adjust -I for the location of LGMHDF5File.h. Run `fileh5` without command line parameters.
 /// The output file *HDF5Test.h5* will contain two Datasets: 2D and 3D arrays *DataArray2D* and *DataArray3D* respectively.
