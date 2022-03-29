@@ -7,6 +7,8 @@ TEMPLATE = lib
 DESTDIR = .
 TARGET = Visual 
 DEPENDPATH += .
+DEFINES += GL_SILENCE_DEPRECATION
+QMAKE_CXXFLAGS += -Wno-deprecated -Wno-deprecated-declarations 
 INCLUDEPATH += . ../c++adt/include ../stl-lignum/include ../stl-voxelspace/include ../Firmament/include 
 
 # Input
