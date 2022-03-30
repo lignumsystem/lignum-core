@@ -18,13 +18,14 @@
 
 
 template <class TS,class BUD> class PineBud;
-
+/// LGAplength:  Path length  from the base of the  tree to a segment
 enum LGMSPAD {LGAplength};
-// 0  LGAplength  Path length  from the base of the  tree to a segment
+
 
 
 template <class TS, class BUD>
 class PineSegment: public CfTreeSegment<TS,BUD>{
+  /// Return the path length
   friend LGMdouble GetValue(const PineSegment& ts,LGMSPAD name){
     if (name == LGAplength)
       return ts.plength;
@@ -33,6 +34,7 @@ class PineSegment: public CfTreeSegment<TS,BUD>{
       return 0.0;
     }
   }
+  ///Set the path length
   friend LGMdouble SetValue(PineSegment& ts,LGMSPAD name,LGMdouble l){
     LGMdouble old_length = GetValue(ts,name);
     if (name == LGAplength)
@@ -44,9 +46,7 @@ class PineSegment: public CfTreeSegment<TS,BUD>{
   }
 
 public:
-  ///PineSegment constructor implements:  segment radius R =lr*L, foliage
-  ///height Hf=nl*sin(na),  radius to foliage  Rf=R+Hf, initial heartwood
-  ///Rh=sqrt(xi*A/PI)  and   initial  foliage  mass   Wf=af*Sa.
+  ///PineSegment constructor sets the initial segment dimensions.
   ///\post Segment radius == LGPlr*L
   ///\post Foliage height == LGPnl*sin(LGPna)
   ///\post Radius to foliage limit == LGAR+LGAHf
@@ -85,7 +85,7 @@ public:
       SetValue(*this,LGAQin,0.0);
     } 
 private:
-  LGMdouble plength;  
+  LGMdouble plength; ///< Path length  from the base of the  tree to a segment
 };
 
 
@@ -138,7 +138,7 @@ public:
   double view;
 };
 
-///Pine Bud has two additional attributes: fm_mother_segment and length_mother_segment
+///PineBud has two additional attributes: fm_mother_segment and length_mother_segment
 template <class TS, class BUD>
 class PineBud: public Bud<TS,BUD>{
   template <class TS1,class BUD1>
