@@ -1,26 +1,21 @@
 #ifndef PINE_H
 #define PINE_H
 #include <Lignum.h>
-//PineBud and  PineSegment are  meant to be  generic Pine  segment and
-//bud.   We  need  to  keep  them  as  templates  in  order  to  allow
-//inheritance. Notice we partially decide  the type of the tree in the
-//constructor, i.e. the  type is Tree<TS,BUD>. If the  segment and bud
-//types     were     not    templates     the     tree    would     be
-//Tree<PineSegment,PineBud>.  And if,  for example, some other segment
-//would  be   needed  inheriting  Pine,   say  ScotsPineSegment:public
-//PineSegment,  then there is  no way  to create  a ScotsPine  tree as
-//Tree<ScotsPineSegment,ScotsPineBud>,   because  PineSegment  already
-//defines as the tree  type Tree<PineSegment,PineBud>. But now, as the
-//actual type  of the tree is  left open, inheritance  is possible and
-//all the generic algorithms implemented in stl-lignum will compile.
+///\file Pine.h
+///\brief PineBud and  PineSegment are  meant to be  generic Pine  segment and bud.
+///
+///We  need  to  keep  them  as  templates  in  order  to  allow
+///inheritance. Notice we partially decide  the type of the tree in the
+///constructor, i.e. the  type is Tree<TS,BUD>. If the  segment and bud
+///types     were     not    templates     the     tree    would     be
+///Tree<PineSegment,PineBud>.  And if,  for example, some other segment
+///would  be   needed  inheriting  Pine,   say  ScotsPineSegment:public
+///PineSegment,  then there is  no way  to create  a ScotsPine  tree as
+///Tree<ScotsPineSegment,ScotsPineBud>,   because  PineSegment  already
+///defines as the tree  type Tree<PineSegment,PineBud>. But now, as the
+///actual type  of the tree is  left open, inheritance  is possible and
+///all the generic algorithms implemented in stl-lignum will compile.
 
-//PineSegment constructor implements:  segment radius R =lr*L, foliage
-//height Hf=nl*sin(na),  radius to foliage  Rf=R+Hf, initial heartwood
-//Rh=sqrt(xi*A/PI)  and   initial  foliage  mass   Wf=af*Sa.  See  the
-//constructor for details.
-
-//PineBud has  SetValue and  GetValue functions to  update and  to use
-//PineBudData in order to pass information to L-system and back. 
 
 template <class TS,class BUD> class PineBud;
 
@@ -49,6 +44,14 @@ class PineSegment: public CfTreeSegment<TS,BUD>{
   }
 
 public:
+  ///PineSegment constructor implements:  segment radius R =lr*L, foliage
+  ///height Hf=nl*sin(na),  radius to foliage  Rf=R+Hf, initial heartwood
+  ///Rh=sqrt(xi*A/PI)  and   initial  foliage  mass   Wf=af*Sa.
+  ///\post Segment radius == LGPlr*L
+  ///\post Foliage height == LGPnl*sin(LGPna)
+  ///\post Radius to foliage limit == LGAR+LGAHf
+  ///\post Heartwood radius = (LGPxi/(1.0+LGPxi))*LGAR
+  ///\post Foliage mass = LGPaf*LGASa
   PineSegment(const Point& p,const PositionVector& d,
 	      const LGMdouble go,const METER l,
 	      const METER r,const METER rh,Tree<TS,BUD>* tree)
@@ -68,8 +71,7 @@ public:
       SetValue(*this,LGARh,sqrt((GetValue(*tree,LGPxi)*GetValue(*this,LGAA))/PI_VALUE));
       //LGPxi defines the area of heartwood in relation to sapwood, i.e.
       //Ah = LGPxi * As ; this results in the following equation for Rh
-      SetValue(*this,LGARh,sqrt(GetValue(*tree,LGPxi)/(1.0+GetValue(*tree,LGPxi)))
-	       *GetValue(*this,LGAR));
+      SetValue(*this,LGARh,sqrt(GetValue(*tree,LGPxi)/(1.0+GetValue(*tree,LGPxi)))*GetValue(*this,LGAR));
       //compute the initial mass of the foliage
       //1. compute the surface area (Sa) of the segment cylinder
       //2. initial mass of the foliage is then af*Sa ((kg/m2)*m2)
@@ -86,20 +88,25 @@ private:
   LGMdouble plength;  
 };
 
-//PineBudData  is  intented  to  be  the data  structure  that  passes
-//information  between LIGNUM  model and  L-system. A  simpler example
-//than  in  SugarMaple. Currently  PineBudData  has 'state',  'foliage
-//mass' (of  the mother segment) and  the direction of  the bud (looks
-//like we need the orientation of the bud in world coordinates, at the
-//very least it will make  life easier).  See PineBud for SetValue and
-//GetValue methods  (used by the  L-system implementation).  Obviously
-//this is  not the  final set of  attributes for PineBudData  that are
-//required,  needed  or useful,  but  the  implementation  is open  to
-//discussion
+
+
+
+///PineBud has  SetValue and  GetValue functions to  update and  to use
+///PineBudData in order to pass information to L-system and back. 
 enum PBNAME {PBDATA};//The name of the data structure
+///PineBudData  is  intented  to  be  the data  structure  that  passes
+///information  between LIGNUM  model and  L-system. A  simpler example
+///than  in  SugarMaple. Currently  PineBudData  has *state*,  *foliage
+///mass* (of  the mother segment) and  the direction of  the bud (looks
+///like we need the orientation of the bud in world coordinates, at the
+///very least it will make  life easier).  See PineBud for SetValue and
+///GetValue methods  (used by the  L-system implementation).  Obviously
+///this is  not the  final set of  attributes for PineBudData  that are
+///required,  needed  or useful,  but  the  implementation  is open  to
+///discussion
 class PineBudData{
-  //GetDirection returns  the direction of  the bud (not used  in data
-  //exchange but makes life easier)
+  ///GetDirection returns  the direction of  the bud (not used  in data
+  ///exchange but makes life easier)
   friend PositionVector GetDirection(const PineBudData& data){
     return PositionVector(data.x,data.y,data.z);
   }
@@ -114,16 +121,16 @@ public:
   double state; //ALIVE,DEAD, FLOWER, etc
   double fm;//foliage mass (of the mother segment)
   double ip;//qin/TreeQinMax, i.e. relative light
-  //Direction   is   PositionVector(x,y,z).    Note  you   can't   use
-  //PositionVector  here, because  internally it  has  implemented the
-  //(x,y,z)  as an  stl-vector.  During  passing the  information from
-  //LIGNUM to L-system and back, L-system uses the sizeof(PineBudData)
-  //built-in  function to  access  this PineBudData  structure in  the
-  //string.  And the sizeof(vector<double>) is something else than the
-  //sizeof three floating point numbers. In general, to be on the safe
-  //side,  do not  use  references or  pointers  or structures  within
-  //structures to  pass the information, just  fundamental c/c++ types
-  //corresponding to basic storage units.
+  ///Direction   is   PositionVector(x,y,z).    Note  you   can't   use
+  ///PositionVector  here, because  internally it  has  implemented the
+  ///(x,y,z)  as an  stl-vector.  During  passing the  information from
+  ///LIGNUM to L-system and back, L-system uses the sizeof(PineBudData)
+  ///built-in  function to  access  this PineBudData  structure in  the
+  ///string.  And the sizeof(vector<double>) is something else than the
+  ///sizeof three floating point numbers. In general, to be on the safe
+  ///side,  do not  use  references or  pointers  or structures  within
+  ///structures to  pass the information, just  fundamental c/c++ types
+  ///corresponding to basic storage units.
   double x;
   double y;
   double z;
@@ -131,6 +138,7 @@ public:
   double view;
 };
 
+///Pine Bud has two additional attributes: fm_mother_segment and length_mother_segment
 template <class TS, class BUD>
 class PineBud: public Bud<TS,BUD>{
   template <class TS1,class BUD1>
@@ -172,8 +180,8 @@ public:
     :Bud<TS,BUD>(p,d,go,tree),view(0.0),fm_mother_segment(0.0),length_mother_segment(0.0){}
   LGMdouble view;
 private:
-  LGMdouble fm_mother_segment;
-  LGMdouble length_mother_segment;
+  LGMdouble fm_mother_segment; ///< Foliage mass of mother segment
+  LGMdouble length_mother_segment; ///< Length of the mother segment
 };
 
 //Prints Qin, Qabs, P, R, Wf, As and LGAAh
