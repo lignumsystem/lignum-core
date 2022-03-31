@@ -38,7 +38,8 @@ using namespace cxxadt;
 
 using namespace sky;
 
-
+/// The core model of Lignum including the basic elements Tree, TreeSegment, Axis
+/// BranchingPoint and Bud.
 namespace Lignum{
 
 
