@@ -201,14 +201,14 @@ namespace Lignum{
 
   //LGMTAD LIGNUM Tree level attribute double. **************************
 
-  //Set LGMTADLENGTH to the number of enumerations in LGMTAD.  It will
-  //intialize  the   vector<LGMdouble>  in  class   Tree  holding  the
-  //attribute values.
+  ///Set LGMTADLENGTH to the number of enumerations in LGMTAD.  It will
+  ///intialize  the   vector<LGMdouble>  in  the class   Tree  holding  the
+  ///attribute values.
+  const int LGMTADLENGTH=8;
 
-  const int LGMTADLENGTH=7;
-
+  /// Tree attribute names 
   enum LGMTAD {Treelambda,Treelb,TreeP,TreeM,TreeWr,TreeQinMax,
-	       TreeRefRadiation};
+    TreeRefRadiation,TreeId};
   // Treelb  Longest branch
   // TreeP   Tree level photosynthesis
   // TreeM   Tree level respiration
@@ -217,6 +217,7 @@ namespace Lignum{
   // Treelambda  Variable to balance carbon balance equation
   // TreeRefRadiation   Variable that is used as reference radiation
   //                     in calculations in tree (e.g. lentgth growth)
+  // TreeId Unique identifier (number) for the tree (Useful in LignumForest)
 
 
   //LGMF   = Functions known in a tree   ********************************
