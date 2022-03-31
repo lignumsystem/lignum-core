@@ -10,6 +10,7 @@
 #include <iomanip>
 #include <mathsym.h>
 using namespace std;
+/// Useful general purpose classes 
 namespace cxxadt{
 
 #define MAX_ITER 100
