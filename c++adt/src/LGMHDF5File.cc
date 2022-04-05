@@ -16,16 +16,31 @@ namespace cxxadt{
 
   int LGMHDF5File::createDataSet(const string& dataset_name, int years, int rows, int cols, const TMatrix3D<double>& data)
   {
+    ///Copy TMatrix<3D> `data` to 3D array of double type 
     double data_array3D[years][rows][cols];
     for (int i = 0; i < years; i++){
       for (int j = 0; j < rows; j++){
-	for (int k=0; k < cols; k++){
+	for (int k = 0; k < cols; k++){
 	  data_array3D[i][j][k] = data[i][j][k];
 	}
       }
     }
+    ///After that create HDF5 dataset NATIVE_DOUBLE
     return createDataSet(dataset_name,years,rows,cols,data_array3D);
   }
+
+  int LGMHDF5File::createDataSet(const string& dataset_name, int years, int cols, const TMatrix2D<double>& data)
+  {
+    ///Copy TMatrix<2D> `data` to 2D array of double type 
+    double data_array2D[years][cols];
+    for (int i = 0; i < years; i++){
+      for (int j = 0; j < cols; j++){
+	  data_array2D[i][j] = data[i][j];
+      }
+    }
+    ///After that create HDF5 dataset NATIVE_DOUBLE
+    return createDataSet(dataset_name,years,cols,data_array2D);
+  }  
 
   int LGMHDF5File::createDataSet(const string& dataset_name, int years, int rows, int cols, void* data)
   {

@@ -46,7 +46,23 @@ namespace cxxadt{
     LGMHDF5File(const string& file_name);
     /// Close the H5File `hdf5_file`. \sa hdf5_file
     ~LGMHDF5File();
+    /// Create dataset form TMatrix3D<double>
+    /// \param dataset_name Name of the dataset
+    /// \param years Years dimension
+    /// \param rows Rows (trees) dimension
+    /// \param cols Columns (data) dimension
+    /// \param data The 3D array of type *double*
+    /// \return -1 if error 0 otherwise
+    /// \exception DataSetIException
     int createDataSet(const string& dataset_name, int years, int rows, int cols, const TMatrix3D<double>& data);
+    /// Create dataset form TMatrix2D<double> (e.g. stand level data)
+    /// \param dataset_name Name of the dataset
+    /// \param years Years  (rows) dimension
+    /// \param cols Columns (data) dimension
+    /// \param data The 3D array of type *double*
+    /// \return -1 if error 0 otherwise
+    /// \exception DataSetIException
+    int createDataSet(const string& dataset_name, int years, int cols, const TMatrix2D<double>& data);
     /// Create 3D array DataSet by giving explicitely the 3 dimensions and `data`
     /// \param dataset_name Name of the dataset
     /// \param years Years dimension
