@@ -135,7 +135,7 @@ namespace Lignum{
     LGPtauL,///< Transmission coefficient (radiatiom) for leaf
     LGPxi, ///< Fraction of heartwood in newly created tree segments
     LGPyc, ///< Foliage mass (kgC) supported by 1 m^2 of sapwood
-    LGPzbrentEpsilon,///< Accuracy in numerical computation in root finding
+    LGPzbrentEpsilon,///< Accuracy in numerical computation to allocate P-M=G, i.e. root finding
     LGPlen_random,///< Parameter controlling random variation in lengths of new segments.
                   ///< Realization may differ with tree species.
     LGPe1, ///< Parameters in function that links height growth to that of diameter
@@ -161,7 +161,8 @@ namespace Lignum{
     TreeId	      ///< Unique identifier (number) for the tree (Useful in LignumForest)                                       
   };		      
 
-  /// LGMF: LIGNUM Functions 
+  /// LGMF: LIGNUM Functions. Usually used as LGMF(x)*Value. So to have no effect set constant function F(x) = 1.
+  /// \note Not all have to be used in one model implementation.
   enum LGMF {
     LGMAL,    ///< Adjusted length For example for making branches below 0.002 to have Length 0 and branches				  
     LGMFM,    ///< Foliage mortality 						      
