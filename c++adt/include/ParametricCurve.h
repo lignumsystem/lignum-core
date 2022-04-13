@@ -15,10 +15,13 @@ using namespace  std;
 class ParametricCurve{
 public:
   ParametricCurve();
+  /// Create ParametricCurve from file
+  /// \param file_name File containing (x,f(x)) values in two columns 
   ParametricCurve(const string& file_name);
-  // In this constructor values for the curve are stored
-  // in the string parameter. Second parameter is only
-  // used for overloading the function.
+  /// In this constructor values for the curve are stored
+  /// in the string parameter.
+  /// \param values (x,f(x)) values in a linear string separated by white space
+  /// \param dummy  technically needed to overload the function.
   ParametricCurve(const string& values, int dummy);
   ParametricCurve(const vector<double>& v);
   ParametricCurve(const ParametricCurve& pc);
