@@ -4,6 +4,30 @@
 #include <LGMHDF5File.h>
 
 namespace cxxadt{
+  TMatrix2D<double> LGMHDF5::getLignumFnData(const vector<double>& v)
+  {
+    //Check if function is defined
+    if (!v.empty()){
+      //The ParametricCurve is defined by (x,f(x)) pairs so the number of elements in vector v
+      //is always even. TMatrix2D fn_data is 2D data array[N,2] where N = number of (x,f(x)) pairs
+      //Note the last element in the vector is FLT_MAX to denote the end of function
+      int rows = static_cast<int>((v.size()-1)/2.0);
+      TMatrix2D<double> fn_data(rows,2,0.0);
+      //Note we raise loop index by two to the next (x,f(x)) pair
+      //Note we must stop when the last x value has been found (the v.size()-2)
+      for (unsigned int i=0,j=0; i < v.size()-2; i+=2,j++){
+	fn_data[j][0] = v[i];
+	fn_data[j][1] = v[i+1];
+      }
+      return fn_data;
+  }
+    else{
+      ///Function not defined
+      TMatrix2D<double> fn_data(1,2,std::nan(""));
+      return fn_data;
+    }
+  }
+  
   LGMHDF5File::LGMHDF5File(const string& file_name)
     :hdf5_file(file_name,H5F_ACC_TRUNC)
   {
@@ -13,7 +37,25 @@ namespace cxxadt{
   {
     hdf5_file.close();
   }
-
+  
+  int LGMHDF5File::createGroup(const string& name)
+  {
+    try{
+      Exception::dontPrint();
+      Group group(hdf5_file.createGroup(name));
+    }
+    // File operations
+    catch (FileIException error){
+        error.printErrorStack();
+        return -1;
+    }
+    //Group operations
+    catch (GroupIException error){
+        error.printErrorStack();
+        return -1;
+    }
+    return  0;
+  }
   int LGMHDF5File::createDataSet(const string& dataset_name, int years, int rows, int cols, const TMatrix3D<double>& data)
   {
     ///Copy TMatrix<3D> `data` to 3D array of double type 
@@ -138,6 +180,25 @@ namespace cxxadt{
     return v;
   }
 
+  int LGMHDF5File::createFnDataSetsFromDir(const string& pattern, const string& hdf5_group, const string& attr_name,
+					   const vector<string>& col_names)
+  {
+    glob_t glob_result;
+    glob(pattern.c_str(),GLOB_TILDE,NULL,&glob_result);
+    vector<string> files;
+    int res=0;
+    for(unsigned int i=0;i<glob_result.gl_pathc;++i){
+      string fname = glob_result.gl_pathv[i];
+      ParametricCurve fn(fname);
+      cout << fname <<endl;
+      TMatrix2D<double> hdf5data = getLignumFnData(fn.getVector());
+      res=createDataSet(hdf5_group+fname,hdf5data.rows(),hdf5data.cols(),hdf5data);
+      res=createColumnNames(hdf5_group+fname,attr_name,col_names);
+    }
+    globfree(&glob_result);
+    return res;
+  }
+    
   void LGMHDF5File::close()
   {
     hdf5_file.close();

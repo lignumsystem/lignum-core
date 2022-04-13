@@ -9,21 +9,32 @@
 /// + h5cc, h5c++, h5fc: Compile HDF5 applications
 ///
 /// See also:
-/// + HDFView: Tool for browsing and editing HDF5 files 
+/// + HDFView: Tool for browsing and editing HDF5 files
 #ifndef LGMHDF5FILE_H
 #define LGMHDF5FILE_H
+#include <cmath>
 #include <iostream>
 #include <string>
 #include <vector>
+#include <glob.h>
+#include <ParametricCurve.h>
 #include <TMatrix3D.h>
 #include <H5Cpp.h>
 using namespace H5;
 using namespace std;
 using namespace cxxadt;
+
 namespace cxxadt{
   // DataSpace RANKS for 2D and 3D arrays
   const int DSPACE_RANK3 = 3; ///< DataSpace rank 3D array
-  const int DSPACE_RANK2 = 2; ///< DataSpace rank 2D array (matrix) 
+  const int DSPACE_RANK2 = 2; ///< DataSpace rank 2D array (matrix)
+  /// Base class containing one method to create TMatrix2D from Lignum function files
+  /// TMatrix2D can be stored in HDF5 file
+  class LGMHDF5{
+  public:
+    /// Create TMatrix2D representation from Lignum function files
+    TMatrix2D<double> getLignumFnData(const vector<double>& v);
+  };
   /// \brief Create HDF5 file from 2D or 3D data arrays.
   ///
   /// After Lignum simulation all data is assumed toi be in 2D or 3D arrays. LGMHDF5File can
@@ -38,7 +49,7 @@ namespace cxxadt{
   /// `rows` are Lignum trees, `columns` are data for a tree and `years` are simulation years.
   /// For example `array[i][j]` retrieves data row for the `j`:th tree on the year ì`.
   /// The 2D data is up to user. 
-  class LGMHDF5File{
+  class LGMHDF5File:public LGMHDF5{
   public:
     /// Constructor prepares for datasets by creating HDF5 file. Previous existing file will be truncated.
     /// \exception DataSpaceIException
@@ -46,6 +57,12 @@ namespace cxxadt{
     LGMHDF5File(const string& file_name);
     /// Close the H5File `hdf5_file`. \sa hdf5_file
     ~LGMHDF5File();
+    /// Create group in HDF5 file
+    /// \param name Group name
+    /// \return -1 if error 0 otherwise 
+    /// \exception FileIException GroupIException
+    /// \note The group name is a Linux style string. e.g. "/Groups/GroupA"
+    int createGroup(const string& name);
     /// Create dataset form TMatrix3D<double>
     /// \param dataset_name Name of the dataset
     /// \param years Years dimension
@@ -55,7 +72,7 @@ namespace cxxadt{
     /// \return -1 if error 0 otherwise
     /// \exception DataSetIException
     int createDataSet(const string& dataset_name, int years, int rows, int cols, const TMatrix3D<double>& data);
-    /// Create dataset form TMatrix2D<double> (e.g. stand level data)
+    /// Create dataset from TMatrix2D<double> (e.g. stand level data)
     /// \param dataset_name Name of the dataset
     /// \param years Years  (rows) dimension
     /// \param cols Columns (data) dimension
@@ -102,6 +119,13 @@ namespace cxxadt{
     /// \note Object names include groups, dataspaces, datasets etc.
     /// \sa hdf5_file
     vector<string> getObjectNames();
+    /// Create datasets from files that have data for ParametricCurve.
+    /// The file format is as used in Lignum functions 
+    /// \param pattern Wild card pattern string for `glob` (in glob.h)
+    /// \param hdf5_group HDF5 group
+    ///	\param col_names Column names
+    /// \note Traditionally the files for ParametricCurve have *.fun* suffix
+    int createFnDataSetsFromDir(const string& pattern, const string& hdf5_group, const string& attr_name, const vector<string>& col_names);
     /// Close the H5File `hdf5_file`. \sa hdf5_file
     void close();
   protected:
