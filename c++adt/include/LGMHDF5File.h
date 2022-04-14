@@ -33,6 +33,7 @@ namespace cxxadt{
   class LGMHDF5{
   public:
     /// Create TMatrix2D representation from Lignum function files
+    /// \exception Undefined vector (v.size()==0) results TMatrxi2D[1][2] with row {NaN NaN}  
     TMatrix2D<double> getLignumFnData(const vector<double>& v);
   };
   /// \brief Create HDF5 file from 2D or 3D data arrays.
@@ -103,6 +104,11 @@ namespace cxxadt{
     /// 2D array of NATIVE_DOUBLE  dataset of given dimensions.  
     /// \sa writeDataSet
     int createDataSet(const string& dataset_name, int rows, int cols, void* data);
+    /// Create dataset of containg one string, for example content of command line.
+    /// Dataset is an array of s single string
+    /// \param dataset_name Dataset name
+    /// \param data Dataset data 
+    int createDataSet(const string& dataset_name, const string& data);
     /// Create column names as HDF5 attribute. Column names can be of variable length strings.
     /// \param dset_name DataSet name for  which the column names will be given 
     /// \param attr_name Attribute name for the column names 

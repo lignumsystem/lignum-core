@@ -125,6 +125,27 @@ namespace cxxadt{
     return 0;
   }
 
+  int LGMHDF5File::createDataSet(const string& dataset_name, const string& data)
+  {
+    //The vector to store the string
+    vector<const char*> v_cstr;
+    //There might not be a way a dataset to be a single string
+    //but the string must be in a vector
+    v_cstr.push_back(data.c_str());
+    //Variable length string (command line length varies)
+    StrType str_type(PredType::C_S1, H5T_VARIABLE);
+    const int rank = 1;
+    hsize_t dims[rank];
+    //In practice vector length is 1.
+    dims[0]=v_cstr.size();
+    //Dataspace for the dataset
+    DataSpace  dspace(rank,dims);
+    //Dataset itself
+    DataSet dataset = hdf5_file.createDataSet(dataset_name, str_type, dspace);
+    //Write the conent of the vector to dataset
+    dataset.write(v_cstr.data(),str_type);
+    return 0;
+  }
   int LGMHDF5File::createColumnNames(const string& dset_name, const string& attr_name, const vector<string>& col_names)
   {
     ///Use variable length string type
