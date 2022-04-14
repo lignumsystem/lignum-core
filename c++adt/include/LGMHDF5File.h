@@ -126,7 +126,7 @@ namespace cxxadt{
     /// \sa hdf5_file
     vector<string> getObjectNames();
     /// Create datasets from files that have data for ParametricCurve.
-    /// The file format is as used in Lignum functions 
+    /// \pre The file format is as used in Lignum functions 
     /// \param pattern Wild card pattern string for `glob` (in glob.h)
     /// \param hdf5_group HDF5 group
     ///	\param col_names Column names
