@@ -1,17 +1,24 @@
 #include <array>
+#include <LGMHDF5File.h>
 /// \file LGMHDF5File.cc
 /// \brief LGMHDF5File implementation with examples to save Lignum simulations to HDF5 file.
-#include <LGMHDF5File.h>
+
 
 namespace cxxadt{
   TMatrix2D<double> LGMHDF5::getLignumFnData(const vector<double>& v)
   {
     //Check if function is defined
     if (!v.empty()){
-      //The ParametricCurve is defined by (x,f(x)) pairs so the number of elements in vector v
-      //is always even. TMatrix2D fn_data is 2D data array[N,2] where N = number of (x,f(x)) pairs
-      //Note the last element in the vector is FLT_MAX to denote the end of function
+      /// The ParametricCurve is defined by (x,f(x)) pairs.<br>
+      /// Return value TMatrix2D[N][2] is 2D data arrray where N = number of (x,f(x)) pairs. <br>
+      /// Note the last element in the vector `v` is FLT_MAX to denote the end of function.
+      /// Thus the number of N (i.e. rows) is:
+      /// \internal
+      /// \snippet{lineno} LGMHDF5File.cc Rows
+      // [Rows]
       int rows = static_cast<int>((v.size()-1)/2.0);
+      // [Rows]
+      /// \endinternal
       TMatrix2D<double> fn_data(rows,2,0.0);
       //Note we raise loop index by two to the next (x,f(x)) pair
       //Note we must stop when the last x value has been found (the v.size()-2)
@@ -22,7 +29,7 @@ namespace cxxadt{
       return fn_data;
   }
     else{
-      ///Function not defined
+      /// `std::nan` denotes function not defined
       TMatrix2D<double> fn_data(1,2,std::nan(""));
       return fn_data;
     }
