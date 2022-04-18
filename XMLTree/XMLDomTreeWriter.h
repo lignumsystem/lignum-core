@@ -1,5 +1,5 @@
-#ifndef XMLDOMTREEWRITERI_H
-#define XMLDOMTREEWRITERI_H
+#ifndef XMLDOMTREEWRITER_H
+#define XMLDOMTREEWRITER_H
 
 //#include <list>
 //#include <QApplication>
@@ -9,46 +9,53 @@
 #include <string>
 #include <XMLDomTreeBuilder.h>
 
-#include <XMLTree.h>
+
+/// \file XMLDomTreeWriter.h
+/// \brief Lignum tree to its XML representation.
+///
+/// Convert Lignum tree to its XML representation. Save the XML to a file
+/// or return as STL string.
 
 using namespace Lignum;
 using namespace cxxadt;
 
-template <class TS, class BUD = DefaultBud<TS>, class S = cxxadt::Ellipse>
+/// Convert Lignum tree to XML. Save the XML to a file or return the XML as STL string
+template <class TS, class BUD, class S = cxxadt::Ellipse>
 class XMLDomTreeWriter
 {
 public:
   XMLDomTreeWriter() {}
-  bool writeTreeToXML(Tree<TS,BUD>&, const string&);
+  /// Write Lignum tree to an XML file
+  /// \param t Lignum tree, either coniferous or broad leaf
+  /// \param f File name
+  /// \return true if success, false if file input error 
+  bool writeTreeToXML(Tree<TS,BUD>& t, const string& f);
+  /// Write Lignum tree to an STL string
+  /// \param t Lignum tree, either coniferous or broad leaf
+  /// \return XML representation of the Lignum tree as stl::string
+  /// \post All white space in the return string removed
+  /// \sa writeTreeToXML
+  string xmlToString(Tree<TS,BUD>& t);
 };
 
-template <class TS, class BUD, class S>
-bool XMLDomTreeWriter<TS,BUD,S>::writeTreeToXML(Tree<TS, BUD>& tree, const string& fileName) {
-  QDomDocument doc("LMODEL");
-
-  QDomElement root = doc.createElement("Tree"); 
-  QDomElement par;
-
-  XMLDomTreeBuilder<TS,BUD,S> XMLDocBuild(doc, root, tree);
-  PropagateUp(tree, par, XMLDocBuild); 
-  
-  QString fname(fileName.c_str());
-
-  QFile file(fname);
-
-  if(!file.open(QIODevice::ReadWrite)){
-    cerr << "XMLDomTreeWriter::writeTreeToXML error in opening file" << endl;
-    cerr << "Returning false, no output for file " << fileName <<endl;
-    return false;
+/// Helper function to write Lignum tree to an xml file
+/// \param argc Number of command line parameters
+/// \param argv Command line
+/// \param t Lignum tree, either coniferous or broad leaf
+template <class TS,class BUD, class S = cxxadt::Ellipse>
+void WriteTreeToXML(int argc, char* argv[],Tree<TS,BUD>& t)
+{
+  string xmlfile;
+  ParseCommandLine(argc,argv,"-xml",xmlfile);
+  if (!xmlfile.empty()){
+    XMLDomTreeWriter<TS,BUD,S> writer;
+    writer.writeTreeToXML(t, xmlfile);
+    cout << "Roots written to a file " << xmlfile <<endl;
   }
-  
-  QIODevice *device = &file;
-  
-  QTextStream out(device);
-  out << doc.toString();
-  file.close();
-  return true;
-  
+  else{
+    cout <<  "WriteTreeToXML: no output file" <<endl;
+  }
 }
 
+#include <XMLDomTreeWriterI.h>
 #endif

@@ -1,7 +1,6 @@
 #ifndef XMLDOMTREEBUILDER_H
 #define XMLDOMTREEBUILDER_H
 
-#include <XMLTree.h>
 
 //#include <list>
 //#include <QApplication>
@@ -21,7 +20,7 @@ using namespace cxxadt;
  * Note: This class is ONLY for building the DOM-document. To write
  * it to a XML-file use XMLDomTreeWriter-class. 
  */   
-template <class TS, class BUD, class S>
+template <class TS, class BUD, class S=cxxadt::Ellipse>
 class XMLDomTreeBuilder
 {
 public:
