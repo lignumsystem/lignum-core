@@ -1,7 +1,6 @@
 #ifndef XMLDOMTREEREADER_H
 #define XMLDOMTREEREADER_H
 
-#include <XMLTree.h>
 #include <list>
 #include <QDomDocument>
 #include <Lignum.h>
