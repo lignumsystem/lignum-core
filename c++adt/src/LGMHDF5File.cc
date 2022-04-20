@@ -101,9 +101,11 @@ namespace cxxadt{
       dspace_dims[0] = years;
       dspace_dims[1] = rows;
       dspace_dims[2] = cols;
-      DataSpace dataspace(DSPACE_RANK3,dspace_dims);
-      DataSet dset = hdf5_file.createDataSet(dataset_name,datatype,dataspace);
+      DataSpace dspace(DSPACE_RANK3,dspace_dims);
+      DataSet dset = hdf5_file.createDataSet(dataset_name,datatype,dspace);
       writeDataSet(dset, data);
+      dspace.close();
+      dspace.close();
     }
     catch (DataSetIException error){
       error.printErrorStack();
@@ -121,9 +123,11 @@ namespace cxxadt{
       hsize_t dspace_dims[DSPACE_RANK2];
       dspace_dims[0] = rows;
       dspace_dims[1] = cols;
-      DataSpace dataspace(DSPACE_RANK2,dspace_dims);
-      DataSet dset = hdf5_file.createDataSet(dataset_name,datatype,dataspace);
+      DataSpace dspace(DSPACE_RANK2,dspace_dims);
+      DataSet dset = hdf5_file.createDataSet(dataset_name,datatype,dspace);
       writeDataSet(dset, data);
+      dspace.close();
+      dset.close();
     }
     catch (DataSetIException error){
       error.printErrorStack();
@@ -148,9 +152,11 @@ namespace cxxadt{
     //Dataspace for the dataset
     DataSpace  dspace(rank,dims);
     //Dataset itself
-    DataSet dataset = hdf5_file.createDataSet(dataset_name, str_type, dspace);
+    DataSet dset = hdf5_file.createDataSet(dataset_name, str_type, dspace);
     //Write the conent of the vector to dataset
-    dataset.write(v_cstr.data(),str_type);
+    dset.write(v_cstr.data(),str_type);
+    dspace.close();
+    dset.close();
     return 0;
   }
   int LGMHDF5File::createColumnNames(const string& dset_name, const string& attr_name, const vector<string>& col_names)
@@ -174,6 +180,7 @@ namespace cxxadt{
       }
       ///Finally write string to attribute 
       attr.write(str_type,c_vector.data());
+      attr_dspace.close();
       dset.close();
     }
     catch (AttributeIException error) {
