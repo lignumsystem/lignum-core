@@ -105,7 +105,7 @@ namespace cxxadt{
       DataSet dset = hdf5_file.createDataSet(dataset_name,datatype,dspace);
       writeDataSet(dset, data);
       dspace.close();
-      dspace.close();
+      dset.close();
     }
     catch (DataSetIException error){
       error.printErrorStack();
