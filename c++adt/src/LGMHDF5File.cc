@@ -63,19 +63,35 @@ namespace cxxadt{
     }
     return  0;
   }
+  
   int LGMHDF5File::createDataSet(const string& dataset_name, int years, int rows, int cols, const TMatrix3D<double>& data)
   {
-    ///Copy TMatrix<3D> `data` to 3D array of double type 
-    double data_array3D[years][rows][cols];
+    ///The maximum (function) stack in sorvi is  8192 kbytes.
+    ///For the most of the 2D data arrays it can be enough.
+    ///With 3D data array collecting annual treewise data in LignumForest
+    ///the stack limit is easily exceeded.
+    ///To collect data for the trees reserve contiguous memory from the heap
+    /// \snippet{lineno} LGMHDF5File.cc [HeapAllocation]
+    //  [HeapAllocation]
+    double* v = new double[years * rows * cols];
+    // [HeapAllocation]
+    
+    ///To index the contiguous memory use the indexing scheme compiler uses.
+    ///If you want to understand the indexing scheme take a piece of grid paper
+    ///and draw for example three 4x5 2D data arrays to represent 3x4x5 data array.
+    ///Then plugin numbers to the indexing scheme and see how it lands on the right
+    ///array cell on a right 2D array. The `v` denotes first cell (i=j=k=0).
     for (int i = 0; i < years; i++){
       for (int j = 0; j < rows; j++){
 	for (int k = 0; k < cols; k++){
-	  data_array3D[i][j][k] = data[i][j][k];
+	  /// \snippet{lineno} LGMHDF5File.cc [HeapIndexing]
+	  // [HeapIndexing]
+	  *(v + i * rows * cols + j * cols + k) = data[i][j][k];
+	  // [HeapIndexing]
 	}
       }
     }
-    ///After that create HDF5 dataset NATIVE_DOUBLE
-    return createDataSet(dataset_name,years,rows,cols,data_array3D);
+    return createDataSet(dataset_name,years,rows,cols,v);
   }
 
   int LGMHDF5File::createDataSet(const string& dataset_name, int years, int cols, const TMatrix2D<double>& data)
@@ -102,10 +118,11 @@ namespace cxxadt{
       dspace_dims[1] = rows;
       dspace_dims[2] = cols;
       DataSpace dspace(DSPACE_RANK3,dspace_dims);
+      cout << "DATASPACE DONE" <<endl;
       DataSet dset = hdf5_file.createDataSet(dataset_name,datatype,dspace);
-      writeDataSet(dset, data);
-      dspace.close();
-      dset.close();
+      cout << "DATASET DONE" << endl;
+      int res = writeDataSet(dset, data);
+      cout << "WRITE DATASET DONE " << res << endl;
     }
     catch (DataSetIException error){
       error.printErrorStack();
@@ -126,8 +143,6 @@ namespace cxxadt{
       DataSpace dspace(DSPACE_RANK2,dspace_dims);
       DataSet dset = hdf5_file.createDataSet(dataset_name,datatype,dspace);
       writeDataSet(dset, data);
-      dspace.close();
-      dset.close();
     }
     catch (DataSetIException error){
       error.printErrorStack();
@@ -155,8 +170,6 @@ namespace cxxadt{
     DataSet dset = hdf5_file.createDataSet(dataset_name, str_type, dspace);
     //Write the conent of the vector to dataset
     dset.write(v_cstr.data(),str_type);
-    dspace.close();
-    dset.close();
     return 0;
   }
   int LGMHDF5File::createColumnNames(const string& dset_name, const string& attr_name, const vector<string>& col_names)
@@ -180,8 +193,6 @@ namespace cxxadt{
       }
       ///Finally write string to attribute 
       attr.write(str_type,c_vector.data());
-      attr_dspace.close();
-      dset.close();
     }
     catch (AttributeIException error) {
       error.printErrorStack();
@@ -225,7 +236,6 @@ namespace cxxadt{
     for(unsigned int i=0;i<glob_result.gl_pathc;++i){
       string fname = glob_result.gl_pathv[i];
       ParametricCurve fn(fname);
-      cout << fname <<endl;
       TMatrix2D<double> hdf5data = getLignumFnData(fn.getVector());
       res=createDataSet(hdf5_group+fname,hdf5data.rows(),hdf5data.cols(),hdf5data);
       res=createColumnNames(hdf5_group+fname,attr_name,col_names);
