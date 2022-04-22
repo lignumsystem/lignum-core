@@ -100,7 +100,9 @@ namespace cxxadt{
     ///Consider removing this extra copying of data for the HDF5 (it requires contiguous
     ///array of data). However this is done only once after simulation and is not limiting
     ///factor regarding memory usage.
-    return createDataSet(dataset_name,years,rows,cols,v);
+    int res = createDataSet(dataset_name,years,rows,cols,v);
+    delete v;
+    return res;
   }
 
   int LGMHDF5File::createDataSet(const string& dataset_name, int years, int cols, const TMatrix2D<double>& data)
