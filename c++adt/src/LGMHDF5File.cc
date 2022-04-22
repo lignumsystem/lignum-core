@@ -70,11 +70,13 @@ namespace cxxadt{
     ///For the most of the 2D data arrays it can be enough.
     ///With 3D data array collecting annual treewise data in LignumForest
     ///the stack limit is easily exceeded.
-    ///To collect data for the trees reserve contiguous memory from the heap
-    /// \snippet{lineno} LGMHDF5File.cc [HeapAllocation]
+    ///To copy tree data for HDF5 storage reserve contiguous memory from the heap
+    /// \internal
+    /// \snippet{lineno} LGMHDF5File.cc HeapAllocation
     //  [HeapAllocation]
     double* v = new double[years * rows * cols];
     // [HeapAllocation]
+    /// \endinternal
     
     ///To index the contiguous memory use the indexing scheme compiler uses.
     ///If you want to understand the indexing scheme take a piece of grid paper
@@ -84,13 +86,20 @@ namespace cxxadt{
     for (int i = 0; i < years; i++){
       for (int j = 0; j < rows; j++){
 	for (int k = 0; k < cols; k++){
-	  /// \snippet{lineno} LGMHDF5File.cc [HeapIndexing]
+	  /// \internal
+	  /// \snippet{lineno} LGMHDF5File.cc HeapIndexing
 	  // [HeapIndexing]
 	  *(v + i * rows * cols + j * cols + k) = data[i][j][k];
 	  // [HeapIndexing]
+	  /// \endinternal
 	}
       }
     }
+    ///\todo The 3D data array `data` is used to collect tree data. It can be easily
+    ///created dynamically when the simulation years and the number of trees are known.
+    ///Consider removing this extra copying of data for the HDF5 (it requires contiguous
+    ///array of data). However this is done only once after simulation and is not limiting
+    ///factor regarding memory usage.
     return createDataSet(dataset_name,years,rows,cols,v);
   }
 
