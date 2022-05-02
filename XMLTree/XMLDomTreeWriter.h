@@ -28,7 +28,7 @@ public:
   /// Write Lignum tree to an XML file
   /// \param t Lignum tree, either coniferous or broad leaf
   /// \param f File name
-  /// \return true if success, false if file input error 
+  /// \return true if success, false if file open error 
   bool writeTreeToXML(Tree<TS,BUD>& t, const string& f);
   /// Write Lignum tree to an STL string
   /// \param t Lignum tree, either coniferous or broad leaf
