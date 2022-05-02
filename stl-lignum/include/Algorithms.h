@@ -4,7 +4,13 @@
 #include <functional>
 #include <list>
 #include <LGMdecl.h>
-
+/// \file Algorithms.h
+/// \brief Generic algorithms for the Lignum tree.
+///
+/// There are four generic algorithms in the Lignum system: ForEach, Accumulate,
+/// AccumulateDown (two flavours) and PropagetUp (two flavours). These are inspired by
+/// C++ STL library and encourages Generic programming when implementing specific
+/// applications with the Lignum system.  
 using namespace std;
 
 namespace Lignum{
@@ -74,21 +80,106 @@ class ForAllTreeCompartments{
   Function f;
 };
 
-
+/// For each applies the user defined function `f` to each Tree compertment in the tree.
+/// \tparam TS Tree segment
+/// \tparam BUD Bud
+/// \tparam Function User defined function 
+/// \param tree Lignum tree
+/// \param f Function of one parameter f(TreeCompartment<TS,BUD>* tc) and returns void.
+/// \return Modified `tree`. 
 template <class TS,class BUD, class Function>
 void ForEach(Tree<TS,BUD>& tree, const Function f);
 
+/// Accumulate applies user defined binary operator to each tree compartment
+/// with the initial value.
+/// \tparam TS Tree segment
+/// \tparam BUD Bud
+/// \tparam T Type of the initial value
+/// \tparam BinOp Binary operator
+/// \param tree Lignum tree
+/// \param init The initial value for Accumulate
+/// \param op The binary operator with two arguments: op(T& init,TreeCompartment<TS,BUD>* tc)
+/// \pre The initial value type T must have assginment (`=`) operator
+/// \remark The order the Lignum tree is traversed is not defined 
+/// \return The altered initial value
+/// \sa AccumulateTreeCompartments
 template <class TS,class BUD, class T, class BinOp>
 T& Accumulate(Tree<TS,BUD>& tree, T& init, const BinOp op);
 
+/// AccumulateDown applies user defined binary operator to each tree compartment
+/// with the initial value.
+/// \tparam TS Tree segment
+/// \tparam BUD Bud
+/// \tparam T Type of the initial value
+/// \tparam BinOp Binary operator
+/// \param tree Lignum tree
+/// \param init The initial value for AccumulateDown
+/// \param op The binary operator with two arguments: op(T& init,TreeCompartment<TS,BUD>* tc)
+/// \pre The initial value type T must have copy constructor (`T(init)`), assginment (`=`)
+///      and add-assign (`+=`) operators
+/// \remark The Lignum tree is traversed from the tip of the branches towards the main stem and
+/// to the base of the tree.
+/// \return The altered intial value
+/// \sa AccumulateDownTreeCompartments
 template <class TS,class BUD, class T, class BinOp>
 T& AccumulateDown(Tree<TS,BUD>& tree, T& init, const BinOp op);
 
+/// AccumulateDown applies user defined binary operator to each tree compartment
+/// with the initial value.
+/// \tparam TS Tree segment
+/// \tparam BUD Bud
+/// \tparam T Type of the initial value
+/// \tparam BinOp1 Binary operator
+/// \tparam BinOp2 Binary operator
+/// \param tree Lignum tree
+/// \param init The initial value for AccumulateDown
+/// \param op1 The binary operator with two arguments: op1(T& init,T& init_from_axis)
+/// \param op2 The binary operator with two arguments: op2(T& init,TreeCompartment<TS,BUD>* tc
+/// \pre The initial value type T must have copy constructor (`T(init)`) and the assginment (`=`)
+///      operator.
+/// \remark The Lignum tree is traversed from the tip of the branches towards the main stem and
+/// to the base of the tree. The operator `op2` is applied to each TreeCompartment.
+/// At BranchingPoint the operator `op1` is applied the to each return value from Axes first
+/// before `op2`.
+/// \return The altered intial value
+/// \sa AccumulateDownTreeCompartments2
 template <class TS,class BUD, class T, class BinOp1, class BinOp2>
 T& AccumulateDown(Tree<TS,BUD>& tree, T& init, const BinOp1 op1, const BinOp2 op2);
+
+/// PropagateUp applies  user defined binary operator to each tree compartment with a value
+/// \tparam TS Tree segment
+/// \tparam BUD Bud
+/// \tparam T Type of the initial value
+/// \tparam BinOp Binary operator
+/// \param tree The Lignum tree
+/// \param init The initial value
+/// \param op1 The binary operator with two arguments: op1(T& init,TreeCompartment<TS,BUD>* tc)
+/// \pre The intial value type T  must have the assignment (`=`) operator.
+/// \remark PropagateUp traverses the tree from the base to the tip of the branches and passes the initial value forward.
+///         Each tree compartment may change the initial value with `op1` and this changed value is received by
+///         TreeCompartments thereafter.
+/// \return The possibly altered tree, the value of `init` is after last change in some TreeCompartment.
+/// \sa PropagateUpTreeCompartments
 template <class TS,class BUD, class T, class BinOp>
 void PropagateUp(Tree<TS,BUD>& tree, T& init, const BinOp op1);
- 
+
+/// PropagateUp applies  user defined binary operator to each tree compartment with a value
+/// \tparam TS Tree segment
+/// \tparam BUD Bud
+/// \tparam T Type of the initial value
+/// \tparam BinOp1 Binary operator with two arguments: op1(T& init,T& default)
+/// \tparam BinOp2 Binary operator with two arguments: op2(T& init, TreeCompartment<TS,BUD>* tc)
+/// \param tree The Lignum tree
+/// \param init The initial value
+/// \param op1 Binary operator
+/// \param op2 Binary operator
+/// \pre The initial value must have default constructor T().
+/// \remark PropagateUp  traverses the tree from the base to the tip of the branches and passes the initial value forward.
+///         Each tree compartment may change the initial value with `op2` and this changed value is received by
+///         TreeCompartments thereafter. Each BranchingPoint calls also T id_new = op1(T(),init) and id_new is  passed
+///         on to Axes connected to he BranchingPoint
+/// \return The possibly altered tree, the value of `init` is after last change in some TreeCompartment.
+/// \sa PropagateUpTreeCompartments2
 template <class TS,class BUD, class T, class BinOp1, class BinOp2>
 void PropagateUp(Tree<TS,BUD>& tree, T& init, const BinOp1 op1, const BinOp2 op2);
 

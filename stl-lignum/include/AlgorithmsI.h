@@ -1,6 +1,8 @@
 #ifndef ALGORITHMSI_H
 #define ALGORITHMSI_H
 
+/// \file AlgorithmsI.h
+/// \brief Implementation of the Generic algorithms.
 namespace Lignum{
 
 
@@ -221,7 +223,7 @@ PropagateUpTreeCompartments2<TS,BUD,T,BinOp1,BinOp2>::operator()(T& id,
 
   else if (BUD* bud = dynamic_cast<BUD*>(tc))
     op2(id,bud);
-
+ 
   else if (Axis<TS,BUD>* axis = dynamic_cast<Axis<TS,BUD>*>(tc)){
     op2(id,axis);
     list<TreeCompartment<TS,BUD>*>& tc_ls = GetTreeCompartmentList(*axis);

@@ -32,14 +32,14 @@ string ParseCommandLine(int argc, char *argv[],const string& flag)
 }
 
 
-
+/// \example{lineno} algorithms.cc
 int main(int argc, char *argv[])
 {
   
-  //using explicitely Tree from  namespace Lignum;
+  /// Using explicitely Tree from  namespace Lignum;
   Tree<MyHwTreeSegment,MyHwBud> hw_tree(Point(0,0,0),
 					PositionVector(0,0,1.0));
-  //by default the tree is from namespace Lignum
+  /// By default the tree is from namespace Lignum
   Tree<MyCfTreeSegment,MyCfBud> cf_tree(Point(0,0,0),
 					PositionVector(0,0,1.0));
   cout << "Created Hw and Cf trees" << endl;
@@ -60,62 +60,58 @@ int main(int argc, char *argv[])
     init_hw.initialize(hw_tree);
     init_cf.initialize(cf_tree); 
   }
-  //This is how to access functions, note the ParametricCurve is
-  //returned as const
+  /// This is how to access functions, note the ParametricCurve is
+  /// returned as const
   const ParametricCurve& pc = GetFunction(hw_tree,LGMFM);
-  //Example 1.
-  //create a tree with a structure [TS,[[B],[B]],B]
-  //i.e, [TS,BP,B] which expands to [TS,[A,A],B] and to [TS,[[B],[B]],B]
-  //A= Axis<MyHwTreeSegment,MyBud>, BP = BranchingPoint<MyHwTreeSegment,MyBud>, 
-  //TS = TreeSegment<MyHwTreeSegment>,MyBud<MyHwTreeSegment,MyBud> and 
-  //B = Bud<MyHwTreeSegment,MyBud>
+  /// Example 1. HwTree 
+  /// create a tree with a structure [TS,[[B],[B]],B]
+  /// i.e, [TS,BP,B] which expands to [TS,[A,A],B] and to [TS,[[B],[B]],B]
+  /// A= Axis<MyHwTreeSegment,MyBud>, BP = BranchingPoint<MyHwTreeSegment,MyBud>, 
+  /// TS = TreeSegment<MyHwTreeSegment>,MyBud<MyHwTreeSegment,MyBud> and 
+  /// B = Bud<MyHwTreeSegment,MyBud>
   Axis<MyHwTreeSegment,MyHwBud>& axis = GetAxis(hw_tree);
   //create the first tree segment
   MyHwTreeSegment *ts = 
     new  MyHwTreeSegment(Point(0,0,0),PositionVector(0,0,1.0),
 			 0,1,0.5,0.2,&hw_tree);
-  //create the branching point
+  /// Create the branching point
   BranchingPoint<MyHwTreeSegment,MyHwBud> *bp = 
     new BranchingPoint<MyHwTreeSegment,MyHwBud>(Point(0,0,0),
 				      PositionVector(0,0,1.0),&hw_tree);
-  //create the terminating bud
+  /// Create the terminating bud
   Bud<MyHwTreeSegment,MyHwBud> *bud = new  MyHwBud(Point(0,0,0),
 						   PositionVector(0,0,1.0),
 						   0,
 						   &hw_tree);
-  //create a branch with one bud (Axis containing one Bud) into the branching point
+  /// Create a branch with one bud (Axis containing one Bud) into the branching point
   InsertTerminatingBud(*bp,new MyHwBud(Point(0,0,0),
 				       PositionVector(0,0,1.0),
 				       0,
 				       &hw_tree));
-  //create another branch with one bud (Axis containing one Bud) into the branching point
+  /// Create another branch with one bud (Axis containing one Bud) into the branching point
   InsertTerminatingBud(*bp,new MyHwBud(Point(0,0,0),
 				       PositionVector(0,0,1.0),
 				       0,
 				       &hw_tree));
 
 
-  //The tree will now look as  [TS,[[B],[B]],B]
+  /// The tree will now look as  [TS,[[B],[B]],B]
   InsertTreeCompartment(axis,ts);
   InsertTreeCompartment(axis,bp);
   InsertTreeCompartment(axis,bud);
 
-  //traverse the tree and print out  the datatypes of tree compartments
-  //using the ForEach algorithm
-
+  /// ForEach: traverse the tree and print out  the datatypes of tree compartments
+  /// using the ForEach algorithm
   cout << "Testing ForEach algorithm with DisplayType" << endl;
   ForEach(hw_tree,DisplayType<MyHwTreeSegment,MyHwBud>());
   cout << endl;
-
-  cout << "Example 1: Tree<MyHwTreeSegment,MyBud> with TreeSegment<MyHwTreeSegment,MyBud>" << endl;
+  cout << "Tree<MyHwTreeSegment,MyBud> with TreeSegment<MyHwTreeSegment,MyBud>" << endl;
   cout << "Testing ForEach algorithm with DisplayType2" << endl;
-  
-  
   ForEach(hw_tree,DisplayType2<MyHwTreeSegment,MyHwBud>());
   cout << endl;
   int i = 0;
 
-  //traverse the tree, echo  and count the number of tree compartments
+  /// Accumulate: traverse the tree, echo  and count the number of tree compartments
   cout << "Testing Accumulate algorithm with CountCompartments" << endl;
   int cc = Accumulate(hw_tree,i,CountCompartments<MyHwTreeSegment,MyHwBud>());
   cout << "Number of Compartments: " << endl;
@@ -124,7 +120,7 @@ int main(int argc, char *argv[])
   cout << endl;
   i = 0;
 
-  //traverse the tree, echo  and count the number of tree compartments
+  /// AccumulateDown: traverse the tree, echo  and count the number of tree compartments
   cout << "Testing AccumulateDown algorithm with "
        << "CountCompartmentsReverse" << endl; 
   cc = AccumulateDown(hw_tree,i,CountCompartmentsReverse<MyHwTreeSegment,MyHwBud>());
@@ -134,7 +130,7 @@ int main(int argc, char *argv[])
 
   i=0;
   cc= 0;
-  //traverse the tree, echo  and count the number of tree compartments
+  /// AccumulateDown: traverse the tree, echo  and count the number of tree compartments
   cout << "Testing AccumulateDown algorithm with CountCompartments" << endl;
   cc = AccumulateDown(hw_tree,i,CountCompartments<MyHwTreeSegment,MyHwBud>());
   cout << "Number of Compartments: " << endl;
@@ -142,64 +138,59 @@ int main(int argc, char *argv[])
   cout << endl;
 
   i = 0;
-  //traverse the tree, echo  and count the number branches
+  /// PropagetUp: traverse the tree, echo  and count the number branches
   cout << "Testing PropagateUp algorithm with MyExampleSignal" << endl;
   PropagateUp(hw_tree,i,MyExampleSignal<MyHwTreeSegment,MyHwBud>());
 
-
-  
-
-  //Example 2.
-  //create a tree with a structure [TS,[[B],[B]],B]
-  //i.e, [TS,BP,B] which expands to [TS,[A,A],B] and to [TS,[[B],[B]],B]
-  //A= Axis<MyCfTreeSegment,MyBud>, BP = BranchingPoint<MyCfTreeSegment,MyBud>, 
-  //TS = MyCfTreeSegment and B = Bud<MyCfBud,MyBud> 
+  /// Example 2. CfTree
+  /// Create a tree with a structure [TS,[[B],[B]],B]
+  /// i.e, [TS,BP,B] which expands to [TS,[A,A],B] and to [TS,[[B],[B]],B]
+  /// A= Axis<MyCfTreeSegment,MyBud>, BP = BranchingPoint<MyCfTreeSegment,MyBud>, 
+  /// TS = MyCfTreeSegment and B = Bud<MyCfBud,MyBud> 
   Axis<MyCfTreeSegment,MyCfBud>& cf_axis = GetAxis(cf_tree);
-  //create the first tree segment
+  /// Create the first tree segment
   MyCfTreeSegment *cf_ts = 
     new MyCfTreeSegment(Point(0,0,0),PositionVector(0,0,1.0),
 			0,1,0.5,0.2,&cf_tree);
   SetValue(*cf_ts, LGAQabs, 100.0);                //this segment has absorbed radiation
-  //create the branching point
+  /// Create the branching point
   BranchingPoint<MyCfTreeSegment,MyCfBud> *cf_bp = 
     new BranchingPoint<MyCfTreeSegment,MyCfBud>(Point(0,0,0),
 						PositionVector(0,0,1.0),&cf_tree);
-  //create the terminating bud
+  /// Create the terminating bud
   Bud<MyCfTreeSegment,MyCfBud> *cf_bud = new  MyCfBud(Point(0,0,0),
 						      PositionVector(0,0,1.0),
 						      0,
 						      &cf_tree);
-  //create a branch with one bud (Axis containing one Bud) into the branching point
+  /// Create a branch with one bud (Axis containing one Bud) into the branching point
   InsertTerminatingBud(*cf_bp,new MyCfBud(Point(0,0,0),
 					  PositionVector(0,0,1.0),
 					  0,
 					  &cf_tree));
-  //create another branch with one bud (Axis containing one Bud) into the branching point
+  /// Create another branch with one bud (Axis containing one Bud) into the branching point
   InsertTerminatingBud(*cf_bp,new MyCfBud(Point(0,0,0),
 					  PositionVector(0,0,1.0),
 					  0,
 					  &cf_tree));
 
 
-  //The tree will now look as  [TS,[[B],[B]],B]
+  /// The tree will now look as  [TS,[[B],[B]],B]
   InsertTreeCompartment(cf_axis,cf_ts);
   InsertTreeCompartment(cf_axis,cf_bp);
   InsertTreeCompartment(cf_axis,cf_bud);
 
-  //traverse the tree and print out  the datatypes of tree compartments
-  //using the ForEach algorithm
+  /// ForEach: Traverse the tree and print out  the datatypes of tree compartments
+  /// using the ForEach algorithm
   cout << endl;
   cout << "Example 2: Tree<MyCfTreeSegment,MyCfBud> with MyCfTreeSegment" << endl;
   cout << "Testing ForEach algorithm with DisplayType2" << endl;
   cout << "Testing ForEach algorithm with DisplayType2" << endl;
-
-  
   ForEach(cf_tree,DisplayType2<MyCfTreeSegment,MyCfBud>());
 
   cout << endl;
   i = 0;
 
-  //traverse the tree, echo  and count the number of tree compartments
+  ///Accumlate: traverse the tree, echo  and count the number of tree compartments
   cout << "Testing Accumulate algorithm with CountCompartments" << endl;
   cc = Accumulate(cf_tree,i,CountCompartments<MyCfTreeSegment,MyCfBud>());
   cout << "Number of Compartments: " << endl;
@@ -208,7 +199,7 @@ int main(int argc, char *argv[])
   cout << endl;
   i = 0;
 
-  //traverse the tree, echo  and count the number of tree compartments
+  /// AccumulateDown: traverse the tree, echo  and count the number of tree compartments
   cout << "Testing AccumulateDown algorithm with "
        << "CountCompartmentsReverse" << endl; 
   cc = AccumulateDown(cf_tree,i,CountCompartmentsReverse<MyCfTreeSegment,MyCfBud>());
@@ -218,7 +209,7 @@ int main(int argc, char *argv[])
 
   i=0;
   cc= 0;
-  //traverse the tree, echo  and count the number of tree compartments
+  /// AccumukateDown: traverse the tree, echo  and count the number of tree compartments
   cout << "Testing AccumulateDown algorithm with CountCompartments" << endl;
   cc = AccumulateDown(cf_tree,i,CountCompartments<MyCfTreeSegment,MyCfBud>());
   cout << "Number of Compartments: " << endl;
@@ -226,7 +217,7 @@ int main(int argc, char *argv[])
   cout << endl;
 
   i = 0;
-  //traverse the tree, echo  and count the number branches
+  /// PropagateUp: traverse the tree, echo  and count the number branches
   cout << "Testing PropagateUp algorithm with MyExampleSignal" << endl;
   PropagateUp(cf_tree,i,MyExampleSignal<MyCfTreeSegment,MyCfBud>());
 
@@ -236,7 +227,7 @@ int main(int argc, char *argv[])
   DisplayStructure(cf_tree);
   cout << endl;
 
-  //traverse the tree and display the structure
+  ///PropagateUp: traverse the tree and display the structure
   cout << "Testing PropagateUp algorithm with DisplayStructureFunctor" << endl;
   DisplayStructureData id;
   PropagateUp(cf_tree,id,DisplayStructureFunctor<MyCfTreeSegment,MyCfBud>());
@@ -266,42 +257,30 @@ int main(int argc, char *argv[])
   sumP = Accumulate(hw_tree,sumP,SumTreePhotosynthesis<MyHwTreeSegment,MyHwBud>());
   cout << "P for HwTree is: " << sumP << endl; 
   
-  //cf_tree.photosynthesis();
+  /// ForEach:  cf_tree.photosynthesis();
   ForEach(cf_tree, TreePhotosynthesis<MyCfTreeSegment,MyCfBud>());
   sumP = 0.0;
   sumP = Accumulate(cf_tree,sumP,SumTreePhotosynthesis<MyCfTreeSegment,MyCfBud>());
   cout << "P for CfTree is: " << sumP 
        << " (should be = 1*100): " << endl;
-   //cf_tree.respiration();
+  /// ForEach: cf_tree.respiration();
   ForEach(cf_tree,TreeRespiration<MyCfTreeSegment,MyCfBud>());
   LGMdouble sumM = 0.0;
   sumM = Accumulate(cf_tree,sumM,SumTreeRespiration<MyCfTreeSegment,MyCfBud>());
   sumM += GetValue(cf_tree,LGPmr)*GetValue(cf_tree,TreeWr);
   cout << "M for CfTree is: " << sumM << endl; 
-   //hw_tree.respiration();
-   cout << endl << "hw_tree Respiration (): "
-	<< GetValue(cf_tree, TreeM) << endl;
+  //hw_tree.respiration();
+  cout << endl << "hw_tree Respiration (): "
+       << GetValue(cf_tree, TreeM) << endl;
 
 
-   //Collision
-
+   /// ForEach: Collision detection
    ForEach(cf_tree, EvaluateCollisionForAllBuds<MyCfTreeSegment,MyCfBud>());
-
    ForEach(hw_tree, EvaluateCollisionForAllBuds<MyHwTreeSegment,MyHwBud>
 	   (PI_VALUE, 0.1));
 
 
-   //Voxelspace
-
-
-     //Matrix<MyCfTreeSegment, MyCfBud > *matrix;
-	
-   //konstruktoriin menee mitat jotka ovat suurin x-arvo,y-arvo ja
-   //z-arvo. Viimeinen on pikkuneliön sivun mitta
-
-   //matrix = new Matrix<MyCfTreeSegment, MyCfBud >(&cf_tree, 0,0,0,0.1);
-
-
+   /// AccumulateDown: delete branches 
    LGMdouble foliage = 0;
    cout << "Testing DeleteDeadBranches CfTree" << endl;
    AccumulateDown(cf_tree,foliage,DeleteDeadBranches<MyCfTreeSegment,MyCfBud>());
