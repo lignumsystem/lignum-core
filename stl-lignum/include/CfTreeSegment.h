@@ -16,7 +16,7 @@ namespace Lignum{
   class CfTreeSegmentAttributes{
   public:
     CfTreeSegmentAttributes():
-      Hf(0.0),P(0.0),Qin(0.0),Qabs(0.0),Rf(0.0),starm(0.0),Wf(0.0),Wf0(0.0){}
+      Hf(0.0),P(0.0),Qin(0.0),Qabs(0.0),Rf(0.0),starm(0.0),Wf(0.0),Wf0(0.0),rue(1.0){}
     METER Hf;       //Foliage height
     LGMdouble P;    //Amount of photosynthesis (kg C) during time step
     LGMdouble Qin;  //Irradiance of incoming radiation (MJ/m2)
@@ -28,7 +28,11 @@ namespace Lignum{
     LGMdouble starm;//Star mean for the coniferous segment
     KGC Wf;         //Foliage mass of the tree segment
     KGC Wf0;        //Initial foliage mass of the tree segment
-
+    LGMdouble rue;  //Radiation use efficiency: photosynthetic production of a CfTreeSegment =
+                    //rue*LGPpr*Qabs, where parameter LGPpr = Photosynthetic efficiency
+                    //(see LGMSymbols.h). rue depends on the radiation conditions of the CfTreeSegment
+                    //at its birth. At full light (at top of the stand) rue = 1, in shaded
+                    //conditions possibly rue > 1.
   };
 
   class CfData:public TcData{

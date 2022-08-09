@@ -11,8 +11,7 @@ template <class TS,class BUD>
 void CfTreeSegment<TS,BUD>::photosynthesis()
 {
   Tree<TS,BUD>& t = GetTree(*this);
-  SetValue(*this,LGAP, GetValue(t, LGPpr) * GetValue(*this,LGAQabs));
-
+  SetValue(*this,LGAP, GetValue(t, LGPpr) * GetValue(*this,LGArue) * GetValue(*this,LGAQabs));
 }
 
 
