@@ -97,8 +97,6 @@ namespace Lignum{
     LGAWhair,	    ///< 64   Mass of fine roots (root hair) (kg C)
     LGAWstem,	    ///< 65   Mass in the main axis (Ws+Wh)                                                                                                                     
     LGAT,            ///< 66   \attention Not used
-
-    LGArue           ///< 67  Radiation use efficiency
   };
 
   /// LGMPD: LIGNUM Parameter Double
