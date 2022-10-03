@@ -102,7 +102,7 @@ namespace cxxadt{
     ///factor regarding memory usage.
     ///\sa CreateXMLDataSet
     int res = createDataSet(dataset_name,years,rows,cols,v);
-    delete v;
+    delete [] v;
     return res;
   }
 
