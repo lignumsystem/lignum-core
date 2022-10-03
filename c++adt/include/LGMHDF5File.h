@@ -28,12 +28,15 @@ namespace cxxadt{
   /// DataSpace RANKS for 2D and 3D arrays
   const int DSPACE_RANK3 = 3; ///< DataSpace rank 3D array
   const int DSPACE_RANK2 = 2; ///< DataSpace rank 2D array (matrix)
-  /// Base class containing one method to create TMatrix2D from Lignum function files
-  /// TMatrix2D can be stored in HDF5 file
+  /// \brief Base class to create TMatrix2D from Lignum functions.
+  ///
+  /// Create TMatrix2D from Lignum function files represented as cxxadt::ParametricCurve.
+  /// TMatrix2D can be stored in HDF5 file.
+  /// \sa LGMHDF5File
   class LGMHDF5{
   public:
     /// Create TMatrix2D representation from Lignum function files
-    /// \param v Function definition as for ParametricCurve.
+    /// \param v Function definition vector as for ParametricCurve.
     /// \return TMatrix2D[N][2] where N is the number of (x,f(x)) points for  ParametricCurve
     /// \exception Undefined vector (i.e. v.size()==0) results TMatrxi2D[1][2] with the row [NaN NaN]
     /// \sa ParametricCurve
