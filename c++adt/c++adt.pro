@@ -29,6 +29,7 @@ HEADERS += include/Bernoulli.h \
            include/LGMHDF5File.h \
            include/Lex.h \
            include/mathsym.h \
+           include/Parallelogram.h \ 
            include/ParametricCurve.h \
            include/ParseCommandLine.h \
            include/Point.h \
@@ -66,6 +67,7 @@ SOURCES += src/Bernoulli.cc \
            src/LGMHDF5File.cc \
            src/Lex.cc \
            src/normal.cc \
+           src/Parallelogram.cc \
            src/ParametricCurve.cc \
            src/ParseCommandLine.cc \
            src/Polygon.cc \
