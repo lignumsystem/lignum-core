@@ -229,14 +229,15 @@ PositionVector& PositionVector::rotate(const Point& p1,
   return *this;
 
 }
-
-
-
-
+  
 //Dot product of two vectors
 double Dot(const PositionVector& pv1,const PositionVector& pv2)
 {
-  return pv1.v[0]*pv2.v[0] +  pv1.v[1]*pv2.v[1] +  pv1.v[2]*pv2.v[2];
+  PositionVector pv1_copy(pv1);
+  PositionVector pv2_copy(pv2);
+  pv1_copy.normalize();
+  pv2_copy.normalize();
+  return pv1_copy.v[0]*pv2_copy.v[0] +  pv1_copy.v[1]*pv2_copy.v[1] +  pv1_copy.v[2]*pv2_copy.v[2];
 }
 
 PositionVector Cross(const PositionVector& pv1,const PositionVector& pv2)
