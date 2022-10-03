@@ -3,127 +3,138 @@
 
 namespace cxxadt{
 
-//The assignment
+  //The assignment
 
-inline Point& Point::operator = (const Point& point)
-{
-  x = point.x;
-  y = point.y;
-  z = point.z;
+  inline Point& Point::operator = (const Point& point)
+  {
+    x = point.x;
+    y = point.y;
+    z = point.z;
 
-  return *this;
-}
+    return *this;
+  }
 
-//Modify the Point by adding another point to it
+  //Modify the Point by adding another point to it
 
-inline Point& Point::operator += (const Point& point)
-{
-  x += point.x;
-  y += point.y;
-  z += point.z;
+  inline Point& Point::operator += (const Point& point)
+  {
+    x += point.x;
+    y += point.y;
+    z += point.z;
     
-  return *this;
-}
+    return *this;
+  }
 
-//Modify the Point by subtracting another point from it
+  //Modify the Point by subtracting another point from it
 
-inline Point& Point::operator -= (const Point& point)
-{
-  x -= point.x;
-  y -= point.y;
-  z -= point.z;
+  inline Point& Point::operator -= (const Point& point)
+  {
+    x -= point.x;
+    y -= point.y;
+    z -= point.z;
     
-  return *this;
-}
+    return *this;
+  }
 
-//Modify the Point by multiplying it with a scalar constant
+  //Modify the Point by multiplying it with a scalar constant
 
-inline Point& Point::operator *= (const double scalar)
-{
-  x *= scalar;
-  y *= scalar;
-  z *= scalar;
+  inline Point& Point::operator *= (const double scalar)
+  {
+    x *= scalar;
+    y *= scalar;
+    z *= scalar;
 
-  return *this;
-}
+    return *this;
+  }
 
-//friend operator to add two points
-inline Point operator + (const Point& point1, const Point& point2)
-{
-  Point p;
+  //friend operator to add two points
+  inline Point operator + (const Point& point1, const Point& point2)
+  {
+    Point p;
   
-  p.x = point1.x + point2.x;
-  p.y = point1.y + point2.y;
-  p.z = point1.z + point2.z;
+    p.x = point1.x + point2.x;
+    p.y = point1.y + point2.y;
+    p.z = point1.z + point2.z;
 
-  return p;
-}
+    return p;
+  }
 
-//friend operator to subtract two points
-inline Point operator - (const Point& point1, const Point& point2)
-{
-  Point p;
+  //friend operator to subtract two points
+  inline Point operator - (const Point& point1, const Point& point2)
+  {
+    Point p;
  
-  p.x = point1.x - point2.x;
-  p.y = point1.y - point2.y;
-  p.z = point1.z - point2.z;
+    p.x = point1.x - point2.x;
+    p.y = point1.y - point2.y;
+    p.z = point1.z - point2.z;
     
-  return p;
-}
+    return p;
+  }
 
-//friend operator to multiply a point with scalar
-inline Point operator * (const double scalar, const Point& point)
-{
-  Point p;
+  //friend operator to multiply a point with scalar
+  inline Point operator * (const double scalar, const Point& point)
+  {
+    Point p;
  
-  p.x = scalar * point.x;
-  p.y = scalar * point.y;
-  p.z = scalar * point.z;
+    p.x = scalar * point.x;
+    p.y = scalar * point.y;
+    p.z = scalar * point.z;
     
-  return p;
-}
+    return p;
+  }
 
-//friend operator to multiply a point with scalar
-inline Point operator * (const Point& p, const double s)
-{
-  return s * p;
-}
+  //friend operator to multiply a point with scalar
+  inline Point operator * (const Point& p, const double s)
+  {
+    return s * p;
+  }
 
-//friend operator to calculate distance between two points
-inline double operator || (const Point& point1, const Point& point2)
-{
-  double x,y,z;
-  x = point1.x - point2.x;
-  y = point1.y - point2.y;
-  z = point1.z - point2.z;
+  //friend operator for division with scalar (though one could replace division with multiplication as here)
+  inline Point operator / (const Point& p, const double s)
+  {
+    return p*(1/s);
+  }
+  //friend operator for division with scalar (though one could replace division with multiplication as here)
+  inline Point operator / (const double s, const Point& p)
+  {
+    return p*(1/s);
+  }
+  
+  //friend operator to calculate distance between two points
+  inline double operator || (const Point& point1, const Point& point2)
+  {
+    double x,y,z;
+    x = point1.x - point2.x;
+    y = point1.y - point2.y;
+    z = point1.z - point2.z;
 
-  return (double)sqrt(pow((double)x,2.0) + pow((double)y,2.0) + pow((double)z,2.0));
-}
+    return (double)sqrt(pow((double)x,2.0) + pow((double)y,2.0) + pow((double)z,2.0));
+  }
 
-inline ostream& operator << (ostream& os, const Point& point)
-{
-  os << "x: " << point.x <<" y: " << point.y 
-     << " z: " << point.z << '\n' << flush;
-  return os;
-}
-
-
+  inline ostream& operator << (ostream& os, const Point& point)
+  {
+    os << "x: " << point.x <<" y: " << point.y 
+       << " z: " << point.z << '\n' << flush;
+    return os;
+  }
 
 
-inline istream& operator >> (istream& os, Point& p)
-{
-  char tmpX[255];
-  char tmpY[255];	
-  char tmpZ[255];
 
-  os  >> tmpX >> tmpY >> tmpZ;
 
-  p.setX(atof(tmpX));
-  p.setY(atof(tmpY));
-  p.setZ(atof(tmpZ));
+  inline istream& operator >> (istream& os, Point& p)
+  {
+    char tmpX[255];
+    char tmpY[255];	
+    char tmpZ[255];
 
-  return os;
-}
+    os  >> tmpX >> tmpY >> tmpZ;
+
+    p.setX(atof(tmpX));
+    p.setY(atof(tmpY));
+    p.setZ(atof(tmpZ));
+
+    return os;
+  }
 
 
 

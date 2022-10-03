@@ -24,6 +24,8 @@ namespace cxxadt{
       inline friend Point operator * (const double scalar, const Point &point);
 
       inline friend Point operator * (const Point& p, const double scalar);
+      inline friend Point operator / (const Point& p, const double scalar);
+      inline friend Point operator / (const double scalar, const Point& p);
 
       inline friend double operator || (const Point &point1, const Point &point2);
 
