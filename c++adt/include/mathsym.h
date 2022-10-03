@@ -13,10 +13,14 @@ namespace cxxadt{
 #define G0_VALUE  9.80665
 //The density of ice kg/m3
 #define Rho_ICE   916.7
+  //Small numbers
 #define EPS8      1.0e-8
 #define EPS6      1.0e-6 
 #define R_EPSILON 1.0e-20
 #define EPS1      1.0e-10
+#define EPS10     1.0e-10
+#define EPS15     1.0e-15
+#define EPS18     1.0e-18
 #define R_HUGE 1.0e+20
 
 //Light year is about this many meters
