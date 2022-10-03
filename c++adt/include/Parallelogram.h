@@ -16,6 +16,7 @@ using namespace cxxadt;
 /// \note Parts of the documentation contain basic LaTeX mathematical typesetting.
 /// If \f(\LaTeX \f) is installed Doxygen should automatically render those parts in the final document.
 /// MacPorts has \f(\TeX \f) Live package.
+/// \todo Check for Lignum::BroadLeaf compatibilty.
 
 namespace cxxadt{
   ///\brief Parallelogram for diamond shaped leaves.
