@@ -25,21 +25,21 @@ namespace cxxadt{
   ///The Parallelogram normal \f$\vec{N} = \overrightarrow{ad} \times \overrightarrow{ab} \f$ pointing upwards and normalised.  
   class Parallelogram{
   public:
-    ///Create parallelogram with four clockwise corner points
+    ///\brief Create parallelogram with four clockwise corner points
     ///\pre The points a,b,c and d are in clockwise order
     ///\param a nadir point (leaf petiole end)
     ///\param b 2nd point
     ///\param c apex point
     ///\param d 4th point
     Parallelogram(const Point& a,const Point& b, const Point& c, const Point& d);
-    ///Create parallelogram with three clockwise corner points
+    ///\brief Create parallelogram with three clockwise corner points
     ///\pre The points a,b,and d are in clockwise order
     ///\param a nadir point (leaf petiole end)
     ///\param b 2nd point
     ///\param d 4th point
     ///\post Point \f$ c =  \vec{b}+\overrightarrow{ad} \f$
     Parallelogram(const Point& a,const Point& b,const Point& d);
-    ///Create parallelogram given intial (leaf) area.
+    ///\brief Create parallelogram given intial (leaf) area.
     ///\param A parallelogram area
     ///\param a parallelogram nadir point (leaf petiole end)
     ///\param dp direction (of a petiole) 
@@ -57,22 +57,24 @@ namespace cxxadt{
     ///away from \f$\overrightarrow{ac} \f$
     ///\note The final orientation of Parallelogram (leaf) is implementation depended \sa pitch roll turn
     Parallelogram(double A,const Point& a, const PositionVector& dp, double alpha, double ratio, bool is_leaf_normal=true);
-    ///Rotation around \f$\overrightarrow{bd} \f$ axis (pitch up or down) at nadir point a 
+    ///\brief Rotation around \f$\overrightarrow{bd} \f$ axis (pitch up or down) at nadir point a 
     ///\param angle Magnitude of rotation in radians
     ///\note Convenience method to Parallelogram::rotate
     ///\sa rotate
     Parallelogram& pitch(double angle);
-    //Rotation around \f$\overrightarrow{ac} \f$ axis (roll left or right) at nadir point *a*
+    ///\brief Rotation around \f$\overrightarrow{ac} \f$ axis (roll left or right) at nadir point *a*
     ///\param angle Magnitude of rotation in radians
     ///\note Convenience method to Paeallelogram::rotate
     ///\sa rotate
     Parallelogram& roll(double angle);
-    ///Rotation around Parallelogram normal \f$\vec{N} \f$ (turn left or right) at nadir point *a*
+    ///\brief Rotation around Parallelogram normal \f$\vec{N} \f$ (turn left or right) at nadir point *a*
     ///\param angle Magnitude of rotation in radians
     ///\note Convenience method to Parallelogram::rotate
     ///\sa rotate
     Parallelogram& turn(double angle);
-    ///Resize Parallelogram. See Parallelogram 3rd constructor to set Parallelogram dimensions.
+    ///\brief Resize Parallelogram.
+    ///
+    ///See Parallelogram 3rd constructor to set Parallelogram dimensions.
     ///\param A New size
     ///\post The nadir point *a* remains in place.
     ///\note Convenience method to Parallelogram::resize
@@ -84,8 +86,9 @@ namespace cxxadt{
     PositionVector getNormal()const{return N;}
     ///Center point
     Point getCenterPoint()const;
-    ///Line (light beam) intersection with parallelogram (leaf)
-    ///The algorithm works in three steps.
+    ///\brief Line (light beam) intersection with parallelogram (leaf).
+    ///
+    ///The algorithm works in three steps:
     ///-# Simple heuristics: For our purposes light beam never
     ///points downwards. Check observation point is strictly below Parallelogram (leaf) maximum height,
     ///-# Check if the (infinite) line intersects plane defined by the parallelogram.
