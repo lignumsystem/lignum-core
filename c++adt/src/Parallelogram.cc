@@ -220,23 +220,6 @@ namespace cxxadt{
       cout << "ABOVE" <<endl;
       return false;
     }
-    /// **Calculate line - plane intersection**    
-    /// Given observation point *o* is below the Parallelogram (leaf) calculate the intersection point.  
-    /// With vector notation a plane is defined by a set of all points \f$ P \f$ that satisfy
-    /// the equation \f$ (P - p_0) \cdot \vec{N} \f$  where \f$ p_0 \f$ is
-    /// a point in the plane and \f$ \vec{N} \f$ is the normal to the plane.   
-    /// The set of all points \f$ P_l \f$ on a line can be defined as \f$ P_l = l_0 + d\hat{l} \f$
-    /// where \f$l_0 \f$ is a point on the line, \f$\hat{l} \f$ is a unit vector defining the
-    /// direction of the line and *d* is a scalar.
-    ///
-    /// Substituting \f$ P \f$ for the line equation in the plane equation gives \f$ (l_0 + d\hat{l}-p_0) \cdot \vec{N})=0 \f$.   
-    /// Expanding gives \f$(\hat{l} \cdot d\vec{N}) + (l_0-p0) \cdot \vec{N} = 0 \f$  and solving for \f$ d \f$ gives
-    /// \f$ d = (p_0-l_0) \cdot \vec{N} / \hat{l} \cdot \vec{N} \f$.
-    ///
-    ///Geometric interpretation: when denominator \f$ \hat{l} \cdot \vec{N} = 0 \f$ then \f$ d \f$ is undefined. The line is perpendicular
-    ///plane normal and parallel with the plane. When the numerator is 0 the line is in the plane.
-    ///For our purposes (Parallelogram as a leaf model) we skip both of these cases.
-    ///When denominator \f$ \hat{l} \cdot \vec{N} != 0 \f$ we can solve for \f$ d \f$ and find the line-plane intersection point (Wikipedia).
     double cosalpha = Dot(beam,N);
     if (fabs(cosalpha)  < EPS15){
       return false;
@@ -255,6 +238,24 @@ namespace cxxadt{
 
   Point Parallelogram::intersectionPoint(const Point& o, const PositionVector& l)const
   {
+    /// **Calculatation line - plane intersection**    
+    /// Given observation point *o* is below the Parallelogram (leaf) calculate the intersection point.  
+    /// With vector notation a plane is defined by a set of all points \f$ P \f$ that satisfy
+    /// the equation \f$ (P - p_0) \cdot \vec{N} \f$  where \f$ p_0 \f$ is
+    /// a point in the plane and \f$ \vec{N} \f$ is the normal to the plane.   
+    /// The set of all points \f$ P_l \f$ on a line can be defined as \f$ P_l = l_0 + d\hat{l} \f$
+    /// where \f$l_0 \f$ is a point on the line, \f$\hat{l} \f$ is a unit vector defining the
+    /// direction of the line and *d* is a scalar.
+    ///
+    /// Substituting \f$ P \f$ for the line equation in the plane equation gives \f$ (l_0 + d\hat{l}-p_0) \cdot \vec{N})=0 \f$.   
+    /// Expanding gives \f$(\hat{l} \cdot d\vec{N}) + (l_0-p0) \cdot \vec{N} = 0 \f$  and solving for \f$ d \f$ gives
+    /// \f$ d = (p_0-l_0) \cdot \vec{N} / \hat{l} \cdot \vec{N} \f$.
+    ///
+    ///Geometric interpretation: when denominator \f$ \hat{l} \cdot \vec{N} = 0 \f$ then \f$ d \f$ is undefined. The line is perpendicular
+    ///plane normal and parallel with the plane. When the numerator is 0 the line is in the plane.
+    ///For our purposes (Parallelogram as a leaf model) we skip both of these cases.
+    ///When denominator \f$ \hat{l} \cdot \vec{N} != 0 \f$ we can solve for \f$ d \f$ and find the line-plane intersection point (Wikipedia).
+
     //Intersection point must exist
     double cosalpha = Dot(l,N);
     //Just in case normalize beam direction

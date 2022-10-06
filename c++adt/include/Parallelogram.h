@@ -89,15 +89,16 @@ namespace cxxadt{
     ///\brief Line (light beam) intersection with parallelogram (leaf).
     ///
     ///The algorithm works in three steps:
-    ///-# Simple heuristics: For our purposes light beam never
-    ///points downwards. Check observation point is strictly below Parallelogram (leaf) maximum height,
-    ///-# Check if the (infinite) line intersects plane defined by the parallelogram.
+    ///-# Simple heuristics:   
+    ///  -# For out purposes check observation point is strictly below Parallelogram (leaf) maximum height.    
+    ///  -# Check if intersection point exists (line not parallel with plane).    
+    ///-# Calculate line - plane intersection point.
     ///-# Check if the plane intersection point is inside the parallelogram.
     ///\param o Observer point (center point of a another leaf)
     ///\param b The line (light beam) direction in 3D space
     ///\return *true* if Parallelogram intersection, *false* if no intersction 
     bool intersectShape(const Point& o, const PositionVector& b)const;
-    ///Find line (beam) - plane intersection point
+    ///\brief Calculate line (light beam) - plane intersection point.
     ///\pre The intersection point with the line (beam) - plane (defined by the Parallelogram) must exist.
     ///\param o the observation point
     ///\param b the line direction in 3D space
@@ -115,6 +116,7 @@ namespace cxxadt{
     ///Maximum Z-coordinate of corner points 
     double getMaxZ()const;
   private:
+    ///\brief Determine if a point is inside Parallelogram.
     ///\pre The intersection point with  line (beam) - plane (defined by the Parallelogram) must exist.
     ///\param p Point in the plane defined by the Parallelogram
     ///\return *true* if *p* inside Parallelogram, *false* if not
