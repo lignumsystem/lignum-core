@@ -297,12 +297,16 @@ namespace cxxadt{
     ///\snippet{lineno} Parallelogram.cc IN
     // [IN]
     //Solution for t1
-    double t1 = (p.getY()-(p.getX()*d0.getY()/d0.getX()))/(b0.getY()-((b0.getX()*d0.getY())/d0.getX()));
+    double t1 = (p0.getY()-(p0.getX()*d0.getY()/d0.getX()))/(b0.getY()-((b0.getX()*d0.getY())/d0.getX()));
     //Solution for t2
     double t2 = (p0.getX()-t1*b0.getX())/d0.getX();
     // [IN]
     ///\endinternal
-    ///If \f$ t_1 \f$ and \f$ t_2 \in \left[0,1\right] \f$  the point \f$ p \f$ is strictly inside Parallelogram
+    ///If \f$ t_1 \f$ and \f$ t_2 \in \left[0,1\right] \f$  the point \f$ p \f$ is strictly inside parallelogram.
+    ///Note the soloutions for  \f$ t_1 \f$ and \f$ t_2 consider the projection of the Parallelogram onto
+    ///\f$ \mathit{xy} \f$ plane. If \f$ x \f$ and \f$ y \f$ are inside this projection then the point \f$ p \f$ is
+    ///inside parallelogram (we know \f$ z \f$ lies on the plane defined by the parallelogram). 
+    ///
     if ((t1 >= 0.0) && (t1 <= 1.0) && (t2 >= 0.0) && (t2 <= 1.0)){
       return true;
     }
