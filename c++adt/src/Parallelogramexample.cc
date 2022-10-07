@@ -98,9 +98,12 @@ int main()
   Parallelogram pgram7(3.0,Point(1,0,0),PositionVector(0,1,0),PI_VALUE/4.0,1.0,false);
   Parallelogram pgram8(4.5,Point(0,0,0),PositionVector(0,1,0),PI_VALUE/4.0,1.0,false);
   Parallelogram pgram9(6.0,Point(0,0,1),PositionVector(0,0,1),PI_VALUE/4.0,1.0,false);
+  Parallelogram pgram10(7.0,Point(-1,-1,2),PositionVector(1,1,1),PI_VALUE/4.0,1.9,false);
   Point o(0.0,0.0,0.0);
   PositionVector beam(1,0,0);
   PositionVector raxis(0,1,0);
+  PositionVector beam1(1,1,0);
+  PositionVector raxis1(Cross(PositionVector(0,0,1),PositionVector(1,1,0)));
 
   PrintPGram("PGRAM0",pgram0);
   PrintPGram("PGRAM1",pgram1);
@@ -118,6 +121,7 @@ int main()
   pgram8.roll(PI_VALUE/2.0);
   PrintPGram("PGRAM8 after roll right",pgram8);
   Intersection("PGRAM9",pgram9,o,beam,raxis);
+  Intersection("PGRAM10",pgram10,o,beam1,raxis1);
   exit(0);
 }
 
