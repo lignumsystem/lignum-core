@@ -266,13 +266,13 @@ namespace cxxadt{
     Point p0(getA());
     //The observation point is on the line
     Point l0(o);
-    //PositionVector  pointing towards the intersection point
-    PositionVector p1(p0-l0);
     /// \internal
-    /// The distance \f$ d \f$ from the observation point \f$ o \f$ to the intersection point \f$ d = (p0-o)\cdot\vec{N}/\hat{l} \cdot\vec{N} \f$,
-    /// where \f$ {p0} \f$ is the Parallelogram nadir point. The point of intersection is \f$ p = o+d\hat{l} \f$.
+    /// The distance \f$ d \f$ from the observation point \f$ o \f$ to the intersection point \f$ d = (p_0-o)\cdot\vec{N}/\hat{l} \cdot\vec{N} \f$,
+    /// where \f$ {p_0} \f$ is the Parallelogram nadir point. The point of intersection is \f$ p = o+d\hat{l} \f$.
     /// \snippet{lineno} Parallelogram.cc PI
     // [PI]
+    //PositionVector  pointing towards the intersection point
+    PositionVector p1(p0-l0);
     double d =  Dot(p1,N)/cosalpha;
     Point p_intersection = Point(PositionVector(o)+d*l_tmp);
     // [PI]
@@ -303,10 +303,8 @@ namespace cxxadt{
     // [IN]
     ///\endinternal
     ///If \f$ t_1 \f$ and \f$ t_2 \in \left[0,1\right] \f$  the point \f$ p \f$ is strictly inside parallelogram.
-    ///Note the soloutions for  \f$ t_1 \f$ and \f$ t_2 consider the projection of the Parallelogram onto
-    ///\f$ \mathit{xy} \f$ plane. If \f$ x \f$ and \f$ y \f$ are inside this projection then the point \f$ p \f$ is
-    ///inside parallelogram (we know \f$ z \f$ lies on the plane defined by the parallelogram). 
-    ///
+    ///Note the solutions \f$ t_1 \f$ and \f$ t_2 \f$ for consider the projection of the Parallelogram onto \f$ \mathit{xy} \f$ plane.
+    ///If the point \f$ p \f$ is inside the projection then it is inside the parallelogram.
     if ((t1 >= 0.0) && (t1 <= 1.0) && (t2 >= 0.0) && (t2 <= 1.0)){
       return true;
     }
