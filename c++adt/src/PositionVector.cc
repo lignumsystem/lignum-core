@@ -244,6 +244,16 @@ PositionVector Cross(const PositionVector& pv1,const PositionVector& pv2)
   return PositionVector(x,y,z);
 }
 
+  double CosAlpha(const PositionVector& pv1,const PositionVector& pv2)
+  {
+    return Dot(pv1,pv2)/(pv1.length()*pv2.length());
+  }
+
+  double Alpha(const PositionVector& pv1,const PositionVector& pv2)
+  {
+    return acos(CosAlpha(pv1,pv2));
+  }
+  
 //Multiply with a scalar, return the result, do not change the vector itself
 PositionVector ScalMult(const PositionVector& pv, double a)
 {

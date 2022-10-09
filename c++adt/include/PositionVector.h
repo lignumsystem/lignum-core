@@ -13,8 +13,16 @@ using namespace std;
 class Point;
 
 class PositionVector{
+  ///\brief Dot product
   friend double Dot(const PositionVector& pv1,const PositionVector& pv2);
+  ///\brief Cross product
   friend PositionVector Cross(const PositionVector& pv1,const PositionVector& pv2);
+  ///\brief Cosine of the angle between two vectors
+  ///\pre For both vectors \f$ |\mathit{pv1}| > 1\f$ and \f$ |\mathit{pv2}| > 1\f$ 
+  friend double CosAlpha(const PositionVector& pv1,const PositionVector& pv2);
+  ///\brief The angle between two vectors
+  ///\pre For both vectors \f$ |\mathit{pv1}| > 1\f$ and \f$ |\mathit{pv2}| > 1\f$ 
+  friend double Alpha(const PositionVector& pv1,const PositionVector& pv2);
   friend PositionVector operator + (const PositionVector &pv1, const PositionVector &pv2);
   friend PositionVector operator - (const PositionVector &pv1, const PositionVector &pv2);
   friend PositionVector operator * (const double scalar, const PositionVector &pv);
@@ -22,6 +30,8 @@ class PositionVector{
   friend double operator || (const PositionVector &pv1, const PositionVector &pv2);
   friend ostream& operator << (ostream& os, const PositionVector& pv);
   friend istream& operator >> (istream& os, PositionVector& pv);
+  ///\brief Compare two vectors, R_EPSILON accuracy
+  ///\return *true* if each \f$ (x_1-x_2,y_1-y_2,z_1-z_2) \f$ differ at most R_EPSILON, *false* otherwise
   friend bool operator == (const PositionVector &pv1, const PositionVector &pv2);
 public:
   PositionVector();
