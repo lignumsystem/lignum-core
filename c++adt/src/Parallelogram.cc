@@ -13,7 +13,7 @@ namespace cxxadt{
     PositionVector d0(d);
     PositionVector ab = b0-a0;
     PositionVector ad = d0-a0;
-    double cos_alpha = Dot(ab,ad);
+    double cos_alpha = Dot(ab.normalize(),ad.normalize());
     double alpha = acos(cos_alpha);
     A = lengthAB()*lengthAD()*sin(alpha);
     N = Cross(ad,ab);
@@ -30,7 +30,7 @@ namespace cxxadt{
     PositionVector ad = d0-a0;
     PositionVector c0 = b0+ad;
     this->c=Point(c0);
-    double cos_alpha = Dot(ab,ad);
+    double cos_alpha = Dot(ab.normalize(),ad.normalize());
     double alpha = acos(cos_alpha);
     A = lengthAB()*lengthAD()*sin(alpha);
     N = Cross(ad,ab);
@@ -217,10 +217,9 @@ namespace cxxadt{
     double o_maxz = o.getZ();
     double maxz = getMaxZ();
     if (o_maxz >= maxz){
-      cout << "ABOVE" <<endl;
       return false;
     }
-    double cosalpha = Dot(beam,N);
+    double cosalpha = Dot(PositionVector(beam).normalize(),N);
     if (fabs(cosalpha)  < EPS15){
       return false;
     } 
@@ -257,10 +256,7 @@ namespace cxxadt{
     ///When denominator \f$ \hat{l} \cdot \vec{N} != 0 \f$ we can solve for \f$ d \f$ and find the line-plane intersection point (Wikipedia).
 
     //Intersection point must exist
-    double cosalpha = Dot(l,N);
-    //Just in case normalize beam direction
-    PositionVector l_tmp(l);
-    l_tmp.normalize();
+    double dot = Dot(N,l);
     //The intersection point with the plane defined by the Parallelogram exists.
     //The nadir point is on the plane
     Point p0(getA());
@@ -271,10 +267,9 @@ namespace cxxadt{
     /// where \f$ {p_0} \f$ is the Parallelogram nadir point. The point of intersection is \f$ p = o+d\hat{l} \f$.
     /// \snippet{lineno} Parallelogram.cc PI
     // [PI]
-    //PositionVector  pointing towards the intersection point
     PositionVector p1(p0-l0);
-    double d =  Dot(p1,N)/cosalpha;
-    Point p_intersection = Point(PositionVector(o)+d*l_tmp);
+    double d =  Dot(N,p1)/dot;
+    Point p_intersection = Point(PositionVector(l0)+(d*l));
     // [PI]
     ///\endinternal
     return p_intersection;

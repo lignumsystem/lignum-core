@@ -53,6 +53,7 @@ void Intersection(const string& name, Parallelogram& pgram, const Point& o, cons
     cout << "Calculated intersect at " << rad*180.0/PI_VALUE << " degree rotation " << " result " << intersect <<endl;
     cout << "N:                " << pgram.getNormal() << endl;
     cout << "Beam:             " << beam_tmp << endl;
+    cout << "Beam normalized   " << PositionVector(beam_tmp).normalize() <<endl;
     cout << "Observation point " << o << flush;
     cout << "Area:               : " << pgram.getArea() << endl;
     cout << "Area (with equation): " << (a||b)*(a||d)*sin(pgram.getAlpha()) <<endl;
@@ -64,17 +65,17 @@ void Intersection(const string& name, Parallelogram& pgram, const Point& o, cons
     cout << "b " << b << flush;
     cout << "c " << c << flush;
     cout << "d " << d << flush;
-    double cosalpha = Dot(beam_tmp,pgram.getNormal());
+    double cosalpha = Dot(pgram.getNormal(),beam_tmp);
     if (fabs(cosalpha) < EPS15){
       cout << "No intersect plane " << deg << " " << fabs(cosalpha) << " " << EPS15 << endl;
     }
     else{
       Point p = pgram.intersectionPoint(o,beam_tmp);
-      cout << "Intersect plane         " << deg << endl;
+      cout << "Intersect plane         " << deg << " degrees" << endl;
       cout << "Point "  << p << flush;
     }
     if (intersect){
-      cout << "Intersect Paralellogrm " << deg << endl;
+      cout << "Intersect Paralellogrm " << deg << " degrees" << endl;
       Point p = pgram.intersectionPoint(o,beam_tmp);
       cout << "p " << p <<flush;
     }
@@ -98,12 +99,12 @@ int main()
   Parallelogram pgram7(3.0,Point(1,0,0),PositionVector(0,1,0),PI_VALUE/4.0,1.0,false);
   Parallelogram pgram8(4.5,Point(0,0,0),PositionVector(0,1,0),PI_VALUE/4.0,1.0,false);
   Parallelogram pgram9(6.0,Point(0,0,1),PositionVector(0,0,1),PI_VALUE/4.0,1.0,false);
-  Parallelogram pgram10(7.0,Point(-1,-1,2),PositionVector(1,1,1),PI_VALUE/4.0,1.9,false);
+  Parallelogram pgram10(7.0,Point(-1,-1,2),PositionVector(1,1,1),PI_VALUE/4.0,1.0,false);
   Point o(0.0,0.0,0.0);
   PositionVector beam(1,0,0);
   PositionVector raxis(0,1,0);
   PositionVector beam1(1,1,0);
-  PositionVector raxis1(Cross(PositionVector(0,0,1),PositionVector(1,1,0)));
+  PositionVector raxis1(Cross(PositionVector(0,0,1),beam1));
 
   PrintPGram("PGRAM0",pgram0);
   PrintPGram("PGRAM1",pgram1);
