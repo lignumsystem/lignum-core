@@ -1,3 +1,5 @@
+///\file PositionVector.cc
+///\brief Implementation of PositionVector.
 #include "stdafx.h"
 #include <Point.h>
 #include <PositionVector.h>
@@ -347,7 +349,6 @@ PositionVector operator - (const PositionVector& pv1, const PositionVector& pv2)
 {
   PositionVector p(pv1.v[0] - pv2.v[0], pv1.v[1] - pv2.v[1],
 		   pv1.v[2] - pv2.v[2]);
-    
   return p;
 }
 

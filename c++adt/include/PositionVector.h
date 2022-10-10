@@ -1,3 +1,7 @@
+///\file PositionVector.h
+///\brief Impelements PositionVector.
+///
+///3D vector in euclidian space.
 #ifndef POSITIONVECTOR_H
 #define POSITIONVECTOR_H
 
@@ -12,21 +16,23 @@ using namespace std;
 
 class Point;
 
+///\brief 3D vector in euclidian space
 class PositionVector{
   ///\brief Dot product
   friend double Dot(const PositionVector& pv1,const PositionVector& pv2);
   ///\brief Cross product
   friend PositionVector Cross(const PositionVector& pv1,const PositionVector& pv2);
   ///\brief Cosine of the angle between two vectors
-  ///\pre For both vectors \f$ |\mathit{pv1}| > 1\f$ and \f$ |\mathit{pv2}| > 1\f$ 
+  ///\pre For both vectors \f$ ||\mathit{pv1}|| > 0\f$ and \f$ ||\mathit{pv2}|| > 0\f$ 
   friend double CosAlpha(const PositionVector& pv1,const PositionVector& pv2);
   ///\brief The angle between two vectors
-  ///\pre For both vectors \f$ |\mathit{pv1}| > 1\f$ and \f$ |\mathit{pv2}| > 1\f$ 
+  ///\pre For both vectors \f$ ||\mathit{pv1}|| > 0 \f$ and \f$ ||\mathit{pv2}|| > 0\f$ 
   friend double Alpha(const PositionVector& pv1,const PositionVector& pv2);
   friend PositionVector operator + (const PositionVector &pv1, const PositionVector &pv2);
   friend PositionVector operator - (const PositionVector &pv1, const PositionVector &pv2);
   friend PositionVector operator * (const double scalar, const PositionVector &pv);
   friend PositionVector operator * (const PositionVector& pv, const double scalar);
+  ///\brief Distance between two vectors (end points)
   friend double operator || (const PositionVector &pv1, const PositionVector &pv2);
   friend ostream& operator << (ostream& os, const PositionVector& pv);
   friend istream& operator >> (istream& os, PositionVector& pv);
@@ -42,6 +48,11 @@ public:
   //PositionVector d from two points, d = end - start.
   PositionVector(const Point& start, const Point& end);
   PositionVector& rotate(ROTATION direction, RADIAN angle);
+  ///\brief Generic rotation: rotate vector around a point.
+  ///\param p0 Rotation around point p0
+  ///\param dir Axis of rotation
+  ///\param angle Angle (magnitude) of rotation
+  ///\note The sign of the *angle* specifies rotation direction
   PositionVector& rotate(const Point& p0, const PositionVector& dir,
 			 RADIAN angle);
   PositionVector& rotate(const Point& begin, const Point& end,
@@ -57,6 +68,8 @@ public:
   double beta()const;
   double gamma()const;
   vector<double> getVector()const{return v;}
+  ///\brief Resize to unit vector
+  ///\return PositionVector length 1.
   PositionVector& normalize();
   double getX() { return v[0]; }
   double getY() { return v[1]; }
