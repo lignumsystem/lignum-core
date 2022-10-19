@@ -11,3 +11,9 @@ Due to their mathematical nature some of the classes (e.g.Parallelogarm)
 use \f( \LaTeX \f) typesetting. To install \f( \LaTeX \f) for example MacPorts
 has \f( \TeX \f) Live. When installed Doxygen should be able to render
 \f( \LaTeX \f) automatically.
+
+To generate Doxygen documentation type (zsh shell):
+
+    doxygen Doxyfile 2> errors.txt
+    
+Errors will appear in *errors.txt* file.
