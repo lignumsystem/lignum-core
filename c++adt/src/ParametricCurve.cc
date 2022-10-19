@@ -3,6 +3,7 @@
 #include <iostream>
 #include <sstream>
 
+
 #include <ParametricCurve.h>
 
 namespace cxxadt{
@@ -14,6 +15,10 @@ ParametricCurve::ParametricCurve()
 
 ParametricCurve::ParametricCurve(const string& file_name)
 {
+  fstream infile(file_name);
+  if (!infile.good()){
+    throw PCurveFileException(file_name);
+  }
   read_xy_file(file_name.c_str());
 }
 
