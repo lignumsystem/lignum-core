@@ -150,19 +150,22 @@ ParametricCurve& ParametricCurve::read_xy_file(const char *file_name)
 double ParametricCurve::eval(double x)const
 {
   int i = 0;
-
+  //Go to closest point less than x. FLT_MAX denotes end of function definition
   for (i = 0; (v[i] <= x) && (v[i] != FLT_MAX); i+=2)
     ;
 
-  //if x is out of bounds approximate according to last values
+  //if x is out of bounds of function definition approximate according to last values
   if (i == 0)
     i+=2;
   else if (v[i] == FLT_MAX)
     i-=2;
-  
-  //the evaluation of the function
+  ///\internal
+  ///The evaluation of the function:
+  ///\snippet{lineno} ParametricCurve.cc Eval
+  //[Eval]
   return v[i-1] + (v[i+1] - v[i-1])*((x - v[i-2]) / (v[i] - v[i-2]));
-
+  //[Eval]
+  ///\endinternal
 }
 
 }//closing namepsace cxxadt
