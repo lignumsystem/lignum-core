@@ -1,5 +1,5 @@
 #ifndef MINESET_H
-#define MINESET_
+#define MINESET_H
 #include <stdlib.h>
 #include <string>
 #include <Lex.h>
