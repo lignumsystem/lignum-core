@@ -1,3 +1,5 @@
+///\file ParametricCurve.h
+///\brief Piecewise-defined linear function, a.k.a parametric curve.
 #ifndef PARAMETRIC_CURVE_H
 #define PARAMETRIC_CURVE_H
 
@@ -11,22 +13,23 @@
 namespace cxxadt{
 
 using namespace  std;
-  ///\brief Constructor exception if file does not exist
+  ///\brief File does not exist exception class
   class PCurveFileException{
   public:
+    ///Constructor
     ///\param fname File name for the missing file
     PCurveFileException(const string& fname):
       file_name(fname){}
-    ///After catching exception user can query missing file name
+    ///After catching exception user can query the missing file name
     const string getFileName(){return file_name;}
   private:
-    const string file_name;
+    const string file_name;///<File for the parametric curve
   };
-  ///\brief Class to implement piecewise-defined linear function, a.k.a parametric curve.
+  ///\brief Create piecewise-defined linear function, a.k.a parametric curve.
   ///
   ///Constructors give various options to define the function.
   ///The most used is to define the function in a text file as (x,f(x)) pairs.
-  ///As an example a function y=2x.
+  ///As an example a function y=2x:
   ///
   ///```
   /// #Function y = 2x 
@@ -38,16 +41,23 @@ using namespace  std;
   ///
   ///The x-values must be in increasing order. Function values between the exact definitions are
   ///interpolated. Function values outside the function definition are extrapolated with two first or
-  ///two last values. Lines beginning with hash mark (#) before the function definition are comments.
+  ///two last function values in the file. Lines beginning with hash mark (#) before the function
+  ///definition are comments.
+  ///
+  ///Due to implementation the maximum x-value must be strictly less than FLT_MAX.
+  ///Also at least two function values must be defined.
+  ///\sa ParametricCurve::ParametricCurve(const string&)
+  ///\sa FLT_MAX in \<float.h\> or \<cfloat\>
 class ParametricCurve{
 public:
   /// Constructor
-  /// \note To be useful the function must be installed
-  /// \sa install 
+  /// \note To be useful parameric curve the function must be installed
+  /// \sa install
+  /// \sa operator=()
   ParametricCurve();
-  /// \brief Create piecewise linear function from file.
+  /// \brief Create parametric curve from file.
   /// \param file_name File containing function values at specific points in two columns
-  /// \exception PCurveException If file does not exists throw exception
+  /// \exception PCurveException If file does not exists throw PCurveException 
   ParametricCurve(const string& file_name);
   /// Values for the parametric curve are read from a string.
   /// \param values Function values at specific points are in a linear string separated by white space
@@ -68,20 +78,25 @@ public:
   /// \param y Vector of function values at points specified in vector *x*.  
   ParametricCurve(const int n_elem, const vector<double> x, const vector<double> y);
   /// Assignment
+  /// \param f Parametric curve 
   ParametricCurve& operator=(const ParametricCurve& f);
   /// \brief Evaluate the function at point *x*.
   ///
   /// Overloaded function operator. Interpolate or extrapolate if needed.
+  /// \pre Parameter *x* < FLT_MAX
+  /// \pre ok() == *true*
   /// \param x Find the function value at *x*.
-  /// \return The function value for argument *x*.
-  /// \sa eval
+  /// \return The function value at *x*.
+  /// \sa eval ok()
   double operator()(double x)const{return eval(x);}
   /// Reinstall a new function from a file.
   bool install(const string& file_name);
-  /// Check if a function technically correct.
+  /// Check if the function is technically correct.
   /// \return *true* if the vector *v* has technically correct function, *false* otherwise.
+  /// \sa vector v.
   bool ok()const;
   /// Evaluate the function. Interpolate or extrapolate if needed.
+  /// \pre Parameter *x* < FLT_MAX
   /// \param x Find the function value at *x*.
   /// \return The function value at *x*.
   double eval(double x)const;
@@ -92,10 +107,14 @@ public:
   const vector<double> y);
 
 private:
-  ///Read the function definition file and install it-
+  ///Read the function definition file and install it in vector *v*.
+  ///\param file_name File for the function definition
+  ///\post Vector *v* has FLT_MAX as the last element to denote end of function definition.
+  ///\sa Vector v.
+  ///\sa FLT_MAX in \<float.h\> or \<cfloat\>
   ParametricCurve& read_xy_file(const char *file_name);
-  string file;///<File where the function  is
-  vector<double> v;///<The internal vector for function
+  string file;///<File for the function definition
+  vector<double> v;///<The internal vector for function definition
   unsigned long num_of_elements;///<Number of elements in the vector *v*.
 };
 
