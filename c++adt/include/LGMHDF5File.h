@@ -36,9 +36,9 @@ namespace cxxadt{
   class LGMHDF5{
   public:
     /// Create TMatrix2D representation from Lignum function files
-    /// \param v Function definition vector as for ParametricCurve.
+    /// \param v Function definition vector from ParametricCurve
     /// \return TMatrix2D[N][2] where N is the number of (x,f(x)) points for  ParametricCurve
-    /// \exception Undefined vector (i.e. v.size()==0) results TMatrxi2D[1][2] with the row [NaN NaN]
+    /// \exception Undefined vector (i.e. v.size()==0) results TMatrix2D[1][2] with the row [std::nan std::nan]
     /// \sa ParametricCurve
     TMatrix2D<double> getLignumFnData(const vector<double>& v);
   };
