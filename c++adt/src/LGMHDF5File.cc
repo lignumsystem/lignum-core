@@ -1,18 +1,16 @@
+/// \file LGMHDF5File.cc
+/// \brief Save Lignum simulations to HDF5 file.
 #include <array>
 #include <LGMHDF5File.h>
-/// \file LGMHDF5File.cc
-/// \brief LGMHDF5File implementation with examples to save Lignum simulations to HDF5 file.
-
 
 namespace cxxadt{
   TMatrix2D<double> LGMHDF5::getLignumFnData(const vector<double>& v)
   {
     //Check if function is defined
     if (!v.empty()){
-      /// The ParametricCurve is defined by (x,f(x)) pairs.<br>
-      /// Return value TMatrix2D[N][2] is 2D data arrray where N = number of (x,f(x)) pairs. <br>
-      /// Note the last element in the vector `v` is FLT_MAX to denote the end of function.
-      /// Thus the number of N (i.e. rows) is:
+      /// Return value TMatrix2D[N][2] is 2D data arrray where N = number of (x,f(x)) pairs.   
+      /// Note the last element in the vector `v` is FLT_MAX to denote the end of function.   
+      /// Thus the number of N (i.e. rows) is:   
       /// \internal
       /// \snippet{lineno} LGMHDF5File.cc Rows
       // [Rows]
@@ -29,7 +27,7 @@ namespace cxxadt{
       return fn_data;
   }
     else{
-      /// `std::nan` denotes function not defined
+      // `std::nan` denotes function not defined
       TMatrix2D<double> fn_data(1,2,std::nan(""));
       return fn_data;
     }

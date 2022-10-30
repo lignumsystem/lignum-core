@@ -1,7 +1,5 @@
 ///\file PositionVector.h
-///\brief Impelements PositionVector.
-///
-///3D vector in euclidian space.
+///\brief Vector in 3D euclidian space.
 #ifndef POSITIONVECTOR_H
 #define POSITIONVECTOR_H
 

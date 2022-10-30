@@ -1,4 +1,5 @@
-
+///\file ParametricCurve.cc
+///\brief Implementation of piecewise-defined linear function.
 #include "stdafx.h"
 #include <iostream>
 #include <sstream>
