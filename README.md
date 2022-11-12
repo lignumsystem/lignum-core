@@ -31,13 +31,13 @@ and binaries. Traditionally the CMake build process has been as follows:
 	      make
 	      make install
 	      
-This generates Makefile system and adds Debug information in the compiler command line. 
+This generates Makefile system and instructsc ompiler to add Debug information. 
 The `cmake ..` command assumes that the *CMakeLists.txt* is in the immediate directory above. 
 Note also that all build products are under *build* directory. To move them to proper locations
 defined in CMakeLists.txt files `make install` is needed.
 
 CrownDensity project has CMakeLists.txt that uses lignum-core projects and well known libraries (Qt, HDF5)
-to build the project. To build Xcode project files:
+to build the project. To build Xcode project files for debugging:
 
    	      mkdir xcode #Immediately under CrownDensity directory
 	      cd xcode
@@ -47,9 +47,10 @@ Open the *xcodeproj* file in Xcode. If in Xcode Product &#8594; Run is disabled 
 that the binary is selected, not for example ALL_BUILD. The binary is in xcode/Debug. Depending on the implementation
 the binary might have for example hard coded function file (*.fun*) names. 
 Such files must be copied accordingly related to xcode/Debug directory. (Another option is to manually 
-move xcode/Debug/crowndens to CrownDensity directory; there are no Makefiles available in Xcode buils system)
+move xcode/Debug/crowndens to CrownDensity directory and explicitely set the binary in XCode. 
+There are no Makefiles available in Xcode build system)
 
-As a third example to build CrownDensity Release (no debug information) version Makefile system
+As a third example to build CrownDensity Release version Makefile system (optimization, no debug information):
 
 		mkdir release #Immediately under CrownDensity directory
 		cd release
