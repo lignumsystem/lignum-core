@@ -46,7 +46,8 @@ to build the project. To build Xcode project files:
 Open the *xcodeproj* file in Xcode. If in Xcode Product &#8594; Run is disabled check Product  &#8594; Scheme
 that the binary is selected, not for example ALL_BUILD. The binary is in xcode/Debug. Depending on the implementation
 the binary might have for example hard coded function file (*.fun*) names. 
-Such files must be copied accordingly related to xcode/Debug directory.
+Such files must be copied accordingly related to xcode/Debug directory. (Another option is to manually 
+move xcode/Debug/crowndens to CrownDensity directory; there are no Makefiles available in Xcode buils system)
 
 As a third example to build CrownDensity Release (no debug information) version Makefile system
 
