@@ -58,9 +58,10 @@ As a third example to build CrownDensity Release (no debug information) version 
 
 Use different directory names for different build types because they cannot coexists. 
 
-Detailed documentation to follow. An outline of model structure can be found in the publications listed below.
-
-Doxygen will be used to document software. 
+## Doxygen
+Sofwtare is usually under constant development and frequent changes. Detailed documentation of the lignum-core 
+and projects using it will be done with Doxygen using extensive commenting directly in the software.
+An outline of the lignum-core model structure can be found in the publications listed below.
 
 # Publications 
 
