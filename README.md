@@ -22,28 +22,41 @@ The main project must tell in its Qt project file the location of the lignum-cor
 had the main project at the same level as lignum-core directories.
 
 CMake build tool has gained popularity recent years. One of the reasons is that it supports many IDE tools
-including Xcode. lignum-core projects (directories) have *CMakeLists.txt* files to build the projects.
-Traditionally the CMake build process has been as follows:
+including Xcode. lignum-core and its projects (directories) have *CMakeLists.txt* files to build lignum-core libraries
+and binaries. Traditionally the CMake build process has been as follows:
 
-	      mkdir build
+	      mkdir build #Immediately under lignum-core directory
 	      cd build
 	      cmake ..
 	      make
+	      make install
+	      
+This generates Makefile system and adds Debug information in the compiler command line. 
+The `cmake ..` command assumes that the *CMakeLists.txt* is in the immediate directory above. 
+Note also that all build products are under *build* directory. To move them to proper locations
+defined in CMakeLists.txt files `make install` is needed.
 
-The `cmake ..` command assumes that the *CMakeLists.txt* is in the immediate directory above. To build Xcode project files:
+CrownDensity project has CMakeLists.txt that uses lignum-core projects and well known libraries (Qt, HDF5)
+to build the project. To build Xcode project files:
 
-   	      mkdir xcode
+   	      mkdir xcode #Immediately under CrownDensity directory
 	      cd xcode
 	      cmake .. -G Xcode
 
-Use different directory because configuration files for traditional builld and Xcode build cannot exist in the same directory.
 Open the *xcodeproj* file in Xcode. If in Xcode Product &#8594; Run is disabled check Product  &#8594; Scheme
 that the binary is selected, not for example ALL_BUILD. The binary is in xcode/Debug. Depending on the implementation
-the binary might have for example hard coded function file (*.fun*) names. Such files must be copied accordingly related to xcode/Debug directory.
+the binary might have for example hard coded function file (*.fun*) names. 
+Such files must be copied accordingly related to xcode/Debug directory.
 
-As an example CrownDensity project has CMakeLists.txt that uses lignum-core projects and well known libraries (Qt, HDF5)
-to build the project. So far downsize is that each lignum-core project must be built one at a time. Yours truly
-haven't learnt (yet) how to create build rules for imported (lignum-core) projects.
+As a third example to build CrownDensity Release (no debug information) version Makefile system
+
+		mkdir release #Immediately under CrownDensity directory
+		cd release
+		cmake .. -DCMAKE_BUILD_TYPE=Release
+		make
+		make install 
+
+Use different directory names for different build types because they cannot coexists. 
 
 Detailed documentation to follow. An outline of model structure can be found in the publications listed below.
 
