@@ -1,5 +1,6 @@
 #include <MineSet.h>
 
+#ifdef SKYDUMP
 //find the command line option and its argument
 void ParseCommandLine(int argc, char *argv[],const string& option, string& argument)
 {
@@ -23,6 +24,8 @@ void ParseCommandLine(int argc, char *argv[],const string& option, string& argum
   else
     argument = empty;
 }
+
+
 
 void Usage()
 {
@@ -92,5 +95,5 @@ int main(int argc, char* argv[])
   exit(0);
 }
 
-
+#endif
 
