@@ -453,7 +453,11 @@ LGMdouble GetValue(const Tree<TS,BUD>& tree, const LGMAD name)
     Axis<TS,BUD>& axis = GetAxis(const_cast<Tree<TS,BUD>&>(tree));
     list<TreeCompartment<TS,BUD>*>& ls = GetTreeCompartmentList(axis);
     BUD* bud = dynamic_cast<BUD*>(ls.back());
-    return GetPoint(*bud).getZ();
+    LGMdouble height = 0.0;
+    if (bud){
+      height = GetPoint(*bud).getZ();
+    }
+    return height;
   }
   else if (name == LGADbase){
     Axis<TS,BUD>& axis = GetAxis(const_cast<Tree<TS,BUD>&>(tree));
