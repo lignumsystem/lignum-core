@@ -8,6 +8,10 @@
 #include <OpenGL/gl.h>
 #include <OpenGL/glu.h>
 #include <GLUT/glut.h>
+#elif __linux__
+#include <FL/gl.h>
+#include <FL/glu.h>
+#include <FL/glut.h>
 #else
 #include <GL/gl.h>
 #include <GL/glu.h>

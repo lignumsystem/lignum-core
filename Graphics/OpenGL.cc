@@ -987,7 +987,7 @@ float MyGetValue(char *line, int index)
 		while(*line == ' ' && *line!='\0')
 			line++;
 	}
-	if (line == '\0')
+	if (line == NULL)
 		return -1;
 
 
