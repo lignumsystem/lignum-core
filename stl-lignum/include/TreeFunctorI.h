@@ -2,48 +2,46 @@
 #define TREE_FUNCTORI_H
 
 #include <iomanip>
-//This file contains implementation of the following functors
-//(functions) for Tree. Help functors etc. are not specified. If you
-//add a functor-function please update this list.
-
-//   CountCompartments
-//   CountCompartmentsReverse
-//   PrintTreeInformation
-//   PrintTreeInformation2
-//   DisplayStructure
-//   DisplayStructureAxis
-//   CheckCoordinates
-//   FindCfBoundingBox
-//   FindHwBoundingBox
-//   CollectFrustumVolume
-//   CollectFoliageMass
-//   CollectFoliageArea
-//   CollectWoodMass
-//   CollectSegmentLengths
-//   CollectStemWoodMass
-//   CollectSapwoodMass
-//   CollectStemSapwoodMass
-//   CollectHeartwoodMass
-//   CollectNewSegmentSapwoodMass (LGAage == 0.0)
-//   CollectOldSegmentSapwoodMass (LGAage > 0.0)
-//   CollectNewFoliageMass        (LGAage == 0.0)
-//   CollectQabs
-//   MoveTree
-//   DeleteDeadBranches
-//   PrintTreeSegmentInformationToFile
-//   PrintTreeSegmentInformationToFileByAxis
-//   DropAllLeaves
-//   CrownVolume
-//   FindLongestDistanceToStem
-//   FindRFunctor
-//   FindRFunctorF        Find mean by foliage weighted distance to stem in a crown slice
-//                        between heights minH and maxH in an angle around
-//                        given direction
-//   CrownExtension
-//   DaVinciTaperCurve
-
-
-//Functors-functions below used in LIGNUM WorkBench are not listed. 
+///\file TreeFunctorI.h
+///\brief Implementation of the following functors
+///(functions) for Tree.
+///
+/// Help functors etc. are not specified. If you add a functor-function please update this list.
+///
+/// -#   CountCompartments   
+/// -#   CountCompartmentsReverse   
+/// -#   PrintTreeInformation   
+/// -#   PrintTreeInformation2   
+/// -#   DisplayStructure   
+/// -#   DisplayStructureAxis   
+/// -#   CheckCoordinates    
+/// -#   FindCfBoundingBox    
+/// -#   FindHwBoundingBox   
+/// -#   CollectFrustumVolume   
+/// -#   CollectFoliageMass   
+/// -#   CollectFoliageArea    
+/// -#   CollectWoodMass    
+/// -#   CollectSegmentLengths   
+/// -#   CollectStemWoodMass   
+/// -#   CollectSapwoodMass   
+/// -#   CollectStemSapwoodMass  
+/// -#   CollectHeartwoodMass   
+/// -#   CollectNewSegmentSapwoodMass (LGAage == 0.0)   
+/// -#   CollectOldSegmentSapwoodMass (LGAage > 0.0)   
+/// -#   CollectNewFoliageMass        (LGAage == 0.0)  
+/// -#   CollectQabs   
+/// -#   MoveTree   
+/// -#   DeleteDeadBranches  
+/// -#   PrintTreeSegmentInformationToFile  
+/// -#   PrintTreeSegmentInformationToFileByAxis   
+/// -#   DropAllLeaves   
+/// -#   CrownVolume   
+/// -#   FindLongestDistanceToStem   
+/// -#   FindRFunctor     
+/// -#   FindRFunctorF   
+///      Find mean by foliage weighted distance to stem in a crown slice between heights minH and maxH in an angle around given direction  
+/// -#   CrownExtension   
+/// -#   DaVinciTaperCurve
 
 namespace Lignum{
 
@@ -102,8 +100,8 @@ namespace Lignum{
   }
 
 
-  //This functor searches longest distance to stem in four quadrants
-  //(they are in vector in counterclockwise order)
+  ///This functor searches longest distance to stem in four quadrants
+  ///(they are in vector in counterclockwise order)
 
   template <class TS,class BUD>
   vector<LGMdouble>& CrownGroundArea<TS,BUD>::operator ()(vector<LGMdouble>& v,TreeCompartment<TS,BUD>* tc) const {
@@ -134,9 +132,9 @@ namespace Lignum{
 
 
 
-  //PrintTreeInformation collects and prints out information about the
-  //tree. It uses functor TreeData to collect the information with
-  //Accumulate
+  ///PrintTreeInformation collects and prints out information about the
+  ///tree. It uses functor TreeData to collect the information with
+  ///Accumulate
 
   template <class TS, class BUD, class STREAM>
   void PrintTreeInformation<TS,BUD,STREAM>::operator() (Tree<TS,BUD>&  tr) {
@@ -327,10 +325,10 @@ namespace Lignum{
   }
 
 
-  //Functor PrintTreeInformation2 prints out tree information to a
-  //file (given as a parameter to constructor (a ofstream)) one row in
-  //each growth cycle for plotting purposes etc.  Calculates the
-  //values with the same methods as PrintTreeInformation.
+  ///Functor PrintTreeInformation2 prints out tree information to a
+  ///file (given as a parameter to constructor (a ofstream)) one row in
+  ///each growth cycle for plotting purposes etc.  Calculates the
+  ///values with the same methods as PrintTreeInformation.
 
   template <class TS, class BUD>
   void PrintTreeInformation2<TS,BUD>::operator() (Tree<TS,BUD>&  tr) {
@@ -494,8 +492,8 @@ namespace Lignum{
   {
   }
 
-  //Check coordinates: Each tree compartment should match
-  //the "id" given. Segment changes the "id" to its end point 
+  ///Check coordinates: Each tree compartment should match
+  ///the "id" given. Segment changes the "id" to its end point 
   template <class TS,class BUD> TreeCompartment<TS,BUD>* 
   CheckCoordinates<TS,BUD>::operator ()(Point& id,
 					TreeCompartment<TS,BUD>* tc)const
@@ -527,10 +525,10 @@ namespace Lignum{
   }
 
 
-  //Find the boundig box for a tree, i.e. inside which the tree lies
-  //Only those segments that carry foliage are considered. This has to
-  //be checked separately for coniferous (CfTreeSegment) and deciduous
-  //(HwTreeSegment) segments.
+  ///Find the boundig box for a tree, i.e. inside which the tree lies
+  ///Only those segments that carry foliage are considered. This has to
+  ///be checked separately for coniferous (CfTreeSegment) and deciduous
+  ///(HwTreeSegment) segments.
 
   template <class TS,class BUD>
   BoundingBox&
@@ -753,8 +751,8 @@ namespace Lignum{
   }
 
 
-  //Either whole tree: construct CollectFoliageMass() or by Gravelius order:
-  // construct CollectFoliageMass(order)
+  ///Either whole tree: construct CollectFoliageMass() or by Gravelius order:
+  /// construct CollectFoliageMass(order)
 
   template <class TS, class BUD>
   LGMdouble& CollectFoliageMass<TS,BUD>::
@@ -774,8 +772,8 @@ namespace Lignum{
   }
 
 
-  //Either whole tree: construct CollectFoliageArea() or by Gravelius order:
-  // construct CollectFoliageArea(order)
+  ///Either whole tree: construct CollectFoliageArea() or by Gravelius order:
+  /// construct CollectFoliageArea(order)
 
   template <class TS, class BUD>
   LGMdouble& CollectFoliageArea<TS,BUD>::
@@ -1296,9 +1294,9 @@ namespace Lignum{
   }
 
 
-  //WriteTreeInformation collects and prints out information about the
-  //tree. It uses functor TreeData to collect the information with
-  //Accumulate
+  ///WriteTreeInformation collects and prints out information about the
+  ///tree. It uses functor TreeData to collect the information with
+  ///Accumulate
   template <class TS, class BUD>
   void WriteTreeInformation(Tree<TS,BUD>&  tr, std::ofstream& file) 
   {
@@ -1550,7 +1548,7 @@ namespace Lignum{
     return tc;
   }
 
-  //Collect leaves from segments
+  ///Collect leaves from segments
   template <class TS, class BUD, class SH>
   list<BroadLeaf<SH>*>& 
   CollectLeaves<TS,BUD,SH>::operator()(list<BroadLeaf<SH>*>& ls,
@@ -1571,15 +1569,15 @@ namespace Lignum{
   }
 
 
-  //   CrownVolume
+  ///   CrownVolume
 
-  // Crown (between carown base and top of tree) is divided into
-  // horizontal slices, the height of which is determined by the
-  // attribute step. Each slice is divided into four quadrants (angle
-  // PI/2, center directions: 0, PI/2, PI, 3PI/2), and maximum distance
-  // from stem to segment (middle) that has foliage is determined. The
-  // crown volume is calculated as the sum of the quadrants of the
-  // slices.
+  /// Crown (between carown base and top of tree) is divided into
+  /// horizontal slices, the height of which is determined by the
+  /// attribute step. Each slice is divided into four quadrants (angle
+  /// PI/2, center directions: 0, PI/2, PI, 3PI/2), and maximum distance
+  /// from stem to segment (middle) that has foliage is determined. The
+  /// crown volume is calculated as the sum of the quadrants of the
+  /// slices.
 
   template <class TS, class BUD>
   double CrownVolume<TS,BUD>::operator ()(Tree<TS,BUD>&  tr)const 
@@ -1655,10 +1653,10 @@ namespace Lignum{
 /*   } */
 
 
-  //   FindRFunctor
-  //It tests if either base or top of segment with foliage between heights minH and maxH is in
-  //an angle angle around direction and determines whichever is farthest from the
-  //stem, and if > R, updates R.
+  ///   FindRFunctor
+  ///It tests if either base or top of segment with foliage between heights minH and maxH is in
+  ///an angle angle around direction and determines whichever is farthest from the
+  ///stem, and if > R, updates R.
 
   template <class TS, class BUD>
     double& FindRFunctor<TS,BUD>::operator ()
@@ -1695,9 +1693,9 @@ namespace Lignum{
     return R;
   }
 
-//   FindRFunctorF        Find mean by foliage weighted distance to stem in a crown slice
-//                        between heights minH and maxH in an angle around
-//                        given direction
+///  Find mean by foliage weighted distance to stem in a crown slice
+///  between heights minH and maxH in an angle around
+///  given direction
 
   template <class TS, class BUD>
     pair<double, double>& FindRFunctorF<TS,BUD>::operator ()
@@ -1724,9 +1722,9 @@ namespace Lignum{
   }
 
 
-  //CrownExtension
-  //Works like CrownVolume but returns crown extensions in quadrants of slices
-  //Here end point of segment with foliage is used instead of midpoint.
+  ///CrownExtension
+  ///Works like CrownVolume but returns crown extensions in quadrants of slices
+  ///Here end point of segment with foliage is used instead of midpoint.
 
   template <class TS, class BUD>
     void CrownExtension<TS,BUD>::operator ()(Tree<TS,BUD>&  tr,
@@ -1770,6 +1768,7 @@ namespace Lignum{
     return;
   }
 
+  ///Classical DaVinci pipe model
   template <class TS, class BUD>
   double DaVinciTaperCurve<TS,BUD>::operator()(double radius_exp,TreeCompartment<TS,BUD>* tc)const
   {
@@ -1783,13 +1782,13 @@ namespace Lignum{
 	radius_exp = pow(init_radius,exponent);
       }
       else{
-	//The radius_e is the sum of the radii of the segments above.
+	///The *radius_e* is the sum of the radii of the segments above.
 	//The sum is calculated by the AccumulateDown in each branching point
 	double r = pow(radius_exp,1.0/exponent);
 	//cout << "Radius B " << r << endl; 
 	SetValue(*ts,LGAR,r);
       }
-      //Return the radius raised to the exponent 
+      ///Return the *radius_e* raised to the exponent 
       double r = GetValue(*ts,LGAR);
       radius_exp = pow(r,exponent);
     }
