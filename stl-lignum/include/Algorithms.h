@@ -14,8 +14,22 @@
 using namespace std;
 
 namespace Lignum{
-
-
+  ///Function to find maximum value in a vector
+  ///\return Iterator to max element in a vector
+  ///\note Can be replaced in C++11 with std::max_element when available
+  template<class ForwardIt>
+  ForwardIt max_elmnt(ForwardIt first, ForwardIt last)
+  {
+    if (first == last)
+        return last;
+    ForwardIt largest = first;
+    ++first;
+    for (; first != last; ++first)
+        if (*largest < *first)
+            largest = first;
+    return largest;
+  }
+  
 template <class TS,class BUD>
 class AdaptableTCFunction
   :public unary_function<TreeCompartment<TS,BUD>*,TreeCompartment<TS,BUD>*>{
