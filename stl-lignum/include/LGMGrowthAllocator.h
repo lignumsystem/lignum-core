@@ -1,7 +1,7 @@
 ///   \file  LGMGrowthAllocator.h
 ///   \brief Allocator functors to implement \f$P-M-G=0\f$.
 ///   \section allocators Carbon allocator functors 
-///   The  LGMGrowthAllocator  functor   implements  the  allocation  of
+///   The  `LGMGrowthAllocator`  functor   implements  the  allocation  of
 ///   photosynthates iteratively, i.e it puts into practice the solution
 ///   of equation \f$P-M-G=0\f$ where
 ///   \f$G =  iW_s(\lambda) + iW_f(\lambda) + iW_r(\lambda)\f$
@@ -31,9 +31,9 @@
 ///   `SetValue(data, LGAiWs,value) `which return  and set the new sapwood
 ///   mass     (elongation    and    thickening)     respectively    and
 ///   `GetValue(data,LGAiWf)`  and `SetValue(data,LGAiWf)` which  return and
-///   set the  new foliage  mass in the  tree respectively.   LGAiWf and
-///   LGAiWs are defined  in LGMSymbols.h. Note that the  iWr is defined
-///   as LGPar*iWf in LGMGrowthAllocator.
+///   set the  new foliage  mass in the  tree respectively.   `LGAiWf` and
+///   `LGAiWs` are defined  in *LGMSymbols.h*. Note that the  \f$iW_r\f$ is defined
+///   as `LGPar*LGAiWf` in `LGMGrowthAllocator`.
 ///
 ///   DATA  can collect  other values  from the  tree and  implement other
 ///   activities  too.   To  inspect  and  debug  DATA  it  can  be  given
