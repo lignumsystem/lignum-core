@@ -45,7 +45,7 @@ namespace Lignum{
     return old_value;
   }
 
-
+  ///\deprecated Use Lignum::LGMAD enumeration instead
   enum DGAD {DGWs,DGWf,DGWfnew};
 
   class DiameterGrowthData:public TcData{
