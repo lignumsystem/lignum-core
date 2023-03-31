@@ -1,6 +1,8 @@
 #ifndef PINE_H
 #define PINE_H
 #include <Lignum.h>
+///\brief Classes for PineSegment and PineBud
+namespace PineTree{
 ///\file Pine.h
 ///\brief PineBud and  PineSegment are  meant to be  generic Pine  segment and bud.
 ///
@@ -46,7 +48,14 @@ class PineSegment: public CfTreeSegment<TS,BUD>{
   }
 
 public:
-  ///PineSegment constructor sets the initial segment dimensions.
+  ///\brief PineSegment constructor sets the initial segment dimensions.
+  ///\param p Base point
+  ///\param d Direction
+  ///\param go Gravelius order
+  ///\param l Length
+  ///\param r Initial radius
+  ///\param rh Intial heartwood radius
+  ///\param tree The tree segment belongs to
   ///\post Segment radius == LGPlr*L
   ///\post Foliage height == LGPnl*sin(LGPna)
   ///\post Radius to foliage limit == LGAR+LGAHf
@@ -93,17 +102,17 @@ private:
 
 ///PineBud has  SetValue and  GetValue functions to  update and  to use
 ///PineBudData in order to pass information to L-system and back. 
-enum PBNAME {PBDATA};//The name of the data structure
-///PineBudData  is  intented  to  be  the data  structure  that  passes
-///information  between LIGNUM  model and  L-system. A  simpler example
-///than  in  SugarMaple. Currently  PineBudData  has *state*,  *foliage
+enum PBNAME {PBDATA};
+///\brief PineBudData  is  intented  pass data  between LIGNUM  model and  L-system.
+///
+///A  simpler example than  in  SugarMaple. Currently  PineBudData  has *state*,  *foliage
 ///mass* (of  the mother segment) and  the direction of  the bud (looks
 ///like we need the orientation of the bud in world coordinates, at the
 ///very least it will make  life easier).  See PineBud for SetValue and
 ///GetValue methods  (used by the  L-system implementation).  Obviously
 ///this is  not the  final set of  attributes for PineBudData  that are
 ///required,  needed  or useful,  but  the  implementation  is open  to
-///discussion
+///discussion.
 class PineBudData{
   ///GetDirection returns  the direction of  the bud (not used  in data
   ///exchange but makes life easier)
@@ -111,8 +120,8 @@ class PineBudData{
     return PositionVector(data.x,data.y,data.z);
   }
 public:
-  //A  couple of  constructors to  initialize members.  Recommended in
-  //general.
+  ///A  couple of  constructors to  initialize members.  Recommended in
+  ///general.
  PineBudData():state(ALIVE),fm(0.0),ip(1.0),x(0.0),y(0.0),z(0.0),length(0.0),view(0.0){}
  PineBudData(double s, double fol, double rl, double len):state(s),fm(fol),ip(rl),x(0.0),y(0.0),z(0.0),
     length(len), view(0.0) {}
@@ -131,14 +140,15 @@ public:
   ///side,  do not  use  references or  pointers  or structures  within
   ///structures to  pass the information, just  fundamental c/c++ types
   ///corresponding to basic storage units.
-  double x;
-  double y;
-  double z;
-  double length; //length of the mother segment
-  double view;
+  double x;///< X coordinate
+  double y;///< Y coordinate
+  double z;///z Z coordinate
+  double length; ///<Length of the mother segment
+  ///\attention Not documented
+  double view; 
 };
 
-///PineBud has two additional attributes: fm_mother_segment and length_mother_segment
+///PineBud has two additional attributes: `fm_mother_segment` and `length_mother_segment`
 template <class TS, class BUD>
 class PineBud: public Bud<TS,BUD>{
   template <class TS1,class BUD1>
@@ -173,8 +183,11 @@ class PineBud: public Bud<TS,BUD>{
       cout << " PineBudData error, name: " << name << " not known" << endl;
     return pbdata;
   }
-
 public:
+  ///\param p Point
+  ///\param d Direction
+  ///\param go Gravelius order
+  ///\param tree Tree bud belongs to
   PineBud(const Point& p, const PositionVector& d, 
 	  const LGMdouble go, Tree<TS,BUD>* tree)
     :Bud<TS,BUD>(p,d,go,tree),view(0.0),fm_mother_segment(0.0),length_mother_segment(0.0){}
@@ -307,12 +320,12 @@ public:
      return tc;
   }
 private:
-  double l;//Lamda to iterate segment lengths
-  mutable double apical; //Apical dominance, 1 or less, e.g. 0.8
+  double l;///<Lamda to iterate segment lengths
+  mutable double apical; ///<Apical dominance, 1 or less, e.g. 0.8
 };
 
-//This  is must be  the same  as diameterGrowth  method, but  we can't
-//change the segment's dimensions.
+///This  is must be  the same  as diameterGrowth  method, but  we can't
+///change the segment's dimensions.
 template <class TS,class BUD>
 class TryDiameterGrowth{
 public:
@@ -406,7 +419,7 @@ private:
 };
 
 
-//Collect photosynthates and respiration once per growth allocation.
+///Collect photosynthates and respiration once per growth allocation.
 template <class TS,class BUD,class L,class D>
 void LPineGrowthFunction<TS,BUD,L,D>::init()
 {
@@ -486,9 +499,9 @@ public:
 };
 
 
-//This  can be  used  to  set foliage  afterwards,  say, for  measured
-//architectural  model trees.  ForEach(t,SetFoliage) will  traverse the
-//tree and apply the functor to each segment.
+///This  can be  used  to  set foliage  afterwards,  say, for  measured
+///architectural  model trees.  ForEach(t,SetFoliage) will  traverse the
+///tree and apply the functor to each segment.
 template <class TS, class BUD>
 class SetFoliage{
 public:
@@ -611,4 +624,5 @@ public:
     return l;
   }
 };
+}
 #endif
