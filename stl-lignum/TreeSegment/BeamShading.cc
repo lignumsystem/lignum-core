@@ -104,28 +104,30 @@ int EllipseBeamShading(Point& p0,
 
 
 
-/////////////////////////////////////////////////////////
-//     Cylinder beamshading for conifers
-////////////////////////////////////////////////////////
 
-//If the beam (starting from 'r0' with direction 'b') hits the shoot
-//(radius indluding foliage 'Rs', length 'L', position 'rs' and direction 'a'), 
-//but not the woody part (radius 'Rw'), 
-//beamShading returns +1 and the distance (m) of the beam traversed
-//in the shoot in the variable distance.
-//If the beam hits the woody part of the shoot beamShading returns -1.
-//In the case of no hit beamShading returns 0.
-//
-
-//If the beam (starting from 'r0' with direction 'b') hits cylinder
-//(radius 'Rs', length 'L', position 'rs' and direction 'a'), 
-//
+///\brief Cylinder light beam shading for conifers
+///
+///If the beam (starting from `r0` with direction `b`) hits the shoot
+///(with radius including foliage `Rs`, length `L`, position `rs` and direction `a`), 
+///but not the woody part (radius `Rw`), 
+///beamShading returns +1 (HIT_THE_FOLIAGE) and the distance (m) of the beam traversed
+///in the shoot in the variable distance. <br>
+///If the beam hits the woody part of the shoot beamShading returns -1.<br>
+///In the case of no hit beamShading returns 0.<br
+//If the beam (starting from `r0` with direction `b`) hits cylinder
+///(radius 'Rs', length 'L', position 'rs' and direction 'a'), 
 //If the beam hits cylinder, returns HIT_THE_FOLIAGE (= 1)
-//and returns the distance beam travelled in cylinder.
+//and returns the `distanc`e beam travelled in cylinder.
 //In the case of no hit returns NO_HIT (= 0).
-
-//	NOTE:  It is assumed that |a| = 1 & |b| = 1 !!
-
+///\param r0_1 Start point of the light beam
+///\param b Direction of the light beam
+///\param rs_1 Start point of the shading segment
+///\param a Direction of the  shading segment
+///\param Rs Radius including foliage of the shading segment
+///\param L Length of the shading segment
+///\param [out] distance Length of the shading segment
+///\pre Direction vector lengths are  |a| = 1 and |b| = 1 !!
+///\return 0 (NO_HIT), -1 (HIT_THE_WOOD) or +1 (HIT_THE_FOLIAGE)
 int CylinderBeamShading(const Point& r0_1, const PositionVector& b, 
 			const Point& rs_1, const PositionVector& a,
 			double Rs, double L, double& distance )
@@ -134,11 +136,11 @@ int CylinderBeamShading(const Point& r0_1, const PositionVector& b,
 
   PositionVector rs = PositionVector(rs_1.getX(),rs_1.getY(),rs_1.getZ());
   PositionVector r0 = PositionVector(r0_1.getX(),r0_1.getY(),r0_1.getZ());
-  
-  //	1.	Rough testing
-
+  ///\section lbcintersect Calculation of light beam intersection
+  ///\subsection roughtest 1.Rough testing
+  ///Shaded segment higher than shading  
   if(rs.getZ() <= r0.getZ() - L){
-    return NO_HIT;	//Subject shoot is higher
+    return NO_HIT;	//Subject (shaded)shoot is higher
   }
 
   double apu1, apu2, apu3;
@@ -148,7 +150,7 @@ int CylinderBeamShading(const Point& r0_1, const PositionVector& b,
  
   if(maximum(apu1, maximum(apu2, apu3)) > L )
     if( Dot(b,(rs - r0)) < 0.0 ) return NO_HIT;
-  // Shading shoot not in direction pointed by b
+  ///Shading shoot not in direction of light beam pointed by b
  
   //	Intermediate dot products and calculations
   PositionVector rdiff;
@@ -169,11 +171,12 @@ int CylinderBeamShading(const Point& r0_1, const PositionVector& b,
   rdiffb = Dot(rdiff, b);
   rdiff2 = Dot(rdiff, rdiff);
 
-  //	2. Test for a special case: if a || b, then the only possibility
-  // that the beam hits the shoot is that the hit occurs on the end disk.
-  // If the hit occurs in one disc, then it occurs in the other also.
-  // The beam hits the plane containing the end disk at rHit with
-  // parameter value p1 
+  ///\subsection specialcase 2. Test for a special case
+  ///If \f$ a || b\f$ , then the only possibility
+  ///that the beam hits the shoot is that the hit occurs on the end disk.
+  ///If the hit occurs in one disc, then it occurs in the other also.
+  ///The beam hits the plane containing the end disk at `rHit` with
+  ///parameter value `p1` 
 
   if(ab > 1.0 - R_EPSILON || -ab > 1.0 - R_EPSILON) {
     p1 = rdiffa / ab;
@@ -189,8 +192,8 @@ int CylinderBeamShading(const Point& r0_1, const PositionVector& b,
     }
   }
 
-  // 3. Does the beam hit the the cylinder with radius Rs?
-
+  ///\subsection beamhit 3.Test the beam hit the the cylinder with radius Rs
+  ///Test no hit <br>
   double c2Over2, c1, c3, discriminantOver4;
   PositionVector r1;
   PositionVector r2;
@@ -205,8 +208,7 @@ int CylinderBeamShading(const Point& r0_1, const PositionVector& b,
     return NO_HIT;			// Does not hit
   }
 
-  // Beam hits the cylinder extending to infinity
-
+  ///Test beam hits the cylinder extending to infinity<br>
   p1 = ( rdiffa * ab - rdiffb + sqrt(discriminantOver4) ) /
     (pow(ab, 2) - 1.0);
  
@@ -220,9 +222,8 @@ int CylinderBeamShading(const Point& r0_1, const PositionVector& b,
   r1 = r0 + p1 * b;
   r2 = r0 + p2 * b;
 
-  // Does beam hit the shoot cylinder?
-  // that is 0 < (ri-rs)*a < L
-  // (|a| = 1 !)
+  ///Test  beam hits the shoot cylinder<br>
+  /// 0 < (ri-rs)*a < L (and |a| = 1 !)
 
   rd = r1 - rs;
   any = Dot(a, rd);
@@ -233,9 +234,7 @@ int CylinderBeamShading(const Point& r0_1, const PositionVector& b,
   if(any > 0.0 && any < L) secondHits = true;
 
 
-  //	6. One member of Cartesian product 
-  //	{mantle, end disk} x {mantle, end disk} or no hit possible 
-
+  ///Test One member of Cartesian product {mantle, end disk} x {mantle, end disk} or no hit possible <br>
   PositionVector rHit1;
   PositionVector rHit2;
 

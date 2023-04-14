@@ -1,28 +1,38 @@
+///\file VoxelObject.h
+///\brief Wrapper for coniferous segments and broad leafleaves.
+///
+///Represent coniferous and broad leaf tree species photosynthesising elements
+///uniformly with VoxelObject. There is enough geometric data
+///to calculate light beam intertsections.
 #ifndef VOXELOBJECT_H
 #define VOXELOBJECT_H
 #include <vector>
 #include <Point.h>
 #include <PositionVector.h>
 #include <Shading.h>
-//Wrapper class for different photosynthesising elements a voxel box
+///\brief Base class for different photosynthesising elements a voxel box.
+///
+///Provides uniform representation to calculate radiation interception.
+///\sa CfCylinder HwEllipse
 class VoxelObject{
 public: 
   VoxelObject(const VoxelObject& vo):tag(vo.tag){}
-  VoxelObject(int t):hit_self(false),tag(t){}
+  VoxelObject(long_size t):hit_self(false),tag(t){}
   virtual ~VoxelObject(){}
   virtual int getRoute(const Point& p, const PositionVector& dir,
 		       LGMdouble& length)const=0;
   virtual LGMdouble getExtinction(const Point& p, const PositionVector& dir,
 				  const ParametricCurve& K)const=0;
   virtual long_size getTag()const{return tag;}
-  mutable bool hit_self;//debug: true if segment compares itself 
+  mutable bool hit_self;///<debug: true if segment compares itself 
 private:
-  long_size tag;//A  tag for object.  If two  objects denote  the same
-		//segment, they have the same tag
+  ////A  unique tag for the voxel object.  If two  objects denote  the same
+  ///element (segment, leaf), they have the same tag
+  long_size tag;
 };
 
 
-//Cylindrical coniferous shading element
+///Cylindrical coniferous shading element
 class CfCylinder:public VoxelObject{
 public:
   CfCylinder(const CfCylinder& cfobj)
@@ -37,6 +47,11 @@ public:
     PositionVector tmp = PositionVector(p0)+sp*l*d;//Possibly the start point of the light beam    
     p2 = Point(tmp);
   }
+  ///Calculate the path length light beam travels in the shading segment
+  ///\param p Start point of the light beam
+  ///\param dir Direction of the light beam
+  ///\param [out] length Length light beam travels in shading foliage
+  ///\return 0 (HIT), -1 (HIT_THE_WOOD), +1 (HIT_THE_FOLIAGE) 
   virtual int getRoute(const Point& p, const PositionVector& dir,
 		       double& length)const
   {
@@ -54,6 +69,11 @@ public:
     }
   }
 
+  ///Radiation extinction for the length light beam travels in shading foliage
+  ///\param p Starting point of the light beam
+  ///\param dir direction of the light beam
+  ///\param K The extinction function \f$K(\phi)\f$ where \f$\phi\f$ is the angle between light beam and shaded segment
+  ///\retval tau  Radiation extinction  
   virtual LGMdouble getExtinction(const Point& p,const PositionVector& dir,
 				  const ParametricCurve& K)const{
     LGMdouble length = 0.0;//path length 
@@ -88,16 +108,16 @@ public:
     return tau;
   }
 private:
-  Point p0;//Start point of the cylinder
-  Point p2;//p0+sp*l*Point(d), point that could be the start point of the light beam
-  PositionVector d;//direction of the cylinder
-  double l;//Length of the cylinder
-  double rw;//Wood radius
-  double rf;//Foliage radius
-  double af;//Foliage area
-  double vf;//Foliage volume
-  double sp;//start point [0:1] of the light beam (e.g. 0.5 is the mid
-	    //point of the segment)
+  Point p0;///<Start point of the cylinder
+  Point p2;///<p0+sp*l*Point(d), point that could be the start point of the light beam
+  PositionVector d;///<direction of the cylinder
+  double l;///<Length of the cylinder
+  double rw;///<Wood radius
+  double rf;///<Foliage radius
+  double af;///<Foliage area
+  double vf;///<Foliage volume
+  double sp;///<start point [0:1] of the light beam (e.g. 0.5 is the mid
+	    ///<point of the segment)
 };
 
 class HwEllipse: public VoxelObject{
