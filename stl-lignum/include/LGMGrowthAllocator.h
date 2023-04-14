@@ -120,7 +120,6 @@
 #define LGMGROWTHALLOCATOR_H
 #include <TreeCompartment.h>
 namespace Lignum{
- 
   /// Growth allocation mode
   enum LGMALLOCATORMODE {LGMALLOCATE,///< Allocation mode
 			 LGMGROWTH ///< Growth mode: adjust segment dimensions 
@@ -174,7 +173,8 @@ namespace Lignum{
   template <class TS,class BUD,class ELONGATION,class DIAMETER_INCREMENT, class DATA>
   double LGMGrowthAllocator<TS,BUD,ELONGATION,DIAMETER_INCREMENT,DATA>::operator()(double l)const
   {
-    ///\subsection calloc Carbon allocation
+    
+    ///\subsection calloc Basic carbon allocation
     ///\snippet{lineno} LGMGrowthAllocator.h GAlloc
     ///\internal
     //[GAlloc]
@@ -205,6 +205,7 @@ namespace Lignum{
   ///It takes user defined  add and asign operator AddAssign that  can be used in
   ///AccumulateDown(tree,data,AddAssign(),DiameterGrowth()). Also a reduction term can be used.
   ///That is, the allocation is P-M-G-reduction=0
+  ///\sa reduction
   template <class TS,class BUD,class ELONGATION,class ADD_ASSIGN,class DIAMETER_INCREMENT, class DATA>
   class LGMGrowthAllocator2{
   public:
@@ -252,7 +253,7 @@ namespace Lignum{
   template <class TS,class BUD,class ELONGATION,class ADD_ASSIGN,class DIAMETER_INCREMENT, class DATA>
   double LGMGrowthAllocator2<TS,BUD,ELONGATION,ADD_ASSIGN,DIAMETER_INCREMENT,DATA>::operator()(double l)const
   {
-    ///\subsection calloc2 Carbon allocation
+    ///\subsection calloc2 Carbon allocation with reduction
     ///\snippet{lineno} LGMGrowthAllocator.h GAlloc2
     ///\internal
     //[GAlloc2]
