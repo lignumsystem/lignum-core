@@ -13,10 +13,11 @@ texture.cc
 tga.cc
 )
 
+target_compile_options(Visual PRIVATE -DGL_SILENCE_DEPRECATION)
 target_include_directories(Visual PUBLIC "."
 "${CMAKE_CURRENT_LIST_DIR}/../c++adt/include"
 "${CMAKE_CURRENT_LIST_DIR}/../stl-lignum/include"
-"${CMAKE_CURRENT_LIST_DIR}/../Firmament/include"
+"${CMAKE_CURRENT_LIST_DIR}/../Firmament/include" 
 "${CMAKE_CURRENT_LIST_DIR}/../stl-voxelspace/include" 
 )
 set(CMAKE_INSTALL_PREFIX ".")
