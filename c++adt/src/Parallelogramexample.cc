@@ -85,7 +85,8 @@ void Intersection(const string& name, Parallelogram& pgram, const Point& o, cons
     cout << "----" << endl;
   }
 }
-	 
+
+#ifdef PGRAMMAIN
 int main()
 { //STL library std::numbers is (will be) in C++20.
   //const double pi_v = std::numbers::pi;
@@ -125,4 +126,5 @@ int main()
   Intersection("PGRAM10",pgram10,o,beam1,raxis1);
   exit(0);
 }
+#endif
 

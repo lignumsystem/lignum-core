@@ -44,7 +44,7 @@ private:
 //To compile type CC -DBISECTION -I../include -lm
 ///\example{lineno} Bisection.cc
 ///Examples to test Bisection method with linear, parabolic and cubic functions
-#ifdef BISECTION
+#ifdef BISECTIONMAIN
 int main()
 {
   F3 f31(-1,1,1,100);

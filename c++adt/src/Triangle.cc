@@ -378,7 +378,7 @@ void Triangle::rotate(const Point& p0, const PositionVector& dir, RADIAN angle) 
 }//closing namespace cxxadt
 
 //To compile: g++ -DTRIANGLE RMatrix.cc PositionVector.cc Triangle.cc -I../include 
-#ifdef TRIANGLE
+#ifdef TRIANGLEMAIN
 #include <iostream>
 #include <stdlib.h>
 using namespace cxxadt;

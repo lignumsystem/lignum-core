@@ -42,7 +42,7 @@ namespace cxxadt{
 }//closing namespace cxxadt
 
 
-#ifdef GAUSS
+#ifdef GAUSSMAIN
 using namespace cxxadt;
 using namespace std;
 

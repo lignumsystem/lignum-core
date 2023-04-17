@@ -62,7 +62,7 @@ CString operator + (const CString& str1, const CString& str2)
 
 }//close namespace cxxadt
 
-#ifdef CSTRING
+#ifdef CSTRINGMAIN
 #include <iostream>
 #include <libc.h>
 int main()

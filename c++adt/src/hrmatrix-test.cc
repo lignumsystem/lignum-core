@@ -6,6 +6,7 @@
 
 
 using namespace cxxadt;
+#ifdef HRMATRIXMAIN
 int main(int argc, char *argv[])
 {
   Point p1(1,2,3);
@@ -67,9 +68,8 @@ int main(int argc, char *argv[])
   cout << endl;
 
   exit(0);
-
 }
-
+#endif
 
 
 

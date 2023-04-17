@@ -15,8 +15,8 @@ namespace cxxadt{
  }
 }//closing namespace cxxadt
 
-#ifdef BERNOULLI
-//To test compile with:  g++ -DBERNOULLI -I../include Bernoulli.cc Uniform.cc 
+#ifdef BERNOULLIMAIN
+//To test compile with:  g++ -DBERNOULLIMAIN -I../include Bernoulli.cc Uniform.cc 
 #include <iostream>
 using namespace cxxadt;
 using namespace std;

@@ -393,7 +393,7 @@ bool operator == (const PositionVector& pv1, const PositionVector& pv2)
 
 
 }//closing namespace cxxadt
-#ifdef PV
+#ifdef POSITIONVECTORMAIN
 
 using namespace cxxadt;
 

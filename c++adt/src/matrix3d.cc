@@ -10,6 +10,7 @@ using namespace cxxadt;
  *command line (SGI).   The program creates 3 matrices  and prints out*
  *there contents. It also tests init() and resize() methods.          *
  *********************************************************************/
+#ifdef MATRIX3DMAIN
 int main() {
 
   TMatrix3D<double> m3(2,4,5);
@@ -68,3 +69,4 @@ int main() {
   }
   return 0;
 }
+#endif

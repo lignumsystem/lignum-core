@@ -171,7 +171,7 @@ double ParametricCurve::eval(double x)const
 
 }//closing namepsace cxxadt
   
-#ifdef PCURVE
+#ifdef PCURVEMAIN
 #include <cmath>
 #include <sstream>
 #include <iostream>

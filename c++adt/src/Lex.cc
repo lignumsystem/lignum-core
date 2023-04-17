@@ -198,7 +198,7 @@ Lex& Lex::putToken(const Token& token)
 
 }//closing namespace cxxadt
 
-#ifdef LEX
+#ifdef LEXMAIN
 
 int main(int argc,char *argv[])
 {

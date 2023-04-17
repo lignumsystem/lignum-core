@@ -380,7 +380,7 @@ namespace cxxadt{
 
 }//closing namespace cxxadt
 
-#ifdef ELLIPSE
+#ifdef ELLIPSEMAIN
 #include <iostream>
 #include <stdlib.h>
 using namespace cxxadt;

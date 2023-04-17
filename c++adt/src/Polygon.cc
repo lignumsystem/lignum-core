@@ -37,7 +37,7 @@ namespace cxxadt{
 
 }//closing namespace cxxadt
 
-#ifdef POLYGON
+#ifdef POLYGONMAIN
 
 #include <list>
 #include <iostream>

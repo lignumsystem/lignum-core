@@ -51,7 +51,7 @@ double Uniform::uran( int* idum)
 
 }//close namespace cxxadt
 
-#ifdef UNIFORM
+#ifdef UNIFORMMAIN
 #include <iostream>
 #include <vector>
 #include <numeric>

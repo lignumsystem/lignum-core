@@ -561,7 +561,7 @@ void* DList::booleanReverseReduce(void *(*reduce_fn)(bool (*b_fn)(void *,void *)
 
 
 
-#ifdef DLIST
+#ifdef DLISTMAIN
 #define NL '\n'
 
 void traverse_list(DList &ls)

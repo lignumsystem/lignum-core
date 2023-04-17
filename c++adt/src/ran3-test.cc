@@ -5,6 +5,7 @@
 #include <Uniform.h>
 using namespace std;
 using namespace cxxadt;
+#ifdef RAN3MAIN
 int main()
 {
   int seed = -233456;
@@ -35,3 +36,4 @@ int main()
   }
   return 0;
 }
+#endif

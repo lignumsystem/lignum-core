@@ -12,7 +12,7 @@ namespace cxxadt{
 }//closing namespace cxxadt
 
 
-#ifdef INVNORM
+#ifdef INVNORMMAIN
 
 #include <iostream>
 using namespace cxxadt;

@@ -100,7 +100,7 @@ RMatrix& RMatrix::inverse()
 
 }//namespace cxxadt  
 
-#ifdef RMATRIX
+#ifdef RMATRIXMAIN
 
 void print_matrix(TMatrix<double>& matrix)
 {

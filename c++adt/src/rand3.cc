@@ -58,7 +58,7 @@ double ran3( int* idum)
 
 }//close namespace cxxadt
 
-#ifdef RAND3
+#ifdef RAND3MAIN
 int main()
 {
   int seed = time(NULL);
