@@ -222,8 +222,24 @@ class CheckQinQabsPRWsWfAsAh{
 
  
 template <class TS,class BUD>
+///\brief Kill unproductive buds or all buds.
+///
+///Kill buds with poor light conditions (default) or unconditionally.
+///\note Use with PropagateUp(tree,Qin,KillBuds<TS,BUD>()) 
 class KillBuds{
 public:
+  ///Kill the tree or just unproductive buds
+  ///\param kill If *true* kill buds unconditianally, if *false*  (default) based on poor relative light conditions 
+  KillBuds(bool kill=false){kill_tree=kill;}
+  KillBuds(const KillBuds& kb){kill_tree=kb.kill_tree;}
+  KillBuds& operator=(const KillBuds& kb){
+    kill_tree=kb.kill_tree;
+    return *this;
+  }
+  ///Kill buds based on Qin of mother segment or unconditionally
+  ///\param qin Qin of the mother segment for a bud
+  ///\param tc Tree compartment
+  ///\retval qin Qin of the mother tree segment for a bud
   double operator()(double& qin, TreeCompartment<TS,BUD>* tc)const
   {
     if (TS* ts = dynamic_cast<TS*>(tc)){
@@ -241,9 +257,15 @@ public:
 	//cout << "Bud Killed" << endl;
 	SetValue(*b,LGAstate,DEAD);
       }
+      //Kill the bud and eventually the tree 
+      if (kill_tree==true){
+	SetValue(*b,LGAstate,DEAD);
+      }
     }
     return qin;
   }
+private:
+  bool kill_tree;///< If true, kill buds unconditionally 
 };
      
 
