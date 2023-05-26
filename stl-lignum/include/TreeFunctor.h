@@ -1533,9 +1533,33 @@ public:
     double step;
   };
 
-
-
-
+  ///\brief Cancel new growth.
+  ///
+  ///Set new tree segments dimensions to 0.0.
+  ///\pre LGAage == 0.0
+  ///\param tc TreeCompartment
+  ///\post LGAWf == 0.0;
+  ///\post LGAL == 0.0;
+  ///\post LGAR == 0.0;
+  ///\post LGARh == 0.0;
+  ///\retval tc TreeCompartment
+  ///\note Use with ForEach 
+  template <class TS, class BUD> 
+  class CancelNewGrowth{
+  public:
+    TreeCompartment<TS,BUD>* operator()(TreeCompartment<TS,BUD>* tc)const
+    {
+      if (TS* ts = dynamic_cast<TS*>(tc)){
+	if (GetValue(*ts,LGAage) == 0.0){
+	  SetValue(*ts,LGAWf,0.0);
+	  SetValue(*ts,LGAL,0.0);
+	  SetValue(*ts,LGAR,0.0);
+	  SetValue(*ts,LGARh,0.0);
+	}
+      }
+      return tc;
+    }
+  };
 }//closing namespace Lignum
 #include <TreeFunctorI.h>
 
