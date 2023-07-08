@@ -214,9 +214,16 @@ namespace Lignum{
       :t(tree),P(0.0),M(0.0), reduction(0.0){init();}
     ///\param tree The tree
     ///\param d The data to be used
-    ///\param functor The user defined functor for data instead of default '+=' 
-    LGMGrowthAllocator2(Tree<TS,BUD>& tree,DATA d, ADD_ASSIGN functor)
-      :t(tree),data(d),data_orig(d),f(functor),P(0.0), M(0.0), reduction(0.0) {init();}
+    ///\param functor The user defined functor for data instead of default '+='
+    ///\param fgo1 Segment length as f(go)
+    ///\param fip1 Segment length as f(ip)
+    ///\param fgo2 Segment length as f(go) after growth mode change
+    ///\param fip2 Segment length as f(ip) after growth mode change
+    LGMGrowthAllocator2(Tree<TS,BUD>& tree,DATA d, ADD_ASSIGN functor,
+			const ParametricCurve& fgo1, const ParametricCurve& fip1,
+			const ParametricCurve& fgo2, const ParametricCurve& fip2)
+      :t(tree),data(d),data_orig(d),f(functor),P(0.0), M(0.0), reduction(0.0),
+       fgo(fgo1),fip(fip1),fgomode(fgo1),fipmode(fip2) {init();}
     ///\param tree The tree
     ///\param d The data to be used
     ///\param functor The user defined functor for data instead of default '+='
@@ -239,6 +246,10 @@ namespace Lignum{
     double M;///< Respiration, growth and maintenance
     mutable double lambda;///< The lambda in  G = iWs(l) + iWfnew(l) + iWrnew(l)
     double reduction;///< A factor that can reduce available growth resource, that is, P - M
+    const ParametricCurve fgo;///< Segment length as function of Gravelius order  
+    const ParametricCurve fip;///< Segment length as function of relative light
+    const ParametricCurve fgomode;///< Segment length as funcition of Gravelius order after growth mode change
+    const ParametricCurve fipmode;///< Segment length as function of relative light after growth mode change
   };
 
   ///Initialize available photosynthates and respiration
@@ -262,7 +273,7 @@ namespace Lignum{
     //0.Save current value of lambda
     lambda = l;
     //1.Elongate or shorten segment lengths
-    ForEach(t,ELONGATION(l));
+    ForEach(t,ELONGATION(l,fgo,fip,fgomode,fipmode));
 
     //2. Simulate  diameter  growth  and  collect  sapwood  and  foliage
     //masses.
