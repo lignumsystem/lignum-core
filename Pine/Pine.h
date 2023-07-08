@@ -1,8 +1,10 @@
 #ifndef PINE_H
 #define PINE_H
 #include <Lignum.h>
+
 ///\brief Classes for PineSegment and PineBud
 namespace PineTree{
+
 ///\file Pine.h
 ///\brief PineBud and  PineSegment are  meant to be  generic Pine  segment and bud.
 ///
@@ -18,33 +20,66 @@ namespace PineTree{
 ///actual type  of the tree is  left open, inheritance  is possible and
 ///all the generic algorithms implemented in stl-lignum will compile.
 
+///Scots Pine Functions
+enum SPFN {SPFAF,///<Scots pine Initial foliage m^2/kgC   
+	   SPFAD,///<Scots pine  Apical Dominance,
+	   SPFGO,///<Scots pine Gravelius Order
+	   SPFLR,///<Scots pine length - radius relationship, R = f(relative_light)*R 
+	   SPFNA,///<Scots pine Needle Angle
+	   SPFSF,///<Scots pine Specific Leaf Area
+	   SPSD,///<Scots pine Sapwood Down as a function of Gravelius order
+	   SPWD,///<Scots pine density of growth ring as function of tree age
+	   SPEBHF,///<Scots pine Extended Borcher-Honda lambda value function
+	   SPBVF///<Scots pine Bud View function
+};
 
-template <class TS,class BUD> class PineBud;
-/// LGAplength:  Path length  from the base of the  tree to a segment
-enum LGMSPAD {LGAplength};
+///Enumeration for SetValue, GetValue in ScotsPine
+enum SPAD {SPAAsDown,///<Sapwood down
+	   SPCrownRatio,///<Crown ratio: CrownL/TreeH
+	   SPHc,///<Height at crown limit
+	   SPHwStart,///<Start year of heartwood buld up
+	   SPrue ///< Radiation use efficiency
+};
+
+///Scots Pine Parameter Double SPPD
+///Extended Borchert-Honda (1 = true,  < 1 = false)
+enum SPPD {
+  SPis_EBH ///< Extended Borchert-Honda ("boolean") 
+};
+
+
+  template <class TS,class BUD> class PineBud;
+  enum LGMSPAD {
+    LGAplength,///< Path length from base to segment
+    LGAphysage ///< Physiological age
+  };
 
 
 
 template <class TS, class BUD>
 class PineSegment: public CfTreeSegment<TS,BUD>{
-  /// Return the path length
+  ///GetValue for PineSegment
   friend LGMdouble GetValue(const PineSegment& ts,LGMSPAD name){
     if (name == LGAplength)
       return ts.plength;
+    else if (name == LGAphysage)
+      return ts.phys_age;
     else{
-      LGMError("GetValue PineSegment has only LGAplength");
+      LGMError("GetValue PineSegment unknown name");
       return 0.0;
     }
   }
-  ///Set the path length
-  friend LGMdouble SetValue(PineSegment& ts,LGMSPAD name,LGMdouble l){
-    LGMdouble old_length = GetValue(ts,name);
+  ///SetValue for PineSegment
+  friend LGMdouble SetValue(PineSegment& ts,LGMSPAD name,LGMdouble val){
+    LGMdouble old_val = GetValue(ts,name);
     if (name == LGAplength)
-      ts.plength = l;
+      ts.plength = val;
+    else if (name == LGAphysage)
+      ts.phys_age = val;
     else{
-      LGMError("SetValue PineSegment has only LGAplength");
+      LGMError("SetValue PineSegment unknown name");
     }
-    return old_length;
+    return old_val;
   }
 
 public:
@@ -64,7 +99,7 @@ public:
   PineSegment(const Point& p,const PositionVector& d,
 	      const LGMdouble go,const METER l,
 	      const METER r,const METER rh,Tree<TS,BUD>* tree)
-    :CfTreeSegment<TS,BUD>(p,d,go,l,r,rh,tree),plength(0.0)
+    :CfTreeSegment<TS,BUD>(p,d,go,l,r,rh,tree),plength(0.0),phys_age(0.0)
     {
       //Set radius according to length radius ratio:
       //As we multiply lr should be in [0,1]
@@ -95,6 +130,9 @@ public:
     } 
 private:
   LGMdouble plength; ///< Path length  from the base of the  tree to a segment
+  ///Physiological age of the bud. Different from chronological age. Implementation depended.
+  ///Can trigger for example growth habit trait in tree crown
+  LGMdouble phys_age; 
 };
 
 
@@ -122,11 +160,12 @@ class PineBudData{
 public:
   ///A  couple of  constructors to  initialize members.  Recommended in
   ///general.
- PineBudData():state(ALIVE),fm(0.0),ip(1.0),x(0.0),y(0.0),z(0.0),length(0.0),view(0.0){}
- PineBudData(double s, double fol, double rl, double len):state(s),fm(fol),ip(rl),x(0.0),y(0.0),z(0.0),
-    length(len), view(0.0) {}
+  PineBudData():state(ALIVE),fm(0.0),ip(1.0),x(0.0),y(0.0),z(0.0),length(0.0),view(0.0),phys_age(0.0){}
+  PineBudData(double s, double fol, double rl, double len, double physiol_age=0.0)
+    :state(s),fm(fol),ip(rl),x(0.0),y(0.0),z(0.0),length(len), view(0.0),phys_age(physiol_age) {}
   PineBudData(const PineBudData& pbd)
-    :state(pbd.state),fm(pbd.fm),ip(pbd.ip),x(pbd.x),y(pbd.y),z(pbd.z),length(pbd.length),view(pbd.view){}
+    :state(pbd.state),fm(pbd.fm),ip(pbd.ip),x(pbd.x),y(pbd.y),z(pbd.z),
+     length(pbd.length),view(pbd.view),phys_age(pbd.phys_age){}
   double state; //ALIVE,DEAD, FLOWER, etc
   double fm;//foliage mass (of the mother segment)
   double ip;//qin/TreeQinMax, i.e. relative light
@@ -145,12 +184,27 @@ public:
   double z;///z Z coordinate
   double length; ///<Length of the mother segment
   ///\attention Not documented
-  double view; 
+  double view;
+  ///Physiological age of the bud. Different from chronological age.Implementation depended.
+  ///Can trigger for example growth habit trait in tree crown
+  double phys_age;
 };
 
-///PineBud has two additional attributes: `fm_mother_segment` and `length_mother_segment`
+///PineBud has additional attributes: \sa fm_mother_segment \sa length_mother_segment \sa phys_age
 template <class TS, class BUD>
 class PineBud: public Bud<TS,BUD>{
+  ///GetValue for PineBud 
+  template <class TS1,class BUD1>
+  friend double GetValue(PineBud<TS1,BUD1>& b,LGMSPAD name){
+    if (name == LGAphysage){
+      return b.phys_age;
+    }
+    else{
+      LGMError("GetValue PineBud unknown name");
+    }
+    return 0.0;
+  }
+  ///SetValue for PineBud for PineBudData
   template <class TS1,class BUD1>
   friend PineBudData SetValue(PineBud<TS1,BUD1>& b,
 			      PBNAME name,const PineBudData& data){
@@ -159,11 +213,14 @@ class PineBud: public Bud<TS,BUD>{
     SetValue(b,LGAip,data.ip);
     b.fm_mother_segment = data.fm;
     b.length_mother_segment = data.length;
-    //Do not update  the direction, it would override  the work of the
+    //Do not update  the direction (x,y,z), it would override  the work of the
     //turtle in L-system
     b.view = data.view;
+    b.phys_age = data.phys_age;
     return old_data;
   }
+  ///GetValue for  PineBud for PineBudData
+  ///Construct PineBudData from its parts/constituents
   template <class TS1,class BUD1>
   friend PineBudData GetValue(const PineBud<TS1,BUD1>& b,PBNAME name){
     PineBudData pbdata;
@@ -173,6 +230,7 @@ class PineBud: public Bud<TS,BUD>{
       pbdata.ip = GetValue(b,LGAip);
       pbdata.length = b.length_mother_segment;
       pbdata.view = b.view;
+      pbdata.phys_age = b.phys_age;
       //Pass the direction to  L-system, user can access the direction
       //easily by calling GetDirection.
       pbdata.x = GetDirection(b).getX();
@@ -190,11 +248,14 @@ public:
   ///\param tree Tree bud belongs to
   PineBud(const Point& p, const PositionVector& d, 
 	  const LGMdouble go, Tree<TS,BUD>* tree)
-    :Bud<TS,BUD>(p,d,go,tree),view(0.0),fm_mother_segment(0.0),length_mother_segment(0.0){}
+    :Bud<TS,BUD>(p,d,go,tree),view(0.0),fm_mother_segment(0.0),length_mother_segment(0.0),phys_age(0.0){}
   LGMdouble view;
 private:
   LGMdouble fm_mother_segment; ///< Foliage mass of mother segment
   LGMdouble length_mother_segment; ///< Length of the mother segment
+  ///Physiological age of the bud. Different from chronological age. Implementation depended.
+  ///Can trigger for example growth habit trait in tree crown
+  LGMdouble phys_age;
 };
 
 //Prints Qin, Qabs, P, R, Wf, As and LGAAh
@@ -608,8 +669,10 @@ public:
   }
 };
 
-//Calculate     path    length     for     each    segment.     Usage:
-//PropagateUp(t,0,PathLength())
+///Calculate     path    length     for     each    segment.
+///Usage:<br>
+///double plength=0.0<br>
+///PropagateUp(t,plength,PathLength())
 template <class TS,class BUD>
 class PathLength{
 public:
@@ -624,5 +687,32 @@ public:
     return l;
   }
 };
+
+///Pass physiological age of the buds to the newly created segments
+///\pre L-system has just created new segments
+///\pre Segment age == 0.0
+///Usage: <br>
+///LGMdouble phys_age=0.0;<br>
+///AccumulateDown(tree,phys_age,PassPhysiologicalAge<TS,BUD>())
+///\post Segment phys. age == Mother bud phys. age
+template <class TS, class BUD>
+class PassPhysiologicalAge{
+public:
+  LGMdouble operator()(LGMdouble& phys_age, 
+		       TreeCompartment<TS,BUD>* tc)const{
+    if (BUD* b = dynamic_cast<BUD*>(tc)){
+      phys_age = GetValue(*b,LGAphysage);
+    }
+    else if (TS* ts = dynamic_cast<TS*>(tc)){
+      if (GetValue(*ts,LGAage) == 0.0){
+	SetValue(*ts,LGAphysage,phys_age);
+      }
+    }
+    return phys_age;
+  }
+};
+
+
+
 }
 #endif
