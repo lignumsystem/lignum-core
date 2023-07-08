@@ -14,7 +14,7 @@ using namespace sky;
 #define HIT_THE_WOOD -1
 
 int EllipseBeamShading(Point& p0, PositionVector& v,
-			BroadLeaf<cxxadt::Ellipse>& leaf);
+			BroadLeaf<Ellipse>& leaf);
 /* int CylinderBeamShading(const Point& r0, const PositionVector& b,  */
 /* 			const Point& rs, const PositionVector& a, */
 /* 			double Rs, double Rw, double L,  */
