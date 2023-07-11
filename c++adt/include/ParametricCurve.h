@@ -14,11 +14,11 @@ namespace cxxadt{
 
 using namespace  std;
   ///\brief File does not exist exception class
-  class PCurveFileException{
+  class ParametricCurveFileException{
   public:
     ///Constructor
     ///\param fname File name for the missing file
-    PCurveFileException(const string& fname):
+    ParametricCurveFileException(const string& fname):
       file_name(fname){}
     ///After catching exception user can query the missing file name
     const string getFileName(){return file_name;}
