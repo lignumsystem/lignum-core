@@ -11,11 +11,13 @@ using namespace std;
 ///Given  TMatrix3D<T> m3,  m[x][y][z] gives  the element  T in  a cell
 ///indexed by  x,y and  z. The implementation  is inspired  by Breymann
 ///(Chapter  9). Indexing is  provided by inheritance as well as with at()
-///method. The  class TMatrix3D<T>  demonstrates the use  of STL, its classes and algorithms,
+///method that checks the validity of indexing. The  class TMatrix3D<T>
+///demonstrates the use  of STL, its classes and algorithms,
 ///and the  importance  of  clear  understandable  implementations  at  the
-///possible small cost of runtime efficiency. The approach  here can  be easily
-///expanded  to N dimensional  matrices.  To  test the  TMatrix3D class
-///there is a "matrix3d.cc" file in src-directory.                     
+///possible small cost of runtime efficiency.
+///
+///The approach  used can  be expanded  to N dimensional  matrices.
+///To  test the  TMatrix3D class there is a "matrix3d.cc" file in src-directory.
 
 namespace cxxadt{
   ///2D Matrix 
