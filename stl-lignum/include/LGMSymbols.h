@@ -1,8 +1,7 @@
 #ifndef LGMSYMBOLS_H
 #define LGMSYMBOLS_H
-/// \file LGMSymbols.h
-
-///This file defines a number of enumerations for stl-ligum.
+///\file LGMSymbols.h
+///\brief This file defines a number of enumerations for stl-ligum.
 ///
 /// + LGMAD = LIGNUM Attribute Double  
 /// + LGMPD = LIGNUM Parameter Double  
