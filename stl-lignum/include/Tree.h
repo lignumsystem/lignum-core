@@ -38,8 +38,10 @@ using namespace cxxadt;
 
 using namespace sky;
 
-/// The core model of Lignum including the basic elements Tree, TreeSegment, Axis
-/// BranchingPoint and Bud.
+///\brief The core model of Lignum.
+///
+///The core model includes implementation Tree, TreeSegment, Axis
+///BranchingPoint and Bud as well as the generic algorithms.
 namespace Lignum{
 
 
@@ -50,74 +52,74 @@ namespace Lignum{
       nl(0.0),pr(0.0),q(0.0),rhoW(0.0),rho_hair(0.0),
       rho_root(0.0),sf(0.0),sr(0.0),ss(0.0),tauL(0.0),
       xi(0.0), yc(0.0),zbrentEpsilon(0.0), lenRandom(0.0) { }
-    LGMdouble af;            //Needle mass - tree segment area relationship
-    LGMdouble aleafmax;      //Maximum size of a leaf (m2)
-    LGMdouble ar;            //Foliage - root relationship
-    LGMdouble apical;        //Length of segment (new) forking off (lateral) =
-                             //LGPapical * Len of not forking off
-    LGMdouble dof;           //Degree  of   filling  (proportion  leaf
-			     //surface  fills  of  geometric  shape  -
-			     //e.g. ellipsis - of the leaf).
-    LGMdouble Lmin;          //Minimun length of segment allowed (m)
-    LGMdouble lr;            //L/R for a new tree segment, R=lr*L
-    LGMdouble mf;            //Maintenance respiration rate of foliage
-    LGMdouble mr;            //Maintenance respiration rate of roots
-    LGMdouble ms;            //Maintenance respiration rate of sapwood
-    LGMdouble na;            //needle angle (radian)
-    LGMdouble nl;            //needle length
-    LGMdouble pr;            //Propotion of bound solar radiation used
-			     //in photosynthesis
-    LGMdouble q;             //Tree segment shortening factor
-    LGMdouble rhoW;          //Density of wood
-    LGMdouble rho_hair;      //Density of root hair
-    LGMdouble rho_root;      //Density of root sapwood
-    LGMdouble sf;            //Specific    foliage    area   (=foliage
-			     //area(total)/weight)
-    LGMdouble sr;            //Senescence rate of roots
-    LGMdouble ss;            //Senescence rate of sapwood
-    LGMdouble tauL;          //Transmission   coeffient  (light)   for  leaf,
-		             //should be about 0.06  for green leaf. NOTE: be
-		             //careful  here, the attenuation  coefficient is
-		             //the opposite (1-tauL)
-    LGMdouble xi;            //Fraction of heartwood in new tree segments
-    LGMdouble yc;            //Foliage mass supported by 1m2 of sapwood
-    LGMdouble zbrentEpsilon; //Accuracy    for    finding   root    of
-			     //P-M-dW(lambda), i.e. allocation.
-    LGMdouble lenRandom;     //Parameter controlling random variation in lengths of new segments.
-                             //Realization may differ with tree species; see e.g.
-                             //Lig-Crobas/include/ScotsPine.h
-    LGMdouble e1;            //Parameters in function that links height growth to that of diameter
-    LGMdouble e2;            //See Sievanen R 1993 Scand. J. For. Res 8: 28-48.
+    LGMdouble af;            ///<Needle mass - tree segment area relationship
+    LGMdouble aleafmax;      ///<Maximum size of a leaf (m2)
+    LGMdouble ar;            ///<Foliage - root relationship
+    LGMdouble apical;        ///<Length of segment (new) forking off (lateral) = LGPapical * Len of not forking off
+    ///Degree  of   filling  (proportion  leaf
+    ///surface  fills  of  geometric  shape  -
+    ///e.g. ellipsis - of the leaf).
+    LGMdouble dof;           
+    LGMdouble Lmin;          ///<Minimun length of segment allowed (m)
+    LGMdouble lr;            ///<L/R for a new tree segment, R=lr*L
+    LGMdouble mf;            ///<Maintenance respiration rate of foliage
+    LGMdouble mr;            ///<Maintenance respiration rate of roots
+    LGMdouble ms;            ///<Maintenance respiration rate of sapwood
+    LGMdouble na;            ///<needle angle (radian)
+    LGMdouble nl;            ///<needle length
+    LGMdouble pr;            ///<Propotion of bound solar radiation used in photosynthesis
+    LGMdouble q;             ///<Tree segment shortening factor
+    LGMdouble rhoW;          ///<Density of wood
+    LGMdouble rho_hair;      ///<Density of root hair
+    LGMdouble rho_root;      ///<Density of root sapwood
+    LGMdouble sf;            ///<Specific foliage area (=foliage area(total)/weight)
+    LGMdouble sr;            ///<Senescence rate of roots
+    LGMdouble ss;            ///<Senescence rate of sapwood
+    ///Transmission   coeffient  (light)   for  leaf,
+    ///should be about 0.06  for green leaf.
+    ///\note Be careful  here, the attenuation  coefficient is the opposite (1-tauL)
+    LGMdouble tauL;         
+    LGMdouble xi;            ///<Fraction of heartwood in new tree segments
+    LGMdouble yc;            ///<Foliage mass supported by 1m2 of sapwood
+    LGMdouble zbrentEpsilon; ///<Accuracy    for    finding   root    of P-M-dW(lambda), i.e. allocation.
+    ///Parameter controlling random variation in lengths of new segments.
+    ///Realization may differ with tree species; see e.g.
+    ///Lig-Crobas/include/ScotsPine.h
+    LGMdouble lenRandom;     
+    LGMdouble e1;            ///<Parameters in function that links height growth to that of diameter
+    LGMdouble e2;            ///<See Sievanen R 1993 Scand. J. For. Res 8: 28-48.
   };
  
-  //TreeAttributes  are  in a  (long)  vector  indexed by  enumeration
-  //LGMTAD defined in LGMSymbols.h
+  ///TreeAttributes  are  in a  (long)  vector  indexed by  enumeration
+  ///LGMTAD defined in LGMSymbols.h
   class TreeAttributes{
   public:
     TreeAttributes(int size = LGMTADLENGTH): v(size,0.0) { }
     vector<LGMdouble> v;
   };
 
+  ///Tree functions are implemented with ParametricCurve
   class TreeFunctions{
   public:
-    ParametricCurve nb;   //number of new buds
-    ParametricCurve ip;   //light relative length of a new tree segment 
-    ParametricCurve fm;   //foliage mortality 
-    ParametricCurve vi;   //vigour index function
-    ParametricCurve al;   //adjusted  length. For  example  for making
-			  //branches below 0.002  to have length 0 and
-			  //branches  between   0.002  and  0.01  have
-			  //length 0.002 (short segments)...
-    
-    ParametricCurve LightOnNumBuds; // the  effect of light  to number
-				    // of  the buds. If  no effect the
-				    //  value  is  always  1  of  this
-				    // function
-    
-    ParametricCurve VigourOnNumBuds;// the  effect of vigour  index to
-				    // the  number of the  buds. If no
-				    // effect the value is always 1 of
-				    // this function
+    ParametricCurve nb;   ///<number of new buds
+    ParametricCurve ip;   ///<light relative length of a new tree segment 
+    ParametricCurve fm;   ///<foliage mortality 
+    ParametricCurve vi;   ///<vigour index function
+    ///adjusted  length. For  example  for making
+    ///branches below 0.002  to have length 0 and
+    ///branches  between   0.002  and  0.01  have
+    ///length 0.002 (short segments)...
+    ParametricCurve al;
+    ///The  effect of light  to number
+    ///of  the buds. If  no effect the
+    ///value  is  always  1  of  this
+    ///function
+    ParametricCurve LightOnNumBuds;
+    ///he  effect of vigour  index to
+    ///the  number of the  buds. If no
+    ///effect the value is always 1 of
+    ///this function
+    ParametricCurve VigourOnNumBuds;
   };
 
   class TreeInitializationFiles{
