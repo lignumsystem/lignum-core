@@ -12,6 +12,11 @@
 #include <PositionVector.h>
 #include <algorithm>
 
+///\brief Implementation of Standard Overcast Sky (SOC).
+///
+///Implementation of SOC and SOC with mask modelling e.g. a forest gap.
+///The mask simply covers partly or completely some of the sky sectors.
+///There can be a sequence of masks during the tree growth.
 namespace sky{
 using namespace Lignum;
 using namespace cxxadt;
@@ -85,7 +90,7 @@ using namespace cxxadt;
 4.   \memberof Firmament void setSunPosition(const vector<double>& v)
       \param v direction vector
      
-5.   \memberof vector<double>  getSunPosition()
+5.   \memberof Firmament vector<double>  getSunPosition()
      \par 
      Get the direction vector
     
