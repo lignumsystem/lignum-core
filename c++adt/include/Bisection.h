@@ -10,7 +10,15 @@
 #include <iomanip>
 #include <mathsym.h>
 using namespace std;
-/// Useful general purpose classes 
+///\brief Useful general purpose classes.
+///
+///The C++ standard library and STL library most likely have the functionality
+///one is looking for a particular application.
+///
+///The classes in c++adt library implement geometric shapes (ellipse, triangle, parallelogram)
+///for leaf models, 2D and 3D matrices, Bisection method for to find root of a function,
+///simple HDF5 file interface to save data from Lignum simulations, random number generators etc.
+
 namespace cxxadt{
 
 #define MAX_ITER 100
