@@ -12,7 +12,7 @@ template <class TS,class BUD, class F>
 //function: it is read from file s
 
 template<class F, class TS, class BUD>
-  WrapRadiationEvaluations<F,TS,BUD>::WrapRadiationEvaluations(string s)
+WrapRadiationEvaluations<F,TS,BUD>::WrapRadiationEvaluations(std::string s)
   :K(s)
   {
     radiation_functor.setExtinction(K);

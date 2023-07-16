@@ -25,9 +25,9 @@ using namespace cxxadt;
 #define NUM_OF_AZIM 24
 #define NUM_OF_INCL 9
 /*! \class Firmament 
-    \brief Implements the radiation coming from the sky.
+    \brief Implements the radiation coming from the sky with Standard Overcast Sky.
      
-     Both direct (=sun) and diffuse radiation is dealt with separately.
+     Both direct (=Sun) and diffuse radiation is dealt with separately.
      The intensity of both radiation types can be set (by defining intensity of
      direct and diffuse radiation on a horizontal plane).
      Initially (constructor) direct radiation is set to 0 and diffuse radiation is set
@@ -35,8 +35,9 @@ using namespace cxxadt;
      (direct+diffuse) during the growing period in southern Finland (Stenberg).
      Setting direct radiation to 0 and defining all radiation as diffuse is the way
      to deal with radiation distribution of the sky over a prolonged period.
+
      If you want to consider momentary values update direct and diffuse radiation
-     components according to your needs.
+     components according to your needs. Firmament does not have any built in time steps.
 
 1) Direct radiation: sun's position and the intensity of radiation can be both set
    and queried. Initially intensity = 0, direction = (0,0,0)
@@ -70,143 +71,141 @@ using namespace cxxadt;
 */
   
 //Public methods:
-//(see Firmament.cc for more precise definition of input and output of methods)
-/*! 
-1. \memberof Firmament  Firmament(int no_incl = NUM_OF_INCL, int no_azim = NUM_OF_AZIM )    
-         \param no_incl number of sectors dividing the sky horizontally.
-         \param no_azim number of sectors dividing the sky vertically.
-         \param rad_plane=1200 1200 MJ (PAR)/m2 equal to radiation sum (direct+diffuse) 
-                          during the growing peariod in Southern Finlandxs 
+//(see Firmament.cc for more precise definition of input and output of methods) 
+/// 1. \fn Firmament::Firmament(int no_incl = NUM_OF_INCL, int no_azim = NUM_OF_AZIM, double rad_plane=1200.0)    
+///          \param no_incl number of sectors dividing the sky horizontally.
+///          \param no_azim number of sectors dividing the sky vertically.
+///          \param rad_plane Default 1200 MJ/m2 (PAR) is equal to radiation sum (direct+diffuse) 
+///                           during the growing period in Southern Finland
 
-2.    \memberof Firmament void setDiffuseRadiation(const double rad)
-        \param rad radiation coming to horiz. plane
-        \par 
-        Set the diffuse radiation (rad = radiation coming to horiz. plane)    
-3.   \memberof Firmament void setDirectRadiation(const double rad)
-          \param rad
-     \par 
-     Set the direct radiation (rad = radiation coming to horiz. plane)
+/// 2.    \fn void Firmament::setDiffuseRadiation(const double rad)
+///         \param rad Radiation coming to horizontal plane
+///         \par
+///         Set the diffuse radiation (rad = radiation coming to horiz. plane)
+  
+/// 3.   \fn void Firmament::setDirectRadiation(const double rad)
+///     \param rad Radiation coming to horizontal plane
+///      \par 
+///      Set the direct radiation (rad = radiation coming to horiz. plane)
 
-4.   \memberof Firmament void setSunPosition(const vector<double>& v)
-      \param v direction vector
-     
-5.   \memberof Firmament vector<double>  getSunPosition()
-     \par 
-     Get the direction vector
+/// 4.   \fn void Firmament::setSunPosition(const vector<double>& v)
+///       \param v direction vector
+///       \par
+///       Set the sun to a sector pointed to by `v`
+
+/// 5.   \fn vector<double>  Firmament::getSunPosition()
+///      \return The direction vector of the sun
     
-6.  \memberof Firmament MJ directRadiation(vector<double>& direction)
-    \param direction
-    \par 
-    Get the intensity (on plane perpendicular to direction vector) and
-    the direction of the sun
+/// 6.  \fn MJ Firmament::directRadiation(vector<double>& direction)
+///     \param direction
+///     \return The direct radiation intensity on plane *perpendicular* to direction vector
+///     \retval direction The direction of the sun
 
-7.  \memberof Firmament MJ diffuseRadiationSum( const vector<double>& v)
-    \param v
-    \par 
-     Get intensity of diffuse radiation (on plane perpendicular to direction vector)
-     from sector input v is poining to.
+/// 7.  \fn MJ Firmament::diffuseRadiationSum( const vector<double>& v)
+///     \param[in] v
+///      \return The intensity of diffuse radiation (on plane perpendicular to direction vector)
+///      from sector input `v` is poining to.
 
-8.  \memberof Firmament int numberOfRegions()
-    \par 
-    Get number of sectors.
+/// 8.  \fn int Firmament::numberOfRegions()
+///     \return The number of sectors.
 
-9.  \memberof Firmament MJ diffuseRegionRadiationSum(int n, vector<double>& direction)
-    \param n
-    \param direction
-    \par 
-    Get intensity of diffuse radiation (on plane perpendicular to direction vector)
-    from sector no n (numbering starts from horizont) and direction of the sector.
+/// 9.  \fn MJ Firmament::diffuseRegionRadiationSum(int n, vector<double>& direction)
+///     \param n Sector number 
+///     \param[out] direction The direction of the sector `n`
+///     \return The intensity of diffuse radiation (on plane perpendicular to direction vector)
+///     from sector  `n` (numbering starts from horizont)
+///     \retval direction The direction of the sector.
 
-10.  \memberof Firmament MJ diffuseHalfRegionRadiationSum(int n, vector<double>& direction)
-     \param n
-     \param direction
-     \par 
-      As 9 but the other half of the upper hemisphere gives no radiation.
+/// 10.  \fn MJ Firmament::diffuseHalfRegionRadiationSum(int n, vector<double>& direction)
+///      \param n 
+///      \param direction
+///      \return As Firmament::diffuseRegionRadiationSum but the other half of the upper hemisphere gives no radiation.
+///      \retval direction The direction of the sector.
+  
+/// 11. \fn MJ Firmament::directHalfRegionRadiationSum(vector<double>& direction)
+///     \param direction
+///      \return As Firmament::diffuseHalfRegionRadiationSum but direct radiation
 
-11. \memberof Firmament MJ directHalfRegionRadiationSum(vector<double>& direction)
-    \param direction
-     \par 
-     As 10 but direct radiation
+/// 12.  \fn MJ Firmament::diffusePlaneSensor(void)
+///      \return The intensity of diffuse radiation on a horizontal plane.
 
-12.  \memberof Firmament MJ diffusePlaneSensor(void)
-     \par 
-      Intensity of diffuse radiation on a horizontal plane.
+/// 13.  \fn MJ Firmament::diffuseBallSensor(void)
+///      \return The intensity of diffuse radiation as recorded by a ball sensor.
 
-13.  \memberof Firmament MJ diffuseBallSensor(void)
-      \par 
-      Intensity of diffuse radiation as recorded by a ball sensor.
+/// 14.   \fn MJ Firmament::diffuseForestRegionRadiationSum(int n, float z, float x,  float la, float ke,
+///                                          float H, float Hc,vector<double>& direction,
+///                                          double density)
+///        
+///        \param   n        Number of region
+///        \param   z        Height of the point from ground, m
+///        \param   x        Distance of the point from the tree stem,  m
+///        \param  la       Needle area (total area) per tree (= sf * Wf),   m2
+///        \param  ke       Extinction cofficient  (= 0.14 for Scots pine),  unitless
+///        \param  H        Height of tree (h. of stand),  m
+///        \param  Hc       Height of the crown base of the tree (stand), m
+///        \param[out] direction  Direction of the region `n`
+///        \param  density  Density of the stand (trees/ha)
+///        \return The radiation sum (MJ) from the `n`:th region of the
+///                firmament as shaded by the neighboring stand
+///         \retval -1.0  If `n` < 0 or `n` > N-1 where N = total number of regions
+///         \par
+///          As Firmament::diffuseRegionRadiationSum but the point where the radiation is coming to is in a forest.
+///         \par
+///          The annual radiation sum (MJ) from the `n`:th region of the
+///          firmament as shaded by the neighboring stand to the  `direction` of `n`:th region.
+///          If n < 0 or n > total number of regions - 1, return -1.0.
+///         See comments in program code for more information about this method. \sa Firmament.cc          
 
-14.   \memberof Firmament MJ diffuseForestRegionRadiationSum(int n, float z, float x,  float la, float ke,
-                                         float H, float Hc,vector<double>& direction,
-                                         double density)
-       \par As 9. but the point where the radiation is coming to is in a forest.
-       \param   n        number of region
-       \param	z        height of the point from ground, m
-       \param   x        distance of the point from the tree stem,  m
-       \param  la       needle area (total area) per tree (= sf * Wf),   m2
-       \param  ke       extinction cofficient  (= 0.14 for Scots pine),  unitless
-       \param  H        height of tree (h. of stand),  m
-       \param  Hc       height of the crown base of the tree (stand), m
-       \param  density  Density of the stand (trees/ha)
-        \par OUTPUT:
-         The annual radiation sum (MJ) from the nth region of the
-         firmament as shaded by the neighboring stand
-	 direction  the direction of nth region
-         If n < 0 or n > total number of regions - 1, return -1.0
-        (see comments in program code for more information about this method)
+/// 15. \fn void Firmament::outDiff()
+///        \par
+///         Prints out ( cout << ) the diffuse radiation intensity sector by sector.
 
-15. \memberof Firmament void outDiff()
-       \par Prints out ( cout << ) the diffuse radiation intensity sector by sector.
+/// 16.  \fn void Firmament::outAz() 
+///       \par
+///       Prints out azimuths of sector mid points in all inclination zones.
 
-16.  \memberof Firmament void outAz() 
-      \par Prints out azimuths of sector mid points in all inclination zones.
+/// 17. \fn double Firmament::getInclination(int n)
+///       \param n The sky sector number
+///       \return The inclination (radians, 0...PI/2) of sector (middlepoint) n.
+///       \retval -1.0 if `n` is out of bounds.
 
-17. \memberof Firmament double getInclination(int n)
-      \param n
-      \par 
-      Returns the inclination (readians, 0...PI/2) of sector (middlepoint) n.
-      Returns -1.0, if n is out of bounds.
+/// 18. \fn double Firmament::getAzimuth(int n)
+///      \param n  The sky sector number
+///       \return the azimuth (radians, 0...2PI) of sector (middlepoint) n.
+///       \retval -1.0 if `n` is out of bounds.
 
-18. \memberof Firmament double getAzimuth(int n)
-     \param n
-      \par 
-      Returns the azimuth (radians, 0...2PI) of sector (middlepoint) n.
-      Returns -1.0, if n is out of bounds.
+/// 19. \fn int Firmament::getInclinationIndex(int n)
+///     \param n The sky sector number
+///      \return The index of inclination of sector `n` in TMatrix<double> diffuseRad
+///              where radiation is stored.
+///      \retval -1.0 if `n` is out of bounds.
 
-19. \memberof Firmament int getInclinationIndex(int n)
-    \param n
-     \par 
-     Returns the index of inclination of sector n in TMatrix<double> diffuseRad  where radiation is stored. Return -1 if n is out of bounds.
+/// 20. \fn int Firmament::getAzimuthIndex(int n)
+///     \param n The sector number
+///     \return Index of azimuth of sector `n` \sa getInclinationIndex.
+///     \retval -1.0 if `n` is out of bounds.
+///      
 
-20. \memberof Firmament int getAzimuthIndex(int n)
-    \param n
-    \par 
-     As getInclinationIndex but for azimuth.
+/// 21. \fn double Firmament::getSectorArea(int n)
+///     \param n Inclination class \sa getNoOfInclinations getInclinationIndex
+///     \return Area of sectors in each inclination class
+///     \retval -1.0, if `n` out of bounds.
 
-21. \memberof Firmament double getSectorArea(int n)
-    \param n
-    \par 
-    returns area of sectors in each inclination class
-    Returns -1, if n out of bounds.
+/// 22. \fn int Firmament::getNoOfInclinations()
+///     \return number of inclination classes.
 
-22. \memberof Firmament int getNoOfInclinations()
-    \par 
-    Returns number of inclination classes.
+/// 23. \fn PositionVector Firmament::getDirection(int n)const
+///      \param n The sector number
+///       \return The direction to the sector `n` 
 
-23. \memberof Firmament PositionVector getDirection(int n)const
-     \param n
-     \par 
-      Returns direction to sector n
+/// 24. \fn void Firmament::outInclinations()
+///     \par
+///      Prints out inclinations of inclination classes
 
-24. \memberof Firmament void outInclinations()
-    \par 
-     Prints out inclinations of inclination classes
+/// 25. \fn vector<pair<double,double> > Firmament::getIncAz()
+///     \return  Vector of inclinations and azimuths of all sectors
+/// =====================================================================================
 
-25. \memberof Firmament vector<pair<double,double> > getIncAz()
-    \par 
-     Return inclinations and azimuths of all sectors
-=====================================================================================
-*/
 
 class Firmament{
 public:

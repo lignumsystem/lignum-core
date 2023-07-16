@@ -48,7 +48,7 @@
 ///   respired    and   these    two   values    are    retrievable   with
 ///   `GetValue(tree,TreeP)`  and `GetValue(tree,TreeM)`. Also  new structural
 ///   units  are created.  Then  one can  allocate  the photosynthates  by
-///   executing the following schema using Bisection function in allocation
+///   executing the following schema using cxxadt::Bisection function in allocation
 ///   (i.e. using Bisection method to find a root of a function):
 ///   \verbatim
 ///        try{
@@ -169,12 +169,12 @@ namespace Lignum{
   }
 
   ///This method, overloaded function operator, implements P-M-G=0 and will be repeateadly
-  ///called by Bisection function
+  ///called by e.g. cxxadt::Bisection function
   template <class TS,class BUD,class ELONGATION,class DIAMETER_INCREMENT, class DATA>
   double LGMGrowthAllocator<TS,BUD,ELONGATION,DIAMETER_INCREMENT,DATA>::operator()(double l)const
   {
     
-    ///\subsection calloc Basic carbon allocation
+    ///\par Basic carbon allocation
     ///\snippet{lineno} LGMGrowthAllocator.h GAlloc
     ///\internal
     //[GAlloc]
@@ -264,7 +264,7 @@ namespace Lignum{
   template <class TS,class BUD,class ELONGATION,class ADD_ASSIGN,class DIAMETER_INCREMENT, class DATA>
   double LGMGrowthAllocator2<TS,BUD,ELONGATION,ADD_ASSIGN,DIAMETER_INCREMENT,DATA>::operator()(double l)const
   {
-    ///\subsection calloc2 Carbon allocation with reduction
+    ///\par Carbon allocation with reduction
     ///\snippet{lineno} LGMGrowthAllocator.h GAlloc2
     ///\internal
     //[GAlloc2]
