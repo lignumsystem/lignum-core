@@ -15,6 +15,7 @@
 #include <cmath>
 #include <iostream>
 #include <string>
+#include <sstream>
 #include <vector>
 #include <glob.h>
 #include <ParametricCurve.h>
@@ -30,21 +31,25 @@ namespace cxxadt{
   const int DSPACE_RANK2 = 2; ///< DataSpace rank 2D array (matrix)
   /// \brief Base class to create TMatrix2D from Lignum functions.
   ///
-  /// Create TMatrix2D from Lignum function files represented as cxxadt::ParametricCurve.
-  /// TMatrix2D can be stored in HDF5 file.
   /// \sa LGMHDF5File
   class LGMHDF5{
   public:
     /// Create TMatrix2D representation from Lignum function files
     /// \param v Function definition vector from ParametricCurve
-    /// \return TMatrix2D[N][2] where N is the number of (x,f(x)) points for  ParametricCurve
     /// \exception Undefined vector (i.e. v.size()==0) results TMatrix2D[1][2] with the row [std::nan std::nan]
+    /// \return TMatrix2D[N][2] where N is the number of (x,f(x)) points for  ParametricCurve
     /// \sa ParametricCurve
-    TMatrix2D<double> getLignumFnData(const vector<double>& v);
+    TMatrix2D<double> getLignumFnData(const vector<double>& v)const;
+    /// Create TMarix2D representation from Lignum paramter files (usually Tree*.txt)
+    /// \param fname Tree parameter file name
+    /// \exception If cannot open file return TMatrix2D[1][2] with the row [NULL NULL]
+    /// \return  TMatrix2D<string>[N][2] where N is the number of parameters in the file
+    /// \note Parameter values are also returned as strings
+    TMatrix2D<string> getLignumParameterData(const string& fname)const;
   };
   /// \brief Create HDF5 dataset file from 2D or 3D data arrays, or from a STL string.
   ///
-  /// After Lignum simulation all data is assumed to be in 2D or 3D arrays. LGMHDF5File can
+  /// After Lignum simulation all simulation data is assumed to be in 2D or 3D arrays. LGMHDF5File can
   /// create HDF5 datasets from the simulation data and produce a single HDF5 file.
   /// Future analysis can be done with R, python or other HDF5 compatible tool.
   /// Thus the LGMHDF5File class  does not (yet) have methods to read HDF5 files.
@@ -62,6 +67,9 @@ namespace cxxadt{
   /// \note R seems to use Fortran column-major ordering when reproducing dataframes from HDF5 file.
   /// Either accept this in data analysis or use matrix transposes to get the original dataset dimensions.
   /// \sa TMatrix2D TMatrix3D for 2D and 3D data arrays.
+  ///
+  /// \warning HDF5 does not *enforce* UTF-8. Using UTF-8 charactiers (like scandinavian alphabet)
+  /// May be OK on one platform but not on some others.
   class LGMHDF5File:public LGMHDF5{
   public:
     /// Constructor prepares the file `file_name` for datasets by creating HDF5 file.
@@ -91,34 +99,19 @@ namespace cxxadt{
     /// \param dataset_name Name of the dataset
     /// \param years Years  (rows) dimension
     /// \param cols Columns (data) dimension
-    /// \param data The 3D array of type *double*
-    /// \return -1 if error 0 otherwise
-    /// \exception DataSetIException
-    int createDataSet(const string& dataset_name, int years, int cols, const TMatrix2D<double>& data);
-    /// Create 3D array DataSet by giving explicitely the 3 dimensions and `data`
-    /// \param dataset_name Name of the dataset
-    /// \param years Years dimension
-    /// \param rows Rows (trees) dimension
-    /// \param cols Columns (data) dimension
-    /// \param data The 3D array of type *double*
-    /// \return -1 if error 0 otherwise
-    /// \exception DataSetIException
-    /// \note Technically 3D arrray `data` must be void*. It will be converted to
-    /// 3D array of NATIVE_DOUBLE HDF5 dataset of given dimensions. 
-    /// \sa writeDataSet
-    int createDataSet(const string& dataset_name, int years, int rows, int cols, void* data);
-    /// Create 2D array DataSet by giving explicitely the 2 dimensions and the `data`
-    /// \param dataset_name Name of the dataset
-    /// \param rows Rows dimension
-    /// \param cols Columns dimension
     /// \param data The 2D array of type *double*
     /// \return -1 if error 0 otherwise
     /// \exception DataSetIException
-    /// \note Technically 2D arrray `data` must be void*. It will be converted to
-    /// 2D array of NATIVE_DOUBLE  dataset of given dimensions.  
-    /// \sa writeDataSet
-    int createDataSet(const string& dataset_name, int rows, int cols, void* data);
-    /// Create dataset of containg one variable length string, for example content of a command line.
+    int createDataSet(const string& dataset_name, int years, int cols, const TMatrix2D<double>& data);
+    /// Create dataset from TMatrix2D<string>, usually Tree parameter files
+    /// \param dataset_name Name of the dataset
+    /// \param years Years  (rows) dimension
+    /// \param cols Columns (data) dimension
+    /// \param data The 2D array of type *stringe*
+    /// \return -1 if error 0 otherwise
+    /// \exception DataSetIException
+    int createDataSet(const string& dataset_name, int rows, int cols, const TMatrix2D<string>& data);
+    /// Create dataset of containg one string, for example the content of a command line.
     /// \param dataset_name Dataset name
     /// \param data Dataset string
     /// \return -1 if error 0 otherwise
@@ -149,9 +142,48 @@ namespace cxxadt{
     /// \note Traditionally the files for ParametricCurve have *.fun* suffix
     /// \sa glob
     int createFnDataSetsFromDir(const string& pattern, const string& hdf5_group, const string& attr_name, const vector<string>& col_names);
+    /// Create datasets from files that have Tree parameters. Wild card search.
+    /// \pre The file format is as used in tree parameters for Lignum
+    /// \param pattern Wild card pattern string for `glob` (in glob.h)
+    /// \param hdf5_group HDF5 group
+    /// \param attr_name Attribute name for the column names
+    ///	\param col_names Column names
+    /// \note Traditionally parameter files are named Tree*.txt.
+    int createParameterDataSetsFromDir(const string& pattern, const string& hdf5_group, const string& attr_name,const vector<string>& col_names);
+    /// Create datasets from files that are Metafiles. Wild card search
+    /// \pre The file format is as used in Metafiles for Lignum
+    /// \param pattern Wild card pattern string for `glob` (in glob.h)
+    /// \param hdf5_group HDF5 group
+    /// \param attr_name Attribute name for the Metafile data
+    ///	\param description Attribute data
+    /// \note Traditionally parameter files are named MetaFile*.txt.
+    int createMetaFileDataSetsFromDir(const string& pattern, const string& hdf5_group);
     /// Close the H5File `hdf5_file`. \sa hdf5_file
     void close();
   protected:
+    /// Create 3D array DataSet by giving explicitely the 3 dimensions and `data`
+    /// \param dataset_name Name of the dataset
+    /// \param years Years dimension
+    /// \param rows Rows (trees) dimension
+    /// \param cols Columns (data) dimension
+    /// \param data The 3D array of type *double*
+    /// \return -1 if error 0 otherwise
+    /// \exception DataSetIException
+    /// \note Technically 3D arrray `data` must be void*. It will be converted to
+    /// 3D array of NATIVE_DOUBLE HDF5 dataset of given dimensions. 
+    /// \sa writeDataSet
+    int createDataSet(const string& dataset_name, int years, int rows, int cols, void* data);
+    /// Create 2D array DataSet by giving explicitely the 2 dimensions and the `data`
+    /// \param dataset_name Name of the dataset
+    /// \param rows Rows dimension
+    /// \param cols Columns dimension
+    /// \param data The 2D array of type *double*
+    /// \return -1 if error 0 otherwise
+    /// \exception DataSetIException
+    /// \note Technically 2D arrray `data` must be void*. It will be converted to
+    /// 2D array of NATIVE_DOUBLE  dataset of given dimensions.  
+    /// \sa writeDataSet
+    int createDataSet(const string& dataset_name, int rows, int cols, void* data);
     /// Write the dataset to dataspace
     /// \param dset DataSet 
     /// \param data Lignum simulation data

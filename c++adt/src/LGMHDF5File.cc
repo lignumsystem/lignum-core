@@ -4,7 +4,7 @@
 #include <LGMHDF5File.h>
 
 namespace cxxadt{
-  TMatrix2D<double> LGMHDF5::getLignumFnData(const vector<double>& v)
+  TMatrix2D<double> LGMHDF5::getLignumFnData(const vector<double>& v)const
   {
     //Check if function is defined
     if (!v.empty()){
@@ -32,7 +32,44 @@ namespace cxxadt{
       return fn_data;
     }
   }
-  
+
+  TMatrix2D<string> LGMHDF5::getLignumParameterData(const string& fname)const
+  {
+    char buffer[100];
+    string pname;
+    double pvalue=0.0;
+    vector<string> v;
+    
+    fstream in_file(fname.c_str(),ios::in);
+    if (in_file.fail() || fname == ""){
+      cout << "LGMHDF5::getLignumParameterData: Error opening file: " << fname << endl;
+      // `std::nan` denotes function not defined
+      TMatrix2D<string> fn_data(1,2,NULL);
+      return fn_data;
+    }
+    //Skip whitespace and comments
+    in_file >> ws;
+    while (in_file.peek() == '#'){
+      in_file.getline(buffer,100);
+      in_file >> ws;
+    }
+    //Read the values to vector
+    while (in_file >> pname >> pvalue){
+      v.insert(v.end(),pname);
+      v.insert(v.end(),std::to_string(pvalue));
+    }
+    //Insert values to the matrix
+    //The vector `v` has always even number of elements
+    //and half of them denote the number of rows in `fn_parameters`
+    int rows = static_cast<int>((v.size())/2.0);
+    TMatrix2D<string> fn_parameters(rows,2);
+    for (unsigned int i=0,j=0; i < v.size()-1; i+=2,j++){
+	fn_parameters[j][0] = v[i];
+	fn_parameters[j][1] = v[i+1];
+    }
+    return fn_parameters;
+  }
+      
   LGMHDF5File::LGMHDF5File(const string& file_name)
     :hdf5_file(file_name,H5F_ACC_TRUNC)
   {
@@ -104,6 +141,7 @@ namespace cxxadt{
     return res;
   }
 
+  //2D matrix dataset for Lignum functions, double datatype
   int LGMHDF5File::createDataSet(const string& dataset_name, int years, int cols, const TMatrix2D<double>& data)
   {
     ///Copy TMatrix<2D> `data` to 2D array of double type 
@@ -117,6 +155,32 @@ namespace cxxadt{
     return createDataSet(dataset_name,years,cols,data_array2D);
   }  
 
+  //2D dataset for Lignum parameters , string datatype
+  int LGMHDF5File::createDataSet(const string& dataset_name, int rows, int cols, const TMatrix2D<string>& data)
+  {
+    vector<const char*> v_cstr;
+    for (int i = 0; i < rows; i++){
+      v_cstr.push_back(data[i][0].c_str());
+      v_cstr.push_back(data[i][1].c_str());
+    }
+    v_cstr.clear();
+    StrType str_type(PredType::C_S1, H5T_VARIABLE);
+    const int rank = 2;
+    hsize_t dims[rank];
+    dims[0]=rows;
+    dims[1]=cols;
+    //In practice vector length is 1.
+    //dims[0]=v_cstr.size();
+    //Dataspace for the dataset
+    DataSpace  dspace(rank,dims);
+    //Dataset itself
+    DataSet dset = hdf5_file.createDataSet(dataset_name, str_type, dspace);
+    //Write the content of the vector to dataset
+    dset.write(v_cstr.data(),str_type);
+    return 0;
+  }
+
+  //3D data set for double data tyoe
   int LGMHDF5File::createDataSet(const string& dataset_name, int years, int rows, int cols, void* data)
   {
     FloatType datatype(PredType::NATIVE_DOUBLE);
@@ -128,11 +192,8 @@ namespace cxxadt{
       dspace_dims[1] = rows;
       dspace_dims[2] = cols;
       DataSpace dspace(DSPACE_RANK3,dspace_dims);
-      cout << "DATASPACE DONE" <<endl;
       DataSet dset = hdf5_file.createDataSet(dataset_name,datatype,dspace);
-      cout << "DATASET DONE" << endl;
       int res = writeDataSet(dset, data);
-      cout << "WRITE DATASET DONE " << res << endl;
     }
     catch (DataSetIException error){
       error.printErrorStack();
@@ -141,6 +202,7 @@ namespace cxxadt{
     return 0;
   }
 
+  //2D dataset for Lignum functions
   int LGMHDF5File::createDataSet(const string& dataset_name, int rows, int cols, void* data)
   {
     FloatType datatype(PredType::NATIVE_DOUBLE);
@@ -161,6 +223,7 @@ namespace cxxadt{
     return 0;
   }
 
+  //Data set for command line string
   int LGMHDF5File::createDataSet(const string& dataset_name, const string& data)
   {
     //The vector to store the string
@@ -178,10 +241,12 @@ namespace cxxadt{
     DataSpace  dspace(rank,dims);
     //Dataset itself
     DataSet dset = hdf5_file.createDataSet(dataset_name, str_type, dspace);
-    //Write the conent of the vector to dataset
+    //Write the content of the vector to dataset
     dset.write(v_cstr.data(),str_type);
     return 0;
   }
+
+  //Create attribute data set for column names
   int LGMHDF5File::createColumnNames(const string& dset_name, const string& attr_name, const vector<string>& col_names)
   {
     ///Use variable length string type
@@ -211,6 +276,7 @@ namespace cxxadt{
     return 0;
   }
 
+  //Write dataset data of double tyoe
   int LGMHDF5File::writeDataSet(const DataSet& dset, void* data)
   {
     try{
@@ -236,12 +302,12 @@ namespace cxxadt{
     return v;
   }
 
+  //Wild card serach for Lignum function files, conventionally `*.fun` files
   int LGMHDF5File::createFnDataSetsFromDir(const string& pattern, const string& hdf5_group, const string& attr_name,
 					   const vector<string>& col_names)
   {
     glob_t glob_result;
     glob(pattern.c_str(),GLOB_TILDE,NULL,&glob_result);
-    vector<string> files;
     int res=0;
     for(unsigned int i=0;i<glob_result.gl_pathc;++i){
       string fname = glob_result.gl_pathv[i];
@@ -253,7 +319,44 @@ namespace cxxadt{
     globfree(&glob_result);
     return res;
   }
+
+  //Wild card search fro Lignum parameters files, conventionally `Tree*.txt` files 
+  int LGMHDF5File::createParameterDataSetsFromDir(const string& pattern, const string& hdf5_group, const string& attr_name,
+						  const vector<string>& col_names)
+  {
+    glob_t glob_result;
+    glob(pattern.c_str(),GLOB_TILDE,NULL,&glob_result);
+    int res=0;
+    for(unsigned int i=0;i<glob_result.gl_pathc;++i){
+	string fname = glob_result.gl_pathv[i];
+	TMatrix2D<string> hdf5data = getLignumParameterData(fname);
+	res=createDataSet(hdf5_group+fname,hdf5data.rows(),hdf5data.cols(),hdf5data);
+	res=createColumnNames(hdf5_group+fname,attr_name,col_names);
+    }
+    globfree(&glob_result);
+    return res;
+  }
+
+  //Wild card search for MetaFiles, conventionally `MetaFile*.txt` files
+  int LGMHDF5File::createMetaFileDataSetsFromDir(const string& pattern, const string& hdf5_group)
+  { 
+    glob_t glob_result;
+    glob(pattern.c_str(),GLOB_TILDE,NULL,&glob_result);
+    int res=0;
+    for(unsigned int i=0;i<glob_result.gl_pathc;++i){
+      string fname = glob_result.gl_pathv[i];
+      std::ifstream f(fname);
+      std::ostringstream oss;
+      oss << f.rdbuf();
+      string str_content = oss.str();
+      cout << "METAFILE " << str_content <<endl;
+      res=createDataSet(hdf5_group+fname,str_content);
+    }
+    globfree(&glob_result);
+    return res;
+  }
     
+  //Close HDF5 file for clean output of datasets to a file before exiting the program
   void LGMHDF5File::close()
   {
     hdf5_file.close();
