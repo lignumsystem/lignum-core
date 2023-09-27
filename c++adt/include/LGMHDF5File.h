@@ -157,7 +157,7 @@ namespace cxxadt{
     /// \param attr_name Attribute name for the Metafile data
     ///	\param description Attribute data
     /// \note Traditionally parameter files are named MetaFile*.txt.
-    int createMetaFileDataSetsFromDir(const string& pattern, const string& hdf5_group);
+    int createFileDataSetsFromDir(const string& pattern, const string& hdf5_group);
     /// Close the H5File `hdf5_file`. \sa hdf5_file
     void close();
   protected:

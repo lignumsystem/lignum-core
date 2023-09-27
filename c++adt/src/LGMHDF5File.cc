@@ -338,7 +338,7 @@ namespace cxxadt{
   }
 
   //Wild card search for MetaFiles, conventionally `MetaFile*.txt` files
-  int LGMHDF5File::createMetaFileDataSetsFromDir(const string& pattern, const string& hdf5_group)
+  int LGMHDF5File::createFileDataSetsFromDir(const string& pattern, const string& hdf5_group)
   { 
     glob_t glob_result;
     glob(pattern.c_str(),GLOB_TILDE,NULL,&glob_result);
@@ -349,7 +349,8 @@ namespace cxxadt{
       std::ostringstream oss;
       oss << f.rdbuf();
       string str_content = oss.str();
-      cout << "METAFILE " << str_content <<endl;
+      cout << "FILE " << fname <<endl;
+      cout << str_content <<endl;
       res=createDataSet(hdf5_group+fname,str_content);
     }
     globfree(&glob_result);
