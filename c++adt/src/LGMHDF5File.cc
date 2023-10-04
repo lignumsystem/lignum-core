@@ -349,8 +349,6 @@ namespace cxxadt{
       std::ostringstream oss;
       oss << f.rdbuf();
       string str_content = oss.str();
-      cout << "FILE " << fname <<endl;
-      cout << str_content <<endl;
       res=createDataSet(hdf5_group+fname,str_content);
     }
     globfree(&glob_result);
