@@ -28,17 +28,21 @@ public:
   /// Write Lignum tree to an XML file
   /// \param t Lignum tree, either coniferous or broad leaf
   /// \param f File name
-  /// \return true if success, false if file open error 
+  /// \return *true* if success
+  /// \return *false* if file open error 
   bool writeTreeToXML(Tree<TS,BUD>& t, const string& f);
   /// Write Lignum tree to an STL string
   /// \param t Lignum tree, either coniferous or broad leaf
   /// \return XML representation of the Lignum tree as stl::string
-  /// \post All white space in the return string removed
+  /// \post All extra white space in the return string removed
   /// \sa writeTreeToXML
   string xmlToString(Tree<TS,BUD>& t);
 };
 
 /// Helper function to write Lignum tree to an xml file
+/// \tparam TS Segment type
+/// \tparam BUD Bud type
+/// \tparam S Leaf shape type (default Ellipse)
 /// \param argc Number of command line parameters
 /// \param argv Command line
 /// \param t Lignum tree, either coniferous or broad leaf

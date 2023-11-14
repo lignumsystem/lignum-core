@@ -1,8 +1,19 @@
 #ifndef XMLDOMTREEWRITERI_H
 #define XMLDOMTREEWRITERI_H
-
 #include <list>
-#include <QApplication>
+///\file XMLDomTreeWriterI.h
+/// Write Lignum tree to a file as XML representation.
+/// Generate Lignum tree XML as std::string.
+///
+///\par Header file QApplication arrangement for Qt4 and Qt5
+///It seems Qt4 is becoming ever more difficult to maintain in MacPorts.
+///Qt5 seems to install and compile XMLTree for M1 processor and macOS Sonoma.
+///See the definition of XMLDomTreeWriterI.h for setting up QApplication header.
+//Qt4 QApplication include 
+//#include <QApplication>
+//Qt5 QApplication include 
+#include <QtWidgets/QApplication>
+//
 #include <QDomDocument>
 #include <QStack>
 #include <Lignum.h>
@@ -12,7 +23,6 @@
 
 using namespace Lignum;
 using namespace cxxadt;
-
 
 template <class TS, class BUD, class S>
 bool XMLDomTreeWriter<TS,BUD,S>::writeTreeToXML(Tree<TS, BUD>& tree, const string& fileName)
