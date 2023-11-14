@@ -7,6 +7,7 @@ Welcome to the lignum-core repository. The lignum-core implements the ubiquitous
 	+ stl-lignum: Implementatetation of the elementry tree units in LIGNUM
 	+ stl-voxelspace: VoxelSpace implementation
 	+ LEngine: L-system implementation
+ 	+ XMLTree: XML representation of the Lignum tree
 	+ qt-workbench: The LignumWB GUI implementation
 
 # Requirements
