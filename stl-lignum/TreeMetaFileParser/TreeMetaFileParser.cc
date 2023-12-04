@@ -1,13 +1,6 @@
 #include <TreeMetaFileParser.h>
 
-//Define the default files for parameters and functions
-//initialize file_mode to PARAMETER
-//I must rethink the functions part: it could become too complicated
-//to remember to update here and in TreeFriend.cc whenever new functions
-//emerge. One could have a list or vector of functions and let the 
-//user define the meaning of each one when implementing metabolic
-//processes. To access functions GetFunction(tree,1), GetFunction(tree,2)
-//or use of mnemonic enumerations should be implemented 
+
 TreeMetaFileParser::TreeMetaFileParser(const string& file)
   :file_mode(PARAMETER),meta_file(file)
 {
@@ -30,14 +23,12 @@ TreeMetaFileParser::TreeMetaFileParser(const string& file)
   file_tables[FUNCTION].insert("LGMVI","");
   //7.The effect of vigour index to the number of the buds. 
   file_tables[FUNCTION].insert("LGMVIONB","");
-
-
   //Initial tree. Possibly getting obsolete due to L-systems
   file_tables[INITIAL].insert("Tree","");
 }
 
 //Install the functions and parameters of the tree
-//1. Scan and parse the description file ("meta file"),
+//1. Scan and parse the description file ("MetaFile"),
 //   then the names of the actual files are known
 //2. Scan and parse the parameter and function files
 //   (i.e., then the parameters and functions are installed)
