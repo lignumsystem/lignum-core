@@ -206,6 +206,12 @@ namespace Lignum{
   ///AccumulateDown(tree,data,AddAssign(),DiameterGrowth()). Also a reduction term can be used.
   ///That is, the allocation is P-M-G-reduction=0
   ///\sa reduction
+  ///\tparam TS Tree segment
+  ///\tparam BUD Bud
+  ///\tparam ELONGATION Functor type to set segment length for new segments 
+  ///\tparam ADD_ASSIGN Functor type to pass diameter growth infomation down  in a tree
+  ///\tparam DIAMTER_INCREMENT Functor type to model diameter increment (e.g. pipe model) in a segment
+  ///\tparam DATA Data structure to pass information down in a tree necessary fro diamter growth
   template <class TS,class BUD,class ELONGATION,class ADD_ASSIGN,class DIAMETER_INCREMENT, class DATA>
   class LGMGrowthAllocator2{
   public:
@@ -235,8 +241,11 @@ namespace Lignum{
     double getP()const{return P;}
     double getM()const{return M;}
     double getL() const{return lambda;}
-    ///\param l The lambda carbon balance parameter
-    double operator()(double l) const;
+    ///Tree growth allocator functor.
+    ///\param L The lambda, \f$\lambda\f$, carbon balance parameter
+    ///\retval Net photosynthates allocated to growth: P-M-G-R, where R is the reduction.
+    ///\note Return value can be negative. \sa LGMGrowthAllocator2::reduction
+    double operator()(double L) const;
   private:
     Tree<TS,BUD>& t; ///< Tree the tree compartment belongs to 
     mutable DATA data;///< Data passed down needed in allocation
@@ -245,7 +254,8 @@ namespace Lignum{
     double P;///< Available photosynthates
     double M;///< Respiration, growth and maintenance
     mutable double lambda;///< The lambda in  G = iWs(l) + iWfnew(l) + iWrnew(l)
-    double reduction;///< A factor that can reduce available growth resource, that is, P - M
+    double reduction;///< A reduction factor R that can reduce available growth resource, that is, P-M-R=G
+                     ///< Default value 0.
     const ParametricCurve fgo;///< Segment length as function of Gravelius order  
     const ParametricCurve fip;///< Segment length as function of relative light
     const ParametricCurve fgomode;///< Segment length as funcition of Gravelius order after growth mode change

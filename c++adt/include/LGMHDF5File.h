@@ -105,9 +105,9 @@ namespace cxxadt{
     int createDataSet(const string& dataset_name, int years, int cols, const TMatrix2D<double>& data);
     /// Create dataset from TMatrix2D<string>, usually Tree parameter files
     /// \param dataset_name Name of the dataset
-    /// \param years Years  (rows) dimension
+    /// \param rows Rows (years) dimension
     /// \param cols Columns (data) dimension
-    /// \param data The 2D array of type *stringe*
+    /// \param data The 2D array of type *string*
     /// \return -1 if error 0 otherwise
     /// \exception DataSetIException
     int createDataSet(const string& dataset_name, int rows, int cols, const TMatrix2D<string>& data);
@@ -154,9 +154,7 @@ namespace cxxadt{
     /// \pre The file format is as used in Metafiles for Lignum
     /// \param pattern Wild card pattern string for `glob` (in glob.h)
     /// \param hdf5_group HDF5 group
-    /// \param attr_name Attribute name for the Metafile data
-    ///	\param description Attribute data
-    /// \note Traditionally parameter files are named MetaFile*.txt.
+    /// \note Traditionally parameter files are named in *MetaFile*.txt.
     int createFileDataSetsFromDir(const string& pattern, const string& hdf5_group);
     /// Close the H5File `hdf5_file`. \sa hdf5_file
     void close();
