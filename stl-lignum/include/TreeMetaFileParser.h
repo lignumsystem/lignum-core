@@ -3,6 +3,9 @@
 #include <stdlib.h>
 #include <Table.h>
 ///\file TreeMetaFileParser.h
+///\brief Parse initial configuration file usually called MetaFile.txt.
+///
+///Parse configuration files and install parameters, Firmament and functions.
 #include <Lex.h>
 
 using namespace cxxadt;
@@ -16,7 +19,7 @@ public:
   ///emerge. One could have a list or vector of functions and let the 
   ///user define the meaning of each one when implementing metabolic
   ///processes.
-  ///\param file The name of The MetaFile.
+  ///\param meta_file The name of The MetaFile.
   TreeMetaFileParser(const string& meta_file);
   ///Install the functions and parameters of the tree
   ///1. Scan and parse the description file ("MetaFile"),
@@ -36,16 +39,17 @@ public:
   string getFunctionFile(const string& type);
   ///Get the initial tree
   ///\param type Initial tree by its type
-  ///\retval Initial tree file name
-  ///\depricated L-systems describe initial trees 
+  ///\return Initial tree file name
+  ///\deprecated L-systems describe initial trees 
   string getTreeInitializationFile(const string& type);
 protected:
   ///Parse names for the actual files
   TreeMetaFileParser& parseMetaFile();
   ///Methods parseFiles() and parseFile() do the file name parsing
   ///one by one mutually recursively
-  TreeMetaFileParser& parseFiles();        
-  TreeMetaFileParser& parseFile();         //parsing one file at a time
+  TreeMetaFileParser& parseFiles();
+  ///Parsing one file at a time
+  TreeMetaFileParser& parseFile();         
 private:
   ///Saving parameters, functions and initial files 
   enum FILE_MODE {PARAMETER,FUNCTION,INITIAL};
@@ -54,7 +58,7 @@ private:
   Table<string,string> file_tables[3]; 
   ///MetaFile describes where the actual files exist
   string meta_file;
-  //Lexical analysator for tokenizing the input file
+  ///Lexical analysator for tokenizing the input file
   Lex lex;               
 };
 

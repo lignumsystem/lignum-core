@@ -1,8 +1,10 @@
+///\file TreeFriend.cc
 #include <MapParameterType.h>
 #include <LGMSymbols.h>
 
 namespace Lignum{
 
+  ///Initialize MapParameterType::lgmpd with parameter names 
   template <>
   MapParameterType<LGMPD>::MapParameterType()
   {

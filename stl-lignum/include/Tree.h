@@ -199,8 +199,7 @@ namespace Lignum{
 	
   private:
     TreeAttributes ta;
-    TreeParameters tp;
-    
+    TreeParameters tp;    
     TreeInitializationFiles tif;
     FirmamentWithMask f;
     Axis<TS,BUD> axis;
