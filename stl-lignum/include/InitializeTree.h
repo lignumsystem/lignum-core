@@ -2,9 +2,12 @@
 ///\brief Initialize tree starting from the main configuration file
 ///usually named *MetaFile.txt*.
 ///
-///Read MetaFile and then parameter files and function files.
-///Then install parameters and functions in a tree.
+///Lignum::InitializeTree reads the first configuration file *meta file* and
+///from there the parameter and function files. Then it installs parameters and functions in a tree.
+///It also reads and configures Firmament.
 ///
+///\anchor Reminder
+///\par Reminder and to do list for new parameters and functions
 ///\par For each new parameter
 ///-# New name in Lignum::LGMPD enumeration
 ///-# New member in class TreeParameters
@@ -38,7 +41,8 @@ namespace Lignum{
 
 	
   template <class TS, class BUD=DefaultBud<TS> >
-    ///Intitialize tree
+    ///Initialize tree with parameters, Firmament and functions.
+    ///\sa \ref Reminder and to do list for new items
     ///\tparam TS tree segment
     ///\tparam BUD bud
     class InitializeTree{
