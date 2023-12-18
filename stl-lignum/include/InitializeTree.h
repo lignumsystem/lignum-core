@@ -1,27 +1,31 @@
 ///\file InitializeTree.h
-///\brief Initialize tree starting from the main configuration file
+///\brief Initialize tree.
+///
+///Initiailize tree starting from the main configuration file
 ///usually named *MetaFile.txt*.
 ///
-///Lignum::InitializeTree reads the first configuration file *meta file* and
-///from there the parameter and function files. Then it installs parameters and functions in a tree.
-///It also reads and configures Firmament.
+///Lignum::InitializeTree reads the first main configuration file (a.k.a *meta file* ) and
+///from there the parameter and function file names as well as Firmament configuration file name.
+///Then it installs given parameters and functions as well as the Firmament in a tree.
+///Initialization can take place user defined times during the simulation.
 ///
-///\anchor Reminder
-///\par Reminder and to do list for new parameters and functions
-///\par For each new parameter
+///\anchor NewParamsAndFuncs
+///\par Steps to take to add  new parameters and functions
+///\par For each new parameter:
 ///-# New name in Lignum::LGMPD enumeration
-///-# New member in class TreeParameters
-///-# Add name to MapParameterType::lgmpd in MapParameterType constructor 
-///-# GetValue and SetValue for the new parameter name
+///-# New member in class Lignum::TreeParameters
+///-# Add the new name to MapParameterType::lgmpd in MapParameterType::MapParameterType() constructor 
+///-# Update Lignum::GetValue(const Tree<TS,BUD>&,const LGMPD) and Lignum::SetValue(Tree<TS,BUD>&,const LGMPD,const LGMdouble)
+///   for the new parameter name
 ///\sa Lignum::LGMPD Lignum::TreeParameters Lignum::MapParameterType
-///    Lignum::MapParameterType::MapParameterType()
+///    MapParameterType::MapParameterType()
 ///
-///\par For each new function
-///-# New name in LGMF enumeration
-///-# New member in class TreeFunctions
-///-# GetFunction and SetFunction for the new name
-///-# Add query for the new function for InitializeTree::tmfp
-///   in InitializeTree::initialize(). Section 3 for functions.
+///\par For each new function:
+///-# New name in Lignum::LGMF enumeration
+///-# New member in class Lignum::TreeFunctions
+///-# Update Lignum::GetFunction() and Lignum::SetFunction() for the new function name
+///-# Update InitializeTree::initialize() in section 3. Parse functions. Add ParametricCurve::install call
+///   via Tree::tf for the new function.
 ///\sa Lignum::LGMF Lignum::TreeFunctions Lignum::InitializeTree
 #ifndef INITIALIZE_TREE_H
 #define INITIALIZE_TREE_H
@@ -41,8 +45,11 @@ namespace Lignum{
 
 	
   template <class TS, class BUD=DefaultBud<TS> >
-    ///Initialize tree with parameters, Firmament and functions.
-    ///\sa \ref Reminder and to do list for new items
+    ///\brief Initialize tree.
+    ///
+    /// Initialize tree with parameters, Firmament and functions.
+    /// Initialization can happen user defined times during the simulation.
+    ///\sa \link NewParamsAndFuncs Steps to take to add new parameters and functions \endlink
     ///\tparam TS tree segment
     ///\tparam BUD bud
     class InitializeTree{

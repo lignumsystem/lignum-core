@@ -9,7 +9,7 @@ using namespace std;
 using namespace cxxadt;
 
 namespace Lignum{
-  ///\brief MapParameterType maps name of the parameter to its enumeration.
+  ///\brief Map the  name of the parameter to its enumeration.
   ///
   ///The class can be instantiated with different enumerations 
   ///found in LGMSymbols.h (for template T).
