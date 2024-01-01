@@ -90,15 +90,19 @@ namespace Lignum{
     LGMdouble e2;            ///<See Sievanen R 1993 Scand. J. For. Res 8: 28-48.
   };
  
-  ///TreeAttributes  are  in a  (long)  vector  indexed by  enumeration
-  ///LGMTAD defined in LGMSymbols.h
+  ///TreeAttributes  are  in a vector  indexed by  enumeration
+  ///Lignum::LGMTAD defined in LGMSymbols.h
   class TreeAttributes{
   public:
     TreeAttributes(int size = LGMTADLENGTH): v(size,0.0) { }
-    vector<LGMdouble> v;
+    vector<LGMdouble> v; ///< Attribute vector
   };
 
-  ///Tree functions are implemented with ParametricCurve
+  ///\brief Tree functions.
+  ///
+  /// Tree functions are implemented with ParametricCurve.
+  ///To implement and add new functions see Lignum::InitializeTree and the section
+  ///\link NewParamsAndFuncs Steps to take to add new parameters and functions \endlink
   class TreeFunctions{
   public:
     ParametricCurve nb;   ///<number of new buds
@@ -120,6 +124,7 @@ namespace Lignum{
     ///effect the value is always 1 of
     ///this function
     ParametricCurve VigourOnNumBuds;
+    ParametricCurve go; ///< Gravelius order effect on segment length
   };
 
   class TreeInitializationFiles{
@@ -194,15 +199,15 @@ namespace Lignum{
 
     void photosynthesis();
     void respiration();
-    TreeFunctions tf;  //cvs update
+    TreeFunctions tf;  ///< Tree functions
 
 	
   private:
-    TreeAttributes ta;
-    TreeParameters tp;    
-    TreeInitializationFiles tif;
-    FirmamentWithMask f;
-    Axis<TS,BUD> axis;
+    TreeAttributes ta; ///< Tree level attributes
+    TreeParameters tp; ///< Tree parameters   
+    TreeInitializationFiles tif; ///< Tree initialization file names
+    FirmamentWithMask f; ///< Firmament for the tree
+    Axis<TS,BUD> axis; ///< The main axis for the tree
   };
 
 
