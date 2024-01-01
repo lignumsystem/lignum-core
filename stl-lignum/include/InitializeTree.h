@@ -24,9 +24,17 @@
 ///-# New name in Lignum::LGMF enumeration
 ///-# New member in class Lignum::TreeFunctions
 ///-# Update Lignum::GetFunction() and Lignum::SetFunction() for the new function name
-///-# Update InitializeTree::initialize() in section 3. Parse functions. Add ParametricCurve::install call
-///   via Tree::tf for the new function.
-///\sa Lignum::LGMF Lignum::TreeFunctions Lignum::InitializeTree
+///-# Insert the function to Lignum::FUNCTION section in Lignum::TreeMetaFileParser::file_tables in
+///   Lignum::TreeMetaFileParser::TreeMetaFileParser constructor 
+///-# Update InitializeTree::initialize() in section \link ParseFunctions 3. Parse functions \endlink:<br>
+///   - Add ParametricCurve::install call via Tree::tf for the new function.
+///\sa Lignum::LGMF Lignum::TreeFunctions, Lignum::InitializeTree, Lignum::TreeMetaFileParser
+///
+///\attention Do not rush to add new functions to Lignum::Tree. You can and should experiment
+///with tree functions in the ongoing project that has a subclass from Lignum::Tree. Use overloaded
+///SetFunction and GetFunction with enumeration function names. If functions are proven to be useful
+///and consensus acieved add functions to Lignum::Tree for later use. Note that Lignum namespace
+///protects functions and enumarated function names in Lignum::Tree.
 #ifndef INITIALIZE_TREE_H
 #define INITIALIZE_TREE_H
 
@@ -66,15 +74,12 @@ namespace Lignum{
 	tmfp.parse();
       }
       ///Read and install parameters and functions for the tree
-      ///-# Read and install tree parameters
-      ///-# Read and configure Firmament
-      ///-# Read and install functions
-      ///To view the list of known functions see LGMFM enumeration.
+      ///To view the list of known functions see Lignum::LGMFM enumeration.
       ///\param t Tree
-      ///\param style Initialization mode OLD_INIT or NEW_INIT.
+      ///\param style Initialization mode Lignum::OLD_INIT or Lignum::NEW_INIT.
       ///             OLD_INIT: single mask file for Firmament,
       ///             NEW_INIT: sequence of mask files for Firmament
-      ///\sa Lignum::LGMFM
+      ///\sa Lignum::LGMFM enumeration
       void initialize(Tree<TS,BUD>& t, LGMINITSTYLE style = OLD_INIT);
       private:
       TreeMetaFileParser tmfp; ///< Tree configuration file parser

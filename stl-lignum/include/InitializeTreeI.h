@@ -1,3 +1,5 @@
+///\file IntializeTreeI.h
+///\brief Implementation of InitializeTree::initialize 
 #ifndef INITIALIZE_TREEI_H
 #define INITIALIZE_TREEI_H
 
@@ -9,7 +11,8 @@ namespace Lignum{
       Lex lex;
       map<string,LGMPD,Cmpstring>::iterator itpd =  maplgmpd.begin();
       
-      //1. Parse parameters for a tree
+      ///\par 1. Parse parameters for a tree
+      ///Retrieve the parameter file for tree, parse for parameter (name, value) pairs  and install parameters 
       string file = tmfp.getParameterFile("Tree");
       if (verbose){
 	cout << "Reading parameters for tree from: " << file.c_str() << endl;
@@ -44,7 +47,8 @@ namespace Lignum{
 	name = lex.getToken();
       }
       
-      //2. Configure the firmament
+      ///\par 2. Configure the firmament
+      ///The firmament can have one (OLD_INIT) or many mask files (NEW_INIT)
       file = tmfp.getParameterFile("Firmament");
       if (verbose){
 	cout << "Reading Configuration for Firmament from: " << file.c_str() << endl;
@@ -74,8 +78,14 @@ namespace Lignum{
 		 GetFirmament(tree).getPlaneChange() << "  Ballsensor:  " <<
 		 GetFirmament(tree).getBallChange() << endl;
       }
-      //3. Parse functions for a tree
+      ///\anchor ParseFunctions
+      ///\par 3. Parse functions for a tree
+      ///Retrieve the function by name and install it via *tree.tf*.
+      ///As an example:
       //1.
+      ///\snippet{lineno} InitializeTreeI.h InstallFunc
+      ///\internal
+      //[InstallFunc]
       file = tmfp.getFunctionFile("LGMAL");
       if (verbose){
 	cout << "Configuring functions" << endl;
@@ -86,6 +96,8 @@ namespace Lignum{
 	}
 	tree.tf.al.install(file);
       }
+      //[InstallFunc]
+      ///\endinternal
       //2.
       file = tmfp.getFunctionFile("LGMFM");
       if (file != string("")){
@@ -133,6 +145,14 @@ namespace Lignum{
 	  cout << "Reading LGMVIONB from: " << file << endl;
 	}
 	tree.tf.VigourOnNumBuds.install(file);
+      }
+      //8.
+      file = tmfp.getFunctionFile("LGMGO");
+      if (file != string("")){
+	if (verbose){
+	  cout << "Reading LGMGO from: " << file << endl;
+	}
+	tree.tf.go.install(file);
       }
     }
 }//closing namespace Lignum

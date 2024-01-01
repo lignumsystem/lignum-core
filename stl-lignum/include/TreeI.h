@@ -348,6 +348,10 @@ const ParametricCurve& GetFunction(const Tree<TS,BUD>& tree, LGMF name)
     return tree.tf.VigourOnNumBuds;
   }
 
+  else if (name == LGMGO){
+    return tree.tf.go;
+  }
+  
   else{
     cerr << "GetFunction unknown function: " << name << endl;
   }
@@ -386,6 +390,10 @@ void SetFunction(Tree<TS,BUD>& tree, ParametricCurve& f, LGMF name)
     tree.tf.VigourOnNumBuds = f;
   }
 
+  else if (name == LGMGO){
+    tree.tf.go = f;
+  }
+  
   else{
     cerr << "SetFunction unknown function: " << name << endl;
     throw ParametricCurve();

@@ -20,9 +20,9 @@
 ///\note Enumeration values are prefixed with LGA, LGP etc.
 
 namespace Lignum{
-  ///LGMAD: LIGNUM Attribute Double  
+  ///Lignum Attributes double  
   ///
-  ///These symbols are used to access (GetValue, SetValue) the
+  ///These symbols are used to access (with GetValue, SetValue) the
   ///variables (either attributes or other variables) of TreeSegment,
   ///Bud, BrachingPoint, BroadLeaf in LIGNUM (in any compartment
   ///except Tree). As regards GetValue, it may be that the value
@@ -98,13 +98,10 @@ namespace Lignum{
     LGAT,            ///< 66   \attention Not used
   };
 
-  /// LGMPD: LIGNUM Parameter Double
+  /// \brief Lignum Parameters double
   ///   
-  /// These symbols are used to access (GetValue, SetValue) parameters
-  /// in any compartment (predominantly Tree) of LIGNUM. A parameter is
-  /// basically a variable that remains constant during
-  /// simulation. Depending on application, quantity can be either
-  /// variable or parameter.
+  /// These symbols are used to access (with GetValue, SetValue) parameters
+  /// in any Lignum::TreeCompartment of LIGNUM. 
   ///
   /// Keep the LGMPD enumeration in sync with MapLGMPD table constructor
   /// in TreeFriend.cc. MapLGMPD maps the names of  the parameters found
@@ -141,14 +138,16 @@ namespace Lignum{
     LGPe2  ///< See Sievanen R 1993 Scand. J. For. Res 8: 28-48.
   };//end enum LGMPD
   
-  /// LGMTAD: LIGNUM Tree Attribute double.
+  ///\brief Number of names in Lignum::LGMTAD enumerations.
   ///
-  ///Set LGMTADLENGTH to the number of enumerations in LGMTAD.  It will
-  ///intialize  the   vector<LGMdouble>  in  the class   Tree  holding  the
-  ///attribute values.
+  ///Lignum::LGMTADLENGTH will be used to intialize  the Lignum::TreeAttributes::v  vector in
+  ///Lignum::Tree::ta holding  the attribute values.
+  //\attention Set LGMTADLENGTH to the number of enumerations in Lignum::LGMTAD. 
   const int LGMTADLENGTH=8;
 
-  /// Tree attribute names 
+  ///\brief Lignum::TreeAttributes double names.
+  ///
+  ///\attention Set Lignum::LGMTADLENGTH to  number of names in Lignum::LGMTAD enumeration.
   enum LGMTAD {
     Treelambda,       ///< lambda s.t. P-M=G(lamda)
     Treelb,           ///< Longest branch \pre Needs update before valid
@@ -169,15 +168,27 @@ namespace Lignum{
     LGMLONB,  ///< The effect of light to number of the buds. 		  
     LGMNB,    ///< Number of buds						  
     LGMVI,    ///< Function of vigour index				           
-    LGMVIONB  ///< The effect of vigour index to the number of the buds. If no effect the value is always 1 of this function       	  
+    LGMVIONB, ///< The effect of vigour index to the number of the buds. If no effect the value is always 1 of this function
+    LGMGO     ///< The effect of Gravelius order in tree segment length    
   };
   ///Types of files used to initialize Tree \sa TreeMetaFileParser
-  enum FILE_MODE {PARAMETER,FUNCTION,GRAPHICS,INITIAL};
+  enum FILE_MODE {
+    PARAMETER, ///< Retrieve parameters
+    FUNCTION,  ///< Retrieve and install functions
+    GRAPHICS,  ///< Visualization
+    INITIAL    ///< InitialTree
+  };
   ///If needed you may design verbose output for example
   ///when initializing trees 
-  enum LGMVERBOSE {QUIET,VERBOSE};
-  ///\todo Document this differerence between old and new initialization
-  enum LGMINITSTYLE {OLD_INIT,NEW_INIT};
+  enum LGMVERBOSE {
+      QUIET,  ///< No output
+      VERBOSE ///< Verbose output
+  };
+  ///Firmameny initialization
+  enum LGMINITSTYLE {
+    OLD_INIT,///< One mask file allowed for Firmament
+    NEW_INIT ///< Many mask files allowed for Firmament
+  };
 
   ///\deprecated Used with experimental TreeSegmentWithFlow 
   enum LGMFLOW { fin, fout, Pr, Wm };
