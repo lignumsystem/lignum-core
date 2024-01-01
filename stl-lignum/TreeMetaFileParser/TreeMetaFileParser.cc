@@ -1,6 +1,6 @@
 #include <TreeMetaFileParser.h>
 
-
+namespace Lignum{
 TreeMetaFileParser::TreeMetaFileParser(const string& file)
   :file_mode(PARAMETER),meta_file(file)
 {
@@ -23,6 +23,8 @@ TreeMetaFileParser::TreeMetaFileParser(const string& file)
   file_tables[FUNCTION].insert("LGMVI","");
   //7.The effect of vigour index to the number of the buds. 
   file_tables[FUNCTION].insert("LGMVIONB","");
+  //8.The effect of Gravelius order on segment length
+  file_tables[FUNCTION].insert("LGMGO","");
   //Initial tree. Possibly getting obsolete due to L-systems
   file_tables[INITIAL].insert("Tree","");
 }
@@ -136,6 +138,7 @@ TreeMetaFileParser& TreeMetaFileParser::parseFile()
   }
 }
 
+}//End namespace Lignum
 
 #ifdef INITIALIZE_TREE
 void Usage()

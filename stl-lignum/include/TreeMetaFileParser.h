@@ -10,6 +10,10 @@
 
 using namespace cxxadt;
 
+namespace Lignum{
+///\brief Parse meta file for the tree.
+///
+///Parse file that lists the files for parameters and functions for the tree
 class TreeMetaFileParser{
 public:
   ///Define the default files for parameters and functions
@@ -62,7 +66,7 @@ private:
   Lex lex;               
 };
 
-
+}//End namespace Lignum
 #endif //TREE_METAFILE_PARSER_H
 
 
