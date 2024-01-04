@@ -91,6 +91,10 @@ namespace cxxadt{
     //Axis of rotation is at end of petiole (at intersection of perimeter and major axis)
     void turn(const double& angle);
 
+    void move(const Point& mov) {
+      center = center + mov;
+    }
+
 
   private:
     Point center;
