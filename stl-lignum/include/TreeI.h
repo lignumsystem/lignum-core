@@ -463,7 +463,8 @@ LGMdouble GetValue(const Tree<TS,BUD>& tree, const LGMAD name)
     BUD* bud = dynamic_cast<BUD*>(ls.back());
     LGMdouble height = 0.0;
     if (bud){
-      height = GetPoint(*bud).getZ();
+                //If starting point Z of axis not equal to 0
+      height = GetPoint(*bud).getZ() - GetPoint(*ls.front()).getZ();
     }
     return height;
   }
