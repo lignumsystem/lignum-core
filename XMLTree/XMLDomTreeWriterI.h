@@ -5,14 +5,18 @@
 /// Write Lignum tree to a file as XML representation.
 /// Generate Lignum tree XML as std::string.
 ///
-///\par Header file QApplication arrangement for Qt4 and Qt5
+///\par QApplication arrangement for Qt4 and Qt5
 ///It seems Qt4 is becoming ever more difficult to maintain in MacPorts.
-///Qt5 seems to install and compile XMLTree for M1 processor and macOS Sonoma.
-///See the definition of XMLDomTreeWriterI.h for setting up QApplication header.
+///So far both Qt4 and Qt5 can compile XMLTree for M1 processor and macOS Sonoma.
+///XMLDomTreeWriterI.h checks QT_VERSION and includes QApplications accordingly
 //Qt4 QApplication include 
-//#include <QApplication>
-//Qt5 QApplication include 
+#include <QtGlobal>
+#if QT_VERSION < QT_VERSION_CHECK(5,0,0)
+#include <QApplication>
+//Qt5 QApplication include
+#else
 #include <QtWidgets/QApplication>
+#endif
 //
 #include <QDomDocument>
 #include <QStack>
