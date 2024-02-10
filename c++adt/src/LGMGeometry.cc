@@ -1,23 +1,9 @@
 #include <LGMGeometry.h>
-
-//These functions are for geometrical calculations
+///\file LGMGeometry.cc
+///\brief Functions for geometery on segments, e.g. triangularization.
 
 namespace cxxadt{
 
-  //This function triangularizes a round frustrum (cylinder if base
-  //and top diameters are equal) - not the end disks. The frustrum is
-  //first approximated as a set of parallellograms. They are then each
-  //divided into two triangles.
-
-  //Input: Number of facets (parallellograms).
-  //       Base (middle point) of frustrum
-  //       Direction of the frustrum (direction from middle point at base to middlepoint at top)
-  //       Height of frustrum
-  //       Radii at base and in the top
-
-  //No checks for reasonable input are made.
-
-  //Output: list of triangles
 
   list<LGMTriangle> LGMTriangularize(const int& n_facets, const Point& base, const PositionVector& direction, 
 					      const double& H,
@@ -66,17 +52,6 @@ namespace cxxadt{
 
   }
 
-  //This function triangularizes a circle. It follows the convention of LGMTriangularize that
-  //triangularizes a round frustrum by defining outside by a normal (it must be input).
-
-  //Input: Number of facets.
-  //       Center of the circle
-  //       Normal of the circle showing the outside of the 
-  //       Radius
-
-  //No checks for reasonable input are made.
-
-  //Output: list of triangles
 
   list<LGMTriangle> LGMTriangularizeCircle(const int& n_facets, const Point& center, const PositionVector& normal, 
 					      const double& R) {
