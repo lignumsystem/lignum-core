@@ -221,10 +221,6 @@ namespace Lignum{
     ///\param tree The tree
     ///\param d The data to be used
     ///\param functor The user defined functor for data instead of default '+='
-    ///\param fgo1 Segment length as f(go)
-    ///\param fip1 Segment length as f(ip)
-    ///\param fgo2 Segment length as f(go) after growth mode change
-    ///\param fip2 Segment length as f(ip) after growth mode change
     LGMGrowthAllocator2(Tree<TS,BUD>& tree,DATA d, ADD_ASSIGN functor)
       :t(tree),data(d),data_orig(d),f(functor),P(0.0), M(0.0), reduction(0.0){init();}
     ///\param tree The tree

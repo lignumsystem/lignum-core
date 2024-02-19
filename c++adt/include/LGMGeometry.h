@@ -29,7 +29,7 @@ namespace cxxadt{
       setNormal(norm);
     }
     ///The Triangle normal is explicitely given
-    ///\param lefcorner Left corner of the Triangle
+    ///\param leftcorner Left corner of the Triangle
     ///\param rightcorner Right corner of the Triangle
     ///\param apexcorner Apex corner of the triangle
     ///\param no Triangle normal

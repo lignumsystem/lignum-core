@@ -1,4 +1,4 @@
-///\file IntializeTreeI.h
+///\file InitializeTreeI.h
 ///\brief Implementation of InitializeTree::initialize 
 #ifndef INITIALIZE_TREEI_H
 #define INITIALIZE_TREEI_H
