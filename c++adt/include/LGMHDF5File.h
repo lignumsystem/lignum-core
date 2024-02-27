@@ -74,6 +74,7 @@ namespace cxxadt{
   public:
     /// Constructor prepares the file `file_name` for datasets by creating HDF5 file.
     /// Previous existing file will be truncated.
+    /// \param file_name HDF5 file name
     /// \exception DataSpaceIException
     /// \sa hdf5_file
     LGMHDF5File(const string& file_name);
