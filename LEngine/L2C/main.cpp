@@ -89,7 +89,7 @@ int main(int argc, char** argv)
 	}
 	catch (const char* msg)
 	{
-		fprintf(stderr, msg);
+	  fprintf(stderr,"%s", msg);
 	}
 	return 0;
 }
@@ -104,9 +104,9 @@ void lerror(const char* fmt, ...)
 	static char msg[1025];
 	va_list args;
 	va_start(args, fmt);
-	vsprintf(aux, fmt, args);
+	vsnprintf(aux, sizeof(aux),fmt, args);
 	va_end(args);
-	sprintf(msg, "Error: %s in %s line %d. Current token: %s\n", aux, FileName, lineno, ltext);
+	snprintf(msg,sizeof(msg), "Error: %s in %s line %d. Current token: %s\n", aux, FileName, lineno, ltext);
 	throw msg;
 }
 
@@ -115,7 +115,7 @@ void lwarning(const char* fmt, ...)
 	static char msg[1025];
 	va_list args;
 	va_start(args, fmt);
-	vsprintf(msg, fmt, args);
+	vsnprintf(msg,sizeof(msg), fmt, args);
 	va_end(args);
 	fprintf(stderr, "Warning/Info: %s in %s line %d. Current token: %s\n", msg, FileName, lineno, ltext);
 }
