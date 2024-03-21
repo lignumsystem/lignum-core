@@ -119,6 +119,7 @@
 #ifndef LGMGROWTHALLOCATOR_H
 #define LGMGROWTHALLOCATOR_H
 #include <TreeCompartment.h>
+#include <TreeGrowthAllocator.h>
 namespace Lignum{
   /// Growth allocation mode
   enum LGMALLOCATORMODE {LGMALLOCATE,///< Allocation mode
@@ -251,12 +252,16 @@ namespace Lignum{
                      ///< Default value 0.
   };
 
-  ///Initialize available photosynthates and respiration
+  ///\brief Initialize available photosynthates and respiration
+  ///\exception TreeGrowthAllocatorException Exception raised if P < M 
   template <class TS,class BUD,class ELONGATION,class ADD_ASSIGN,class DIAMETER_INCREMENT, class DATA>
   void LGMGrowthAllocator2<TS,BUD,ELONGATION,ADD_ASSIGN,DIAMETER_INCREMENT,DATA>::init()
   {
     P = GetValue(t,TreeP);
     M = GetValue(t,TreeM);
+    if (P < M){
+      throw TreeGrowthAllocatorException(P,M);
+    }
   }
 
   //This method, overloaded function operator, implements P-M-G-reduction=0
