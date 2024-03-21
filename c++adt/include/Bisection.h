@@ -21,7 +21,7 @@ using namespace std;
 
 namespace cxxadt{
 
-#define MAX_ITER 100
+  const int MAX_ITER = 100;
   ///Exception thrown in BracketFunction if bracket fails
   class BracketFunctionException{
   public:
@@ -59,14 +59,15 @@ namespace cxxadt{
   class BisectionMaxIterationException{
   public:
     BisectionMaxIterationException(double fa, double fb, double fmid,
-				   double a,double b, double mid)
-      :fao(fa),fbo(fb),fc(fmid),ao(a),bo(b),c(mid){}
+				   double a,double b, double mid, int iter=MAX_ITER)
+      :fao(fa),fbo(fb),fc(fmid),ao(a),bo(b),c(mid),max_iter(iter){}
     double getFa()const{return fao;}
     double getFb()const{return fbo;}
     double getFc()const{return fc;}
     double getA()const{return ao;}
     double getB()const{return bo;}
     double getC()const{return c;}
+    double getMaxIter()const{return max_iter;}
   private:
     double fao;///< The original fa 
     double fbo;///< The original fb
@@ -74,6 +75,7 @@ namespace cxxadt{
     double ao; ///< The original a (fao=F(ao))
     double bo; ///< The original b (fbo=F(bo))
     double c;  ///< The last c, s.t. fc = F(c)
+    int max_iter;///< Maximum iterations
   };
 
   ///Bracket the function `f` by increasing the value of `b` by 20% in each iteration
