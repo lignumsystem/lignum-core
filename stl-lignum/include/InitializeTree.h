@@ -76,9 +76,9 @@ namespace Lignum{
       ///Read and install parameters and functions for the tree
       ///To view the list of known functions see Lignum::LGMFM enumeration.
       ///\param t Tree
-      ///\param style Initialization mode Lignum::OLD_INIT or Lignum::NEW_INIT.
-      ///             OLD_INIT: single mask file for Firmament,
-      ///             NEW_INIT: sequence of mask files for Firmament
+      ///\param style Initialization mode Lignum::OLD_INIT or Lignum::NEW_INIT.<br>
+      ///             Lignum::OLD_INIT: single mask file for Firmament,<br>
+      ///             Lignum::NEW_INIT: sequence of mask files for Firmament
       ///\sa Lignum::LGMFM enumeration
       void initialize(Tree<TS,BUD>& t, LGMINITSTYLE style = OLD_INIT);
       private:

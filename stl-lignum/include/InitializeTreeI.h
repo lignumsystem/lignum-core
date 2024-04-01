@@ -12,7 +12,7 @@ namespace Lignum{
       map<string,LGMPD,Cmpstring>::iterator itpd =  maplgmpd.begin();
       
       ///\par 1. Parse parameters for a tree
-      ///Retrieve the parameter file for tree, parse for parameter (name, value) pairs  and install parameters 
+      ///Retrieve the parameter file for tree, parse for parameter names for their values and install parameters 
       string file = tmfp.getParameterFile("Tree");
       if (verbose){
 	cout << "Reading parameters for tree from: " << file.c_str() << endl;
@@ -48,7 +48,7 @@ namespace Lignum{
       }
       
       ///\par 2. Configure the firmament
-      ///The firmament can have one (OLD_INIT) or many mask files (NEW_INIT)
+      ///The firmament can have one (Lignum::OLD_INIT) or many mask files (Lignum::NEW_INIT)
       file = tmfp.getParameterFile("Firmament");
       if (verbose){
 	cout << "Reading Configuration for Firmament from: " << file.c_str() << endl;
@@ -80,7 +80,19 @@ namespace Lignum{
       }
       ///\anchor ParseFunctions
       ///\par 3. Parse functions for a tree
-      ///Retrieve the function by name and install it via *tree.tf*.
+      ///Retrieve the function by name and install it via \p tree.tf.
+      ///The following functions are known and installed if the corresponding file exists:
+      ///+ Lignum::LGMAL
+      ///+ Lignum::LGMFM
+      ///+ Lignum::LGMIP
+      ///+ Lignum::LGMLONB
+      ///+ Lignum::LGMNB
+      ///+ Lignum::LGMVI
+      ///+ Lignum::LGMVIONB
+      ///+ Lignum::LGMGO
+      ///
+      ///All other (experimental) functions must be installed in the related program.
+      ///The list of known functions can be extended following the implementation pattern.
       ///As an example:
       //1.
       ///\snippet{lineno} InitializeTreeI.h InstallFunc
