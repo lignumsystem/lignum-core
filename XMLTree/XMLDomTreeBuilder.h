@@ -1,32 +1,44 @@
 #ifndef XMLDOMTREEBUILDER_H
 #define XMLDOMTREEBUILDER_H
-
-
+///\file XMLDomTreeBuilder.h
+///\brief  Class for building a DOM-document of a given Tree-object.
 //#include <list>
 //#include <QApplication>
 #include <QDomDocument>
 #include <QStack>
+#include <Kite.h>
 #include <Lignum.h>
 //#include <string>
 
 using namespace Lignum;
 using namespace cxxadt;
 
-/**
- * Class for building a DOM-document of a given Tree-object.
- * DOM-document is a representation of a XML-document, which can be
- * written to a file. 
- *
- * Note: This class is ONLY for building the DOM-document. To write
- * it to a XML-file use XMLDomTreeWriter-class. 
- */   
+
+///\brief Class for building a DOM-document of a given Tree-object.
+///
+///XML DOM-document is a representation of a XML-document, which can be
+///written to a file. 
+///\note This class is ONLY for building the DOM-document. To write
+///XML DOM document to an XML-file use XMLDomTreeWriter-class.
+///\tparam TS Tree segment
+///\tparam BUD Bud
+///\tparam S Leaf shape
 template <class TS, class BUD, class S=cxxadt::Ellipse>
 class XMLDomTreeBuilder
 {
 public:
   XMLDomTreeBuilder(QDomDocument& doc, QDomElement& root, Tree<TS,BUD>& tree)
 : object_index(0), m_tree(tree), m_doc(doc), m_root(root), segmentTypeFound(false), leafTypeFound(false) {}
-  QDomElement& operator() (QDomElement&, TreeCompartment<TS, BUD>*)const ;
+ 
+  ///\brief Functor building the DOM-document.
+  ///
+  ///Call PropagateUp algorithm with the Tree-object and
+  ///this functor as a arguments to build the DOM-document.
+  ///Two stacks are used to keep track of traversal in the tree.
+  ///\param e QDom element
+  ///\param tc Tree Compartment
+  ///\retval e Updated QDom element
+  QDomElement& operator() (QDomElement& e, TreeCompartment<TS, BUD> *tc)const ;
   void addTreeCompartmentAttributeNode(QDomElement&, QDomDocument&, TreeCompartment<TS,BUD>*)const;
   void addTreeAttributeNode(QDomElement&, QDomDocument&, Tree<TS,BUD>*)const; 
   void addTreeParameterNode(QDomElement&, QDomDocument&, Tree<TS,BUD>*)const;
@@ -50,7 +62,7 @@ private:
   mutable QStack<QDomElement> m_segstack;
 };
 
-/**
+/*
  * A Functor building the DOM-document. Call PropagateUp -algorithm with the Tree-object and
  * this functor as a arguments to build the DOM-document.
  *
@@ -653,10 +665,15 @@ void XMLDomTreeBuilder<TS,BUD,S>::addHwTreeSegmentAttributeNode(QDomElement& nod
   for(typename list<BroadLeaf<S>*>::iterator i = ll.begin(); i != ll.end(); i++) {
     const Shape& s = static_cast<const Shape&>(GetShape(**i));
     QDomElement leaf = m_doc.createElement("BroadLeaf");
-    if(dynamic_cast<const Triangle*>(&s))
+    if(dynamic_cast<const Triangle*>(&s)){
       leaf.setAttribute("Shape", "Triangle");
-    else
+    }
+    else if (dynamic_cast<const Ellipse*>(&s)){
       leaf.setAttribute("Shape", "Ellipse");
+    }
+    else{
+      leaf.setAttribute("Shape","Kite");
+    }
     addBroadLeafAttributeNode(leaf, m_doc, *i);
     node.appendChild(leaf);
   }
@@ -825,6 +842,33 @@ void XMLDomTreeBuilder<TS,BUD,S>::addBroadLeafAttributeNode(QDomElement& node, Q
 
     attrib = m_doc.createElement("TriangleAC");
     tmp = QString("%1 %2 %3").arg(t.getApexCorner().getX()).arg(t.getApexCorner().getY()).arg(t.getApexCorner().getZ());
+    attrib.appendChild(m_doc.createTextNode(tmp));
+    rootNode.appendChild(attrib);
+  }
+  else if (node.attribute("Shape") == "Kite"){
+    const Kite& kite = dynamic_cast<const Kite&>(s);
+    Point base_c = kite.getBaseCorner();
+    Point left_c = kite.getLeftCorner();
+    Point right_c = kite.getRightCorner();
+    Point apex_c = kite.getApexCorner();
+    //Base corner
+    attrib = m_doc.createElement("KiteBaseC");
+    tmp = QString("%1 %2 %3").arg(base_c.getX()).arg(base_c.getY()).arg(base_c.getZ());
+    attrib.appendChild(m_doc.createTextNode(tmp));
+    rootNode.appendChild(attrib);
+    //Left corner
+    attrib = m_doc.createElement("KiteLeftC");
+    tmp = QString("%1 %2 %3").arg(left_c.getX()).arg(left_c.getY()).arg(left_c.getZ());
+    attrib.appendChild(m_doc.createTextNode(tmp));
+    rootNode.appendChild(attrib);
+    //Right corner
+    attrib = m_doc.createElement("KiteRightC");
+    tmp = QString("%1 %2 %3").arg(right_c.getX()).arg(right_c.getY()).arg(right_c.getZ());
+    attrib.appendChild(m_doc.createTextNode(tmp));
+    rootNode.appendChild(attrib);
+    //Apex corner
+    attrib = m_doc.createElement("KiteApexC");
+    tmp = QString("%1 %2 %3").arg(apex_c.getX()).arg(apex_c.getY()).arg(apex_c.getZ());
     attrib.appendChild(m_doc.createTextNode(tmp));
     rootNode.appendChild(attrib);
   }
