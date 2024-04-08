@@ -22,15 +22,23 @@ using namespace cxxadt;
  * it to the  of this class. Tree is then written
  * by calling the readXMLToTree-function of the XMLDomTreeReader-object.
  */
-
 template <class TS, class BUD, class S = cxxadt::Ellipse>
 class XMLDomTreeReader
 {
 public:
-  // XMLDomTreeReader(Tree<TS,BUD>& t)
-  //:tree(t){}
-  XMLDomTreeReader() {}  
+  ///\brief XMLDomTreeReader to parse XML tree file
+  ///\sa readXMLToTree(Tree<TS,BUD>&, const string&)
+  XMLDomTreeReader() {}
+  ///\brief Construct a tree from an XML file
+  ///\param[in,out] t The tree to be constructed
+  ///\param fileName XML file
+  ///\return The tree constructed from the \p fileName file
+  ///\sa parseTree
   Tree<TS,BUD>& readXMLToTree(Tree<TS,BUD>& t, const string& fileName);
+  ///\brief Construct a tree from a QDOmDocument 
+  ///\param[in,out] t The tree to be constructed
+  ///\param doc QDomDocument representation of an XML file
+  ///\return The Tree constructed from the \p doc QDomDocument
   Tree<TS,BUD>& readXMLToTree(Tree<TS,BUD>& t, const QDomDocument& doc);
   int treeType(const string& fileName);
   int leafType(const string& fileName);
@@ -42,14 +50,72 @@ public:
   enum {Cf, Hw};
   enum {TRIANGLE, ELLIPSE, NONE};
 private:
-  void parseTree(QDomNode&, Tree<TS,BUD>& t); 
-  void parseRootAxis(QDomNode&, Axis<TS,BUD>*, Tree<TS,BUD>& );
-  Axis<TS,BUD>* parseAxis(QDomNode&, Tree<TS,BUD>& );
-  TS* parseTreeSegment(QDomNode&, Tree<TS,BUD>& );
-  BranchingPoint<TS,BUD>* parseBranchingPoint(QDomNode&, Tree<TS,BUD>& );
-  BUD* parseBud(QDomNode&, Tree<TS,BUD>& );
-  BroadLeaf<Triangle>* parseTriangleBroadLeaf(QDomNode&);
-  BroadLeaf<cxxadt::Ellipse>* parseEllipseBroadLeaf(QDomNode&);
+  ///\brief Construct the tree from a QDomNode.
+  ///
+  ///Parse the the XML file represented in QDomNode \p n.
+  ///Find the XML nodes for the TreeParameters, TreeAttributes, TreeFunctions
+  ///and the Tree main axis. Parse each one of them to construct the tree \p t.
+  ///\param n The QDomNode representation of an XML tree file
+  ///\param[in,out] t The tree to be constructed
+  ///\sa parseRootAxis
+  void parseTree(QDomNode& n, Tree<TS,BUD>& t);
+  ///\brief Parse the QDomNode\p n representaion of the main axis.
+  ///
+  ///Parse the main axis representation QDomNode \p n.
+  ///Read the main Axis, its attributes and the tree compartments TreeSegments,
+  ///Buds and BranchingPoints in \p n
+  ///and parse these recursively to construct the tree \p t.
+  ///\param n The QDomNode representation of an XML tree file
+  ///\param a The main axis of the tree \p t
+  ///\param[in,out] t The tree
+  ///\sa parseAxis
+  ///\sa parseTreeSegment
+  ///\sa parseBud
+  void parseRootAxis(QDomNode& n, Axis<TS,BUD>* a, Tree<TS,BUD>& t);
+  ///\brief Parse single Axis
+  ///
+  ///Traverse the axis, construct Axis attributes and recursively TreeSegments, BranchingPoints and Buds 
+  ///\param n BranchingPoint position in a QDomNode
+  ///\param[in] t The Tree
+  ///\return The Axis constructed
+  ///\sa parseTreeSegment
+  ///\sa parseBranchingPoint
+  ///\sa parseBud
+  Axis<TS,BUD>* parseAxis(QDomNode& n, Tree<TS,BUD>& t);
+  ///\brief Parse TreeSegment, either CfTreeSegment or HwTreeSegment
+  ///\param n QDomNode representing a TreeSegment
+  ///\param t The Tree
+  ///\return The TreeSegment constructed
+  ///\sa parseCfTreeSegmentAttributes
+  ///\sa parseHwTreeSegmentAttributes
+  ///\sa insertLeaf
+  TS* parseTreeSegment(QDomNode& n, Tree<TS,BUD>& t);
+  ///\brief Parse BranchingPoint
+  ///
+  ///Parse recursively each axis connectied to a BrachingPoint
+  ///\param n QDomNode representing BranchingPoint
+  ///\param t The Tree
+  ///\return The BranchingPoint constructed
+  ///\sa parseBranchingPointAttributes
+  BranchingPoint<TS,BUD>* parseBranchingPoint(QDomNode& n, Tree<TS,BUD>& t);
+  ///\brief Parse Bud
+  ///\param n QDomNode representing Bud
+  ///\param t The Tree
+  ///\return The Bud constructed
+  ///\sa parseBudAttributes
+  BUD* parseBud(QDomNode& n, Tree<TS,BUD>& t);
+  ///\brief Parse Triangle leaf
+  ///\param n QDomNode representing Triangle leaf
+  ///\return Triangle BroadLeaf constructed
+  BroadLeaf<cxxadt::Triangle>* parseTriangleBroadLeaf(QDomNode& n);
+  ///\brief Parse Ellipse leaf
+  ///\param n QDomNode representing Ellipse leaf
+  ///\return Ellipse BroadLeaf constructed
+  BroadLeaf<cxxadt::Ellipse>* parseEllipseBroadLeaf(QDomNode& n);
+  ///\brief Parse Kite leaf
+  ///\param n QDomNode representing Kite leaf
+  ///\return Kite BroadLeaf constructed
+  BroadLeaf<cxxadt::Kite>* parseKiteBroadLeaf(QDomNode& n);
   void parseTreeParameters(QDomNode&, Tree<TS,BUD>&);
   void parseTreeAttributes(QDomNode&, Tree<TS,BUD>&);
   void parseTreeFunctions(QDomNode&, Tree<TS,BUD>&);
@@ -58,11 +124,30 @@ private:
   void parseHwTreeSegmentAttributes(QDomNode&, HwTreeSegment<TS,BUD,S>*);
   void parseBranchingPointAttributes(QDomNode&, BranchingPoint<TS,BUD>*);
   void parseBudAttributes(QDomNode&, Bud<TS,BUD>*);
-  void parseTriangleBroadLeafAttributes(QDomNode&, BroadLeaf<Triangle>*);
-  void parseEllipseBroadLeafAttributes(QDomNode&, BroadLeaf<cxxadt::Ellipse>*);
-  void insertLeaf(QDomNode&, HwTreeSegment<TS,BUD,cxxadt::Ellipse>*);
-  void insertLeaf(QDomNode&, HwTreeSegment<TS,BUD,Triangle>*); 
-
+  ///\brief Parse Triangle leaf attributes
+  ///\param n QDomNode representing Tringle leaf
+  ///\param[in,out] l Triangle leaf
+  void parseTriangleBroadLeafAttributes(QDomNode& n, BroadLeaf<Triangle>* l);
+  ///\brief Parse Ellipse leaf attributes
+  ///\param n QDomNode representing Ellipse leaf
+  ///\param[in,out] l Ellipse leaf
+  void parseEllipseBroadLeafAttributes(QDomNode&n , BroadLeaf<cxxadt::Ellipse>* l);
+  ///\brief Parse Kite leaf attributes
+  ///\param n QDomNode representing Kite leaf
+  ///\param[in,out] l Kite leaf
+  void parseKiteBroadLeafAttributes(QDomNode&n , BroadLeaf<cxxadt::Kite>* l);
+  ///\brief Create and insert Ellipse BroadLeaf
+  ///\param n QDomNode representing the BroadLeaf
+  ///\param[in,out] ts The TreeSegment with the leaf created
+  void insertLeaf(QDomNode& n, HwTreeSegment<TS,BUD,cxxadt::Ellipse>* ts);
+  ///\brief Create and insert Triangle BroadLeaf
+  ///\param n QDomNode representing the BroadLeaf
+  ///\param[in,out] ts The TreeSegment with the leaf created
+  void insertLeaf(QDomNode& n, HwTreeSegment<TS,BUD,cxxadt::Triangle>* ts);
+  ///\brief Create and insert Kite BroadLeaf
+  ///\param n QDomNode representing the BroadLeaf
+  ///\param[in,out] ts The TreeSegment with the leaf created
+  void insertLeaf(QDomNode& n, HwTreeSegment<TS,BUD,cxxadt::Kite>* ts); 
   QDomDocument m_doc;			  
 
   // Change this to enum
@@ -139,9 +224,7 @@ int XMLDomTreeReader<TS,BUD,S>::leafType(const QDomDocument& doc) {
     return XMLDomTreeReader::ELLIPSE;
 }
 
-/**
- * Reads the XML-file to a Tree-object.
- */ 
+
 template <class TS, class BUD, class S>
 Tree<TS,BUD>& XMLDomTreeReader<TS,BUD,S>::readXMLToTree(Tree<TS,BUD>& tree, const string& fileName) {
   objectIndexForTreeCompartment.clear();
@@ -173,9 +256,6 @@ Tree<TS,BUD>& XMLDomTreeReader<TS,BUD,S>::readXMLToTree(Tree<TS,BUD>& tree, cons
 
 }
 
-/**
- * Reads the XML-file to a Tree-object.
- */ 
 template <class TS, class BUD, class S>
 Tree<TS,BUD>& XMLDomTreeReader<TS,BUD,S>::readXMLToTree(Tree<TS,BUD>& tree, const QDomDocument& doc) {
   objectIndexForTreeCompartment.clear();
@@ -201,9 +281,7 @@ template <class TS, class BUD, class S>
 QHash<BroadLeaf<S>*, int> XMLDomTreeReader<TS,BUD,S>::getLeafHash() {
   return objectIndexForLeaf;
 }
-/**
- * Parses the root element of the XML-document
- */
+
 template <class TS, class BUD, class S>
 void XMLDomTreeReader<TS,BUD,S>::parseTree(QDomNode& root, Tree<TS,BUD>& tree) {
   QDomNode node = root.firstChild();
@@ -257,9 +335,6 @@ void XMLDomTreeReader<TS,BUD,S>::parseTree(QDomNode& root, Tree<TS,BUD>& tree) {
 
 }
   
-/**  
- * Parses the root axis of the tree.
- */ 
 template <class TS, class BUD, class S>
 void XMLDomTreeReader<TS,BUD,S>::parseRootAxis(QDomNode& axisNode, Axis<TS, BUD>* axis, Tree<TS,BUD>& tree) {
   QDomNode node = axisNode.firstChild();
@@ -327,9 +402,6 @@ void XMLDomTreeReader<TS,BUD,S>::parseRootAxis(QDomNode& axisNode, Axis<TS, BUD>
   }
 }
 
-/**
- * Parses a axis node to a Axis-object.
- */
 template <class TS, class BUD, class S>
 Axis<TS, BUD>* XMLDomTreeReader<TS,BUD,S>::parseAxis(QDomNode& axisNode, Tree<TS,BUD>& tree) {
   QDomNode node = axisNode.firstChild();
@@ -640,8 +712,8 @@ BUD* XMLDomTreeReader<TS,BUD,S>::parseBud(QDomNode& bNode, Tree<TS,BUD>& tree) {
 }
 
 template <class TS, class BUD, class S>
-BroadLeaf<Triangle>* XMLDomTreeReader<TS,BUD,S>::parseTriangleBroadLeaf(QDomNode& leafNode) {
-  BroadLeaf<Triangle>* leaf;
+BroadLeaf<cxxadt::Triangle>* XMLDomTreeReader<TS,BUD,S>::parseTriangleBroadLeaf(QDomNode& leafNode) {
+  BroadLeaf<cxxadt::Triangle>* leaf;
   QDomNode node = leafNode.firstChild();
   QDomNode child;
   double sf, tauL, dof, x, y, z;
@@ -768,6 +840,148 @@ BroadLeaf<Triangle>* XMLDomTreeReader<TS,BUD,S>::parseTriangleBroadLeaf(QDomNode
   
   return leaf;
 }
+
+template <class TS, class BUD, class S>
+BroadLeaf<cxxadt::Kite>* XMLDomTreeReader<TS,BUD,S>::parseKiteBroadLeaf(QDomNode& leafNode) {
+  BroadLeaf<cxxadt::Kite>* leaf;
+  QDomNode node = leafNode.firstChild();
+  QDomNode child;
+  double sf, tauL, dof, x, y, z;
+  int number_of_sectors;
+  Point pstart;
+  Point pend;
+  Point kiteBC, kiteLC, kiteRC, kiteAC; 
+  
+  PositionVector normal;
+  QString tmp;
+
+  while(!node.isNull()) {
+    if(node.isElement()) {
+      if(node.nodeName() == "BroadLeafAttributes") {
+	child = node.firstChild();
+	while(true) {
+	
+	  if(!child.isNull() && child.isElement()) {
+	    QDomElement element = child.toElement();
+	    if(child.nodeName() == "LGAsf") { 
+	      sf = element.text().toDouble();
+	      child = child.nextSibling();
+	      if(child.isNull() || !child.isElement())
+		break;
+	      element = child.toElement();
+	    }
+	    if(child.nodeName() == "LGAtauL") {
+	      tauL = element.text().toDouble();
+	      child = child.nextSibling();
+	      if(child.isNull() || !child.isElement())
+		break;
+	      element = child.toElement();
+	    }
+	    if(child.nodeName() == "LGAdof") { 
+	      dof = element.text().toDouble();
+	      child = child.nextSibling();
+	      if(child.isNull() || !child.isElement())
+		break;
+	      element = child.toElement();
+	    }
+	    if(child.nodeName() == "SkySectors") {
+	      number_of_sectors = element.text().toInt();
+	      child = child.nextSibling();
+	      if(child.isNull() || !child.isElement())
+		break;
+	      element = child.toElement();
+	    }
+	    if(child.nodeName() == "PetioleStart") {
+	      tmp = element.text();
+	      x = tmp.section(' ', 0, 0).toDouble();
+	      y = tmp.section(' ', 1, 1).toDouble();
+	      z = tmp.section(' ', 2, 2).toDouble();
+	      pstart = Point(x, y, z);
+	      child = child.nextSibling();
+	      if(child.isNull() || !child.isElement())
+		break;
+	      element = child.toElement();
+	    }
+	    if(child.nodeName() == "PetioleEnd") {
+	      tmp = element.text();
+	      x = tmp.section(' ', 0, 0).toDouble();
+	      y = tmp.section(' ', 1, 1).toDouble();
+	      z = tmp.section(' ', 2, 2).toDouble();
+	      pend = Point(x, y, z);
+	      child = child.nextSibling();
+	      if(child.isNull() || !child.isElement())
+		break;
+	      element = child.toElement();
+	    }
+	    if(child.nodeName() == "LeafNormal") {
+	      tmp = element.text();
+	      x = tmp.section(' ', 0, 0).toDouble();
+	      y = tmp.section(' ', 1, 1).toDouble();
+	      z = tmp.section(' ', 2, 2).toDouble();
+	      normal = PositionVector(x, y, z);
+	      child = child.nextSibling();
+	      if(child.isNull() || !child.isElement())
+		break;
+	      element = child.toElement();
+	    }
+	    if (child.nodeName() == "KiteBC") {
+	      tmp = element.text();
+	      x = tmp.section(' ', 0, 0).toDouble();
+	      y = tmp.section(' ', 1, 1).toDouble();
+	      z = tmp.section(' ', 2, 2).toDouble();
+	      kiteBC = Point(x, y, z);
+	      child = child.nextSibling();
+	      if(child.isNull() || !child.isElement())
+		break;
+	      element = child.toElement();
+	    }
+	    if (child.nodeName() == "KiteLC") {
+	      tmp = element.text();
+	      x = tmp.section(' ', 0, 0).toDouble();
+	      y = tmp.section(' ', 1, 1).toDouble();
+	      z = tmp.section(' ', 2, 2).toDouble();
+	      kiteLC = Point(x, y, z);
+	      child = child.nextSibling();
+	      if(child.isNull() || !child.isElement())
+		break;
+	      element = child.toElement();
+	    }
+	    if (child.nodeName() == "KiteRC") {
+	      tmp = element.text();
+	      x = tmp.section(' ', 0, 0).toDouble();
+	      y = tmp.section(' ', 1, 1).toDouble();
+	      z = tmp.section(' ', 2, 2).toDouble();
+	      kiteRC = Point(x, y, z);
+	      child = child.nextSibling();
+	      if(child.isNull() || !child.isElement())
+		break;
+	      element = child.toElement();
+	    }
+	    if (child.nodeName() == "KiteAC") {
+	      tmp = element.text();
+	      x = tmp.section(' ', 0, 0).toDouble();
+	      y = tmp.section(' ', 1, 1).toDouble();
+	      z = tmp.section(' ', 2, 2).toDouble();
+	      kiteAC = Point(x, y, z);
+	      leaf = new BroadLeaf<cxxadt::Kite>(sf, tauL, dof, number_of_sectors, Petiole(pstart, pend),
+						 cxxadt::Kite(kiteBC,kiteLC, kiteRC,kiteAC));
+	      parseKiteBroadLeafAttributes(child, leaf);
+	      child = child.nextSibling();
+	      break;
+	    }
+	  
+	  }
+	  break;
+	}
+	break;
+      }
+    }
+    node = node.nextSibling();
+  }
+  
+  return leaf;
+}
+
 
 template <class TS, class BUD, class S>
 BroadLeaf<cxxadt::Ellipse>* XMLDomTreeReader<TS,BUD,S>::parseEllipseBroadLeaf(QDomNode& leafNode) {
@@ -1377,7 +1591,7 @@ void XMLDomTreeReader<TS,BUD,S>::insertLeaf(QDomNode& node, HwTreeSegment<TS,BUD
 }
 
 template <class TS, class BUD, class S>
-void XMLDomTreeReader<TS,BUD,S>::insertLeaf(QDomNode& node, HwTreeSegment<TS,BUD,Triangle>* ts) {
+void XMLDomTreeReader<TS,BUD,S>::insertLeaf(QDomNode& node, HwTreeSegment<TS,BUD,cxxadt::Triangle>* ts) {
   BroadLeaf<S>* leaf = parseTriangleBroadLeaf(node);
   InsertLeaf(*ts, leaf);
   QString o_index = node.toElement().attribute(QString("ObjectIndex"));
@@ -1386,10 +1600,17 @@ void XMLDomTreeReader<TS,BUD,S>::insertLeaf(QDomNode& node, HwTreeSegment<TS,BUD
 
 }
 
-/**
- * Parses a branching point attribute node and sets the given BranchingPoint-object's attributes
- * accordingly.
- */
+template <class TS, class BUD, class S>
+void XMLDomTreeReader<TS,BUD,S>::insertLeaf(QDomNode& node, HwTreeSegment<TS,BUD,cxxadt::Kite>* ts) {
+  BroadLeaf<S>* leaf = parseKiteBroadLeaf(node);
+  InsertLeaf(*ts, leaf);
+  QString o_index = node.toElement().attribute(QString("ObjectIndex"));
+  if(!o_index.isEmpty())
+    objectIndexForLeaf.insert(leaf, o_index.toInt());
+
+}
+
+
 template <class TS, class BUD, class S>
 void XMLDomTreeReader<TS,BUD,S>::parseBranchingPointAttributes(QDomNode& node, BranchingPoint<TS,BUD>* bpoint) {
   QDomNode child = node;
@@ -1417,10 +1638,6 @@ void XMLDomTreeReader<TS,BUD,S>::parseBranchingPointAttributes(QDomNode& node, B
  
 }
 
-/**
- * Parses a bud attribute node and sets the given Bud-object's attributes
- * accordingly.
- */
 template <class TS, class BUD, class S>
 void XMLDomTreeReader<TS,BUD,S>::parseBudAttributes(QDomNode& node, Bud<TS,BUD>* bud) {
   QDomNode child = node;
@@ -1465,7 +1682,7 @@ void XMLDomTreeReader<TS,BUD,S>::parseBudAttributes(QDomNode& node, Bud<TS,BUD>*
 }
 
 template <class TS, class BUD, class S>
-void XMLDomTreeReader<TS,BUD,S>::parseTriangleBroadLeafAttributes(QDomNode& node, BroadLeaf<Triangle>* leaf) {
+  void XMLDomTreeReader<TS,BUD,S>::parseTriangleBroadLeafAttributes(QDomNode& node, BroadLeaf<cxxadt::Triangle>* leaf) {
   QDomNode child = node;
   QString tmp;
   
@@ -1522,6 +1739,64 @@ void XMLDomTreeReader<TS,BUD,S>::parseTriangleBroadLeafAttributes(QDomNode& node
   return;
 }
 
+template <class TS, class BUD, class S>
+void XMLDomTreeReader<TS,BUD,S>::parseKiteBroadLeafAttributes(QDomNode& node, BroadLeaf<cxxadt::Kite>* leaf) {
+  QDomNode child = node;
+  QString tmp;
+  
+  while(true) {
+    if(!child.isNull() && child.isElement()) {
+      if(child.nodeName() == "LGAA") {
+	SetValue(*leaf, LGAA, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() || !child.isElement())
+	  break;
+      }
+      if(child.nodeName() == "LGAP") {
+	SetValue(*leaf, LGAP, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() || !child.isElement())
+	  break;
+      }
+      if(child.nodeName() == "LGAM") {
+	SetValue(*leaf, LGAM, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() || !child.isElement())
+	  break;
+      }
+      if(child.nodeName() == "LGAQabs") {
+	SetValue(*leaf, LGAQabs, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() || !child.isElement())
+	  break;
+      }
+      if(child.nodeName() == "LGAQin") {
+	SetValue(*leaf, LGAQin, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() || !child.isElement())
+	  break;
+      }
+      if(child.nodeName() == "LGAWf") {
+	SetValue(*leaf, LGAWf, child.toElement().text().toDouble());
+	child = child.nextSibling();
+	if(child.isNull() || !child.isElement())
+	  break;
+      }
+      if(child.nodeName() == "RadiationVector") {
+	vector<double> rv(GetRadiationVector(*leaf).size());
+	tmp = child.toElement().text();
+
+	for(int i = 0; i < static_cast<int>(rv.size()); i++) {
+	  rv[i] = tmp.section(' ', i, i).toDouble();
+	}
+	SetRadiationVector(*leaf, rv);
+      }
+    }
+    break;
+  }
+  return;
+}
+ 
 template <class TS, class BUD, class S>
 void XMLDomTreeReader<TS,BUD,S>::parseEllipseBroadLeafAttributes(QDomNode& node, BroadLeaf<cxxadt::Ellipse>* leaf) {
   QDomNode child = node;

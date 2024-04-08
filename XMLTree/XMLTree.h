@@ -5,8 +5,6 @@
 #include <XMLDomTreeReader.h>
 #include <XMLDomTreeWriter.h>
 
-/// \file XMLTree.h
-/// \brief Read from and write Lignum tree to an XML file.
 
 template <class TS, class BUD, class S>
 class XMLDomTreeWriter;
@@ -14,57 +12,53 @@ class XMLDomTreeWriter;
 template <class TS, class BUD, class S>
 class XMLDomTreeReader;
 
-///\file XMLTree.h 
-/// **XML Writing Usage**:
+///\file XMLTree.h
+/// \brief Read from and write Lignum tree to an XML file.
+///
+/// \par XML Writing
 ///   
-/// In order to write a Tree-object to a XML-file one must
-/// first create a XMLDomTreeWriter-object with the used
-/// TreeSegment, Bud and Shape (default is Ellipse) template types.
-/// After that the writing is executed by calling the
-/// writeTreeToXML-method of the created writer-object with
-/// the Tree-object and name of the file to created given as arguments. 
-///  
+/// In order to write a Tree-object to an XML file one must
+/// create a XMLDomTreeWriter object with types
+/// for TreeSegment, Bud and leaf Shape for broad-leaved trees.
+/// After that the file writing is executed by calling the
+/// XMLDomTreeWriter::writeTreeToXML method of the  \p writer object with
+/// the Tree object and the name of the file as the two arguments.
 ///
-/// Example (ScotsPine):
-///  
-/// ScotsPineTree pine1(/* Arguments of the constructor*/);
-///  
-/// --- Simulation here ---
-/// 
-/// XMLDomTreeWriter<ScotsPineSegment, ScotsPineBud> writer;
-/// writer.writeTreeToXML(pine1, "pine1.xml");
-///  
-/// 
-/// **Reading Usage**:
-///  
-/// Reading is done in similar manner as writing: User
-/// must first create the XMLDomTreeReader-object, and call
-/// it's writeXMLtoTree-method with the Tree-object and
-/// file name as arguments. Note that the Tree-object must
-/// be initialized before the file is read.
+///```{.cc}
+/// ScotsPineTree pine(Point(0,0,0), PositionVector(0,0,0)));
+/// XMLDomTreeWriter<ScotsPineSegment, ScotsPineBud> pine_writer;
+/// pine_writer.writeTreeToXML(pine, "pine.xml");
+/// ```
 ///
+/// For broad-leaved trees user can define leaf shape, e.g.:<br>
 ///
-/// Example (SugarMaple):
-/// 
-/// Tree<SugarMapleSegment, SugarMapleBud> maple(Point(0,0,0), PositionVector(0,0,0));
-/// XMLDomTreeReader<SugarMapleSegment, SugarMapleBud> reader;
-/// reader.readXMLToTree(maple, "maple.xml");
-/// 
+///```{.cc}
+/// Tree<SugarMapleSegment, SugarMapleBud,Ellipse> maple(Point(0,0,0), PositionVector(0,0,0));
+/// XMLDomTreeWriter<ScotsPineSegment, ScotsPineBud, Ellipse> maple_writer;
+/// maple_writer.writeTreeToXML(maple, "maple.xml");
+///```
+/// \note For Scots pine (or conifers in general) with cylindrical shape of homogenous foliage
+/// the leaf shape is ignored.
+///
 /// \note
-/// When dealing with broadleaved trees one should always explicitely express the leaf type
+/// With broad-leaved trees the default leaf Shape is Ellipse. Supported leaf types
+/// are cxxadt::Ellipse, cxxadt::Triangle and cxxadt::Kite.
 ///
+/// \par XML Reading
+/// 
+/// Reading is similar to  writing. User creates
+/// the XMLDomTreeReader \p reader object, and call it's
+/// XMLDomTreeReader::readXMLToTree method with a Tree and a file name as arguments. 
+///
+///```{.cc}
+/// ScotsPineTree pine(Point(0,0,0), PositionVector(0,0,0)));
 /// Tree<SugarMapleSegment, SugarMapleBud,Ellipse> maple(Point(0,0,0), PositionVector(0,0,0));
 /// Tree<PoplarSegment,PoplarBud,Triangle> poplar(Point(0,0,0), PositionVector(0,0,0));
-///
-/// XMLDomTreeReader<SugarMapleSegment, SugarMapleBud,Ellipse> >reader;
-/// XMLDomTreeReader<Tree<PoplarSegment,PoplarBud,Triangle> >reader;
-/// XMLDomTreeWriter<SugarMapleSegment, SugarMapleBud,Ellipse> > writer;
-/// XMLDomTreeWriter<Tree<PoplarSegment,PoplarBud,Triangle> > writer;
-///
-/// The default value is Ellipse so the the reader example for e.g. sugar maple works
-/// but other leaf forms like Triangle MUST BE explicitely expressed. Otherwise
-/// XMLDomTreeWriter will generate 'Generic' segmentswithout attribute values. The tree 
-/// is consequently useless.
- 
-
+/// XMLDomTreeReader<ScotsPineSegment, ScostPineBud> pine_reader;
+/// XMLDomTreeReader<SugarMapleSegment, SugarMapleBud,Ellipse> > maple_reader;
+/// XMLDomTreeReader<Tree<PoplarSegment,PoplarBud,Triangle> > poplar_reader;
+/// pine_reader.readXMLToTree(pine,"pine.xml");
+/// maple_reader.readXMLToTree(maple,"maple.xml");
+/// poplar_reader.readXMLToTree(poplar,"poplar.xml");
+///```
 #endif

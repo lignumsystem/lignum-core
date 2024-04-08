@@ -14,11 +14,14 @@ using namespace Lignum;
 using namespace cxxadt;
 
 
-///\brief Class for building a DOM-document of a given Tree-object.
+///\brief Class for building an XML DOM document of a given Lignum Tree-object.
 ///
-///XML DOM-document is a representation of a XML-document, which can be
-///written to a file. 
-///\note This class is ONLY for building the DOM-document. To write
+///XML DOM document is a Qt data structure representation of a XML-document, which can be
+///written to a text file. For broadleaved or hardwood trees supported leaf shapes are 
+///cxxadt::Triangle,cxxadt::Ellipse and cxxadt::Kite.
+///Call PropagateUp algorithm with a Tree-object and
+///this functor as a arguments to build the DOM-document.
+///\note This class is only  for building the DOM-document. To write
 ///XML DOM document to an XML-file use XMLDomTreeWriter-class.
 ///\tparam TS Tree segment
 ///\tparam BUD Bud
@@ -30,7 +33,7 @@ public:
   XMLDomTreeBuilder(QDomDocument& doc, QDomElement& root, Tree<TS,BUD>& tree)
 : object_index(0), m_tree(tree), m_doc(doc), m_root(root), segmentTypeFound(false), leafTypeFound(false) {}
  
-  ///\brief Functor building the DOM-document.
+  ///\brief Function operator building the DOM-document.
   ///
   ///Call PropagateUp algorithm with the Tree-object and
   ///this functor as a arguments to build the DOM-document.
@@ -852,22 +855,22 @@ void XMLDomTreeBuilder<TS,BUD,S>::addBroadLeafAttributeNode(QDomElement& node, Q
     Point right_c = kite.getRightCorner();
     Point apex_c = kite.getApexCorner();
     //Base corner
-    attrib = m_doc.createElement("KiteBaseC");
+    attrib = m_doc.createElement("KiteBC");
     tmp = QString("%1 %2 %3").arg(base_c.getX()).arg(base_c.getY()).arg(base_c.getZ());
     attrib.appendChild(m_doc.createTextNode(tmp));
     rootNode.appendChild(attrib);
     //Left corner
-    attrib = m_doc.createElement("KiteLeftC");
+    attrib = m_doc.createElement("KiteLC");
     tmp = QString("%1 %2 %3").arg(left_c.getX()).arg(left_c.getY()).arg(left_c.getZ());
     attrib.appendChild(m_doc.createTextNode(tmp));
     rootNode.appendChild(attrib);
     //Right corner
-    attrib = m_doc.createElement("KiteRightC");
+    attrib = m_doc.createElement("KiteRC");
     tmp = QString("%1 %2 %3").arg(right_c.getX()).arg(right_c.getY()).arg(right_c.getZ());
     attrib.appendChild(m_doc.createTextNode(tmp));
     rootNode.appendChild(attrib);
     //Apex corner
-    attrib = m_doc.createElement("KiteApexC");
+    attrib = m_doc.createElement("KiteAC");
     tmp = QString("%1 %2 %3").arg(apex_c.getX()).arg(apex_c.getY()).arg(apex_c.getZ());
     attrib.appendChild(m_doc.createTextNode(tmp));
     rootNode.appendChild(attrib);
