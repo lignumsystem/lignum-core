@@ -307,7 +307,7 @@ namespace cxxadt{
 					   const vector<string>& col_names)
   {
     glob_t glob_result;
-    glob(pattern.c_str(),GLOB_TILDE,NULL,&glob_result);
+    glob(pattern.c_str(),GLOB_TILDE|GLOB_BRACE,NULL,&glob_result);
     int res=0;
     for(unsigned int i=0;i<glob_result.gl_pathc;++i){
       string fname = glob_result.gl_pathv[i];
@@ -325,7 +325,7 @@ namespace cxxadt{
 						  const vector<string>& col_names)
   {
     glob_t glob_result;
-    glob(pattern.c_str(),GLOB_TILDE,NULL,&glob_result);
+    glob(pattern.c_str(),GLOB_TILDE|GLOB_BRACE,NULL,&glob_result);
     int res=0;
     for(unsigned int i=0;i<glob_result.gl_pathc;++i){
 	string fname = glob_result.gl_pathv[i];
@@ -341,7 +341,7 @@ namespace cxxadt{
   int LGMHDF5File::createFileDataSetsFromDir(const string& pattern, const string& hdf5_group)
   { 
     glob_t glob_result;
-    glob(pattern.c_str(),GLOB_TILDE,NULL,&glob_result);
+    glob(pattern.c_str(),GLOB_TILDE|GLOB_BRACE,NULL,&glob_result);
     int res=0;
     for(unsigned int i=0;i<glob_result.gl_pathc;++i){
       string fname = glob_result.gl_pathv[i];
