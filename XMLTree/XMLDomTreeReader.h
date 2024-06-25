@@ -76,34 +76,34 @@ private:
   ///
   ///Traverse the axis, construct Axis attributes and recursively TreeSegments, BranchingPoints and Buds 
   ///\param n BranchingPoint position in a QDomNode
-  ///\param[in] t The Tree
+  ///\param[in] tree The Tree
   ///\return The Axis constructed
   ///\sa parseTreeSegment
   ///\sa parseBranchingPoint
   ///\sa parseBud
-  Axis<TS,BUD>* parseAxis(QDomNode& n, Tree<TS,BUD>& t);
+  Axis<TS,BUD>* parseAxis(QDomNode& n, Tree<TS,BUD>& tree);
   ///\brief Parse TreeSegment, either CfTreeSegment or HwTreeSegment
-  ///\param n QDomNode representing a TreeSegment
-  ///\param t The Tree
+  ///\param node QDomNode representing a TreeSegment
+  ///\param[in] tree The Tree
   ///\return The TreeSegment constructed
   ///\sa parseCfTreeSegmentAttributes
   ///\sa parseHwTreeSegmentAttributes
   ///\sa insertLeaf
-  TS* parseTreeSegment(QDomNode& n, Tree<TS,BUD>& t);
+  TS* parseTreeSegment(QDomNode& node, Tree<TS,BUD>& tree);
   ///\brief Parse BranchingPoint
   ///
   ///Parse recursively each axis connectied to a BrachingPoint
-  ///\param n QDomNode representing BranchingPoint
-  ///\param t The Tree
+  ///\param bpNode QDomNode representing BranchingPoint
+  ///\param tree The Tree
   ///\return The BranchingPoint constructed
   ///\sa parseBranchingPointAttributes
-  BranchingPoint<TS,BUD>* parseBranchingPoint(QDomNode& n, Tree<TS,BUD>& t);
+  BranchingPoint<TS,BUD>* parseBranchingPoint(QDomNode& bpNode, Tree<TS,BUD>& tree);
   ///\brief Parse Bud
-  ///\param n QDomNode representing Bud
-  ///\param t The Tree
+  ///\param bNode QDomNode representing Bud
+  ///\param[in] tree The Tree
   ///\return The Bud constructed
   ///\sa parseBudAttributes
-  BUD* parseBud(QDomNode& n, Tree<TS,BUD>& t);
+  BUD* parseBud(QDomNode& bNode, Tree<TS,BUD>& tree);
   ///\brief Parse Triangle leaf
   ///\param n QDomNode representing Triangle leaf
   ///\return Triangle BroadLeaf constructed
