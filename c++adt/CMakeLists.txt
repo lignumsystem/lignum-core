@@ -33,6 +33,13 @@ src/rand3.cc
 src/Kite.cc
 )
 
+if(CMAKE_HOST_SYSTEM_NAME MATCHES "Darwin")
+  message("c++adt")
+  message("------")
+  message("Using C++14 because of HDF5 library")
+  message("XCode with C++17 will cause error")
+  target_compile_options(cxxadt PUBLIC -std=c++14)
+endif()
 target_include_directories(cxxadt PRIVATE "include" "/opt/local/include")
 set(CMAKE_INSTALL_PREFIX ".")
 install(TARGETS cxxadt DESTINATION "${CMAKE_CURRENT_LIST_DIR}/lib")
