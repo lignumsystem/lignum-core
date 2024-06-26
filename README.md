@@ -1,13 +1,14 @@
 # lignum-core
 
-Welcome to the lignum-core repository. The lignum-core implements the ubiquitous classes in The LIGNUM System
+Welcome to the *lignum-core* repository. The *lignum-core* implements the ubiquitous libraries and binaries 
+in The LIGNUM System in seven projects:
 
 	+ c++adt: basic ubiquitous (abstract) classes
 	+ Firmamanet: Implementation of the hemispheren standard overcast sky (SOC) 
 	+ stl-lignum: Implementatetation of the elementry tree units in LIGNUM
 	+ stl-voxelspace: VoxelSpace implementation
 	+ LEngine: L-system implementation
- 	+ XMLTree: XML representation of the Lignum tree
+	+ XMLTree: XML representation of the Lignum tree
 	+ qt-workbench: The LignumWB GUI implementation
 
 # Requirements
@@ -40,73 +41,79 @@ the directory of the first main CMakeLists.txt file, traditionally one directory
 the build directory.
 
 ## System requrements
-System requirements to follow. In short, we develop on macOS and run simulations also on Linux servers.
+System requirements to appear. In short, we develop on macOS and run simulations also on Linux servers.
 
 # Documentation
 
 ## Compilation with CMake
 
-The *lignum-core* project  and its subprojects (directories) have *CMakeLists.txt* files to build 
-lignum-core libraries and binaries.  The CMake build process is as follows:
+The *lignum-core* repository  and its projects (directories) have *CMakeLists.txt* files to build 
+*lignum-core* libraries and binaries.  The CMake build process for Unix Makefile systen is as follows:
 
-	mkdir build #Immediately under lignum-core directory
-	cd build
-	cmake ..
+	cd lignum-core
+	mkdir release #Immediately under lignum-core directory
+	cd release
+	cmake .. -DCMAKE_BUILD_TYPE=Release
 	make
 	make install
 	      
-This generates Unix Makefile build system and instructs compiler to add Debug information. 
-The `cmake ..` command assumes that the *CMakeLists.txt* is in the immediate directory above. 
-Note also that all build products are under *build* directory. To move them to proper locations
-defined in CMakeLists.txt files `make install` is needed.
+The  `cmake`  program  instructs  compiler to  create  Release  version,
+i.e. without debugging information. To corresponding option to create 
+Debug version is `-DCMAKE_BUILD_TYPE=Debug` . The `cmake ..` command expects to
+find the top level *CMakeLists.txt*  in the immediate directory above.
+Note also that *all* build  products are under *release* directory. To
+move them  to proper locations  defined in CMakeLists.txt  files `make
+install` is needed.
 
-Each lignum-core subdirectory and the main project have had Qt project (pro) files to compile.
-The main project must tell in its Qt project file the location of the lignum-core. We have traditionally
-had the main project at the same level as lignum-core directories.
+Different directories for different build types (Degub, Release) must be used because they cannot 
+coexists under the same directory. CMake has hundred or so
+[CMake system built-in variables](https://cmake.org/cmake/help/latest/manual/cmake-variables.7.html) 
+that describe the operating system,  control the build process, provide information during the build etc.
 
->[!IMPORTANT]
+>[!NOTE]
+>The `make` or `make install` commands are necessary to allow projects depending on *lignum-core* to 
+>find and use libraries and binaries in *lignum-core* via their CMakeLists.txt files.
+
+>[!CAUTION]
 >Qt4 seems to be ever more difficult to maintain in MacPorts. 
 
-Apple Silicon processors (M1, M2, etc.), macOS Ventura and later require Qt5  with XMLTree. *qt-workbench* cannot be compiled 
-and used with Qt5 because of the backward incompatibilites between the Qt4 and Qt5 versions. To install Qt5 Toolkit 
-from MacPorts type:
+>[!WARNING]
+>Apple Silicon processors (M1, M2, etc.), macOS Ventura and later require Qt5  with XMLTree. *qt-workbench* cannot be compiled 
+>and used with Qt5 because of the backward incompatibilites between the Qt4 and Qt5 versions. 
+
+To install Qt5 Toolkit from MacPorts type:
 
 	    sudo port install qt5
 
 ## Projects using lignum-core
 
-As an example clone CrownDensity and LignumForest projects immediately under lignum-core and compile. CrownDensity has CMakeLists.txt that
-defines how to use lignum-core projects and well known libraries (Qt, HDF5) to build the project. To build Xcode project files for debugging:
+To create LignumForest Release version Unix Makefile build system type:
 
-	git clone https://github.com/lignumsystem/CrownDensity.git #Immediately under lignum-core directory
+	cd lignum-core
 	git clone https://github.com/lignumsystem/LignumForest.git #Immediately under lignum-core directory
-	mkdir xcode #Immediately under CrownDensity directory
-	cd xcode
-	cmake .. -G Xcode
-
-Open the *xcode/crowndens.xcodeproj* file in Xcode. If in Xcode &#8594; Product &#8594; Run is disabled 
-check Xcode &#8594; Product  &#8594; Scheme that the binary `crowndens` is selected, not for example ALL_BUILD. 
-
-The binary `crowndens` is located in xcode/Debug directory. It has for example hard coded locations 
-for function file (*.fun*) names and configuration (*.txt*) files. Such files must be copied 
-to xcode/Debug directory in order to let `crowndens` to fine them. Another option is to manually
-move the binary *xcode/Debug/`crowndens`* to CrownDens directory and explicitely set the binary in
-XCode &#8594; Debug &#8594; Debug Executable. There are no Unix Makefiles available 
-in the generated Xcode build system.
-
-As the third example to create CrownDensity Release version Unix Makefile build system 
-(optimization, no debug information):
-
-	mkdir release #Immediately under CrownDensity directory
+	cd LignumForest
+	mkdir release #Immediately under LignumForest directory
 	cd release
 	cmake .. -DCMAKE_BUILD_TYPE=Release
 	make
 	make install 
 
-Use different directories for different build types (degub, release) because they cannot coexists under the same directory.
-The CMAKE_BUILD_TYPE is just one of the many (a hundred or so)
-[CMake system built-in variables](https://cmake.org/cmake/help/latest/manual/cmake-variables.7.html) 
-that can describe the operating system,  control the build process, provide information during the build etc.
+To build Xcode project files for debugging:
+
+	mkdir xcode #Immediately under LignumForest directory
+	cd xcode
+	cmake .. -G Xcode
+
+Open the *xcode/lignum-forest.xcodeproj* file in Xcode. If  Xcode &#8594; Product &#8594; Run is disabled 
+check Xcode &#8594; Product  &#8594; Scheme that the binary `crowndens` is selected, not for example ALL_BUILD. 
+
+The  binary `lignum-forest`  is located  in xcode/Debug  directory. It
+needs  function files  (*.fun*) and  configuration (*.txt*)  files for
+simulations. Such  files must  be copied  to xcode/Debug  directory in
+order  to let  `lignum-forest` to  find  them.  Another  option is  to
+manually move the  binary *xcode/Debug/`lignum-forest`* to LignumForest
+directory  and explicitely  set  the binary  in  XCode: XCode  &#8594;
+Debug&#8594; Debug  Executable. 
 
 ## Doxygen
 Software is usually under constant development and frequent changes. Detailed documentation of the lignum-core 
