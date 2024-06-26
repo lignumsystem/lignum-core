@@ -21,5 +21,5 @@ target_include_directories(Visual PUBLIC "."
 "${CMAKE_CURRENT_LIST_DIR}/../stl-voxelspace/include" 
 )
 set(CMAKE_INSTALL_PREFIX ".")
-install(TARGETS Visual DESTINATION "${CMAKE_CURRENT_LIST_DIR}")
+install(TARGETS Visual DESTINATION "${CMAKE_CURRENT_LIST_DIR}/lib")
 export(TARGETS Visual  FILE ${CMAKE_CURRENT_LIST_DIR}/lib/Visual.cmake)
