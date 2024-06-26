@@ -18,8 +18,6 @@ CString& CString::operator=(const CString& str)
 CString& CString::operator+=(const CString& str)
 {
   char *string_tmp = new char[this->str_length + str.str_length + 1];
-  
-  sprintf(string_tmp,"%s%s",string,str.string);
 
   str_length = this->str_length + str.str_length;
   
