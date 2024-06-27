@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.12)
-project(cxxadt DESCRIPTION "Generic utility classes")
+project(cxxadtlib DESCRIPTION "Generic utility classes")
 
 add_library(cxxadt STATIC src/Bernoulli.cc
 src/Bisection.cc

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.12)
-project(voxel DESCRIPTION "3D Voxel space implementation")
+project(voxellib DESCRIPTION "3D Voxel space implementation")
 
 add_library(voxel STATIC 
 src/Nearby.cc

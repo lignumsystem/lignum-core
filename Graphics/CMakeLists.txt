@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.12)
-project(Visual DESCRIPTION "Simple LIGNUM tree visualization")
+project(Graphics DESCRIPTION "Simple LIGNUM tree visualization")
 
 add_library(Visual STATIC GLSettings.cc
 LGMVisualization.cc

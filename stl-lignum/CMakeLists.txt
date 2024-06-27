@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.12)
-project(LGM DESCRIPTION "LIGNUM tree with generic algorithms")
+project(LGMlib DESCRIPTION "LIGNUM tree with generic algorithms")
 
 add_library(LGM STATIC Axis/AxisFriend.cc
 BranchingPoint/BranchingPointFriend.cc

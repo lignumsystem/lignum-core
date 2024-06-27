@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.12)
-project(sky DESCRIPTION "Implementation of Standard Overcast Sky")
+project(skylib DESCRIPTION "Implementation of Standard Overcast Sky")
 add_library(sky STATIC Firmament.cc
 FirmamentWithMask.cc
 Interlen.cc
