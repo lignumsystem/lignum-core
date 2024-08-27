@@ -1,5 +1,4 @@
 //Return argument of a flag from the command line as a string
-
 //Note: ParseCommadLine declared in ../include/ParseCommandLine.h
 #include <ParseCommandLine.h>
 #include <string>
@@ -8,12 +7,11 @@ using namespace std;
 
 
 //This asumes that an argument follows the flag and returns it in its body
-
 string ParseCommandLine(int argc, char *argv[],const string& flag)
 {
   int i = 1;
   string clarg;  //obviously initialized as empty string
-
+  
   //loop through command line options, argc - 1 checks possible
   //missing last argument to command line option does not cause core
   //dump
@@ -31,12 +29,10 @@ string ParseCommandLine(int argc, char *argv[],const string& flag)
 
 //This checks if an argument (=string not beginning with character
 //'-') follows the flag. The argument or empty string returned in clarg.
-
 bool ParseCommandLine(int argc, char *argv[],const string& flag, string& clarg)
 {
   int i = 1;
   bool found = false;
-
   //loop through command line options
   while (i < argc){
     if (string(argv[i]) == flag){
