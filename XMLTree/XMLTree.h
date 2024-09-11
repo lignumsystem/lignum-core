@@ -21,36 +21,27 @@ class XMLDomTreeReader;
 /// create a XMLDomTreeWriter object with types
 /// for TreeSegment, Bud and leaf Shape for broad-leaved trees.
 /// After that the file writing is executed by calling the
-/// XMLDomTreeWriter::writeTreeToXML method of the  \p writer object with
+/// XMLDomTreeWriter::writeTreeToXML method of the  \c writer object with
 /// the Tree object and the name of the file as the two arguments.
-///
-///```{.cc}
+/// \code{.cc}
 /// ScotsPineTree pine(Point(0,0,0), PositionVector(0,0,0)));
 /// XMLDomTreeWriter<ScotsPineSegment, ScotsPineBud> pine_writer;
 /// pine_writer.writeTreeToXML(pine, "pine.xml");
-/// ```
-///
-/// For broad-leaved trees user can define leaf shape, e.g.:<br>
-///
-///```{.cc}
+/// \endcode
+/// For broad-leaved trees user can define leaf shape:
+/// \code{.cc}
 /// Tree<SugarMapleSegment, SugarMapleBud,Ellipse> maple(Point(0,0,0), PositionVector(0,0,0));
 /// XMLDomTreeWriter<ScotsPineSegment, ScotsPineBud, Ellipse> maple_writer;
 /// maple_writer.writeTreeToXML(maple, "maple.xml");
-///```
+/// \endcode
 /// \note For Scots pine (or conifers in general) with cylindrical shape of homogenous foliage
-/// the leaf shape is ignored.
-///
-/// \note
-/// With broad-leaved trees the default leaf Shape is Ellipse. Supported leaf types
-/// are cxxadt::Ellipse, cxxadt::Triangle and cxxadt::Kite.
-///
+/// the leaf shape is ignored. With broad-leaved trees the default leaf Shape is Ellipse.
+/// Supported leaf types are cxxadt::Ellipse, cxxadt::Triangle and cxxadt::Kite.
 /// \par XML Reading
-/// 
 /// Reading is similar to  writing. User creates
 /// the XMLDomTreeReader \p reader object, and call it's
 /// XMLDomTreeReader::readXMLToTree method with a Tree and a file name as arguments. 
-///
-///```{.cc}
+/// \code{.cc}
 /// ScotsPineTree pine(Point(0,0,0), PositionVector(0,0,0)));
 /// Tree<SugarMapleSegment, SugarMapleBud,Ellipse> maple(Point(0,0,0), PositionVector(0,0,0));
 /// Tree<PoplarSegment,PoplarBud,Triangle> poplar(Point(0,0,0), PositionVector(0,0,0));
@@ -60,5 +51,6 @@ class XMLDomTreeReader;
 /// pine_reader.readXMLToTree(pine,"pine.xml");
 /// maple_reader.readXMLToTree(maple,"maple.xml");
 /// poplar_reader.readXMLToTree(poplar,"poplar.xml");
-///```
+/// \endcode
+///
 #endif

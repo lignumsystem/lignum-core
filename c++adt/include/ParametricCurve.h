@@ -31,13 +31,13 @@ using namespace  std;
   ///The most used is to define the function in a text file as (x,f(x)) pairs.
   ///As an example a function y=2x:
   ///
-  ///```
+  ///\verbatim
   /// #Function y = 2x 
   /// #x      f(x)
   /// 0.0     0.0
   /// 1.0     2.0
   /// 2.0     4.0
-  ///```
+  ///\endverbatim
   ///
   ///The x-values must be in increasing order. Function values between the exact definitions are
   ///interpolated. Function values outside the function definition are extrapolated with two first or

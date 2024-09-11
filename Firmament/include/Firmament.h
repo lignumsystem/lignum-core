@@ -203,7 +203,7 @@ using namespace cxxadt;
 ///      Prints out inclinations of inclination classes
 
 /// 25. \fn vector<pair<double,double> > Firmament::getIncAz()
-///     \return  Vector of inclinations and azimuths of all sectors
+///     \return  Vector of inclinations and azimuths of all sectors  
 /// =====================================================================================
 
 

@@ -44,15 +44,12 @@ namespace cxxadt{
     ///\param a parallelogram nadir point (leaf petiole end)
     ///\param dp direction (of a petiole) 
     ///\param alpha The angle \f$ \alpha = \overrightarrow{ab} \angle \overrightarrow{ad} \f$
-    ///\param ratio length ratio \f$ |\overrightarrow{ab}| / |\overrightarrow{ad}| \f$ .  
-    ///\parblock
-    ///For symmetry the *ratio* is 1 which is probably the best choice for a leaf.
-    ///\endparblock
+    ///\param ratio length ratio \f$ |\overrightarrow{ab}| / |\overrightarrow{ad}| \f$.
+    ///\remark For symmetry the \p ratio is 1 which is probably the best choice for a diamond leaf.
     ///\param is_leaf_normal Default *true*.  
-    ///\parblock
-    ///If *true* set \f$ \vec{N} = \overrightarrow{d_p} \f$. If *false* set \f$\ \vec{N} \perp \overrightarrow{d_p} \f$ and pointing upwards.  
+    ///\remark If *true* set \f$ \vec{N} = \overrightarrow{d_p} \f$. If *false* set \f$\ \vec{N} \perp \overrightarrow{d_p} \f$ and pointing upwards.  
     ///In the latter case \f$\overrightarrow{d_p} \f$ is e.g. petiole or bud direction.
-    ///\endparblock 
+    ///
     ///\post The angle \f$ \alpha = \overrightarrow{ab} \angle \overrightarrow{ad} \f$, symmetrically by \f$ (\alpha/2,-\alpha/2) \f$
     ///away from \f$\overrightarrow{ac} \f$
     ///\note The final orientation of Parallelogram (leaf) is implementation depended \sa pitch roll turn
