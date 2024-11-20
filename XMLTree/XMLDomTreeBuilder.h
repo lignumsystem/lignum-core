@@ -671,7 +671,7 @@ void XMLDomTreeBuilder<TS,BUD,S>::addHwTreeSegmentAttributeNode(QDomElement& nod
     if(dynamic_cast<const Triangle*>(&s)){
       leaf.setAttribute("Shape", "Triangle");
     }
-    else if (dynamic_cast<const Ellipse*>(&s)){
+    else if (dynamic_cast<const cxxadt::Ellipse*>(&s)){
       leaf.setAttribute("Shape", "Ellipse");
     }
     else{
