@@ -40,8 +40,36 @@ takes place in one build directory. There `cmake` is given necessary command lin
 the directory of the first main CMakeLists.txt file, traditionally one directory level above 
 the build directory.
 
-## System requrements
-System requirements to appear. In short, we develop on macOS and run simulations also on Linux servers.
+## System requirements
+The Lignum model is developed on macOS and simulations are also made on Linux servers.
+The *lignum-core* base requires HDF5 and Qt5 libraries. With [MacPorts](https://www.macports.org) 
+installations are straightforward:
+
+	sudo port install hdf5
+	sudo port install qt5
+
+Simulation results can be saved in HDF5 files including Lignum trees in XML format. 
+See *LignumForest* as an example. In addition the *Doxygen* system is used 
+for software  documentation:
+
+	sudo port install doxygen +qt5
+	sudo port install doxygen-launcher
+	sudo port install graphviz 
+	
+The LignumWB workbench has been implemented with Qt4. *MacPorts* has only Intel binary.
+Therefore Rosetta2 must be installed for Apple Silicon processors:
+	
+	sudo softwareupdate --install-rosetta
+	sudo port install qt4-mac
+	
+Emacs is a popular text editor in software engineering and LateX common document preparation system,
+especially in engineering sciences.
+
+	sudo port install emacs-mac-app
+	sudo port install texlive +full
+	
+The *+full* variant for *texlive* means full installation that will take several gigabytes of disk space.
+Naturally, there are other ways to install the required software.
 
 # Documentation
 
