@@ -3,14 +3,17 @@
 
 
 namespace cxxadt{
+  
   template <class T>
   TMatrix2D<T>::TMatrix2D()
     :xd(0),yd(0){}
   template <class T>
-    TMatrix2D<T>::TMatrix2D(int x, int y)
+  ///By inheritance the matrix is a vector of rows.
+  ///Each row is a vector of elements 
+  TMatrix2D<T>::TMatrix2D(int x, int y)
     :vector<vector<T> >(x,vector<T>(y)),xd(x),yd(y)
-    {
-    }
+  {
+  }
   
   template <class T>
     TMatrix2D<T>::TMatrix2D(int x, int y, const T& t)
@@ -36,6 +39,17 @@ namespace cxxadt{
       return *this;
     }
 
+  template <class T>
+  TMatrix2D<T>& TMatrix2D<T>::append(const vector<T>& v){
+    if (yd != 0 && v.size() != yd){
+      throw(AppendException("AppendException: vector length differs from number of columns",xd,yd,v.size()));
+    }
+    vector<vector<T> >::push_back(v);
+    xd = xd + 1;
+    yd = v.size();
+    return *this;
+  }
+    
   template <class T>
   TMatrix3D<T>::TMatrix3D()
     :xd(0),yd(0),zd(0){}
