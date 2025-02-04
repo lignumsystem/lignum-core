@@ -1,15 +1,18 @@
+
 #include <iostream>
 #include <iomanip>
 #include <RectangularCuboid.h>
-///\file cuboid.cc
+
 using namespace std;
 using namespace cxxadt;
 ///\example{lineno} cuboid.cc
-///\brief This program  demonstrates the use  of RectangularCuboid.
-///To compile the program  type `c++ -DCUBOID -g -I../include -L../lib -lcxxadt cuboid.cc -o cuboid` in the
-///command line. The program creates RectangularCuboid object together with a set of points and
-///tests if these points are inside the cuboid.
-
+///This program  demonstrates the use  of RectangularCuboid.
+///To compile the program  type
+///
+///`c++ -DCUBOID -g -I../include -L../lib -lcxxadt cuboid.cc -o cuboid` in the
+///
+///command line. The program creates RectangularCuboid objects together with a set of points and
+///tests if these points are inside the cuboids.
 #ifdef CUBOID
 int main()
 {

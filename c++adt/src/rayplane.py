@@ -1,13 +1,14 @@
-##\example{lineno} rayplane.py 
+##\example{lineno} rayplane.py
+#Python implementation of light ray - plane (in 3D) intersection
 import numpy as np
 def rayplane(planeN,planeP,rayD,rayP):
-    """!
+    """
     Check for line - plane intersection 
     \param planeN plane normal
     \param planeP point on the plane
     \param rayD ray direction
     \param rayP point on a ray
-    """!
+    """
     NdotR = planeN.dot(rayD)
     print("NdotR",NdotR)
     w = planeP-rayP

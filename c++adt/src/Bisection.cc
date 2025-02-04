@@ -1,5 +1,3 @@
-///\file Bisection.cc
-///Examples to test Bisection method
 #include <Bisection.h>
 #include <iostream>
 
@@ -41,9 +39,14 @@ private:
 };
 
 
-//To compile type CC -DBISECTION -I../include -lm
-///\example{lineno} Bisection.cc
-///Examples to test Bisection method with linear, parabolic and cubic functions
+
+/// \example{lineno} Bisection.cc
+/// Examples to test the Bisection function method with linear, parabolic and cubic functions.
+/// To compile type:
+///
+/// `c++ -DBISECTIONMAIN -I../include -lm Bisection.cc -o bisection`
+///
+/// Run the `bisection` binary.
 #ifdef BISECTIONMAIN
 int main()
 {

@@ -1,23 +1,23 @@
+/// \example{lineno} HDF5example.cc
+/// Examples how to use  the class `LGMHDF5File`.
+/// Generate  HDF5 datasets and save them to a file.
+/// To compile in this directory type:
+///
+/// `h5c++ -I../include  -DHDF5MAIN  LGMHDF5File.cc HDF5example.cc -o fileh5`
+///
+/// Run `fileh5` without command line parameters.
+/// The output file *HDF5Test.h5* will contain three Datasets: 2D data array *DataArray2D*,
+/// 3D data array *DataArray3D* and 3D data array *DataArrayTMatrix3D* created with TMatrix3D<double>.
+/// 
+/// To install HDF5 toolkit use for example MacPorts: `sudo port install hdf5`.
+
 #include <array>
 #include <vector>
 #include <algorithm>
 #include <LGMHDF5File.h>
 using namespace std;
 using namespace cxxadt;
-/// \file HDF5Example.cc
-/// \brief Examples how to use  the class `LGMHDF5File`.
-///
-/// Examples to generate  HDF5 datasets and save them to a file.
-/// To compile in this directory type:
-///
-/// `h5c++ -I../include  -DHDF5MAIN  LGMHDF5File.cc HDF5example.cc -o fileh5`
-///
-/// Adjust -I for the location of LGMHDF5File.h. Run `fileh5` without command line parameters.
-/// The output file *HDF5Test.h5* will contain three Datasets: 2D data array *DataArray2D*,
-/// 3D data array *DataArray3D* and 3D data array *DataArrayTMatrix3D* created with TMatrix3D<double>.
-/// 
-/// To install HDF5 toolkit use for example MacPorts: `sudo port install hdf5`.
-/// \example{lineno} HDF5example.cc
+
 #ifdef HDF5MAIN
 
 #include <TMatrix3D.h>
