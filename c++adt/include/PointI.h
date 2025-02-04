@@ -113,8 +113,7 @@ namespace cxxadt{
 
   inline ostream& operator << (ostream& os, const Point& point)
   {
-    os << "x: " << point.x <<" y: " << point.y 
-       << " z: " << point.z << '\n' << flush;
+    os << point.x << " " << point.y << " " << point.z << flush;
     return os;
   }
 

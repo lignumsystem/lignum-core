@@ -299,8 +299,8 @@ istream& operator >> (istream& os, PositionVector& pv)
 
 ostream& operator << (std::ostream& os, const PositionVector& pv)
 {
-	std::vector<double> vv = pv.getVector();
-  os  << " " << vv[0] << " " << vv[1] << " " << vv[2];
+  std::vector<double> vv = pv.getVector();
+  os  << " " << vv[0] << " " << vv[1] << " " << vv[2] << flush;
   return os;
 }
 
