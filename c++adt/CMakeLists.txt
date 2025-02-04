@@ -31,6 +31,7 @@ src/matrix3d.cc
 src/normal.cc
 src/rand3.cc
 src/Kite.cc
+src/RectangularCuboid.cc
 )
 
 if(CMAKE_HOST_SYSTEM_NAME MATCHES "Darwin")
