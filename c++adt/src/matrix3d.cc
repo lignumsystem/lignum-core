@@ -1,12 +1,11 @@
 #include <iostream>
 #include <TMatrix3D.h>
-
+///\file matrix3d.cc
 using namespace std;
 using namespace cxxadt;
-
-///\file matrix3d.cc
-///\brief This program  demonstrates the use  of TMatrix3D class.   To compile
-///the program  type `c++ -DMATRIX3DMAIN -g -I../include  matrix3d.cc` in the
+///\example{lineno} matrix3d.cc
+///\brief This program  demonstrates the use  of TMatrix2D and TMatrix3D classes.
+///To compile the program  type `c++ -DMATRIX3DMAIN -g -I../include  matrix3d.cc -o matrix3d` in the
 ///command line. The program creates TMatrix2D and TMatrix3D matrices  and prints out
 ///there contents.
 #ifdef MATRIX3DMAIN
