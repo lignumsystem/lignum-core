@@ -77,8 +77,8 @@ namespace Lignum{
     LGASa,	    ///< 45   Surface area of the segment cylinder: 2*PI*R*L												      
     LGAsf,	    ///< 46   Specific leaf area (=leaf area/ leaf weight)												      
     LGAstarm,	    ///< 47   Star mean for a confiferous segment														      
-    LGAstatus, 	    ///< 48   General counter to control e.g. bud burst.  												      
-    LGAstate,	    ///< 49   Bud state can be dead, alive, dormant etc., see LGMUnits.h											      
+    LGAstatus, 	    ///< 48   General counter to control e.g. bud burst. \sa Lignum::LGAstate
+    LGAstate,	    ///< 49   Bud state can be dead, alive, dormant etc in LGMUnits.h. \sa LignumForest::LGAstatus
     LGAtauL,	    ///< 50   Transmission coefficient of leaf (in direction of the ray of light) 									      
     LGAtype,	    ///< 51   General type specifier, e.g. Bud:dominant, apical, lateral etc. The numerical values and their symbols of different types given in LGMUnits.h     
     LGAV,	    ///< 52   Segment volume based on R and L														      
