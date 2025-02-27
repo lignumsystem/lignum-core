@@ -411,7 +411,7 @@ void LGMPolygonDomBuilder::parseBroadLeafElement(const QDomElement& element, con
 	    x = temp.section(' ', 0, 0).toDouble();
 	    y = temp.section(' ', 1, 1).toDouble();
 	    z = temp.section(' ', 2, 2).toDouble();
-	  pstart = Point(x, y, z);
+	    pstart = Point(x, y, z);
 	  }
 	  else if(child2.tagName() == "PetioleEnd") {
 	    QString temp = child2.text();
@@ -461,6 +461,94 @@ void LGMPolygonDomBuilder::parseBroadLeafElement(const QDomElement& element, con
 	BSPPolygonSet* leaf = makeTriangleLeaf(lc, rc, ac, 
 					       parameters.useLeafTextures(),
 					       object);
+	polygons->addPolygons(leaf);
+	delete leaf;
+	
+	SceneObject* p_object = new SceneObject(parameters.getPetioleMaterial(), object_index, 0, false);
+	sceneObjects->insert(object_index, p_object);
+	BSPPolygonSet* petiole = makePetiole(pstart, pend,
+					     parameters.getPetioleDetail(),
+					     parameters.getPetioleRadius(),
+					     p_object);
+	polygons->addPolygons(petiole);
+	delete petiole;
+	
+      }
+      
+      child = child.nextSiblingElement();
+    }
+  }
+  else if (element.attribute("Shape") == "Kite") {
+
+    while (!child.isNull()) {
+      if(child.tagName() == "BroadLeafAttributes") {
+	QDomElement child2 = child.firstChildElement();
+	double x, y, z;
+	Point pstart;
+	Point pend;
+	Point bc, lc, rc, ac;
+	PositionVector normal;
+	
+	int object_index = element.attribute(QString("ObjectIndex")).toInt();
+      
+	
+	while(!child2.isNull()) {
+	  if(child2.tagName() == "PetioleStart") {
+	    QString temp = child2.text();
+	    x = temp.section(' ', 0, 0).toDouble();
+	    y = temp.section(' ', 1, 1).toDouble();
+	    z = temp.section(' ', 2, 2).toDouble();
+	    pstart = Point(x, y, z);
+	  }
+	  else if(child2.tagName() == "PetioleEnd") {
+	    QString temp = child2.text();
+	    x = temp.section(' ', 0, 0).toDouble();
+	    y = temp.section(' ', 1, 1).toDouble();
+	    z = temp.section(' ', 2, 2).toDouble();
+	    pend = Point(x, y, z);
+	  }
+	  else if(child2.tagName() == "LeafNormal") {
+	    QString temp = child2.text();
+	    x = temp.section(' ', 0, 0).toDouble();
+	    y = temp.section(' ', 1, 1).toDouble();
+	    z = temp.section(' ', 2, 2).toDouble();
+	    normal = PositionVector(x, y, z);
+	  }
+	  else if(child2.tagName() == "KiteBC") {
+	    QString temp = child2.text();
+	    x = temp.section(' ', 0, 0).toDouble();
+	    y = temp.section(' ', 1, 1).toDouble();
+	    z = temp.section(' ', 2, 2).toDouble();
+	    bc = Point(x, y, z);
+	  }
+	  else if(child2.tagName() == "KiteLC") {
+	    QString temp = child2.text();
+	    x = temp.section(' ', 0, 0).toDouble();
+	    y = temp.section(' ', 1, 1).toDouble();
+	    z = temp.section(' ', 2, 2).toDouble();
+	    lc = Point(x, y, z);
+	  }
+	  else if(child2.tagName() == "KiteRC") {
+	    QString temp = child2.text();
+	    x = temp.section(' ', 0, 0).toDouble();
+	    y = temp.section(' ', 1, 1).toDouble();
+	    z = temp.section(' ', 2, 2).toDouble();
+	    rc = Point(x, y, z);
+	  }
+	  else if(child2.tagName() == "KiteAC") {
+	    QString temp = child2.text();
+	    x = temp.section(' ', 0, 0).toDouble();
+	    y = temp.section(' ', 1, 1).toDouble();
+	    z = temp.section(' ', 2, 2).toDouble();
+	    ac = Point(x, y, z);
+	  }
+	  child2 = child2.nextSiblingElement();
+	}
+	cout << "Kite leaf found " <<endl;
+	SceneObject *object = new SceneObject(parameters.getLeafMaterial(), object_index, 0, false);
+	sceneObjects->insert(object_index, object);
+	
+	BSPPolygonSet* leaf = makeKiteLeaf(bc, lc, rc, ac, object);
 	polygons->addPolygons(leaf);
 	delete leaf;
 	
@@ -735,6 +823,15 @@ BSPPolygonSet* LGMPolygonDomBuilder::makeTriangleLeaf(Point lc, Point rc, Point 
   
   return polygons;
 
+}
+
+BSPPolygonSet* LGMPolygonDomBuilder::makeKiteLeaf(Point bc, Point lc, Point rc, Point ac,SceneObject* object) const{
+  BSPPolygonSet* polygons = new BSPPolygonSet();
+  polygons->addPolygon(new BSPPolygon(bc, lc, ac, object));
+  polygons->addPolygon(new BSPPolygon(lc, ac, rc, object));
+  polygons->addPolygon(new BSPPolygon(bc, ac, rc, object));
+  polygons->addPolygon(new BSPPolygon(bc, lc, rc, object));
+  return polygons;
 }
 
 BSPPolygonSet* LGMPolygonDomBuilder::makeEllipseLeaf(cxxadt::Ellipse ellipse, int detail, bool use_tex, SceneObject* object) const {

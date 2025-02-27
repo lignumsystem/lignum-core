@@ -54,6 +54,12 @@ private:
 			     SceneObject* object) const;
   BSPPolygonSet* makePetiole(Point sp, Point ep, int detail, double radius, SceneObject* object) const;
   BSPPolygonSet* makeTriangleLeaf(Point lc, Point rc, Point ac, bool use_tex, SceneObject* object) const;
+  ///\brief Kite leaf
+  ///
+  ///Create Kite leaf polygon chain using Triangle leaf as a model
+  ///\note Texture mapping is not implemented
+  ///\sa makeTriangleLeaf
+  BSPPolygonSet* makeKiteLeaf(Point bc,Point lc, Point rc, Point ac,SceneObject* object) const;
   BSPPolygonSet* makeEllipseLeaf(cxxadt::Ellipse ellipse, int detail, bool use_tex, SceneObject* object) const;
   BSPPolygonSet* makeBud(Point point, PositionVector direction, int la_detail, int lo_detail, double size, SceneObject* object) const;
  

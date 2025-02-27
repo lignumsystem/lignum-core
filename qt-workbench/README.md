@@ -54,6 +54,11 @@ To remove all compilation work type:
 
 	make distclean
 
+>[!NOTE]
+>Instead of `qmake` it might be necesessary to use `qmake` explicitely
+>from its installation location, for example :<br>
+>   `/opt/local/libexec/qt4/bin/qmake -r qt-opengl.pro`<br>
+>especially with recent versions  of macOS (Apple silicon) and MacPorts
 
 ## CMake
 CMake has become a popular software build system and LIGNUM projects
