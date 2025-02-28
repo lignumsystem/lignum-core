@@ -544,7 +544,6 @@ void LGMPolygonDomBuilder::parseBroadLeafElement(const QDomElement& element, con
 	  }
 	  child2 = child2.nextSiblingElement();
 	}
-	cout << "Kite leaf found " <<endl;
 	SceneObject *object = new SceneObject(parameters.getLeafMaterial(), object_index, 0, false);
 	sceneObjects->insert(object_index, object);
 	
