@@ -19,7 +19,8 @@
 /// -#   FindHwBoundingBox   
 /// -#   CollectFrustumVolume   
 /// -#   CollectFoliageMass   
-/// -#   CollectFoliageArea    
+/// -#   CollectFoliageArea
+/// -#   CollectLeafArea
 /// -#   CollectWoodMass    
 /// -#   CollectSegmentLengths   
 /// -#   CollectStemWoodMass   
@@ -792,6 +793,25 @@ namespace Lignum{
     return sum;
   }
 
+
+  //Either whole tree: construct CollectLeafArea() or by Gravelius order:
+  // construct CollectLeafArea(order)
+  template <class TS,class BUD, class SHAPE>
+  LGMdouble& CollectLeafArea<TS, BUD, SHAPE>::
+  operator()(LGMdouble &sum,TreeCompartment<TS,BUD>* tc)const {
+    if(HwTreeSegment<TS,BUD,SHAPE>*segment =
+       dynamic_cast<HwTreeSegment<TS,BUD,SHAPE>*>(tc)) {
+      if(my_order < 0.0)
+	sum += GetValue(*segment, LGAAf);
+      else {
+	LGMdouble order = GetValue(*segment,LGAomega);
+	if(order - 0.1 < my_order && order + 0.1 > my_order)
+	  sum += GetValue(*segment, LGAAf);
+      }
+    }
+    return sum;
+  }
+  
   template <class TS, class BUD>
   LGMdouble& CollectWoodMass<TS,BUD>::
   operator()(LGMdouble &sum, TreeCompartment<TS,BUD>* tc)const
