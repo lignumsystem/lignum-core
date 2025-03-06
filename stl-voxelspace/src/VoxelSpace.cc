@@ -831,8 +831,8 @@ double VoxelSpace::getBorderStandExtinction(const Point& p0,
         tdist = *it;
     }
     //The exit point from the voxel space
-    PositionVector exit = d0+tdist*dir;
-    double tau = NearbyShading(Point(exit),dir,
+    PositionVector exit_p = d0+tdist*dir;
+    double tau = NearbyShading(Point(exit_p),dir,
                                GetValue(forest_descriptor,LGAH),
                                GetValue(forest_descriptor,LGAcbase),
                                GetValue(forest_descriptor,LGALAIc),
@@ -1108,7 +1108,8 @@ LGMdouble VoxelSpace::calculatePoplarLight(LGMdouble diffuse, LGMdouble structur
                 //set the incoming direct radiation from one sector;
                 //cout << "hits " << hits <<  " % " << percent << " iop " << iop <<endl<<endl;
                 voxboxes[i1][i2][i3].addRadiation(percent*iop);
-                //cout << "Qin diffuse + direct voxel " << i1 << " "  << i2 << " "  << i3 << " Qin " << voxboxes[i1][i2][i3].getQin() <<endl;
+                //cout << "Qin diffuse + direct voxel " << i1 << " "  << i2 << " "  << i3
+		//<< " Qin " << voxboxes[i1][i2][i3].getQin() <<endl;
             }//for (int i3=0; i3 < Zn; i3++)
     return 0;
 }
@@ -1118,7 +1119,7 @@ LGMdouble VoxelSpace::calculatePoplarLight(LGMdouble diffuse, LGMdouble structur
 //
 //	The function calculates the Qin and Qabs-values to every VoxelBox.
 //    self_shading determines if the box shades itself or not
-LGMdouble VoxelSpace::calculateTurbidLight(bool self_shading)
+LGMdouble VoxelSpace::calculateTurbidLight(bool border_forest, bool self_shading)
 {
     updateBoxValues();
     for(int i1=0; i1<Xn; i1++)
@@ -1131,18 +1132,20 @@ LGMdouble VoxelSpace::calculateTurbidLight(bool self_shading)
                 //loop is executed.
                 if (voxboxes[i1][i2][i3].isEmpty() == false)
                 {
-
                     for(int i = 0; i < num_dirs; i++)
                     {
                         vector<double> rad_direction(3);
-                        LGMdouble iop = sky->
-                                diffuseRegionRadiationSum(i,rad_direction);
-
-                        PositionVector
-                                radiation_direction(rad_direction[0],
-                                                    rad_direction[1], rad_direction[2]);
+                        LGMdouble iop = sky->diffuseRegionRadiationSum(i,rad_direction);
+			PositionVector radiation_direction(rad_direction[0],
+							   rad_direction[1], rad_direction[2]);
                         radiation_direction.normalize();
-                        double ext = getBorderStandExtinction(voxboxes[i1][i2][i3].getCenterPoint(),radiation_direction);
+
+			if(border_forest) {  //If BorderForest add (=multiplay) effect of it
+			  LGMdouble ext = getBorderStandExtinction(voxboxes[i1][i2][i3].
+							 getCenterPoint(),rad_direction);
+			  iop *= ext;			  
+			}
+
                         vector<VoxelMovement> vec;
                         getRoute(vec, i1, i2, i3, radiation_direction);
                         int size = vec.size();
@@ -1151,6 +1154,7 @@ LGMdouble VoxelSpace::calculateTurbidLight(bool self_shading)
                         if (size>1){
                             for (int a=1; a<size; a++)
                             {
+			      LGMdouble ext = 1.0;
                                 VoxelMovement v1 = vec[a-1];
                                 VoxelMovement v2 = vec[a];
                                 ext = voxboxes[v1.x][v1.y][v1.z].extinction(v2.l);

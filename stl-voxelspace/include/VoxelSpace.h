@@ -216,9 +216,10 @@ public:
     //Input: p0   start point of the light beam
     //       dir  direction of the light beam, |dir| == 1 (!!!)
     double getBorderStandExtinction(const Point& p0, const PositionVector& dir)const;
-    void updateBoxValues();  //Runs updateValues() of voxelboxes (whatever it does)
-    LGMdouble calculateTurbidLight(bool self_shading = true);
-    //diffuse is to calcluate the real diffuse from standard 1200, structureFlag is used to indicate if it is the first time light calculation after structure update
+  void updateBoxValues();  //Runs updateValues() of voxelboxes (whatever it does)
+  LGMdouble calculateTurbidLight(bool border_forest, bool self_shading = true);
+    //diffuse is to calcluate the real diffuse from standard 1200, structureFlag is
+    //used to indicate if it is the first time light calculation after structure update
     LGMdouble calculatePoplarLight(LGMdouble diffuse, LGMdouble structureFlag);
     void setLightValues();
     void setLight();
