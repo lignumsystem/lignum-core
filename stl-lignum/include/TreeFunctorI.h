@@ -3,8 +3,7 @@
 
 #include <iomanip>
 ///\file TreeFunctorI.h
-///\brief Implementation of the following functors
-///(functions) for Tree.
+///\brief Implementation of the functors (functions) for Tree.
 ///
 /// Help functors etc. are not specified. If you add a functor-function please update this list.
 ///

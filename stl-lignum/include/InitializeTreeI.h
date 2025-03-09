@@ -1,10 +1,9 @@
-///\file InitializeTreeI.h
-///\brief Implementation of InitializeTree::initialize 
 #ifndef INITIALIZE_TREEI_H
 #define INITIALIZE_TREEI_H
-
+///\file InitializeTreeI.h
 
 namespace Lignum{
+  ///\brief Implementation for class Tree  initialization
   template <class TS, class BUD>
   void  InitializeTree<TS,BUD>::initialize(Tree<TS,BUD>& tree, LGMINITSTYLE style)
     {
