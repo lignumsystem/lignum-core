@@ -29,7 +29,7 @@ namespace cxxadt{
   /// DataSpace RANKS for 2D and 3D arrays
   const int DSPACE_RANK3 = 3; ///< DataSpace rank 3D array
   const int DSPACE_RANK2 = 2; ///< DataSpace rank 2D array (matrix)
-  /// \brief Base class to create TMatrix2D from Lignum functions.
+  /// \brief Base class to create TMatrix2D from Lignum functions and parameters.
   ///
   /// \sa LGMHDF5File
   class LGMHDF5{
@@ -81,30 +81,47 @@ namespace cxxadt{
     /// Close the H5File `hdf5_file`.
     /// \sa hdf5_file
     ~LGMHDF5File();
-    /// Create group in HDF5 file
+    /// \brief Create group in HDF5 file
     /// \param name Group name
     /// \return -1 if error 0 otherwise 
     /// \exception FileIException GroupIException
     /// \note The group name is a Linux/Unix style directory path string. e.g. "/Groups/GroupA"
     int createGroup(const string& name);
-    /// Create dataset form TMatrix3D<double>
-    /// \param dataset_name Name of the dataset
-    /// \param years Years dimension
-    /// \param rows Rows (trees) dimension
-    /// \param cols Columns (data) dimension
-    /// \param data The 3D array of type *double*
+    /// \brief Create 3D dataset from a struct T type 
+    ///
+    /// Create dataset from a struct T datatype. User defines \p comp_type that contains
+    /// the names, offsets and HDF5 datatypes of the struct members.
+    /// \tparam T struct datatype in the dataset
+    /// \param name Name of the dataset
+    /// \param comp_type HDF5 CompType describing the struct T members
+    /// \param x X dimension
+    /// \param y Y dimension
+    /// \param z Z dimension
+    /// \param data The 3D data matrix
     /// \return -1 if error 0 otherwise
     /// \exception DataSetIException
-    int createDataSet(const string& dataset_name, int years, int rows, int cols, const TMatrix3D<double>& data);
-    /// Create dataset from TMatrix2D<double> (e.g. stand level data)
-    /// \param dataset_name Name of the dataset
+    /// \note This method can be used to save data collected from VoxelSpace and VoxelBoxes
+    /// \sa createDataSet(const string&,int,int,int,const TMatrix3D<double>&)
+    template <class T>
+    int createDataSet(const string& name, const CompType& comp_type, int x, int y, int z, const TMatrix3D<T>& data);
+    /// \brief Create dataset form TMatrix3D
+    /// \param name Name of the dataset
+    /// \param years Simulation years dimension
+    /// \param rows Number of data rows dimension
+    /// \param cols Number of data columns dimension
+    /// \param data The 3D matrix of double
+    /// \return -1 if error 0 otherwise
+    /// \exception DataSetIException
+    int createDataSet(const string& name, int years, int rows, int cols, const TMatrix3D<double>& data);
+    /// \brief Create dataset from TMatrix2D<double> (e.g. stand level data)
+    /// \param name Name of the dataset
     /// \param years Years  (rows) dimension
     /// \param cols Columns (data) dimension
     /// \param data The 2D array of type *double*
     /// \return -1 if error 0 otherwise
     /// \exception DataSetIException
     int createDataSet(const string& dataset_name, int years, int cols, const TMatrix2D<double>& data);
-    /// Create dataset from TMatrix2D<string>, usually Tree parameter files
+    /// \brief Create dataset from TMatrix2D<string>, usually Tree parameter files
     /// \param dataset_name Name of the dataset
     /// \param rows Rows (years) dimension
     /// \param cols Columns (data) dimension
@@ -112,13 +129,13 @@ namespace cxxadt{
     /// \return -1 if error 0 otherwise
     /// \exception DataSetIException
     int createDataSet(const string& dataset_name, int rows, int cols, const TMatrix2D<string>& data);
-    /// Create dataset of containg one string, for example the content of a command line.
+    /// \brief Create dataset of containg one string, for example the content of a command line.
     /// \param dataset_name Dataset name
     /// \param data Dataset string
     /// \return -1 if error 0 otherwise
     /// \exception DataSetIException
     int createDataSet(const string& dataset_name, const string& data);
-    /// Create column names as HDF5 attribute. Column names can be of variable length strings.
+    /// \brief Create column names as HDF5 attribute. Column names can be of variable length strings.
     /// \param dset_name DataSet name for  which the column names will be given 
     /// \param attr_name Attribute name for the column names 
     /// \param col_names vector of column names 
@@ -134,7 +151,7 @@ namespace cxxadt{
     /// \note Object names include groups, dataspaces, datasets etc.
     /// \sa hdf5_file
     vector<string> getObjectNames();
-    /// Create datasets from files that have data for ParametricCurve. Wild card search
+    /// \brief Create datasets from files that have data for ParametricCurve. Wild card search
     /// \pre The file format is as used in Lignum functions 
     /// \param pattern Wild card pattern string for `glob` (in glob.h)
     /// \param hdf5_group HDF5 group
@@ -143,7 +160,7 @@ namespace cxxadt{
     /// \note Traditionally the files for ParametricCurve have *.fun* suffix
     /// \sa glob
     int createFnDataSetsFromDir(const string& pattern, const string& hdf5_group, const string& attr_name, const vector<string>& col_names);
-    /// Create datasets from files that have Tree parameters. Wild card search.
+    /// \brief Create datasets from files that have Tree parameters. Wild card search.
     /// \pre The file format is as used in tree parameters for Lignum
     /// \param pattern Wild card pattern string for `glob` (in glob.h)
     /// \param hdf5_group HDF5 group
@@ -151,16 +168,16 @@ namespace cxxadt{
     ///	\param col_names Column names
     /// \note Traditionally parameter files are named Tree*.txt.
     int createParameterDataSetsFromDir(const string& pattern, const string& hdf5_group, const string& attr_name,const vector<string>& col_names);
-    /// Create datasets from files that are Metafiles. Wild card search
+    /// \brief Create datasets from files that are Metafiles. Wild card search
     /// \pre The file format is as used in Metafiles for Lignum
     /// \param pattern Wild card pattern string for `glob` (in glob.h)
     /// \param hdf5_group HDF5 group
     /// \note Traditionally parameter files are named in *MetaFile*.txt.
     int createFileDataSetsFromDir(const string& pattern, const string& hdf5_group);
-    /// Close the H5File `hdf5_file`. \sa hdf5_file
+    /// \brief Close the H5File `hdf5_file`. \sa hdf5_file
     void close();
   protected:
-    /// Create 3D array DataSet by giving explicitely the 3 dimensions and `data`
+    /// \brief Create 3D array DataSet by giving explicitely the 3 dimensions and `data`
     /// \param dataset_name Name of the dataset
     /// \param years Years dimension
     /// \param rows Rows (trees) dimension
@@ -172,7 +189,7 @@ namespace cxxadt{
     /// 3D array of NATIVE_DOUBLE HDF5 dataset of given dimensions. 
     /// \sa writeDataSet
     int createDataSet(const string& dataset_name, int years, int rows, int cols, void* data);
-    /// Create 2D array DataSet by giving explicitely the 2 dimensions and the `data`
+    /// \brief Create 2D array DataSet by giving explicitely the 2 dimensions and the `data`
     /// \param dataset_name Name of the dataset
     /// \param rows Rows dimension
     /// \param cols Columns dimension
@@ -183,7 +200,7 @@ namespace cxxadt{
     /// 2D array of NATIVE_DOUBLE  dataset of given dimensions.  
     /// \sa writeDataSet
     int createDataSet(const string& dataset_name, int rows, int cols, void* data);
-    /// Write the dataset to dataspace
+    /// \brief Write the dataset to dataspace
     /// \param dset DataSet 
     /// \param data Lignum simulation data
     /// \return -1 if error 0 otherwise
@@ -191,7 +208,60 @@ namespace cxxadt{
     /// \sa createDataSet
     int writeDataSet(const DataSet& dset, void* data);
   private:
-    H5File hdf5_file; /// HDF5 file containing simulation results
+    H5File hdf5_file; ///< HDF5 file containing simulation results
   };
+
+  template <class T>
+  int LGMHDF5File::createDataSet(const string& dataset_name, const CompType& comp_type, int x, int y, int z, const TMatrix3D<T>& data)
+  {
+    ///The maximum function stack may be a limiting factor (use shell command `ulimit -Hs`).
+    ///In macOS it seems to be 65520 kbytes, default sems to be 8176.
+    ///For the most of the 2D data arrays it can be enough.
+    ///With 3D data arrays the stack limit is easily exceeded.
+    ///To copy tree data for HDF5 storage reserve contiguous memory from the heap instead.
+    /// \internal
+    /// \snippet{lineno} LGMHDF5File.cc HeapAllocation3D
+    //  [HeapAllocation3D]
+    T* v = new T[x * y * z];
+    // [HeapAllocation3D]
+    /// \endinternal
+    
+    ///To index the contiguous memory use the indexing scheme compiler uses.
+    ///If you want to understand the row first indexing scheme take a piece of grid paper
+    ///and draw for example three 4x5 2D data arrays to represent 3x4x5 data array.
+    ///Then plugin numbers to the indexing scheme and see how it lands on the right
+    ///array cell on a right 2D array. The `v` denotes first cell (i=j=k=0).
+    for (int i = 0; i < x; i++){
+      for (int j = 0; j < y; j++){
+	for (int k = 0; k < z; k++){
+	  /// \internal
+	  /// \snippet{lineno} LGMHDF5File.cc HeapIndexing
+	  // [HeapIndexing]
+	  *(v + i * y * z + j * z + k) = data[i][j][k];
+	  // [HeapIndexing]
+	  /// \endinternal
+	}
+      }
+    }
+    try{
+      Exception::dontPrint();
+      // DataSpace needs dimensions and rank
+      hsize_t dspace_dims[DSPACE_RANK3];
+      dspace_dims[0] = x;
+      dspace_dims[1] = y;
+      dspace_dims[2] = z;
+      DataSpace dspace(DSPACE_RANK3,dspace_dims);
+      DataSet dset = hdf5_file.createDataSet(dataset_name,comp_type,dspace);
+      dset.write((void*) v,comp_type);
+    }
+    catch (DataSetIException error){
+      error.printErrorStack();
+      return -1;
+    }
+    //Note the us of [] operator to delete vector 
+    delete [] v;
+    return 0;
+  }
+  
 }//namepace cxxadt
 #endif
