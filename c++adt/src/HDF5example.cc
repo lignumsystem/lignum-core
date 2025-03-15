@@ -3,12 +3,11 @@
 /// Generate  HDF5 datasets and save them to a file.
 /// To compile in this directory type:
 ///
-/// `h5c++ -I../include  -DHDF5MAIN  LGMHDF5File.cc HDF5example.cc -o fileh5`
+/// `h5c++ -I../include -L../lib -DHDF5MAIN  LGMHDF5File.cc HDF5example.cc  -lcxxadt  -o h5file`
 ///
 /// Run `fileh5` without command line parameters.
-/// The output file *HDF5Test.h5* will contain three Datasets: 2D data array *DataArray2D*,
-/// 3D data array *DataArray3D* and 3D data array *DataArrayTMatrix3D* created with TMatrix3D<double>.
-/// 
+/// The output file *HDF5Test.h5* will contain sample datasets for 2D and 3D matrices
+/// as well as an example with C/C++ data structure as the dataset element. 
 /// To install HDF5 toolkit use for example MacPorts: `sudo port install hdf5`.
 
 #include <array>
@@ -24,13 +23,17 @@ using namespace cxxadt;
 using namespace cxxadt;
 int main()
 {
+  //Data structure
   struct H5TestStruct{
     int a;
-    double b;
+    float b;
+    double c;
   };
+  //Corresponding CompType for H5TestStruct
   H5::CompType comp_data(sizeof(H5TestStruct));
   comp_data.insertMember("A",HOFFSET(H5TestStruct,a),H5::PredType::NATIVE_INT);
-  comp_data.insertMember("B",HOFFSET(H5TestStruct,b),H5::PredType::NATIVE_DOUBLE);
+  comp_data.insertMember("B",HOFFSET(H5TestStruct,b),H5::PredType::NATIVE_FLOAT);
+  comp_data.insertMember("C",HOFFSET(H5TestStruct,c),H5::PredType::NATIVE_DOUBLE);
   
   LGMHDF5File h5file("HDF5Test.h5");
   cout << "Output file " <<  "HDF5Test.h5" << endl;
@@ -52,16 +55,18 @@ int main()
       }
     }
   }
-  //Create data set with a structure
+  //Create 3D matrix with H5TestStruct data structure
   TMatrix3D<H5TestStruct> mh5struct(3,4,5);
   for (int i=0; i < 3; i++){
     for (int j=0; j < 4; j++){
       for (int k=0; k < 5; k++){
 	mh5struct[i][j][k].a = i+j+k;
-	mh5struct[i][j][k].b = 10.0*(i+j+k);
+	mh5struct[i][j][k].b = static_cast<float>(10.0*(i+j+k));
+	mh5struct[i][j][k].c = static_cast<double>(20.0*(i+j+k));
       }
     }
   }
+  //Create datasets
   h5file.createDataSet("H5MATRIX2D",5,7,m2d);
   h5file.createDataSet("H5MATRIX3D",5,6,7,m3d);
   h5file.createDataSet("H5STRUCT",comp_data,3,4,5,mh5struct);

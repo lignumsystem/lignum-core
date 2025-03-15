@@ -1,6 +1,7 @@
 /// \file LGMHDF5File.h
-/// \brief The interface to HDF5 c++ library to create HDF5 files for Lignum simulations.
+/// \brief The interface to HDF5 c++ library
 ///
+/// The interface to HDF5 c++ library to create HDF5 files for Lignum simulations.
 /// The further analysis of data is meant to be made with R, Python or some other
 /// high level tool supporting HDF5 files. To retrieve information from a HDF5
 /// file one can also use utility tools from HDF5 installation, e.g.:
@@ -47,8 +48,9 @@ namespace cxxadt{
     /// \note Parameter values are also returned as strings
     TMatrix2D<string> getLignumParameterData(const string& fname)const;
   };
-  /// \brief Create HDF5 dataset file from 2D or 3D data arrays, or from a STL string.
+  /// \brief Create HDF5 datasets file
   ///
+  /// Create HDF5 datasets file from 2D or 3D data arrays, or from a STL string.
   /// After Lignum simulation all simulation data is assumed to be in 2D or 3D arrays. LGMHDF5File can
   /// create HDF5 datasets from the simulation data and produce a single HDF5 file.
   /// Future analysis can be done with R, python or other HDF5 compatible tool.
@@ -62,14 +64,14 @@ namespace cxxadt{
   /// For example `array[4][5]` retrieves data row for the `5`th tree on the iteration `4`.
   /// The 2D data is up to user, usually `array[years][columns]` for aggreate annual data.
   /// 
-  /// \note In C/C++ array indexing starts from 0. In the data analysis the indexing
-  /// depends on the tool. For example R starts indexing from 1.
-  /// \note R seems to use Fortran column-major ordering when reproducing dataframes from HDF5 file.
-  /// Either accept this in data analysis or use matrix transposes to get the original dataset dimensions.
-  /// \sa TMatrix2D TMatrix3D for 2D and 3D data arrays.
+  /// \important In C/C++ and Python array indexing starts from 0 but for example R starts indexing from 1.
+  /// \important C/C++ (consequently LGMHDF5File implementation) and Python use row-first ordering
+  /// for storing multidimensinal vectors in linear continous storage. R uses Fortran style column-first ordering.
+  /// Use for example matrix transposes to get the original dataset dimensions in R.
   ///
   /// \warning HDF5 does not *enforce* UTF-8. Using UTF-8 charactiers (like scandinavian alphabet)
-  /// May be OK on one platform but not on some others.
+  /// may be OK on one platform but not on some others.
+  /// \sa TMatrix2D TMatrix3D for 2D and 3D data arrays.
   class LGMHDF5File:public LGMHDF5{
   public:
     /// Constructor prepares the file `file_name` for datasets by creating HDF5 file.
@@ -120,7 +122,7 @@ namespace cxxadt{
     /// \param data The 2D array of type *double*
     /// \return -1 if error 0 otherwise
     /// \exception DataSetIException
-    int createDataSet(const string& dataset_name, int years, int cols, const TMatrix2D<double>& data);
+    int createDataSet(const string& name, int years, int cols, const TMatrix2D<double>& data);
     /// \brief Create dataset from TMatrix2D<string>, usually Tree parameter files
     /// \param dataset_name Name of the dataset
     /// \param rows Rows (years) dimension
@@ -214,19 +216,21 @@ namespace cxxadt{
   template <class T>
   int LGMHDF5File::createDataSet(const string& dataset_name, const CompType& comp_type, int x, int y, int z, const TMatrix3D<T>& data)
   {
-    ///The maximum function stack may be a limiting factor (use shell command `ulimit -Hs`).
-    ///In macOS it seems to be 65520 kbytes, default sems to be 8176.
+    ///\par Function stack and heap 
+    ///The maximum function stack may be a limiting factor (use the Terminal shell command `ulimit -Hs`).
+    ///In macOS it seems to be 65520 kbytes, default value looks to be 8176.
     ///For the most of the 2D data arrays it can be enough.
     ///With 3D data arrays the stack limit is easily exceeded.
-    ///To copy tree data for HDF5 storage reserve contiguous memory from the heap instead.
-    /// \internal
-    /// \snippet{lineno} LGMHDF5File.cc HeapAllocation3D
+    ///To copy tree data for HDF5 storage reserve contiguous memory dynamically
+    ///from the heap instead.
+    //
+    /// \snippet{lineno} LGMHDF5File.h HeapAllocation3D
     //  [HeapAllocation3D]
     T* v = new T[x * y * z];
     // [HeapAllocation3D]
-    /// \endinternal
-    
-    ///To index the contiguous memory use the indexing scheme compiler uses.
+
+    ///\par Row first indexing vector as 3D matrix 
+    ///To index row first the contiguous memory use the indexing scheme compiler uses.
     ///If you want to understand the row first indexing scheme take a piece of grid paper
     ///and draw for example three 4x5 2D data arrays to represent 3x4x5 data array.
     ///Then plugin numbers to the indexing scheme and see how it lands on the right
@@ -234,12 +238,10 @@ namespace cxxadt{
     for (int i = 0; i < x; i++){
       for (int j = 0; j < y; j++){
 	for (int k = 0; k < z; k++){
-	  /// \internal
-	  /// \snippet{lineno} LGMHDF5File.cc HeapIndexing
-	  // [HeapIndexing]
+	  /// \snippet{lineno} LGMHDF5File.h HeapIndexing3D
+	  // [HeapIndexing3D]
 	  *(v + i * y * z + j * z + k) = data[i][j][k];
-	  // [HeapIndexing]
-	  /// \endinternal
+	  // [HeapIndexing3D]
 	}
       }
     }

@@ -101,20 +101,24 @@ namespace cxxadt{
   
   int LGMHDF5File::createDataSet(const string& dataset_name, int years, int rows, int cols, const TMatrix3D<double>& data)
   {
-    ///The maximum (function) stack in sorvi is  8192 kbytes.
-    ///For the most of the 2D data arrays it can be enough.
-    ///With 3D data array collecting annual treewise data in LignumForest
+    ///\par Function stack and heap 
+    ///The maximum function stack size can be quieried
+    ///with the Terminal shell command `ulimit -Hs`.
+    ///For the 2D data arrays the stack size can be enough.
+    ///With 3D data arrays (collecting annual tree data in LignumForest)
     ///the stack limit is easily exceeded.
-    ///To copy tree data for HDF5 storage reserve contiguous memory from the heap.
+    ///To copy tree data for HDF5 storage reserve contiguous memory
+    ///dynamically from the heap.
+    ///
     /// \internal
     /// \snippet{lineno} LGMHDF5File.cc HeapAllocation
     //  [HeapAllocation]
     double* v = new double[years * rows * cols];
     // [HeapAllocation]
     /// \endinternal
-    
+    ///\par Row first indexing vector as 3D matrix 
     ///To index the contiguous memory use the indexing scheme compiler uses.
-    ///If you want to understand the indexing scheme take a piece of grid paper
+    ///If you want to understand the row first indexing scheme take a piece of grid paper
     ///and draw for example three 4x5 2D data arrays to represent 3x4x5 data array.
     ///Then plugin numbers to the indexing scheme and see how it lands on the right
     ///array cell on a right 2D array. The `v` denotes first cell (i=j=k=0).
@@ -130,12 +134,6 @@ namespace cxxadt{
 	}
       }
     }
-    ///\todo The TMatrix3D data array `data` is used to collect tree data. It can be easily
-    ///created dynamically when the simulation years and the number of trees are known.
-    ///Consider removing this extra copying of data for the HDF5 (it requires contiguous
-    ///array of data). However this is done only once after simulation and is not limiting
-    ///factor regarding memory usage.
-    ///\sa CreateXMLDataSet
     int res = createDataSet(dataset_name,years,rows,cols,v);
     delete [] v;
     return res;
