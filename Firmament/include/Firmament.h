@@ -208,7 +208,13 @@ using namespace cxxadt;
  
 //=====================================================================================
 
-
+///\brief Firmament as the model of upper hemisphere.
+///
+///The Lignum model uses Firmament as source of photosynthetic active radiation (PAR).
+///The incoming radiation in a tree canopy is modelled using ray casting (not ray tracing)
+///assuming no reflections of the light rays. This assumption can be made assuming PAR is used.
+///Leaves are assumed black bodies regarding the PAR; PAR is either used in foliage or
+///transmitted through.
 class Firmament{
 public:
   Firmament(int no_incl = NUM_OF_INCL/*9*/, int no_azim = NUM_OF_AZIM /*24*/,double rad_plane=1200.0); //parametrised constructor
@@ -268,7 +274,11 @@ public:
   int getNoOfAzimuths() { return num_of_azim; }
   int getNoOfInclinations() { return num_of_incl; }
   PositionVector getDirection(int n)const;
-
+  ///\brief Direction of a sector
+  ///\param n Number of a sector
+  ///\return The direction of a sector \p n as std::vector
+  ///\note This is used in Python interface
+  vector<double> getDirectionAsVector(int n){return getDirection(n).getVector();}
   void outInclinations() {
     int line = 1;
     for(int i = 0; i < num_of_incl; i++) {

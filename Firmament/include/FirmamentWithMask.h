@@ -32,7 +32,7 @@ namespace sky{
 
     }
   private:
-    int iter;
+    int iter; ///< The i:th mask to be found
   };
 
 ///\brief FirmamentWithMask models a gap in a forest.
@@ -58,9 +58,15 @@ namespace sky{
 class FirmamentWithMask:public Firmament{
 public:
   ///\brief Default constructor
+  ///
+  ///The Lignum model uses Firmament as source of photosynthetic active radiation (PAR).
+  ///The incoming radiation in a tree canopy is modelled using ray casting (not ray tracing)
+  ///assuming no reflections of the light rays. This assumption can be made assuming PAR is used.
+  ///Leaves are assumed black bodies regarding the PAR; it is either used in foliage or
+  ///transmitted through.
   ///\param no_incl Number of inclinations
   ///\param no_azim Number of azimuths
-  ///\param rad_plane Incoming radiation on the plane (for example forest canopy)   
+  ///\param rad_plane Incoming PAR radiation on the plane (for example forest canopy),  
   FirmamentWithMask(int no_incl = NUM_OF_INCL/*9*/, int no_azim = NUM_OF_AZIM /*24*/,double rad_plane=1200.0);
   ///\brief Resize the firmament
   ///
@@ -82,7 +88,7 @@ public:
   /// <tt># Some comment</tt>| Comment line
   ///9                     | 9 inclinations + zenith sector
   ///10                    | 10 azimuth sectors
-  ///1200                  | Incoming radiation on plane (PAR)
+  ///1200                  | Incoming radiation on plane (e.g. 1200MJ PAR)
   ///0      100.0     | 1st inclination 100% mask
   ///1      100.0     | 2nd inclination 100% mask
   ///2       99.0     |  99% mask
@@ -96,7 +102,9 @@ public:
   ///
   ////Each mask defines a mask for all azimuth sectors in an inclination.
   ///\important Masks must match the number of inclinations in the firmament
-  ///and define number of inclinations and the zenith sector even if no masking. 
+  ///and define number of inclinations and the zenith sector even if no masking.
+  ///\note the mask is optional
+  ///\note The quanta (amount) of incoming radiation in PAR and the units used depend on application.  
   void configure(const string& file);
   ///\brief Reconfigure firmament with a new mask
   ///
@@ -106,7 +114,7 @@ public:
   ///
   ///\param file File for firmament configuration including mask file names
   ///
-  ///\par Configuration file format with mask
+  ///\par Configuration file format with a mask
   ///Configure firmament from  a file with  a sequence of
   ///mask  files. The  file format is as follows:
   ///
@@ -115,7 +123,7 @@ public:
   /// <tt># Some comment</tt>| Comment line
   ///9                     | 9 inclinations + zenith sector
   ///10                    | 10 azimuth sectors
-  ///1200                  | Incoming radiation on plane (PAR)
+  ///1200                  | Incoming radiation on plane (1200MJ PAR)
   ///5  MaskFile1.txt      | Mask file for iterations 0-5
   ///10 MaskFile2.txt      | Mask file for iterations 6-10
   ///20 MaskFile3.txt      | Mask file for iterations 11-20
@@ -145,9 +153,22 @@ public:
   void readMaskFile(const string& file);
   ///\brief Reduce incoming radiation in firmament sector-wise
   ///
-  ///Read file setting mask according to azimuth \e and inclination angles.
+  ///Read file setting mask according to azimuth and inclination angles.
   ///The two angles are given in degrees.
-  ///\note Experimental and not tested fully. 
+  ///
+  ///\par Configuration file format with a mask
+  ///Configure firmament from  a file with azimuth and inclination masks
+  ///
+  ///ConfugurationFile.txt   | Notes
+  ///----------------------- |------
+  /// <tt># Some comment</tt>| Comment line
+  ///10                      | 10 inclinations
+  ///20                      | 20 azimuths
+  ///1200                    | Incoming radiation on plane (1200MJ PAR)
+  ///0 10 100                | Azimuth  0 degrees, inclination 10 degrees, mask 100%
+  ///50 20 60                | Azimuth 50 degrees, inclination 20 degrees, mask 60%
+  ///120 50 30               | Azimuth 120 degrees, inclination 50 degrees, mask 30%
+  ///\warning Experimental and not tested fully. 
   void readAzimuthInclinationMaskFile(const string& file);
   ///\brief The same as Firmament::setMask
   void getMask(int incl_index,double percentage){return  setMask(incl_index, percentage);}
