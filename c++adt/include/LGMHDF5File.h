@@ -35,13 +35,17 @@ namespace cxxadt{
   /// \sa LGMHDF5File
   class LGMHDF5{
   public:
-    /// Create TMatrix2D representation from Lignum function files
+    /// \brief Lignum function vector
+    ///
+    /// Create TMatrix2D representation from Lignum function vector
     /// \param v Function definition vector from ParametricCurve
     /// \exception Undefined vector (i.e. v.size()==0) results TMatrix2D[1][2] with the row [std::nan std::nan]
     /// \return TMatrix2D[N][2] where N is the number of (x,f(x)) points for  ParametricCurve
     /// \sa ParametricCurve
     TMatrix2D<double> getLignumFnData(const vector<double>& v)const;
-    /// Create TMarix2D representation from Lignum paramter files (usually Tree*.txt)
+    /// \brief Lignum parameter files
+    ///
+    /// Create TMarix2D representation from Lignum parameter files (usually Tree*.txt)
     /// \param fname Tree parameter file name
     /// \exception If cannot open file return TMatrix2D[1][2] with the row [NULL NULL]
     /// \return  TMatrix2D<string>[N][2] where N is the number of parameters in the file

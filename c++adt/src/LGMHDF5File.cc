@@ -8,9 +8,10 @@ namespace cxxadt{
   {
     //Check if function is defined
     if (!v.empty()){
+      /// \par Vector to TMatrix2D
       /// Return value TMatrix2D[N][2] is 2D data arrray where N = number of (x,f(x)) pairs.   
       /// Note the last element in the vector `v` is FLT_MAX to denote the end of function.   
-      /// Thus the number of N (i.e. rows) is:   
+      /// Thus the number of N (i.e. rows) is:
       /// \internal
       /// \snippet{lineno} LGMHDF5File.cc Rows
       // [Rows]
@@ -101,7 +102,7 @@ namespace cxxadt{
   
   int LGMHDF5File::createDataSet(const string& dataset_name, int years, int rows, int cols, const TMatrix3D<double>& data)
   {
-    ///\par Function stack and heap 
+    /// \par Function stack and heap 
     ///The maximum function stack size can be quieried
     ///with the Terminal shell command `ulimit -Hs`.
     ///For the 2D data arrays the stack size can be enough.
@@ -109,14 +110,13 @@ namespace cxxadt{
     ///the stack limit is easily exceeded.
     ///To copy tree data for HDF5 storage reserve contiguous memory
     ///dynamically from the heap.
-    ///
     /// \internal
     /// \snippet{lineno} LGMHDF5File.cc HeapAllocation
     //  [HeapAllocation]
     double* v = new double[years * rows * cols];
     // [HeapAllocation]
-    /// \endinternal
-    ///\par Row first indexing vector as 3D matrix 
+    ///\endinternal
+    /// \par Row first indexing vector as 3D matrix 
     ///To index the contiguous memory use the indexing scheme compiler uses.
     ///If you want to understand the row first indexing scheme take a piece of grid paper
     ///and draw for example three 4x5 2D data arrays to represent 3x4x5 data array.
