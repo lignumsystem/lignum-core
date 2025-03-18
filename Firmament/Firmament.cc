@@ -600,12 +600,14 @@ void Firmament::setSunPosition(const vector<double>& v)
 // Input: Vector pointing to sun
 // Return: void
 // Sets the the vector of Firmament that points to the sun
-
+// If input vector has null length, do nothing.
 {
+double len = pow((pow(v[0],2.0) + pow(v[1],2.0) + pow(v[2],2.0)), 0.5 );
+if(len > R_EPSILON) {
   int i;
   for(i = 0; i < 3; i++)
-    sunPosition[i] = v[i];
-
+    sunPosition[i] = v[i]/len;
+  }
 }
 
 MJ Firmament::directRadiation(vector<double>& direction)
