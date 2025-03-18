@@ -51,8 +51,8 @@ private:
     Point p;//The global point of the segment causing the excepetion
 };
 
-class VoxelSpace
-{
+  class VoxelSpace
+  {
     //VoxelBox::update Value  accesses private data  members--> friend
     //declaration needed due to lack of access methods/functions
     friend class VoxelBox;
@@ -106,7 +106,7 @@ class VoxelSpace
                                string& fname, bool empty);
 
     
-public:
+  public:
     VoxelSpace(Point corner1, Point corner2,
                int xn, int yn, int zn,
                Firmament& f);
@@ -216,8 +216,8 @@ public:
     //Input: p0   start point of the light beam
     //       dir  direction of the light beam, |dir| == 1 (!!!)
     double getBorderStandExtinction(const Point& p0, const PositionVector& dir)const;
-  void updateBoxValues();  //Runs updateValues() of voxelboxes (whatever it does)
-  LGMdouble calculateTurbidLight(bool border_forest, bool self_shading = true);
+    void updateBoxValues();  //Runs updateValues() of voxelboxes (whatever it does)
+    LGMdouble calculateTurbidLight(bool border_forest, bool self_shading = true);
     //diffuse is to calcluate the real diffuse from standard 1200, structureFlag is
     //used to indicate if it is the first time light calculation after structure update
     LGMdouble calculatePoplarLight(LGMdouble diffuse, LGMdouble structureFlag);
@@ -234,7 +234,7 @@ public:
                                   bool boolDimensionsWithNumBoxes);
 
     void searchDimensions(bool boolDimensionsWithNumBoxes=true){
-        searchDimensions(bbox, boolDimensionsWithNumBoxes);
+      searchDimensions(bbox, boolDimensionsWithNumBoxes);
     }
 
     void dumpTrees();
@@ -264,30 +264,36 @@ public:
 
     bool inVoxelSpace(const Point& p);
 
-//
-// Returns vector of VoxelBoxes for a end point of vector (specified with the
-// end point, and direction of vector) and neighboring voxelboxes in a positive
-// dierction of the vector. That is, when the indexes of the end point of the 
-// the vector are (0, 0, 0), then in addition to (0,0,0) the voxels 
-// (+1, 0, 0), (0, +1, 0), (0, 0, +1),
-// (+1, +1, 0), (0, +1, +1), (+1, 0, +1), (+1, +1, +1) (8 voxels)
-// are included when all components of the direction vector are positive.
-// When components of the direction vector are negative the corresponding +1
-// is replaced with -1 in the above permutation.
-// It is possible that either the voxel of the end point or the neighboring voxels
-// are outside of VoxelSpace. Nothing is returned from such a "voxel". The length of
-// of returned vector thus varies between 0 and 8, 0 meaning that both the end point
-// and the neighboring "voxels" are outside of VoxelSpace.
+    void setDiffuseSkyRadiation(const LGMdouble radiation) {
+      sky->setDiffuseRadiation(radiation); }
+    void setDirectSkyRadiation(const LGMdouble radiation) {
+      sky->setDirectRadiation(radiation); }
+    void setDirectRadiationDirection(const vector<double> dir) {
+      sky->setSunPosition(dir); }
+    //
+    // Returns vector of VoxelBoxes for a end point of vector (specified with the
+    // end point, and direction of vector) and neighboring voxelboxes in a positive
+    // dierction of the vector. That is, when the indexes of the end point of the 
+    // the vector are (0, 0, 0), then in addition to (0,0,0) the voxels 
+    // (+1, 0, 0), (0, +1, 0), (0, 0, +1),
+    // (+1, +1, 0), (0, +1, +1), (+1, 0, +1), (+1, +1, +1) (8 voxels)
+    // are included when all components of the direction vector are positive.
+    // When components of the direction vector are negative the corresponding +1
+    // is replaced with -1 in the above permutation.
+    // It is possible that either the voxel of the end point or the neighboring voxels
+    // are outside of VoxelSpace. Nothing is returned from such a "voxel". The length of
+    // of returned vector thus varies between 0 and 8, 0 meaning that both the end point
+    // and the neighboring "voxels" are outside of VoxelSpace.
 
-vector<VoxelBox> getVoxelBoxPositiveNeighborhood(const Point& p,
-					    const PositionVector& dir);
+    vector<VoxelBox> getVoxelBoxPositiveNeighborhood(const Point& p,
+						     const PositionVector& dir);
 
-//
-// Returns vector of VoxelBoxes that are neighbors of a box including a Point
-// (not this box)
-// Only boxes that are inside the voxelspace are returned
+    //
+    // Returns vector of VoxelBoxes that are neighbors of a box including a Point
+    // (not this box)
+    // Only boxes that are inside the voxelspace are returned
 
-vector<VoxelBox> getVoxelBoxNeighborhood(const Point& p);
+    vector<VoxelBox> getVoxelBoxNeighborhood(const Point& p);
 
 
 
@@ -302,7 +308,7 @@ vector<VoxelBox> getVoxelBoxNeighborhood(const Point& p);
     int hitfol;//foliage hits
     int nohit;//no hits
     int hitself; //Self comparison
-private:
+  private:
 
 
     BoundingBox bbox;
@@ -323,7 +329,7 @@ private:
     ForestDescriptor forest_descriptor;//maintains         descripitive
     //statistics and indices of the
     //forest in the voxel space
-};
+  };
 
 
 template <class TS,class BUD>

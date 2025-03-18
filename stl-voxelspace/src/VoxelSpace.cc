@@ -1117,84 +1117,122 @@ LGMdouble VoxelSpace::calculatePoplarLight(LGMdouble diffuse, LGMdouble structur
 
 
 //
-//	The function calculates the Qin and Qabs-values to every VoxelBox.
+//	The function calculates the Qin value for every VoxelBox.
 //    self_shading determines if the box shades itself or not
 LGMdouble VoxelSpace::calculateTurbidLight(bool border_forest, bool self_shading)
 {
-    updateBoxValues();
-    for(int i1=0; i1<Xn; i1++)
-        for(int i2=0; i2<Yn; i2++)
-            for(int i3=0; i3<Zn; i3++)
-            {
-                int num_dirs = sky->numberOfRegions();
-                //This might  make the voxel  space slow in  execution: if
-                //there  is something  in the  voxel boxes,  the following
-                //loop is executed.
-                if (voxboxes[i1][i2][i3].isEmpty() == false)
-                {
-                    for(int i = 0; i < num_dirs; i++)
-                    {
-                        vector<double> rad_direction(3);
-                        LGMdouble iop = sky->diffuseRegionRadiationSum(i,rad_direction);
-			PositionVector radiation_direction(rad_direction[0],
-							   rad_direction[1], rad_direction[2]);
-                        radiation_direction.normalize();
+  updateBoxValues();
+  for(int i1=0; i1<Xn; i1++) {
+    for(int i2=0; i2<Yn; i2++) {
+      for(int i3=0; i3<Zn; i3++) {
+	//First all sectors of Firmament (= diffuse radiation)
+	int num_dirs = sky->numberOfRegions();
+	//This might  make the voxel  space slow in  execution: if
+	//there  is something  in the  voxel boxes,  the following
+	//loop is executed.
+	      
+	if (voxboxes[i1][i2][i3].isEmpty() == false) {
+	  int size = 0;
+	  vector<VoxelMovement> vec;
+	  LGMdouble rad = 0.0;
+	  
+	  for(int i = 0; i < num_dirs; i++) {
+	    vector<double> rad_direction(3);
+	    rad = sky->diffuseRegionRadiationSum(i,rad_direction);
+	    PositionVector radiation_direction(rad_direction[0],
+					       rad_direction[1], rad_direction[2]);
 
-			if(border_forest) {  //If BorderForest add (=multiplay) effect of it
-			  LGMdouble ext = getBorderStandExtinction(voxboxes[i1][i2][i3].
-							 getCenterPoint(),rad_direction);
-			  iop *= ext;			  
-			}
+	    if(border_forest) {  //If BorderForest add (=multiplay) effect of it
+	      LGMdouble ext = getBorderStandExtinction(voxboxes[i1][i2][i3].
+						       getCenterPoint(),radiation_direction);
+	      rad *= ext;			  
+	    }
 
-                        vector<VoxelMovement> vec;
-                        getRoute(vec, i1, i2, i3, radiation_direction);
-                        int size = vec.size();
+	    vec.clear();
+	    getRoute(vec, i1, i2, i3, radiation_direction);
+	    size = vec.size();
 
-                        //other boxes
-                        if (size>1){
-                            for (int a=1; a<size; a++)
-                            {
-			      LGMdouble ext = 1.0;
-                                VoxelMovement v1 = vec[a-1];
-                                VoxelMovement v2 = vec[a];
-                                ext = voxboxes[v1.x][v1.y][v1.z].extinction(v2.l);
-                                iop = iop * ext;
-                            }
-                        }
-                        //the self shading
-                        if (size>0 && self_shading)
-                        {
-                            // qin is here the value on the surface of VoxelBox
-                            LGMdouble qin = iop;
+	    //other boxes
+	    if (size > 1) {
+	      for (int a = 1; a < size; a++) {
+		LGMdouble ext = 1.0;
+		VoxelMovement v1 = vec[a-1];
+		VoxelMovement v2 = vec[a];
+		ext = voxboxes[v1.x][v1.y][v1.z].extinction(v2.l);
+		rad *= ext;
+	      }
+	    }
 
-                            //The distance the beam travels inside this
-                            //VoxelBox (from surface to middle)
+	    //the self shading (= shading inside the particular box)
+	    if (size > 0 && self_shading)
+	      {
+		//The distance the beam travels inside this
+		//VoxelBox (from surface to middle)
 
-                            LGMdouble inner_length = vec[0].l;
+		LGMdouble inner_length = vec[0].l;
 
-                            //extinction coefficient on the way through VoxBox
-                            LGMdouble ext2 = voxboxes[i1][i2][i3].extinction(inner_length);
+		//extinction coefficient on the way through VoxBox
+		LGMdouble ext = voxboxes[i1][i2][i3].extinction(inner_length);
+		rad *= ext;
+	      }
+	    voxboxes[i1][i2][i3].addQin(rad);
+	  
+	  } //for(int i = 0; i < num_dirs;
+	  
 
-                            //radiant intensity of the beam when it comes
-                            //out of the VoxBox
-                            LGMdouble qout = iop * ext2;
+	  // Direct radiation
+	  vector<double> rad_direction(3);
+	  rad_direction = sky->getSunPosition();
+	  LGMdouble sun_rad = sky->directRadiation(rad_direction);
+	  PositionVector radiation_direction(rad_direction[0],
+					     rad_direction[1], rad_direction[2]);
 
-                            //and attenuation inside the VoxBox
-                            voxboxes[i1][i2][i3].addQabs(qin - qout);
-                            //Now we calculate only to the mid point; the
-                            //radiation the VoxBox receives is the one at
-                            //the mid point.
+	  if(border_forest) {  //If BorderForest add (=multiplay) effect of it
+	    LGMdouble ext = getBorderStandExtinction(voxboxes[i1][i2][i3].
+						     getCenterPoint(),radiation_direction);
+	    sun_rad *= ext;			  
+	  }
 
-                            LGMdouble ext = voxboxes[i1][i2][i3].extinction(inner_length/2.0);
-                            iop = iop * ext;
-                        }
-                        //radiation coming, Qin,  to the VoxBox
-                        voxboxes[i1][i2][i3].addRadiation(iop);
-                    }
-                }
-            }
-    return 0;
+	  vec.clear();
+	  getRoute(vec, i1, i2, i3, radiation_direction);
+	  size = vec.size();
+
+	  //other boxes
+	  if (size > 1){
+	    for (int a = 1; a < size; a++) {
+	      LGMdouble ext = 1.0;
+	      VoxelMovement v1 = vec[a-1];
+	      VoxelMovement v2 = vec[a];
+	      ext = voxboxes[v1.x][v1.y][v1.z].extinction(v2.l);
+	      sun_rad *= ext;
+	    }
+	  }
+
+	  //the self shading (= shading inside the particular box)
+	  if (size > 0 && self_shading)
+	    {
+	      //The distance the beam travels inside this
+	      //VoxelBox (from surface to middle)
+
+	      LGMdouble inner_length = vec[0].l;
+
+	      //extinction coefficient on the way through VoxBox
+	      LGMdouble ext = voxboxes[i1][i2][i3].extinction(inner_length);
+	      sun_rad *=  ext;
+	    }
+
+	  voxboxes[i1][i2][i3].addQin(sun_rad);
+	    
+	} //	if (voxboxes[i1][i2][i3].isEmpty() ...
+
+      } // i3
+    } // i2
+  } // i1
+
+  return 0;
 }
+
+
 
 void VoxelSpace::updateBoxValues()
 {
