@@ -9,7 +9,7 @@ the ubiquitous libraries and binaries in The LIGNUM System :
 + stl-voxelspace: VoxelSpace implementation
 + LEngine: L-system implementation
 + XMLTree: XML representation of the LIGNUM tree
-+ qt-workbench: The LignumWb GUI implementation
++ qt-workbench: The LignumWb GUI application
 
 These seven subprojects are used to build applications in The LIGNUM System.
 
@@ -107,11 +107,11 @@ to visualize results. From the Terminal command line type:
 
 	sudo port install python312
 	/opt/local/bin/python3.12 -m venv ~/venv/lignumsystem
-	source ~/lignumsystem//bin/activate
+	source ~/venv/lignumsystem/bin/activate
 	(lignumsystem) pip install -r requirements.txt
 
-These instructions install python3.12, creates Python virtual environment and installs 
-Python software in *requirements.txt*. The text *(lignumsystem)* in Terminal tells the 
+These instructions install python3.12, create Python virtual environment and install
+Python software in *requirements.txt*. The Terminal prompt prefix *(lignumsystem)* tells the 
 Python virtual envronment is active. In general to create a Python package from a C++ software 
 defined in *setup.py* file:
 	
@@ -133,7 +133,7 @@ for data science. To install tidyverse in R:
 R is used in data analysis in The Lignum System. See instructions for each use case.
 
 ### Git
-See the .gitignore (dot gitignore) file that can be used with The LIGNUM System projects.
+See the .gitignore file that can be used with The LIGNUM System projects. 
 
 ## Publications 
 To cite, please use:
