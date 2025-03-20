@@ -52,6 +52,14 @@ public:
 
 template <class SHAPE>
 class BroadLeaf{
+  ///\brief Get one of named attribute values
+  ///\param bl The broadleaf
+  ///\param name The parameter name
+  ///\return Value of the named attribute
+  ///\note The name LGAA returns true leaf area \f$\mathrm{A_{leaf}}\f$ that is
+  ///based on the area of the geometric leaf \e shape and the degree of filling (\e dof):
+  ///\f$\mathrm{A_{leaf} = A_{shape}\times dof}\f$. If \e dof is 1 then leaf area
+  ///equals the area of the geometric shape of the leaf. The value of \f$\mathrm{dof \in [0,1]}\f$.
   template <class S>
   friend LGMdouble GetValue(const BroadLeaf<S>& bl, const LGMAD name);
 
