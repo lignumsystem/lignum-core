@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from mpl_toolkits import mplot3d
 import firmament
 
+plt.rcParams['text.usetex'] = True
 
 def plot_firmament(incl,azim,rad,cmap,unit):
     """
@@ -35,14 +36,14 @@ def plot_firmament(incl,azim,rad,cmap,unit):
     R = np.array(r)
     rmin = R.min()
     rmax = R.max()
-    print(rmin,rmax)
+    #print(rmin,rmax)
     fig = plt.figure()
     fig.suptitle(main_title,multialignment='center')
     ax = fig.add_subplot(111,projection='3d')
     ax.set(xlabel=str(azim)+" azimuths ",zlabel=str(incl)+" inclinations ")
     img = ax.scatter(X, Y, Z, c=R, cmap=cmap)
-    print(type(img))
-    print(img.get_clim())
+    #print(type(img))
+    #print(img.get_clim())
     cbar=fig.colorbar(img,label="Sector intensity "+r"$\mathrm{"+unit+"}$",shrink=0.8,pad=0.10,location='right')
     cbar.set_ticks(np.linspace(rmin,rmax,8))
     plt.show()
