@@ -30,8 +30,8 @@ namespace Lignum{
   ///returned is calculated on the basis of other variables.
   ///If you add a new symbol be sure to document it carefully.
   enum LGMAD {
-    LGAA,           ///<  0   Segment base area based on R. Also broad leaf shape \e true area.													      
-    LGAAbase,	    ///<  1   Area at the base of the tree														      
+    LGAA,           ///<  0   Segment base area based on R. Also BroadBeaf shape \e true area. \sa BroadLeaf::GetValue() TreeSegment::GetValue()													      
+    LGAAbase,	    ///<  1   Area at the base of the \e tree														      
     LGAAf,	    ///<  2   Area of foliage																      
     LGAAfb,	    ///<  3   Foliage area, broad leaved (see ForestDescriptor in stl-voxelspace)										      
     LGAAfc,	    ///<  4   Foliage area, conifers (see ForestDescriptor in stl-voxelspace)										      
