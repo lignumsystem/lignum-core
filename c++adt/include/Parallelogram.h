@@ -96,7 +96,7 @@ namespace cxxadt{
     ///\return *true* if Parallelogram intersection, *false* if no intersction 
     bool intersectShape(const Point& o, const PositionVector& b)const;
     ///\brief Calculate line (light beam) - plane intersection point.
-    ///\pre The intersection point with the line (beam) - plane (defined by the Parallelogram) must exist.
+    ///\pre The intersection point with the line (light beam) - plane (defined by the Parallelogram) must exist.
     ///\param o the observation point
     ///\param b the line direction in 3D space
     ///\return The intersection point
