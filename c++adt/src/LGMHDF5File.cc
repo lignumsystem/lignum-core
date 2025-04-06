@@ -142,14 +142,14 @@ namespace cxxadt{
   //2D matrix dataset for Lignum functions, double datatype
   int LGMHDF5File::createDataSet(const string& dataset_name, int years, int cols, const TMatrix2D<double>& data)
   {
-    ///Copy TMatrix<2D> `data` to 2D array of double type 
+    //Copy TMatrix<2D> `data` to 2D array of double type 
     double data_array2D[years][cols];
     for (int i = 0; i < years; i++){
       for (int j = 0; j < cols; j++){
 	  data_array2D[i][j] = data[i][j];
       }
     }
-    ///After that create HDF5 dataset NATIVE_DOUBLE
+    //After that create HDF5 dataset NATIVE_DOUBLE
     return createDataSet(dataset_name,years,cols,data_array2D);
   }  
 
@@ -206,7 +206,7 @@ namespace cxxadt{
     FloatType datatype(PredType::NATIVE_DOUBLE);
     try{
       Exception::dontPrint();
-      /// DataSpace needs dimensions and rank
+      // DataSpace needs dimensions and rank
       hsize_t dspace_dims[DSPACE_RANK2];
       dspace_dims[0] = rows;
       dspace_dims[1] = cols;
