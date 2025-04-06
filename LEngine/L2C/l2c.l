@@ -8,7 +8,7 @@
 #include <lglobal.h>
 
 #include "module.h"
-#include "l2c_tab.h"
+#include "l2c_tab.hpp"
 
 extern ModuleTable moduleTable;
 
