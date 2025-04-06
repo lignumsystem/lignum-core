@@ -1,5 +1,5 @@
-//Triangle.h
-//----------------------------------
+///\file Triangle.h
+///3D Triangle with line-triangle intersection detection
 #ifndef TRIANGLE_H
 #define TRIANGLE_H
 #include <vector>
@@ -13,58 +13,120 @@
 using namespace std;
 
 namespace cxxadt{
-
-  class Triangle: public virtual Shape{
+  ///\brief 3D Triangle
+  ///
+  ///3D Triangle with line-triangle intersection detection
+  class Triangle: public Shape{
   public:
-    Triangle(const Point& leftcorner, const Point& rightcorner, 
-	     const Point& apexcorner);
+    ///\brief Constructor
+    ///\param A Leftmost corner
+    ///\param B Rightmost corner
+    ///\param C Apex corner
+    ///\note The semantics of the corner points define the rotation axis as \f$\vec{\mathrm{AB}}\f$ in Triangle::pitch.
+    ///Moreover, when using triangle shaped leaves the attachment point of a petiole
+    ///can be for example \f$\|\vec{\mathrm{AB}}\|/2\f$. 
+    Triangle(const Point& A, const Point& B, const Point& C);
+    ///\brief Copy constructor
     Triangle(const Triangle& t)
-      :Shape(Triangle::Shape()),leftcorner(t.leftcorner),rightcorner(t.rightcorner),
-      apexcorner(t.apexcorner){}
+      :a(t.a),b(t.b),
+      c(t.c){}
+    ///\brief Assignment operator
     Triangle& operator=(const Triangle& t);
-    Point  getLeftCorner() const { return leftcorner;};
-    Point  getRightCorner() const { return rightcorner;};
-    Point  getApexCorner() const { return apexcorner;};
+    ///\return Leftmost corner
+    Point  getA() const { return a;};
+    ///\return Rightmost corner
+    Point  getB() const { return b;};
+    ///\return Apex corner
+    Point  getC() const { return c;};
+    ///\brief Collect triangle points in a vector 
+    ///\return Triangle points in a vector
     vector<Point>&  getVertexVector(vector<Point>& points)const;
-    void   setLeftCorner(const Point& p){ leftcorner=p;};
-    void   setRightCorner(const Point& p){ rightcorner=p;};
-    void   setApexCorner(const Point& p){ apexcorner=p;};
-    double getArea()const;               //the triangle area calculation
-    Point  getCenterPoint()const;     //getting the triangle center 
-
-                                 //getting the triangle normal vector
+    ///\brief Set new leftmost corner
+    Triangle&   setA(const Point& p){ a=p;return *this;}
+    ///\brief Set new rightmost corner
+    Triangle&   setB(const Point& p){ b=p;return *this;};
+    ///\brief Set new apex corner
+    Triangle&   setC(const Point& p){ c=p;return *this;};
+    ///\return Triangle area
+    double getArea()const;
+    ///\brief Maximum height of three coordinate points
+    ///\return Maximum Z-value in three coordinate points
+    double getMaxZ()const;
+    ///\return Triangle center
+    Point  getCenterPoint()const;     
+    ///\return Triangle normal vector
     virtual PositionVector getNormal()const;
-                                 //set up the triangle center point
-                                 //end change the triangle corners
-                                 //according the center point 
-    void   setCenterPoint(const Point& center);
-  
-    double setArea(double area);   //it defines a new triangle from
-                                   // the old one
-                                   //using the scaling method with the 
-                                   //triangle centroid as the scaling center
-
-                                   //it defines a new triangle from 
-                                   //  the old one 
-                                   // with the base point as the center
+    ///\brief Set new triangle center point
+    ///
+    ///Set new center point and move triangle corners accoridingly
+    ///\param center The new triangle center point
+    Triangle&   setCenterPoint(const Point& center);
+    ///\brief Set new triangle area
+    ///
+    ///Set new triangle area with triangle center as the scaling center
+    ///\param area The new triangle area
+    ///\return The new triangle area
+    double setArea(double area);   
+    ///\brief Set new triangle area
+    ///
+    ///Set new triangle area with the Point \p base as the scaling center
+    ///\param area The new triangle area
+    ///\param base The scaling center
+    ///\return new triangle area
     double setArea(double area, const Point& base );
-
-                                   //checking the triangle intersection 
-                                   // with "a light beam" 
-                                   //the light beam is the ob vector 
-                                   // o - the observer position
-                                   // b - the vector beam 
-    bool   intersectShape(const Point& o,const PositionVector& beam)const; 
-    
-    //rotate apex round the base of the triangle by alpha
-    void pitch(const double alpha);
-    void move(const Point& mov);
-
-    //rotate amount angle around axis defined by p0 and dir
-    void rotate(const Point& p0, const PositionVector& dir, RADIAN angle);
-                                            
+    ///\brief Line-triangle intersection
+    ///
+    ///Decide for example if a light beam from point \p o with a direction \p l intersects triangle.
+    ///\pre The observation point \p o is \e not above the tringle
+    ///\pre The direction vector \p l is \e not parallel with the triangle plane
+    ///\param o The observation point
+    ///\param l The direction vector from the observation point
+    ///\return True if intersection, False otherwise
+    ///
+    ///\sa Triangle::intersectShape
+    ///\sa Triangle::intersectionPoint
+    ///
+    ///\note Due to the method chosen in Triangle::insideShape
+    ///and inevitable limited floating point accuracy
+    ///the intersection point must be strictly inside the triangle.
+    ///The intersection point is detected with the cxxadt::EPS18 accuracy.
+    ///For the demonstration see the test cases 25,26 and 27 in TriangleExample.cc.
+    bool  intersectShape(const Point& o,const PositionVector& l)const;
+    ///\brief Line-plane  intersection point
+    ///
+    ///The triangle defines a plane. Decide the line-plane intersection point
+    ///from the point \p o with direction \p l
+    ///\pre The intersection point must exists
+    ///\param o The observation point
+    ///\param l The direction  vector from the observation point towards the plane
+    ///\return The intersection point
+    ///\sa intersectShape
+    Point intersectionPoint(const Point& o,const PositionVector& l)const;
+    ///\brief Determine if a point is inside triangle
+    ///\param p The point (in the plane defined by the triangle)
+    ///\pre The point \p must be in the plane defined by the triangle
+    ///\return True if the point \p p is inside the triangle, False otherwise
+    ///\sa Triangle::intersectionPoint
+    ///\note Due to the method chosen the point \p must be strictly inside the triangle
+    bool  insideShape(const Point& p)const;
+    ///\brief Rotate triangle 
+    ///
+    ///Rotate triangle by \p alpha with the triangle base as the rotation axis.
+    ///This method can be used to move Triangle shaped leaves up and down.
+    ///\param alpha Pitching angle
+    ///\note The base of the triangle is defined by vector \f$ \vec{\mathrm{AB}} \f$
+    ///and the apex point is \f$\mathrm{C}\f$
+    Triangle& pitch(const double alpha);
+    ///\brief Add a point to each triangle corner point
+    ///\param mov The point to add to each corner point
+    Triangle& move(const Point& mov);
+    ///\brief Rotate triangle
+    ///
+    ///Rotate triangle by \p angle around rotation axis defined by \p p0 and and \p dir
+    Triangle& rotate(const Point& p0, const PositionVector& dir, RADIAN angle);                                      
   private:
-    Point leftcorner,rightcorner,apexcorner;//the triangle corners
+    Point a,b,c;///<Triangle corner points (left corner,right corner,apex corner)
+    PositionVector N; ///< Triangle normal 
   };
 
 

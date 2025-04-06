@@ -20,7 +20,10 @@ namespace cxxadt{
 #define EPS1      1.0e-10
 #define EPS10     1.0e-10
 #define EPS15     1.0e-15
-#define EPS18     1.0e-18
+#define EPS16     1.0e-16
+const double EPS17 = 1.0e-17;
+const double  EPS18 = 1.0e-18;
+const double EPS19  = 1.0e-19;
 #define R_HUGE 1.0e+20
 
 //Light year is about this many meters

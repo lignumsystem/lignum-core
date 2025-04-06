@@ -12,36 +12,38 @@ namespace cxxadt{
 
   Triangle::Triangle(const Point& p1,const  Point& p2,const Point& p3)
   {
-    leftcorner=p1; rightcorner=p2; apexcorner=p3;
-    
+    a=p1; b=p2; c=p3;
+    N = getNormal();
   }
   
   Triangle& Triangle::operator=(const Triangle& t)
   {
-    leftcorner = t.leftcorner; rightcorner= t.rightcorner; 
-    apexcorner = t.apexcorner;
+    a = t.a; b= t.b; c = t.c;
+    N = getNormal();
     return *this;
   }
 
   //member function uses the same logic (add a vector, i.e. Point)
   //as MoveTree in TreeFunctor.h (stl-lignum)
   //This friend function is used by MoveHwTree (through friend Move of BroadLeaf)
-  void Triangle::move(const Point& mov) {
-    Point tmp = leftcorner + mov;
-    leftcorner = tmp;
-    tmp = rightcorner + mov;
-    rightcorner = tmp;
-    tmp = apexcorner + mov;
-    apexcorner = tmp;
+  Triangle& Triangle::move(const Point& mov) {
+    Point tmp = a + mov;
+    a = tmp;
+    tmp = b + mov;
+    b = tmp;
+    tmp = c + mov;
+    c = tmp;
+    N = getNormal();
+    return *this;
   }
 
 
 
 vector<Point>& Triangle::getVertexVector(vector<Point>& points)const
 {
-  points.push_back(leftcorner);
-  points.push_back(rightcorner);
-  points.push_back(apexcorner);
+  points.push_back(a);
+  points.push_back(b);
+  points.push_back(c);
   return points;
 }
 
@@ -66,16 +68,16 @@ Point Triangle::getCenterPoint()const
   center.setY(sum.getY()/3.0);
   center.setZ(sum.getZ()/3.0);
 
-  return center ;
+  return center;
 }
 
 //getting the triangle normal vector
 
 PositionVector Triangle::getNormal()const
 {
-  PositionVector p1(leftcorner);
-  PositionVector p2(rightcorner);
-  PositionVector p3(apexcorner);
+  PositionVector p1(a);
+  PositionVector p2(b);
+  PositionVector p3(c);
 
  // these vectors are the triangle sides 
  
@@ -96,12 +98,13 @@ PositionVector Triangle::getNormal()const
 //end change the triangle points
 //according the center point 
 
-void  Triangle::setCenterPoint(const Point& center0){
+Triangle&  Triangle::setCenterPoint(const Point& center0){
    Point center;
    center.setX(center0.getX());
    center.setY(center0.getY());
    center.setZ(center0.getZ());
    setArea(getArea(),center);
+   return *this;
 }
 
 
@@ -116,9 +119,9 @@ double Triangle::getArea()const{
    
  // These vectors are based on the origin
   
-  PositionVector p1(leftcorner);
-  PositionVector p2(rightcorner);
-  PositionVector p3(apexcorner);
+  PositionVector p1(a);
+  PositionVector p2(b);
+  PositionVector p3(c);
 
  // these vectors are the triangle sides 
  
@@ -131,7 +134,16 @@ double Triangle::getArea()const{
  
 }
 
+  double Triangle::getMaxZ()const
+  {
+    double maxL = a.getZ();
+    double maxA = b.getZ();
+    double maxR = c.getZ();
 
+    double maxLA = max(maxL,maxA);
+    double maxLAR = max(maxR,maxLA);
+    return maxLAR;
+  }
 
 //Creation  a new triangle from the old one 
 //using the new triangle area
@@ -149,9 +161,10 @@ double Triangle::getArea()const{
 
 double Triangle::setArea(double area)
 {
-  double areaold, areanew,
-         scalcoef; 
-   double adbasex, adbasey, adbasez;
+  double areaold,areanew,scalcoef;
+  areaold=areanew=scalcoef=0.0;
+  double adbasex,adbasey,adbasez;
+  adbasex=adbasey=adbasez=0.0;
   
   areaold=getArea();
   areanew=area; 
@@ -161,10 +174,6 @@ double Triangle::setArea(double area)
   adbasex=getCenterPoint().getX()*(1-scalcoef);
   adbasey=getCenterPoint().getY()*(1-scalcoef);
   adbasez=getCenterPoint().getZ()*(1-scalcoef);
-
-
-
-
 
   vector<Point> points;
   points=getVertexVector(points);
@@ -177,13 +186,13 @@ double Triangle::setArea(double area)
    x.setZ(p.getZ() *scalcoef  + adbasez);
    switch(i){
    case 0:
-     setLeftCorner(x);
+     setA(x);
      break;
    case 1:
-     setRightCorner(x);
+     setB(x);
      break;
    case 2:
-     setApexCorner(x);
+     setC(x);
      break;
    };
   };
@@ -195,9 +204,10 @@ double Triangle::setArea(double area)
 
 double Triangle::setArea(double area, const Point& base )
 {
-  double areaold, areanew,
-         scalcoef;
-  double adbasex, adbasey, adbasez;
+  double areaold,areanew,scalcoef;
+  areaold=areanew=scalcoef=0.0;
+  double adbasex,adbasey,adbasez;
+  adbasex=adbasey=adbasez=0.0;
   
   areaold=getArea();
   areanew=area; 
@@ -207,9 +217,6 @@ double Triangle::setArea(double area, const Point& base )
   adbasex= base.getX()*(1-scalcoef);
   adbasey= base.getY()*(1-scalcoef);
   adbasez= base.getZ()*(1-scalcoef);
-
-
-
 
   vector<Point> points;
   points=getVertexVector(points);
@@ -222,13 +229,13 @@ double Triangle::setArea(double area, const Point& base )
    x.setZ(p.getZ() *scalcoef  + adbasez);
    switch(i){
    case 0:
-     setLeftCorner(x);
+     setA(x);
      break;
    case 1:
-     setRightCorner(x);
+     setB(x);
      break;
    case 2:
-     setApexCorner(x);
+     setC(x);
      break;
    default:
      ;
@@ -236,107 +243,117 @@ double Triangle::setArea(double area, const Point& base )
   };
   return getArea();
 }
- //This method checks crossing a triangle 
- //with a straight line in space, 
- //given by the O point(O - the first parameter the method) 
- //and direction B(B - the second parameter the method).
- // 
- //Image a pyramid with the triangle in the base
- //and the O point as the apex of the pyramid
- //Image the vector OB, the vector of direction B 
- //as a vector having the points O and B.
- //For every corner P of the triangle
- //doing the following:  
- //1.calculation the vector OP position
- //2.calculation the vector OPc position,
- //  the  vector  crossing the POB plane 
- //  with the T1OT2 plane, where T1 and T2 the 
- //  other points of triangle, not P  
- //3.calculation the first angle,a angle between the vector OP and OB   
- //4.calculation the second angle,a angle  between the OP and OPc
- //5.compare these angles.
- //The OB vector crosses the triangle 
- //if for every corner of the triangle 
- //the first angle  less than the second angle 
- //
-
- bool Triangle::intersectShape(const Point& O,
-				  const PositionVector& B)const{
-
-   int i,j,k;
-   int counter=0;
-   double cos1, cos2, angle1, angle2;
-   vector<Point> points;
-   points=getVertexVector(points);
-
-   Point pt,p2,p3,pc;
-
-   PositionVector o(O);           //the view point on the light beam
-                                  //(the pyramid apex)
-   PositionVector beam=B;        //the light beam vector
-   PositionVector obeam = beam - o; //the light beam vector from 
-                                    //o to b
-   
-   for(i=0; i<3; i++){
-    pt=(Point)points[i];  //the arbitrary triangle corner
-    PositionVector ptv(pt);                     
-    if (i==0){              //for the other of the remaining points 
-         j=1; k=2;          //of the triangle(p2 and p3) 
+ 
+  bool Triangle::intersectShape(const Point& o, const PositionVector& l)const
+  {
+    ///\par Line-triangle intersection detection
+    /// -# Check that the observation point \p o is \e not above triangle
+    /// -# Check the line \p l is not parallel with the triangle plane
+    /// -# Calculate intersection point \f$ p_i \f$ between the line \p l and the plane
+    ///    determined by the triangle
+    /// -# Calculate if the  \f$ p_i \f$ is inside triangle
+  
+    //Check if the observation point is strictly below the Triangle,
+    double o_maxz = o.getZ();
+    double maxz = getMaxZ();
+    //If above return false
+    if (o_maxz > maxz){
+      return false;
+    }
+    //Check if beam direction parallel to the Triangle plane
+    double cosalpha = Dot(PositionVector(l).normalize(),N);
+    if (fabs(cosalpha) <= EPS18){
+      return false;
+    } 
+    //Calculate intersection point
+    Point p_intersect = intersectionPoint(o,l); 
+    //Check if the point is inside Triangle
+    bool p_inside = insideShape(p_intersect);
+    if (p_inside == true){
+      return true;
     }
     else{
-      j=0;k=3-i;
-    };
-                           //the other of the remaining points are p2 and p3
-    p2=(Point)points[j]; 
-    p3=(Point)points[k]; 
+      return false;
+    }
+  }
+  
+  Point Triangle::intersectionPoint(const Point& o, const PositionVector& l)const
+  {
+    /// \par Calculatation line - plane intersection
+    ///
+    /// Given observation point  \f$ \mathit{o} \f$ is below the Triangle (leaf) calculate the intersection point.
+    /// With vector notation a plane is defined by a set of all points \f$ P \f$ that satisfy
+    /// the equation \f$ (P - p_0) \cdot \vec{N} \f$  where \f$ p_0 \f$ is
+    /// a point in the plane and \f$ \vec{N} \f$ is the normal to the plane.
+    ///
+    /// The set of all points \f$ P_l \f$ on a line can be defined as \f$ P_l = l_0 + d\hat{l} \f$
+    /// where \f$l_0 \f$ is a point on the line, \f$\hat{l} \f$ is a unit vector defining the
+    /// direction of the line and \f$ \mathit{d} \f$  is a scalar.
+    ///
+    /// Substituting \f$ P \f$ for the line equation in the plane equation gives \f$ (l_0 + d\hat{l}-p_0) \cdot \vec{N})=0 \f$.
+    /// Expanding gives \f$(\hat{l} \cdot d\vec{N}) + (l_0-p0) \cdot \vec{N} = 0 \f$  and solving for \f$ d \f$ gives
+    /// \f$ d = (p_0-l_0) \cdot \vec{N} / \hat{l} \cdot \vec{N} \f$.
+    /// When denominator \f$ \hat{l} \cdot \vec{N} != 0 \f$ we can solve for \f$ d \f$ and find the line-plane intersection point (Wikipedia).
+    ///+ Geometric interpretation: when denominator \f$ \hat{l} \cdot \vec{N} = 0 \f$ then \f$ d \f$ is undefined. The line is perpendicular
+    ///  plane normal and parallel with the plane. When the numerator is 0 the line is in the plane.
+    ///  For our purposes (Triangle as a leaf model) we skip both of these cases.
+    ///
+    ///  \sa Parallelogram::intersectionPoint()
 
-    PositionVector p2v(p2);
-    PositionVector p3v(p3);  
-    
-    PositionVector op2= p2v - o;
-    PositionVector op3= p3v - o;
-    PositionVector opt= ptv - o;  
+    double dot = Dot(N,l);
+    Point p0(getA());
+    Point l0(o);
+    PositionVector p1(p0-l0);
+    double d =  Dot(N,p1)/dot;
+    Point p_intersection = Point(PositionVector(l0)+(d*l));
+    return p_intersection;
+  }
 
-    PositionVector pc=Cross(Cross(opt,obeam),Cross(op2,op3));
-    PositionVector opc= pc - o;
+  bool Triangle::insideShape(const Point& p)const
+  {
+    /// \par Calculation point inside triangle
+    ///
+    /// Calculate the three angles between the line-plane intersection point \p p
+    /// and the triangle corner points. If the sum of the angles is 360 degrees, \f$2\pi\f$,
+    /// the point \p p  is inside triangle.
     
-    if ( (opt.length()*obeam.length())!=0 )
-     cos1=Dot(opt,obeam)/(opt.length()*obeam.length());
+    //Construct the vectors from intersection point to
+    //triangle corners
+    PositionVector pL = PositionVector(getA()-p).normalize();
+    PositionVector pA = PositionVector(getC()-p).normalize();
+    PositionVector pR = PositionVector(getB()-p).normalize();
+
+    //calculate the three angles between intersection point and
+    //corner points, Dot(a,b) = cos(ab)
+    double cosLA = Dot(pL,pA);
+    double cosRA = Dot(pA,pR);
+    double cosRL = Dot(pR,pL);
+
+    //If the sum of the angles is 360 degrees, 2pi radians,
+    //the intersection point is inside triangle.
+    //The angle ab in radians: acos(cos(ab)) 
+    double radLA = acos(cosLA);
+    double radRA = acos(cosRA);
+    double radRL = acos(cosRL);
+    double sum = radLA+radRA+radRL;
+
+    //If the sum is close enough 2*pi return true
+    if (fabs(sum - 2.0*PI_VALUE) <= EPS18){
+      //cout << " " << sum << " " << 180.0*sum/PI_VALUE << " " << fabs(sum - 2.0*PI_VALUE) <<endl;
+      return true;
+    }
     else{
-      cout<<"Check positions for the OB vector "<<
-            "and points of the triangle"<<endl;
-      cos1=0;
-    };
-     
-
-    if ( (opt.length()*opc.length()) !=0 )
-      cos2=Dot(opt,opc)/(opt.length()*opc.length());
-    else{
-      cout<<"Check positions for the OB vector "<<
-            "and points of the triangle"<<endl;
-      cos2=0;
-    };
+      //cout << " " << sum << " " << 180.0*sum/PI_VALUE << " " << fabs(sum - 2.0*PI_VALUE) <<endl;
+      return false;
+    }
+  }
     
-    angle1 = acos(cos1);
-    angle2 = acos(cos2);
-
-    if(angle1 < angle2 )
-     counter ++;
-
-   }
-
-   if (counter != 3) 
-     return false;
-   else 
-     return true;
- }
-
 //Rotate apex point around the base of the triangle by alpha
-void Triangle::pitch(const double alpha)
+Triangle& Triangle::pitch(const double alpha)
 {
-  PositionVector v1(leftcorner);
-  PositionVector v2(rightcorner);
-  PositionVector v3(apexcorner);
+  PositionVector v1(a);
+  PositionVector v2(b);
+  PositionVector v3(c);
   //Axis of rotation is the base
   PositionVector base(v1-v2);
   //Right edge of the triangle
@@ -347,7 +364,7 @@ void Triangle::pitch(const double alpha)
   double cosalpha = Dot(base,right_edge);
   //Find the the  point of rotation: the point  of the triangle height
   //on the base
-  double s = rightcorner || apexcorner;
+  double s = a || c;
   //cosalpha = l/s --> l = s*cosalpha
   double l = s*cosalpha;
   //The point of rotation: the point of triangle height at the base
@@ -355,187 +372,27 @@ void Triangle::pitch(const double alpha)
   //Rotate the apex round p1
   v3.rotate(Point(p1),base,alpha);
   //reset apex corner
-  apexcorner = Point(v3.getX(),v3.getY(),v3.getZ());
+  c = Point(v3.getX(),v3.getY(),v3.getZ());
+  return *this;
 }
 
 
-    //rotate amount angle around axis defined by p0 and dir
-void Triangle::rotate(const Point& p0, const PositionVector& dir, RADIAN angle) {
+//rotate amount angle around axis defined by p0 and dir
+Triangle& Triangle::rotate(const Point& p0, const PositionVector& dir, RADIAN angle) {
 
-  PositionVector new_point(leftcorner);
+  PositionVector new_point(a);
   new_point.rotate(p0,dir,angle);
-  leftcorner = Point(new_point);
+  a = Point(new_point);
 
-  new_point = PositionVector(rightcorner);
+  new_point = PositionVector(c);
   new_point.rotate(p0,dir,angle);
-  rightcorner = Point(new_point);
+  b = Point(new_point);
 
-  new_point = PositionVector(apexcorner);
+  new_point = PositionVector(c);
   new_point.rotate(p0,dir,angle);
-  apexcorner = Point(new_point);
+  c = Point(new_point);
+  return *this;
 }
 
 }//closing namespace cxxadt
-
-//To compile: g++ -DTRIANGLE RMatrix.cc PositionVector.cc Triangle.cc -I../include 
-#ifdef TRIANGLEMAIN
-#include <iostream>
-#include <stdlib.h>
-using namespace cxxadt;
-
-void printing(const  Point& p){
-  
-  cout<<"----------------------------------------------"<<endl;
-  cout<< "x=" << p.getX()<< "  y=" << p.getY()<< "  z=" << p.getZ()<<endl;
-  cout<<"----------------------------------------------"<<endl;
-}
-
-
-int main()
-{
-  
-  Point p1=Point();
-  Point p2=Point(2.0,0.0,0.0);
-  Point p3=Point(2.0,4.0,0.0);
-  Triangle t1(p1,p2,p3);
-  
-
-
-  vector<Point> points;
-  points=t1.getVertexVector(points);
-
-  cout<<"----------------------------------------------"<<endl;
-  cout << "0.The triangle points are   "<< endl;
-    
-  for_each(points.begin(),points.end(),printing);   
-  
-  cout << "1.For these points  " << endl;  
-  cout << "2.Area is   " << t1.getArea() << endl;
-  cout << "3.Center is " << t1.getCenterPoint().getX()
-       << endl;
-  cout <<"3a. Normal vector is "<<t1.getNormal()
-       <<endl<<endl;
-
-  Point base=Point(2.0,0.0,0.0);
-
-  t1.setArea(2.0, base );
-  cout << "4.After scaling the triangle  " << endl;
-
-  cout << "5.Area is   " <<     t1.getArea() << endl;
-  cout << "6.Center is " <<     t1.getCenterPoint().getX() << endl;
-
-  points.clear();
-  points=t1.getVertexVector(points);
-  
-  for_each(points.begin(),points.end(),printing);   
-
-  cout<<endl;
-
-
-  //checking intersection
-
-  cout<<"----------------------------------------------"<<endl;
-
-  cout << "Checking intersection the new triangle" << endl;
-  cout << "with the vector of b direction and the o point"<<endl;
-  cout<<"----------------------------------------------"<<endl;
-
-  Point o=Point(0.0,0.0,3.0);
-
-  PositionVector b(0,1,3);//not intersection
-
-  //  PositionVector b(1.5,1.5,0.0);//there is  intersection
-
-  
-  cout<<"From point O " <<o<< " the beam vector "<<b;
-  if (t1.intersectShape(o,b) ) 
-    cout<<" crosses the triangle "<<endl<<endl;
-  else
-    cout<<" does not cross the triangle "<<endl<<endl;
-
-  Point lc(-1,0.0);
-  Point rc(1,0,0);
-  Point ac(0,1,0);
-  Triangle t2(lc,rc,ac);
-
-  cout << "Pitching Triangle A " << 180*(-PI_VALUE/2.0)/PI_VALUE << endl;
-  cout << "Area before " << t2.getArea()<<endl;
-  cout  << t2.getLeftCorner() << t2.getRightCorner() << t2.getApexCorner()<<endl;
-  t2.pitch(-PI_VALUE/2.0);
-  cout  << t2.getLeftCorner() << t2.getRightCorner() << t2.getApexCorner();
-  cout << "Area after " << t2.getArea() <<endl <<endl;
-  cout << "Pitching A back" << 180*(PI_VALUE/2.0)/PI_VALUE << endl;
-  t2.pitch(PI_VALUE/2.0);
-  cout  << t2.getLeftCorner() << t2.getRightCorner() << t2.getApexCorner();
-  cout << "Area after " << t2.getArea() <<endl<<endl;;
-
-  Point lc1(-1,0.0);
-  Point rc1(1,0,0);
-  Point ac1(1,1,0);
-  Triangle t3(lc1,rc1,ac1);
-
-  cout << "Pitching triangle B " << 180*(-PI_VALUE/2.0)/PI_VALUE<< endl;
-  cout << "Area before " << t3.getArea() <<endl;
-  cout  << t3.getLeftCorner() << t3.getRightCorner() << t3.getApexCorner()<<endl;
-  t3.pitch(-PI_VALUE/2.0);
-  cout  << t3.getLeftCorner() << t3.getRightCorner() << t3.getApexCorner() ;
-  cout << "Area after " << t3.getArea() <<endl <<endl;
-  cout << "Pitching B back " << 180*(PI_VALUE/2.0)/PI_VALUE<< endl;
-  t3.pitch(PI_VALUE/2.0);
-  cout  << t3.getLeftCorner() << t3.getRightCorner() << t3.getApexCorner() ;
-  cout << "Area after " << t3.getArea() <<endl<<endl;
-
-  Point lc2(0,1,0);
-  Point rc2(1,0,0);
-  Point ac2(1,1,0);
-  Triangle t4(lc2,rc2,ac2);
-
-  cout << "Pitching triangle C " << 180*(-PI_VALUE/2.0)/PI_VALUE<< endl;
-  cout << "Area before " << t4.getArea() <<endl;
-  cout  << t4.getLeftCorner() << t4.getRightCorner() << t4.getApexCorner()<<endl;
-  t4.pitch(-PI_VALUE/2.0);
-  cout  << t4.getLeftCorner() << t4.getRightCorner() << t4.getApexCorner() ;
-  cout << "Area after " << t4.getArea() <<endl <<endl;
-  cout << "Pitching C back " << 180*(PI_VALUE/2.0)/PI_VALUE<< endl;
-  t4.pitch(PI_VALUE/2.0);
-  cout  << t4.getLeftCorner() << t4.getRightCorner() << t4.getApexCorner() ;
-  cout << "Area after " << t4.getArea() <<endl <<endl;
-
-  Point lc3(-1,1,0);
-  Point rc3(1,-1,0);
-  Point ac3(2,2,0);
-  Triangle t5(lc3,rc3,ac3);
-  cout << "Pitching triangle D " << 180*(-PI_VALUE/2.0)/PI_VALUE<< endl;
-  cout << "Area before " << t5.getArea() <<endl;
-  cout  << t5.getLeftCorner() << t5.getRightCorner() << t5.getApexCorner()<<endl;
-  t5.pitch(-PI_VALUE/2.0);
-  cout  << t5.getLeftCorner() << t5.getRightCorner() << t5.getApexCorner() ;
-  cout << "Area after " << t5.getArea() <<endl <<endl;
-  cout << "Pitching D back " << 180*(PI_VALUE/2.0)/PI_VALUE<< endl;
-  t5.pitch(PI_VALUE/2.0);
-  cout  << t5.getLeftCorner() << t5.getRightCorner() << t5.getApexCorner() ;
-  cout << "Area after " << t5.getArea() <<endl <<endl;
-
-  Point lc4(-4,2,0);
-  Point rc4(-1,-1,0);
-  Point ac4(2,2,0);
-  Triangle t6(lc4,rc4,ac4);
-  cout << "Pitching triangle E " << 180*(-PI_VALUE/2.0)/PI_VALUE<< endl;
-  cout << "Area before " << t6.getArea() <<endl;
-  cout  << t6.getLeftCorner() << t6.getRightCorner() << t6.getApexCorner()<<endl;
-  t6.pitch(-PI_VALUE/2.0);
-  cout  << t6.getLeftCorner() << t6.getRightCorner() << t6.getApexCorner() ;
-  cout << "Area after " << t6.getArea() <<endl <<endl;
-  cout << "Pitching E back " << 180*(PI_VALUE/2.0)/PI_VALUE<< endl;
-  t6.pitch(PI_VALUE/2.0);
-  cout  << t6.getLeftCorner() << t6.getRightCorner() << t6.getApexCorner() ;
-  cout << "Area after " << t6.getArea() <<endl;
-  cout << "Dist Apex and Right in E " << (ac4 || rc4) <<endl;
-
-}
-
-
-#endif
-
-
 

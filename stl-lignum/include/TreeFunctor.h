@@ -1479,9 +1479,9 @@ public:
        	list<LGMTriangle>::iterator it;
 	for(it = triangles.begin(); it != triangles.end(); it++) {
 	  PositionVector norm = (*it).getNormal();
-	  Point left = (*it).getLeftCorner();
-	  Point right = (*it).getRightCorner();
-	  Point apex = (*it).getApexCorner();
+	  Point left = (*it).getA();
+	  Point right = (*it).getB();
+	  Point apex = (*it).getC();
 
 	  cout << "facet normal " << norm.getX() << " " << norm.getY() << " " << norm.getZ()
 	       << endl;

@@ -834,17 +834,17 @@ void XMLDomTreeBuilder<TS,BUD,S>::addBroadLeafAttributeNode(QDomElement& node, Q
     const Triangle& t = dynamic_cast<const Triangle&>(s);    
     
     attrib = m_doc.createElement("TriangleLC");
-    tmp = QString("%1 %2 %3").arg(t.getLeftCorner().getX()).arg(t.getLeftCorner().getY()).arg(t.getLeftCorner().getZ());
+    tmp = QString("%1 %2 %3").arg(t.getA().getX()).arg(t.getA().getY()).arg(t.getA().getZ());
     attrib.appendChild(m_doc.createTextNode(tmp));
     rootNode.appendChild(attrib);
     
     attrib = m_doc.createElement("TriangleRC");
-    tmp = QString("%1 %2 %3").arg(t.getRightCorner().getX()).arg(t.getRightCorner().getY()).arg(t.getRightCorner().getZ());
+    tmp = QString("%1 %2 %3").arg(t.getB().getX()).arg(t.getB().getY()).arg(t.getB().getZ());
     attrib.appendChild(m_doc.createTextNode(tmp));
     rootNode.appendChild(attrib);
 
     attrib = m_doc.createElement("TriangleAC");
-    tmp = QString("%1 %2 %3").arg(t.getApexCorner().getX()).arg(t.getApexCorner().getY()).arg(t.getApexCorner().getZ());
+    tmp = QString("%1 %2 %3").arg(t.getC().getX()).arg(t.getC().getY()).arg(t.getC().getZ());
     attrib.appendChild(m_doc.createTextNode(tmp));
     rootNode.appendChild(attrib);
   }
