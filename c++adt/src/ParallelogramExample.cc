@@ -2,7 +2,7 @@
 /// Test Parallelogram interface.
 /// To compile (on Mac) type. libcxxadt.a also compiled with clang++.
 ///
-///       clang++  -I../include -L../lib -lcxxadt Parallelogram.cc Parallelogramexample.cc -o pgram
+///       clang++  -DPARALLELOGRAM -I../include -L../lib -lcxxadt Parallelogram.cc ParallelogramExample.cc -o pgram
 /// \sa PrintPGram Intersection
 #include <string>
 #include <Parallelogram.h>
@@ -86,7 +86,7 @@ void Intersection(const string& name, Parallelogram& pgram, const Point& o, cons
   }
 }
 
-#ifdef PGRAMMAIN
+#ifdef PARALLELOGRAM
 int main()
 { //STL library std::numbers is (will be) in C++20.
   //const double pi_v = std::numbers::pi;
