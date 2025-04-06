@@ -60,7 +60,7 @@ namespace cxxadt{
     ///\retval this Reference to the current instance 
     ///\post The six other vertices calculated to form rectangular cuboid
     ///\post Dot products and vectors used in RectangularCuboid::insideVolume calculated
-    ///\note The same algorithm as the constructor RectangularCuboid(const Point& lower_left, const Point& upper_right);
+    ///\note The same algorithm as in the constructor RectangularCuboid(const Point& lower_left, const Point& upper_right);
     ///\sa RectangularCuboid::RectangularCuboid(const Point&, const Point&);
     RectangularCuboid& resize(const Point& lower_left, const Point& upper_right);
     ///\brief Determine if a point is inside RectangularCuboid including the perimeter line itself.

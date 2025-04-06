@@ -14,7 +14,7 @@ using namespace std;
 
 namespace cxxadt{
 
-  class Ellipse: public virtual Shape{
+  class Ellipse: public Shape{
   public:
     Ellipse(const Point& center, const PositionVector& normal, 
 	    const double& semimajoraxis,  const double& semiminoraxis);

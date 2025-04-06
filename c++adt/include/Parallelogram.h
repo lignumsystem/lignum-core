@@ -6,9 +6,10 @@
 #include <PositionVector.h>
 using namespace cxxadt;
 /// \file Parallelogram.h
-/// \brief Leaf shape as Parallelogram.
+/// Parallelogram, a quadrilateral with two pairs of parallel sides.
 ///
-/// Implements Parallelogram for a "diamond shape" leaf.
+/// Implements Parallelogram that can be used for example as diamond shape leaf.
+/// The opposite sides are of equal length and the opposite angles are of equal measure.
 /// The interface includes constructors, resizing the Parallelogram area,
 /// rotations in 3D space and detection of line (light ray) - Parallelogram (leaf) intersection.
 /// The inteface is compatible with BroadLeaf.
@@ -19,8 +20,10 @@ using namespace cxxadt;
 /// \todo Check for Lignum::BroadLeaf compatibilty.
 
 namespace cxxadt{
-  ///\brief Parallelogram for diamond shaped leaves.
+  ///\brief Parallelogram (e.g. for diamond shaped leaves).
   ///
+  ///A quadrilateral with two pairs of parallel sides. The opposite sides are of equal length
+  ///and the opposite angles are of equal measure.
   ///Parallelogram area \f$A = |\overrightarrow{ab}||\overrightarrow{ad}\sin(\alpha) \f$  and \f$ \alpha = \overrightarrow{ab} \angle \overrightarrow{ad} \f$   
   ///The Parallelogram normal \f$\vec{N} = \overrightarrow{ad} \times \overrightarrow{ab} \f$ pointing upwards and normalised.  
   class Parallelogram{
@@ -96,7 +99,8 @@ namespace cxxadt{
     ///\return *true* if Parallelogram intersection, *false* if no intersction 
     bool intersectShape(const Point& o, const PositionVector& b)const;
     ///\brief Calculate line (light beam) - plane intersection point.
-    ///\pre The intersection point with the line (light beam) - plane (defined by the Parallelogram) must exist.
+    ///\pre the observation point is below the plane
+    ///\pre Beam crosses the plane defined by the Parallelogram
     ///\param o the observation point
     ///\param b the line direction in 3D space
     ///\return The intersection point

@@ -17,12 +17,12 @@ using namespace std;
 
 namespace cxxadt{
 
-  class Kite: public virtual Shape{
+  class Kite: public Shape{
   public:
     Kite(const Point& basecorner, const Point& leftcorner, const Point& rightcorner, 
 	     const Point& apexcorner);
     Kite(const Kite& k)
-      :Shape(Kite::Shape()),basecorner(k.basecorner),leftcorner(k.leftcorner),rightcorner(k.rightcorner),
+      :basecorner(k.basecorner),leftcorner(k.leftcorner),rightcorner(k.rightcorner),
       apexcorner(k.apexcorner){}
     Kite& operator=(const Kite& t);
     Point  getLeftCorner() const { return leftcorner;}

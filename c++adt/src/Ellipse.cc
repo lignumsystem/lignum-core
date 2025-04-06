@@ -88,7 +88,7 @@ namespace cxxadt{
     
     
   Ellipse::Ellipse(const Ellipse& e)
-    :Shape(Ellipse::Shape()),center(e.center),normal(e.normal),
+    :center(e.center),normal(e.normal),
      xdir(e.xdir),ydir(e.ydir),semimajoraxis(e.semimajoraxis),
      semiminoraxis(e.semiminoraxis)
   {

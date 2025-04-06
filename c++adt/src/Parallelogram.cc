@@ -1,6 +1,6 @@
 #include <Parallelogram.h>
 /// \file Parallelogram.cc
-/// \brief Implementation of Parallelogram.
+/// Implementation of Parallelogram.
 
 namespace cxxadt{
   
@@ -213,12 +213,14 @@ namespace cxxadt{
 
   bool Parallelogram::intersectShape(const Point& o, const PositionVector& beam)const
   {
-    //Check if the observation point is strictly below the Parallelogra.
+    //Check if the observation point is strictly below above the Parallelogram.
     double o_maxz = o.getZ();
     double maxz = getMaxZ();
-    if (o_maxz >= maxz){
+    //If above return false
+    if (o_maxz > maxz){
       return false;
     }
+    //Check if beam direction parallel to the Parallelogram plane
     double cosalpha = Dot(PositionVector(beam).normalize(),N);
     if (fabs(cosalpha)  < EPS15){
       return false;
@@ -237,7 +239,7 @@ namespace cxxadt{
 
   Point Parallelogram::intersectionPoint(const Point& o, const PositionVector& l)const
   {
-    /// \par Calculatation line - plane intersection
+    /// \par Calculation line - plane intersection
     ///
     /// Given observation point  \f$ \mathit{o} \f$ is below the Parallelogram (leaf) calculate the intersection point.  
     /// With vector notation a plane is defined by a set of all points \f$ P \f$ that satisfy
@@ -265,7 +267,7 @@ namespace cxxadt{
     Point l0(o);
     /// \internal
     /// The distance \f$ \mathit{d} \f$ from the observation point \f$ \mathit{o} \f$ to
-    /// the intersection point \f$ d = (p_0-o)\cdot\vec{N}/\hat{l} \cdot\vec{N} \f$,
+    /// the intersection point is \f$ d = (p_0-o)\cdot\vec{N}/\hat{l} \cdot\vec{N} \f$,
     /// where \f$ {p_0} \f$ is the Parallelogram nadir point. Finally, the point of intersection is \f$ p = o+d\hat{l} \f$.
     /// \snippet{lineno} Parallelogram.cc PI
     // [PI]
