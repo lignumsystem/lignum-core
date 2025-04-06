@@ -1,5 +1,18 @@
 cmake_minimum_required(VERSION 3.12)
 project(LGMlib DESCRIPTION "LIGNUM tree with generic algorithms")
+message("------")
+message("Lignum")
+message("------")
+include(CMakePrintHelpers)
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+  cmake_print_variables(CMAKE_SOURCE_DIR)
+  cmake_print_variables(CMAKE_BINARY_DIR)
+  cmake_print_variables(PROJECT_SOURCE_DIR)
+  cmake_print_variables(PROJECT_BINARY_DIR)
+  cmake_print_variables(CMAKE_CURRENT_LIST_DIR)
+  cmake_print_variables(CMAKE_CURRENT_SOURCE_DIR)
+  cmake_print_variables(CMAKE_CURRENT_BINARY_DIR)
+endif()
 
 add_library(LGM STATIC Axis/AxisFriend.cc
 BranchingPoint/BranchingPointFriend.cc

@@ -1,5 +1,18 @@
 cmake_minimum_required(VERSION 3.12)
 project(Graphics DESCRIPTION "Simple LIGNUM tree visualization")
+message("--------")
+message("Graphics")
+message("--------")
+include(CMakePrintHelpers)
+if (CMAKEBUILD_TYPE STREQUAL "Debug")
+  cmake_print_variables(CMAKE_SOURCE_DIR)
+  cmake_print_variables(CMAKE_BINARY_DIR)
+  cmake_print_variables(PROJECT_SOURCE_DIR)
+  cmake_print_variables(PROJECT_BINARY_DIR)
+  cmake_print_variables(CMAKE_CURRENT_LIST_DIR)
+  cmake_print_variables(CMAKE_CURRENT_SOURCE_DIR)
+  cmake_print_variables(CMAKE_CURRENT_BINARY_DIR)
+endif()
 
 add_library(Visual STATIC GLSettings.cc
 LGMVisualization.cc

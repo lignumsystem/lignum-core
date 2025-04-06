@@ -1,5 +1,18 @@
 cmake_minimum_required(VERSION 3.12)
 project(cxxadtlib DESCRIPTION "Generic utility classes")
+message("------")
+message("c++adt")
+message("------")
+include(CMakePrintHelpers)
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+  cmake_print_variables(CMAKE_SOURCE_DIR)
+  cmake_print_variables(CMAKE_BINARY_DIR)
+  cmake_print_variables(PROJECT_SOURCE_DIR)
+  cmake_print_variables(PROJECT_BINARY_DIR)
+  cmake_print_variables(CMAKE_CURRENT_LIST_DIR)
+  cmake_print_variables(CMAKE_CURRENT_SOURCE_DIR)
+  cmake_print_variables(CMAKE_CURRENT_BINARY_DIR)
+endif()
 
 add_library(cxxadt STATIC src/Bernoulli.cc
 src/Bisection.cc
@@ -35,9 +48,8 @@ src/RectangularCuboid.cc
 )
 
 if(CMAKE_HOST_SYSTEM_NAME MATCHES "Darwin")
-  message("c++adt")
-  message("------")
-  message("Using C++14 standard (-std=c++14)  because of HDF5 library")
+  message("-----")
+  message("Note: using C++14 standard (-std=c++14)  because of HDF5 library")
   message("XCode with C++17 standard (-std=c++17, default) will cause error")
   target_compile_options(cxxadt PUBLIC -std=c++14)
 endif()
