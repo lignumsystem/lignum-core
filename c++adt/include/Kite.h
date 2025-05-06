@@ -29,7 +29,9 @@ namespace cxxadt{
     Point  getRightCorner() const { return rightcorner;}
     Point  getApexCorner() const { return apexcorner;}
     Point  getBaseCorner() const { return basecorner;}
-    
+    ///Retrieve corner points
+    ///\param points Vector for corner points
+    ///\retval points Corner points in counterclockwise order
     vector<Point>&  getVertexVector(vector<Point>& points)const;
     void   setLeftCorner(const Point& p){ leftcorner=p;}
     void   setRightCorner(const Point& p){ rightcorner=p;}

@@ -6,8 +6,8 @@ namespace cxxadt{
 
 
   list<LGMTriangle> LGMTriangularize(const int& n_facets, const Point& base, const PositionVector& direction, 
-					      const double& H,
-					      const double& R_base, const double& R_top) {
+				     const double& H, const double& R_base, const double& R_top,
+				     bool disks) {
     PositionVector dir = direction;
     dir.normalize();
 
@@ -47,14 +47,21 @@ namespace cxxadt{
       ce_prev = ce_next;
       pointer_prev = pointer;
     }
-
+    
+    if (disks==true){
+      list<LGMTriangle> diskbase_ls = LGMTriangularizeCircle(n_facets,base,direction,R_base);
+      PositionVector end_v = PositionVector(base)+H*direction;
+      Point end_p(end_v);
+      //list<LGMTriangle> diskend_ls = LGMTriangularizeCircle(n_facets,end_p,direction,R_top);
+      output.splice(output.end(),diskbase_ls);
+      //output.splice(output.end(),diskend_ls);
+    }
     return output;
-
   }
 
 
   list<LGMTriangle> LGMTriangularizeCircle(const int& n_facets, const Point& center, const PositionVector& normal, 
-					      const double& R) {
+					   const double& R) {
     PositionVector dir = normal;
     dir.normalize();
     PositionVector norm = normal;

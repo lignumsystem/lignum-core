@@ -39,9 +39,9 @@ namespace cxxadt{
 vector<Point>& Kite::getVertexVector(vector<Point>& points)const
 {
   points.push_back(basecorner);
-  points.push_back(leftcorner);
   points.push_back(rightcorner);
   points.push_back(apexcorner);
+  points.push_back(leftcorner);
   return points;
 }
 
