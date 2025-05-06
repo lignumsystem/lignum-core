@@ -118,7 +118,12 @@ private:
   BroadLeaf<cxxadt::Kite>* parseKiteBroadLeaf(QDomNode& n);
   void parseTreeParameters(QDomNode&, Tree<TS,BUD>&);
   void parseTreeAttributes(QDomNode&, Tree<TS,BUD>&);
-  void parseTreeFunctions(QDomNode&, Tree<TS,BUD>&);
+  ///\brief Parse tree function
+  ///\param n QDomNode
+  ///\param t The tree
+  ///\exception ParametricCurveFileException. Catch exception if a function file is not found.
+  ///Write error message to standard output and continue building the tree.
+  void parseTreeFunctions(QDomNode& n, Tree<TS,BUD>& t);
   void parseAxisAttributes(QDomNode&, Axis<TS,BUD>*);
   void parseCfTreeSegmentAttributes(QDomNode&, CfTreeSegment<TS,BUD>*);
   void parseHwTreeSegmentAttributes(QDomNode&, HwTreeSegment<TS,BUD,S>*);
@@ -1329,32 +1334,67 @@ void XMLDomTreeReader<TS,BUD,S>::parseTreeFunctions(QDomNode& node, Tree<TS, BUD
   while(!child.isNull()) {
     if(child.isElement()) {
       if(child.nodeName() == "LGMAL") {
-	function = ParametricCurve(child.toElement().text().toStdString());
-	SetFunction(tree, function, LGMAL);
+	try{
+	  function = ParametricCurve(child.toElement().text().toStdString());
+	  SetFunction(tree, function, LGMAL);
+	}
+	catch (ParametricCurveFileException e){
+	  cout << "XMLDomTreeReader: could  not find file "<<  e.getFileName() << endl;
+	}
       }
       else if(child.nodeName() == "LGMFM") {
-	function = ParametricCurve(child.toElement().text().toStdString());
-	SetFunction(tree, function, LGMFM);
+	try{
+	  function = ParametricCurve(child.toElement().text().toStdString());
+	  SetFunction(tree, function, LGMFM);
+	}
+	catch (ParametricCurveFileException e){
+	  cout << "XMLDomTreeReader: could  not find file "<<  e.getFileName() << endl;
+	}
       }
       else if(child.nodeName() == "LGMIP") {
-	function = ParametricCurve(child.toElement().text().toStdString());
-	SetFunction(tree, function, LGMIP);
+	try{
+	  function = ParametricCurve(child.toElement().text().toStdString());
+	  SetFunction(tree, function, LGMIP);
+	}
+	catch (ParametricCurveFileException e){
+	  cout << "XMLDomTreeReader: could  not find file "<<  e.getFileName() << endl;
+	}
       }
       else if(child.nodeName() == "LGMNB") {
-	function = ParametricCurve(child.toElement().text().toStdString());
-	SetFunction(tree, function, LGMNB);
+	try{
+	  function = ParametricCurve(child.toElement().text().toStdString());
+	  SetFunction(tree, function, LGMNB);
+	}
+	catch (ParametricCurveFileException e){
+	  cout << "XMLDomTreeReader: could  not find file "<<  e.getFileName() << endl;
+	}
       }
       else if(child.nodeName() == "LGMLONB") {
-	function = ParametricCurve(child.toElement().text().toStdString());
-	SetFunction(tree, function, LGMLONB);
+	try{
+	  function = ParametricCurve(child.toElement().text().toStdString());
+	  SetFunction(tree, function, LGMLONB);
+	}
+	catch (ParametricCurveFileException e){
+	  cout << "XMLDomTreeReader: could  not find file "<<  e.getFileName() << endl;
+	}
       }
       else if(child.nodeName() == "LGMVI") {
-	function = ParametricCurve(child.toElement().text().toStdString());
-	SetFunction(tree, function, LGMVI);
+	try{
+	  function = ParametricCurve(child.toElement().text().toStdString());
+	  SetFunction(tree, function, LGMVI);
+	}
+	catch (ParametricCurveFileException e){
+	  cout << "XMLDomTreeReader: could  not find file "<<  e.getFileName() << endl;
+	}
       }
       else if(child.nodeName() == "LGMVIONB") {
-	function = ParametricCurve(child.toElement().text().toStdString());
-	SetFunction(tree, function, LGMVIONB);
+	try{
+	  function = ParametricCurve(child.toElement().text().toStdString());
+	  SetFunction(tree, function, LGMVIONB);
+	}
+	catch (ParametricCurveFileException e){
+	  cout << "XMLDomTreeReader: could  not find file "<<  e.getFileName() << endl;
+	}
       }
 
     }
