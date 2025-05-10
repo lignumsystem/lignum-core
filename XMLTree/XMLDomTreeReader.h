@@ -40,7 +40,11 @@ public:
   ///\param doc QDomDocument representation of an XML file
   ///\return The Tree constructed from the \p doc QDomDocument
   Tree<TS,BUD>& readXMLToTree(Tree<TS,BUD>& t, const QDomDocument& doc);
-  Tree<TS,BUD>& readXMLStringToTree(Tree<TS,BUD>& t, const string& fileName);
+  ///\brief Construct a tree from a properly formed XML string
+  ///\param t Lignum tree
+  ///\param xmlstring Lignum tree XML as std::string
+  ///\return The Tree construncted from \p xmltreeg
+  Tree<TS,BUD>& readXMLStringToTree(Tree<TS,BUD>& t, const string& xmlstring);
   int treeType(const string& fileName);
   int leafType(const string& fileName);
   int treeType(const QDomDocument& doc);
