@@ -40,6 +40,7 @@ public:
   ///\param doc QDomDocument representation of an XML file
   ///\return The Tree constructed from the \p doc QDomDocument
   Tree<TS,BUD>& readXMLToTree(Tree<TS,BUD>& t, const QDomDocument& doc);
+  Tree<TS,BUD>& readXMLStringToTree(Tree<TS,BUD>& t, const string& fileName);
   int treeType(const string& fileName);
   int leafType(const string& fileName);
   int treeType(const QDomDocument& doc);
@@ -257,6 +258,28 @@ Tree<TS,BUD>& XMLDomTreeReader<TS,BUD,S>::readXMLToTree(Tree<TS,BUD>& tree, cons
   parseTree(root, tree);
   
   file.close();
+  return tree;
+
+}
+
+template <class TS, class BUD, class S>
+Tree<TS,BUD>& XMLDomTreeReader<TS,BUD,S>::readXMLStringToTree(Tree<TS,BUD>& tree, const string& xmlstring) {
+  objectIndexForTreeCompartment.clear();
+  objectIndexForLeaf.clear();
+  
+  m_doc = QDomDocument("LMODEL");
+  QString qt_xmlstring(xmlstring.c_str());
+  if(!m_doc.setContent(qt_xmlstring)) {
+    cerr << "XMLDomTreeReader::readXMLStringToTree: Cannot set XML Dom content" <<endl;
+    return tree;
+  }
+  
+  QDomNode root = m_doc.firstChild();
+
+  segmentType = root.toElement().attribute("SegmentType");
+
+  parseTree(root, tree);
+  cout << "Parsing done" <<endl;
   return tree;
 
 }
