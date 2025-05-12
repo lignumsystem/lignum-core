@@ -1,19 +1,24 @@
 # The LIGNUM System
 Welcome to The LIGNUM System. The *lignum-core* project 
 consist of the following seven subprojects that implement 
-the ubiquitous libraries and binaries in The LIGNUM System :
+the ubiquitous libraries and binaries in The LIGNUM System:
 
 + c++adt: basic ubiquitous classes
 + Firmamanet: Standard overcast sky (SOC) implementation
 + stl-lignum: Implementatetation of the elementary tree units in The LIGNUM System
 + stl-voxelspace: VoxelSpace implementation
 + LEngine: L-system implementation
-+ XMLTree: XML representation of the LIGNUM tree
++ XMLTree: XML representation of a LIGNUM tree
+
+These six subprojects are used to build applications in The LIGNUM System. The 
+seventh subproject is *qt-workbench*:
+
 + qt-workbench: The LignumWb GUI application
 
-These seven subprojects are used to build applications in The LIGNUM System.
+The `LignumWb` application can be used to visualize simulated trees and inspect 
+the content of the Lignum XML file.
 
-### Building lignum-core with CMake
+## Building lignum-core with CMake
 The *lignum-core* repository  and its subprojects (directories) have *CMakeLists.txt* files to build 
 *lignum-core* libraries and binaries.  The CMake build process for Unix Makefile system is as follows:
 
@@ -24,14 +29,21 @@ The *lignum-core* repository  and its subprojects (directories) have *CMakeLists
 	cmake .. -DCMAKE_BUILD_TYPE=Release
 	make
 	make install
-	    
-The build process for the applications is the same. Download the software, create the build directory and
-build the software.
+
+### qt-workbench
+The `LignumWb` GUI is an independent application to visualize Lignum trees and inspect their status.
+To build `LignumWb` see the README.md file in qt-workbench.
+
+## Building Lignum applications with CMake
+The build process for the applications is also CMake based. Download the software from GitHub under the 
+lignum-core directory, create the build directory and build the software. The applications should
+have an accompanying README file and CMakeLists.txt for application specific compilation and usage details.
 
 ## LignumVTK
-The *qt-workbench* is a Qt4 application. It has become difficult to update and maintain. To upgrade it to modern 
-Qt5 and Qt6 would require substantial amount of time and work. Because of that we are making a transition 
-to LignumVTK project to visualize trees and forest plots with ParaView. See LignumVTK for details.
+The LigumWb in qt-workbench is a Qt4 application. It has become difficult to update and maintain the project.
+To upgrade it to modern Qt5 and Qt6 would require substantial amount of time and work. Because of these impediments
+we are making a transition from qt-workbench to LignumVTK project to visualize trees and forest plots with ParaView.
+See LignumVTK for details.
 
 ## Operating system  requirements
 The LIGNUM System applications are  developed with on macOS. 
@@ -43,7 +55,7 @@ The LIGNUM System software is being developed with C++ together
 with non-proprietary software packages available from the Internet.
 The *lignum-core* subprojects require Xcode IDE, HDF5 and Qt5 libraries. 
 In addition the *qt-workbench* requires Qt4 library. The software documentation
-is uses Doxygen document generator.
+is in header file comments in Doxygen document generator format.
 
 [MacPorts](https://www.macports.org) is used to install and update 
 necessary software to build applications. The software installation 
