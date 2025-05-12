@@ -28,6 +28,11 @@ The *lignum-core* repository  and its subprojects (directories) have *CMakeLists
 The build process for the applications is the same. Download the software, create the build directory and
 build the software.
 
+## LignumVTK
+The *qt-workbench* is a Qt4 application. It has become difficult to update and maintain. To upgrade it to modern 
+Qt5 and Qt6 would require substantial amount of time and work. Because of that we are making a transition 
+to LignumVTK project to visualize trees and forest plots with ParaView. See LignumVTK for details.
+
 ## Operating system  requirements
 The LIGNUM System applications are  developed with on macOS. 
 Simulations are also made on Linux servers. We keep the 
