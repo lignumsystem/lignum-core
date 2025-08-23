@@ -1,12 +1,8 @@
 #ifndef PINE_H
 #define PINE_H
 #include <Lignum.h>
-
-///\brief Classes for PineSegment and PineBud
-namespace PineTree{
-
 ///\file Pine.h
-///\brief PineBud and  PineSegment are  meant to be  generic Pine  segment and bud.
+///PineBud and  PineSegment are  meant to be  generic Pine  segment and bud.w
 ///
 ///We  need  to  keep  them  as  templates  in  order  to  allow
 ///inheritance. Notice we partially decide  the type of the tree in the
@@ -19,6 +15,11 @@ namespace PineTree{
 ///defines as the tree  type Tree<PineSegment,PineBud>. But now, as the
 ///actual type  of the tree is  left open, inheritance  is possible and
 ///all the generic algorithms implemented in stl-lignum will compile.
+
+///\brief Classes for PineSegment and PineBud
+namespace PineTree{
+
+
 
 ///Scots Pine Functions
 enum SPFN {SPFAF,///<Scots pine Initial foliage m^2/kgC   
@@ -33,7 +34,7 @@ enum SPFN {SPFAF,///<Scots pine Initial foliage m^2/kgC
 	   SPBVF///<Scots pine Bud View function
 };
 
-///Enumeration for SetValue, GetValue in ScotsPine
+///\brief Enumeration for SetValue, GetValue in ScotsPine
 enum SPAD {SPAAsDown,///<Sapwood down
 	   SPCrownRatio,///<Crown ratio: CrownL/TreeH
 	   SPHc,///<Height at crown limit
@@ -41,7 +42,7 @@ enum SPAD {SPAAsDown,///<Sapwood down
 	   SPrue ///< Radiation use efficiency
 };
 
-///Scots Pine Parameter Double SPPD
+///\brief Scots Pine Parameter Double SPPD
 ///Extended Borchert-Honda (1 = true,  < 1 = false)
 enum SPPD {
   SPis_EBH ///< Extended Borchert-Honda ("boolean") 
@@ -55,10 +56,10 @@ enum SPPD {
   };
 
 
-
+///\brief Pine segment 
 template <class TS, class BUD>
 class PineSegment: public CfTreeSegment<TS,BUD>{
-  ///GetValue for PineSegment
+  ///\brief GetValue for PineSegment
   friend LGMdouble GetValue(const PineSegment& ts,LGMSPAD name){
     if (name == LGAplength)
       return ts.plength;
@@ -69,7 +70,7 @@ class PineSegment: public CfTreeSegment<TS,BUD>{
       return 0.0;
     }
   }
-  ///SetValue for PineSegment
+  ///\brief SetValue for PineSegment
   friend LGMdouble SetValue(PineSegment& ts,LGMSPAD name,LGMdouble val){
     LGMdouble old_val = GetValue(ts,name);
     if (name == LGAplength)
@@ -138,6 +139,8 @@ private:
 
 
 
+///\brief Symbol for PineBudData
+///
 ///PineBud has  SetValue and  GetValue functions to  update and  to use
 ///PineBudData in order to pass information to L-system and back. 
 enum PBNAME {PBDATA};
@@ -204,7 +207,7 @@ class PineBud: public Bud<TS,BUD>{
     }
     return 0.0;
   }
-  ///SetValue for PineBud for PineBudData
+  ///\brief SetValue for PineBud for PineBudData
   template <class TS1,class BUD1>
   friend PineBudData SetValue(PineBud<TS1,BUD1>& b,
 			      PBNAME name,const PineBudData& data){
@@ -219,7 +222,7 @@ class PineBud: public Bud<TS,BUD>{
     b.phys_age = data.phys_age;
     return old_data;
   }
-  ///GetValue for  PineBud for PineBudData
+  ///\brief GetValue for  PineBud for PineBudData
   ///Construct PineBudData from its parts/constituents
   template <class TS1,class BUD1>
   friend PineBudData GetValue(const PineBud<TS1,BUD1>& b,PBNAME name){
@@ -242,6 +245,7 @@ class PineBud: public Bud<TS,BUD>{
     return pbdata;
   }
 public:
+  ///\brief PineBud constructor 
   ///\param p Point
   ///\param d Direction
   ///\param go Gravelius order
@@ -258,7 +262,7 @@ private:
   LGMdouble phys_age;
 };
 
-//Prints Qin, Qabs, P, R, Wf, As and LGAAh
+///\brief Prints Qin, Qabs, P, R, Wf, As and LGAAh
 template <class TS, class BUD>
 class CheckQinQabsPRWsWfAsAh{
  public:
@@ -330,16 +334,22 @@ private:
 };
      
 
-
+///\brief Adjust tree segment length using parameter \f$\lambda \f$
 template <class TS,class BUD>
 class SetSegmentLength{
 public:
-  SetSegmentLength(double lamda):l(lamda),apical(1.0){}
+  ///\brief Constructor
+  ///\param lambda Parameter to adjust segment length
+  ///\post apical = 1 
+  SetSegmentLength(double lambda):l(lambda),apical(1.0){}
+  ///\brief Copy constructor
+  ///\param sl SetSegmentLength instance
   SetSegmentLength& operator=(const SetSegmentLength& sl){
     l = sl.l;
     apical = sl.apical;
     return *this;
   }
+  ///\brief Set segment length as  \f$\lambda \times \mathrm{L_{vi}} \times \mathrm{f_{ip}}(\mathrm{LGAQin}/B)\f$
   TreeCompartment<TS,BUD>* operator()(TreeCompartment<TS,BUD>* tc)const
   {
      if (TS* ts = dynamic_cast<TS*>(tc)){
@@ -407,8 +417,9 @@ private:
   mutable double apical; ///<Apical dominance, 1 or less, e.g. 0.8
 };
 
-///This  is must be  the same  as diameterGrowth  method, but  we can't
-///change the segment's dimensions.
+///\brief Try diameter growth before adjusting segment dimensions.
+///
+///This must be  the same  as diameterGrowth  method adjusting the segment dimensons.
 template <class TS,class BUD>
 class TryDiameterGrowth{
 public:
@@ -666,11 +677,12 @@ LGMdouble& ShortenSegment<TS,BUD>::operator()(LGMdouble& c,
     return c;
 }
 
-//Using L-systems  we 'blindly' create new  segments. After allocation
-//some of  the segments migh be 0  length. We do not  know this before
-//hand because there  is a treshold length LGPmin. This  is a clean up
-//routine to kill  buds in front of 0 length  segments to prevent them
-//grow any further.
+///\brief Kill buds not able to create segments.
+///
+///After allocation some of  the segments migh be 0  length. We do not  know this 
+///in advance because there  is a treshold length LGPmin. This  is a clean up
+///routine to kill  buds in front of 0 length  segments to prevent them
+///grow any further.
 template <class TS, class BUD> 
 class KillBudsAfterAllocation{
 public:
@@ -691,7 +703,7 @@ public:
   }
 };
 
-///Calculate     path    length     for     each    segment.
+///\brief Calculate     path    length     for     each    segment.
 ///Usage:<br>
 ///double plength=0.0<br>
 ///PropagateUp(t,plength,PathLength())
@@ -710,7 +722,7 @@ public:
   }
 };
 
-///Pass physiological age of the buds to the newly created segments
+///\brief Pass physiological age of the buds to the newly created segments
 ///\pre L-system has just created new segments
 ///\pre Segment age == 0.0
 ///Usage: <br>
