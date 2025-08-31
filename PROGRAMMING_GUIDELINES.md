@@ -3,10 +3,10 @@ There are profound and detailed programming guidelines for various C/C++ project
 for a reason[^JSF]. Another productive way to proceed can be to establish a small set principles
 and practices to eliminate programming conventions difficult to review. Using minimum number 
 of decrees cannot be all encompassing but can be beneficial by for example restricting
-the use of complex language features, encouraging the use of compiler for static analysis, 
+the use of complex language features, encouraging the use of a compiler for static analysis, 
 verifying control flows and paying attention to memory management.
 
-This guideline is based on well thought of and renowned
+This guideline is based on the renowned
 [Nasa's Power of 10 Rules](https://en.wikipedia.org/wiki/The_Power_of_10:_Rules_for_Developing_Safety-Critical_Code)
 that capture in a nutshell some C/C++ programming conventions for good programming
 practices and make program verification and maintenance easier.
@@ -25,35 +25,35 @@ If a function or  method exceeds one A4 page (about 60 lines) it is time to reth
 the implementation.
 
 ## The scope of variables should be restricted to minimum
-The principle of information hiding means that if an object is not in scope
-then it is not possible to change its value. If an object has too wide scope
+The principle of information hiding means that if an object is not in the scope
+then it is not possible to change it. If an object has too wide scope
 it can be changed incompatible ways by unrelated parts of a program.
 Especially if a global variable is needed enclose it to namespace. Then the
 variable is less global.
 
 ## Use references instead of pointers
 A reference provides the benefits of a pointer without drawbacks. 
-Reference is an alias to an object. Unlike a pointer it cannot
+Reference is an alias always assigned to an object. Unlike a pointer it cannot
 be reassigned. 
 
 Sometimes it is not possible to avoid pointers. For example C++ standard 
-libray containers (like vectors and lists) cannot have reference type as 
-members. Consider using generic container algorithms with functors,
+library containers (e.g. vectors and lists) cannot have reference type as 
+members. Consider using generic container algorithms with user defined functors,
 a class with overloaded function operator, instead of loops.
 
 ## Remove all compiler warnings
 From the very beginning the program should be compiled with as many compiler 
 warnings flags on as feasible. Software build systems like CMake provide this automatically.
-All compiler warnings should be removed. There is no rationale not to do this. Some
+*All compiler warnings should be removed*. There is no rationale not to do this. Some
 day in the future or in another compiler a warning may be an error preventing
 compilation. Ideally the software should be compiled in different operating systems and 
 with compilers from different vendors.
 
 ## Practice const correctness
-The keyword *const* expresses a program entity is constant and cannot be changed or does not change anything. 
-Using the keyword extensively whenever this is true amounts to whatis called *const correctness*. 
-This is a form of type safety. It prevents inadvertently modification of something that is not meant to be changed.
-Any violation of the constness of an abject results compile time error.
+The keyword *const* expresses a program entity is constant that cannot be changed or does not change anything. 
+Using the keyword extensively whenever this is true amounts to what is called *const correctness*. 
+This is a form of type safety. It prevents unintentional modification of something that is not meant to be changed.
+Any violation of the constness of an abject will result compile time error.
 
 ## Do not misuse auto keyword
 The keyword *auto* is a placeholder type that will be replaced later. It lets the compiler to
@@ -64,19 +64,20 @@ Type information is useful for compiler type control and understanding the progr
 
 ## Make documentation part of the work
 [Doxygen](https:://www.doxygen.org) is an example of tools that can generate software documentation 
-using comments in the  software. It does not increase the workload to attach comment notes to the
-program entity just created. A program is more often read by others than made by the author.
+using comments in the  software. Adding comment notes to a program entity just created does 
+not increase the work load. If you try to save time here easily spends time elsewhere.
+A program is more often read by others than made by the author.
 
 Doxygen has a rich set of special markup commands to highlight different program features. 
 For example users of the program components are mostly interested in them as black boxes. 
 They are interested in function parameters, restrictions in usage and return values. 
 For this Doxygen provides commands for parameters, their preconditions as well as 
 function return values and postconditions. C/C++ namespaces help with navigating 
-the documentation because Doxygen creates document sections based on these.
+the documentation as Doxygen creates document sections based on these.
 
 It is recommended to come back to the work after a few days or weeks. A clear program flow
-usually shows by itself how it runs. If you cannot understand looking afresh your own program flow 
-it is time to make notes to make the work transparent for all developers. 
+usually shows by itself how it runs and what it does. If you cannot understand looking afresh 
+your own program flow it is time to improve comment notes to make the work transparent for all developers. 
 
 ## Study the C++ Standard Library
 The C/C++ language has matured but the [C++ Standard Library](https://en.wikipedia.org/wiki/C%2B%2B_Standard_Library) 
@@ -84,7 +85,7 @@ keeps evolving. It is based on reserach in generic programming and conventions i
 [Standard Temmplate Library](https://en.wikipedia.org/wiki/Standard_Template_Library).
 
 The [C++ reference site](https://en.cppreference.com) presents the library with examples. 
-It also shows the C++ standard where a language feature or a library component should appear.
+It also shows the C++ version where a language feature or a library component is available.
 
 It is always better to use standardized tested components than reinventing the wheel.
 
