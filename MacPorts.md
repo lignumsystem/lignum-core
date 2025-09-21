@@ -97,7 +97,7 @@ A snapshot of installed ports before migration is also taken. Ports that fail to
 
 	sudo port restore --last
 	
->|!NOTE]
+>[!NOTE]
 >After macOS major update you should be able to use existing ports. Seldom does a new macOS break the software itself.
 >It is the MacPorts that is designed to be macOS and CPU architecture specific.
 
