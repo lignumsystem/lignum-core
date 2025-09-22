@@ -13,7 +13,8 @@ In the `port` command examples the '[]' and '\< \>' are not part of `port` comma
 `port` action, port name or regular expression.
 
 # Xcode commands
-Xcode installation is mandatory for MacPorts. Remember also to install command line tools and the licence agreement:
+Xcode installation is mandatory for MacPorts. Remember also to install command line tools and 
+agree the licence agreement:
 
 	sudo xcode-select --install #Install command line tools
 	sudo xcodebuild -license    #Licence agreement
@@ -74,6 +75,9 @@ Update ports regurlarly for example once a month.
 
 	sudo port selfupdate       #First, upgrade MacPorts itself and port definition files
 	sudo port upgrade outdated #Upgrade outdated ports found in port definition files 
+	
+A port update can include new variants or removal of variants.
+
 	sudo port upgrade <port>   #Upgrade a single port
 	sudo port upgrade --enforce-variants <port> +<variant1> -<variant2> #Upgrade port with or without variants
 
@@ -98,7 +102,7 @@ A snapshot of installed ports before migration is also taken. Ports that fail to
 	sudo port restore --last
 	
 >[!NOTE]
->After macOS major update you should be able to use existing ports. Seldom does a new macOS break the software itself.
+>After macOS major update you should be able to continue using existing ports. Seldom does a new macOS break the software itself.
 >It is the MacPorts that is designed to be macOS and CPU architecture specific.
 
 >[!CAUTION]
@@ -149,15 +153,16 @@ Interactive `reclaim` finds files in the port system that can be removed:
 
 	sudo port reclaim #Uninstall inactive ports, remove unnecessary files and directories
   
-Files and directories are in three parts. The first part presents
+Files and directories are listed in three parts. The first part presents
 unnecessary unrequested ports (i.e. ports without dependencies). The second part
-contains inactive ports. Third part has unnecessary files and directories. 
-Remove inactive ports and unnecessary files. Unnecessary unrequested ports can include useful programs.
+contains inactive ports. The third part has unnecessary files and directories. 
+Remove inactive ports and unnecessary files. Unnecessary unrequested ports 
+can include useful programs.
 
 Port `clean` removes temporary files and compilation work:
 
 	sudo port clean installed #Remove compilation work
-	sudo port clean python39  #Clean python39 only
+	sudo port clean <port>    #Clean one port
 	sudo port clean active    #Clean all active ports
 
 `port install` calls `clean` as the last step in port installation. Manual `clean` is needed
@@ -206,25 +211,23 @@ Optionally set in *.zprofile*:
 	alias qmake4='/opt/local/libexec/qt4/bin/qmake' #Explicitely Qt4 qmake
 	alias qmake5='/opt/local/libexec/qt5/bin/qmake' #Explicitely Qt5 qmake
 	alias qmake6='/opt/local/libexec/qt6/bin/qmake' #Explicitely Qt6 qmake
-	
-Qt libraries are mutually exclusive conficting each other.
 
 ## Programming libraries
 
-	sudo port install libomp #The OpenMP subproject of LLVM, parallel programming with threads and tasks
+	sudo port install libomp  #The OpenMP subproject of LLVM, parallel programming with threads and tasks
 	sudo port install openmpi #The MPI library, parallel programming with independent processes
-	sudo port select --set mpi openmpi-mp-fortran #Activate mpi compilers 'mpi[xxx], 'mpiexec' and 'mprun'
-	sudo port install cgal6 #New version, conflicts cgal4 and cgal5
-	sudo port install hdf5 #Libraries and command line tools for HDF5 files
+	sudo port select --set mpi openmpi-mp-fortran #Activate MPI compilers 'mpi[xxx], 'mpiexec' and 'mprun'
+	sudo port install cgal6   #New version, conflicts cgal4 and cgal5
+	sudo port install hdf5    #HDF5 Libraries and command line tools 
 	sudo port install h5utils #Utilities for visualization and conversion of HDF5 files
-	sudo port install vtk #VTK 3D computer graphics library for ParaView file formats
+	sudo port install vtk     #VTK 3D computer graphics library for ParaView file formats
 	
 For hdf5 port Mac users may need to add `export HDF5_USE_FILE_LOCKING=FALSE` in *.zprofile* for network mounted files.
 
 ## Image processing
 
 	sudo port install ImageMagick #Command line tools suite to create, convert and edit pdf files and raster images
-	sudo port install ffmpeg #Create, convert, play and stream audio/video
+	sudo port install ffmpeg      #Create, convert, play and stream audio/video
 
 ## Text file formatting 
 GNU `enscript` can be used to format source code text files. `enscript-color` is an example for two column landscape 
@@ -236,7 +239,7 @@ PostScript output.
 Use `convert` from ImageMagick to convert PostScript to PDF.
 
 	enscript-color -o <file.cc> -p <file.ps> #Command line 
-	convert [input-options] file.ps [output-options] file.pdf #Use convert in ImageMagick suite to convert between file formats
+	convert [input-options] file.ps [output-options] file.pdf #Use 'convert' in ImageMagick suite to convert between file formats
      
 `enscript` does not support UTF-8. Use for example `iconv` to convert UTF-8 to ISO_8859-1:
 
