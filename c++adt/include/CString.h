@@ -1,4 +1,5 @@
-
+/// \file CString.h
+/// \brief Deprecated string class. \deprecated Use Standard C++ library *string*.
 #ifndef STRING_H
 #define STRING_H
 

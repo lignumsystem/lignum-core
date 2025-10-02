@@ -1,17 +1,25 @@
+/// \file DList.h
+/// \brief List class.
+///
+/// DList is no longer for development work
+/// but it is in use when parsing  Lignum simulation
+/// configuration files. 
 #ifndef DLIST_H
 #define DLIST_H
 
 #include <DListElement.h>
 
 namespace cxxadt{
-/*=============================================================
-** DList is a two-way list. The elements of list are linked together
-** with pointers to previous and next element. Each list element
-** can carry data.
-** There are three specific elements in the list
-** The first, the last and the current element:
-**
-*/
+
+///\brief DList is a two-way list.
+///
+///DList elements are linked together
+///with pointers to previous and next element. Each list element
+///can carry data.
+///There are three specific elements in the list
+///The first, the last and the current element.
+///\sa cxxadt:::DListElement
+///\deprecated No longer for development work. Use std::list.
 class DList{
 public:
   DList();

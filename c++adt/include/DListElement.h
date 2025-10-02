@@ -1,4 +1,5 @@
-
+/// \file DListElement.h
+/// \brief Deprecated list class
 #ifndef DLIST_ELEMENT_H
 #define DLIST_ELEMENT_H
 

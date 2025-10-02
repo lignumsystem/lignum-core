@@ -1,7 +1,7 @@
 /// \file Bisection.h
 /// \brief Bisection function to find a root of a function.
 ///
-/// Can be used when the exact functional form is not known.
+/// cxxadt::Bisection method can be used when the exact functional form is not known.
 /// For the LIGNUM model find the allocation of photosynthates.
 #ifndef BISECTION_H
 #define BISECTION_H

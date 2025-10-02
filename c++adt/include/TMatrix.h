@@ -1,3 +1,5 @@
+/// \file TMatrix.h
+/// \brief 2D TMatrix
 #ifndef TMATRIX_H
 #define TMATRIX_H
 #include <iostream>
@@ -16,6 +18,8 @@ namespace cxxadt{
 
 using namespace std;
 
+  ///\brief 2D Matrix
+  ///\tparam T Matrix type
 template <class T> 
 class TMatrix {
 

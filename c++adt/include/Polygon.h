@@ -1,3 +1,5 @@
+/// \file Polygon.h
+/// \brief Polygon algorithms
 #ifndef POLYGON_H
 #define POLYGON_H
 #include <cmath>
@@ -26,16 +28,16 @@ namespace cxxadt{
 	double yi;
     };
 
-    /*****************************************************************
-     *Compute the area of a  closed planar polygon chain.  The points*
-     *of  the   polygon  must  be   Point  class  (where  z   is  now*
-     *redundant). The polygon itself can  be any STL sequence: a list*
-     *or a vector.  Note the algorithm checks if the polygon chain is*
-     *closed or not. If not the first element will be inserted as the*
-     *last  element.    As  an  example   given  a  list   of  points*
-     *[(4,6,0),(4,2,0),(0,8,0)]  or [(4,6,0),(4,2,0),(0,8,0),(4,6,0)]*
-     *the area will be 8.                                            *
-     *****************************************************************/
+    ///\brief Area of a polygon
+    ///
+    ///Compute the area of a  closed planar polygon chain.  The points
+    ///of  the   polygon  must  be   Point  class  (where  z   is  now
+    ///redundant). The polygon itself can  be any STL sequence: a list
+    ///or a vector.  Note the algorithm checks if the polygon chain is
+    ///closed or not. If not the first element will be inserted as the
+    ///last  element.    As  an  example   given  a  list   of  points
+    ///[(4,6,0),(4,2,0),(0,8,0)]  or [(4,6,0),(4,2,0),(0,8,0),(4,6,0)]
+    ///the area will be 8.                                            
     template <class Polygon>
 	double PolygonArea(Polygon& plgn)
 	{
@@ -53,12 +55,13 @@ namespace cxxadt{
 	    return 0.5*fabs(accumulate(plgn.begin(),plgn.end(),0.0,f));
 	}
 
-    /*****************************************************************
-     *Compute the center of the  polygon (center of mass). In general*
-     *the centroid coordinates (x,y)  of the closed planar region are*
-     *x=IIxdxdy/A and y=IIydxdy/A where the integrals II are over the*
-     *(polygon) region of size A.                                    *
-     *****************************************************************/
+    
+    ///\brief Center of a polygon
+    ///
+    ///Compute the center of the  polygon (center of mass). In general
+    ///the centroid coordinates (x,y)  of the closed planar region are
+    ///\f$ x=\int x \,dx\,dy/A \f$  and \f$ y=\int y \,dx\,dy/A \f$
+    ///where the integrals are over the polygon region of size A.                                    
     template <class Polygon>
 	Point PolygonCentroid(Polygon& plgn)
 	{

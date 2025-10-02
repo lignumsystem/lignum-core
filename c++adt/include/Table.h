@@ -1,3 +1,7 @@
+/// \file Table.h
+/// \brief Deprecated look up table
+///
+/// The Standard C++ version is available.
 #ifndef TABLE_H
 #define TABLE_H
 

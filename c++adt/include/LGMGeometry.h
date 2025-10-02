@@ -1,18 +1,37 @@
+/// \file LGMGeometry.h
+/// \brief Geometrical calculations in Lignum.
+///
+/// Currently triangularization of a tree segment cylinder
 #ifndef LGMGEOMETRY_H
 #define LGMGEOMETRY_H
 
 #include <Triangle.h>
 #include <list>
-///\file LGMGeometry.h
-///\brief Classes and functions for geometrical calculations in LIGNUM
+
 
 using namespace std;
 namespace cxxadt{
   class LGMTriangle;
+  ///\brief Triangularize Lignum tree segment cylinder 
+  ///\param n_facets Number of facets on the cylinder surface
+  ///\param begin The base point of the cylinder
+  ///\param dir Direction of the cylinder
+  ///\param L Length of the cylinder
+  ///\param R_begin Radius at cylinder base
+  ///\param R_end Radius at cylinder end
+  ///\param disks Triangularize cylinderend disks
+  ///\return List of triangles
+  ///\sa cxxadt::LGMTriangularizeCircle
   list<LGMTriangle> LGMTriangularize(const int& n_facets, const Point& begin,
    				     const PositionVector& dir, const double& L,
    				     const double& R_begin, const double& R_end,
 				     bool disks=true);
+  ///\brief Triangularize circular end disk of a tree segment cylinder
+  ///\param n_facets Number facets on the end disk surface
+  ///\param center Center point of the circle
+  ///\param normal Circle normal vector
+  ///\param R Radius of the circle
+  ///\return List of triangles
   list<LGMTriangle> LGMTriangularizeCircle(const int& n_facets, const Point& center,
 					   const PositionVector& normal, const double& R);
   ///\brief LGMTriangle maintains triangle normal more suitable for computer geometry and graphics.

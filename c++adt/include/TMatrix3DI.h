@@ -1,3 +1,5 @@
+/// \file TMatrix3DI.h
+/// \brief TMatrix2D and TMatrix3D implementation
 #ifndef MATRIX3DI_H
 #define MATRIX3DI_H
 

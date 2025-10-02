@@ -1,7 +1,8 @@
 #ifndef PARSECOMMANDLINE_H
 #define PARSECOMMANDLINE_H
 #include <string>
-///\file ParseCommandLine.h
+/// \file ParseCommandLine.h
+/// \brief Functions to check and parse command line in Lignum applications
 using namespace std;
 ///\brief Find argument that follows the flag and returns it in its body
 ///\param argc Number of command line strings (parameters)

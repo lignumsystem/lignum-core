@@ -1,3 +1,5 @@
+/// \file PointI.h
+/// \brief 3D Point implementation file
 #ifndef POINTI_H
 #define POINTI_H
 

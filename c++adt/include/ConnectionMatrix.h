@@ -1,3 +1,5 @@
+/// \file ConnectionMatrix.h
+/// \brief Experimental no longer active 
 #ifndef CONNECTION_MATRIX_H
 #define CONNECTION_MATRIX_H
 

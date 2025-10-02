@@ -1,5 +1,5 @@
-//Ellipse.h
-//----------
+/// \file Ellipse.h
+/// \brief Ellipse leaf shape
 #ifndef ELLIPSE_H
 #define ELLIPSE_H
 #include <vector>
@@ -13,7 +13,7 @@
 using namespace std;
 
 namespace cxxadt{
-
+  ///Ellipse leaf shape
   class Ellipse: public Shape{
   public:
     Ellipse(const Point& center, const PositionVector& normal, 
@@ -27,7 +27,15 @@ namespace cxxadt{
 	    const PositionVector& x1u, 
 	    const double& semimajoraxis0,  
 	    const double& semiminoraxis0);
-    //Used in XMLTree.h and in LGMPolygonDomBuilder.cpp
+    ///\brief Constructor
+    ///
+    ///Used in XMLTree.h and in LGMPolygonDomBuilder.cpp
+    ///\param petiole_end Petiole end point on the Ellipse circumference
+    ///\param leaf_normal Leaf normal
+    ///\param xdir  Semimajor axis direction
+    ///\param ydir  Semimajor axis direction
+    ///\param semimajoraxis Semimajor axis length
+    ///\param semiminoraxis Semiminoraxis length
     Ellipse(const Point& petiole_end,
 	    const PositionVector& leaf_normal, 
 	    const PositionVector& xdir,
@@ -61,34 +69,35 @@ namespace cxxadt{
                                    //ellipse center point as the scaling center
     inline double setArea(double area);
                                  
-                                   //it defines a new triangle from 
+                                   //it defines a new ellipse from 
                                    //  the old one 
                                    // with the base point as the center
     double setArea(double area,       
 		   const Point& base );
                                    
-                                     //checking the ellipse intersection 
-                                     // with "a light beam"
-                                     //the light beam is the ob vector 
-                                     // o - the observer position
-                                     // b - the vector beam
-    bool intersectShape(const Point& o,
- 		   const PositionVector& beam)const;
+    ///\brief Ellipse - light beam intersection 
+    ///\param o The observer position
+    ///\param beam The direction of (infinite length)light beam from the position \p o
+    ///\pre The vector \p beam  is a unit vector 
+    ///\retval true if the light beam intersects Ellipse
+    ///\retval false otherwise
+    bool intersectShape(const Point& o, const PositionVector& beam)const;
     
 					   				       
     PositionVector x1u()const; //unit vector x-axis in the ellipse plane
 
     PositionVector y1u()const;     //unit vector y-axis in the ellipse plane
  
-    //Rotate ellipse around major axis by angle angle
+    ///\brief Rotate ellipse around semi major axis
+    ///\param angle Rotation angle (radians) 
     void roll(const double& angle);
 
-    //Rotate ellipse around minor axis by angle angle
-    //Axis of rotation is at end of petiole (at intersection of perimeter and major axis)
+    ///\brief Rotate ellipse around semi minor axis
+    ///\param angle Rotation angle (radians)
     void pitch(const double& angle);
 
-    //Rotate ellipse around normal by angle angle
-    //Axis of rotation is at end of petiole (at intersection of perimeter and major axis)
+    ///\brief Rotate ellipse around ellipse normal
+    ///\param angle Rotation angle 
     void turn(const double& angle);
 
     void move(const Point& mov) {
@@ -97,12 +106,12 @@ namespace cxxadt{
 
 
   private:
-    Point center;
-    PositionVector normal;
-    PositionVector xdir;
-    PositionVector ydir;
-    double semimajoraxis;
-    double semiminoraxis;
+    Point center;///< Ellipse center
+    PositionVector normal;///< Ellipse normal
+    PositionVector xdir;///< Semimajor axis direction
+    PositionVector ydir;///< Semiminor axis direction
+    double semimajoraxis;///< Length of the semimajor axis
+    double semiminoraxis;///< Length of the semiminor axis
   };
 
   //This case  with the ellipse center as the scaling center 

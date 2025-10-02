@@ -1,3 +1,7 @@
+/// \file mathsym.h
+/// \brief Mathematical symbols and constants
+/// \note Some of the constant exists for historic reasons.
+/// Prefer The C++ Standard Library. 
 #ifndef MATHSYM_H
 #define MATHSYM_H
 #include <cmath>
@@ -26,9 +30,9 @@ const double  EPS18 = 1.0e-18;
 const double EPS19  = 1.0e-19;
 #define R_HUGE 1.0e+20
 
-//Light year is about this many meters
+///\brief Light year in meters (big number)
 #define LIGHT_YEAR 9.461e+15 
-//Distance to Alpha Centauri in meters
+///\brief Distance to Alpha Centauri in meters (big number)
 #define ALPHA_CENTAURI 4.11554e+16
 
 //Try to use standard STL max function if possible, Max is a functor
@@ -58,33 +62,43 @@ inline T minimum(T A, T B)
   typedef double RADIAN;
   typedef unsigned long int long_size;
 
-//constant functions used in RMatrix and in HRMatrix
-//for the rotations in 3D space.
+///\brief Constant functions used in RMatrix and in HRMatrix
+///for the rotations in 3D space.
 inline RADIAN fn_1(RADIAN angle){angle=1.0; return angle;}  //angle used to avoid warning
 inline RADIAN fn_0(RADIAN angle){angle=0.0; return angle;}
 inline RADIAN neg_sin(RADIAN angle){return (RADIAN) -sin(angle);}
 inline RADIAN neg_cos(RADIAN angle){return (RADIAN) -cos(angle);}
 
 
-//Useful mathematical random function implemented
-//returns uniformally distributed random number [0.0,1.0]
-//Before use initialize with any negative number. 
+///\brief Uniformly distributed random numbers.
+///
+///Before use initialize with any negative number.
+///negative numbers generate different sequences.
+///Generate sequence with repeated calls with a positive number.
+///\note Different negative numbers will initialize different sequences.
+///The same negative number will always initialize the same sequence. 
+///\return Uniformly distributed random number in \f$ U(0.0,1.0) \f$.
 extern double ran3(int *seed);   
 
-//Gauss returns normal distribution random number N(m,s) using seed 'seed'. 
-//Algorithm implements Box-Muller method and uses ran3 to generate 
-//uniformly distributed random numbers [-1,1]. 
-//Thus before the  calls to gauss, ran3 must be initialized with seed < 0.
-//See Numerical Recipes for details.
+///\brief Gauss returns normal distribution random number N(m,s).
+///
+///Algorithm implements Box-Muller method and uses `ran3` to generate 
+///uniformly distributed random numbers [-1,1]. 
+///Thus before the  calls to `gauss`, `ran3` must be initialized with seed < 0.
+///See Numerical Recipes for details.
 extern double gauss(double m, double s, int *seed);
 
-//Change degrees to radian
+///\brief Change degrees to radian
+///\param degrees Angle in degrees
+///\return Angle in radians
 inline double LGMRadian(double degrees)
 {
   return (degrees*PI_VALUE)/180.0;
 }
 
-//Change radian to degrees
+///\brief Change radian to degrees
+///\param radian Angle in radians
+///\return Angle in degrees
 inline double LGMDegrees(double radian)
 {
   return (radian*180.0)/PI_VALUE;

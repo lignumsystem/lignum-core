@@ -1,5 +1,5 @@
-///\file ParametricCurve.h
-///\brief Piecewise-defined linear function, a.k.a parametric curve.
+/// \file ParametricCurve.h
+/// \brief Piecewise defined linear function
 #ifndef PARAMETRIC_CURVE_H
 #define PARAMETRIC_CURVE_H
 
@@ -16,7 +16,7 @@ using namespace  std;
   ///\brief File does not exist exception class
   class ParametricCurveFileException{
   public:
-    ///Constructor
+    ///\brief Exception  constructor 
     ///\param fname File name for the missing file
     ParametricCurveFileException(const string& fname):
       file_name(fname){}

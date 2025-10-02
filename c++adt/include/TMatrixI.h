@@ -1,3 +1,5 @@
+/// \file TMatrixI.h
+/// \brief 2D TMatrix implementation
 #ifndef TMATRIXI_H
 #define TMATRIXI_H
 

@@ -1,3 +1,7 @@
+/// \file Lex.h
+/// \brief Simple lexical analyzer.
+///
+/// Simple lexical analyzer for Lignum simulation configuration files.
 #ifndef LEX_H
 #define LEX_H
 

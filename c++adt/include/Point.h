@@ -1,19 +1,20 @@
+/// \file Point.h
+/// \brief 3D Point class 
 #ifndef POINT_H
 #define POINT_H
 #include <cmath>
 #include <iostream>
 #include <PositionVector.h>
-/*========================================================================
-** Point is a class to represent a single point in 3-D world.
-** There are operations to add (+) two points, subtract two points (-),
-** count the distance between two points (||) and for the output (<<).
-** With the methods it is possible to query coordinates, change the cordinates
-** as well as "add and assign" and "subtract and assign" points
-*/ 
 
 
 namespace cxxadt{
   class PositionVector;
+  
+  ///\brief Point represents a single point in 3D space
+  ///
+  ///There are algeabric operations such as to add (+) two points, subtract two points (-),
+  ///calculate the distance between two points (||) as well as methods to query
+  ///and change Point in 3D space.
     class Point{
       inline friend Point operator + (const Point &point1, 
 				      const Point &point2);

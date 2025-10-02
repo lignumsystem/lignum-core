@@ -1,18 +1,22 @@
+/// \file InvNorm.h
+/// \brief Inverse of normal distribution 
 #ifndef INVNORM_H
 #define INVNORM_H
 #include <ParametricCurve.h>
 
 namespace cxxadt{
-  //Inverse of cumulative probablility density function of normal (0,1) (N(0,1))
-  //distribution.
-  //The function is realized as a tabulated one (step size = 0.01, ) and linear
-  //interpolation between. Values are tabulated between [-5.2, 5.2].
-  //Inverse(1) = -Inverse(0) = 5.2. Cum. prob density(-5.2) =
-  //1 - cum. prob density(5.2) = 1.0e-7
-  //
-  //Input: x in range [0,1] (if x<0, x=0, if x>1, x=1)
-  //Output: Inverse in range [-5.2,5.2]
-
+  ///\brief Inverse of cumulative probability density function.
+  ///
+  ///Inverse of cumulative probability density function
+  ///of normal (0,1) (N(0,1)) distribution.
+  ///
+  ///The function is realized as a tabulated one (step size = 0.01, ) and linear
+  ///interpolation between. Values are tabulated between [-5.2, 5.2].
+  ///Inverse(1) = -Inverse(0) = 5.2. Cum. prob density(-5.2) =
+  ///1 - cum. prob density(5.2) = 1.0e-7
+  ///
+  ///\pre x in range [0,1] (if x<0, x=0, if x>1, x=1)
+  ///\post Inverse in range [-5.2,5.2]
   class InvNorm{
   public:
   InvNorm() {
@@ -29,10 +33,13 @@ namespace cxxadt{
     "0.94  1.55477359 0.95  1.64485363 0.96  1.75068607 0.97  1.88079361 0.98  2.05374891"
     "0.99  2.32634787 0.999 3.090232 0.9999 3.719016 1.0 5.2 1.5 5.2", dummy);
   }
-
+  ///\brief Inverse of cumulative probability density function
+  ///\param m Input from normal distribution
+  ///\return Inverse in range \f$ [-5.2,5.2] \f$
+  ///\pre \f$ \mathrm{m} \in [0,1], \mathrm{m} \sim N(0,1) \f$
   double operator()(const double m)const;
   private:
-    ParametricCurve inv_norm;
+    ParametricCurve inv_norm;///< Tabulated inverse function
   };
 
 }//closing namespace

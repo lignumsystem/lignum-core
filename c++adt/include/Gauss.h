@@ -1,10 +1,15 @@
+/// \file Gauss.h
+/// \brief Normal distrubutiom
 #ifndef GAUSS_H
 #define GAUSS_H
 
 #include <Uniform.h>
 namespace cxxadt{
-  //Return Normally distributed random number with mean 'm' and 
-  //standard deviate 's".
+  ///\brief Normal distribution
+  ///
+  ///Normally distributed random number with mean 'm' and 
+  ///standard deviate 's".
+  ///\sa cxxadt::Uniform
   class Gauss{
   public:
     Gauss(int seed = -1):uniform(seed){}

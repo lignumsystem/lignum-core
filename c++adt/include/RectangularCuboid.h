@@ -1,6 +1,7 @@
 #ifndef RECTANGULARCUBOID_H
 #define RECTANGULARCUBOID_H
-///\file RectangularCuboid.h
+/// \file RectangularCuboid.h
+/// \brief Rectangular cuboid
 #include <algorithm>
 #include <Point.h>
 #include <PositionVector.h>

@@ -1,16 +1,17 @@
 /// \file LGMHDF5File.h
-/// \brief The interface to HDF5 c++ library
+/// \brief Interface to HDF5 c++ library
 ///
 /// The interface to HDF5 c++ library to create HDF5 files for Lignum simulations.
 /// The further analysis of data is meant to be made with R, Python or some other
-/// high level tool supporting HDF5 files. To retrieve information from a HDF5
+/// high level tool supporting HDF5 files.
+///
+/// To retrieve information from a HDF5
 /// file one can also use utility tools from HDF5 installation, e.g.:
 /// + h5ls: List the objects (datasets, groups etc.) in a HDF5 file
 /// + h5dump: Dump the content of a HDF5 file
 /// + h5cc, h5c++, h5fc: Compile HDF5 applications
-///
-/// See also:
 /// + HDFView: Tool for browsing and editing HDF5 files
+
 #ifndef LGMHDF5FILE_H
 #define LGMHDF5FILE_H
 #include <cmath>

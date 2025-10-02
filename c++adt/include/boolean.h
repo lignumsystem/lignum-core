@@ -1,4 +1,5 @@
-
+/// \file boolean.h
+/// \brief BOOLEAN type
 #ifndef BOOLEAN_H
 #define BOOLEAN_H
 

@@ -1,3 +1,5 @@
+/// \file Ellipsis.h
+/// \brief Deprecated Ellipse class
 #ifndef ELLIPSIS_H
 #define ELLIPSIS_H
 
@@ -5,6 +7,8 @@
 
 namespace cxxadt{
 
+///\deprecated
+///\sa cxxadt::Ellipse
 class Ellipsis{
 public:
   Ellipsis(double a, double b);

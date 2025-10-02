@@ -1,3 +1,7 @@
+/// \file TableI.h
+/// \brief Deprecated look up table
+///
+/// Implementation file.
 #ifndef TABLEI_H
 #define TABLEI_H
 

@@ -1,13 +1,14 @@
 #ifndef BERNOULLI_H
 #define BERNOULLI_H
-
+/// \file Bernoulli.h
+/// \brief Bernoulli distribution
 #include <Uniform.h>
 #include <numeric>
 #include <cmath>
 #include <cstdlib>
 using namespace std;
 namespace cxxadt{
-  //Implement Bernoulli distribution: Pr(X=1) = 1 - Pr(X=0) = 1 - q = p
+  ///Bernoulli distribution: \f$ P_r(X=1) = 1 - P_r(X=0) = 1 - q = p\f$
   class Bernoulli{
   public:
     Bernoulli(int seed = -1):uniform(-abs(seed)){}

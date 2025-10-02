@@ -1,3 +1,26 @@
+/// \file TMatrix3D.h
+/// \brief TMatrix2D and TMatrix3D matrices
+///
+///**TMatrix2D** implements 2D matrix *m* as a vector of rows where
+///each row is a vector of elements. C style indexing of the matrix
+///elements is realised with inheritance, both with bracket notation and
+///with \c at method that checks the validity of indexing.
+///For example the matrix element \c e is retrieved  \c e = \c m2D[i][j].
+///
+///**TMatrix3D** implements 3D matrix as a vector of TMatrix2D elements.
+///The matrix element \c e is retrieved as \c e = \c m3D[i][j][k].
+///
+///Note that there are only matrix dimensions as data members in
+///TMatrix2D and TMatrix3D. These two classes *are* vectors of vectors using inheritance. 
+///This approach  can  be expanded  to N-dimensional  matrices.
+///
+///The implementation  is inspired  by Breymann (Chapter  9).
+///The  classes TMatrix2D and  TMatrix3D demonstrate the use  of STL, its classes and algorithms,
+///and the  importance  of  clear  understandable  implementations  at  the
+///possible small cost of runtime efficiency.
+///
+///To  test the  TMatrix3D class there is a *matrix3d.cc* file in src-directory.
+
 #ifndef MATRIX3D_H
 #define MATRIX3D_H
 
@@ -8,26 +31,7 @@
 
 using namespace std;
 ///\file TMatrix3D.h
-///\brief TMatrix2D implements 2D matrix *m* as a vector of rows where
-///each row is a vector of elements. C style indexing of the matrix
-///elements is fulfilled with inheritance, both with bracket notation and
-///with `at` method that checks the validity of indexing.
-///For example given the matrix element *e*,  *e* = m[i][j].
-///
-///TMatrix3D implements 3D matrix as a vector of TMatrix2D elements.
-///Given  TMatrix3D<T> m3,  the matrix element *e* is given as *e*= m3[x][y][z]
-///indexed by  x,y and  z.
-///
-///Note that there are only matrix dimensions as data members in
-///TMatrix2D and TMatrix3D. These two classes *are* vectors of vectors using inheritance. 
-///This approach  can  be expanded  to N dimensional  matrices.
-///
-///The implementation  is inspired  by Breymann (Chapter  9).
-///The  classes TMatrix2D and  TMatrix3D demonstrate the use  of STL, its classes and algorithms,
-///and the  importance  of  clear  understandable  implementations  at  the
-///possible small cost of runtime efficiency.
-///
-///To  test the  TMatrix3D class there is a "matrix3d.cc" file in src-directory.
+
 
 namespace cxxadt{
   ///\brief Throw and catch exceptions in matrix append operation

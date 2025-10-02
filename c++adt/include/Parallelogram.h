@@ -6,7 +6,7 @@
 #include <PositionVector.h>
 using namespace cxxadt;
 /// \file Parallelogram.h
-/// Parallelogram, a quadrilateral with two pairs of parallel sides.
+/// \brief Parallelogram is a quadrilateral with two pairs of parallel sides.
 ///
 /// Implements Parallelogram that can be used for example as diamond shape leaf.
 /// The opposite sides are of equal length and the opposite angles are of equal measure.
