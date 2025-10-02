@@ -1,3 +1,9 @@
+/// \file TreeMetabolism.h
+/// \brief Tree metabolism
+///
+/// Mostly deprecated functors based on methods in tree compartments.
+/// Encouraging implementing functors that change attribute
+/// values in tree compartments with SetValue and GetValue functions.
 #ifndef TREEMETABOLISM_H
 #define TREEMETABOLISM_H
 
@@ -9,6 +15,8 @@
 
 namespace Lignum{
 
+  ///\brief Photosynthesis
+  ///\deprecated TreeCompartment::photosynthsis deprecated
   template <class TS,class BUD>
   class TreePhotosynthesis
   {
@@ -19,6 +27,7 @@ namespace Lignum{
     }
   };
 
+  ///\brief Summation of photosynthates
   template <class TS, class BUD>
   class SumTreePhotosynthesis{
   public:
@@ -32,7 +41,8 @@ namespace Lignum{
     }
   };
 
-
+  ///\brief Respiration
+  ///\deprecated  TreeCompartment::respiration deprecated
   template <class TS,class BUD>
   class TreeRespiration{
   public:
@@ -41,7 +51,8 @@ namespace Lignum{
       return tc;
     }
   };
-
+  
+  ///\brief Summation of tree segment respiration
   template <class TS, class BUD>
   class SumTreeRespiration{
   public:
@@ -56,6 +67,7 @@ namespace Lignum{
     }
   };
 
+  ///\brief Increase age in tree compartments
   template <class TS, class BUD>
   class IncreaseAge{
   public:
@@ -70,6 +82,9 @@ namespace Lignum{
   };
   
 
+  ///\brief Aging processes in tree compartments
+  ///\deprecated Use functors to implement application specific
+  ///aging processes
   template <class TS, class BUD>
   class TreeAging{
   public:
@@ -80,6 +95,9 @@ namespace Lignum{
     }
   };
 
+  ////\brief Diameter growth
+  ///\deprecated  Use functors to implement application specific
+  ///diameter growth processes
   template <class TS, class BUD>
   class TreeDiameterGrowth{
   public:

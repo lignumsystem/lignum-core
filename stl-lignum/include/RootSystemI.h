@@ -1,3 +1,5 @@
+/// \file RootSystemI.h
+/// \brief Experimental root system implementation not active
 #ifndef ROOTSYSTEMI_H
 #define ROOTSYSTEMI_H
 

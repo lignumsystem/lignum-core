@@ -1,7 +1,7 @@
 #ifndef INITIALIZE_TREEI_H
 #define INITIALIZE_TREEI_H
-///\file InitializeTreeI.h
-
+/// \file InitializeTreeI.h
+/// \brief Initialize tree implementation
 namespace Lignum{
   ///\brief Implementation for class Tree  initialization
   template <class TS, class BUD>

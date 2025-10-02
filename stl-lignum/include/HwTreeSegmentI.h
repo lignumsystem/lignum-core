@@ -1,4 +1,5 @@
-
+/// \file HwTreeSegmentI.h
+/// \brief Hardwood tree segment implementation
 #ifndef HWTREESEGMENTI_H
 #define HWTREESEGMENTI_H
 
@@ -63,13 +64,6 @@ namespace Lignum{
 
     }
 
-
-
-  //Sets the area of the all leaf ellipses, when the (true) area of the
-  //all leaves is given as input. That is, every leaf gets the same (true) area
-  //that is equal to input/# of leaves.  Area of the ellipse
-  //= leaf area / degree_of_filling. Return old (true) leaf area, return
-  //0.0, and do nothing if no leaves
   template<class TS, class BUD, class S>
     LGMdouble SetLeafArea(HwTreeSegment<TS,BUD,S>& ts, const LGMdouble value)
     {

@@ -1,3 +1,15 @@
+/// \file CompareLeaves.h
+/// \brief Radiation calculations for Ellipse leaves
+///
+///File implements pairwise  comparison of  cxxadt::Ellipse leaves in  a hardwood
+///tree to compute radiation climate in a tree crown. 
+///Essentially the algorithms  consists of two Lignum::ForEach calls. The
+///first, `ForEach(tree,ForEachLeafComputeQabs<TS,BUD,SH>())`, makes one pass
+///tree calling  the second, `ForEach(tree,LeafComputeQabs<TS,BUD,SH>(leaf))`, 
+///for each leaf in each tree segment found in the first ForEach call.
+/// \warning  Algorithm makes pairwise comparisons of leaves 
+/// and has \f$ \mathcal{O}(n^2) \f$ complexity
+/// \note File needs a better name
 #ifndef COMPARELEAVES_H
 #define COMPARELEAVES_H
 
@@ -5,20 +17,14 @@
 #include <HwTreeSegment.h>
 #include <cmath>
 
-/*********************************************************************
- *This  file implements pairwise  comparison of  leaves in  a hardwood
- *tree to compute radiation climate in a tree crown. 
- *Essentially the algorithms  consists of two ForEach calls. The
- *first, ForEach(tree,ForEachLeafComputeQabs<TS,BUD,SH>()), makes one pass
- *tree calling  the second, ForEach(tree,ForEachLeafIntersect<TS,BUD,SH>(l)), 
- *for each leaf 'l' in a tree found in the first ForEach call.
- *This should work for any leaf shape with the same interface as Triangle and 
- *Ellipse has.
- *********************************************************************/
+
 
 namespace Lignum{
 
-  //The entry point to pairwise comparison of leaves
+  ///\brief Absorbed radiation in the tree
+  ///
+  ///The entry point to pairwise comparison of leaves
+  ///\param tc Tree compartment
   template<class TS, class BUD,class SH>
   class ForEachLeafComputeQabs{
   public:
@@ -26,8 +32,10 @@ namespace Lignum{
   };
 
 
-  //Called by ForEachLeafComputeQabs to traverse the leaf list in a HwTreeSegment 
-  //to compare each leaf 'l' from that list to other leaves in the tree.
+  ///\brief Absorbed radiation for a leaf
+  ///
+  ///Called by ForEachLeafComputeQabs to traverse the leaf list in a HwTreeSegment 
+  ///to compare each leaf 'l' from that list to other leaves in the tree.
   template <class TS, class BUD, class SH>
   class LeafComputeQabs{
   public:
@@ -37,7 +45,9 @@ namespace Lignum{
     Tree<TS,BUD>& tree;
   };
 
-  //Called by HwTreeSegmentLeafCompare to compare leaf 'l' to other leaves in the tree.
+  ///\brief Radiation attenuation in a tree
+  ///
+  ///Called by HwTreeSegmentLeafCompare to compare leaf 'l' to other leaves in the tree.
   template<class TS,class BUD,class SH>
   class ForEachLeafComputeAttenuation{
     friend const BroadLeaf<SH>& GetLeaf(const ForEachLeafComputeAttenuation<TS,BUD,SH>& f){
@@ -50,7 +60,9 @@ namespace Lignum{
     const BroadLeaf<SH>& leaf;
   };
 
-  //Called by ForEachLeafComputeAttenuation and does the actual comparison. 
+  ///\brief Radiation attenuation in a leaf
+  ///
+  ///Called by ForEachLeafComputeAttenuation and does the actual comparison. 
   template<class SH>
   class LeafComputeAttenuation{
   public:
@@ -65,13 +77,15 @@ namespace Lignum{
     Firmament& f;
   };
 
-  //Given the sky, the  vector of radiation attenuation, calculate the
-  //Qabs  for the  leaf. This  is as  in LeafComputeQabs,  but  in the
-  //pairwise     comparison     there     is     first     call     to
-  //ForEachLeafComputeAttenuation.   There are now  many possibilities
-  //to calculate  the attenuation.  So I  thought it might  be good to
-  //separate this  Qabs to  its own functor.  NOTE that the  vrad must
-  //contain Qin from each sector (not just the attenuation coefficients)
+  ///\brief Absorbed radiation in a leaf
+  ///
+  ///Given the sky, the  vector of radiation attenuation, calculate the
+  ///Qabs  for the  leaf. This  is as  in LeafComputeQabs,  but  in the
+  ///pairwise     comparison     there     is     first     call     to
+  ///ForEachLeafComputeAttenuation.   There are now  many possibilities
+  ///to calculate  the attenuation.  So I  thought it might  be good to
+  ///separate this  Qabs to  its own functor.  NOTE that the  vrad must
+  ///contain Qin from each sector (not just the attenuation coefficients)
   template <class SH>
   class LeafQabs{
   public:

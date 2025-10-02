@@ -1,3 +1,5 @@
+/// \file BudI.h
+/// \brief Tree bud implementation
 #ifndef BUDI_H
 #define BUDI_H
 

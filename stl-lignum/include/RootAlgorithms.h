@@ -1,3 +1,5 @@
+/// \file RootAlgorithms.h
+/// \brief Experimental root system generic algorithms not active
 #ifndef ROOTALGORITHMS_H
 #define ROOTALGORITHMS_H
 

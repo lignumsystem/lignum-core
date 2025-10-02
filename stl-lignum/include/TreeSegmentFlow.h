@@ -1,3 +1,5 @@
+/// \file TreeSegmentFlow.h
+/// \brief Obsolete
 #ifndef TREESEGMENTFLOW_HPP
 #define TREESEGMENTFLOW_HPP
 

@@ -1,3 +1,5 @@
+/// \file Forest.h
+/// \brief Experimental framework for multiple species forest not active
 #ifndef FOREST_H
 #define FOREST_H
 

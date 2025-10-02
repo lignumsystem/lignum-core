@@ -1,3 +1,5 @@
+/// \file zbrentFunctor.h
+/// \brief Functors for Brent-Dekker method not active
 #ifndef ZBRENTFUNCTOR_H
 #define ZBRENTFUNCTOR_H
 

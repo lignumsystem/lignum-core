@@ -1,5 +1,9 @@
 ///   \file  LGMGrowthAllocator.h
-///   \brief Allocator functors to implement \f$P-M-G=0\f$.
+///   \brief Growth allocator functors
+///   
+///   Allocation functors implement \f$P-M-G=0\f$ where \f$ P \f$ is photosynthesis,
+///   \f$ M \f$ respiration and \f$ G \f$ tree growth.
+///
 ///   \section allocators Carbon allocator functors 
 ///   The  `LGMGrowthAllocator`  functor   implements  the  allocation  of
 ///   photosynthates iteratively, i.e it puts into practice the solution

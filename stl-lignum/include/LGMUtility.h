@@ -1,3 +1,5 @@
+/// \file LGMUtility.h
+/// \brief Utility functions not active
 #ifndef LGMUTILITY_H
 #define LGMUTILITY_H
 

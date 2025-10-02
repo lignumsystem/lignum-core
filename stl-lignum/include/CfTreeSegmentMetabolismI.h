@@ -1,3 +1,6 @@
+/// \file CfTreeSegmentMetabolismI.h
+/// \brief CfTreeSegment metabolism implementation no longer active
+/// \deprecated Use functors to implement metabolic processes
 #ifndef CF_TREESEGMENT_METABOLISMI_H
 #define CF_TREESEGMENT_METABOLISMI_H
 

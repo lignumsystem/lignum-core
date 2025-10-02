@@ -1,3 +1,5 @@
+/// \file ForestAlgorithms.h
+/// \brief Generic algorthims for Lignum::Forest not active 
 #ifndef FORESTALGORITHM_H
 #define FORESTALGORITHM_H
 

@@ -14,117 +14,132 @@ using namespace std;
 #include <TreeCharacteristics.h>
 #include <TreeMetabolism.h>
 #include <LGMGeometry.h>
-
-//This file declares the following functors (functions) for Tree. Help
-//functors etc. are not specified. If you add a functor-function
-//please update this list.
-
-//   ConnectTree
-//   CountAxes
-//   CountAxesProper  (no. of axes with at least one TreeSegment)
-//   IsConnected
-//   CountBuds
-//   CountTreeSegments
-//   CountBranchingPoints
-//   CountBranches
-//   CountCfTreeSegmentsWithFoliage
-//   CountHwTreeSegmentsWithFoliage
-//   CountLeavesHw
-//   TotalSegmentLength
-//   ForwardQin (for coniferous)
-//   PrintTreeInformation
-//   PrintTreeInformation2
-//   CountCompartments 
-//   CountCompartmentsReverse
-//   CrownGroundArea
-//   SetGraveliusOrder
-//   DisplayStructure
-//   CheckCoordinates
-//   FindCfBoundingBox
-//   FindHwBoundingBox
-//   FindLongestDistanceToStem      finds longest distance to to stem
-//                                  and its direction
-//   FindRFunctor         find largest distance to stem in a crown slice
-//                        in a quadrant around given direction
-//   FindRFunctorF        Find mean by foliage weighted distance to stem in a crown slice
-//                        between heights minH and maxH in an angle around
-//                        given direction
-//   CollectFrustumVolume 
-//   CollectFoliageMass (Either whole tree or by Gravelius order)
-//   CollectFoliageArea (Either whole tree or by Gravelius order)
-//   CollectLeafArea    (Either whole tree or by Gravelius order)
-//   CollectWoodMass (Either whole tree or by Gravelius order)
-//   CollectSegmentLengths (Either whole tree or by Gravelius order)
-//   CollectStemWoodMass
-//   CollectSapwoodMass
-//   CollectStemSapwoodMass
-//   CollectHeartwoodMass
-//   CollectNewSegmentSapwoodMass (LGAage == 0.0)
-//   CollectOldSegmentSapwoodMass (LGAage > 0.0)
-//   CollectNewFoliageMass        (LGAage == 0.0)
-//   CollectQabs
-//   CollectQin
-//   CollectMantleArea
-//   GetQinMax
-//   MoveHwTree (does MoveTree + moves leaves also)
-//   MoveTree
-//   DeleteDeadBranches
-//   PrintTreeSegmentInformationToFile
-//   PrintTreeSegmentInformationToFileByAxis
-//   DropAllLeaves
-//   ResetQinQabs
-//   CollectLeaves: return a 'list<BroadLeaf<SH>*> ls' of leaves in a tree
-//                  Usage: Accumulate(t,ls,CollectLeaves<TS,BUD,SH>());
-//   SortLeaves: sort leaves (returned by CollectLeaves), leaves closest to the 
-//               point 'p' appear first
-//               Usage: Point p(0,0,0);
-//                      SortLeaves<SH> sorter(p);
-//                      ls.sort(sorter);
-//   SortLeavesHeight:  sort  leaves  (returned by  CollectLeaves)  in
-//               height defined by BinaryPredicate (see STL)
-//             Usage:
-//               SortLeavesHeight<SH,BinaryPredicate>           sorter; 
-//               ls.sort(sorter);
-//             To sort in descending order (lowest leaf first)
-//               SortLeavesHeight<Ellipse,less_equal<double> > sorter;
-//             To sort in ascending order
-//               SortLeavesHeight<Ellipse,greater_equal<double> > sorter;
-//   CrownVolume
-//   MainAxisVolume: Usage MainAxisVolume vol; double v = vol(tree);
-//   SetRTopToR: Set LGARTop to LGAR: SetValue(ts,LGARTop, GetValue(*ts,LGAR)). 
-//               Usage: ForEach(tree, SetRTopToR<TS,BUD>()).  
-//               There is  LGARTop that used in  visualiztion.  It may
-//               or may not  have the desired value. In  most cases in
-//               growth simulations only LGAR  is used.  This may have
-//               unwanted results in visualization.
-
-//  CrownExtension: Works like CrownVolume but returns instead of volume
-//               mean distance crown surface from stem in different heights
-//
-//  LowestSegmentExcludingStem
-//  LowestCfSegmentWithFoliage
-//  HighestSegment
-//  HighestCfSegmentWithFoliage
-//  STL_Triangularize
-//              These functors return start or end point (whichever
-//              is higher or lower) of segments. With foliage for conifers. Useful, since
-//              there may be segments higher than tree top or lower than crown
-//              base, which are evaluated on the basis on the main axis (stem).
-//              NOTE that in the case of LowestSegmentExcludingStem stem segments are NOT
-//              considered since the lowest segment is by definition the first in the
-//              main axis (stem). In other functors stem is also included.
-//
-//
-//  Triangularize Dump tree (woody parts) to STL format (writes to the console).
-//  DaVinciTaperCurve  Implements the taper curve according to Da Vinci rule
-//                     Needs 1) Radius of the first segments 2) The exponent 
+/// \file TreeFunctor.h
+/// \brief Tree functors and functions.
+///
+/// If you add a functor or function please update this list.
+/// Helper functors etc. are not listed here.
+/// \arg \c  ConnectTree
+/// \arg \c  CountAxes
+/// \arg \c  CountAxesProper  (no. of axes with at least one TreeSegment)
+/// \arg \c  IsConnected
+/// \arg \c  CountBuds
+/// \arg \c  CountTreeSegments
+/// \arg \c  CountBranchingPoints
+/// \arg \c  CountBranches
+/// \arg \c  CountCfTreeSegmentsWithFoliage
+/// \arg \c  CountHwTreeSegmentsWithFoliage
+/// \arg \c  CountLeavesHw
+/// \arg \c  TotalSegmentLength
+/// \arg \c  ForwardQin (for coniferous)
+/// \arg \c  PrintTreeInformation
+/// \arg \c  PrintTreeInformation2
+/// \arg \c  CountCompartments 
+/// \arg \c  CountCompartmentsReverse
+/// \arg \c  CrownGroundArea
+/// \arg \c  SetGraveliusOrder
+/// \arg \c  DisplayStructure
+/// \arg \c  CheckCoordinates
+/// \arg \c  FindCfBoundingBox
+/// \arg \c  FindHwBoundingBox
+/// \arg \c  FindLongestDistanceToStem  Find longest distance to to stem
+///                                     and its direction
+/// \arg \c  FindRFunctor Find largest distance to stem in a crown slice
+///                       in a quadrant around given direction
+/// \arg \c  FindRFunctorF Find mean by foliage weighted distance to stem in a crown slice
+///                        between heights minH and maxH in an angle around
+///                        given direction
+/// \arg \c  CollectFrustumVolume 
+/// \arg \c  CollectFoliageMass (Either whole tree or by Gravelius order)
+/// \arg \c  CollectFoliageArea (Either whole tree or by Gravelius order)
+/// \arg \c  CollectLeafArea    (Either whole tree or by Gravelius order)
+/// \arg \c  CollectWoodMass (Either whole tree or by Gravelius order)
+/// \arg \c  CollectSegmentLengths (Either whole tree or by Gravelius order)
+/// \arg \c  CollectStemWoodMass
+/// \arg \c  CollectSapwoodMass
+/// \arg \c  CollectStemSapwoodMass
+/// \arg \c  CollectHeartwoodMass
+/// \arg \c  CollectNewSegmentSapwoodMass (LGAage == 0.0)
+/// \arg \c  CollectOldSegmentSapwoodMass (LGAage > 0.0)
+/// \arg \c  CollectNewFoliageMass        (LGAage == 0.0)
+/// \arg \c  CollectQabs
+/// \arg \c  CollectQin
+/// \arg \c  CollectMantleArea
+/// \arg \c  GetQinMax
+/// \arg \c  MoveHwTree (does MoveTree + moves leaves also)
+/// \arg \c  MoveTree
+/// \arg \c  DeleteDeadBranches
+/// \arg \c  PrintTreeSegmentInformationToFile
+/// \arg \c  PrintTreeSegmentInformationToFileByAxis
+/// \arg \c  DropAllLeaves
+/// \arg \c  ResetQinQabs
+/// \arg \c  CollectLeaves: Return a 'list<BroadLeaf<SH>*> ls' of leaves in a tree<br>
+/// Usage:
+/// \code{.cc}
+///    Accumulate(t,ls,CollectLeaves<TS,BUD,SH>());
+/// \endcode
+/// \arg \c  SortLeaves Sort leaves (returned by CollectLeaves), leaves closest to the 
+///                      point \p p appear first<br>
+/// Usage:
+/// \code{.cc}
+///    Point p(0,0,0);
+///    SortLeaves<SH> sorter(p);
+///    ls.sort(sorter);
+/// \endcode
+/// \arg \c   SortLeavesHeight  Sort  leaves  (returned by  CollectLeaves)  in
+///                              height defined by a binary predicate <br>
+/// Usage:
+/// \code{.cc}
+///    SortLeavesHeight<SH,BinaryPredicate> sorter; 
+///    ls.sort(sorter);
+/// \endcode
+/// To sort in descending order (lowest leaf first):
+/// \code{.cc}
+///    SortLeavesHeight<Ellipse,less_equal<double> > sorter;
+/// \endcode
+/// To sort in ascending order:
+/// \code{.cc}
+///    SortLeavesHeight<Ellipse,greater_equal<double> > sorter;
+/// \endcode
+/// \arg \c  CrownVolume
+/// \arg \c  MainAxisVolume Usage:
+/// \code{.cc}
+///    MainAxisVolume main_axis_volume;
+///    double v = main_axis_volume(tree);
+/// \endcode
+/// \arg \c   SetRTopToR Set LGARTop to LGAR<br>
+/// Usage:
+/// \code{.cc}
+///    ForEach(tree, SetRTopToR<TS,BUD>()).
+/// \endcode
+/// \note LGARTop is used in for example visualiztion.  It may
+///  or may not  have the desired value. In  most cases in
+///  growth simulations only LGAR  is used.  This may have
+///  unwanted results in visualization.
+///
+/// \arg \c CrownExtension Returns instead of crown volume mean distance crown surface from stem in different heights
+///
+///  The following functors return start or end point (whichever
+///  is higher or lower) of segments. With foliage for conifers. Useful, since
+///  there may be segments higher than tree top or lower than crown
+///  base, which are evaluated on the basis on the main axis (stem).
+///  \note In the case of LowestSegmentExcludingStem stem segments are *not*
+///  considered since the lowest segment is by definition the first in the
+///  main axis (stem). In other functors stem is also included.
+///
+/// \arg \c LowestSegmentExcludingStem
+/// \arg \c LowestCfSegmentWithFoliage
+/// \arg \c HighestSegment
+/// \arg \c HighestCfSegmentWithFoliage
+///
+/// Dump tree (woody parts) to STL format (writes to the console).
+/// \arg \c STL_Triangularize
+/// \arg \c Triangularize
+///
+/// \arg \c DaVinciTaperCurve  Implements the taper curve according to Da Vinci rule
+//                             Needs 1) Radius of the first segments 2) The exponent 
 //
 //  Vertical leaf area disrtribution
-
-
-
-
-
 //  Functors-functions below used in LIGNUM WorkBench are not listed.
 
 

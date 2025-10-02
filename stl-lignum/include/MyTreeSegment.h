@@ -1,3 +1,5 @@
+/// \file MyTreeSegment.h
+/// \brief Example tree segment not active 
 #ifndef MYTREESEGMENT_H
 #define MYTREESEGMENT_H
 

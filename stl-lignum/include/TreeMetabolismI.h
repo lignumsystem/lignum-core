@@ -1,3 +1,6 @@
+/// \file TreeMetabolismI.h
+/// \brief Tree metabolism implementation
+
 #ifndef TREEMETABOLISMI_H
 #define TREEMETABOLISMI_H
 

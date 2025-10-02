@@ -2,7 +2,7 @@
 #define ALGORITHMSI_H
 
 /// \file AlgorithmsI.h
-/// \brief Implementation of the Generic algorithms.
+/// \brief Generic algorithms implementation
 namespace Lignum{
 
 

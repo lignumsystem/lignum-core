@@ -1,3 +1,5 @@
+/// \file BroadLeafI.h
+/// \brief Model for leaves implementation
 #ifndef BROADLEAFI_H
 #define BROADLEAFI_H
 

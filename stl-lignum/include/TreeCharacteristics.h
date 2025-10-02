@@ -1,39 +1,49 @@
 #ifndef TREE_CHARACTERISTICS_H
 #define TREE_CHARACTERISTICS_H
-
-//The  file will contain  variety of  attributes describing  trees and
-//forest stands. Currently implemented:
- 
-//Functor DiameterBreastHeight for for_each to compute Diameter Breast
-//Height.  Use it implicitely by calling GetValue(tree,Dbh)
-
-//AccumulateDown for Crown Base Diameter and Height is something like:
-//  DCLData     dcl;
-//  AccumulateDown(tree,dcl,AddBranchWf(),DiameterCrownBase<TS,BUD>())  
-//DCLData  will  contain the crown base height and diameter.
-
-//The Vigour Index as in Nikinmaa et al. 2003 Tree Physiology
-//VI_j = (d_j/d_M)^2*VI_below
-//Usage is: 
-//    TreePhysiologyVigourIndex(tree);
-//Each segment will have its vigour index ('vi') updated.
-//The complexity is 2O(n). See  TreePhysiologyVigourIndex below.
-
-//AccumulateDown for CollectCrownLimitData. DiameterCrownBase does not
-//always produce  good results for  crown limit. CollectCrownLimitData
-//produces a list of foliage masses and Qabs's in branches forking off
-//from the branching points in the  main axis and a list of heights of
-//those branching points.  Then one can print out those two lists, and
-//the beauty is in the eyes of the beholder.  Usage is:
-//CrownLimitData  cld;
-//AccumulateDown(tree,cld,AddCrownLimitData(),CollectCrownLimitData<TS,BUD>());
-//CrownLimitData will contain lists  of foliage masses and Qabs's and
-//their  heights in  the crown.   Retrieve  the lists for printing  by
-//calling  for example: 
-//const   list<pair<double,double>  >&  p   =  cld.WfHList().
-//pair.first is the height and pair.second its foliage mass.
-
-
+/// \file TreeCharacteristics.h
+/// \brief Functors and functions to collect descriptive tree data
+///
+///Currently implemented:
+///
+/// \arg \c DiameterBreastHeight Compute diameter at breast
+///height. Use it implicitely by calling GetValue(tree,LGADbh).
+///
+/// \arg \c DiameterCrownBase Diameter crown base and crown base height.
+/// \code{.cc}
+///  DCLData dcl;
+///  AccumulateDown(tree,dcl,AddBranchWf(),DiameterCrownBase<TS,BUD>())
+/// \endcode
+///DCLData  will  contain the crown base height and diameter.
+///
+/// \arg \c CollectCrownLimitData Functor \c DiameterCrownBase does not
+///always produce  good results for crown limit. CollectCrownLimitData
+///produces a list of foliage masses and Qabs valus in branches forking off
+///from the branching points in the  main axis and a list of heights of
+///those branching points. Usage is:
+/// \code{.cc}
+///  CrownLimitData  cld;
+///  AccumulateDown(tree,cld,AddCrownLimitData(),CollectCrownLimitData<TS,BUD>());
+/// \endcode
+///CrownLimitData will contain list of branch foliage masses, Qabs values  and
+///their  heights in the tree crown. Retrieve  the list for further analysis, for example:
+/// \code{.cc}
+///  const list<pair<double,double> >& p = cld.WfHList()
+/// \endcode
+/// \c pair.first is the height and \c pair.second its foliage mass.
+///
+/// \arg \c TreePhysiologyVigourIndex Vigour index \f$ \mathcal{V} \f$
+/// comparing segment diameters connected to the same branching point
+/// (Nikinmaa et al. 2003 Tree Physiology)
+/// \f[
+/// \mathcal{V}_\mathrm{d} = (d/\max d_i)^2 \times \mathcal{V}_\mathrm{below}
+/// \f]
+///Usage is:
+/// \code{.cc}
+///  TreePhysiologyVigourIndex(tree);
+/// \endcode
+///Each segment will have its vigour index \f$ \mathcal{V} \f$ updated.
+///The algorithmic complexity is \f$2\mathcal{O}(n)\f$.
+///
 #include <cmath>
 #include <list>
 #include <vector>
@@ -63,21 +73,24 @@ namespace Lignum{
   };
 
 
-  //Computing the  diameter at  the crown base  and the height  of the
-  //crown base.  The definition  of the crown  (base) is simple:  If a
-  //side branch  (axis) starting  from a branching  point in  the main
-  //axis  has  segments  with  foliage,  the branch  is  part  of  the
-  //crown. Not quite as the official scientific definition, but easier
-  //to compute and  pretty much O.K. for Scots  pine.  The computation
-  //of  the  crown  base  proceeds with  AccumulateDown  checking  the
-  //foliage of  the side branches.   If there is foliage,  the segment
-  //below the branching  point in the main axis  marks itself as crown
-  //base   possibly   overriding   previous   value.   The   call   to
-  //AccumulateDown is something like:
-  //  DCLData     dcl;
-  //  AccumulateDown(tree,dcl,AddBranchWf(),DiameterCrownBase<TS,BUD>())  
+  //\brief Computing the  diameter at  the crown base  and the height  of the
+  //crown base.
+  ///
+  ///The crown base definition here is simple:  If a
+  ///side branch  (axis) starting  from a branching  point in  the main
+  ///axis  has  segments  with  foliage,  the branch  is  part  of  the
+  ///crown.  The computation of  the  crown  base  proceeds with
+  ///AccumulateDown  checking  the foliage of  the side branches.
+  ///If there is foliage,  the segment below the branching  point
+  ///in the main axis  marks itself as crown base   possibly
+  ///overriding   previous   value.
+  ///
+  ///Usage:
+  ///\code{.cc}
+  /// DCLData     dcl;
+  /// AccumulateDown(tree,dcl,AddBranchWf(),DiameterCrownBase<TS,BUD>());
+  ///\endcode
   //DCLData  will  contain the crown base height and diameter.
- 
   class DCLData{
     friend class AddBranchWf;
   public:
@@ -150,10 +163,15 @@ namespace Lignum{
     }
   };
 
-  //Helper functor for assigning max diameter of segments  connected to a branching point
+  ///\brief Functor to choose max diameter of segments connected to a branching point
   template<class TS,class BUD>
   class MaxSegmentDiameter{
   public:
+    ///\brief Choose maximum of two segment diameters
+    ///\param d1 Segment diameter
+    ///\param d2 Segment diameter
+    ///\return \f$ max(d1,d2) \f$
+    ///\note \p MaxSegmentDiameter is called by AccumulateDown in each branching point before \p SegmentDiameter
     double operator()(const double& d1, const double& d2)const
     {
       //Choose the maximum of the two segment diameters 
@@ -161,15 +179,20 @@ namespace Lignum{
     }
   };
 
-  //Helper functor for assigning max diameter of segments  connected to a branching point
+  ///\brief Functor to assign maximum diameter of segments connected to a branching point
   template<class TS,class BUD>
   class SegmentDiameter{
   public:
+    ///\brief Assign max segment diameter in a branching point
+    ///\param d Maximum segment diameter connected to a branching point
+    ///\param tc Tree compartment
+    ///\retval d Maximum segment diameter
+    ///\pre MaxSegmentDiameter is called in each branching point to chooose maximum diameter between tree segments
+    ///\post Each branching point has maximum of segment diameters 
     double& operator()(double& d,TreeCompartment<TS,BUD>* tc)const
     {
-      //MaxSegmentDiameter has chosen 
-      if (BranchingPoint<TS,BUD>* bp = 
-	  dynamic_cast<BranchingPoint<TS,BUD>*>(tc)){
+      //MaxSegmentDiameter has chosen maximum diameter 
+      if (BranchingPoint<TS,BUD>* bp = dynamic_cast<BranchingPoint<TS,BUD>*>(tc)){
 	SetValue(*bp,LGAMaxD,d);
       }
       if (TS* ts = dynamic_cast<TS*>(tc)){
@@ -186,37 +209,49 @@ namespace Lignum{
   };
 
 
-  //The vigour index as in Nikinmaa et al. 2003 Tree Physiology
-  //VI_j = (d_j/d_M)^2*VI_below
-  //Usage is with PropagateUp:
-  //   ViData data(1);
-  //   PropagateUp(tree,data,TPVigourIndex<TS,BUD>());
+  ///\brief Implement Vigour index \f$ \mathcal{V} \f$ formula as in Nikinmaa et al. 2003 Tree Physiology
+  ///
+  ///\f[ \mathcal{V}_\mathrm{d} = (d/\max d_i)^2 \times \mathcal{V}_\mathrm{below} \f]
+  ///
   class ViData{
   public:
+    ///\brief Constructor
+    ///
+    ///\param init Default initial value for \f$ V = 1\f$   
     ViData(double init = 1)
       :vi_segment_below(init){}
-    //Copy constructor, required by PropagateUp
+    ///\brief Copy constructor, required by PropagateUp
+    ///\param vi_data ViData 
     ViData(const ViData& vi_data)
       :vi_segment_below(vi_data.vi_segment_below),
        segment_diameter_ls(vi_data.segment_diameter_ls){}     
-    //Assignment, required by PropagateUp
+    ///\brief Assignment, required by PropagateUp
+    ///\param vi_data ViData
     ViData& operator=(const ViData& vi_data);    
-    //Calculate the Vigour index 
+    ///\brief Calculate the Vigour index
+    ///\param d Diameter of the tree segment
+    ///\retval Vigour index
+    ///\pre Vigour index \p vi_segment_below calculated
     double operator()(double d)const;
-    //reset the list of diameters
+    ///\brief Reset the list of diameters \p segment_diameter_ls
     void reset(){segment_diameter_ls.clear();}
+    ///\brief Add segment diameter \p d to list of diameters 
     ViData& addSegmentDiameter(double d){
       segment_diameter_ls.push_back(d);
       return *this;
     }
+    ///\brief Vigour index in segment below
+    ///\retval vi_segment_below Vigout index value
     double viSegmentBelow()const{return  vi_segment_below;}
     ViData& viSegmentBelow(double vi){
       vi_segment_below = vi;
       return *this;
     }
   private:
+    ///Vigor index in the segment below the branching point
     double vi_segment_below;
-    list<double> segment_diameter_ls;
+    ///List of segment diameters connected to the same branching point
+    list<double> segment_diameter_ls; 
   };
     
   //VI as a function of diameter 'd'
@@ -228,8 +263,8 @@ namespace Lignum{
     //formula for vi from Nikinmaa et al 2003 Tree Physiology 
     //Note: if you write "d/*maxj"  the '/*' would be the beginning of
     //a comment!!
-    //ALSO NOTE: the division will hit you hard if maxj is 0 or
-    //a very small number. Probably resulting NaN.
+    //Small vigour index values may lead to problems (unrealistic small segments
+    //not able to grow)
     double vi = 0.0;
     if (*maxj > R_EPSILON)
       vi = pow(d / *maxj,2.0)*vi_segment_below;
@@ -244,10 +279,18 @@ namespace Lignum{
     segment_diameter_ls = vi_data.segment_diameter_ls;
     return *this;
   }
-  
+
+  ///\brief Traverse tree with Lignum::PropagateUp and calculate Vigour index.
+  ///
+  ///In each branching point collect maximum segment diameter.
+  ///In each tree segment calculate  Vigour index 
   template <class TS, class BUD>
   class TPVigourIndex{
   public:
+    ///\brief Calculate Vigour index
+    ///\param vi_data Vigour index calculator class collecting also necessary data
+    ///\param tc Tree compartment
+    ///\retval vi_data Vigor index calculator 
     ViData& operator()(ViData& vi_data, TreeCompartment<TS,BUD>* tc)const
     {
       if (BranchingPoint<TS,BUD>* bp = dynamic_cast<BranchingPoint<TS,BUD>*>(tc)){
@@ -262,22 +305,22 @@ namespace Lignum{
       //compute the VI for the segment
       else if (TS* ts = dynamic_cast<TS*>(tc)){
 	if (GetValue(*ts,LGAage) > 0){
-	//special case (in the beginning) when there are no segment
-	//diameters in  the list: add the  segment to the  list so you
-	//compare the segment to itself at least, and get a meaningful
-	//result; by definition VI is [0,1] and also comparison to the
-	//segment itself is needed.  If  the diameter is twice it does
-	//not  matter  (more troublesome  to  explicitely program  the
-	//special case in the beginning)
-	vi_data.addSegmentDiameter(2.0*GetValue(*ts,LGAR));
-	//ViData has the max diameter of the segments we need to compare with
-	//to  compute the  VI (see  TreePhysiologyVigourIndex). Compute
-	//the VI.
-	double vi_value = vi_data(2.0*GetValue(*ts,LGAR));
-	//Update VI
-	SetValue(*ts,LGAvi,vi_value);
-	//This will be the new segment below VI
-	vi_data.viSegmentBelow(vi_value);
+	  //special case (in the beginning) when there are no segment
+	  //diameters in  the list: add the  segment to the  list so you
+	  //compare the segment to itself at least, and get a meaningful
+	  //result; by definition VI is [0,1] and also comparison to the
+	  //segment itself is needed.  If  the diameter is twice it does
+	  //not  matter  (more troublesome  to  explicitely program  the
+	  //special case in the beginning)
+	  vi_data.addSegmentDiameter(2.0*GetValue(*ts,LGAR));
+	  //ViData has the max diameter of the segments we need to compare with
+	  //to  compute the  VI (see  TreePhysiologyVigourIndex). Compute
+	  //the VI.
+	  double vi_value = vi_data(2.0*GetValue(*ts,LGAR));
+	  //Update VI
+	  SetValue(*ts,LGAvi,vi_value);
+	  //This will be the new segment below VI
+	  vi_data.viSegmentBelow(vi_value);
 	}
 	else{
 	  //Newly  created segment  will get  its vigour  from segment
@@ -292,22 +335,20 @@ namespace Lignum{
   };//class TPVigourIndex
 
 
-  //Interface to VigourIndex (VI) as in Nikinmaa et al 2003 Tree  Physiology   
-  //paper.  The design  of LIGNUM hits back when  implementing the VI.
-  //First,  AccumulateDown  segment   diameters  and  assign  in  each
-  //branching  point the  maximum  of the  diameters  of the  segments
-  //forking off from the branching  point and the segment above.  Then
-  //PropagateUp   the  VI   according  to   its  formula.    Thus  the
-  //computational  complexity  is  2O(n).    The  problem  is  that  a
-  //branching point cannot see the segment above, only the segments in
-  //the branches.   So two traversals are needed,  first assigning the
-  //maximum of  the diameters (going from  tip of the  branches to the
-  //base of the tree ) and  then actually computing the VI (going from
-  //the base  to the  branch tips).  Perhaps  it would be  possible to
-  //construct  an   algorithm  for  VI  with   single  traversal  only
-  //(i.e. O(n) complexity) but I could not come up any straightforward
-  //way of  doing it.  It  is the clarity versus  efficiency tradeoff,
-  //where I chose clarity.
+  ///\brief Vigour index as in Nikinmaa et al 2003 Tree  Physiology.
+  ///\f[
+  ///\mathcal{V}_\mathrm{d} = (d/\max d_i)^2 \times \mathcal{V}_\mathrm{below}
+  ///\f]
+  ///First,  AccumulateDown  segment   diameters  and  assign  in  each
+  ///branching  point the  maximum  of the  diameters  of the  segments
+  ///forking off from the branching  point and the segment above.  Then
+  ///PropagateUp   the  Vigour index   according  to   its  formula.
+  //Tthe computational  complexity  is  \f$2O(n)\f$.
+  ///
+  ///Two traversals are needed. First, assigning the maximum of  the
+  ///diameters (going from  tip of the  branches to the
+  //base of the tree ) and  then actually computing the Vigour index
+  ///(going from the base  to the  branch tips).
   template <class TS,class BUD>
   void TreePhysiologyVigourIndex(Tree<TS,BUD>& t)
   {
@@ -386,30 +427,25 @@ namespace Lignum{
     }
     const list<pair<double,double> >& dHdQabsList()const{return dh_dqabs_ls;}
   private:
-    double wf_bp;//collects  foliage  mass  in  an axis,  sums  up  in
-		 //branching points.
-    double qabs_bp;//collects Qabs  in an  axis, sums up  in branching
-		   //points.
-    list<pair<double,double> > wf_h_bp_ls;//list of the foliage masses
-                                          //in  the  branches  forking
-                                          //off from a branching point
-                                          //in the  main axis, and the
-                                          //heights of those branching
-                                          //points: pair<h,Wf>
-    list<pair<double,double> > dh_dwf_ls;//same as  wf_h_bp_ls but now
-					 //the         list        has
-					 //pair<dh,dWf/dh>          (in
-					 //practice  dWf is Wf  and dh
-					 //is the segment length)
-    list<pair<double,double> > h_qabs_ls;//list  of pair<h,Qabs> in
-					 //branching   points   (as
-					 //above)
-    list<pair<double,double> > dh_dqabs_ls;//same as wf_dh_dqabs_ls
-					   //but  now the  list has
-					   //pair<dh,dQabs/dh>
+    ///Collect  foliage  mass  in  an axis,  sums  up  in
+    ///branching points.
+    double wf_bp;
+    ///Collect \c Qabs  in an  axis, sums up  in branching
+    ///points.
+    double qabs_bp;
+    ///list of the foliage masses in  the  branches forking off from a
+    ///branching point in the  main axis, and the heights of those
+    ///branching points: pair<h,Wf>
+    list<pair<double,double> > wf_h_bp_ls;
+    ///Same as  \p wf_h_bp_ls but now the list has \p pair<dh,dWf/dh>.
+    list<pair<double,double> > dh_dwf_ls;
+    ///List  of \p pair<h,Qabs> in branching   points  
+    list<pair<double,double> > h_qabs_ls;
+    ///same as \p wf_dh_dqabs_ls but  now the  list has \p pair<dh,dQabs/dh>
+    list<pair<double,double> > dh_dqabs_ls;
   }; 
 
-  //Helper functor to add foliage masses and Qabs's in branching points  
+  ///\brief Helper functor to add \c Wf and \c Qabs values in branching points  
   class AddCrownLimitData{
   public:
     CrownLimitData& operator()(CrownLimitData& data1,CrownLimitData& data2)const
@@ -420,7 +456,7 @@ namespace Lignum{
     }
   };
 
-  //Collect Wf and Qabs branchwise in the main axis
+  ///\brief Collect \c Wf and \c Qabs branchwise in the main axis
   template <class TS, class BUD>
   class CollectCrownLimitData{
   public:

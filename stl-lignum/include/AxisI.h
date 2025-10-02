@@ -1,3 +1,5 @@
+/// \file AxisI.h
+/// \brief Tree axis implementation 
 #ifndef AXISI_H
 #define AXISI_H
 

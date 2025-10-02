@@ -1,3 +1,5 @@
+/// \file TreeCompartment.h
+/// \brief TreeCompartment base class 
 #ifndef TREECOMPARTMENT_H
 #define TREECOMPARTMENT_H
 

@@ -1,3 +1,5 @@
+/// \file LGMdecl.h
+/// \brief Data type forward declarations 
 #ifndef LGMDECL_H
 #define LGMDECL_H
 

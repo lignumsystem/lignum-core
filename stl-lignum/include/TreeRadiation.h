@@ -1,3 +1,5 @@
+/// \file TreeRadiation.h
+/// \brief Obsolete 
 #ifndef TREERADIATION_H
 #define TREERADIATION_H
 

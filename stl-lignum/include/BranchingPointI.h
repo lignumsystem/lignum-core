@@ -1,3 +1,5 @@
+/// \file BranchingPointI.h
+/// \brief Branching point implementation
 #ifndef BRANCHINGPOINTI_H
 #define BRANCHINGPOINTI_H
 

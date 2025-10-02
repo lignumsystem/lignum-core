@@ -1,3 +1,5 @@
+/// \file VisualFunctor.h
+/// \brief Obsolete
 #ifndef VISUALFUNCTOR_H
 #define VISUALFUNCTOR_H
 

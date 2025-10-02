@@ -1,4 +1,5 @@
-
+/// \file Zbrent.h
+/// \brief Brent-Dekker root finding method not active
 #ifndef ZBRENT_H
 #define ZBRENT_H
 

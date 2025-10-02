@@ -1,3 +1,5 @@
+/// \file  CreateLeaves.h
+/// \brief Create Ellipse and Triangle leaves
 #ifndef CREATE_LEAVES_H
 #define CREATE_LEAVES_H
 
@@ -8,27 +10,39 @@
 using namespace cxxadt;
 
 namespace Lignum{
-  /**************************************************************************
-   *Two  functors to be  used with  AccumulateDown to  create leaves.
-   *CreateLeaves  create  the   Ellipse  leaves  and  AppendDirections
-   *appends the  directions of the  buds in branching  points.  Usage:
-   *AccumulateDown(tree,vector<PositionVector>(),
-   *               AppendSequence<vector<PositionVector> >(),
-   *               CreateLeaves<TS,BUD>())  
-   *CreateLeaves uses LGMstatus of 1 for bud to create leaves.            
-   **************************************************************************/
-  //From buds collect directions if they will create a leaf,
-  //if segment then create the leaves.
+  
+  ///\brief Ellipse leaves
+  ///
+  ///Two  functors to be  used with  AccumulateDown to  create leaves.
+  ///CreateLeaves  create  the   Ellipse  leaves  and  AppendDirections
+  ///appends the  directions of the  buds in branching  points.  Usage:
+  ///\code{.cc}
+  ///AccumulateDown(tree,vector<PositionVector>(),
+  ///               AppendSequence<vector<PositionVector> >(),
+  ///               CreateLeaves<TS,BUD>())
+  ///\endcode
+  ///CreateLeaves uses LGMstatus of 1 for bud to create leaves.            
+  ///Collect directions from buds if they will create a leaves
   template <class TS, class BUD, class E>
     class CreateLeaves{
     public:
+      ///\brief constructor
+      ///\param l Petiole length
+      ///\param semi_major Ellipse semimajor axis
+      ///\param semi_minor Ellipse semiminor axis
       CreateLeaves(METER l, METER semi_major, METER semi_minor)
 	:pl(l),a(semi_major),b(semi_minor){}
+      ///\brief Create Ellipse leaves
+      ///\param v Petiole direction vectors from buds  
+      ///\param tc Tree compartment
+      ///\retval v Filled with directon vectors from buds or empty after leaves created in tree segment
+      ///\pre Bud has LGAstatus = 1 to create a leaf
+      ///\post Leaf normal is random but pointing to upper hemisphere
       vector<PositionVector>& operator()(vector<PositionVector>& v,
 					 TreeCompartment<TS,BUD>* tc)const;
-      METER pl;//Petiole length
-      METER a; //semi major axis of leaf ellips
-      METER b; //semi minor axis od leaf ellips
+      METER pl;///<Petiole length
+      METER a; ///<semi major axis of leaf ellips
+      METER b; ///<semi minor axis od leaf ellips
     };
   
   template <class TS, class BUD, class E>
@@ -85,20 +99,31 @@ namespace Lignum{
     return pdv;
   }
 
-  /********************************************************************
-   *Create triangle  leaves in the  same way as ellipse  shaped leaves
-   *We need  petiole length,  and the shape  of the triangle  given by
-   *base length and height of the triangle.
-   *******************************************************************/
+  ///\brief Triangle leaf
+  ///
+  ///Create triangle  leaves in the  same way as ellipse  shaped leaves
+  ///We need  petiole length,  and the shape  of the triangle  given by
+  ///base length and height of the triangle.
+  ///\sa CreateLeaves
   template <class TS, class BUD, class T>
     class CreateTriangleLeaves{
     public:
+    ///\brief Constructor
+    ///\param l Petiole length
+    ///\param b Triangle base length
+    ///\param h Triangle height
     CreateTriangleLeaves(METER l, METER b, METER h):pl(l),base(b),height(h){}
+    ///\brief Create Triangle leaves
+    ///\param v Petiole direction vectors from buds
+    ///\param tc Tree compartment
+    ///\retval v Filled with directon vectors from buds or empty after leaves created in tree segment
+    ///\pre Bud has LGAstatus = 1 to create a leaf
+    ///\post Leaf normal is random but pointing to upper hemisphere
     vector<PositionVector>& operator()(vector<PositionVector>& v,
 				       TreeCompartment<TS,BUD>* tc)const;
-    METER pl;//Petiole length
-    METER base; //base length
-    METER height; //height of the triangle
+    METER pl;///<Petiole length
+    METER base; ///<Triangle base length
+    METER height; ///<Triangle height
   };
 
   template <class TS, class BUD, class T>  vector<PositionVector>& 

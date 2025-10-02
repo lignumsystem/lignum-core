@@ -1,3 +1,5 @@
+/// \file CfTreeSegmentI.h
+/// \brief Coniferous tree segment implementation
 #ifndef CF_TREE_SEGMENTI_H
 #define CF_TREE_SEGMENTI_H
 

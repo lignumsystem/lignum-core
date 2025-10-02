@@ -1,3 +1,5 @@
+/// \file BetulaWithFlow.h
+/// \brief Experimental no longer active
 #ifndef BETULAWITHFLOW_HPP
 #define BETULAWITHFLOW_HPP
 

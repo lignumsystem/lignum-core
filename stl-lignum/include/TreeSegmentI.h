@@ -1,3 +1,5 @@
+/// \file TreeSegmentI.h
+/// \brief Tree segment implementation
 #ifndef TREESEGMENTI_H
 #define TREESEGMENTI_H
 

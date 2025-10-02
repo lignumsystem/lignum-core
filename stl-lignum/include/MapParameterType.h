@@ -1,5 +1,5 @@
-///\file MapParameterType.h
-///\brief Map parameter name string to parameter name enumeration 
+/// \file MapParameterType.h
+/// \brief Map parameter name string to parameter name enumeration 
 #ifndef MAP_PARAMETERTYPE_H
 #define MAP_PARAMETERTYPE_H
 

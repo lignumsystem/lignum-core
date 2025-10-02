@@ -1,5 +1,5 @@
-///\file InitializeTree.h
-///\brief Initialize tree.
+/// \file InitializeTree.h
+/// \brief Initialize tree.
 ///
 ///Initiailize tree starting from the main configuration file
 ///usually named *MetaFile.txt*.

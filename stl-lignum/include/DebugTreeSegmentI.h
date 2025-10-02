@@ -1,3 +1,5 @@
+/// \file DebugTreeSegmentI.h
+/// \brief Debug file output for TreeSegment implementation
 #ifndef DEBUG_TREE_SEGMENTI_H
 #define DEBUG_TREE_SEGMENTI_H
 

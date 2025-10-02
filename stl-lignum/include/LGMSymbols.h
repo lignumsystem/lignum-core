@@ -1,7 +1,9 @@
 #ifndef LGMSYMBOLS_H
 #define LGMSYMBOLS_H
-///\file LGMSymbols.h
-///\brief This file defines a number of enumerations for stl-ligum.
+/// \file LGMSymbols.h
+/// \brief Enumeration symbols
+///
+///Defines a number of enumerations for Lignum.
 ///
 /// + LGMAD = LIGNUM Attribute Double  
 /// + LGMPD = LIGNUM Parameter Double  
@@ -19,7 +21,7 @@
 ///cannot be found for variable N* where N is an integer value for the enumeration.
 ///\note Enumeration values are prefixed with LGA, LGP etc.
 
-///\brief Lignum  basic modelling framework
+///\brief Lignum  core model framework
 namespace Lignum{
   ///Lignum Attributes double  
   ///

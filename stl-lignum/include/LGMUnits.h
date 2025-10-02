@@ -1,3 +1,5 @@
+/// \file LGMUnits.h
+/// \brief Units used in Lignum
 #ifndef LGMUNITS_H
 #define LGMUNITS_H
 

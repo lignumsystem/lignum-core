@@ -1,3 +1,5 @@
+/// \file HwTreeSegmentMetabolismI.h
+/// \brief Hardwood tree segment implementation
 #ifndef HWTREESEGMENTMETABOLISMI_H
 #define HWTREESEGMENTMETABOLISMI_H
 

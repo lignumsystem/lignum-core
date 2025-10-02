@@ -1,11 +1,21 @@
-
+/// \file CfTreeFunctorI.h
+/// \brief Set HwTreeSegment vigour
 #ifndef CFTREEFUNCTORI_H
 #define CFTREEFUNCTORI_H
 
 
 namespace Lignum{
 
-
+///\brief Set vigour value for tree segments
+///
+///Vigour value \f$ \nu \f$ is defined as \f$ \nu = \nu \times \frac{A_{\mathrm{ts}}}{A_{\mathrm{max}}} \f$
+///\param axis Tree axis
+///\param vig_val Vigour value 
+///\param max_area Maximum cross sectional area in tree segments
+///\retval vig_val Modified vigour value
+///\pre TS must be able to type cast to HwTreeSegment
+///\pre The \p max_area value must be known
+///\note Starting from the main axis SetVigours() travels the tree and sets vigours
 template <class TS, class BUD,class S>
 LGMdouble SetVigours(Axis<TS,BUD>& axis, LGMdouble vig_val, LGMdouble max_area)
 {

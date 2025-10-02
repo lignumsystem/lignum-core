@@ -1,3 +1,5 @@
+/// \file CollisionI.h
+/// \brief Growth space collision detection implementation
 #ifndef COLLISIONI_H
 #define COLLISIONI_H
 

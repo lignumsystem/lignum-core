@@ -1,3 +1,5 @@
+/// \file MyBud.h
+/// \brief Example tree bud not active
 #ifndef MYBUD_H
 #define MYBUD_H
 

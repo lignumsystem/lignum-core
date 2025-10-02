@@ -1,3 +1,7 @@
+/// \file Tree.h
+/// \brief Lignum tree 
+///
+/// Includes necessary header files required to build Lignum models. 
 #ifndef TREE_H
 #define TREE_H
 #include <algorithm>

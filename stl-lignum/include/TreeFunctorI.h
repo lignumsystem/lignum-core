@@ -2,8 +2,8 @@
 #define TREE_FUNCTORI_H
 
 #include <iomanip>
-///\file TreeFunctorI.h
-///\brief Implementation of the functors (functions) for Tree.
+/// \file TreeFunctorI.h
+/// \brief Tree functors and functions implementation.
 ///
 /// Help functors etc. are not specified. If you add a functor-function please update this list.
 ///

@@ -1,3 +1,9 @@
+/// \file Shading.h
+/// \brief Light attenuation calculations
+///
+///Light attenuation calculations for hardwood species and conifers.
+///The functors are based on parwise comparison of the shading elements.
+///The algorithmic complexities are \f$ \mathcal{O}(n^2) \f$.
 #ifndef SHADING_H
 #define SHADING_H
 
@@ -5,11 +11,12 @@
 
 namespace Lignum {
 
-//This functor EvaluateRadiationForHwTreeSegment evaluates shading
-//caused by all other leaves to all leaves of this hardwood
-//segment. This functor uses functor ShadingEffectOfLeaf<TS,BUD> to
-//go through all leaves and to check the shading.
-
+///\brief Hardwood radiation climate
+///
+///Evaluate shading aused by all other leaves to all leaves of this hardwood
+///segment. This functor uses functor ShadingEffectOfLeaf to
+///go through all leaves and to check the shading.
+///\sa ShadingEffectOfLeaf
 template <class TS, class BUD,class S= Ellipse>
 class EvaluateRadiationForHwTreeSegment {
 public:
@@ -20,10 +27,10 @@ public:
  //invoked with sring argument for harrdwoods.
 };
 
-//This functor ShadingEffectOfLeaf<TS,BUD> evaluates shading caused
-//by all leaves of a hardwood segment on a leaf (shaded_l) of a
-//hardwood segment (shaded_s). 
-
+///\brief Evaluate shading caused by all leaves
+///
+///Evaluate shading caused by all leaves of a hardwood segment
+///on a leaf (shaded_l) of a hardwood segment (shaded_s). 
 template <class TS,class BUD,class S=Ellipse>
 class ShadingEffectOfLeaf{
 public:
@@ -35,11 +42,12 @@ public:
 };
 
 
-//This functor EvaluateRadiationForCfTreeSegment evaluates shading
-//caused by all other segments on this conifer segment. This functor
-//uses functor ShadingEffectOfCfTreeSegment<TS,BUD> to go through all
-//segments to check the shading.
-
+///\brief Evaluate radiation climate for conifer segment
+///
+///Evaluates shading caused by all other segments on this conifer segment.
+///This functor uses functor ShadingEffectOfCfTreeSegment to go through all
+///segments to check the shading.
+///\sa ShadingEffectOfCfTreeSegment 
 template <class TS, class BUD>
 class EvaluateRadiationForCfTreeSegment {
 public:
@@ -49,15 +57,16 @@ private:
   const ParametricCurve& K;
 };
 
-//Is just like EvaluateRadiationForCfTreeSegment but uses instead of
-//Firmaments diffuseRegionRadiationSum diffuseForestRegionRadiationSum,
-//that is, the tree is surrounded by identical trees that are taken
-//care with Lambert-Beer extinction.
-//The tree level input parameters for diffuseForestRegionRadiationSum
-//(needle area, extinction coefficient, tree height, height of
-//crown base, stand density, and location of tree (for calculation of
-// distance from tree stem)) are specified in the constructor.
-
+///\brief Evaluate forest radiation climate for conifer segment
+///
+///Analogous to EvaluateRadiationForCfTreeSegment but instead of
+///Firmament::diffuseRegionRadiationSum uses Firmament::diffuseForestRegionRadiationSum,
+///that is, the tree is surrounded by identical trees that are taken
+///care with Lambert-Beer extinction.
+///The tree level input parameters for diffuseForestRegionRadiationSum
+///(needle area, extinction coefficient, tree height, height of
+///crown base, stand density, and location of tree (for calculation of
+/// distance from tree stem)) are specified in the constructor.
 template <class TS, class BUD>
 class EvaluateRadiationForCfTreeSegmentForest {
 public:
@@ -79,9 +88,9 @@ private:
 
 
 
-//This functor ShadingEffectOfCfTreeSegment<TS,BUD> evaluates shading caused
-//by a conifer segment on this conifer segment (shaded_s)
-
+///\brief Shading of one conifer segment
+///
+///Evaluate shading caused by the conifer segment \p tc on the \p shaded_s segment
 template <class TS,class BUD>
 class ShadingEffectOfCfTreeSegment {
 public:
@@ -100,29 +109,21 @@ private:
 };
 
 
-//////////////////////////////////////////////////////////////////////////////////////////////
-//Shading by woody parts only
-//Two versions:
-//1) ShadingEffectOfWoodyPartsSelf that can and should be used to check self-shading by
-//woody parts: this takes the target_segment (in the constructor) and checks that comparison
-//is not made itself as a shading TreeSegment. Consequently, the shading tree must be consisting of
-//similar TreeSegments and Buds (<TS,BUD>) as the target one. Can thus be used for self-
-//wood shading and wood-shading by other similar trees.
-//2) ShadingEffectOfWoodyParts that takes a Point (e.g. Midpoint of a TreeSegment) in the
-//constructor and makes comparisons for that. No checking is made (is not possible) whether the
-//shading TreeSegment is the object (e.g. TreeSegment) for which evaluation is made. Can
-//thus not be used to evaluate self wood shading in a tree.
 
-//NOTE: Assumes that all trees have the same firmament, thus
-//GetFirmamentWithMask(GetTree(*shaded_s) == GetFirmamentWithMask(GetTree(*ts))
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-
+///\brief Shading by woody parts only with self-shading
+///
+///Two versions: ShadingEffectOfWoodyPartsSelf and ShadingEffectOfWoodyParts.
+///
+///ShadingEffectOfWoodyPartsSelf should be used to check self-shading by
+///woody parts: this takes the target_segment (in the constructor) and checks that comparison
+///is not made itself as a shading TreeSegment. Consequently, the shading tree must be consisting of
+///similar TreeSegments and Buds (<TS,BUD>) as the target one. Can thus be used for self-
+///wood shading and wood-shading by other similar trees.
+///\sa ShadingEffectOfWoodyParts
 template <class TS,class BUD>
 class ShadingEffectOfWoodyPartsSelf {
 public:
-  ShadingEffectOfWoodyPartsSelf(
-TreeSegment<TS,BUD>* ts, 
+  ShadingEffectOfWoodyPartsSelf(TreeSegment<TS,BUD>* ts, 
 			       vector<double>& sectors)
     :shaded_s(ts), S(sectors){}
   //ForEach functor to compute shadiness
@@ -149,6 +150,16 @@ private:
   vector<double>& S;
 };
 
+///\brief Shading by woody parts only with no self-shading
+///
+///Two versions: ShadingEffectOfWoodyPartsSelf and ShadingEffectOfWoodyParts.
+//
+///ShadingEffectOfWoodyParts Takes a cxxadt::Point (e.g. midpoint of a TreeSegment) in the
+///constructor and makes comparisons for that. No checking is made (is not possible) whether the
+///shading TreeSegment is the object (e.g. TreeSegment) for which evaluation is made. Can
+///thus *not* be used to evaluate self wood shading in a tree.
+///\note Assumes that all trees have the same Firmament.
+///\sa ShadingEffectOfWoodyPartsSelf
 template <class TS,class BUD>
 class ShadingEffectOfWoodyParts {
 public:

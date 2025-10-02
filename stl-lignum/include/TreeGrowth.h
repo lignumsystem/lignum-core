@@ -1,10 +1,9 @@
+/// \file TreeGrowth.h
+/// \brief Not active
+///
+/// \deprecated Obsolete functors and functions 
 #ifndef TREEGROWTH_H
 #define TREEGROWTH_H
-
-
-
-
-
 #include <string>
 #include <Tree.h>
 

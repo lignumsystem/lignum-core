@@ -1,3 +1,7 @@
+/// \file Lignum.h
+/// \brief Lignum main header file
+///
+/// The only required header file to build Lignum models.
 #ifndef LIGNUM_H
 #define LIGNUM_H
 

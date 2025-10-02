@@ -1,3 +1,5 @@
+/// \file DefaultBud.h
+/// \brief Example for the minimum bud
 #ifndef DEFAULTBUD_H
 #define DEFAULTBUD_H
 
@@ -6,6 +8,7 @@
 
 namespace Lignum{
 
+///\brief Example for the minimum bud 
 template <class TS>
 class DefaultBud:public Bud<TS,DefaultBud<TS> >{
  public:

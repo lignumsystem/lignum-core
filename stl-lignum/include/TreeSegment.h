@@ -1,3 +1,7 @@
+/// \file TreeSegment.h
+/// \brief Tree segment.
+///
+/// Base class for both coniferous and hardwood species.
 #ifndef TREESEGMENT_H
 #define TREESEGMENT_H
 
@@ -14,33 +18,45 @@ using namespace cxxadt;
 
 namespace Lignum{
 
+///\brief Tree segment attributes
 class TreeSegmentAttributes{
 public:
   TreeSegmentAttributes();
-  KGC As0;                //Original sapwood area
-  METER L;                //Length of the tree segment
-  KGC M;                  //Respiration of the tree segment during the
-			  //time step
-  LGMdouble omega;        //Gravelius order
-  METER R;                //Radius including bark
-  METER Rtop;             //Radius at top
-  METER Rh;               //Heartwood radius
-  KGC Ws;                 //Sapwood mass of the tree segment
-  KGC Wh;                 //Heartwood mass of the segment
-  vector<METER> annual_rings; //Annual rings of the tree segment
-  LGMdouble vigour;			//Vigour index
-  LGMdouble type;         //Dominant, Nondominant etc.  
+  KGC As0;                ///<Original sapwood area
+  METER L;                ///<Length of the tree segment
+  KGC M;                  ///<Respiration of the tree segment during the
+			  ///<time step
+  LGMdouble omega;        ///<Gravelius order
+  METER R;                ///<Radius including bark
+  METER Rtop;             ///<Radius at top
+  METER Rh;               ///<Heartwood radius
+  KGC Ws;                 ///<Sapwood mass of the tree segment
+  KGC Wh;                 ///<Heartwood mass of the segment
+  vector<METER> annual_rings; ///<Annual rings of the tree segment
+  LGMdouble vigour;	  ///<Vigour index
+  LGMdouble type;         ///<Dominant, Nondominant etc.  
 };
 
-
+///\brief Tree segment base class for coniferous and hardwood species
 template <class TS,class BUD=DefaultBud<TS> >
 class TreeSegment: public TreeCompartment<TS,BUD>{
   template <class TS1,class BUD1>
   friend vector<METER> GetAnnualRings(const TreeSegment<TS1,BUD1>& ts);
-   
+  ///\brief Get attribute value
+  ///\tparam TS1 Tree segment type
+  ///\tparam BUD1 Bud type
+  ///\param ts Tree segment
+  ///\param name attribute name
+  ///\return Attribute value
   template <class TS1,class BUD1>
   friend LGMdouble GetValue(const TreeSegment<TS1,BUD1>& ts, const LGMAD name);
-  
+  ///\brief Set attribute value
+  ///\tparam TS1 Tree segment type
+  ///\tparam BUD1 Bud type
+  ///\param ts Tree segment
+  ///\param name attribute name
+  ///\param value attribute value
+  ///\return Previous attribute value
   template <class TS1,class BUD1>
   friend LGMdouble SetValue(TreeSegment<TS1,BUD1>& ts, const LGMAD name, const LGMdouble value);
   

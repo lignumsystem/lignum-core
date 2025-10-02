@@ -2,10 +2,10 @@
 #define TREE_METAFILE_PARSER_H
 #include <stdlib.h>
 #include <Table.h>
-///\file TreeMetaFileParser.h
-///\brief Parse initial configuration file usually called MetaFile.txt.
+/// \file TreeMetaFileParser.h
+/// \brief Parse initial configuration file usually called MetaFile.txt.
 ///
-///Parse configuration files and install parameters, Firmament and functions.
+/// Parse configuration files and install parameters, Firmament and functions.
 #include <Lex.h>
 
 using namespace cxxadt;

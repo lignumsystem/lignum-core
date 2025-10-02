@@ -1,3 +1,5 @@
+/// \file ShadingI.h
+/// \brief Light attenuation calculations implementation
 #ifndef SHADINGI_H
 #define SHADINGI_H
 

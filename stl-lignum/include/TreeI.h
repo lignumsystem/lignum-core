@@ -1,3 +1,5 @@
+/// \file TreeI.h
+/// \brief Lignum tree implementation
 #ifndef TREEI_H
 #define TREEI_H
 

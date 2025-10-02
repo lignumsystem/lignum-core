@@ -1,3 +1,5 @@
+/// \file BetulaTortuosa.h
+/// \brief Experimental Betula tortuosa no longer active
 #ifndef BetulaTortuosa_HPP
 #define BetulaTortuosa_HPP
 

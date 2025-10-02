@@ -1,3 +1,5 @@
+/// \file TreeBookkeeping.h
+/// \brief Data collection not active 
 #ifndef TREEBOOKKEEPING_H
 #define TREEBOOKKEEPING_H
 

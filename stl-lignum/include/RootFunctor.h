@@ -1,3 +1,5 @@
+/// \file RootFunctor.h
+/// \brief Experimental root system functors not active
 #ifndef ROOTFUNCTOR_H
 #define ROOTFUNCTOR_H
 

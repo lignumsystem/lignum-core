@@ -1,4 +1,5 @@
-
+/// \file StructuralGrowthI.h
+/// \brief Branch bending not active
 #ifndef STRUCTURALGROWTHI_H
 #define STRUCTURALGROWTHI_H
 
