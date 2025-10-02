@@ -2,9 +2,9 @@
 /// Test Triangle interface.
 /// To compile (on Mac) type. 
 ///
-///       clang++  -DTRIANGLE -I../include -L../lib -lcxxadt TriangleExample.cc
+///       clang++  -DTRIANGLE -I../include -L../lib -lcxxadt TriangleExample.cc -o triangletest
 ///
-/// libcxxadt.a must also be compiled with clang++.
+/// libcxxadt.a must also be compiled and installed in -L../lib/ with clang++.
 #ifdef TRIANGLE
 #include <iostream>
 #include <stdlib.h>
@@ -25,9 +25,9 @@ void TestIntersection(int i, const Point& o, const PositionVector& l, const Tria
   cout << "Test " << i << endl;
   cout<<"From point " <<o<< " the beam vector "<<l;
   if (t.intersectShape(o,l) ) 
-    cout<<" crosses the triangle at point "<< t.intersectionPoint(o,l) << endl;
+    cout<<" crosses the triangle at point "<< t.intersectionPoint(o,l).first << endl;
   else
-    cout<<" does not cross the triangle at point "<< t.intersectionPoint(o,l) << endl;
+    cout<<" does not cross the triangle" << endl;
 }
 
 int main()
@@ -130,6 +130,7 @@ int main()
   TestIntersection(22,o5,b11,t12);
   TestIntersection(23,o6,b11,t12);
   TestIntersection(24,o7,b11,t12);
+  cout << "Numeric accuracy demonstration " << 25 << "," << 26 << "," << 27 << ":" << endl;
   TestIntersection(25,o,b11,t12);
   TestIntersection(26,o8,b11,t12);
   TestIntersection(27,o9,b11,t12);

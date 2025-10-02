@@ -246,12 +246,12 @@ double Triangle::setArea(double area, const Point& base )
  
   bool Triangle::intersectShape(const Point& o, const PositionVector& l)const
   {
-    ///\par Line-triangle intersection detection
-    /// -# Check that the observation point \p o is \e not above triangle
-    /// -# Check the line \p l is not parallel with the triangle plane
+    ///\par Line-Triangle intersection detection
+    /// -# Check that the observation point \p o is \e not above the Triangle
+    /// -# Check the line \p l is not parallel with the Triangle plane
     /// -# Calculate intersection point \f$ p_i \f$ between the line \p l and the plane
-    ///    determined by the triangle
-    /// -# Calculate if the  \f$ p_i \f$ is inside triangle
+    ///    determined by the Triangle
+    /// -# Calculate if the  \f$ p_i \f$ is inside the Triangle
   
     //Check if the observation point is strictly below the Triangle,
     double o_maxz = o.getZ();
@@ -266,9 +266,13 @@ double Triangle::setArea(double area, const Point& base )
       return false;
     } 
     //Calculate intersection point
-    Point p_intersect = intersectionPoint(o,l); 
+    pair<Point,double> p_intersect = intersectionPoint(o,l);
+    //If the scalar 'd' in 'o+dl', distance to intersect point, is negative -> intersection point is behind
+    if (p_intersect.second < 0.0){
+      return false;
+    }
     //Check if the point is inside Triangle
-    bool p_inside = insideShape(p_intersect);
+    bool p_inside = insideShape(p_intersect.first);
     if (p_inside == true){
       return true;
     }
@@ -277,7 +281,7 @@ double Triangle::setArea(double area, const Point& base )
     }
   }
   
-  Point Triangle::intersectionPoint(const Point& o, const PositionVector& l)const
+  pair<Point,double> Triangle::intersectionPoint(const Point& o, const PositionVector& l)const
   {
     /// \par Calculatation line - plane intersection
     ///
@@ -305,17 +309,19 @@ double Triangle::setArea(double area, const Point& base )
     Point l0(o);
     PositionVector p1(p0-l0);
     double d =  Dot(N,p1)/dot;
-    Point p_intersection = Point(PositionVector(l0)+(d*l));
-    return p_intersection;
+    Point p = Point(PositionVector(l0)+(d*l));
+    //cout << " Distance d " << d << endl;
+    pair<Point,double> p_d(p,d);
+    return p_d;
   }
 
   bool Triangle::insideShape(const Point& p)const
   {
-    /// \par Calculation point inside triangle
+    /// \par Calculation point inside Triangle
     ///
     /// Calculate the three angles between the line-plane intersection point \p p
-    /// and the triangle corner points. If the sum of the angles is 360 degrees, \f$2\pi\f$,
-    /// the point \p p  is inside triangle.
+    /// and the Triangle corner points. If the sum of the angles is 360 degrees, \f$2\pi\f$,
+    /// the point \p p  is inside Triangle.
     
     //Construct the vectors from intersection point to
     //triangle corners
