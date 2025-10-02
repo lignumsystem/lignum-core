@@ -1,8 +1,10 @@
 /// \example{lineno} Parallelogramexample.cc
 /// Test Parallelogram interface.
-/// To compile (on Mac) type. libcxxadt.a also compiled with clang++.
+/// To compile (on Mac) type: 
 ///
 ///       clang++  -DPARALLELOGRAM -I../include -L../lib -lcxxadt Parallelogram.cc ParallelogramExample.cc -o pgram
+///
+/// libcxxadt.a also compiled with clang++.
 /// \sa PrintPGram Intersection
 #include <string>
 #include <Parallelogram.h>

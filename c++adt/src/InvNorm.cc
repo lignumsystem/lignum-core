@@ -1,3 +1,5 @@
+///\example InvNorm.cc
+///Example for inverse of normal distribution
 #include <InvNorm.h>
 
 namespace cxxadt{

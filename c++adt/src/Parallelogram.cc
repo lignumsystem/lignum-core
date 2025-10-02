@@ -252,7 +252,7 @@ namespace cxxadt{
     /// Substituting \f$ P \f$ for the line equation in the plane equation gives \f$ (l_0 + d\hat{l}-p_0) \cdot \vec{N})=0 \f$.
     /// Expanding gives \f$(\hat{l} \cdot d\vec{N}) + (l_0-p0) \cdot \vec{N} = 0 \f$  and solving for \f$ d \f$ gives
     /// \f$ d = (p_0-l_0) \cdot \vec{N} / \hat{l} \cdot \vec{N} \f$.
-    /// When denominator \f$ \hat{l} \cdot \vec{N} != 0 \f$ we can solve for \f$ d \f$ and find the line-plane intersection point (Wikipedia).
+    /// When denominator \f$ \hat{l} \cdot \vec{N} \neq 0 \f$ we can solve for \f$ d \f$ and find the line-plane intersection point (Wikipedia).
     ///+ Geometric interpretation: when denominator \f$ \hat{l} \cdot \vec{N} = 0 \f$ then \f$ d \f$ is undefined. The line is perpendicular
     ///  plane normal and parallel with the plane. When the numerator is 0 the line is in the plane.
     ///  For our purposes (Parallelogram as a leaf model) we skip both of these cases.
