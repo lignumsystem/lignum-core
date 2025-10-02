@@ -1,44 +1,104 @@
-/*********************************************************************
- *The  class  LSystem provides  programming  interface  to L-system  *
- *rewriting of  the language L that lsystem.h  implements.  Note that*
- *neither lsys.h nor this  file  LSystem.h  are wrapped  with #infdef*
- *... #define ... #endif directives to prevent multiple inclusions of*
- *the header files. This is because both LSystem.h and lsystem.h must*
- *be  included several  times, once  for each  species of  the model.*
- *Multiple  decalarations and  definitions are  prevented by wrapping*
- *LSystem.h and lsys.h in namespaces.                             *
- *********************************************************************/
+/// \file LSystem.h
+/// \brief Application programming interface to L-systems.
+///
+///The  class  LSystem provides  programming  interface  to L-systems 
+///by rewriting of  the language L that *lsystem.h*  implements.
+///
+///Note that neither *lsys.h* nor this  file  *LSystem.h*  are wrapped  with
+/// \code{.cc}
+/// #infdef
+/// #define
+/// 
+/// #endif
+/// \endcode
+///directives to prevent multiple inclusions of the header files.
+///This is because both *LSystem.h* and *lsystem.h* must be included several times,
+///once  for each  species of the model implementation.
+///
+///Multiple  decalarations and definitions prevented by wrapping
+///*LSystem.h* and *lsys.h* in namespaces.                             
+ 
 #include <lsys.h>
 
+///\brief Left and Right context search in L-system string
 ProdCaller  ContextMatch(const LstringIterator& pos,CallerData& caller_data,int& prod);
 
-//The succstrg, the temporary  expanded string or 'storage', is common
-//within a species, but it is cleared after each derivation so it does
-//not prevent multiple individuals of  the species to be modelled.  It
-//only makes the program strictly sequential.
+///\brief The succstrg, the temporary  expanded string or 'storage'.
+///The \p succstrg is common within a species, but it is cleared
+///after each derivation so it does not prevent multiple individuals
+///of the species to be modelled.
+///\note The \p succstrg usage makes the L-systems evaluations strictly sequential.
 SuccessorStorage succstrg;
 
+///\brief Add new element to \p succstrg
+///\param pX The new element
+///\param size Size of the new element
 void _Add(const void* pX, int size)
 {
   succstrg.Add(pX, size);
 }
 
+///\brief Programing interface for L-system and Lignum tree structural development
+///\tparam TS Tree segment type
+///\tparam BUD Bud type
+///\tparam N Type name for structures or variables  passing information between Lignum and L-system
+///\tparam F Type name for information values in structures or variables
 template <class TS, class BUD, class N = LGMAD, class F=LGMdouble>
 class LSystem{
  public:
+  ///\brief Initialize L-system and evaluate Start axiom
  void start();
+ ///\brief L-system derivation
  void derive();
  int derivationLength();
-  void end();
-  void endEach();
+ ///\brief Evaluate End rule as a last step
+ void end();
+ ///\brief Evaluate EndEach rule after each LSystem::derive()
+ void endEach();
+ ///\brief Print L-system to s
+ ///\param arg if *true* Print module arguments.
  void print(bool arg=false);
+ ///\brief Update L-string with Lignum structure
+ ///\param t Lignum tree
+ ///\param argnum Number of variable arguments
+ ///\param[in] ... Parameter values from Lignum to L-string
  int lignumToLstring(Tree<TS,BUD>& t,int argnum = 0,...);
+ ///\brief lstringToLignum Update Lignum structure with L-string
+ ///\param t Lignum tree 
+ ///\param argnum Number of variable arguments
+ ///\param[in] ... Parameter values from L-string to Lignum 
  int lstringToLignum(Tree<TS,BUD>& t,int argnum = 0,...);
  int rootSystemToLstring(Tree<TS,BUD>& t,int argnum = 0,...);
  int lstringToRootSystem(Tree<TS,BUD>& t,int argnum = 0,...);
-  int prune(Tree<TS,BUD>& t,int argnum = 0,...);
-  template <class P,class I> 
-  int prune(Tree<TS,BUD>& t,P p,I& init,int argnum = 0,...){
+ ///\brief Prune dead branches.
+ ///
+ ///An axis or branch is dead if  the   buds  area   dead
+ ///and  none   of  its   segments  contain foliage.
+ ///After  the  pruning  update  the structure  of  LIGNUM  to L-string.
+ ///The algorithm is essentially the same as Lstring2Lignum.
+ ///\param t Lignum tree
+ ///\param argnum Number of variable arguments
+ ///\param[in] ... Parameter values from L-string to Lignum
+ ///\retval -1 Error
+ ///\retval 0 Normal exit
+ ///\post Lignum tree topology and L-string topology match
+ int prune(Tree<TS,BUD>& t,int argnum = 0,...);
+ ///\brief Prune tree from dead branches.
+ ///
+ ///As in prune(Tree&,int,...) but with AccumalateDown call 
+ ///\tparam P Functor type for AccumulateDown
+ ///\tparam I Initial value type for AcculateDown
+ ///\param t Lignum tree
+ ///\param p Functor for AccumulatDown
+ ///\param init Initial value for \p p
+ ///\param argnum Number of variable arguments
+ ///\param[in] ... Parameter values fron L-string to Lignum
+ ///\retval -1 Error
+ ///\retval 0 Normal exit
+ ///\pre AcumulateDown with \p p and \p init is called before prune(Tree&,int,...)
+ ///\post Lignum tree topology and L-string topology match
+ template <class P,class I> 
+ int prune(Tree<TS,BUD>& t,P p,I& init,int argnum = 0,...){
     va_list ap;
     vector<N> vav;
 
@@ -60,28 +120,95 @@ class LSystem{
     return prune(t,vav);
   }
  protected:
- //above ground part
+ ///\brief Lignum tree conversion to L-string.
+ ///
+ ////Entry point to conversion
+ ///\param t Lignum tree
+ ///\param vav Variable argument list. Parameters to be passed from Lignum to L-string
+ ///\retval -1 Error
+ ///\retval 0 Normal exit
  int lignum2Lstring(Tree<TS,BUD>& t, vector<N>& vav);
+ ///\brief Axis conversion to L-string
+ ///\param ls Axis list
+ ///\param current Current position in \p ls
+ ///\param ltr Current position in the L-string
+ ///\param vav Parameters to be passe from Lignum to L-string
+ ///\retval -1 Error
+ ///\retval 0  Normal exit
  int lignum2Lstring(list<Axis<TS,BUD>*>& ls, 
 		    typename list<Axis<TS,BUD>*>::iterator current, 
 		    LstringIterator& ltr, vector<N>& vav);
+ ///\brief Tree comprtment list conversion to L-string
+ ///\param ls Tree compartment list
+ ///\param current Current position in \p ls
+ ///\param ltr Current position in the L-string
+ ///\param vav Parameters to be passe from Lignum to L-string
+ ///\retval -1 Error
+ ///\retval 0  Normal exit
  int lignum2Lstring(list<TreeCompartment<TS,BUD>*>& ls,
 		    typename list<TreeCompartment<TS,BUD>*>::iterator current,
 		    LstringIterator& ltr, vector<N>& vav);
+ ///\brief L-string to Lignum tree conversion
+ ///
+ ///Entry point to conversion
+ ///\param t Lignum tree
+ ///\param vav Variable argument list. Parameters to be passed from Lignum to L-string
+ ///\retval -1 Error
+ ///\retval 0 Normal exit
  int lstring2Lignum(Tree<TS,BUD>& t, vector<N>& vav);
+ ///\brief L-string to Tree compartment list conversion 
+ ///\param ls Tree compartment list
+ ///\param current Current position in \p ls
+ ///\param tree Lignum tree
+ ///\param ltr L-string iterator
+ ///\param turtle_stack Stack of turtles for branches
+ ///\param vav Parameters to be passe from Lignum to L-string
+ ///\retval -1 Error
+ ///\retval 0  Normal exit
  int lstring2Lignum(list<TreeCompartment<TS,BUD>*>& ls,
 		    typename list<TreeCompartment<TS,BUD>*>::iterator current,
 		    Tree<TS,BUD>& tree,
 		    LstringIterator& ltr,
-		       stack<Turtle>& turtle_stack,vector<N>& vav);
+		    stack<Turtle>& turtle_stack,vector<N>& vav);
+ ///\brief L-string to Axis list conversion 
+ ///\param ls Tree compartment list
+ ///\param current Current position in \p ls
+ ///\param tree Lignum tree
+ ///\param ltr L-string iterator
+ ///\param turtle_stack Stack of turtles for branches
+ ///\param vav Parameters to be passe from Lignum to L-string
+ ///\retval -1 Error
+ ///\retval 0  Normal exit
  int lstring2Lignum(list<Axis<TS,BUD>*>& ls, 
 		    typename list<Axis<TS,BUD>*>::iterator current, 
 		    Tree<TS,BUD>& tree, LstringIterator& ltr, 
 		    stack<Turtle>& turtle_stack, vector<N>& vav);
+  ///\brief Entry point to prune Lignum tree
+  ///
+  ///Get the main axis and with the user given data in \p vav
+  ///start syncing Lignum and Lstring
+  ///\param t Lignum tree
+  ///\param vav Variable arguments for L-string
+  ///\retval -1 Error
+  ///\retval 0 Normal exit
   int prune(Tree<TS,BUD>& t, vector<N>& vav);
+  ///\brief Axis list pruning
+  ///\param ls Axis list
+  ///\param current Iterator to current Axis
+  ///\param ltr Iterator to current Axis in L-string
+  ///\param vav Variable argument list
+  ///\retval -1 Error
+  ///\retval 0 Normal exit
   int prune(list<Axis<TS,BUD>*>& ls, 
 	    typename list<Axis<TS,BUD>*>::iterator current, 
 	    LstringIterator& ltr, vector<N>& vav);
+  ///\brief Tree compartment list  pruning
+  ///\param ls Tree compartment list
+  ///\param current Iterator to current tree compartment
+  ///\param ltr Iterator to current Axis in L-string
+  ///\param vav Variable argument list
+  ///\retval -1 Error
+  ///\retval 0 Normal exit
   int prune(list<TreeCompartment<TS,BUD>*>& ls,
 	    typename list<TreeCompartment<TS,BUD>*>::iterator current,
 	    LstringIterator& ltr, vector<N>& vav);
@@ -108,7 +235,9 @@ class LSystem{
 			stack<Turtle>& turtle_stack, vector<N>& vav);
 
  private:
+  ///L-system string, status of the L-string after each derivation
   Lstring mainstring;
+  ///Derived string, will be resetted after L-system derivation
   Lstring derivedstring;
 };
 

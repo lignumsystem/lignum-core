@@ -1,6 +1,7 @@
 #ifndef TURTLE_H
 #define TURTLE_H
-
+/// \file Turtle.h
+/// \brief Implementation of the 3D turtle graphics
 #include <iostream>
 #include <mathsym.h>
 #include <Point.h>
@@ -10,50 +11,54 @@ using namespace std;
 using namespace cxxadt;
 
 
-// The  symbols the turtle understands are
-//    Turn(a)     rotation round turtle up by angle 'a'
-//    Pitch(a)    rotation round turtle left by angle 'a'
-//    Roll(a)     rotation round turtle heading by angle 'a'
-//    F(d)        move turtle forward distance 'd', create segment
-//    Fd(d,r,rtop)move turtle forward distance 'd', create segment
-//                that has length 'd', radius 'r' and top radius 'rtop'
-//    f(d)        move turtle forward distance 'd', do not create segment
-//    HRoll()     rotation round heading so that left is horizontal
-//                in world coordinates. Formally:  L = UpxH and U = HxL.
-//    Hrz()       rotations of turtle HLU round horizontal, Hrz = UpxH,
-//                so that turtle heading becomes horizontal in world coordinates.
-//    Up()        rotations of turtle HLU round horizontal, so that turtle up
-//                is pointing directly upwards in  world coordinates
-//    HDir(a)     set the turtle heading to angle 'a' measured from world up
-//                by rotating turtle HLU round horizontal
-//    HUp(a)      conditionally set the turtle heading to angle 'a'
-//                measured from world up: rotate turtle HLU round horizontal
-//                if and only if turtle heading is pointing downwards
-//                in world coordinates
-//    H(x,y,z)    query turtle heading
-//    L(x,y,z) 	  query turtle left
-//    U(x,y,z)    query turtle up
-//                Note that  lstringToLignum updates the  arguments of
-//                H,L,U. After  derive arguments have  values they are
-//                given or undefined.
-//    MoveTo(x,y,z) set turtle to given position Point(x,y,z), orientation not changed
-//    GetPoint(x,y,z) get the position of the turtle (global coordinates)
-//    SetHeadUp(hx,hy,hz,ux,uy,uz) 
-//                  set turtle heading to PositionVector(hx,hy,hz) and
-//                  turtle up to PositionVector(ux,uy,uz). The vectors
-//                  need  not  be   normalized  (they  are  normalized
-//                  here). Turtle left is defined as Cross(turtle_up,heading).
-//                  The turtle position is not changed.
-//                  The module is ignored if
-//                  1.  the angle  between heading  and up  is  not 90
-//                  degrees (Dot product > R_EPSILON)
-//                  2. the length of either of the two vectors is less than R_EPSILON
-//   SetHead(hx,hy,hz)
-//                  set  turtle  heading to  PositionVector(hx,hy,hz),
-//                  the  turtle left will  be Cross(global_up,heading)
-//                  and the turtle up will be Cross(heading,left)
-//As a reminder U = H x L, L = U x H and H = L x U
-//See also LsysteI.h for the implementation of the symbols
+///\brief Turtle graphics
+///
+/// 3D Turtle graphics is a vector graphics where the
+/// cursor (*turtle*) moves in 3D Euclidian space.
+///
+/// The  symbols the turtle understands are:
+/// \arg \c Turn(a)     rotation round turtle up by angle 'a'
+/// \arg \c   Pitch(a)    rotation round turtle left by angle 'a'
+/// \arg \c   Roll(a)     rotation round turtle heading by angle 'a'
+/// \arg \c   F(d)        move turtle forward distance 'd', create segment
+/// \arg \c   Fd(d,r,rtop) move turtle forward distance 'd', create segment
+///                that has length 'd', radius 'r' and top radius 'rtop'
+/// \arg \c   f(d)        move turtle forward distance 'd', do not create segment
+/// \arg \c   HRoll()     rotation round heading so that left is horizontal
+///                in world coordinates. Formally:  L = UpxH and U = HxL.
+/// \arg \c   Hrz()       rotations of turtle HLU round horizontal, Hrz = UpxH,
+///                so that turtle heading becomes horizontal in world coordinates.
+/// \arg \c   Up()        rotations of turtle HLU round horizontal, so that turtle up
+///                is pointing directly upwards in  world coordinates
+/// \arg \c   HDir(a)     set the turtle heading to angle 'a' measured from world up
+///                by rotating turtle HLU round horizontal
+/// \arg \c   HUp(a)      conditionally set the turtle heading to angle 'a'
+///                measured from world up: rotate turtle HLU round horizontal
+///                if and only if turtle heading is pointing downwards
+///                in world coordinates
+/// \arg \c   H(x,y,z)    query turtle heading
+/// \arg \c   L(x,y,z) 	  query turtle left
+/// \arg \c   U(x,y,z)    query turtle up
+///                Note that  lstringToLignum updates the  arguments of
+///                H,L,U. After  derive arguments have  values they are
+///                given or undefined.
+/// \arg \c   MoveTo(x,y,z) set turtle to given position Point(x,y,z), orientation not changed
+/// \arg \c   GetPoint(x,y,z) get the position of the turtle (global coordinates)
+/// \arg \c   SetHeadUp(hx,hy,hz,ux,uy,uz) set turtle heading to PositionVector(hx,hy,hz) and
+///                  turtle up to PositionVector(ux,uy,uz). The vectors
+///                  need  not  be   normalized  (they  are  normalized
+///                  here). Turtle left is defined as Cross(turtle_up,heading).
+///                  The turtle position is not changed.
+///                  The module is ignored if
+///                  1.  the angle  between heading  and up  is  not 90
+///                  degrees (Dot product > R_EPSILON)
+///                  2. the length of either of the two vectors is less than R_EPSILON
+/// \arg \c  SetHead(hx,hy,hz) set  turtle  heading to  PositionVector(hx,hy,hz),
+///                  the  turtle left will  be Cross(global_up,heading)
+///                  and the turtle up will be Cross(heading,left)
+///
+///As a reminder U = H x L, L = U x H and H = L x U
+///See also LSystemI.h for the implementation of the symbols
 class Turtle{
   friend ostream& operator << (ostream& os, const Turtle& t);
   friend const PositionVector& GetHeading(const Turtle& t);
