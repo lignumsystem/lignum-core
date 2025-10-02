@@ -1,6 +1,7 @@
 #ifndef XMLDOMTREEWRITER_H
 #define XMLDOMTREEWRITER_H
-
+/// \file XMLDomTreeWriter.h
+/// \brief Write Lignum DOM document to XML file
 //#include <list>
 //#include <QApplication>
 #include <QDomDocument>
@@ -9,17 +10,12 @@
 #include <string>
 #include <XMLDomTreeBuilder.h>
 
-
-/// \file XMLDomTreeWriter.h
-/// \brief Lignum tree to its XML representation.
-///
-/// Convert Lignum tree to its XML representation. Save the XML to a file
-/// or return as STL string.
-
 using namespace Lignum;
 using namespace cxxadt;
 
-/// Convert Lignum tree to XML. Save the XML to a file or return the XML as STL string
+namespace lignumxml{
+///\brief Convert Lignum tree to XML representation.
+///Save the XML representation to a file or return the XML as STL string
 template <class TS, class BUD, class S = cxxadt::Ellipse>
 class XMLDomTreeWriter
 {
@@ -60,6 +56,6 @@ void WriteTreeToXML(int argc, char* argv[],Tree<TS,BUD>& t)
     cout <<  "WriteTreeToXML: no output file" <<endl;
   }
 }
-
+}
 #include <XMLDomTreeWriterI.h>
 #endif

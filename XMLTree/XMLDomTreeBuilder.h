@@ -1,7 +1,7 @@
 #ifndef XMLDOMTREEBUILDER_H
 #define XMLDOMTREEBUILDER_H
-///\file XMLDomTreeBuilder.h
-///\brief  Class for building a DOM-document of a given Tree-object.
+/// \file XMLDomTreeBuilder.h
+/// \brief XML DOM document for a Lignum tree
 //#include <list>
 //#include <QApplication>
 #include <QDomDocument>
@@ -9,11 +9,10 @@
 #include <Kite.h>
 #include <Lignum.h>
 //#include <string>
-
 using namespace Lignum;
 using namespace cxxadt;
 
-
+namespace lignumxml{
 ///\brief Class for building an XML DOM document of a given Lignum Tree-object.
 ///
 ///XML DOM document is a Qt data structure representation of a XML-document, which can be
@@ -952,5 +951,5 @@ void XMLDomTreeBuilder<TS,BUD,S>::addBroadLeafAttributeNode(QDomElement& node, Q
   object_index++;
   node.appendChild(rootNode);
 }
-
+}
 #endif

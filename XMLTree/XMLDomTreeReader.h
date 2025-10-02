@@ -1,6 +1,7 @@
 #ifndef XMLDOMTREEREADER_H
 #define XMLDOMTREEREADER_H
-
+/// \file XMLDomTreeReader.h
+/// \brief Read Lignum tree from an XML file
 #include <list>
 #include <QDomDocument>
 #include <Lignum.h>
@@ -12,16 +13,15 @@
 
 using namespace Lignum;
 using namespace cxxadt;
-
-/** 
- * Class for reading a XML-file to a Tree-object. The XML-file
- * must have correct structure (i.e. it is written using the
- * XMLDomTreeWriter class) for the reader to function.
- * 
- * Users must themselves create a empty Tree-object and pass
- * it to the  of this class. Tree is then written
- * by calling the readXMLToTree-function of the XMLDomTreeReader-object.
- */
+namespace lignumxml{
+///\brief Class for reading a XML-file to a Tree-object.
+///The XML-file must have correct structure (i.e. it is
+///written using the XMLDomTreeWriter class) for the reader
+///to function.
+///
+//Users must themselves create a empty Tree-object and pass
+///it to the  of this class. Tree is then written
+///by calling the readXMLToTree-function of the XMLDomTreeReader-object.
 template <class TS, class BUD, class S = cxxadt::Ellipse>
 class XMLDomTreeReader
 {
@@ -1921,7 +1921,7 @@ void XMLDomTreeReader<TS,BUD,S>::parseEllipseBroadLeafAttributes(QDomNode& node,
     break;
   }
 }
-
+}
 
 #endif
   
