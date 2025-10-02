@@ -1,3 +1,5 @@
+/// \file Firmament.h
+/// \brief Standard overcast sky
 #ifndef FIRMAMENT_H
 #define FIRMAMENT_H
 

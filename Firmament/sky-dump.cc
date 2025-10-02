@@ -1,3 +1,5 @@
+/// \file sky-dump.cc
+/// \brief No longer in use
 #include <MineSet.h>
 
 #ifdef SKYDUMP

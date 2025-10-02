@@ -1,3 +1,5 @@
+## \file firmamentplot.py
+## \brief Visualize radiant intensity in Firmament sectors 
 import argparse
 import numpy as np
 import matplotlib.pyplot as plt

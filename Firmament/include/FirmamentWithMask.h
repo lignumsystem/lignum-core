@@ -1,3 +1,5 @@
+/// \file FirmamentWithMask.h
+/// \brief Standard ovecast sky with gap model
 #ifndef FIRMAMENT_WITH_MASK
 #define FIRMAMENT_WITH_MASK
 

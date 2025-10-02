@@ -1,3 +1,7 @@
+## \file setup.py
+## \brief Python extension package for sky::Firmament
+##
+##Python interface is defined in Firmament.pyx and Firmament.pxd files 
 from setuptools import Extension, setup
 from Cython.Build import cythonize
 
@@ -9,7 +13,7 @@ sourcels=["Firmament.pyx"]
 #extra_compile_args=["-I. "]
 
 #The Python extension package for Firmament C++ class.
-#The first name pyfirmament is for project, how it is listed on PyPi if installed.
+#The first name *pyfirmament* is for the project, how it is listed on PyPi if installed.
 setup(name="pyfirmament",
       ext_modules = cythonize(
           Extension(

@@ -1,3 +1,5 @@
+/// \file interlen.h
+/// \brief Line-voxel intersection length
 #ifndef _INTERLEN_H_
 #define _INTERLEN_H_
 
@@ -8,17 +10,19 @@ using namespace cxxadt;
 
 int startvoxel(float a, float b);
 
-/* Reports line-voxel intersection length for each voxel a line
- * intersects. Parameters v and w specify line end points.  A
- * voxel (v1, v2, v3) confines all such locations (x1, x2, x3) for
- * which vi <= xi < vi + 1, i = 1, 2, 3.  For each intersection
- * functor setLen is called with voxel coordinates and 
- * voxel coordinates and intersection length. This is really a
- * wrapper of InterLen constructor. */
-
-
-/* This class exists only to allow the members funtions to share
-   common data. */
+///\brief Line-voxel intersection
+///
+///InterLen reports line-voxel intersection length
+///for each voxel a line intersects.
+///
+///Parameters v and w specify line end points. 
+///A voxel (v1, v2, v3) confines all such locations (x1, x2, x3) for
+///which vi <= xi < vi + 1, i = 1, 2, 3.  For each intersection
+///functor setLen is called with voxel coordinates and 
+///voxel coordinates and intersection length. This is really a
+///wrapper of InterLen constructor. 
+///\note This class exists only to allow the members funtions to share
+///common data.
 template<class T>
 class InterLen
 {
