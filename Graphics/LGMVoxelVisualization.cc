@@ -6,8 +6,7 @@
 #include <vector>
 
 
-namespace Lignum
-{
+namespace voxelspace{
 
 
   // Function visualizes given VoxelSpace. Background color 

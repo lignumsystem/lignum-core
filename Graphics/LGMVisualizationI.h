@@ -5,7 +5,7 @@
 #include <WrapperBase.h>
 #include <CTexture.h>
 
-namespace Lignum{
+namespace voxelspace{
 
 
 

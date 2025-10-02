@@ -21,7 +21,7 @@ extern CTexture stemtexture;
 
 extern bool several_species;
 
-namespace Lignum{
+namespace voxelspace{
 
 template <class TS,class BUD>
   int VisualizeLGMTreesWithVoxelSpace(vector<Tree<TS,BUD> *> trees, 

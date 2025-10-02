@@ -1,4 +1,3 @@
-
 #ifndef LGMVISUALIZATION_H
 #define LGMVISUALIZATION_H
 
@@ -23,7 +22,7 @@ struct LoadedTexture
     int number;
 };
 
-namespace Lignum{
+namespace voxelspace{
 enum STEMMODE { SOLID, WIREMODEL };
 
  class MakeWireModelLists{

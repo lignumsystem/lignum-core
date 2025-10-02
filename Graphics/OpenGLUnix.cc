@@ -3,7 +3,7 @@
 #include "OpenGLUnix.h"
 #include <Tree.h>
 using namespace Lignum;
-
+using namespace voxelspace;
 #include <list>
 #include <algorithm>
 

@@ -4,10 +4,11 @@
 
 using namespace Lignum;
 
+namespace voxelspace{
+  
 LGMVisualization* LGMVisualization::active_visualization = NULL;
 
-namespace Lignum
-{
+
 
   void LGMTextOutput(double x, double y, double z,void* font,const string& str){
     int len, i;
@@ -888,12 +889,6 @@ void LGMVisualization::drawTrees()
 						 settings.cam_z));
 }
 
-
-
-
-
-
- 
 }
 
 

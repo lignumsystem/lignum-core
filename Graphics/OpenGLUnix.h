@@ -37,11 +37,11 @@ void UseTgaTexture(char *filename);
 
 void StartVisualization();
 
-void AddVoxelSpaceToVisualization(VoxelSpace *vs);
 
-namespace Lignum{
-  
-  
+namespace voxelspace{
+
+  void AddVoxelSpaceToVisualization(VoxelSpace *vs);
+
   template <class TS,class BUD>
     int VisualizeLGMTreesWithVoxelSpace(vector<Tree<TS,BUD> *> trees, 
 					vector<SmallCube> cubes);

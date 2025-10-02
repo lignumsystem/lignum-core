@@ -9,8 +9,7 @@
 
 #include <VoxelSpace.h>
 
-namespace Lignum
-{
+namespace voxelspace{
 
 class LGMVoxelVisualization
 {
