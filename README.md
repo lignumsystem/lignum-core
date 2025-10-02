@@ -4,23 +4,20 @@ consist of the following seven subprojects that implement
 the ubiquitous libraries and binaries in The LIGNUM System:
 
 + c++adt: basic ubiquitous classes
-+ Firmamanet: Standard overcast sky (SOC) implementation
-+ stl-lignum: Implementatetation of the elementary tree units in The LIGNUM System
++ Firmament: Standard overcast sky (SOC) implementation
++ stl-lignum: Implementation of the elementary tree units and generic algorithms in The LIGNUM System
 + stl-voxelspace: VoxelSpace implementation
 + LEngine: L-system implementation
 + XMLTree: XML representation of a LIGNUM tree
-
-These six subprojects are used to build applications in The LIGNUM System. The 
-seventh subproject is *qt-workbench*:
-
 + qt-workbench: The LignumWb GUI application
 
-The `LignumWb` application can be used to visualize simulated trees and inspect 
-the content of the Lignum XML file.
+These subprojects are used to build applications in The LIGNUM System. The 
+*qt-workbench* implements `LignumWb` application to visualize simulated trees 
+and inspect the content of a Lignum XML file.
 
 ## Building lignum-core with CMake
 The *lignum-core* repository  and its subprojects (directories) have *CMakeLists.txt* files to build 
-*lignum-core* libraries and binaries.  The CMake build process for Unix Makefile system is as follows:
+*lignum-core* libraries and binaries. The CMake build process for Unix Makefile system is as follows:
 
 	git clone https://github.com/lignumsystem/lignum-core.git
 	cd lignum-core
@@ -32,7 +29,18 @@ The *lignum-core* repository  and its subprojects (directories) have *CMakeLists
 
 ### qt-workbench
 The `LignumWb` GUI is an independent application to visualize Lignum trees and inspect their status.
-To build `LignumWb` see the README.md file in qt-workbench.
+To build `LignumWb` see the *README.md* file in the *qt-workbench* project.
+
+#### Qt4 
+The `LignumWb` workbench has been implemented with Qt4. MacPorts has only Intel binary.
+Therefore Rosetta2 must be installed for Apple Silicon processors:
+	
+	sudo softwareupdate --install-rosetta
+	sudo port install qt4-mac
+
+>[!NOTE]
+>`LignumWb` is becoming obsolete. We are making a transition to *LignumVTK* to visualize trees and 
+>forest stands with ParaView.
 
 ## Building Lignum applications with CMake
 The build process for the applications is also CMake based. Download the software from GitHub under the 
@@ -40,15 +48,15 @@ lignum-core directory, create the build directory and build the software. The ap
 have an accompanying README file and CMakeLists.txt for application specific compilation and usage details.
 
 ## LignumVTK
-The LigumWb in qt-workbench is a Qt4 application. It has become difficult to update and maintain the project.
-To upgrade it to modern Qt5 and Qt6 would require substantial amount of time and work. Because of these impediments
-we are making a transition from qt-workbench to LignumVTK project to visualize trees and forest plots with ParaView.
-See LignumVTK for details.
+The `LignumWb` GUI program has become difficult to update and maintain.
+To upgrade it from Qt4 to modern Qt5 or Qt6 application would require substantial amount of time and work. 
+Because of these impediments we are making a transition from the *qt-workbench* to the *LignumVTK* project 
+to visualize trees and forest plots with [ParaView](https://www.paraview.org). See LignumVTK for details.
 
 ## Operating system  requirements
 The LIGNUM System applications are  developed with on macOS. 
 Simulations are also made on Linux servers. We keep the 
-macOS up to date, using the most recent version practicably available.
+macOS up to date, using and supporting the most recent version practicably available.
 
 ## Software requirements
 The LIGNUM System software is being developed with C++ together 
@@ -59,7 +67,7 @@ is in header file comments in Doxygen document generator format.
 
 [MacPorts](https://www.macports.org) is used to install and update 
 necessary software to build applications. The software installation 
-instructions that follow are given with the `port` command 
+instructions that follow in the examples are given with the `port` command 
 in macOS Terminal.
 
 ### Xcode
@@ -84,19 +92,10 @@ can be saved in XML format implemented with Qt5 cross-platform software developm
 	sudo port install qt5
 	sudo port install hdf5
 
-### Qt4 
-The `LignumWb` workbench has been implemented with Qt4. MacPorts has only Intel binary.
-Therefore Rosetta2 must be installed for Apple Silicon processors:
-	
-	sudo softwareupdate --install-rosetta
-	sudo port install qt4-mac
-
-To build `LignumWb` see the README.md file in qt-workbench.
-
 ### Doxygen 
-Documentation of the *lignum-core* and applications  will be done directly in the software 
-and typsetted with Doxygen. The documentation uses also LaTeX for typesetting 
-mathematical notations.
+Documentation of the *lignum-core* and The LIGNUM System applications 
+will be done directly in the software and typsetted with Doxygen. 
+The documentation uses LaTeX for typesetting mathematical equations and notations:
 
 	sudo port install doxygen +qt5
 	sudo port install doxygen-launcher
@@ -105,22 +104,24 @@ mathematical notations.
 	sudo port install emacs-mac-app
 
 The `doxygen-launcher` installs `doxywizard` which is a GUI editor for Doxygen 
-configuration files called *Doxyfile*s. Emacs is a popular text editor in software engineering. 
+configuration files called *Doxyfiles*. Doxygen documentations use plain LaTeX 
+mathematical environment only, not external packages such as *amstex*. 
+Emacs is a popular text editor in software engineering. 
 
-The documentation uses plain LaTeX mathematical environment only, not external packages such as *amstex*. 
-
-To produce Doxygen software documentation for lignum-core:
+To produce Doxygen software documentation for *lignum-core*:
 
 	doxygen Doxyfile 2> errors.txt
 	open  DoxygenDoc/html/index.html
 
-Doxyfiles are configured so that the HTML version of the document appears under
-DoxygenDoc directory. This convention applies to The LIGNUM System applications too. 
+In general project Doxyfiles are configured so that the HTML version of a document appears under
+*DoxygenDoc* directory. 
 
 ### Python and R
 #### Python
-Some projects implement Python packages and can use for example Python `matplotlib`  
-to visualize results. From the Terminal command line type:
+Some projects implement Python packages from C++ software and use 
+for example Python `matplotlib`  package to visualize results or data structures. 
+To install Python using Terminal command line, in the *lignum-core* 
+directory type the following:
 
 	sudo port install python312
 	/opt/local/bin/python3.12 -m venv ~/venv/lignumsystem
@@ -128,29 +129,42 @@ to visualize results. From the Terminal command line type:
 	(lignumsystem) pip install -r requirements.txt
 
 These instructions install python3.12, create Python virtual environment and install
-Python software in *requirements.txt*. The Terminal prompt prefix *(lignumsystem)* tells the 
-Python virtual envronment is active. In general to create a Python package from a C++ software 
-defined in *setup.py* file:
+Python software enumerated in the *requirements.txt* file covering packages used in The LIGNUM System projects. 
+The Terminal prompt prefix *(lignumsystem)* tells the corresponding Python virtual environment is active. 
+
+In general to create a Python package from a C++ software 
+defined in a *setup.py* file:
 	
 	(lignumsystem) python3 setup.py build_ext --inplace
 	
-See instructions for each use case.
+See detailed instructions for each use case.
 
 > [!TIP]
-> The Python virtual environment is installed in *venv* directory under home directory.
-> In this way the virtual environments are collected in one place.
+> The *lignumsystem* Python virtual environment is installed under home directory in the *venv* directory
+> where additional virtual environments can be installed and found in one place.
 
 #### R
 [RStudio](https://posit.co/products/open-source/rstudio/) is a popular choice for R installation.
-R has its own package management system. The [tidyverse](https://www.tidyverse.org) is collection of R packages 
-for data science. To install tidyverse in R:
+R has its own package management system. The [tidyverse](https://www.tidyverse.org) is a collection of R packages 
+for data science. To install `tidyverse` in R:
 	
 	install.packages("tidyverse")
 
-R is used in data analysis in The Lignum System. See instructions for each use case.
+R is used in data analysis in The LIGNUM System. See instructions for each use case.
 
 ### Git
-See the .gitignore file that can be used with The LIGNUM System projects. 
+XCode installs `git`. However, it usually lacks behind the mainstream version
+available (or close to it) in MacPorts:
+	
+		sudo port install git
+		
+See the *.gitignore* file in *lignum-core* that can be used with The LIGNUM System projects. 
+
+### ParaView
+MacPorts shows poor port health for ParaView (i.e. it is likely not in working order).
+Install ParaView from [ParaView](https://www.paraview.org) home page.
+
+---
 
 ## Publications 
 To cite, please use:
