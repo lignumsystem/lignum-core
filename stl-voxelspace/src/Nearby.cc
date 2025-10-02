@@ -26,7 +26,7 @@
 //Output: proportion  left of radiant intensity  after passing through
 //surrounding forest (i.e. no shading = 1)
 
-
+namespace voxelspace{
 extern int lage;
 
 
@@ -81,3 +81,4 @@ double NearbyShading(const Point& out, const PositionVector& direction, double H
   //else 
       return ext;
 }
+}//end namespace voxelspace

@@ -1,5 +1,6 @@
 #include <VOBookKeeper.h>
 
+namespace voxelspace{
 long_size VOBookKeeper::newTag()
 {
   long_size tmp = tag;
@@ -37,3 +38,4 @@ void VOBookKeeper::initVector()
 {
   v.resize(tag,false);
 }
+}//end namespace voxelspace

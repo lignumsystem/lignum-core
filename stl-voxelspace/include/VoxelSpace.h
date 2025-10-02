@@ -1,3 +1,6 @@
+/// \file VoxelSpace.h
+/// \brief  Voxel space (needs clean-up)
+/// \todo Needs clean-up 
 #ifndef VOXELSPACE_H
 #define VOXELSPACE_H
 
@@ -12,7 +15,10 @@
 #include <ForestDescriptor.h>
 #include <Firmament.h>
 #include <Nearby.h>
-namespace Lignum {
+
+///\brief Implementation of 3D VoxelSpace for radiation calculation
+///\todo Documentation for classes  and functions in voxelspace
+namespace voxelspace {
 
 struct VoxelMovement
 {

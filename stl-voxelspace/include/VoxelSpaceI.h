@@ -1,13 +1,19 @@
+/// \file VoxelSpaceI.h
+/// \brief Voxel space implementation (needs clean-up)
+///
+/// Insert foliage as aggregate foliage density data in Voxel space or
+/// insert tree segments and leaves as geometric voxel objects.
+/// \todo Needs clean-up
 #ifndef VOXELSPACEI_H
 #define VOXELSPACEI_H
 
-namespace Lignum {
+namespace voxelspace {
 inline
 LGMdouble GetValue(const VoxelSpace& s,VAD name){
     if (name == LGAkb)
         return s.k_b;
     else
-        cerr << "GetValue(vs,name) unknown name " << name <<endl;
+        cerr << "GetValue(const VoxcelSpace& vs,VAD name) unknown name " << name <<endl;
     return s.k_b;
 }
 //First CfTree & CfTreeSegment==========================
@@ -110,18 +116,24 @@ operator ()(TreeCompartment<TS,BUD>* tc)const
     return tc;
 }
 
-//When 'copying'  the tree to voxel  space, we cannot  in the single
-//tree case use the segments  themselves; they are pointers and each
-//time  we change the  segment location  previous insertion  will be
-//lost. Instead  we need a  CfCylinder VoxelObject that has  all the
-//information  of the  segment to  calculate the  shading  (i.e. the
-//attenuation of light)
-//'d': the direction to the new location, NOTE it is assumed |d|=1
-//'t': the distance to the new location
-//'beam_start': position  on the segment [0:1] where  the light beam
-//              starts (needed to avoid comparison of a segment with
-//              itself)
-//parts: number of parts the segment will be divived
+///\brief Insert coniferous tree segment as geomtric voxel object in
+///voxel space
+///
+///When the tree to voxel space, we cannot  in the single
+///tree case use the segments  themselves; they are pointers and each
+///time  we change the  segment location  previous insertion  will be
+///lost. Instead  we need a  CfCylinder VoxelObject that has  all the
+///information  of the  segment to  calculate the  shading  (i.e. the
+///attenuation of light)
+///\param s Voxel space
+///\param ts Coniferous tree segment 
+///\param d Direction to the new location
+///\param t Distance to the new location
+///\param beam_start Relatiove position  on the segment [0:1] where  the light beam
+///                   starts. Needed to avoid comparison of a segment with
+///                   itself.
+///\param parts Number of \p parts the segment will be divived into
+///\pre \f$ |d|=1 \f$
 template <class TS>
 void InsertCfVoxelObject(VoxelSpace& s, const TS& ts,
                          const PositionVector& d,
@@ -268,33 +280,35 @@ public:
         return;
     }
 private:
-    VoxelSpace& s;//voxel space
-    const PositionVector& d;//direction to the location of the leaf
-    double t; //distance to the location of the leaf
-    int parts;//number of points on the  edge of ellipse user wants to
-    //use when inserting the leaf into space
-    bool leaf;//insert the leaf itself too
+    VoxelSpace& s;///< Voxel space
+    const PositionVector& d;///< direction to the location of the leaf
+    double t; ///< Distance to the location of the leaf
+    int parts;///< number of points on the  edge of ellipse user wants to
+    bool leaf;///< Insert the leaf itself too
 };
 
 
-//Insert Ellipse leaves into  voxel space as HwEllipse voxel objects
-//'d': the direction  to the new location, NOTE  it is assumed |d|=1
-//'t': the distance to  the new location
-//'beam_start':  for  broadleaf  trees  this  is  dummy, needed  to
-//               maintain  the overloaded interface with conifers.
-//parts: for broadleaf trees the number of points on the boundary of
-//the ellipse checked
-//leaf: insert the leaf itself too
+///\brief Insert hardwood species leaves into  voxel space as HwEllipse voxel objects
+///
+///\param s Voxel space
+///\param ts Tree segment
+///\param d Direction  to the new location, 
+///\param parts  For broad leaf trees the number of points on the boundary of
+///              the ellipse checked
+///\param l Distance to  the new location        
+///\param leaf Insert the leaf itself too
+///\pre \f$ |d|=1 \f$
+///\note Ellipse leaf implemented
 template <class TS,class BUD,class S>
 void InsertHwVoxelObject(VoxelSpace& s,HwTreeSegment<TS,BUD,S>& ts,
                          const PositionVector& d,
-                         double t,int parts, bool leaf)
+                         double l,int parts, bool leaf)
 {
     //To expand to Triangle leaves, take out the first leaf. Check its
     //type (Triangle  or Ellipse)  and call either  InsertHwEllipse or
     //InsertHwTriangle)
     for_each(GetLeafList(ts).begin(),GetLeafList(ts).end(),
-             InsertHwEllipse(s,d,t,parts,leaf));
+             InsertHwEllipse(s,d,l,parts,leaf));
 }
 
 template <class TS,class BUD>

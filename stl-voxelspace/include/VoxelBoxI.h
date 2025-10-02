@@ -1,7 +1,10 @@
+/// \file VoxelBoxI.h
+/// \brief Voxel box implementation (needs clean-up)
+/// \todo Needs clean-up
 #ifndef VOXELBOXI_H
 #define VOXELBOXI_H
 
-namespace Lignum {
+namespace voxelspace {
 
 
 //

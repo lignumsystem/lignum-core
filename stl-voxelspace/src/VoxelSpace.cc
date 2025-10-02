@@ -17,7 +17,7 @@ extern float cam_z;
 //used in sensitivity analysis for calculatePoplarLight
 //extern int gradseed;
 
-namespace Lignum {
+namespace voxelspace {
 
 // Constructor
 //

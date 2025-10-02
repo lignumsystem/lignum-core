@@ -3,10 +3,11 @@
 
 #include <LGMSymbols.h>
 using namespace Lignum;
-///\file ForestDescriptor.h 
-///\brief Descriptive stand level statistics 
+namespace voxelspace{
+/// \file ForestDescriptor.h 
+/// \brief Descriptive stand level statistics 
 ///
-///Collect descriptive statistics from the forest stand, i.e. voxel space.
+///Collect descriptive stand level metrics from the the voxel space.
 
 ///ForestDescriptor collects descriptive statistics and indices for the
 ///forest in the voxel space. The natural place to insert data.
@@ -89,5 +90,5 @@ inline double GetValue(const ForestDescriptor& fd, LGMAD name)
   return 0.0;
 }
     
-
+}
 #endif

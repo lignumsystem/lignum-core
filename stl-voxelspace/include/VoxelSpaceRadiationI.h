@@ -1,19 +1,30 @@
+/// \file VoxelSpaceRadiationI.h
+/// \brief  Radiation calculations implementation
 #ifndef VOXELSPACERADIATION_H
 #define VOXELSPACERADIATION_H
 #include <CompareLeaves.h>
-//The    multiplicative     extinction    coeffiecients.    Used    in
-//DiffuseVoxelSpaceRadiation.
+namespace voxelspace{ 
+///\brief Calculate extinction coefficient
+///
+///The multiplicative extinction coeffiecients.
+///Used in DiffuseVoxelSpaceRadiation.
+/// \sa voxelspace::DiffuseVoxelSpaceRadiation
 class AccumulateExtinction{
 public:
   AccumulateExtinction(VoxelSpace& vspace):vs(vspace){}
+  ///\brief Extinction coefficient in a voxel
+  ///\param tau Extinction coeffient
+  ///\param vm Light bem path in voxel space
+  ///\retval tau New extinction coefficient after attenuation in \p vm  
   double operator()(double tau,VoxelMovement& vm){
     double tau_box = vs.voxboxes[vm.x][vm.y][vm.z].extinction(vm.l); 
     tau = tau*tau_box;
     return tau;
   }
-  VoxelSpace& vs;
+  VoxelSpace& vs;///< Voxel space
 };
 
+///\brief 
 class AccumulatePairwiseExtinction{
 public:
   double operator()(double t,VoxelMovement& vm){
@@ -31,7 +42,15 @@ public:
 /* }; */
 
 
-
+///\brief Absorbed radiation for coniferous
+///
+///\tparam Confierous tree segment
+///\tparam Bud
+///\param ts Coniferous segment
+///\param f Firmament
+///\param s Absorbed radiation in each sky sector
+///\param K Extinction as  function  of inclination (Oker-Blom and Smolander)
+///\return Absorbed radiation from all sectors
 template <class TS,class BUD>
 class AbsorbedRadiation{
 public:
@@ -91,14 +110,15 @@ public:
   }
 };
 
-
-//Use     Firmament::diffuseForestRegionRadiationSum    to    describe
-//surrounding  plants.   The  documentation  is  in  Firmament.cc  but
-//REMEMBER to  create file 'fdensity.fun' (exact this  name). The file
-//has the stand  density as a function of stand  age.  Usage is simply
-//ForEach(t,DiffuseForestRadiation<TS,BUD>(Hc,La,K)), where  Hc is the
-//height  of the crown  base, La  is leaf  area (sf*Wf)  and K  is the
-//extinction from Kelllomaki (K(0.2) is somewhat good approximate).
+///\brief Absorbed radiation for coniferous tree segment in homogenous forest
+///
+///Use     Firmament::diffuseForestRegionRadiationSum    to    describe
+///surrounding  trees.   The  documentation  is  in  Firmament.cc  but
+///remember to  create file 'fdensity.fun' (exact this  name). The file
+///has the stand  density as a function of stand  age.  Usage is simply
+///ForEach(t,DiffuseForestRadiation<TS,BUD>(Hc,La,K)), where  Hc is the
+///height  of the crown  base, La  is leaf  area (sf*Wf)  and K  is the
+///extinction from Kelllomaki (K(0.2) is somewhat good approximate).
 template <class TS,class BUD>
 class DiffuseForestRadiation:public AbsorbedRadiation<TS,BUD>{
 public:
@@ -160,38 +180,49 @@ public:
     return;
   }//end operator
 private:
-  VoxelSpace& vs;
-  //Compute hc and la once before calculating forest light
-  double hc;//crown limit
-  double la;//foliage area of the tree: sf*Wf
-  const ParametricCurve& K;//extinction as a function of inclination (from Kellomaki) 
-  double density;//Forest density trees/ha
-  double sp;//start point of the light beam
+  VoxelSpace& vs;///< Voxel space
+  ///Compute hc and la once before calculating forest light
+  double hc;///< Crown limit
+  double la;///< Foliage area of the tree: sf*Wf
+  const ParametricCurve& K;///< Extinction as a function of inclination (from Kellomaki) 
+  double density;///< Forest density trees/ha
+  double sp;///< Start point of the light beam
 };
 
-//PairwiseVoxelSpaceRadiation calculates  the extinction of  the light
-//rays  through  the voxel  space  beginning  from  the segment  point
-//'sp'=[0:1]  (e.g. 0.5  is the  midpoint  of the  segment) using  the
-//methods  in Eco  Mod  98  to calculate  absorbed  radiation for  the
-//segment.   It  tries  to  minimize  the  number  of  comparisons  by
-//comparing only to the shading objects on path of the light ray.  For
-//hardwood the leaf shape is  by default is Ellipse. For conifers this
-//is not used  but this same class can be used  for both. The incoming
-//light part is the same for both, but the Qabs part is different.
+///\brief Absorbed radiation for tree segment pairwise comparison 
+///
+///PairwiseVoxelSpaceRadiation calculates  the extinction of  the light
+///rays  through  the voxel  space  beginning  from  the segment  point
+///'sp'=[0:1]  (e.g. 0.5  is the  midpoint  of the  segment) using  the
+///methods  in Ecological Modelling  98  to calculate  absorbed  radiation for  the
+///segment.   It  tries  to  minimize  the  number  of  comparisons  by
+///comparing only to the shading objects on path of the light ray.  For
+///hardwood the leaf shape is  by default is Ellipse. For conifers this
+///is not used  but this same class can be used  for both. The incoming
+///light part is the same for both, but the Qabs part is different.
 template <class TS,class BUD, class S=Ellipse>
 class PairwiseVoxelSpaceRadiation: public AbsorbedRadiation<TS,BUD>{
 public:
-  //Constructor for hardwoods, K not needed, beam_start center of the leaf
+  ///\brief Constructor
+  ///
+  ///Constructor for hardwoods K not needed, beam_start center of the leaf
+  ///\param voxel_space Voxel space 
   PairwiseVoxelSpaceRadiation(VoxelSpace& voxel_space):vs(voxel_space),K(0.14),sp(0.5){}
-  //Constructor for conifers (K extinction, beam start_point [0:1] on the segment
+  ///\brief Constructor
+  ///Constructor for conifers
+  ///\param voxel_space Voxel space
+  ///\param kfun Extinction as a function of inclination
+  ///\param start_point Beam relative start point [0:1] on the segment
   PairwiseVoxelSpaceRadiation(VoxelSpace& voxel_space,const ParametricCurve& kfun,
 			      double start_point)
     :vs(voxel_space),K(kfun),sp(start_point){}
   PairwiseVoxelSpaceRadiation(const PairwiseVoxelSpaceRadiation& r)
     :vs(r.vs),K(r.K),sp(r.sp){}
-  //f: the sky
-  //sp: start point of the beam
-  //s: vector to contain Qin sector by sector
+
+  ///\brief Incoming  radiation
+  ///\param f  Firmament
+  ///\param sp Start point of the beam
+  ///\param s  Vector to contain Qin sector by sector
   void calculatePairwiseQin(const Firmament& f,const Point& sp,vector<double>& s)const{
     vector<double> d(3,0.0);//drection of the i'th sector
     for (int i = 0; i < f.numberOfRegions(); i++){
@@ -218,7 +249,8 @@ public:
       s[i] = s[i]*tau;//the Qin from one sector
     }
   }
-  //For each segment compute the Qabs  
+  ///\brief Calculate absorbed radiation
+  ///\param tc Conferous or hardwood segment 
   void operator()(TreeCompartment<TS,BUD>* tc)const
   {
     Firmament& f = GetFirmament(GetTree(*tc));
@@ -265,21 +297,25 @@ private:
   double sp;//The start point [0:1] of the light beam on the segment 
 };
 
-//DiffuseVoxelSpaceRadiation  calculates the  extinction of  the light
-//rays through  the voxel space  beginning from the  segment midpoint.
-//The functor  also calculates the border stand  extinction. See voxel
-//space for details.
-//The computational  cost is  r*s*O(n), where the  n is the  number of
-//segments and  s is the number of  sectors.  Also a cost  is a linear
-//route finding  'r' in the voxel  space. 'r' is done  for each sector
-//and at worst it is propotional to the size of the voxel space. After
-//that  the algorithm  falls back  to older  methods (Eco  Mod  98) to
-//calculate absorbed radiation  for the segment. So now  we have three
-//related  methods with  decreasing  level of  detail  to compute  the
-//light: 1)  pairwise comparison, 2)  this DiffuseVoxelSpaceRasdiation
-//approach   and  3)   the   diffuseForestRegionRadiationSum  assuming
-//homogenous layer  of foliage  in canopy (implemented  in Firmament).
-//Usage: ForEach(tree,DiffuseVoxelSpaceRadiation(voxel_space,K));
+///\brief Diffuse voxel space radiation
+///
+///DiffuseVoxelSpaceRadiation  calculates the  extinction of  the light
+///rays through  the voxel space  beginning from the  segment midpoint.
+///The functor  also calculates the border stand  extinction. See voxel
+///space for details.
+///
+///The computational  cost is  r*s*O(n), where the  n is the  number of
+///segments and  s is the number of  sectors.  Also a cost  is a linear
+///route finding  'r' in the voxel  space. 'r' is done  for each sector
+///and at worst it is propotional to the size of the voxel space. After
+///that  the algorithm  falls back  to older  methods (Eco  Mod  98) to
+///calculate absorbed radiation  for the segment.
+///
+///Three related  methods with  decreasing  level of  detail  to compute  the
+///light: 1)  pairwise comparison, 2)  this DiffuseVoxelSpaceRadiation
+///approach   and  3)   the   diffuseForestRegionRadiationSum  assuming
+///homogenous layer  of foliage  in canopy (implemented  in Firmament).
+///Usage: ForEach(tree,DiffuseVoxelSpaceRadiation(voxel_space,K));
 template <class TS,class BUD>
 class DiffuseVoxelSpaceRadiation: public AbsorbedRadiation<TS,BUD>{
 public:
@@ -333,11 +369,15 @@ public:
     return;
   }//end operator
 private:
-  VoxelSpace& vs;
-  const ParametricCurve& K;//extinction as function of inclination (from Kellomaki) 
-  double sp;//Start point [0:1] of the light beam on the segment
+  VoxelSpace& vs;///< Voxel space
+  const ParametricCurve& K;///< Extinction as function of inclination (from Kellomaki) 
+  double sp;///< Relative start point [0:1] of the light beam on the segment
 };
 
+///\brief Insert coniferous segments as voxel objects in voxel space
+///
+///Create voxel object representation of coniferous tree segments and insert
+///voxel objects in voxel space
 template <class TS,class BUD>
 class InsertCfVoxelObjects{
 public:
@@ -358,9 +398,8 @@ private:
   VoxelSpace& vs;
   const PositionVector d;
   double dist;
-  double sp;//start  point [0:1]  of  the light  beam  on the  segment
-	    //(e.g. 0.5 is the midpoint)
-  int parts;//number of segment parts
+  double sp;///< Start  point [0:1]  of  the light  beam  on the  segment
+  int parts;///< Number of segment parts
 };
 
 template <class TS,class BUD,class S>
@@ -407,13 +446,11 @@ public:
   }
 private:
   VoxelSpace& vs;
-  const PositionVector& d;//direction where to insert
-  double t;//distance from the original object where to insert
-  double sp;//start point  of the light  beam on the  segment (conifer
-	    //only)
-  int parts;//number of parts to consider
-  bool leaf;//Insert  the  leaf  itself   too  into  the  voxel  box
-	      //(hartwood only)
+  const PositionVector& d;///< Direction where to insert
+  double t;///< Distance from the original object where to insert
+  double sp;///< Start point  of the light  beam on the  segment (conifer only)
+  int parts;///< Number of parts to consider
+  bool leaf;///< Insert  the  leaf  itself   too  into  the  voxel  box (hardwood only)
 };
-  
+}//end namespace voxelspace
 #endif

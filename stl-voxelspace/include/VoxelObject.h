@@ -1,15 +1,17 @@
-///\file VoxelObject.h
-///\brief Wrapper for coniferous segments and broad leafleaves.
+/// \file VoxelObject.h
+/// \brief Geometric representation for coniferous segments and broad leafleaves.
 ///
 ///Represent coniferous and broad leaf tree species photosynthesising elements
-///uniformly with VoxelObject. There is enough geometric data
-///to calculate light beam intertsections.
+///uniformly as geometric objects with VoxelObject. There must be enough geometric data
+///to calculate object - light beam intersections and radiation attenuation.
 #ifndef VOXELOBJECT_H
 #define VOXELOBJECT_H
 #include <vector>
 #include <Point.h>
 #include <PositionVector.h>
 #include <Shading.h>
+
+namespace voxelspace{
 ///\brief Base class for different photosynthesising elements a voxel box.
 ///
 ///Provides uniform representation to calculate radiation interception.
@@ -175,4 +177,5 @@ private:
   double tauL;//Extinction coefficient if beam hits the leaf shape
   BroadLeaf<Ellipse>* leaf;//the leaf itself
 };
+}//end namespace voxelspace
 #endif

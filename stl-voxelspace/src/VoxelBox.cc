@@ -3,7 +3,7 @@
 #include <VoxelBox.h>
 #include <VoxelSpace.h>
 
-namespace Lignum {
+namespace voxelspace {
 //
 //      Constructor of the class VoxelBox
 //

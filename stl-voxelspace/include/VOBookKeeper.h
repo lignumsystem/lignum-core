@@ -1,5 +1,5 @@
-///\file VOBookKeeper.h
-///\brief Helper class for VoxelObject.
+/// \file VOBookKeeper.h
+/// \brief Helper class for VoxelObject.
 ///
 ///Generate unique tags, keep track computed voxel objects.
 #ifndef VOBOOKKEEPER_H
@@ -10,6 +10,7 @@ using namespace std;
 #include <mathsym.h>
 using namespace cxxadt;
 
+namespace voxelspace{
 ///\brief Helper class in radiation interception computations
 class VOBookKeeper{
 public:
@@ -46,4 +47,5 @@ private:
   ///Vector to mark voxel object computed
   vector<bool> v;
 };
+}//end namespace voxelspace
 #endif

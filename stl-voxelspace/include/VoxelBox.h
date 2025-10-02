@@ -1,3 +1,6 @@
+/// \file VoxelBox.h
+/// \brief Voxel box in voxel space (needs clean-up)
+/// \todo Needs clean-up 
 #ifndef VOXELBOX_H
 #define VOXELBOX_H
 
@@ -12,7 +15,7 @@ struct VisualCube
     bool ready;
 };
 
-namespace Lignum {
+namespace voxelspace {
 
 class VoxelSpace;
 
