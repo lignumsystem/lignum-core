@@ -30,7 +30,7 @@ src/LGMHDF5File.cc
 src/LGMHistogram.cc
 src/Lex.cc
 src/Parallelogram.cc
-src/Parallelogramexample.cc
+src/ParallelogramExample.cc
 src/ParametricCurve.cc
 src/ParseCommandLine.cc
 src/Poisson.cc
