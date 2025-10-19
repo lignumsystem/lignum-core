@@ -58,8 +58,11 @@ void DumpCfSegmentFoliage(VoxelBox &b, const CfTreeSegment<TS,BUD>& ts,
     //function CalcDirectionalStar and stored for the different 8 values.
     wht = farea/(double)num_parts;  // weight is used to get the weighted part of the calulcation
     starDir= calcDirectionalStar(b,ts,fmass,lenght,needle_rad,S_f);
-    std::transform( starDir.begin(), starDir.end(), weightedstarDir.begin(),std::bind1st(std::multiplies<LGMdouble>(),wht));//multiply the vector with the weighted foliage
+    //std::transform( starDir.begin(), starDir.end(), weightedstarDir.begin(),std::bind1st(std::multiplies<LGMdouble>(),wht));//multiply the vector with the weighted foliage
     //area and use to add up all the vectors.
+    //std::bind1st is among deprecated functionals. Use std::bind with std::placeholders
+    //See lignum-core/c++adt/src/AlgorithmExample.cc
+    std::transform( starDir.begin(), starDir.end(), weightedstarDir.begin(),std::bind(std::multiplies<LGMdouble>(),wht,std::placeholders::_1));
     vector<LGMdouble> starDirSumTemp(7,0.0);
 
     b.addDirectionalStarSum(weightedstarDir);
@@ -257,8 +260,11 @@ void DumpOccupy(VoxelBox &b, const TreeSegment<TS,BUD>& ts,
     //function CalcDirectionalStar and stored for the different 8 values.
     wht = farea/(double)num_parts;  // weight is used to get the weighted part of the calulcation
     starDir= calcDirectionalStar(b,ts,fmass,lenght,needle_rad,S_f);
-    std::transform( starDir.begin(), starDir.end(), weightedstarDir.begin(),std::bind1st(std::multiplies<LGMdouble>(),wht));//multiply the vector with the weighted foliage
+    //std::transform( starDir.begin(), starDir.end(), weightedstarDir.begin(),std::bind1st(std::multiplies<LGMdouble>(),wht));//multiply the vector with the weighted foliage
     //area and use to add up all the vectors.
+    //std::bind1st is among deprecated functionals. Use std::bind with std::placeholders.
+    //See lignum-core/c++dt/src/AlgorithExample.cc
+    std::transform( starDir.begin(), starDir.end(), weightedstarDir.begin(),std::bind(std::multiplies<LGMdouble>(),wht,std::placeholders::_1));
     vector<LGMdouble> starDirSumTemp(7,0.0);
 
     b.addDirectionalStarSum(weightedstarDir);

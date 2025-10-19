@@ -816,8 +816,10 @@ double VoxelSpace::getBorderStandExtinction(const Point& p0,
     sort(v.begin(),v.end());
     //Take  the first nonnegative  t, i.e.  the shortest  distance the
     //beam can travel in the voxel space before crossing some wall
-    vector<double>::iterator it = find_if(v.begin(),v.end(),
-                                          bind2nd(greater_equal<double>(),0.0));
+    //vector<double>::iterator it = find_if(v.begin(),v.end(),bind2nd(greater_equal<double>(),0.0));
+    //std::bind2nd is among deprecated functionals. Use std::binf with std::placeholders.
+    //See lignum-core/c++adt/src/AlgorithmExample.cc
+    vector<double>::iterator it = find_if(v.begin(),v.end(),bind(greater_equal<double>(),std::placeholders::_1,0.0));
     double tdist = R_HUGE;
     if (it == v.end()){
         cerr << "No Exit point from voxel space (All t < 0). Error!!!" << endl;

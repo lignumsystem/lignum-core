@@ -174,7 +174,10 @@ void VoxelBox::updateValuesDirectionalStar()
         if (weight > 0.0)
         {
             LGMdouble coeff = 1/weight;
-            std::transform(starDirSum.begin(),starDirSum.end(),starDir.begin(),std::bind1st(std::multiplies<LGMdouble>(),coeff));
+            //std::transform(starDirSum.begin(),starDirSum.end(),starDir.begin(),std::bind1st(std::multiplies<LGMdouble>(),coeff));
+	    //std::bind1st is among deprecated functionals. Use bind with std::placeholders.
+	    //See lignum-core/c++adt/src/AlgorithmExample.cc
+	    std::transform(starDirSum.begin(),starDirSum.end(),starDir.begin(),std::bind(std::multiplies<LGMdouble>(),coeff,std::placeholders::_1));
         }
         else
         {
