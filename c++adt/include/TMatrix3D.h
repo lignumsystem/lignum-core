@@ -48,10 +48,10 @@ namespace cxxadt{
     }
     ///\brief Message string
     ///\return Character string of user defined exception message
-    virtual const char* what() const _NOEXCEPT{
+    virtual const char* what() const noexcept{
       return message.c_str();
     }
-    virtual ~AppendException() _NOEXCEPT{}
+    virtual ~AppendException() noexcept{}
   private:
     ///User defined message
     void constructMessage(){
