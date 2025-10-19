@@ -29,11 +29,23 @@ namespace Lignum{
             largest = first;
     return largest;
   }
+
   
-template <class TS,class BUD>
-class AdaptableTCFunction
-  :public unary_function<TreeCompartment<TS,BUD>*,TreeCompartment<TS,BUD>*>{
-};
+  ///\brief Replacement for deprecated std::unary_function.
+  ///
+  ///AdaptableTCFunction previously simply inhereted std::unary_function
+  ///with proper types. std::unary_function is among deprecated
+  ///function objects (since C++11) and AdaptableTCFunction is reimplemented for backward
+  ///compatibilty. As with std::unary_function derived classes are exptected
+  ///to implement function operator.
+  ///\note The implementation simply reimplements std::unary_function with \p argument_type
+  /// and \p result_type.
+  template <class TS,class BUD>
+  class AdaptableTCFunction{
+  public:
+    typedef TreeCompartment<TS,BUD>* argument_type;
+    typedef TreeCompartment<TS,BUD>* result_type;
+  };
 
 template <class TS,class BUD, class T, class BinOp>
 class AccumulateTreeCompartments{
