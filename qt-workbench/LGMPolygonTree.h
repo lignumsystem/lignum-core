@@ -169,11 +169,17 @@ template <class TS, class BUD, class S>
 	  else
 	    object = new SceneObject(parameters.getLeafMaterial(), object_index, 0, false);
 	  sceneObjects->insert(object_index, object);
-	  BSPPolygonSet* leaf = makeTriangleLeaf(t->getLeftCorner(),
-						 t->getRightCorner(),
-						 t->getApexCorner(),
+	  // BSPPolygonSet* leaf = makeTriangleLeaf(t->getLeftCorner(),
+	  // 					 t->getRightCorner(),
+	  // 					 t->getApexCorner(),
+	  // 					 parameters.useLeafTextures(),
+	  // 					 object);
+	  BSPPolygonSet* leaf = makeTriangleLeaf(t->getA(),
+						 t->getB(),
+						 t->getC(),
 						 parameters.useLeafTextures(),
 						 object);
+
 	  polygons->addPolygons(leaf);
 	  delete leaf;
 	}
