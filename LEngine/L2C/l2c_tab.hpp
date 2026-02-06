@@ -1,14 +1,14 @@
-/* A Bison parser, made by GNU Bison 3.8.2.  */
+/* A Bison parser, made by GNU Bison 2.3.  */
 
-/* Bison interface for Yacc-like parsers in C
+/* Skeleton interface for Bison's Yacc-like parsers in C
 
-   Copyright (C) 1984, 1989-1990, 2000-2015, 2018-2021 Free Software Foundation,
-   Inc.
+   Copyright (C) 1984, 1989, 1990, 2000, 2001, 2002, 2003, 2004, 2005, 2006
+   Free Software Foundation, Inc.
 
-   This program is free software: you can redistribute it and/or modify
+   This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
-   the Free Software Foundation, either version 3 of the License, or
-   (at your option) any later version.
+   the Free Software Foundation; either version 2, or (at your option)
+   any later version.
 
    This program is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -16,7 +16,9 @@
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with this program.  If not, see <https://www.gnu.org/licenses/>.  */
+   along with this program; if not, write to the Free Software
+   Foundation, Inc., 51 Franklin Street, Fifth Floor,
+   Boston, MA 02110-1301, USA.  */
 
 /* As a special exception, you may create a larger work that contains
    part or all of the Bison parser skeleton and distribute that work
@@ -31,78 +33,80 @@
    This special exception was added by the Free Software Foundation in
    version 2.2 of Bison.  */
 
-/* DO NOT RELY ON FEATURES THAT ARE NOT DOCUMENTED in the manual,
-   especially those whose name start with YY_ or yy_.  They are
-   private implementation details that can be changed or removed.  */
-
-#ifndef YY_L_USERS_JARIP_DEVELOPER_LIGNUM_CORE_LENGINE_L2C_L2C_TAB_HPP_INCLUDED
-# define YY_L_USERS_JARIP_DEVELOPER_LIGNUM_CORE_LENGINE_L2C_L2C_TAB_HPP_INCLUDED
-/* Debug traces.  */
-#ifndef YYDEBUG
-# define YYDEBUG 0
-#endif
-#if YYDEBUG
-extern int ldebug;
-#endif
-
-/* Token kinds.  */
+/* Tokens.  */
 #ifndef YYTOKENTYPE
 # define YYTOKENTYPE
-  enum yytokentype
-  {
-    YYEMPTY = -2,
-    YYEOF = 0,                     /* "end of file"  */
-    YYerror = 256,                 /* error  */
-    YYUNDEF = 257,                 /* "invalid token"  */
-    tOPEN = 258,                   /* tOPEN  */
-    tCLOSE = 259,                  /* tCLOSE  */
-    tMODULE = 260,                 /* tMODULE  */
-    tPRODUCE = 261,                /* tPRODUCE  */
-    tSTART = 262,                  /* tSTART  */
-    tSTARTEACH = 263,              /* tSTARTEACH  */
-    tENDEACH = 264,                /* tENDEACH  */
-    tEND = 265,                    /* tEND  */
-    tCONSIDER = 266,               /* tCONSIDER  */
-    tIGNORE = 267,                 /* tIGNORE  */
-    tDERIVLENGTH = 268,            /* tDERIVLENGTH  */
-    tINTERPRETATION = 269,         /* tINTERPRETATION  */
-    tLPAREN = 270,                 /* tLPAREN  */
-    tRPAREN = 271,                 /* tRPAREN  */
-    tSEMICOLON = 272,              /* tSEMICOLON  */
-    tCOMMA = 273,                  /* tCOMMA  */
-    tLESSTHAN = 274,               /* tLESSTHAN  */
-    tGREATERTHAN = 275,            /* tGREATERTHAN  */
-    tENDPRODPROTO = 276,           /* tENDPRODPROTO  */
-    tIDENT = 277,                  /* tIDENT  */
-    tMODULEIDENT = 278,            /* tMODULEIDENT  */
-    tERROR = 279                   /* tERROR  */
-  };
-  typedef enum yytokentype yytoken_kind_t;
+   /* Put the tokens into the symbol table, so that GDB and other debuggers
+      know about them.  */
+   enum yytokentype {
+     tOPEN = 258,
+     tCLOSE = 259,
+     tMODULE = 260,
+     tPRODUCE = 261,
+     tSTART = 262,
+     tSTARTEACH = 263,
+     tENDEACH = 264,
+     tEND = 265,
+     tCONSIDER = 266,
+     tIGNORE = 267,
+     tDERIVLENGTH = 268,
+     tINTERPRETATION = 269,
+     tLPAREN = 270,
+     tRPAREN = 271,
+     tSEMICOLON = 272,
+     tCOMMA = 273,
+     tLESSTHAN = 274,
+     tGREATERTHAN = 275,
+     tENDPRODPROTO = 276,
+     tIDENT = 277,
+     tMODULEIDENT = 278,
+     tERROR = 279
+   };
 #endif
+/* Tokens.  */
+#define tOPEN 258
+#define tCLOSE 259
+#define tMODULE 260
+#define tPRODUCE 261
+#define tSTART 262
+#define tSTARTEACH 263
+#define tENDEACH 264
+#define tEND 265
+#define tCONSIDER 266
+#define tIGNORE 267
+#define tDERIVLENGTH 268
+#define tINTERPRETATION 269
+#define tLPAREN 270
+#define tRPAREN 271
+#define tSEMICOLON 272
+#define tCOMMA 273
+#define tLESSTHAN 274
+#define tGREATERTHAN 275
+#define tENDPRODPROTO 276
+#define tIDENT 277
+#define tMODULEIDENT 278
+#define tERROR 279
 
-/* Value type.  */
+
+
+
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-union YYSTYPE
-{
+typedef union YYSTYPE
 
+{
   char Ident[eMaxIdentifierLength+1];
   int ModuleId;
   ParametersList ParamsList;
   FormalModuleDt* pFormalModuleData;
   FormalModuleDtList* pFormalModuleDataList;
+}
+/* Line 1529 of yacc.c.  */
 
-
-};
-typedef union YYSTYPE YYSTYPE;
-# define YYSTYPE_IS_TRIVIAL 1
+	YYSTYPE;
+# define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
+# define YYSTYPE_IS_TRIVIAL 1
 #endif
-
 
 extern YYSTYPE llval;
 
-
-int lparse (void);
-
-
-#endif /* !YY_L_USERS_JARIP_DEVELOPER_LIGNUM_CORE_LENGINE_L2C_L2C_TAB_HPP_INCLUDED  */
