@@ -32,7 +32,7 @@ namespace Lignum{
   ///returned is calculated on the basis of other variables.
   ///If you add a new symbol be sure to document it carefully.
   enum LGMAD {
-    LGAA,           ///<  0   Segment base area based on R. Also BroadBeaf shape \e true area. \sa BroadLeaf::GetValue() TreeSegment::GetValue()													      
+    LGAA,           ///<  0   Segment base area based on R. Also BroadBeaf shape \e true area. \sa BroadLeaf::GetValue() TreeSegment::GetValue()	      
     LGAAbase,	    ///<  1   Area at the base of the \e tree														      
     LGAAf,	    ///<  2   Area of foliage																      
     LGAAfb,	    ///<  3   Foliage area, broad leaved (see ForestDescriptor in stl-voxelspace)										      
@@ -56,10 +56,10 @@ namespace Lignum{
     LGADcb,	    ///< 21   Diameter at crown base															      
     LGAdof,	    ///< 22   Degree of filling of leaf															      
     LGAdR,	    ///< 23   Change in radius (=difference of two growth rings)												      
-    LGAH,	    ///< 24   Height of tree, also the Z coordinate at the segment base 											      
-    LGAHcb,	    ///< 25   Height of crown base															      
+    LGAH,	    ///< 24   Height of tree main axis and the Z coordinate at a tree segment base point \sa Lignum::FindHighestPoint
+    LGAHcb,	    ///< 25   Height of the tree crown base
     LGAHf,	    ///< 26   Height (thickness) of cylindrical layer of foliage in a segment, e.g. Hf = Lneedle*sin(needle_angle)          				      
-    LGAHTop,	    ///< 27   Max height from ground of the tree, segment, etc.												      
+    LGAHTop,	    ///< 27   Z coordinate of a tree segment end point												      
     LGAip,	    ///< 28   Degree of interaction															      
     LGAiWf,	    ///< 29   New foliage in a tree															      
     LGAiWs,	    ///< 30   New sapwood in a tree															      
@@ -98,7 +98,7 @@ namespace Lignum{
     LGAWh,	    ///< 63   Mass of heartwood (kg C)															      
     LGAWhair,	    ///< 64   Mass of fine roots (root hair) (kg C)
     LGAWstem,	    ///< 65   Mass in the main axis (Ws+Wh)                                                                                                                     
-    LGAT,            ///< 66   \attention Not used
+    LGAT,           ///< 66   \attention Not used
   };
 
   /// \brief Lignum Parameters double

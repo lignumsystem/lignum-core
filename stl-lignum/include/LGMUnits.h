@@ -18,16 +18,16 @@ namespace Lignum{
   typedef unsigned int YEAR; ///<Age of a tree compartment in years
   ///@}
   
-  ///\defgroup BudStates The Bud states
-  ///The list of possile buds states \sa Lignum::LGAstate
+  ///\defgroup BUDSTATES The bud states
+  /// \brief The possile bud states. \sa Lignum::LGAstate
   ///@{
-  ///Dead bud
+  ///\brief Dead bud
   const LGMdouble DEAD = 0.0;
-  ///Alive bud
+  ///\brief Alive bud
   const LGMdouble ALIVE = 1.0;
-  ///Dormant bud
+  ///\brief Dormant bud
   const LGMdouble DORMANT = 2.0;
-  ///Bud to produce a cone or other reproductive organ 
+  ///\brief Bud to produce a cone or other reproductive organ 
   const LGMdouble FLOWER = 3.0;
   ///@}
 }//closing namespace Lignum
