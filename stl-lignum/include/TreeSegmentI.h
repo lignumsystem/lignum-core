@@ -243,7 +243,7 @@ METER GetLastAnnualIncrement(const TreeSegment<TS,BUD>& ts)
 
 	LGMdouble ret=0;
 
-	int s = rings.size();
+	unsigned long s = rings.size();
 	if (s>1)
 		ret = rings[s-1] - rings[s-2];
 	if (s==1)
@@ -373,7 +373,7 @@ LGMdouble SetValue(TreeSegment<TS,BUD>& ts, const LGMAD name, const LGMdouble va
   
   else if (name == LGAdR)
   {
-    int size = ts.tsa.annual_rings.size();
+    unsigned long size = ts.tsa.annual_rings.size();
     if (size>1)
       {
 	LGMdouble rad = ts.tsa.annual_rings[size-2];
