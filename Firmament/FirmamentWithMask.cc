@@ -272,8 +272,8 @@ namespace sky{
       vmask.push_back(stod(v[2]));
     }
     //ParametricCurves themselves
-    ParametricCurve azimtoincl(vazim.size(),vazim,vincl);
-    ParametricCurve incltomask(vincl.size(),vincl,vmask);
+    ParametricCurve azimtoincl(static_cast<int>(vazim.size()),vazim,vincl);
+    ParametricCurve incltomask(static_cast<int>(vincl.size()),vincl,vmask);
     //Now assign the azim-incl mask file to sky
     //Map first radiation direction to azim, then to inclination and finally the inclination to mask
     //Azimuth running [0:360) degrees always maps to some inclination running  [0:90] in the mask file.
