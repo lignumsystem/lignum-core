@@ -185,7 +185,7 @@ byte *tga_t::GetRGBA(FILE *strm, int size)
 {
    byte *rgba;
    byte temp;
-   int bread;
+   size_t bread;
    int i;
 
    rgba = new byte[size * 4]; 
@@ -228,7 +228,7 @@ byte *tga_t::GetRGB(FILE *strm, int size)
 {
    byte *rgb;
    byte temp;
-   int bread;
+   size_t bread;
    int i;
 
    rgb = new byte[size * 3]; 
@@ -260,7 +260,7 @@ byte *tga_t::GetRGB(FILE *strm, int size)
 byte *tga_t::GetGray(FILE *strm, int size)
 {
    byte *grayData;
-   int bread;
+   size_t bread;
 
    grayData = new byte[size];
 

@@ -99,7 +99,7 @@ int VisualizeLGMTree(Tree<TS,BUD> &tree)
  
   stemtexture.Load("Manty.bmp", 512, 512);
 
-    LoadGLTextures("neulaset5.tga");
+  LoadGLTextures(const_cast<char*>(string("neulaset5.tga").c_str()));
   
 
   cout << "tekstuurit kaytossa******************************************** " << endl;
@@ -177,16 +177,16 @@ int VisualizeLGMTree(Tree<TS,BUD> &tree)
  
   stemtexture.Load("koivu.bmp", 512, 512);
 
-  LoadGLTextures("lehti.tga");  //**** HwLoadGLTextures
+  LoadGLTextures(const_cast<char*>(string("lehti.tga").c_str()));  //**** HwLoadGLTextures
   
 
 
-  cout << "ei lehtiä, rakennetaan puu.." << endl;
+  cout << "Ei lehtia, rakennetaan puu.." << endl;
 
   MakeTreeList(tree, 0.05);
 
   
-  cout << "rakennetaan lehdet " << endl;
+  cout << "Rakennetaan lehdet " << endl;
   MakeLeaveList<TS,BUD,S>(tree, 2, 2);
  
 
@@ -261,11 +261,11 @@ int VisualizeCfTree(Tree<TS,BUD> &tree)
   glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
  
   stemtexture.Load("Manty.bmp", 512, 512);
-  LoadGLTextures("neulaset5.tga");  //**** CFLoadGLTextures
+  LoadGLTextures(const_cast<char*>(string("neulaset5.tga").c_str()));  //**** CFLoadGLTextures
   
 
 
-  cout << "rakennetaan puu.." << endl;
+  cout << "Rakennetaan puu.." << endl;
   
   MakeTreeList(tree, 0.05);
   MakeNeedlesList(tree);

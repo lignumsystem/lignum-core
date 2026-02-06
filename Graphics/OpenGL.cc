@@ -504,10 +504,10 @@ void MakeCylinder(float radius, float rad_top, float length, float rad_limit, fl
   if (last_texY > 1)
     last_texY = last_texY - (int)(last_texY);
   
-  delete position1;
-  delete position2;
-  delete tex1;
-  delete tex2;
+  delete [] position1;
+  delete [] position2;
+  delete [] tex1;
+  delete [] tex2;
 }
 
 
@@ -761,7 +761,7 @@ void MakeCylinderWithTop(float radius, float rad_top, float length, float rad_li
 	  edges=16;
   else edges = 36;
 
-  cout << "särmiä " << edges << endl;
+  cout << "Sarmia " << edges << endl;
   if (rad_top == 0)
 	  rad_top = radius;
 

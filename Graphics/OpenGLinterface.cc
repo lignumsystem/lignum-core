@@ -253,7 +253,7 @@ void DrawTree()
 			glPushMatrix();
 	  
 			if (glIsList(FOREST_LIST)==false)
-				cout << "Virhe:metsäpuulistaa ei maaritelty " << endl;
+				cout << "Virhe:metsapuulistaa ei maaritelty " << endl;
 			glCallList(FOREST_LIST);
 			glPopMatrix();
 		}
@@ -306,7 +306,7 @@ void DrawTree()
   
   glPushMatrix();
   if (glIsList(TREE_SMALL) == false)
-    cout << "Virhe2:puuta ei määritelty " << endl;
+    cout << "Virhe2:puuta ei maaritelty " << endl;
   glCallList(TREE_SMALL);
   glPopMatrix();
 	  
@@ -314,7 +314,7 @@ void DrawTree()
   
   glPushMatrix();
   if (glIsList(ROOT_LIST) == false)
-    cout << "Virhe2:juuria ei määritelty " << endl;
+    cout << "Virhe2:juuria ei maaritelty " << endl;
  
   glEnable(GL_LIGHTING);
   glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, mat_amb2); 
@@ -502,13 +502,13 @@ void DrawBuds()
   if(glIsList(BUDS_ALIVE))
     glCallList(BUDS_ALIVE);
   else 
-    cout << "ei määritelty BUDS ALIVE " << endl;
+    cout << "Ei maaritelty BUDS ALIVE " << endl;
   
   glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, mat_amb2);
   if(glIsList(BUDS_DEAD))
     glCallList(BUDS_DEAD);
   else 
-    cout << "ei määritelty BUDS DEAD " << endl;
+    cout << "Ei maaritelty BUDS DEAD " << endl;
 }
 
 
@@ -676,7 +676,7 @@ void SetLightPosition()
 
 void DrawOrderedNeedles()
 {
-	int s = nplanes.size();
+	int s = static_cast<int>(nplanes.size());
 
 	if (cam_x*cam_x + cam_y*cam_y > 10 || rand()%5>0)
 	{

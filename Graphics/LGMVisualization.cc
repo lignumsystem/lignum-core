@@ -48,7 +48,7 @@ LGMVisualization* LGMVisualization::active_visualization = NULL;
 	//level.
 	string s(argv[0]);
 	string n;
-	int i = s.size()-1;
+	unsigned long i = s.size()-1;
 	while (i && (isalnum(s[i]) || s[i] == '-' || s[i] == '_')){
 	  n.insert(n.begin(),s[i]);
 	  i--;
@@ -755,7 +755,7 @@ LGMVisualization* LGMVisualization::active_visualization = NULL;
 
       case 13:
 	glutSetWindow(settings.window1);
-	screenShot ("shot.tga", settings.WINDOW_SIZE_X, settings.WINDOW_SIZE_Y);
+	screenShot(const_cast<char*>(string("shot.tga").c_str()), settings.WINDOW_SIZE_X, settings.WINDOW_SIZE_Y);
 	break;
     
       case 14:
@@ -852,7 +852,7 @@ LGMVisualization* LGMVisualization::active_visualization = NULL;
 
   int LGMVisualization::GetTgaTexNumber(string filename)
   {
-     	int s =  LoadedTgas.size();
+     	int s =  static_cast<int>(LoadedTgas.size());
 	for (int i=0; i<s; i++)
 	{
 	    LoadedTexture lt =  LoadedTgas[i];
@@ -867,7 +867,7 @@ LGMVisualization* LGMVisualization::active_visualization = NULL;
 
  int LGMVisualization::GetBmpTexNumber(string filename)
   {
-     	int s =  LoadedBmps.size();
+     	int s =  static_cast<int>(LoadedBmps.size());
 	for (int i=0; i<s; i++)
 	{
 	    LoadedTexture lt =  LoadedTgas[i];

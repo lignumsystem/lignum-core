@@ -272,7 +272,7 @@ void redraw(void)
 
 void DrawVoxelCubes()
 {
-  int num = cubes.size();
+  int num = static_cast<int>(cubes.size());
   
   if (num == 0)
     {
@@ -302,7 +302,7 @@ void DrawVoxelCubes()
     {
       int max_dist = -10;
       int mem_num = -1;
-      int a = cubes.size();
+      int a = static_cast<int>(cubes.size());
       for (int ii=0; ii<a; ii++)
 	{
 	  SmallCube c = cubes[ii];
@@ -349,7 +349,7 @@ void DrawVoxelCubes()
   
   glLineWidth(1);
   
-  int s = ordered_cubes.size();
+  int s = static_cast<int>(ordered_cubes.size());
   // cout << "toinen koko " << s << endl;
   for (int i = 0; i< s; i++)
     {
@@ -746,7 +746,7 @@ void menu(int value)
 
     case 13:
       glutSetWindow(window1);
-      screenShot ("shot.tga", WINDOW_SIZE_X, WINDOW_SIZE_Y);
+      screenShot (const_cast<char*>(string("shot.tga").c_str()), WINDOW_SIZE_X, WINDOW_SIZE_Y);
       break;
     
     case 14:
