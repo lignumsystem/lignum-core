@@ -1,11 +1,10 @@
 //Branching point  has the  list of  axes. If an  empty axis  is found
 //update the L-string by pruning it.
-template <class TS, class BUD, class T, class F>
-int LSystem<TS,BUD,T,F>::prune(list<Axis<TS,BUD>*>& ls, 
+template <class TS, class BUD, class N, class F>
+int LSystem<TS,BUD,N,F>::prune(list<Axis<TS,BUD>*>& ls, 
 			       typename list<Axis<TS,BUD>*>::iterator current, 
-			       LstringIterator& ltr, vector<T>& vav)
+			       LstringIterator& ltr, vector<N>& vav)
 {
-
   //Lstring must not end in a branching point 
   if (ltr.AtEnd()){
     cerr << "BP error in prune  end of string" << endl;
@@ -71,10 +70,10 @@ int LSystem<TS,BUD,T,F>::prune(list<Axis<TS,BUD>*>& ls,
       
 //Update  the structure of  LIGNUM and  Lstring. If  an empty  axis is
 //found update the L-string
-template <class TS, class BUD,class T, class F>
-int LSystem<TS,BUD,T,F>::prune(list<TreeCompartment<TS,BUD>*>& ls,
+template <class TS, class BUD,class N, class F>
+int LSystem<TS,BUD,N,F>::prune(list<TreeCompartment<TS,BUD>*>& ls,
 			       typename list<TreeCompartment<TS,BUD>*>::iterator current,
-			       LstringIterator& ltr, vector<T>& vav)
+			       LstringIterator& ltr, vector<N>& vav)
 {
   CallerData caller_data;
 

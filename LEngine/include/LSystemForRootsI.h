@@ -8,11 +8,11 @@
 /*********************************************************
  *RootBranchingPoint part: traverse the list of root axes.
  *********************************************************/
-template <class TS,class BUD,class T, class F>
-  int LSystem<TS,BUD,T,F>::rootSystem2Lstring(list<RootAxis<Tree<TS,BUD> >*>& ls,
+template <class TS,class BUD,class N, class F>
+  int LSystem<TS,BUD,N,F>::rootSystem2Lstring(list<RootAxis<Tree<TS,BUD> >*>& ls,
 					      typename list<RootAxis<Tree<TS,BUD> >*>::iterator
 					      current,
-					      LstringIterator& ltr, vector<T>& vav)
+					      LstringIterator& ltr, vector<N>& vav)
 {
 
   //Lstring must not end in a branching point
@@ -62,11 +62,11 @@ template <class TS,class BUD,class T, class F>
  *updated.     The   algorithm    is   essentially    the    same   as
  *lstring2RootSystem so other operations are easily added.
  *********************************************************************/
-template <class TS, class BUD, class T, class F>
-  int LSystem<TS,BUD,T,F>::rootSystem2Lstring(list<RootCompartment<Tree<TS,BUD> >*>& ls,
+template <class TS, class BUD, class N, class F>
+  int LSystem<TS,BUD,N,F>::rootSystem2Lstring(list<RootCompartment<Tree<TS,BUD> >*>& ls,
 					      typename list<RootCompartment<Tree<TS,BUD> >*>::iterator
 					      current,
-					      LstringIterator& ltr, vector<T>& vav)
+					      LstringIterator& ltr, vector<N>& vav)
 {
   CallerData caller_data;
 
@@ -238,11 +238,11 @@ int LSystem<TS,BUD,N,F>::rootSystemToLstring(Tree<TS,BUD>& t, int argnum,...)
  *Lstring2RootSystem for Root Branching points.  Scan for SB's and EB's
  *for the beginning and end of axes respectively.
  **********************************************************************/
-template <class TS, class BUD, class T,class F>
-  int LSystem<TS,BUD,T,F>::lstring2RootSystem(list<RootAxis<Tree<TS,BUD> >*>& ls,
+template <class TS, class BUD, class N,class F>
+  int LSystem<TS,BUD,N,F>::lstring2RootSystem(list<RootAxis<Tree<TS,BUD> >*>& ls,
 					      typename list<RootAxis<Tree<TS,BUD> >*>::iterator current,
 					      Tree<TS,BUD>& tree, LstringIterator& ltr,
-					      stack<Turtle>& turtle_stack, vector<T>& vav)
+					      stack<Turtle>& turtle_stack, vector<N>& vav)
 {
 
   //Lstring must not end in a branching point
@@ -310,13 +310,13 @@ template <class TS, class BUD, class T,class F>
  *RootSystem  match i.e.  the  new structure  in  the Lstring will
  *create root system structure.  
  *********************************************************************/
-template <class TS, class BUD, class T, class F>
-  int LSystem<TS,BUD,T,F>::lstring2RootSystem(list<RootCompartment<Tree<TS,BUD> >*>& ls,
+template <class TS, class BUD, class N, class F>
+  int LSystem<TS,BUD,N,F>::lstring2RootSystem(list<RootCompartment<Tree<TS,BUD> >*>& ls,
 					      typename list<RootCompartment<Tree<TS,BUD> >*>::iterator 
 					      current,
 					      Tree<TS,BUD>& tree,
 					      LstringIterator& ltr,
-					      stack<Turtle>& turtle_stack,vector<T>& vav)
+					      stack<Turtle>& turtle_stack,vector<N>& vav)
 {
    CallerData caller_data;
 

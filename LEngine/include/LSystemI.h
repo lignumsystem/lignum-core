@@ -1,8 +1,8 @@
 
-template <class TS, class BUD, class T, class F>
-int LSystem<TS,BUD,T,F>::lignum2Lstring(list<Axis<TS,BUD>*>& ls, 
+template <class TS, class BUD, class N, class F>
+int LSystem<TS,BUD,N,F>::lignum2Lstring(list<Axis<TS,BUD>*>& ls, 
 					typename list<Axis<TS,BUD>*>::iterator current, 
-					LstringIterator& ltr, vector<T>& vav)
+					LstringIterator& ltr, vector<N>& vav)
 {
 
   //Lstring must not end in a branching point 
@@ -53,10 +53,10 @@ int LSystem<TS,BUD,T,F>::lignum2Lstring(list<Axis<TS,BUD>*>& ls,
  *The algorithm is essentially the same as Lstring2Lignum*
  *so other operations are easily added                   *
  *********************************************************/ 
-template <class TS, class BUD,class T, class F>
-int LSystem<TS,BUD,T,F>::lignum2Lstring(list<TreeCompartment<TS,BUD>*>& ls,
+template <class TS, class BUD,class N, class F>
+int LSystem<TS,BUD,N,F>::lignum2Lstring(list<TreeCompartment<TS,BUD>*>& ls,
 					typename list<TreeCompartment<TS,BUD>*>::iterator current,
-					LstringIterator& ltr, vector<T>& vav)
+					LstringIterator& ltr, vector<N>& vav)
 {
   CallerData caller_data;
 
@@ -247,11 +247,11 @@ int LSystem<TS,BUD,N,F>::lignumToLstring(Tree<TS,BUD>& t, int argnum,...)
  *Lstring2Lignum for Axes and Branching points.                         *
  *Scan for SB's and EB's for the beginning and end of axes respectively.*
  ************************************************************************/
-template <class TS, class BUD,class T,class F>
-int LSystem<TS,BUD,T,F>::lstring2Lignum(list<Axis<TS,BUD>*>& ls, 
+template <class TS, class BUD,class N,class F>
+int LSystem<TS,BUD,N,F>::lstring2Lignum(list<Axis<TS,BUD>*>& ls, 
 					typename list<Axis<TS,BUD>*>::iterator current, 
 					Tree<TS,BUD>& tree, LstringIterator& ltr, 
-					stack<Turtle>& turtle_stack, vector<T>& vav)
+					stack<Turtle>& turtle_stack, vector<N>& vav)
 {
 
   //Lstring must not end in a branching point 
@@ -320,12 +320,12 @@ int LSystem<TS,BUD,T,F>::lstring2Lignum(list<Axis<TS,BUD>*>& ls,
  *This algorithm is similar to  L2Lignum but lstring2Lignum   *
  *adds only the new structure in Lstring into Lignum          *
  **************************************************************/
-template <class TS, class BUD, class T, class F>
-int LSystem<TS,BUD,T,F>::lstring2Lignum(list<TreeCompartment<TS,BUD>*>& ls,
+template <class TS, class BUD, class N, class F>
+int LSystem<TS,BUD,N,F>::lstring2Lignum(list<TreeCompartment<TS,BUD>*>& ls,
 			    typename list<TreeCompartment<TS,BUD>*>::iterator current,
 			    Tree<TS,BUD>& tree,
 			    LstringIterator& ltr,
-			    stack<Turtle>& turtle_stack,vector<T>& vav)
+			    stack<Turtle>& turtle_stack,vector<N>& vav)
 {
   CallerData caller_data;
 

@@ -41,8 +41,8 @@ void _Add(const void* pX, int size)
 ///\brief Programing interface for L-system and Lignum tree structural development
 ///\tparam TS Tree segment type
 ///\tparam BUD Bud type
-///\tparam N Type name for structures or variables  passing information between Lignum and L-system
-///\tparam F Type name for information values in structures or variables
+///\tparam N Enumeration type naming structure or variables  passing information between Lignum and L-system
+///\tparam F Type for the structure or variables with the name in N 
 template <class TS, class BUD, class N = LGMAD, class F=LGMdouble>
 class LSystem{
  public:
