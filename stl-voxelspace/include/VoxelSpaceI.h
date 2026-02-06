@@ -226,7 +226,7 @@ public:
             return;
         }
         //Unique id for the HwEllipse objects denoting the same real leaf
-        int tag = s.book_keeper.newTag();
+        int tag = static_cast<int>(s.book_keeper.newTag());
         HwEllipse* hwe = NULL;
         if (leaf){
             hwe = new HwEllipse(e,GetValue(*l,LGAdof),

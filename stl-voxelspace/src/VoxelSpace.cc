@@ -110,7 +110,7 @@ void PrintVoxelObjectLocations(const VoxelSpace& s, const string& fname)
     for (int i = 0; i < s.Xn; i++){
         for (int j = 0; j < s.Yn; j++){
             for (int k = 0; k < s.Zn; k++){
-                int size = s.voxboxes[i][j][k].getObjects().size();
+                unsigned long size = s.voxboxes[i][j][k].getObjects().size();
                 if (size > 0)
                     f << i << " " << j << " " << k << " " << size <<endl;
             }
@@ -1001,7 +1001,7 @@ LGMdouble VoxelSpace::calculatePoplarLight(LGMdouble diffuse, LGMdouble structur
                             int hits=0;
 
                             //stop conition i > 0 means no self shading
-                            for (int i = vec.size()-1; i > 0; i--){
+                            for (unsigned long i = vec.size()-1; i > 0; i--){
                                 VoxelMovement& vm = vec[i];
                                 //cout << "VM " << i << " x " << vm.x << " y " << vm.y << " z "  << vm.z << endl;
                                 //cout << "Xn " << Xn << " Yn " << Yn << " Zn " << Zn << endl;
@@ -1073,7 +1073,7 @@ LGMdouble VoxelSpace::calculatePoplarLight(LGMdouble diffuse, LGMdouble structur
                 //leaf towards a sector)
                 int hits=0;
                 //stop condition i > 0 means no self shading
-                for (int i = vec.size()-1; i > 0; i--){
+                for (unsigned long i = vec.size()-1; i > 0; i--){
                     VoxelMovement vm = vec[i];
                     LGMdouble leaf_area = voxboxes[vm.x][vm.y][vm.z].getLeafArea();
                     PositionVector big_leaf_normal=voxboxes[vm.x][vm.y][vm.z].getBigLeafNormal();
@@ -1134,7 +1134,7 @@ LGMdouble VoxelSpace::calculateTurbidLight(bool border_forest, bool self_shading
 	//loop is executed.
 	      
 	if (voxboxes[i1][i2][i3].isEmpty() == false) {
-	  int size = 0;
+	  unsigned long size = 0;
 	  vector<VoxelMovement> vec;
 	  LGMdouble rad = 0.0;
 	  
