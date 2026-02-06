@@ -40,11 +40,12 @@ using namespace std;
 /// \arg \c  SetGraveliusOrder
 /// \arg \c  DisplayStructure
 /// \arg \c  CheckCoordinates
+/// \arg \c  FindHighestPoint Find the highest point among living buds (LGAstate == ALIVE) in the tree
 /// \arg \c  FindCfBoundingBox
 /// \arg \c  FindHwBoundingBox
-/// \arg \c  FindLongestDistanceToStem  Find longest distance to to stem
+/// \arg \c  FindLongestDistanceToStem  Find the longest distance to to stem
 ///                                     and its direction
-/// \arg \c  FindRFunctor Find largest distance to stem in a crown slice
+/// \arg \c  FindRFunctor Find the largest distance to stem in a crown slice
 ///                       in a quadrant around given direction
 /// \arg \c  FindRFunctorF Find mean by foliage weighted distance to stem in a crown slice
 ///                        between heights minH and maxH in an angle around
@@ -527,7 +528,6 @@ namespace Lignum{
   //(they are in vector in counterclockwise order)
   //NOTE that the tree is given as argument in constructor
   //NOTE that the initial values of vector elements must be = 0.0
-
   template <class TS,class BUD=DefaultBud<TS> >
     class CrownGroundArea{
       public:
@@ -658,26 +658,65 @@ public:
     Point maxxyz;
   };
 
-
-  //This functor runs (Accumulate) through tree and finds the bounding
-  //box for it.  Conifers and deciduous TreeSegments (i.e. Trees)
-  //separately, since deciduoous are dealt with leaf by leaf and
-  //conifers by segments.
-
+  ///\brief Find the highest point in the tree among living buds
+  ///
+  ///\note FindHighestPoint searches the whole tree, not just the height of the main axis
+  ///\sa Lignum::LGAH 
+  ///\tparam TS Tree segment
+  ///\tparam BUD Bud
+  template <class TS, class BUD>
+  class FindHighestPoint{
+  public:
+    ///\brief Find the highest point in a tree
+    ///\param p The highest point in a tree
+    ///\param tc TreeCompartment
+    ///\retval p The highest point in a tree
+    Point& operator()(Point& p, TreeCompartment<TS,BUD>* tc)const;
+  };
+  
+  ///\brief Bounding box of a coniferous tree
+  ///
+  ///This functor runs (Accumulate) through a tree and finds the bounding
+  ///box for it.  Conifers and deciduous TreeSegments (i.e. Trees)
+  ///separately, since deciduoous are dealt with leaf by leaf and
+  ///conifers by segments.
+  ///\note Denote explicitly to include the cylindrical foliage foliage
+  ///\sa FindHwBoundingBox
   template <class TS,class BUD>
-    class FindCfBoundingBox{
+  class FindCfBoundingBox{
     public:
+    ///\brief Default constructor to use wooden parts only
     FindCfBoundingBox() : foliage(false) {}
+    ///\brief Constructor to explicitely include cylindrical foliage
+    ///\param fol True: include foliage
     FindCfBoundingBox(bool fol) : foliage(fol) {}
+    ///\brief Calculate the bounding box
+    ///\param b_box The bounding box
+    ///\param tc Tree compartment
+    ///\retval b_box The calculated bounding box
     BoundingBox& operator ()(BoundingBox& b_box,
 			     TreeCompartment<TS,BUD>* tc)const;
   private:
+    ///True: account for foliage for bounding box,
+    ///False (default): use wooden parts only 
     bool foliage;
   };
 
+  ///\brief Bounding box of a hardwood tree
+  ///
+  ///This functor runs (Accumulate) through a tree and finds the bounding
+  ///box for it.  Conifers and deciduous TreeSegments (i.e. Trees)
+  ///separately, since deciduoous are dealt with leaf by leaf and
+  ///conifers by segments.
+  ///\note Bounding box will include leaves 
+  ///\sa FindCfBoundingBox
   template<class TS, class BUD, class SHAPE>
     class FindHwBoundingBox{
     public:
+    ///\brief Calculate the bounding box
+    ///\param b_box The bounding box
+    ///\param tc Tree compartment
+    ///\retval b_box The calculated bounding box
     BoundingBox& operator ()(BoundingBox& b_box,
 			     TreeCompartment<TS,BUD>* tc)const;
   };
@@ -689,58 +728,92 @@ public:
       LGMdouble& operator()(LGMdouble &sum, TreeCompartment<TS,BUD>* tc)const;
     };
 
-  //Either whole tree: construct CollectFoliageMass() or by Gravelius order:
-  // construct CollectFoliageMass(order)
+  ///\brief Foliage mass in a tree
+  ///
+  ///Either whole tree or by Gravelius order
+  ///\note Both coniferous and hardwood trees
   template <class TS,class BUD>
     class CollectFoliageMass
     { 
     public:
+      ///\brief Default constructor to cover the whole tree
       CollectFoliageMass():my_order(-1.0) {}
+      ///\brief Constructor to collect by Gravelius order
+      ///\param order Gravelius order
       CollectFoliageMass(const LGMdouble order):my_order(order){}
+      ///\brief Collect foliage mass
+      ///\param sum Foliage mass
+      ///\param tc Tree compartment
+      ///\retval sum Foliage mass in a tree
       LGMdouble& operator()(LGMdouble &sum, TreeCompartment<TS,BUD>* tc)const;
       void setOrder(const int order) {my_order = static_cast<double>(order); }
     private:
       LGMdouble my_order;
     };
 
-  //Either whole tree: construct CollectFoliageArea() or by Gravelius order:
-  // construct CollectFoliageArea(order)
-  //THIS WORKS WITH Conifers
+  ///\brief Foliage area in a conifer tree
+  ///
+  ///Either whole tree or by Gravelius order
+  ///\note Conifer trees
+  ///\sa CollectLeafArea
   template <class TS,class BUD>
     class CollectFoliageArea
     { 
     public:
+      ///\brief Default constructor to cover the whole tree
       CollectFoliageArea():my_order(-1.0) {}
+      ///\brief Constructor to collect by Gravelius order
+      ///\param order Gravelius order
       CollectFoliageArea(const LGMdouble order):my_order(order){}
-
+      ///\brief Collect foliage area
+      ///\param sum Foliage area
+      ///\param tc Tree compartment
+      ///\retval sum Foliage area in a tree
       LGMdouble& operator()(LGMdouble &sum, TreeCompartment<TS,BUD>* tc)const;
     private:
       LGMdouble my_order;
     };
 
-  //Either whole tree: construct CollectLeafArea() or by Gravelius order:
-  // construct CollectLeafArea(order)
+  ///\brief Leaf area in a hardwood tree
+  ///
+  ///Either whole tree or by Gravelius order
+  ///\note Hardwood trees
+  ///\sa CollectFoliageArea
   template <class TS,class BUD, class SHAPE>
   class CollectLeafArea
   { 
   public:
+    ///\brief Default constructor to cover the whole tree
     CollectLeafArea():my_order(-1.0) {}
+    ///\brief Constructor to collect by Gravelius order
+    ///\param order Gravelius order
     CollectLeafArea(const LGMdouble order):my_order(order){}
-    LGMdouble& 
-    operator()(LGMdouble &sum,TreeCompartment<TS,BUD>* tc)const;
+    ///\brief Collect leaf area
+    ///\param sum Leaf area
+    ///\param tc Tree compartment
+    ///\retval sum Leaf area in a tree
+    LGMdouble& operator()(LGMdouble &sum,TreeCompartment<TS,BUD>* tc)const;
   private:
     LGMdouble my_order;
   };
 
-  //Either whole tree: construct CollectFoliageMass() or by Gravelius order:
-  // construct CollectFoliageMass(order)
+  ///\brief Wood mass in tree
+  ///
+  ///Either whole tree or by Gravelius order
+  ///\note Both conifers and hardwood trees
   template <class TS,class BUD>
     class CollectWoodMass
     { 
     public:
+      ///\brief Default constructor to cover the whole tree
       CollectWoodMass():my_order(-1.0) {}
-      CollectWoodMass(const LGMdouble order):
-      my_order(static_cast<double>(order)){}
+      ///\brief Constructor to collect by Gravelius order
+      ///\param order Gravelius order
+      CollectWoodMass(const LGMdouble order):my_order(static_cast<double>(order)){}
+      ///\brief Collect wood mass
+      ///\param sum Wood mass
+      ///\param tc Tree compartment
+      ///\retval sum Wood mass in a tree
       LGMdouble& operator()(LGMdouble &sum, TreeCompartment<TS,BUD>* tc)const;
       void setOrder(const int order) {my_order = static_cast<double>(order);}
     private:

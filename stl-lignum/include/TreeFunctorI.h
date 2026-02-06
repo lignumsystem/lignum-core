@@ -13,7 +13,8 @@
 /// -#   PrintTreeInformation2   
 /// -#   DisplayStructure   
 /// -#   DisplayStructureAxis   
-/// -#   CheckCoordinates    
+/// -#   CheckCoordinates
+/// -#   FindHighestPoint
 /// -#   FindCfBoundingBox    
 /// -#   FindHwBoundingBox   
 /// -#   CollectFrustumVolume   
@@ -524,12 +525,22 @@ namespace Lignum{
     return tc;
   }
 
-
+  template <class TS, class BUD>
+  Point& FindHighestPoint<TS,BUD>::operator()(Point& p, TreeCompartment<TS,BUD>* tc)const
+  {
+    if (BUD* bud = dynamic_cast<BUD*>(tc) && (GetValue(*bud,LGAstate) == ALIVE)){
+      Point p_bud = GetPoint(*bud);
+      if (p_bud.getZ() > p.getZ()){
+	p = p_bud;
+      }
+    }
+    return p;
+  }
+	  
   ///Find the boundig box for a tree, i.e. inside which the tree lies
   ///Only those segments that carry foliage are considered. This has to
   ///be checked separately for coniferous (CfTreeSegment) and deciduous
   ///(HwTreeSegment) segments.
-
   template <class TS,class BUD>
   BoundingBox&
   FindCfBoundingBox<TS,BUD>::operator ()(BoundingBox& b_box,
