@@ -61,20 +61,22 @@ namespace cxxadt{
   /// Future analysis can be done with R, python or other HDF5 compatible tool.
   /// Thus the LGMHDF5File class  does not (yet) have methods to read HDF5 files.
   ///
-  /// The datasets will be of NATIVE_DOUBLE type defined in HDF5. Thus user provides 2D or 3D arrays
+  /// The datasets will be of H5::NATIVE_DOUBLE type defined in HDF5. Thus user provides 2D or 3D arrays
   /// of *double* type. Column names are implemented as HDF5 attributes.
   ///
   /// The 3D data should be organised as `array[years][rows][columns]` where the
-  /// `rows` are Lignum trees, `columns` are data for a tree and `years` are simulation iterations.
-  /// For example `array[4][5]` retrieves data row for the `5`th tree on the iteration `4`.
-  /// The 2D data is up to user, usually `array[years][columns]` for aggreate annual data.
+  /// \p years are simulation iterations, \p rows denote Lignum trees and \p columns are data for the trees.
+  /// \note The exact semantics is application specific. For example the first \p year (index 0)
+  /// can contain the initial state of the simulaton.
+  ///
+  /// The 2D data is up to user, for example `array[years][columns]` for aggreate annual data.
   /// 
   /// \important In C/C++ and Python array indexing starts from 0 but for example R starts indexing from 1.
-  /// \important C/C++ (consequently LGMHDF5File implementation) and Python use row-first ordering
-  /// for storing multidimensinal vectors in linear continous storage. R uses Fortran style column-first ordering.
-  /// Use for example matrix transposes to get the original dataset dimensions in R.
+  /// \important C/C++ and consequently LGMHDF5File implementation as well as Python use row-first ordering
+  /// for storing multidimensinal vectors (matrices) in a linear continous storage. R uses Fortran style column-first ordering.
+  /// Use for example matrix transposes in R to regain matrices based in column-first ordering.
   ///
-  /// \warning HDF5 does not *enforce* UTF-8. Using UTF-8 charactiers (like scandinavian alphabet)
+  /// \warning HDF5 does not *enforce* UTF-8. Using UTF-8 characters (like scandinavian alphabet)
   /// may be OK on one platform but not on some others.
   /// \sa TMatrix2D TMatrix3D for 2D and 3D data arrays.
   class LGMHDF5File:public LGMHDF5{
@@ -111,6 +113,20 @@ namespace cxxadt{
     /// \sa createDataSet(const string&,int,int,int,const TMatrix3D<double>&)
     template <class T>
     int createDataSet(const string& name, const CompType& comp_type, int x, int y, int z, const TMatrix3D<T>& data);
+    /// \brief Create 2D dataset from a struct T type 
+    ///
+    /// Create dataset from a struct T datatype. User defines \p comp_type that contains
+    /// the names, offsets and HDF5 datatypes of the struct members.
+    /// \tparam T struct datatype in the dataset
+    /// \param name Name of the dataset
+    /// \param comp_type HDF5 CompType describing the struct T members
+    /// \param x X dimension
+    /// \param y Y dimension
+    /// \param data The 2D data matrix
+    /// \return -1 if error 0 otherwise
+    /// \exception DataSetIException
+    template <class T>
+    int createDataSet(const string& name, const CompType& comp_type, int x, int y, const TMatrix2D<T>& data);
     /// \brief Create dataset form TMatrix3D
     /// \param name Name of the dataset
     /// \param years Simulation years dimension
@@ -229,10 +245,10 @@ namespace cxxadt{
     ///To copy tree data for HDF5 storage reserve contiguous memory dynamically
     ///from the heap instead.
     //
-    /// \snippet{lineno} LGMHDF5File.h HeapAllocation3D
-    //  [HeapAllocation3D]
+    /// \snippet{lineno} LGMHDF5File.h HeapAlloc3D
+    //  [HeapAlloc3D]
     T* v = new T[x * y * z];
-    // [HeapAllocation3D]
+    // [HeapAlloc3D]
 
     ///\par Row first indexing vector as 3D matrix 
     ///To index row first the contiguous memory use the indexing scheme compiler uses.
@@ -243,10 +259,10 @@ namespace cxxadt{
     for (int i = 0; i < x; i++){
       for (int j = 0; j < y; j++){
 	for (int k = 0; k < z; k++){
-	  /// \snippet{lineno} LGMHDF5File.h HeapIndexing3D
-	  // [HeapIndexing3D]
+	  /// \snippet{lineno} LGMHDF5File.h HeapIndex3D
+	  // [HeapIndex3D]
 	  *(v + i * y * z + j * z + k) = data[i][j][k];
-	  // [HeapIndexing3D]
+	  // [HeapIndex3D]
 	}
       }
     }
@@ -269,6 +285,54 @@ namespace cxxadt{
     delete [] v;
     return 0;
   }
-  
+
+  template <class T>
+  int LGMHDF5File::createDataSet(const string& dataset_name, const CompType& comp_type, int x, int y, const TMatrix2D<T>& data)
+  {
+    ///\par Function stack and heap 
+    ///The maximum function stack may be a limiting factor (use the Terminal shell command `ulimit -Hs`).
+    ///In macOS it seems to be 65520 kbytes, default value looks to be 8176.
+    ///For the most of the 2D data arrays it can be enough.
+    ///With 3D data arrays the stack limit is easily exceeded.
+    ///To copy tree data for HDF5 storage reserve contiguous memory dynamically
+    ///from the heap instead.
+    //
+    /// \snippet{lineno} LGMHDF5File.h HeapAlloc2D
+    //  [HeapAlloc2D]
+    T* v = new T[x * y];
+    // [HeapAlloc2D]
+
+    ///\par Row first indexing vector as 3D matrix 
+    ///To index row first the contiguous memory use the indexing scheme compiler uses.
+    ///If you want to understand the row first indexing scheme take a piece of grid paper
+    ///and draw for example three 4x5 2D data arrays to represent 3x4x5 data array.
+    ///Then plugin numbers to the indexing scheme and see how it lands on the right
+    ///array cell on a right 2D array. The `v` denotes first cell (i=j=k=0).
+    for (int i = 0; i < x; i++){
+      for (int j = 0; j < y; j++){
+	/// \snippet{lineno} LGMHDF5File.h HeapIndex2D
+	// [HeapIndex2D]
+	*(v + i * y + j) = data[i][j];
+	// [HeapIndex2D]
+      }
+    }
+    try{
+      Exception::dontPrint();
+      // DataSpace needs dimensions and rank
+      hsize_t dspace_dims[DSPACE_RANK2];
+      dspace_dims[0] = x;
+      dspace_dims[1] = y;
+      DataSpace dspace(DSPACE_RANK2,dspace_dims);
+      DataSet dset = hdf5_file.createDataSet(dataset_name,comp_type,dspace);
+      dset.write((void*) v,comp_type);
+    }
+    catch (DataSetIException error){
+      error.printErrorStack();
+      return -1;
+    }
+    //Note the us of [] operator to delete vector 
+    delete [] v;
+    return 0;
+  }
 }//namepace cxxadt
 #endif

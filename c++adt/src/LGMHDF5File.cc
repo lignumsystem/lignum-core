@@ -102,7 +102,7 @@ namespace cxxadt{
   
   int LGMHDF5File::createDataSet(const string& dataset_name, int years, int rows, int cols, const TMatrix3D<double>& data)
   {
-    /// \par Function stack and heap 
+    /// \par Function stack vs heap 3D 
     ///The maximum function stack size can be quieried
     ///with the Terminal shell command `ulimit -Hs`.
     ///For the 2D data arrays the stack size can be enough.
@@ -111,14 +111,14 @@ namespace cxxadt{
     ///To copy tree data for HDF5 storage reserve contiguous memory
     ///dynamically from the heap.
     /// \internal
-    /// \snippet{lineno} LGMHDF5File.cc HeapAllocation
-    //  [HeapAllocation]
+    /// \snippet{lineno} LGMHDF5File.cc HeapAllocation3D
+    //  [HeapAllocation3D]
     double* v = new double[years * rows * cols];
-    // [HeapAllocation]
-    ///\endinternal
-    /// \par Row first indexing vector as 3D matrix 
+    // [HeapAllocation3D]
+    /// \endinternal
+    /// \par Row-first indexing for 3D matrix 
     ///To index the contiguous memory use the indexing scheme compiler uses.
-    ///If you want to understand the row first indexing scheme take a piece of grid paper
+    ///The best way to understand the C/C++ *row-first* indexing scheme is to take a piece of grid paper
     ///and draw for example three 4x5 2D data arrays to represent 3x4x5 data array.
     ///Then plugin numbers to the indexing scheme and see how it lands on the right
     ///array cell on a right 2D array. The `v` denotes first cell (i=j=k=0).
@@ -126,10 +126,11 @@ namespace cxxadt{
       for (int j = 0; j < rows; j++){
 	for (int k = 0; k < cols; k++){
 	  /// \internal
-	  /// \snippet{lineno} LGMHDF5File.cc HeapIndexing
-	  // [HeapIndexing]
+	  /// \snippet{lineno} LGMHDF5File.cc HeapIndexing3D
+	  // [HeapIndexing3D]
+	  //Copy TMatrix3D data row-first to the 1D array of double type
 	  *(v + i * rows * cols + j * cols + k) = data[i][j][k];
-	  // [HeapIndexing]
+	  // [HeapIndexing3D]
 	  /// \endinternal
 	}
       }
@@ -142,15 +143,33 @@ namespace cxxadt{
   //2D matrix dataset for Lignum functions, double datatype
   int LGMHDF5File::createDataSet(const string& dataset_name, int years, int cols, const TMatrix2D<double>& data)
   {
-    //Copy TMatrix<2D> `data` to 2D array of double type 
-    double data_array2D[years][cols];
+    
+    /// \par Function stack and heap 2D
+    ///Function stack is usually capacious enough for 2D matrices (`ulimit -Hs`).
+    ///However, although various C++ compilers provide dynamic arrays as
+    ///C/C++ language extension dynamic arrays are *not* part of the C++ language standard.
+    ///Allocate space from heap for 2D matrix.
+    /// \internal
+    /// \snippet{lineno} LGMHDF5File.cc HeapAllocation2D
+    //  [HeapAllocation2D]
+    double* data_array2D = new double[years*cols];
+    //  [HeapAllocation2D]
+    /// \endinternal 
     for (int i = 0; i < years; i++){
       for (int j = 0; j < cols; j++){
-	  data_array2D[i][j] = data[i][j];
+	/// \internal
+	/// \snippet{lineno} LGMHDF5File.cc HeapIndexing2D
+	// [HeapIndexing2D]
+	//Copy TMatrix2D data row-first to 1D array of double type
+	*(data_array2D+i*cols+j) = data[i][j];
+	// [HeapIndexing2D]
+	/// \endinternal
       }
     }
     //After that create HDF5 dataset NATIVE_DOUBLE
-    return createDataSet(dataset_name,years,cols,data_array2D);
+   int res = createDataSet(dataset_name,years,cols,data_array2D);
+   delete [] data_array2D;
+   return res;
   }  
 
   //2D dataset for Lignum parameters , string datatype

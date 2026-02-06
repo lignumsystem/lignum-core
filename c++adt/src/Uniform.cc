@@ -7,7 +7,7 @@ namespace cxxadt{
 #define MZ 0
 #define FAC (1.0/MBIG)
 
-//return uniformally distributed random number [0.0,1.0]
+//return uniformally distributed random number [0.0,1.0)
 //reinitialize the sequence with any negative integer as 'idum'
 double Uniform::uran( int* idum)
 {
