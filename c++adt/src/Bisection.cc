@@ -2,6 +2,8 @@
 #include <iostream>
 
 using namespace cxxadt;
+///\brief Test functor for cxxadt::Bisection 
+///
 ///Linear function, 1st order
 class F1{
 public:
@@ -14,6 +16,8 @@ private:
   double a,b;
 };
 
+///\brief Test functor for cxxadt::Bisection 
+///
 ///Parabolic function, 2nd order
 class F2{
 public:
@@ -26,6 +30,8 @@ private:
   double a,b,c;
 };
 
+///\brief Test functor for cxxadt::Bisection 
+///
 ///Cubic function, 3rd order
 class F3{
 public:
