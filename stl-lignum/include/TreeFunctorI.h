@@ -528,10 +528,12 @@ namespace Lignum{
   template <class TS, class BUD>
   Point& FindHighestPoint<TS,BUD>::operator()(Point& p, TreeCompartment<TS,BUD>* tc)const
   {
-    if (BUD* bud = dynamic_cast<BUD*>(tc) && (GetValue(*bud,LGAstate) == ALIVE)){
-      Point p_bud = GetPoint(*bud);
-      if (p_bud.getZ() > p.getZ()){
-	p = p_bud;
+    if (BUD* bud = dynamic_cast<BUD*>(tc)){
+      if (GetValue(*bud,LGAstate) == ALIVE){
+	Point p_bud = GetPoint(*bud);
+	if (p_bud.getZ() > p.getZ()){
+	  p = p_bud;
+	}
       }
     }
     return p;
