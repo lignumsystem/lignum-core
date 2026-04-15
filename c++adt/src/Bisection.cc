@@ -4,7 +4,7 @@
 using namespace cxxadt;
 ///\brief Test functor for cxxadt::Bisection 
 ///
-///Linear function, 1st order
+///\test Linear function, 1st order
 class F1{
 public:
   F1(double a0,double b0):a(a0),b(b0){}
@@ -18,7 +18,7 @@ private:
 
 ///\brief Test functor for cxxadt::Bisection 
 ///
-///Parabolic function, 2nd order
+///\test Parabolic function, 2nd order
 class F2{
 public:
   F2(double a0,double b0,double c0):a(a0),b(b0),c(c0){}
@@ -32,7 +32,7 @@ private:
 
 ///\brief Test functor for cxxadt::Bisection 
 ///
-///Cubic function, 3rd order
+///\test Cubic function, 3rd order
 class F3{
 public:
   F3(double a0,double b0,double c0,double d0):a(a0),b(b0),c(c0),d(d0){}
