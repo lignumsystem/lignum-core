@@ -23,16 +23,15 @@
 
 ///\brief Lignum  core model framework
 namespace Lignum{
-  ///Lignum Attributes double  
+  ///Short for Lignum Attributes Double  
   ///
-  ///These symbols are used to access (with GetValue, SetValue) the
+  ///These symbols of *double* type are used to access (with GetValue, SetValue) the
   ///variables (either attributes or other variables) of TreeSegment,
-  ///Bud, BrachingPoint, BroadLeaf in LIGNUM (in any compartment
-  ///except Tree). As regards GetValue, it may be that the value
-  ///returned is calculated on the basis of other variables.
-  ///If you add a new symbol be sure to document it carefully.
+  ///Bud, BrachingPoint, BroadLeaf in Lignum (in any compartment
+  ///except Tree). GetValue may calculate the symbol value based on other variables.
+  ///If you add a new symbol list it here with a comment
   enum LGMAD {
-    LGAA,           ///<  0   Segment base area based on R. Also BroadBeaf shape \e true area. \sa BroadLeaf::GetValue() TreeSegment::GetValue()	      
+    LGAA,           ///<  0   Segment base area based on R. Also BroadBeaf shape \e true area. \sa BroadLeaf::GetValue() \sa TreeSegment::GetValue()	      
     LGAAbase,	    ///<  1   Area at the base of the \e tree														      
     LGAAf,	    ///<  2   Area of foliage																      
     LGAAfb,	    ///<  3   Foliage area, broad leaved (see ForestDescriptor in stl-voxelspace)										      
@@ -81,9 +80,9 @@ namespace Lignum{
     LGAsf,	    ///< 46   Specific leaf area (=leaf area/ leaf weight)												      
     LGAstarm,	    ///< 47   Star mean for a confiferous segment														      
     LGAstatus, 	    ///< 48   General counter to control e.g. bud burst. \sa Lignum::LGAstate
-    LGAstate,	    ///< 49   Bud state can be dead, alive, dormant etc in LGMUnits.h. \sa LignumForest::LGAstatus
+    LGAstate,	    ///< 49   Bud state can be dead, alive, dormant, flower etc. \sa LGMUnits.h \sa Lignum::LGAstatus
     LGAtauL,	    ///< 50   Transmission coefficient of leaf (in direction of the ray of light) 									      
-    LGAtype,	    ///< 51   General type specifier, e.g. Bud:dominant, apical, lateral etc. The numerical values and their symbols of different types given in LGMUnits.h     
+    LGAtype,	    ///< 51   General application specific type specifier, for example dominant, apical, lateral etc. bud. \sa LGMUnits.h     
     LGAV,	    ///< 52   Segment volume based on R and L														      
     LGAVf,	    ///< 53   Volume occupied by the foliage in CfSegment 												      
     LGAVfrustum,    ///< 54   Volume of the segment frustum when LGAR > LGARTop												      
@@ -150,20 +149,25 @@ namespace Lignum{
 
   ///\brief Lignum::TreeAttributes double names.
   ///
-  ///\attention Set Lignum::LGMTADLENGTH to  number of names in Lignum::LGMTAD enumeration.
+  ///The attribute names are used to index tree attribute vector.
+  ///\attention Set Lignum::LGMTADLENGTH to  number of names in the LGMTAD enumeration.
+  ///\sa TreeAttributes
+  ///\sa TreeAttributes::v
+  ///\sa Tree::ta
   enum LGMTAD {
     Treelambda,       ///< lambda s.t. P-M=G(lamda)
     Treelb,           ///< Longest branch \pre Needs update before valid
     TreeP,	      ///< Tree level photosynthesis									    
-    TreeM,	      ///< Tree level respiration										    
+    TreeM,	      ///< Tree level respiration
     TreeWr,	      ///< Root mass											    
     TreeQinMax,	      ///< Max Qin of all segments in a tree								    
     TreeRefRadiation, ///< Variable that is used as reference radiation in calculations in tree (e.g. lentgth growth) 
-    TreeId	      ///< Unique identifier (number) for the tree (Useful in LignumForest)                                       
+    TreeId	      ///< Unique identifier (number) for the tree
   };		      
 
-  /// LGMF: LIGNUM Functions. Usually used as LGMF(x)*Value. So to have no effect set constant function F(x) = 1.
-  /// \note Not all have to be used in one model implementation.
+  ///\brief Lignum tree functions
+  ///
+  ///Lignum tree functions recognised by Lignum::GetFunction(). Usually implemented as cxxadt::ParametricCurve in a file. 
   enum LGMF {
     LGMAL,    ///< Adjusted length For example for making branches below 0.002 to have Length 0 and branches				  
     LGMFM,    ///< Foliage mortality 						      
