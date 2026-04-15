@@ -39,7 +39,7 @@ ModuleDeclaration::ModuleDeclaration(const char* ident, const ParametersList* pP
 {
 	_id = id;
 	strcpy(_Ident, ident);
-	memcpy(&_Params, pParams, sizeof(ParametersList));
+	memcpy((void*)&_Params, pParams, sizeof(ParametersList));
 }
 
 
@@ -48,7 +48,7 @@ void ModuleDeclaration::operator=(const ModuleDeclaration& src)
 	if (this != &src)
 	{
 		strcpy(_Ident, src._Ident);
-		memcpy(&_Params, &(src._Params), sizeof(ParametersList));
+		memcpy((void*)&_Params, &(src._Params), sizeof(ParametersList));
 		_id = src._id;
 	}
 }
@@ -367,7 +367,7 @@ void GenerateFixed()
 FormalModuleDt::FormalModuleDt(const char* idnt, const ParametersList* pParams)
 {
 	strcpy(Ident, idnt);
-	memcpy(&Params, pParams, sizeof(ParametersList));
+	memcpy((void*)&Params, pParams, sizeof(ParametersList));
 	pNext = NULL;
 }
 

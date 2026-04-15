@@ -110,7 +110,7 @@ void ProductionProto::GenerateCaller() const
 				fprintf(fOut, "/* Parameter %s */\n", pCurrentModule->Params.Params[i]);
 #endif
 				fprintf(fOut, "%s p%d;\n", decl.Params().Params[i], prmcnt);
-				fprintf(fOut, "memcpy(&p%d, pArg, sizeof(%s));\n", prmcnt, decl.Params().Params[i]);
+				fprintf(fOut, "memcpy((void*)&p%d, pArg, sizeof(%s));\n", prmcnt, decl.Params().Params[i]);
 				if (i<pCurrentModule->Params.count-1)
 					fprintf(fOut, "pArg += sizeof(%s);\n", decl.Params().Params[i]);
 				prmcnt++;
@@ -142,7 +142,7 @@ void ProductionProto::GenerateCaller() const
 				fprintf(fOut, "/* Parameter %s */\n", pCurrentModule->Params.Params[i]);
 #endif
 				fprintf(fOut, "%s p%d;\n", decl.Params().Params[i], prmcnt);
-				fprintf(fOut, "memcpy(&p%d, pArg, sizeof(%s));\n", prmcnt, decl.Params().Params[i]);
+				fprintf(fOut, "memcpy((void*)&p%d, pArg, sizeof(%s));\n", prmcnt, decl.Params().Params[i]);
 				if (i<pCurrentModule->Params.count-1)
 					fprintf(fOut, "pArg += sizeof(%s);\n", decl.Params().Params[i]);
 				prmcnt++;
@@ -175,7 +175,7 @@ void ProductionProto::GenerateCaller() const
 				fprintf(fOut, "/* Parameter %s */\n", pCurrentModule->Params.Params[i]);
 #endif
 				fprintf(fOut, "%s p%d;\n", decl.Params().Params[i], prmcnt);
-				fprintf(fOut, "memcpy(&p%d, pArg, sizeof(%s));\n", prmcnt, decl.Params().Params[i]);
+				fprintf(fOut, "memcpy((void*)&p%d, pArg, sizeof(%s));\n", prmcnt, decl.Params().Params[i]);
 				if (i<pCurrentModule->Params.count-1)
 					fprintf(fOut, "pArg += sizeof(%s);\n", decl.Params().Params[i]);
 				prmcnt++;
