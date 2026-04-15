@@ -144,59 +144,65 @@ private:
 ///PineBud has  SetValue and  GetValue functions to  update and  to use
 ///PineBudData in order to pass information to L-system and back. 
 enum PBNAME {PBDATA};
-///\brief PineBudData  is  intented  pass data  between LIGNUM  model and  L-system.
+///\brief Pass data  between the LIGNUM  model and  L-system.
 ///
-///A  simpler example than  in  SugarMaple. Currently  PineBudData  has *state*,  *foliage
-///mass* (of  the mother segment) and  the direction of  the bud (looks
-///like we need the orientation of the bud in world coordinates, at the
-///very least it will make  life easier).  See PineBud for SetValue and
-///GetValue methods  (used by the  L-system implementation).  Obviously
-///this is  not the  final set of  attributes for PineBudData  that are
-///required,  needed  or useful,  but  the  implementation  is open  to
-///discussion.
+///See PineBud for SetValue and GetValue methods used by the  L-system implementation).
+///
+///\attention The \p l2c L-system compiler generates \e sizeof(PineBudData) function
+///call to  access  PineBudData  structure. To be on the safe side
+///PineBudData has fundamental C/C++ types only corresponding to basic trivial storage units.
+///The built-in \e sizeof function can not return right memory size for non-trivially copyable structures.
+///\note In general do not  use  references or  pointers  or structures  within
+///structures to  pass information with PineBudData, only fundamental C/C++ types corresponding
+///to basic storage units.
+///\sa \link SetPBValue SetValue(PineBud<TS1,BUD1>&,PBNAME,const PineBudData&) \endlink
+///\sa \link GetPBValue GetValue(const PineBud<TS1,BUD1>&,PBNAME) \endlink
 class PineBudData{
-  ///GetDirection returns  the direction of  the bud (not used  in data
-  ///exchange but makes life easier)
+  ///\brief Direction of  a bud
+  ///\return #x, #y and #z as PositionVector  
   friend PositionVector GetDirection(const PineBudData& data){
     return PositionVector(data.x,data.y,data.z);
   }
 public:
-  ///A  couple of  constructors to  initialize members.  Recommended in
-  ///general.
+  ///\name Constructors
+  ///@{
+  ///Constructors to  initialize data members.  
   PineBudData():state(ALIVE),fm(0.0),ip(1.0),x(0.0),y(0.0),z(0.0),length(0.0),view(0.0),phys_age(0.0){}
   PineBudData(double s, double fol, double rl, double len, double physiol_age=0.0)
     :state(s),fm(fol),ip(rl),x(0.0),y(0.0),z(0.0),length(len), view(0.0),phys_age(physiol_age) {}
   PineBudData(const PineBudData& pbd)
     :state(pbd.state),fm(pbd.fm),ip(pbd.ip),x(pbd.x),y(pbd.y),z(pbd.z),
      length(pbd.length),view(pbd.view),phys_age(pbd.phys_age){}
-  double state; //ALIVE,DEAD, FLOWER, etc
-  double fm;//foliage mass (of the mother segment)
-  double ip;//qin/TreeQinMax, i.e. relative light
-  ///Direction   is   PositionVector(x,y,z).    Note  you   can't   use
-  ///PositionVector  here, because  internally it  has  implemented the
-  ///(x,y,z)  as an  stl-vector.  During  passing the  information from
-  ///LIGNUM to L-system and back, L-system uses the sizeof(PineBudData)
-  ///built-in  function to  access  this PineBudData  structure in  the
-  ///string.  And the sizeof(vector<double>) is something else than the
-  ///sizeof three floating point numbers. In general, to be on the safe
-  ///side,  do not  use  references or  pointers  or structures  within
-  ///structures to  pass the information, just  fundamental c/c++ types
-  ///corresponding to basic storage units.
+  ///@}
+  double state;///< \brief State as in Lignum::LGAstate: Lignum::ALIVE or Lignum::DEAD
+  double fm;///< \brief Foliage mass of the mother segment
+  double ip;///< \brief Relative light as \e Lignum::LGAQin / Lignum::TreeQinMax
+  ///\name Direction of a bud with three (x,y,z) floating point numbers 
+  ///@{
   double x;///< X coordinate
   double y;///< Y coordinate
-  double z;///z Z coordinate
-  double length; ///<Length of the mother segment
+  double z;///< Z coordinate
+  ///@}
+  double length; ///< \brief Length of the mother segment
   ///\attention Not documented
   double view;
-  ///Physiological age of the bud. Different from chronological age.Implementation depended.
-  ///Can trigger for example growth habit trait in tree crown
+  ///\brief Physiological age of the bud.
+  ///
+  ///Different from chronological age. Implementation depended.
+  ///Can trigger for example growth habit change in the tree crown
   double phys_age;
 };
 
 ///PineBud has additional attributes: \sa fm_mother_segment \sa length_mother_segment \sa phys_age
 template <class TS, class BUD>
 class PineBud: public Bud<TS,BUD>{
-  ///GetValue for PineBud 
+  ///\brief GetValue for PineBud
+  ///
+  ///The argument \p name is in LGMSPAD enumeration.
+  ///The known values are:
+  /// + PineTree::LGAphysage
+  ///.
+  ///\sa LGMSPAD
   template <class TS1,class BUD1>
   friend double GetValue(PineBud<TS1,BUD1>& b,LGMSPAD name){
     if (name == LGAphysage){
@@ -207,10 +213,16 @@ class PineBud: public Bud<TS,BUD>{
     }
     return 0.0;
   }
-  ///\brief SetValue for PineBud for PineBudData
+
+  ///\anchor SetPBValue 
+  ///\brief SetValue for PineBud
+  ///
+  ///Assign PineBudData basic storage units to PineBud.
+  ///The argument \p name is in PBNAME enumeration.
+  ///\retval PineBudData with previous values in PineBud \p b.
+  ///\sa PBNAME
   template <class TS1,class BUD1>
-  friend PineBudData SetValue(PineBud<TS1,BUD1>& b,
-			      PBNAME name,const PineBudData& data){
+  friend PineBudData SetValue(PineBud<TS1,BUD1>& b, PBNAME name,const PineBudData& data){
     PineBudData old_data = GetValue(b,name); 
     SetValue(b,LGAstate,data.state);
     SetValue(b,LGAip,data.ip);
@@ -222,8 +234,14 @@ class PineBud: public Bud<TS,BUD>{
     b.phys_age = data.phys_age;
     return old_data;
   }
-  ///\brief GetValue for  PineBud for PineBudData
-  ///Construct PineBudData from its parts/constituents
+
+  ///\anchor GetPBValue
+  ///\brief  GetValue for  PineBud
+  ///
+  ///Construct PineBudData basic storage units from PineBud.
+  ///The argument \p name is in PBNAME enumeration.
+  ///\retval PineBudData with data from PineBud \p b.
+  ///\sa PBNAME
   template <class TS1,class BUD1>
   friend PineBudData GetValue(const PineBud<TS1,BUD1>& b,PBNAME name){
     PineBudData pbdata;
@@ -294,7 +312,7 @@ template <class TS,class BUD>
 class KillBuds{
 public:
   ///Kill the tree or just unproductive buds
-  ///\param kill If *true* kill buds unconditianally, if *false*  (default) based on poor relative light conditions 
+  ///\param kill If *true* kill buds unconditianally, if *false*  (default) based on relative light conditions 
   KillBuds(bool kill=false){kill_tree=kill;}
   KillBuds(const KillBuds& kb){kill_tree=kb.kill_tree;}
   KillBuds& operator=(const KillBuds& kb){
