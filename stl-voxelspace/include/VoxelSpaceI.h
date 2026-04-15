@@ -46,8 +46,7 @@ void DumpCfTree(VoxelSpace &s, Tree<TS, BUD> &tree,int num_parts, bool wood)
 
 
 template <class TS, class BUD>
-TreeCompartment<TS,BUD>* DumpCfTreeFunctor<TS,BUD>::
-operator ()(TreeCompartment<TS,BUD>* tc)const
+TreeCompartment<TS,BUD>* DumpCfTreeFunctor<TS,BUD>::operator ()(TreeCompartment<TS,BUD>* tc)const
 {
     if (TS* cfts = dynamic_cast<TS*>(tc))  {
         bool foliage = false;
@@ -66,7 +65,7 @@ operator ()(TreeCompartment<TS,BUD>* tc)const
                 if(foliage)
 		  DumpCfSegmentFoliage(this_box, *cfts, num_parts);
                 else if(dumpWood) {
-                    DumpSegmentWood(this_box, *cfts, num_parts);
+		  DumpSegmentWood(this_box, *cfts, num_parts);
                 }
             }
 

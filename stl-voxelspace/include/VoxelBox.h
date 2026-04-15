@@ -21,11 +21,31 @@ class VoxelSpace;
 
  class VoxelBox
  {
-
+   ///\brief Insert conifer tree segment foliage data into a VoxelBox.
+   ///
+   ///Updates the STAR sum and the \p weight based on foliage area for the weighted STAR.
+   ///Updates number of segments in the VoxelBox. Updates the record of true number of segments
+   ///in the VoxelBox based on \p num_parts. Note that this approximate the number of true segments
+   ///when the segment is divided into \p num_parts imaginary segments.
+   ///\tparam TS Tree segment
+   ///\tparam BUD Bud
+   ///\param b VoxelBox
+   ///\param ts TreeSegment
+   ///\param num_parts Number of parts tree segment is divided into
+   ///\sa starSum
+   ///\sa weight
    template <class TS,class BUD>
      friend void DumpCfSegmentFoliage(VoxelBox &b, const CfTreeSegment<TS,BUD>& ts,
 				      int num_parts );
-
+   ///\brief Insert conifer tree segment wooden part into a VoxelBox.
+   ///
+   ///Updates wood mass and the wooden cylinder surface area values (based on cxxadt::LGAR)
+   ///in the VoxelBox.
+   ///\tparam TS Tree segment
+   ///\tparam BUD Bud
+   ///\param b VoxelBox
+   ///\param ts Tree segment
+   ///\param num_parts Number of parts tree segment is divided into 
    template <class TS,class BUD>
      friend void DumpSegmentWood(VoxelBox &b, const TreeSegment<TS,BUD>& ts,
 				 int num_parts);
@@ -42,9 +62,44 @@ class VoxelSpace;
  public:
    VoxelBox(VoxelSpace *s);
    VoxelBox();
-   //Recalculate star and val_c,  k_b and val_b
-   //currently star and k_b hard-coded!!
+   ///\brief Update \f$ \mathit{STAR} \f$, \f$ \mathit{val}_c\f$ and \f$ \mathit{val}_b\f$
+   ///
+   ///Recalculate weighted \f$ \mathit{STAR} \f$:
+   ///\f{math}{
+   ///   \mathit{STAR}  = \left\{
+   ///     \begin{array}{l}
+   ///       \mathit{STARSUM}/w \quad w > 0\\
+   ///       0 \quad w = 0
+   ///     \end{array}
+   ///   \right.
+   ///\f}
+   ///then \f$ \mathit{val}_c\f$ for conifers and \f$ \mathit{val}_b\f$ for broadleaved trees:
+   ///\f{math}{
+   ///  \begin{array}{l}
+   ///   \mathit{val}_c = \mathit{STAR} \times (A_{\mathrm{needle}} / V_{\mathrm{voxel}})\\
+   ///   \mathit{val}_b = k_b \times (A_{\mathrm{leaf}} / V_{\mathrm{voxel}})
+   ///  \end{array}
+   ///\f}
+   ///\sa star 				       
+   ///\sa val_c
+   ///\sa val_b
+   ///\sa voxelspace::LGAkb
+   ///\sa DumpCfSegmentFoliage
    void updateValues();
+   ///\brief Update directional \f$\mathbf{STARDIR}\f$ vector
+   ///
+   ///Recalculate weighted values in \f$\mathbf{STARDIR}\f$ vector:
+   /// \f{math}{
+   ///     \mathbf{STARDIR}_i = \left\{
+   ///       \begin{array}{l}
+   ///         \mathbf{STARDIRSUM}_i \times  1/w \quad  w > 0 \\
+   ///         0 \quad  w = 0
+   ///       \end{array}
+   ///     \right.
+   /// \f}
+   ///\sa starDir
+   ///\sa starDirSum
+   ///\sa weight
    void updateValuesDirectionalStar();
    LGMdouble extinction(LGMdouble l)const;
    bool isEmpty()const;
@@ -62,6 +117,12 @@ class VoxelSpace;
    LGMdouble getQinMean()const{return Qin_mean;}
    LGMdouble getStarSum()const{ return starSum; }
    LGMdouble getStar()const{return star; }
+   ///\brief STAR for conifers
+   ///\retval val_c
+   LGMdouble getStarConifer()const{return val_c;}
+   ///\brief STAR for broadleaved
+   ///\retval val_b
+   LGMdouble getStarBroadLeaf()const{return val_b;}
    vector<LGMdouble> getDirStar() const{ return starDir;}
    vector<LGMdouble> getDirStarSum()const{  return starDirSum;}
    LGMdouble getNeedleMass()const{return needleMass;}
@@ -96,7 +157,9 @@ class VoxelSpace;
    void setQabsMean(LGMdouble val){Qabs_mean= val;}
    void addInterceptedRadiation(LGMdouble rad) { interceptedRadiation += rad; }
    void addStarSum(LGMdouble starmean){starSum += starmean;}
-   void addDirectionalStarSum(vector<LGMdouble> stardirmean){std::transform (starDirSum.begin(),starDirSum.end(),stardirmean.begin(),starDirSum.begin(),plus<LGMdouble>());}
+   void addDirectionalStarSum(vector<LGMdouble> stardirmean){
+     std::transform (starDirSum.begin(),starDirSum.end(),stardirmean.begin(),starDirSum.begin(),plus<LGMdouble>());
+   }
    void subtractStarSum(LGMdouble starmean){starSum -= starmean;}
    void addWoodMass(LGMdouble mass) {woodMass += mass; }
    void addWoodArea(LGMdouble area) {woodArea += area; }

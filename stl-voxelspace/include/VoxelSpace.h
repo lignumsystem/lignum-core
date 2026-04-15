@@ -64,11 +64,17 @@ private:
     friend class VoxelBox;
     friend class InsertHwEllipse;
 
+    ///\brief Insert coniferous tree segment into VoxelSpace
+    ///\tparam TS Tree segment
+    ///\tparam BUD Bud
+    ///\param vs VoxelSpace
+    ///\param tree Lignum tree
+    ///\param num_parts Divide the coniferous tree segment into \p num_parts and insert data piecewise
     template <class TS,class BUD>
-    friend void DumpCfTree(VoxelSpace &s, Tree<TS, BUD> &tree,int num_parts);
+    friend void DumpCfTree(VoxelSpace &vs, Tree<TS, BUD> &tree,int num_parts);
 
     template <class TS,class BUD>
-    friend void DumpCfTree(VoxelSpace &s, Tree<TS, BUD> &tree,int num_parts, bool wood);
+    friend void DumpCfTree(VoxelSpace &vs, Tree<TS, BUD> &tree,int num_parts, bool wood);
 
     //Insert whole segment to a voxel.
 
@@ -171,18 +177,21 @@ private:
     int getNumberOfFilledBoxes()const;
     int getNumberOfTreeSegments()const;
     LGMdouble getBoxVolume()const{ return Xbox*Ybox*Zbox; }
-    LGMdouble getXSideLength(){ return Xbox; }
-    LGMdouble getYSideLength(){ return Ybox; }
-    LGMdouble getZSideLength(){ return Zbox; }
-    int getNoBoxX() {return Xn;}
-    int getNoBoxY() {return Yn;}
-    int getNoBoxZ() {return Zn;}
+    LGMdouble getXSideLength()const{ return Xbox; }
+    LGMdouble getYSideLength()const{ return Ybox; }
+    LGMdouble getZSideLength()const{ return Zbox; }
+    int getNoBoxX()const{return Xn;}
+    int getNoBoxY()const{return Yn;}
+    int getNoBoxZ()const{return Zn;}
     LGMdouble getQabs()const;
     LGMdouble getQin()const;
     pair<double,double> getMinMaxNeedleMass()const;
     // returns the total foliage mass of the tree segments dumped into
     // the VoxelSpace
     LGMdouble getFoliageMass(void);
+    const TMatrix3D<VoxelBox>& getVoxelBoxes()const{
+      return voxboxes;
+    }
     VoxelBox& getVoxelBox(const Point& p);
     //Given a point 'p' in global coordinate system, return a point in
     //VoxelSpace coordinate system (=indexes)
@@ -222,7 +231,8 @@ private:
     //Input: p0   start point of the light beam
     //       dir  direction of the light beam, |dir| == 1 (!!!)
     double getBorderStandExtinction(const Point& p0, const PositionVector& dir)const;
-    void updateBoxValues();  //Runs updateValues() of voxelboxes (whatever it does)
+    ///\brief Loop through VoxelBoxes and update VoxelBox values
+    void updateBoxValues();  
     LGMdouble calculateTurbidLight(bool border_forest, bool self_shading = true);
     //diffuse is to calcluate the real diffuse from standard 1200, structureFlag is
     //used to indicate if it is the first time light calculation after structure update
@@ -338,16 +348,20 @@ private:
   };
 
 
-template <class TS,class BUD>
-class DumpCfTreeFunctor
-{
-public:
+  ///\brief Insert coniferous segment into VoxelSpace 
+  template <class TS,class BUD>
+  class DumpCfTreeFunctor
+  {
+  public:
+    ///\brief Constructor
+    ///\param n Number of segment parts
+    ///\param wood Boolean flag to insert wooden part or not 
     DumpCfTreeFunctor(int n, bool wood):num_parts(n), dumpWood(wood) {}
     TreeCompartment<TS,BUD>* operator ()(TreeCompartment<TS,BUD>* tc)const;
-    mutable VoxelSpace *space;
-    double num_parts;
-    bool dumpWood;
-};
+    mutable VoxelSpace *space;///< VoxelSPace
+    double num_parts;///< Number of segment parts 
+    bool dumpWood;///< Insert wooden part or not
+  };
 
 
 template <class TS,class BUD>

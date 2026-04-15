@@ -6,11 +6,6 @@
 
 namespace voxelspace {
 
-
-//
-//	Dumps a conifer segment to the VoxelBox given as a parameter.
-//	Updates also the star value
-//
 template <class TS,class BUD>
 void DumpCfSegmentFoliage(VoxelBox &b, const CfTreeSegment<TS,BUD>& ts,
                           int num_parts)
@@ -33,22 +28,26 @@ void DumpCfSegmentFoliage(VoxelBox &b, const CfTreeSegment<TS,BUD>& ts,
         S_f = farea/fmass;
     else
         S_f = 28.0;
-
+    ///\par Steps calculating STAR mean
+    ///\internal
+    ///\snippet{lineno} VoxelBoxI.h STARSUM
+    // [STARSUM]
     LGMdouble starS = 0.0;
-
     //This for loop is executed for angles 0, 15, .., 90 degrees, that is, 7 times
+    //S_f = farea/fmas or 28.0
     for (double phi=0;phi<=PI_VALUE/2.0; phi+=PI_VALUE/12.0)
     {
       starS += cos(phi) * b.S(phi, S_f, fmass, needle_rad, lenght);
     }
+    //Mean STAR value is the spherically averaged:
+    //integ(incl=0,PI, azim=0,2PI) cos(incl)*STAR(incl,azim) dincl dazim (Oker-Blom & Smolander 1988)
     starS /= 4.29788;    //4.29788 = sum(cos(phi), phi = 0,15,30, .., 90 (from previous loop)
-    //Mean STAR value is the spherically averaged
-    //= integ(incl=0,PI, azim=0,2PI) cos(incl)*STAR(incl,azim) dincl dazim (Oker-Blom & Smolander 1988)
 
-    b.addStarSum(starS * farea/(double)num_parts);  //Note: weighted by needle area
-    //of the part of seg that is in question.
+    //Note: weighted by needle area of the part of segment that is in question.
+    b.addStarSum(starS * farea/(double)num_parts);  
     b.addWeight(farea/(double)num_parts);
-
+    // [STARSUM]
+    ///\endinternal
     b.increaseNumberOfSegments();  //This is a bit problematic with num_parts
     b.addNumberOfSegmentsReal(1.0/(double)num_parts);
     b.addVector((farea/(double)num_parts)*GetDirection(ts));
