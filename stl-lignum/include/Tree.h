@@ -94,8 +94,12 @@ namespace Lignum{
     LGMdouble e2;            ///<See Sievanen R 1993 Scand. J. For. Res 8: 28-48.
   };
  
-  ///TreeAttributes  are  in a vector  indexed by  enumeration
+  ///\brief TreeAttributes  vector
+  ///
+  ///Tree attributes are  in a vector  indexed by  enumeration
   ///Lignum::LGMTAD defined in LGMSymbols.h
+  ///\sa Lignum::LGMTAD
+  ///\sa Tree::ta
   class TreeAttributes{
   public:
     TreeAttributes(int size = LGMTADLENGTH): v(size,0.0) { }
@@ -207,7 +211,12 @@ namespace Lignum{
 
 	
   private:
-    TreeAttributes ta; ///< Tree level attributes
+    ///\brief Tree level attributes
+    ///
+    ///Tree attributes for indexing the vector are itemized in Lignum::LGMTAD 
+    ///\sa Lignum::LGMTAD
+    ///\sa TreeAttributes
+    TreeAttributes ta; 
     TreeParameters tp; ///< Tree parameters   
     TreeInitializationFiles tif; ///< Tree initialization file names
     FirmamentWithMask f; ///< Firmament for the tree
