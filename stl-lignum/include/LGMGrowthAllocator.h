@@ -224,16 +224,16 @@ namespace Lignum{
     LGMGrowthAllocator2(Tree<TS,BUD>& tree)
       :t(tree),P(0.0),M(0.0), reduction(0.0){init();}
     ///\param tree The tree
-    ///\param d The data to be used
-    ///\param functor The user defined functor for data instead of default '+='
+    ///\param d The data to be used during diameter growth allocation
+    ///\param functor The user defined functor for data \p d instead of default add assign '+='
     LGMGrowthAllocator2(Tree<TS,BUD>& tree,DATA d, ADD_ASSIGN functor)
       :t(tree),data(d),data_orig(d),f(functor),P(0.0), M(0.0), reduction(0.0){init();}
     ///\param tree The tree
-    ///\param d The data to be used
-    ///\param functor The user defined functor for data instead of default '+='
-    ///\param red0 The value for reduction
-    LGMGrowthAllocator2(Tree<TS,BUD>& tree,DATA d, ADD_ASSIGN functor, const double red0)
-      :t(tree),data(d),data_orig(d),f(functor),P(0.0), M(0.0), reduction(red0) {init();}
+    ///\param d The data to be used during diameter growth allocation
+    ///\param functor The user defined functor for data \p d instead of default add assign operator '+='
+    ///\param r0 The value for reduction
+    LGMGrowthAllocator2(Tree<TS,BUD>& tree,DATA d, ADD_ASSIGN functor, const double r0)
+      :t(tree),data(d),data_orig(d),f(functor),P(0.0), M(0.0), reduction(r0) {init();}
     void init();
     DATA getData()const{return data;}
     double getP()const{return P;}
@@ -252,8 +252,10 @@ namespace Lignum{
     double P;///< Available photosynthates
     double M;///< Respiration, growth and maintenance
     mutable double lambda;///< The lambda in  G = iWs(l) + iWfnew(l) + iWrnew(l)
-    double reduction;///< A reduction factor R that can reduce available growth resource, that is, P-M-R=G
-                     ///< Default value 0.
+    ///A reduction factor \p r  that can reduce available growth resource, that is, P-M-r=G
+    ///Default value for \p r is 0.
+    double reduction;
+                     
   };
 
   ///\brief Initialize available photosynthates and respiration
@@ -278,19 +280,19 @@ namespace Lignum{
     //[GAlloc2]
     //Reset data!!!!
     DATA data = data_orig;
-    //0.Save current value of lambda
+    //1. Save current value of lambda
     lambda = l;
-    //1.Elongate or shorten segment lengths
+    //2. Elongate or shorten segment lengths
     ForEach(t,ELONGATION(l));
 
-    //2. Simulate  diameter  growth  and  collect  sapwood  and  foliage
-    //masses.
+    //3. Simulate  diameter  growth  and  collect  sapwood  and  foliage masses.
     data = AccumulateDown(t,data,f,DIAMETER_INCREMENT(LGMALLOCATE));   
   
-    //3. return P-M-G=0 where G = iWs(l) + iWfnew(l) + iWrnew(l)
+    //4. Return to check P-M-G-r=0 where G = iWs(l) + iWfnew(l) + iWrnew(l)
     //iWs = sapwood mass: new segments + thickening
     //iWfnew = new foliage
-    //iWrnew = new roots = ar*iWfnew 
+    //iWrnew = new roots = ar*iWfnew
+    //r = growth reduction
     return P - M - GetValue(data,LGAiWs) - GetValue(data,LGAiWf) - GetValue(t,LGPar)* GetValue(data,LGAiWf)
       - reduction;
     //[GAlloc2]
