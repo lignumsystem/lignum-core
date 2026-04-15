@@ -22,15 +22,21 @@
 #include <glob.h>
 #include <ParametricCurve.h>
 #include <TMatrix3D.h>
+#include <TMatrixN.h>
 #include <H5Cpp.h>
 using namespace H5;
 using namespace std;
 using namespace cxxadt;
 
 namespace cxxadt{
-  /// DataSpace RANKS for 2D and 3D arrays
-  const int DSPACE_RANK3 = 3; ///< DataSpace rank 3D array
-  const int DSPACE_RANK2 = 2; ///< DataSpace rank 2D array (matrix)
+  ///\name  DataSpace ranks
+  ///Data space ranks or dimensions
+  ///@{
+  const int DSPACE_RANK2 = 2; ///< DataSpace rank 2
+  const int DSPACE_RANK3 = 3; ///< DataSpace rank 3 
+  const int DSPACE_RANK4 = 4; ///< DataSpace rank 4
+  ///@}
+  
   /// \brief Base class to create TMatrix2D from Lignum functions and parameters.
   ///
   /// \sa LGMHDF5File
@@ -90,11 +96,13 @@ namespace cxxadt{
     /// Close the H5File `hdf5_file`.
     /// \sa hdf5_file
     ~LGMHDF5File();
-    /// \brief Create group in HDF5 file
+    /// \brief Create a group in a HDF5 file if it does not exist.
+    ///
+    /// Create also nested groups in the HDF5 path string ending \p name.
     /// \param name Group name
     /// \return -1 if error 0 otherwise 
-    /// \exception FileIException GroupIException
-    /// \note The group name is a Linux/Unix style directory path string. e.g. "/Groups/GroupA"
+    /// \exception FileIException
+    /// \exception GroupIException
     int createGroup(const string& name);
     /// \brief Create 3D dataset from a struct T type 
     ///
@@ -127,23 +135,37 @@ namespace cxxadt{
     /// \exception DataSetIException
     template <class T>
     int createDataSet(const string& name, const CompType& comp_type, int x, int y, const TMatrix2D<T>& data);
-    /// \brief Create dataset form TMatrix3D
-    /// \param name Name of the dataset
-    /// \param years Simulation years dimension
-    /// \param rows Number of data rows dimension
-    /// \param cols Number of data columns dimension
-    /// \param data The 3D matrix of double
-    /// \return -1 if error 0 otherwise
-    /// \exception DataSetIException
-    int createDataSet(const string& name, int years, int rows, int cols, const TMatrix3D<double>& data);
-    /// \brief Create dataset from TMatrix2D<double> (e.g. stand level data)
+    /// \brief Create dataset from TMatrix2D<double>
     /// \param name Name of the dataset
     /// \param years Years  (rows) dimension
     /// \param cols Columns (data) dimension
     /// \param data The 2D array of type *double*
     /// \return -1 if error 0 otherwise
     /// \exception DataSetIException
+    /// \remark Create and save for example time series of forest stand level data.
     int createDataSet(const string& name, int years, int cols, const TMatrix2D<double>& data);
+    /// \brief Create dataset form TMatrix3D
+    /// \param name Name of the dataset
+    /// \param years Simulation years dimension
+    /// \param rows Number of data rows dimension
+    /// \param cols Number of data columns dimension
+    /// \param data The 3D matrix of double for data
+    /// \return -1 if error 0 otherwise
+    /// \exception DataSetIException
+    /// \remark Create and save for example time series of tree data from a forest stand.
+    int createDataSet(const string& name, int years, int rows, int cols, const TMatrix3D<double>& data);
+    /// \brief Create dataset form TMatrix4D
+    /// \param name Name of the dataset
+    /// \param a 1st dimension
+    /// \param b 2nd dimension
+    /// \param c 3rd dimension
+    /// \param d 4th dimension.
+    /// \param data The 4D matrix of double for data
+    /// \return -1 if error 0 otherwise
+    /// \exception DataSetIException
+    /// \remark Create and save data for example from VoxelSpace. Use \p a, \p b and \p c for VoxelSpace dimensions
+    /// and \p d for data
+    int createDataSet(const string& name, int a, int b, int c, int d, const TMatrix4D<double>& data);
     /// \brief Create dataset from TMatrix2D<string>, usually Tree parameter files
     /// \param dataset_name Name of the dataset
     /// \param rows Rows (years) dimension
@@ -155,7 +177,8 @@ namespace cxxadt{
     /// \brief Create dataset of containg one string, for example the content of a command line.
     /// \param dataset_name Dataset name
     /// \param data Dataset string
-    /// \return -1 if error 0 otherwise
+    /// \retval -1 if error
+    /// \retval 0 normal return
     /// \exception DataSetIException
     int createDataSet(const string& dataset_name, const string& data);
     /// \brief Create column names as HDF5 attribute. Column names can be of variable length strings.
@@ -163,15 +186,35 @@ namespace cxxadt{
     /// \param attr_name Attribute name for the column names 
     /// \param col_names vector of column names 
     /// \return -1 if error 0 otherwise
+    /// \exception DataSetIException 
     /// \exception AttributeIException
     /// \note HDF5 C++ interface does not (yet) support dimension scales which would be a more natural way to describe
     /// the meaning of each N dimensional array dimension.
     /// \warning You can try to use UTF-8 characters in column names (including Scandinavian alphabet) but
     /// not recommended. HDF5 does not *enforce* UTF-8. May be OK on one platform but not on some others.
     int createColumnNames(const string& dset_name, const string& attr_name,const vector<string>& col_names);
-    /// Retrieve object names known to `hdf5_file`
+    ///\brief Create dataset scalar attribute
+    ///\param dset_name Dataset name
+    ///\param attr_name Attribute name
+    ///\param value Attribute value
+    ///\retval -1 if error
+    ///\retval 0 normal return
+    ///\exception DataSetIException
+    ///\exception AttributeIException
+    int createDataSetAttribute(const string& dset_name, const string& attr_name, double value);
+    ///\brief Create dataset attribute values
+    ///\param dset_name Dataset name
+    ///\param attr_name Attribute name
+    ///\param values Vector of attribute values
+    ///\retval -1 if error
+    ///\retval 0 normal return
+    ///\exception DataSetIException
+    ///\exception AttributeIException
+    int createDataSetAttribute(const string& dset_name, const string& attr_name, const vector<double>& values);
+    /// \brief Retrieve object names known to `hdf5_file`.
+    ///
+    /// Object names include groups, dataspaces, datasets etc.
     /// \return vector of object names 
-    /// \note Object names include groups, dataspaces, datasets etc.
     /// \sa hdf5_file
     vector<string> getObjectNames();
     /// \brief Create datasets from files that have data for ParametricCurve. Wild card search
@@ -200,7 +243,18 @@ namespace cxxadt{
     /// \brief Close the H5File `hdf5_file`. \sa hdf5_file
     void close();
   protected:
-    /// \brief Create 3D array DataSet by giving explicitely the 3 dimensions and `data`
+    /// \brief Create 2D array DataSet by giving explicitely the 2 dimensions and the \p data
+    /// \param dataset_name Name of the dataset
+    /// \param rows Rows dimension
+    /// \param cols Columns dimension
+    /// \param data The 2D array of type *double*
+    /// \return -1 if error 0 otherwise
+    /// \exception DataSetIException
+    /// \remark Technically 2D arrray \p data must be \e void*. It will be converted to
+    /// 2D array of NATIVE_DOUBLE  dataset of given dimensions.  
+    /// \sa writeDataSet
+    int createDataSet(const string& dataset_name, int rows, int cols, void* data);
+    /// \brief Create 3D array DataSet by giving explicitely the 3 dimensions and \p data
     /// \param dataset_name Name of the dataset
     /// \param years Years dimension
     /// \param rows Rows (trees) dimension
@@ -208,21 +262,20 @@ namespace cxxadt{
     /// \param data The 3D array of type *double*
     /// \return -1 if error 0 otherwise
     /// \exception DataSetIException
-    /// \note Technically 3D arrray `data` must be void*. It will be converted to
+    /// \remark Technically 3D array \p data must be \e void*. It will be converted to
     /// 3D array of NATIVE_DOUBLE HDF5 dataset of given dimensions. 
     /// \sa writeDataSet
     int createDataSet(const string& dataset_name, int years, int rows, int cols, void* data);
-    /// \brief Create 2D array DataSet by giving explicitely the 2 dimensions and the `data`
+    /// \brief Create 4D array DataSet by giving explicitely the 3 dimensions and \p data
     /// \param dataset_name Name of the dataset
-    /// \param rows Rows dimension
-    /// \param cols Columns dimension
-    /// \param data The 2D array of type *double*
+    /// \param a 1st dimension
+    /// \param b 2nd dimension
+    /// \param c 3rd dimension
+    /// \param d 4th dimension
+    /// \param data The 4D array of type *double*
     /// \return -1 if error 0 otherwise
     /// \exception DataSetIException
-    /// \note Technically 2D arrray `data` must be void*. It will be converted to
-    /// 2D array of NATIVE_DOUBLE  dataset of given dimensions.  
-    /// \sa writeDataSet
-    int createDataSet(const string& dataset_name, int rows, int cols, void* data);
+    int createDataSet(const string& dataset_name, int a, int b, int c, int d, void* data);
     /// \brief Write the dataset to dataspace
     /// \param dset DataSet 
     /// \param data Lignum simulation data

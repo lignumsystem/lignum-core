@@ -41,7 +41,6 @@ src/RMatrix.cc
 src/Triangle.cc
 src/Uniform.cc
 src/hrmatrix-test.cc
-src/matrix3d.cc
 src/normal.cc
 src/rand3.cc
 src/Kite.cc

@@ -44,8 +44,8 @@ namespace cxxadt{
     fstream in_file(fname.c_str(),ios::in);
     if (in_file.fail() || fname == ""){
       cout << "LGMHDF5::getLignumParameterData: Error opening file: " << fname << endl;
-      // `std::nan` denotes function not defined
-      TMatrix2D<string> fn_data(1,2,NULL);
+      // `std::string()` denotes function not defined
+      TMatrix2D<string> fn_data(1,2,std::string());
       return fn_data;
     }
     //Skip whitespace and comments
@@ -83,21 +83,62 @@ namespace cxxadt{
   
   int LGMHDF5File::createGroup(const string& name)
   {
+    //For some reason HDF5 API does not have existence check
+    //for groups or databases
     try{
       Exception::dontPrint();
-      Group group(hdf5_file.createGroup(name));
+      H5::Group g = hdf5_file.openGroup(name);
+      return 0;
     }
     // File operations
     catch (FileIException error){
-        error.printErrorStack();
-        return -1;
+      LinkCreatPropList lcpl;
+      lcpl.setCreateIntermediateGroup(true);
+      //Group constructor required by the C++ API
+      Group group(hdf5_file.createGroup(name,lcpl));
+      return -1;
     }
     //Group operations
     catch (GroupIException error){
-        error.printErrorStack();
-        return -1;
+      LinkCreatPropList lcpl;
+      lcpl.setCreateIntermediateGroup(true);
+      //Group constructor required by the C++ API
+      Group group(hdf5_file.createGroup(name,lcpl));
+      return -1;
     }
     return  0;
+  }
+
+  //2D matrix dataset for Lignum functions, double datatype
+  int LGMHDF5File::createDataSet(const string& dataset_name, int years, int cols, const TMatrix2D<double>& data)
+  {
+    
+    /// \par Function stack and heap 2D
+    ///Function stack is usually capacious enough for 2D matrices (`ulimit -Hs`).
+    ///However, although various C++ compilers provide dynamic arrays as
+    ///C/C++ language extension dynamic arrays are *not* part of the C++ language standard.
+    ///Allocate space from heap for 2D matrix.
+    /// \internal
+    /// \snippet{lineno} LGMHDF5File.cc HeapAllocation2D
+    //  [HeapAllocation2D]
+    double* data_array2D = new double[years*cols];
+    //  [HeapAllocation2D]
+    /// \endinternal 
+    for (int i = 0; i < years; i++){
+      for (int j = 0; j < cols; j++){
+	/// \internal
+	/// \snippet{lineno} LGMHDF5File.cc HeapIndexing2D
+	// [HeapIndexing2D]
+	//Copy TMatrix2D data row-first to 1D array of double type
+	*(data_array2D+i*cols+j) = data[i][j];
+	// [HeapIndexing2D]
+	/// \endinternal
+      }
+    }
+    //After that create HDF5 dataset NATIVE_DOUBLE
+   int res = createDataSet(dataset_name,years,cols,data_array2D);
+   delete [] data_array2D;
+   return res;
   }
   
   int LGMHDF5File::createDataSet(const string& dataset_name, int years, int rows, int cols, const TMatrix3D<double>& data)
@@ -140,38 +181,39 @@ namespace cxxadt{
     return res;
   }
 
-  //2D matrix dataset for Lignum functions, double datatype
-  int LGMHDF5File::createDataSet(const string& dataset_name, int years, int cols, const TMatrix2D<double>& data)
+  int LGMHDF5File::createDataSet(const string& dataset_name, int a, int b, int c, int d, const TMatrix4D<double>& data)
   {
-    
-    /// \par Function stack and heap 2D
-    ///Function stack is usually capacious enough for 2D matrices (`ulimit -Hs`).
-    ///However, although various C++ compilers provide dynamic arrays as
-    ///C/C++ language extension dynamic arrays are *not* part of the C++ language standard.
-    ///Allocate space from heap for 2D matrix.
+    /// \par Function stack vs heap 4D matrix
+    /// The same applies as for 3D matrix. Function stack may not be sufficient
+    /// but the heap must be used.
     /// \internal
-    /// \snippet{lineno} LGMHDF5File.cc HeapAllocation2D
-    //  [HeapAllocation2D]
-    double* data_array2D = new double[years*cols];
-    //  [HeapAllocation2D]
-    /// \endinternal 
-    for (int i = 0; i < years; i++){
-      for (int j = 0; j < cols; j++){
-	/// \internal
-	/// \snippet{lineno} LGMHDF5File.cc HeapIndexing2D
-	// [HeapIndexing2D]
-	//Copy TMatrix2D data row-first to 1D array of double type
-	*(data_array2D+i*cols+j) = data[i][j];
-	// [HeapIndexing2D]
-	/// \endinternal
+    /// \snippet{lineno} LGMHDF5File.cc HeapAllocation4D
+    //  [HeapAllocation4D]
+    double* v = new double[a * b * c * d];
+    // [HeapAllocation4D]
+    /// \endinternal
+    /// \par Row-first indexing for 4D matrix 
+    ///To index the contiguous memory use the indexing scheme compiler uses.
+    for (int i = 0; i < a; i++){
+      for (int j = 0; j < b; j++){
+	for (int k = 0; k < c; k++){
+	  for (int l = 0; l < d; l++){
+	    /// \internal
+	    /// \snippet{lineno} LGMHDF5File.cc HeapIndexing4D
+	    // [HeapIndexing4D]
+	    //Copy TMatrix4D data row-first to the 1D array of double type
+	    *(v + i * b * c * d + j * c * d + k * d + l) = data[i][j][k][l];
+	    // [HeapIndexing4D]
+	    /// \endinternal
+	  }
+	}
       }
     }
-    //After that create HDF5 dataset NATIVE_DOUBLE
-   int res = createDataSet(dataset_name,years,cols,data_array2D);
-   delete [] data_array2D;
-   return res;
-  }  
-
+    int res = createDataSet(dataset_name,a,b,c,d,v);
+    delete [] v;
+    return res;
+  }
+  
   //2D dataset for Lignum parameters , string datatype
   int LGMHDF5File::createDataSet(const string& dataset_name, int rows, int cols, const TMatrix2D<string>& data)
   {
@@ -197,6 +239,27 @@ namespace cxxadt{
     return 0;
   }
 
+  //2D dataset for double data type
+  int LGMHDF5File::createDataSet(const string& dataset_name, int rows, int cols, void* data)
+  {
+    FloatType datatype(PredType::NATIVE_DOUBLE);
+    try{
+      Exception::dontPrint();
+      // DataSpace needs dimensions and rank
+      hsize_t dspace_dims[DSPACE_RANK2];
+      dspace_dims[0] = rows;
+      dspace_dims[1] = cols;
+      DataSpace dspace(DSPACE_RANK2,dspace_dims);
+      DataSet dset = hdf5_file.createDataSet(dataset_name,datatype,dspace);
+      writeDataSet(dset, data);
+    }
+    catch (DataSetIException error){
+      error.printErrorStack();
+      return -1;
+    }
+    return 0;
+  }
+
   //3D data set for double data tyoe
   int LGMHDF5File::createDataSet(const string& dataset_name, int years, int rows, int cols, void* data)
   {
@@ -219,19 +282,21 @@ namespace cxxadt{
     return 0;
   }
 
-  //2D dataset for Lignum functions
-  int LGMHDF5File::createDataSet(const string& dataset_name, int rows, int cols, void* data)
+  //4D data set for double data tyoe
+  int LGMHDF5File::createDataSet(const string& dataset_name, int a, int b, int c, int d, void* data)
   {
     FloatType datatype(PredType::NATIVE_DOUBLE);
     try{
       Exception::dontPrint();
-      // DataSpace needs dimensions and rank
-      hsize_t dspace_dims[DSPACE_RANK2];
-      dspace_dims[0] = rows;
-      dspace_dims[1] = cols;
-      DataSpace dspace(DSPACE_RANK2,dspace_dims);
+      /// DataSpace needs dimensions and rank
+      hsize_t dspace_dims[DSPACE_RANK4];
+      dspace_dims[0] = a;
+      dspace_dims[1] = b;
+      dspace_dims[2] = c;
+      dspace_dims[3] = d;
+      DataSpace dspace(DSPACE_RANK4,dspace_dims);
       DataSet dset = hdf5_file.createDataSet(dataset_name,datatype,dspace);
-      writeDataSet(dset, data);
+      int res = writeDataSet(dset, data);
     }
     catch (DataSetIException error){
       error.printErrorStack();
@@ -239,7 +304,7 @@ namespace cxxadt{
     }
     return 0;
   }
-
+  
   //Data set for command line string
   int LGMHDF5File::createDataSet(const string& dataset_name, const string& data)
   {
@@ -286,6 +351,10 @@ namespace cxxadt{
       ///Finally write string to attribute 
       attr.write(str_type,c_vector.data());
     }
+    catch (DataSetIException error){
+      error.printErrorStack();
+      return -1;
+    }
     catch (AttributeIException error) {
       error.printErrorStack();
       return -1;
@@ -293,6 +362,49 @@ namespace cxxadt{
     return 0;
   }
 
+  int LGMHDF5File::createDataSetAttribute(const string& dset_name, const string& attr_name, double value)
+  {
+    DataSpace attr_dspace(H5S_SCALAR);
+    try{
+      Exception::dontPrint();
+      DataSet dset = hdf5_file.openDataSet(dset_name);
+      Attribute attr = dset.createAttribute(attr_name,PredType::NATIVE_DOUBLE,attr_dspace);
+      attr.write(PredType::NATIVE_DOUBLE,&value);
+    }
+    catch (DataSetIException error){
+      error.printErrorStack();
+      return -1;
+    }
+    catch (AttributeIException error) {
+      error.printErrorStack();
+      return -1;
+    }
+    return 0;
+  }
+
+  int LGMHDF5File::createDataSetAttribute(const string& dset_name, const string& attr_name, const vector<double>& values)
+  {
+    try{
+      const int rank = 1;
+      hsize_t dims[rank];
+      ///Reserve space for the vector values
+      dims[0]=values.size();
+      DataSpace attr_dspace(rank, dims);
+      DataSet dset = hdf5_file.openDataSet(dset_name);
+      Attribute attr = dset.createAttribute(attr_name,PredType::NATIVE_DOUBLE,attr_dspace);
+      attr.write(PredType::NATIVE_DOUBLE,values.data());
+    }
+    catch (DataSetIException error){
+      error.printErrorStack();
+      return -1;
+    }
+    catch (AttributeIException error) {
+      error.printErrorStack();
+      return -1;
+    }
+    return 0;
+  }
+     
   //Write dataset data of double tyoe
   int LGMHDF5File::writeDataSet(const DataSet& dset, void* data)
   {
