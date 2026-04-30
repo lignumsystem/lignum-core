@@ -20,6 +20,14 @@ private:
   D data;
 };
 
+  ///\brief Exception for Table::lookup()
+template <class K>
+ class LookupException{
+ public:
+   LookupException(K k):key(k){}
+   K key;
+};
+  
 template <class K,class D>
 class Table{
 public:
@@ -27,7 +35,6 @@ public:
   Table<K,D>& insert(const K& key,const D& data);
   D& lookup(const K& key);
   Table<K,D>& remove(const K& key);
-  class Lookup{};//for exception
 private:
   DList data_ls;
 };

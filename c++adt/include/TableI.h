@@ -77,7 +77,7 @@ D& Table<K,D>::lookup(const K& new_key)
   }
   
   //exception handling (by the user of this class)
-  throw Lookup(); 
+  throw LookupException<K>(new_key); 
   
 }
     

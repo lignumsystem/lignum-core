@@ -49,7 +49,7 @@ namespace cxxadt{
       Point& setX(const double new_x){x = new_x; return *this;}
       Point& setY(const double new_y){y = new_y; return *this;}
       Point& setZ(const double new_z){z = new_z; return *this;}
-      inline Point& operator = (const Point&point);
+      inline Point& operator = (const Point& point);
       inline Point& operator += (const Point& point); 
       inline Point& operator -= (const Point& point);
       inline Point& operator *= (const double scalar);
