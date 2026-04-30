@@ -988,7 +988,7 @@ public:
   MoveHwTree(const Point& point):move_to(point) {} 
   Point setPoint(const Point& new_point) {
     Point tmp = move_to;
-    move_to = new_point;
+    const_cast<Point&>(move_to) = new_point;
     return tmp;
   }
   TreeCompartment<TS,BUD>* operator()(TreeCompartment<TS,BUD>* tc)const
@@ -1047,7 +1047,7 @@ public:
   MoveTree(const Point& point):move_to(point) {} 
   Point setPoint(const Point& new_point) {
     Point tmp = move_to;
-    move_to = new_point;
+    const_cast<Point&>(move_to) = new_point;
     return tmp;
   }
   TreeCompartment<TS,BUD>* operator()(TreeCompartment<TS,BUD>* tc)const
