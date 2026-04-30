@@ -44,20 +44,38 @@ TreeMetaFileParser& TreeMetaFileParser::parse()
 
 string TreeMetaFileParser::getParameterFile(const string& type)
 {
-  string file = file_tables[PARAMETER].lookup(type);
-  return file;
+  try{
+    string file = file_tables[PARAMETER].lookup(type);
+    return file;
+  }
+  catch (LookupException<string>(e)){
+    std::cerr << "Parameter for " << e.key << " not found" <<endl;
+    exit(-1);
+  }
 }
 
 string TreeMetaFileParser::getFunctionFile(const string& type)
 {
-  string file = file_tables[FUNCTION].lookup(type);
-  return file;
+  try{
+    string file = file_tables[FUNCTION].lookup(type);
+    return file;
+  }
+  catch (LookupException<string>(e)){
+    std::cerr << "Function for " << e.key << " not found" <<endl;
+    exit(-1);
+  }
 }
 
 string TreeMetaFileParser::getTreeInitializationFile(const string& type)
 {
-  string file = file_tables[INITIAL].lookup(type);
-  return file;
+  try{
+    string file = file_tables[INITIAL].lookup(type);
+    return file;
+  }
+  catch (LookupException<string>(e)){
+    std::cerr << "Initialization file for " << e.key << " not found" <<endl;
+    exit(-1);
+  }
 }
 
 //1.Scan and parse the description file ("meta file")
