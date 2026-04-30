@@ -41,7 +41,7 @@ namespace Lignum{
     DebugTreeSegment(const DebugTreeSegment& db)
       :file(db.file),manip(db.manip){}
     DebugTreeSegment& operator=(const DebugTreeSegment& db){
-      file=db.file;manip=db.manip;
+      file=std::move(db.file);manip=db.manip;
     }
     //~DebugTreeSegment(){file.close();}
     //Write the titles for the data columns 
