@@ -1,5 +1,6 @@
 #ifndef TREE_METAFILE_PARSER_H
 #define TREE_METAFILE_PARSER_H
+#include <iostream>
 #include <stdlib.h>
 #include <Table.h>
 /// \file TreeMetaFileParser.h
