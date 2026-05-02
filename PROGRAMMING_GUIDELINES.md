@@ -1,6 +1,6 @@
 # Programming guidelines
-There are detaild and rigorous programming guidelines for various C/C++ projects
-for good reasons[^vtk][^jsf]. Large and long-term projects with many participants
+There are detailed and rigorous programming guidelines for various C/C++ projects
+for good reasons[^c++][^vtk][^jsf]. Large and long-term projects with many participants
 require effective management and shared standards for success. 
 
 Another viable approach, especially for projects with limited contributors, 
@@ -103,23 +103,24 @@ long and noisy type names:
 	vector<int> v{1,2,3,4};
 	auto iter = v.begin();
 	
-The iterator type is clear from the contex deduced by the compiler as vector<int>::iterator.
+The iterator type is clear from the contex deduced by the compiler as `vector<int>::iterator`.
 
 Do not use the *auto* keyword in the context of braced initializer lists. For example:
 
 	auto a = {1,2,3};//Do not use
 	
 A brace-enclosed initializer list has no type. As a special case `auto a` is deduced as 
-std::initializer_list<int>, not as a list or a vector as one might expect.
+`std::initializer_list<int>`, not as an array of three integers as one inadvertently 
+might expect.
 
-Do not overuse the *auto* keyword. Type information is useful for automated compiler type control 
-and understanding the program flow.
+Do not overuse the *auto* keyword. Type information is useful for automated compiler type control,
+understanding the program flow and using the software components.
 
 ## 12. Type safe enumerations
 Adopt the new scoped and type safe *enum class* instead of the old *enum*. For example:
 
 	enum class RGBCOLOR {RED,GREEN,BLUE};
-	RGBOLOR color = RGBCOLOR::RED; //Mandatory scope resolution
+	RGBCOLOR color = RGBCOLOR::RED; //Mandatory scope resolution
 	
 The values in an *enum class* are encapsulated and require explicit scope resolution.
 
@@ -145,7 +146,7 @@ by adding  object-oriented features like classes with methods, derived classes a
 Object-oriented paradigm is based on software entities called objects, 
 that encapsulate both data and methods defining the object's behaviour 
 and interactions with other entities. This simplifies the design and management 
-of complex large-scale sofware systems.
+of complex large-scale software systems.
 
 ### 13.2 Generic programming 
 In generic programming algorithms are written in terms of parameterised types 
@@ -186,6 +187,7 @@ The [C++ reference site](https://en.cppreference.com) presents the library with 
 It also identifies the C++ language version in which an approved language feature or a library component
 is first available. 
 
+[^c++]: See [C++ core guidelines](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines).
 [^vtk]: See [VTK](https://docs.vtk.org/en/latest/developers_guide/coding_conventions.html).
 [^jsf]: See [JSF Air Vehicle](https://www.stroustrup.com/JSF-AV-rules.pdf).
 [^fnctr]: A functor is a C++ class with an overloaded function operator. 
