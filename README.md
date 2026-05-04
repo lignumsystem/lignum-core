@@ -1,18 +1,24 @@
 # The LIGNUM System
-The following six projects implement *lignum-core* libraries and binaries 
-that are used to build applications in the LIGNUM system:
+At the heart of the LIGNUM system is *lignum-core*. It currently consists of seven projects, 
+providing the foundational libraries and binaries necessary to build LIGNUM applications.
 
-+ c++adt: Basic general purpose classes
-+ Firmament: Standard overcast sky (SOC)
-+ stl-lignum: LIGNUM tree, tree parts and generic algorithms
-+ stl-voxelspace: Voxel space 
-+ LEngine: L-system 
-+ XMLTree: XML representation of a LIGNUM tree
+```
+lignum-core
+├── Firmament:      Standard overcast sky (SOC) 
+├── LEngine:        Lindenmayer system 
+├── XMLTree:        LIGNUM tree XML representation 
+├── c++adt:         General purpose classes
+├── qt-workbench:   LignumWb application
+├── stl-lignum:     LIGNUM tree and generic algorithms
+└── stl-voxelspace: Voxel space
 
-The qt-workbench and `LignumWb` application, for visualizing simulated trees,
-are now obsolete. Because `LignumWb` relies on Qt4 - which lacks support for Apple Silicon - 
-it has been incompatible with macOS since the release of macOS Tahoe.
-`LignumWb` has been superseded by LignumVTK.
+7 directories
+```
+
+The qt-workbench and its `LignumWb` application for visualizing simulated trees
+are now obsolete and will be removed. Because `LignumWb` relies on Qt4 - which 
+lacks support for Apple Silicon - it has been incompatible with macOS since 
+the release of macOS Tahoe. `LignumWb` has been superseded by LignumVTK.
 
 ## Operating system requirements
 The LIGNUM system is developed for macOS, with Ubuntu Linux used to verify software portability.
@@ -24,10 +30,13 @@ The installation examples are for macOS and the package manager is
 [MacPorts](https://www.macports.org). 
 
 ### Xcode
-Xcode is the integrated development environment (IDE) for macOS. 
-Download and install Xcode from App Store. Install also command line tools:
+Xcode is the integrated development environment (IDE) for macOS
+and provides C++ toolchain. Download and install Xcode from App Store. 
+Install also command line tools:
 
 	sudo xcode-select --install
+
+Xcode is also a mandatory dependency for the MacPorts system.
 
 ### MacPorts
 Install from [MacPorts](https://www.macports.org) website. Once installed
@@ -50,8 +59,8 @@ It is used to save simulation configuration and results including the simulated 
 	sudo port install hdf5
 	
 ### Qt
-[Qt](https://www.qt.io) and its QtXML module is used to save and read simulated trees in XML format. 
-Both Qt5 and Qt6 can be used.
+Simulated trees are saved and read in XML format via the QtXML module in[Qt](https://www.qt.io),
+ensuring compatibility with both Qt5 and Qt6.
 
 #### Qt5 
 Qt5 installation is straightforward:
@@ -72,7 +81,7 @@ To install Qt6:
 	sudo port install qt6
 	
 If Qt6 installation fails, try restarting Mac; this clears the `xcrun` cache in Xcode, 
-which often resolves the issue. The instructions for Qt6 are from the article for 
+which often resolves the issue. The instructions for Qt6 are from the article in MacPorts for 
 [Metal toolchain](https://trac.macports.org/wiki/TahoeProblems#MetaltoolchainisnolongerbundledinXcode).
 
 ### LignumVTK and VTK
@@ -83,12 +92,15 @@ To install VTK:
 	sudo port install vtk
 
 ### ParaView
-ParaView is the open source post-processing visualization program. 
+ParaView is the open source post-processing visualization software. 
 Install from [ParaView](https://www.paraview.org) home page.
 
+> [!IMPORTANT]
+> Choose the right processor architecture for macOS: Intel or Apple Silicon.
+
 ### Doxygen 
-Documentation of the *lignum-core* and the LIGNUM system applications 
-is done with Doxygen documentation blocks in the software.  LaTeX is used to 
+Documentation of the lignum-core and the LIGNUM system applications 
+is done with Doxygen documentation blocks in the software. LaTeX is used to 
 typeset mathematical equations and notations:
 
 	sudo port install doxygen +qt5     #doxygen with Qt5 dependency
@@ -140,7 +152,11 @@ for data science:
 
 RStudio features a built-in GUI that simplifies package management and installation.
 
-## Building The LIGNUM System applications
+### Emacs
+Emacs is a popular text editor in software engineering. Download and install
+from the [official web site](https://www.gnu.org/software/emacs/).
+
+## Building the LIGNUM system applications
 The lignum-core project and its applications are built using the [CMake](https://cmake.org) 
 build system. The CMake build process consists of four phases:
 
@@ -164,28 +180,46 @@ To build lignum-core using Unix Makefiles, follow these steps:
 	make                                #Compile
 	make install                        #Install software components
 
-The *Release* build system results optimized code. To generate *Debug* build system
-either for Makefile system or for Xcode:
+The *Release* build system results optimized, production-ready code. 
+To debug, switch to the *Debug* build configuration in Makefile system 
+or generate Xcode project:
 
 	cmake .. -DCMAKE_BUILD_TYPE=Debug #Makefile debug build system
 	cmake .. -G Xcode                 #Xcode build system
 
-The `make clean` command clears the build environment to ensure all changes 
-are captured during recompilation. To reset the build, simply remove the build 
-directory and recreate it.
+The `make clean` command in the Makefile system clears the build environment 
+to ensure all changes are captured during recompilation. To reset the build
+system, simply remove the build directory and recreate it.
 
 > [!NOTE]
 > Each CMake build directory is limited to one build configuration. This means that
 > different build configurations must be in separate build directories.
 > Choose descriptive names like *release*, *debug* or *xcode* for these directories.
 
-### Emacs
-Emacs is a popular text editor in software engineering. Download and install
-from the [official web site](https://www.gnu.org/software/emacs/).
-
 ## Programming guidelines
-The concise [PROGRAMMING_GUIDELINES](https://github.com/lignumsystem/lignum-core/blob/master/PROGRAMMING_GUIDELINES.md)
-highlights key aspects for implementing LIGNUM applications. 
+Setting up a LIGNUM application involves both lignum-core and the new project. 
+For instance, the LignumForest development environment uses the following top-level 
+directory structure:
+
+```
+lignum-core/
+├── CMakeLists.txt
+├── Firmament
+├── Graphics
+├── LEngine
+├── LignumForest
+├── Pine
+├── XMLTree
+├── c++adt
+├── qt-workbench
+├── stl-lignum
+└── stl-voxelspace
+
+10 directories, 1 file
+```
+
+[PROGRAMMING_GUIDELINES](https://github.com/lignumsystem/lignum-core/blob/master/PROGRAMMING_GUIDELINES.md)
+provides a concise overview of recommended practices for the LIGNUM application development.
 
 ## Litterature to cite the LIGNUM model
 
