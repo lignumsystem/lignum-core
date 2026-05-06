@@ -167,8 +167,12 @@ build system. The CMake build process consists of four phases:
 
 CMake offers hundreds of built-in variables and functions while supporting custom definitions 
 for complete build system tailoring. It also integrates popular software packages, making it easy
-to incorporate external dependencies. See [tutorials](https://cmake.org/getting-started/) for CMake
-and CMakeLists.txt files.
+to incorporate external dependencies.
+
+> [!TIP]
+> [The CMake tutorial](https://cmake.org/cmake/help/latest/guide/tutorial/index.html) 
+> is an excellent starting point, while the CMakeLists.txt files within LIGNUM
+> provide practical, system-specific examples.
 
 ### CMake example for lignum-core
 To build lignum-core using Unix Makefiles, follow these steps:
@@ -209,15 +213,16 @@ lignum-core/
 ├── Graphics
 ├── LEngine
 ├── LignumForest
+│   └── CMakeLists.txt
 ├── Pine
 ├── XMLTree
 ├── c++adt
 ├── qt-workbench
 ├── stl-lignum
 └── stl-voxelspace
-
-10 directories, 1 file
+10 directories, 2 files
 ```
+Lignum Forest defines lignum-core as a build-time dependency in its main CMakeLists.txt.
 
 [PROGRAMMING_GUIDELINES](https://github.com/lignumsystem/lignum-core/blob/master/PROGRAMMING_GUIDELINES.md)
 discuss best practices for LIGNUM application development.
