@@ -59,7 +59,7 @@ It is used to save simulation configuration and results including the simulated 
 	sudo port install hdf5
 	
 ### Qt
-Simulated trees are saved and read in XML format via the QtXML module in[Qt](https://www.qt.io),
+Simulated trees are saved and read in XML format via the QtXML module in [Qt](https://www.qt.io),
 ensuring compatibility with both Qt5 and Qt6.
 
 #### Qt5 
@@ -165,9 +165,10 @@ build system. The CMake build process consists of four phases:
 + Compile the project: Create binaries and libraries.
 + Install the project (optional): Copy binaries and libraries to install locations.
 
-CMake features hundreds of built-in functions and variables for customizing build systems.
-It also integrates popular software packages, making it easy to incorporate external dependencies.
-See [tutorials](https://cmake.org/getting-started/) for CMake and CMakeLists.txt files.
+CMake offers hundreds of built-in variables and functions while supporting custom definitions 
+for complete build system tailoring. It also integrates popular software packages, making it easy
+to incorporate external dependencies. See [tutorials](https://cmake.org/getting-started/) for CMake
+and CMakeLists.txt files.
 
 ### CMake example for lignum-core
 To build lignum-core using Unix Makefiles, follow these steps:
@@ -219,7 +220,7 @@ lignum-core/
 ```
 
 [PROGRAMMING_GUIDELINES](https://github.com/lignumsystem/lignum-core/blob/master/PROGRAMMING_GUIDELINES.md)
-provides a concise overview of recommended practices for the LIGNUM application development.
+discuss best practices for LIGNUM application development.
 
 ## Litterature to cite the LIGNUM model
 
