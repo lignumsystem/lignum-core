@@ -58,20 +58,19 @@ then it is not possible to change it. If an object has too wide scope it can be
 changed incompatible ways by unrelated parts of a program. If a global 
 variable is needed enclose it with namespace.
 
-## 6. Use exception handling discreetly
-The exception handling mechanism in C/C++ can provide means to recover from
-abnormal situations during program execution. There should be 
-a real possibility to continue program execution after an exception is
-detected and catched. Otherwise simple assertion followed by program abortion 
-can be a better solution.
+## 6. Use exception handling sparingly
+The exception handling mechanism in C++ provides a way to recover from abnormal
+situations during execution. There should be a genuine possibility of continuing
+the program after an exception is caught; otherwise, a simple assertion followed
+by termination may be a better solution.
 
 ## 7. Use references instead of pointers
 A reference provides the benefits of a pointer without its drawbacks. 
 Reference is an alias always assigned to an object. Unlike a pointer it cannot
 be reassigned. 
 
-It is not possible to avoid pointers completely. For example the C/C++ vectors
-and The C++ Standard Library containers cannot have reference type as members.
+Pointers are sometimes unavoidable. For example, C++ Standard Library containers,
+such as `std::vector`, cannot store references.
 
 ## 8. Avoid macros
 Prefer inline functions and constant variables over macros. Macros tend to make 
@@ -79,23 +78,20 @@ the program harder to read and a compiler cannot type check macros. Avoid
 macros whenever there is an alternative in C/C++.
 
 ## 9. Conditional compilation
-Conditional compilation with preprocessor directives (e.g., `#ifndef ... #endif`) 
-should be kept simple. The mandatory use case is to prevent a header file to 
-include multiple times.
-
-Do not use preprocessor directives to enable or disable program features,
-for debugging satements or assume C/C++ language standards. Use debugger 
-and development environment. Set language standard in a build system like CMake.
+Keep conditional compilation (like `#ifndef ... #endif`) with preprocessor directives simple.
+Its mandatory use case is preventing a header file from being included multiple times. 
+Do not use preprocessor directives to enable features, manage debug statements, or assume 
+specific C/C++ standards. Use debugger and development environment for testing, and set
+language standards within a build system like CMake.
 
 ## 10. Const correctness
-The keyword *const* expresses a program entity that cannot be changed 
-or does not change anything. Using the keyword consistently whenever this is true 
-amounts to what is called *const correctness*. It is a form of type safety. 
-It prevents unintentional modification of something that is not meant to be changed.
-Any violation of the constness of an abject will result compile time error.
+The keyword `const` identifies a program entity that is immutable or does not modify other data.
+Adhering to this principle consistently is known as *const correctness*. As a form of type safety,
+it prevents the accidental modification of data and ensures that any violation of an object's
+"constness" results in a compile-time error.
 
 ## 11. The auto keyword
-The keyword *auto* is a placeholder type and its value will be determined  by a compiler. 
+The keyword `auto` is a placeholder type and its value will be determined  by a compiler. 
 It is especially useful when a type is obvious or of little  importance. 
 One use case is to improve readability in the context of container iterators that can have 
 long and noisy type names:
@@ -105,7 +101,7 @@ long and noisy type names:
 	
 The iterator type is clear from the contex deduced by the compiler as `vector<int>::iterator`.
 
-Do not use the *auto* keyword in the context of braced initializer lists. For example:
+Do not use the `auto` keyword in the context of braced initializer lists. For example:
 
 	auto a = {1,2,3};//Do not use
 	
@@ -113,18 +109,18 @@ A brace-enclosed initializer list has no type. As a special case `auto a` is ded
 `std::initializer_list<int>`, not as an array of three integers as one inadvertently 
 might expect.
 
-Do not overuse the *auto* keyword. Type information is useful for automated compiler type control,
+Do not overuse the `auto` keyword. Type information is useful for automated compiler type control,
 understanding the program flow and using the software components.
 
 ## 12. Type safe enumerations
-Adopt the new scoped and type safe *enum class* instead of the old *enum*. For example:
+Adopt the new scoped and type safe `enum class` instead of the old `enum`. For example:
 
 	enum class RGBCOLOR {RED,GREEN,BLUE};
 	RGBCOLOR color = RGBCOLOR::RED; //Mandatory scope resolution
 	
-The values in an *enum class* are encapsulated and require explicit scope resolution.
+The values in an `enum class` are encapsulated and require explicit scope resolution.
 
-The *enum class* was introduced in C++11. Changing the old *enum* to the new *enum class*
+The `enum class` was introduced in C++11. Changing the old `enum` to the new `enum class`
 can be laborous in older projects, trigger cascade of incompatibility effects that disrupt 
 dependent projects.
 

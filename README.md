@@ -53,11 +53,16 @@ two main versions:
 `cmake` is the standard, stable release version and `cmake-devel` tracks the latest features and changes.
 
 ### HDF5
-[HDF5](https://www.hdfgroup.org) is a file format designed to store and organise large datasets. 
-It is used to save simulation configuration and results including the simulated trees:
+[HDF5](https://www.hdfgroup.org) files function like a file system within a single file,
+using a hierarchical structure to store large self-documenting datasets. It is used to save simulation 
+configuration and results including the simulated trees:
 
 	sudo port install hdf5
 	
+HDF5 provides format for data analysis with high-level languages like R or Python. 
+Both offer dedicated packages — `rhdf5` and `h5py`, respectively — that implement the 
+HDF5 API for reading, writing, and inspecting data.
+
 ### Qt
 Simulated trees are saved and read in XML format via the QtXML module in [Qt](https://www.qt.io),
 ensuring compatibility with both Qt5 and Qt6.
@@ -85,7 +90,7 @@ which often resolves the issue. The instructions for Qt6 are from the article in
 [Metal toolchain](https://trac.macports.org/wiki/TahoeProblems#MetaltoolchainisnolongerbundledinXcode).
 
 ### LignumVTK and VTK
-LignumVTK now replaces `LignumWb` for visualization. The VTK Visualization Toolkit converts 
+LignumVTK now replaces `LignumWb` for visualization. The [VTK](https://vtk.org) Visualization Toolkit converts 
 LIGNUM trees and voxel space data into VTK files for final visualization in [ParaView](https://www.paraview.org).
 To install VTK:
 
