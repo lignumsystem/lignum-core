@@ -56,17 +56,17 @@ tga_t::tga_t(const char *name, int texId, int upload, GLenum nf)
 
 int tga_t::Load(const char *name)
 {
-   byte type[4];
-   byte info[7];
+   databyte type[4];
+   databyte info[7];
    FILE *iFile;
 
 
    if (!(iFile = fopen(name, "r+bt")))
       return Error(notFound, 0);
 
-   fread(&type, sizeof(byte), 3, iFile); // read in colormap info and image type, byte 0 ignored
+   fread(&type, sizeof(databyte), 3, iFile); // read in colormap info and image type, databyte 0 ignored
    fseek(iFile, 12, SEEK_SET); // seek past the header and useless info
-   fread(&info, sizeof(byte), 6, iFile);
+   fread(&info, sizeof(databyte), 6, iFile);
    fseek(iFile, type[0], SEEK_CUR); // skip past image identification
 
    if (type[1] != 0 || (type[2] != 2 && type[2] != 3))
@@ -181,19 +181,19 @@ int tga_t::CheckSize(int x)
    return 0;
 }
 
-byte *tga_t::GetRGBA(FILE *strm, int size)
+databyte *tga_t::GetRGBA(FILE *strm, int size)
 {
-   byte *rgba;
-   byte temp;
+   databyte *rgba;
+   databyte temp;
    size_t bread;
    int i;
 
-   rgba = new byte[size * 4]; 
+   rgba = new databyte[size * 4]; 
 
    if (rgba == 0)
       return 0;
 
-   bread = fread(rgba, sizeof(byte), size * 4, strm); 
+   bread = fread(rgba, sizeof(databyte), size * 4, strm); 
 
    if (bread != size * 4)
    {
@@ -224,19 +224,19 @@ byte *tga_t::GetRGBA(FILE *strm, int size)
    return rgba;
 }
 
-byte *tga_t::GetRGB(FILE *strm, int size)
+databyte *tga_t::GetRGB(FILE *strm, int size)
 {
-   byte *rgb;
-   byte temp;
+   databyte *rgb;
+   databyte temp;
    size_t bread;
    int i;
 
-   rgb = new byte[size * 3]; 
+   rgb = new databyte[size * 3]; 
 
    if (rgb == 0)
       return 0;
 
-   bread = fread (rgb, sizeof(byte), size * 3, strm);
+   bread = fread (rgb, sizeof(databyte), size * 3, strm);
 
    if (bread != size * 3)
    {
@@ -257,17 +257,17 @@ byte *tga_t::GetRGB(FILE *strm, int size)
    return rgb;
 }
 
-byte *tga_t::GetGray(FILE *strm, int size)
+databyte *tga_t::GetGray(FILE *strm, int size)
 {
-   byte *grayData;
+   databyte *grayData;
    size_t bread;
 
-   grayData = new byte[size];
+   grayData = new databyte[size];
 
    if (grayData == 0)
       return 0;
 
-   bread = fread(grayData, sizeof(byte), size, strm);
+   bread = fread(grayData, sizeof(databyte), size, strm);
 
    if (bread != size)
    {
@@ -280,7 +280,7 @@ byte *tga_t::GetGray(FILE *strm, int size)
    return grayData;
 }
 
-byte *tga_t::GrabData(FILE *strm, int size)
+databyte *tga_t::GrabData(FILE *strm, int size)
 {
    if (bits == 32)
       return GetRGBA (strm, size);

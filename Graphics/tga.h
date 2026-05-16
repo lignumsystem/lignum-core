@@ -31,7 +31,7 @@
 #include <windows.h>
 #else
 #include <stdio.h>
-typedef unsigned char byte;
+typedef unsigned char databyte;
 #endif
 
 #include <OpenGLHFiles.h>
@@ -54,8 +54,8 @@ struct tga_t
    int Id(void)           {return id;}
    void Format(GLenum nf) {format = nf;}
    GLenum Format(void)    {return format;}
-   byte *Data(void) {return data;}
-   byte operator[](int ndx) {return data[ndx];}
+   databyte *Data(void) {return data;}
+   databyte operator[](int ndx) {return data[ndx];}
    int GenId(void)     
   {GLuint temp; glGenTextures(1, &temp); return static_cast<int>(temp);}
 
@@ -75,10 +75,10 @@ struct tga_t
 protected:
    int Error(int errNum, FILE *strm);
    int CheckSize(int x);
-   byte *GetRGB(FILE *strm, int size);
-   byte *GetRGBA(FILE *strm, int size);
-   byte *GetGray(FILE *strm, int size);
-   byte *GrabData(FILE *strm, int size);
+   databyte *GetRGB(FILE *strm, int size);
+   databyte *GetRGBA(FILE *strm, int size);
+   databyte *GetGray(FILE *strm, int size);
+   databyte *GrabData(FILE *strm, int size);
 
    int lastError;
    int bits;
@@ -87,7 +87,7 @@ protected:
    int id;
    int size;
    GLenum format;
-   byte *data;
+   databyte *data;
    
 };
 #endif
