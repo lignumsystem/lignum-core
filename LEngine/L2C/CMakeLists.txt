@@ -37,6 +37,7 @@ include_directories("${CMAKE_CURRENT_LIST_DIR}" "." "${CMAKE_CURRENT_LIST_DIR}/.
 )
 
 add_executable(l2c ${SOURCE_FILES})
+add_executable(l2c::l2c ALIAS l2c)
 #target_compile_options(l2c PUBLIC -std=c++14)
 #set(CMAKE_INSTALL_PREFIX ".")
 install(TARGETS l2c DESTINATION "${PROJECT_SOURCE_DIR}/bin")

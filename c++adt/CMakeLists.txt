@@ -46,7 +46,7 @@ src/rand3.cc
 src/Kite.cc
 src/RectangularCuboid.cc
 )
-
+add_library(cxxadt::cxxadt ALIAS cxxadt)
 if(CMAKE_HOST_SYSTEM_NAME MATCHES "Darwin")
   message("-----")
   message("Note: using C++14 standard (-std=c++14)  because of HDF5 library")
@@ -56,4 +56,4 @@ endif()
 target_include_directories(cxxadt PRIVATE ${HDF5_INCLUDE_DIRS} "include" "/opt/local/include")
 set(CMAKE_INSTALL_PREFIX ".")
 install(TARGETS cxxadt DESTINATION "${CMAKE_CURRENT_LIST_DIR}/lib")
-export(TARGETS cxxadt  FILE ${CMAKE_CURRENT_LIST_DIR}/lib/cxxadt.cmake)
+export(TARGETS cxxadt  NAMESPACE cxxadt:: FILE ${CMAKE_CURRENT_LIST_DIR}/lib/cxxadt.cmake)

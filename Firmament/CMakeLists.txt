@@ -20,10 +20,12 @@ Interlen.cc
 MineSet.cc
 sky-dump.cc 
 )
+add_library(sky::sky ALIAS sky)
+
 target_include_directories(sky PUBLIC "include" 
 "${CMAKE_CURRENT_LIST_DIR}/../c++adt/include"
 "${CMAKE_CURRENT_LIST_DIR}/../stl-lignum/include"
 )
 set(CMAKE_INSTALL_PREFIX ".")
 install(TARGETS sky  DESTINATION "${CMAKE_CURRENT_LIST_DIR}/lib")
-export(TARGETS sky  FILE ${CMAKE_CURRENT_LIST_DIR}/lib/sky.cmake)
+export(TARGETS sky  NAMESPACE sky:: FILE ${CMAKE_CURRENT_LIST_DIR}/lib/sky.cmake)

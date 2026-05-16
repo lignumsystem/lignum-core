@@ -20,6 +20,7 @@ src/VOBookKeeper.cc
 src/VoxelBox.cc
 src/VoxelSpace.cc
 )
+add_library(voxel::voxel ALIAS voxel)
 
 target_include_directories(voxel PUBLIC "include" 
 "${CMAKE_CURRENT_LIST_DIR}/../c++adt/include"
@@ -29,4 +30,4 @@ target_include_directories(voxel PUBLIC "include"
 
 set(CMAKE_INSTALL_PREFIX ".")
 install(TARGETS voxel DESTINATION "${CMAKE_CURRENT_LIST_DIR}/lib")
-export(TARGETS voxel  FILE ${CMAKE_CURRENT_LIST_DIR}/lib/voxel.cmake)
+export(TARGETS voxel  NAMESPACE voxel:: FILE ${CMAKE_CURRENT_LIST_DIR}/lib/voxel.cmake)

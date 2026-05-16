@@ -25,6 +25,7 @@ WrapperBase.cc
 texture.cc
 tga.cc
 )
+add_library(Visual::Visual ALIAS Visual)
 
 target_compile_options(Visual PRIVATE -DGL_SILENCE_DEPRECATION)
 target_include_directories(Visual PUBLIC "."
@@ -35,4 +36,4 @@ target_include_directories(Visual PUBLIC "."
 )
 set(CMAKE_INSTALL_PREFIX ".")
 install(TARGETS Visual DESTINATION "${CMAKE_CURRENT_LIST_DIR}/lib")
-export(TARGETS Visual  FILE ${CMAKE_CURRENT_LIST_DIR}/lib/Visual.cmake)
+export(TARGETS Visual  NAMESPACE Visual::  FILE ${CMAKE_CURRENT_LIST_DIR}/lib/Visual.cmake)

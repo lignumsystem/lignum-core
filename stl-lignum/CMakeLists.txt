@@ -29,6 +29,7 @@ TreeSegment/MyTreeSegment.cc
 TreeSegment/TreeSegment.cc
 TreeSegment/TreeSegmentFriend.cc 
 )
+add_library(LGM::LGM ALIAS LGM)
 
 target_include_directories(LGM PUBLIC "include" 
 "${CMAKE_CURRENT_LIST_DIR}/../c++adt/include"
@@ -37,4 +38,4 @@ target_include_directories(LGM PUBLIC "include"
 )
 set(CMAKE_INSTALL_PREFIX ".")
 install(TARGETS LGM DESTINATION "${CMAKE_CURRENT_LIST_DIR}/lib")
-export(TARGETS LGM  FILE ${CMAKE_CURRENT_LIST_DIR}/lib/LGM.cmake)
+export(TARGETS LGM  NAMESPACE LGM:: FILE ${CMAKE_CURRENT_LIST_DIR}/lib/LGM.cmake)
