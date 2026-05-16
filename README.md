@@ -53,13 +53,14 @@ two main versions:
 `cmake` is the standard, stable release version and `cmake-devel` tracks the latest features and changes.
 
 ### HDF5
-[HDF5](https://www.hdfgroup.org) files function like a file system within a single file,
-using a hierarchical structure to store large self-documenting datasets. It is used to save simulation 
-configuration and results including the simulated trees:
+[HDF5](https://www.hdfgroup.org) files act like a file system within a single file,
+using a hierarchical structure to store large self-documenting datasets. This standardized
+storage format is used to save simulation configuration and results, including the
+simulated trees:
 
 	sudo port install hdf5
 	
-HDF5 provides format for data analysis with high-level languages like R or Python. 
+HDF5 facilitates seamless data analysis for high-level languages like R or Python. 
 Both offer dedicated packages — `rhdf5` and `h5py`, respectively — that implement the 
 HDF5 API for reading, writing, and inspecting data.
 
