@@ -90,6 +90,17 @@ If Qt6 installation fails, try restarting Mac; this clears the `xcrun` cache in 
 which often resolves the issue. The instructions for Qt6 are from the article in MacPorts for 
 [Metal toolchain](https://trac.macports.org/wiki/TahoeProblems#MetaltoolchainisnolongerbundledinXcode).
 
+##### Error: Failed to destroot qt6-qtwebengine: xinstall:
+This error occurs because MacPorts' staging system (`xinstall`) attempts to copy compiled files into
+the destination directory (destroot) before the required nested folder path for QtWebEngineCore.framework
+resources has been created. MacPorts does not generate this directory structure automatically.
+
+Solution: create the necessary folder path in the error message manually, for example:
+
+	sudo mkdir -p /opt/local/var/macports/build/qt6-qtwebengine-e1fa6a31/work/destroot/opt/local/libexec/qt6/lib/QtWebEngineCore.framework/Resources/
+
+The solution was found with Google AI.
+
 ### LignumVTK and VTK
 LignumVTK now replaces `LignumWb` for visualization. The [VTK](https://vtk.org) Visualization Toolkit converts 
 LIGNUM trees and voxel space data into VTK files for final visualization in [ParaView](https://www.paraview.org).
