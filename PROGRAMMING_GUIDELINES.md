@@ -183,7 +183,16 @@ The [C++ reference site](https://en.cppreference.com) presents the library with 
 It also identifies the C++ language version in which an approved language feature or a library component
 is first available. 
 
+### 15.1 Random numbers
+Defined in the *&lt;random&gt;* header, the C++ Standard Library has provided a versatile set of random number generators
+since C++11. This eliminates the need for ad hoc implementations; specifically, `ran3` in lignum-core can be replaced
+by `std::uniform_real_distribution`.
+
+
 [^c++]: See [C++ core guidelines](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines).
+
 [^vtk]: See [VTK](https://docs.vtk.org/en/latest/developers_guide/coding_conventions.html).
+
 [^jsf]: See [JSF Air Vehicle](https://www.stroustrup.com/JSF-AV-rules.pdf).
+
 [^fnctr]: A functor is a C++ class with an overloaded function operator. 
