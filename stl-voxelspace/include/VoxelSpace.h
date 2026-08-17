@@ -1,6 +1,6 @@
 /// \file VoxelSpace.h
-/// \brief  Voxel space (needs clean-up)
-/// \todo Needs clean-up 
+/// \brief  Voxel space 
+/// \todo File content needs improved documentation and  clean-up 
 #ifndef VOXELSPACE_H
 #define VOXELSPACE_H
 
@@ -64,32 +64,70 @@ private:
     friend class VoxelBox;
     friend class InsertHwEllipse;
 
-    ///\brief Insert coniferous tree segment into VoxelSpace
+    ///\brief Insert coniferous tree segment
+    ///
+    ///Insert coniferous tree segment into VoxelSpace without wooden poart
     ///\tparam TS Tree segment
     ///\tparam BUD Bud
     ///\param vs VoxelSpace
     ///\param tree Lignum tree
     ///\param num_parts Divide the coniferous tree segment into \p num_parts and insert data piecewise
+    ///\note Final step VoxelSpace::updateBoxValues() is \e not called
+    ///\sa DumpCfTreeFunctor
+    ///\todo Merge with DumpCfTree(VoxelSpace &vs, Tree<TS, BUD> &tree,int num_parts, bool wood),
+    ///      then remove from use.
     template <class TS,class BUD>
     friend void DumpCfTree(VoxelSpace &vs, Tree<TS, BUD> &tree,int num_parts);
 
+    ///\brief Insert coniferous tree segment into VoxelSpace
+    ///Insert coniferous tree segment into VoxelSpace with wooden part
+    ///\tparam TS Tree segment
+    ///\tparam BUD Bud
+    ///\param vs VoxelSpace
+    ///\param tree Lignum tree
+    ///\param num_parts Divide the coniferous tree segment into \p num_parts and insert data piecewise
+    ///\param wood \e true: insert wooden part, \e false: omit wooden part
+    ///\post VoxelSpace::updateBoxValues() \e is called
+    ///\post Wooden part insertion only if no foliage
+    ///\sa DumpCfTreeFunctor
+    ///\todo Merge with DumpCfTree(VoxelSpace &vs, Tree<TS, BUD> &tree,int num_parts)
+    ///    - Make call to VoxelSpace::updateBoxValues() behind boolean flag
+    ///    - Remove woody part insertion depenency on foliage mass.
+    ///    - Remove  DumpCfTree(VoxelSpace &vs, Tree<TS, BUD> &tree,int num_parts) from use.
     template <class TS,class BUD>
     friend void DumpCfTree(VoxelSpace &vs, Tree<TS, BUD> &tree,int num_parts, bool wood);
 
-    //Insert whole segment to a voxel.
-
-    //Conifers
+    ///\brief Insert coniferous segment to a voxel.
+    ///
+    ///Construct  VoxelObject by extracting geometric data from the segment.
+    ///\note This function is meant to copy a single tree in origo (0,0,0) to many locations
+    ///      in a voxel space. See UKScotsPine project.
+    ///\tparam TS Tree segment
+    ///\param s Voxel space
+    ///\param ts Coniferous tree segment 
+    ///\param d Direction to the new location
+    ///\param t Distance to the new location
+    ///\param beam_start Relative position  on the segment [0:1] where  the light beam
+    ///                  starts. Needed to avoid comparison of a segment with itself.
+    ///\param parts Number of parts a segment will be divived into
+    ///\pre \f$ |d|=1 \f$
+    ///\sa voxelspace::InsertVoxelObjects 
     template <class TS>
     friend void InsertCfVoxelObject(VoxelSpace& s, const TS& ts,
-                                    const PositionVector& dir,
+                                    const PositionVector& d,
                                     double t,double beam_start,
-                                    int segment_parts);
-    //Broadleaved trees with ellipse leaf model
+                                    int parts);
+    //\brief Broadleaved trees with ellipse leaf model
     template <class TS, class BUD,class S>
     friend void InsertHwVoxelObject(VoxelSpace& s, HwTreeSegment<TS,BUD,S>& ts,
                                     const PositionVector& d,
                                     double t,int parts);
-
+    ///\brief Insert tree segment into voxel
+    ///
+    ///Insertion is based on  tree segment midpoint.
+    ///\tparam TS Tree segment
+    ///\param s Voxel space
+    ///\param ts Tree segment
     template <class TS>
     friend void InsertTreeSegmentAsVoxelObject(VoxelSpace& s, TS& ts);
 
@@ -355,8 +393,13 @@ private:
   public:
     ///\brief Constructor
     ///\param n Number of segment parts
-    ///\param wood Boolean flag to insert wooden part or not 
+    ///\param wood Boolean flag to insert wooden part or not
     DumpCfTreeFunctor(int n, bool wood):num_parts(n), dumpWood(wood) {}
+    ///\brief Functor to insert conferous segment foliage and wooden part
+    ///\pre Wooden part is inserted if foliage mass \p LGAWf <= R_EPSILON and \p dumpWood = \e true
+    ///When \p num_parts is 1 (whole segment) then 1/2 of the segment (middle point) is
+    ///checked for the right voxel. When \p num_parts is 2 then 1/3 and 2/3 are checked.
+    ///When \p num_parts is 3 then 1/4, 2/4 and 3/4 are checked etc.
     TreeCompartment<TS,BUD>* operator ()(TreeCompartment<TS,BUD>* tc)const;
     mutable VoxelSpace *space;///< VoxelSPace
     double num_parts;///< Number of segment parts 

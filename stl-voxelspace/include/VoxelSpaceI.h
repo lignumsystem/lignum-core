@@ -1,9 +1,12 @@
 /// \file VoxelSpaceI.h
-/// \brief Voxel space implementation (needs clean-up)
+/// \brief Voxel space implementation
 ///
-/// Insert foliage as aggregate foliage density data in Voxel space or
-/// insert tree segments and leaves as geometric voxel objects.
-/// \todo Needs clean-up
+/// The implemntation icludes:
+/// - Insert foliage as aggregate foliage density data in Voxel space
+/// - Insert tree segments and leaves as geometric voxel objects.
+/// - Calculate light interception effieciency
+///.
+/// \todo File content needs documentation and clean-up
 #ifndef VOXELSPACEI_H
 #define VOXELSPACEI_H
 
@@ -115,24 +118,8 @@ operator ()(TreeCompartment<TS,BUD>* tc)const
     return tc;
 }
 
-///\brief Insert coniferous tree segment as geomtric voxel object in
-///voxel space
-///
-///When the tree to voxel space, we cannot  in the single
-///tree case use the segments  themselves; they are pointers and each
-///time  we change the  segment location  previous insertion  will be
-///lost. Instead  we need a  CfCylinder VoxelObject that has  all the
-///information  of the  segment to  calculate the  shading  (i.e. the
-///attenuation of light)
-///\param s Voxel space
-///\param ts Coniferous tree segment 
-///\param d Direction to the new location
-///\param t Distance to the new location
-///\param beam_start Relatiove position  on the segment [0:1] where  the light beam
-///                   starts. Needed to avoid comparison of a segment with
-///                   itself.
-///\param parts Number of \p parts the segment will be divived into
-///\pre \f$ |d|=1 \f$
+///CfCylinder voxel object has  all the information from the  segment to
+///calculate the  shading  and the radiation attenuation.
 template <class TS>
 void InsertCfVoxelObject(VoxelSpace& s, const TS& ts,
                          const PositionVector& d,

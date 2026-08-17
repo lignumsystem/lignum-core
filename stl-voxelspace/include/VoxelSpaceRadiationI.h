@@ -377,12 +377,22 @@ private:
 ///\brief Insert coniferous segments as voxel objects in voxel space
 ///
 ///Create voxel object representation of coniferous tree segments and insert
-///voxel objects in voxel space
+///voxel objects in voxel space.
+///\note This class is meant to copy  a single tree at origo (0,0,0) to several
+///predefiend places in a voxel space. If \p distance is 0 then the tree is copied
+///using its own place. See the project UKScotsPine
 template <class TS,class BUD>
 class InsertCfVoxelObjects{
 public:
+  ///\brief Copy constructor
   InsertCfVoxelObjects(const InsertCfVoxelObjects& ivo):
-    vs(ivo.vs),d(ivo.d),dist(ivo.dist),sp(ivo.sp),parts(ivo.parts){}			    
+    vs(ivo.vs),d(ivo.d),dist(ivo.dist),sp(ivo.sp),parts(ivo.parts){}
+  ///\brief Insert coniferous tree into voxel space
+  ///\param space Voxel space
+  ///\param dir Direction to the tree base in the voxel space
+  ///\param distance Distance to the tree base in the voxel space
+  ///\param beam_start  Relative position [0,1] on a segment part where light beam starts
+  ///\param num_parts Number of parts tree segment is divided into 
   InsertCfVoxelObjects(VoxelSpace& space, const PositionVector& dir, double distance, 
 		     double beam_start, int num_parts)
     :vs(space),d(dir),dist(distance),sp(beam_start),parts(num_parts){}
@@ -425,12 +435,23 @@ private:
   bool leaf;//insert also the leaf itself or not
 };
 
+///\brief  Wrapper class to insert both coniferous and hardwood trees into voxel space
+///
+///\note This class is meant to copy  a single tree at origo (0,0,0) to several
+///predefiend places in a voxel space. If \p distance is 0 then the tree is copied
+///using its own place. See the project UKScotsPine.
 template <class TS, class BUD, class S=Ellipse> 
 class InsertVoxelObjects{
 public:
-  InsertVoxelObjects(VoxelSpace& vs1, const PositionVector& d1,
-		     double t1,double sp1,int parts1)
-    :vs(vs1),d(d1),t(t1),sp(sp1),parts(parts1),leaf(false){}
+  ///\brief Constructor: Insert coniferous tree into voxel space
+  ///\param space Voxel space
+  ///\param dir Direction to the tree base in the voxel space
+  ///\param distance Distance to the tree base in the voxel space
+  ///\param beam_start  Relative position [0,1] on a segment part where light beam starts
+  ///\param num_parts Number of parts tree segment is divided into 
+  InsertVoxelObjects(VoxelSpace& space, const PositionVector& dir,
+		     double distance,double beam_start,int num_parts)
+    :vs(space),d(dir),t(distance),sp(beam_start),parts(num_parts),leaf(false){}
   InsertVoxelObjects(VoxelSpace& vs1, const PositionVector& d1,
 		     double t1,double sp1,int parts1,bool leaf1)
     :vs(vs1),d(d1),t(t1),sp(sp1),parts(parts1),leaf(leaf1){}

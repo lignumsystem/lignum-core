@@ -1,6 +1,6 @@
 /// \file VoxelBox.h
-/// \brief Voxel box in voxel space (needs clean-up)
-/// \todo Needs clean-up 
+/// \brief A single voxel in a voxel space
+/// \todo File content needs clean-up and improved documentation 
 #ifndef VOXELBOX_H
 #define VOXELBOX_H
 
@@ -49,6 +49,7 @@ class VoxelSpace;
    template <class TS,class BUD>
      friend void DumpSegmentWood(VoxelBox &b, const TreeSegment<TS,BUD>& ts,
 				 int num_parts);
+   ///\brief Insert voxel object 
    template <class OBJ>
      friend void InsertVoxelObject(VoxelBox& b, OBJ* obj);
 
@@ -156,7 +157,16 @@ class VoxelSpace;
    void setQinMean(LGMdouble val){Qin_mean= val;}
    void setQabsMean(LGMdouble val){Qabs_mean= val;}
    void addInterceptedRadiation(LGMdouble rad) { interceptedRadiation += rad; }
+   ///\brief Add STAR mean
+   ///
+   ///Add single segment STAR mean \p starmean to voxel STAR sum.
+   ///\param starmean The STAR mean value
+   ///\sa DumpCfSegmentFoliage
    void addStarSum(LGMdouble starmean){starSum += starmean;}
+   ///\brief Add directional STAR values
+   ///
+   ///Add directional STAR values from \stardirmean element-wise to voxel's \p starDirSum. 
+   ///\param stardirmean Vector of directional STAR values 
    void addDirectionalStarSum(vector<LGMdouble> stardirmean){
      std::transform (starDirSum.begin(),starDirSum.end(),stardirmean.begin(),starDirSum.begin(),plus<LGMdouble>());
    }
@@ -165,6 +175,11 @@ class VoxelSpace;
    void addWoodArea(LGMdouble area) {woodArea += area; }
    void subtractWoodMass(LGMdouble mass) {woodMass -= mass; }
    void subtractWoodArea(LGMdouble area) {woodArea -= area; }
+   ///\brief Add weigth
+   ///
+   ///Accumulate the weigth used in STAR sum
+   ///\sa addStarSum
+   ///\sa DumpCfSegmentFoliage
    void addWeight(LGMdouble w){weight += w;}
    void subtractWeight(LGMdouble w){weight -= w;}
    void increaseNumberOfSegments(){number_of_segments++;}
@@ -176,11 +191,23 @@ class VoxelSpace;
    bool getOccupied() {return occupied;}
    void setOccupiedTry(const bool& set_value) {occupied_try = set_value;}
    bool getOccupiedTry() {return occupied_try;}
-    
+   ///\brief STAR calculations
+   /// \todo Method needs more descriptive name.
+   /// \todo Check parameters, it seems Wf*Sf just recalculates Af:
+   ///       - Sf is calculated with Af and Wf in the calling DumpCfSegmentFoliage().
+   ///       - Instead of Wf and Sf pass Af as parameter
+   /// \todo For easier read, write the implementation in the Oker-Blom and Smolander (1988) notation form:
+   ///       - See for example Eq. 8 as a model.
+   ///       - The current implementation seems to match Eq. 8 in Oker-Blom and Smolander (1988) though.
+   /// \sa DumpCfSegmentFoliage()
    LGMdouble S(LGMdouble phi, LGMdouble sf, LGMdouble Wf,
 	       LGMdouble r, LGMdouble l);
-   //reset  the  box to  0,  clear  the  vector of  photosynthesising
-   //objects (not the objects though!!!) vector<LGMdouble>starDirSum(7,0.0);vector<LGMdouble>starDir(7,0.0); // here i initialise the vectors with 8 of the values to zero.
+   ///\brief Reset  the  voxel
+   ///
+   ///Reset voxel values and vectors:
+   /// - Set values in the voxel to  0
+   /// - Clear the vector \p objects of  photosynthesising objects (not the objects in the vectors).
+   /// - Initialize \p starDirSum and \p starDir with zeros. 
    void reset();
 
    //Reset Qin, Qabs and  intercepedRadiation to 0, this is necessary
@@ -201,6 +228,10 @@ class VoxelSpace;
      val_b = 0.0; Q_inStdDiffuse = 0;
      big_leaf_normal = PositionVector(0,0,0);
    }
+   ///\brief Tree segment silhouette area.
+   ///\todo Conceptually should be a function for a tree segment instead of VoxelBox method.
+   ///\todo The implementation looks like a silhouette implementation.
+   ///      - Oker-Blom and Smolander (1988) use shoot projection area (Aproj) in their Eq. 5 
    LGMdouble SAc(LGMdouble phi, LGMdouble r, LGMdouble l);
    LGMdouble K(LGMdouble phi);
 
