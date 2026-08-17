@@ -49,8 +49,11 @@ src/RectangularCuboid.cc
 add_library(cxxadt::cxxadt ALIAS cxxadt)
 if(CMAKE_HOST_SYSTEM_NAME MATCHES "Darwin")
   message("-----")
-  message("Note: using C++14 standard (-std=c++14)  because of HDF5 library")
-  message("XCode with C++17 standard (-std=c++17, default) will cause error")
+  message("Note: using the C++14 standard (-std=c++14) for the HDF5 library")
+  message("The C++17 standard (-std=c++17, XCode clang default) will cause error")
+  #Keep the C++14 standard PRIVATE to this compilation,
+  #otherwise the language standard may propagate unintentionally.
+  #Many software packages like VTK and QT6 require C++17.
   target_compile_options(cxxadt PRIVATE -std=c++14)
 endif()
 target_include_directories(cxxadt PRIVATE ${HDF5_INCLUDE_DIRS} "include" "/opt/local/include")
