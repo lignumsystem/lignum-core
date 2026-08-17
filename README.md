@@ -36,11 +36,15 @@ Install also command line tools:
 
 	sudo xcode-select --install
 
-Xcode is also a mandatory dependency for the MacPorts system.
+Xcode is a mandatory dependency for the MacPorts system.
 
 ### MacPorts
 Install from [MacPorts](https://www.macports.org) website. Once installed
 use the `port` command line interface in Terminal for package management.
+Query *notes* or *info* for quick package details, for example:
+
+	port notes python314
+	port info python314
 
 ### CMake
 Use CMake to manage the configuration and build process for lignum-core and 
@@ -51,6 +55,7 @@ two main versions:
 	sudo port install cmake-devel #CMake 4.x
 
 `cmake` is the standard, stable release version and `cmake-devel` tracks the latest features and changes.
+These packages are mutually exclusive; you can only install one.
 
 ### HDF5
 [HDF5](https://www.hdfgroup.org) files act like a file system within a single file,
@@ -85,7 +90,8 @@ which is no longer bundled with Xcode 26. First, install Metal:
 To install Qt6:
 	
 	sudo port install qt6
-	
+
+#### Troubleshooting Qt6 installation issues
 If Qt6 installation fails, try restarting Mac; this clears the `xcrun` cache in Xcode, 
 which often resolves the issue. The instructions for Qt6 are from the article in MacPorts for 
 [Metal toolchain](https://trac.macports.org/wiki/TahoeProblems#MetaltoolchainisnolongerbundledinXcode).
@@ -135,28 +141,41 @@ To produce Doxygen software documentation use the project Doxyfile:
 
 Project Doxyfiles specify *DoxygenDoc* as the destination for final documents. 
 
+#### Troubleshooting LaTeX installation issues 
+LaTeX installation or ugrade can fail because the `jxrlib` CMake configuration is
+incompatible with CMake 4. Temporarily downgrade to CMake 3 and reinstall `texlive`:
+
+	sudo port uninstall cmake-devel #CMake 4
+	sudo port install cmake         #CMake 3
+	sudo port install texlive       #Alternatively: port upgrade
+	
+Finally, replace CMake 3 with CMake 4. 
+
 ### Python
-Some projects expose C++ software as Python packages. Install Python,
-create Python virtual environment and install Python packages:
+Some C++ projects use Cython to expose their software as Python packages. 
+To set up this environment, install Python, create a virtual environment, 
+and install Cython along with required packages.
 
-	sudo port install python312                           #Python 3.12 example
-	/opt/local/bin/python3.12 -m venv ~/venv/lignumsystem #Create virtual environment
-	source ~/venv/lignumsystem/bin/activate               #Activate the virtual environment
-	(lignumsystem) pip install -r requirements.txt        #Install required python packages
+	sudo port install python312                               #Python 3.12
+	/opt/local/bin/python3.12 -m venv ~/venv/lignumsystem     #Create virtual environment
+	source ~/venv/lignumsystem/bin/activate                   #Activate the virtual environment
+	(lignumsystem) pip install --upgrade pip setuptools wheel #Core packaging tools for Python 3.12
+	(lignumsystem) pip install Cython                         #Cython for Python 3.12
+	(lignumsystem) pip install -r requirements.txt            #Install required python packages
 
-For the LIGNUM system, the [requirements.txt](https://github.com/lignumsystem/lignum-core/blob/master/requirements.txt) 
-file defines the commonly used packages. 
+The [requirements.txt](https://github.com/lignumsystem/lignum-core/blob/master/requirements.txt) 
+file is available in *lignum-core*.
 
-The build process for C++ extensions is in *setup.py* files:
+The build process for C++ extensions with Cython is in *setup.py* files:
 	
 	(lignumsystem) python3 setup.py build_ext --inplace
 	
 See instructions for each use case.
 
 > [!TIP]
-> The *lignumsystem* virtual environment is in the *~/venv* directory, where
-> the tilde (~) denotes home directory. Centralizing environments this way makes 
-> them easier to manage and locate.
+> In the example the *lignumsystem* virtual environment is in the *~/venv* directory, where
+> the tilde (~) denotes home directory. Centralizing environments this way makes them 
+> easier to locate and manage.
 
 ### R
 R is used in data analysis in the LIGNUM system. [RStudio](https://posit.co/products/open-source/rstudio/) 
@@ -218,8 +237,8 @@ system, simply remove the build directory and recreate it.
 > different build configurations must be in separate build directories.
 > Choose descriptive names like *release*, *debug* or *xcode* for these directories.
 
-## Programming guidelines
-Setting up a LIGNUM application involves both lignum-core and the new project. 
+### Setting up a new project
+Setting up a LIGNUM project involves both lignum-core and the new project. 
 For instance, the LignumForest development environment uses the following top-level 
 directory structure:
 
@@ -241,7 +260,7 @@ lignum-core/
 ```
 Lignum Forest defines lignum-core as a build-time dependency in its main CMakeLists.txt.
 
-[PROGRAMMING_GUIDELINES](https://github.com/lignumsystem/lignum-core/blob/master/PROGRAMMING_GUIDELINES.md)
+[PROGRAMMING_GUIDELINES](PROGRAMMING_GUIDELINES.md)
 discuss best practices for LIGNUM application development.
 
 ## Litterature to cite the LIGNUM model
