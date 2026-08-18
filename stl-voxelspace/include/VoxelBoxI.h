@@ -34,7 +34,7 @@ void DumpCfSegmentFoliage(VoxelBox &b, const CfTreeSegment<TS,BUD>& ts,
     // [STARSUM]
     LGMdouble starS = 0.0;
     //This for loop is executed for angles 0, 15, .., 90 degrees, that is, 7 times
-    //S_f = farea/fmas or 28.0
+    //S_f = farea/fmass or 28.0
     for (double phi=0;phi<=PI_VALUE/2.0; phi+=PI_VALUE/12.0)
     {
       starS += cos(phi) * b.S(phi, S_f, fmass, needle_rad, lenght);
@@ -48,7 +48,8 @@ void DumpCfSegmentFoliage(VoxelBox &b, const CfTreeSegment<TS,BUD>& ts,
     b.addWeight(farea/(double)num_parts);
     // [STARSUM]
     ///\endinternal
-    b.increaseNumberOfSegments();  //This is a bit problematic with num_parts
+    b.increaseNumberOfSegments();
+    //This is a bit problematic with num_parts
     b.addNumberOfSegmentsReal(1.0/(double)num_parts);
     b.addVector((farea/(double)num_parts)*GetDirection(ts));
 

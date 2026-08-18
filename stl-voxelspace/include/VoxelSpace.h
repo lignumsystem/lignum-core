@@ -270,6 +270,13 @@ private:
     //       dir  direction of the light beam, |dir| == 1 (!!!)
     double getBorderStandExtinction(const Point& p0, const PositionVector& dir)const;
     ///\brief Loop through VoxelBoxes and update VoxelBox values
+    ///\todo VoxelSpace::updateBoxValues() is called:
+    /// - Every time in DumpCfTree(VoxelSpace &s, Tree<TS, BUD> &tree,int num_parts, bool wood)
+    /// - In the LignumForest::GrowthLoop::setVoxelSpaceAndBorderForest()
+    /// .
+    /// It seeems  VoxelBox::updateValues() is strictly local, no cross-voxel dependencies.
+    /// However, VoxelSpace::updateBoxValues() loops each time 3D voxel space matrix.
+    /// \todo Minimize calls to VoxelSpace::updateBoxValues().
     void updateBoxValues();  
     LGMdouble calculateTurbidLight(bool border_forest, bool self_shading = true);
     //diffuse is to calcluate the real diffuse from standard 1200, structureFlag is

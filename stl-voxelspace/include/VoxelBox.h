@@ -34,6 +34,10 @@ class VoxelSpace;
    ///\param num_parts Number of parts tree segment is divided into
    ///\sa starSum
    ///\sa weight
+   ///\todo Check the calculation for STAR:
+   ///  - `starS` is multiplied by `farea` to set `VoxelBox::starSum`, and `farea` is set to `VoxelBox::weight`.
+   ///  - `VoxelBox::starSum` is then divided by `VoxelBox::weight` (or `farea`) in VoxelBox::updateValues(),
+   ///     effectively canceling out the multiplication in `val_c` calculation.
    template <class TS,class BUD>
      friend void DumpCfSegmentFoliage(VoxelBox &b, const CfTreeSegment<TS,BUD>& ts,
 				      int num_parts );
