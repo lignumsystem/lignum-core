@@ -258,10 +258,9 @@ lignum-core/
 └── stl-voxelspace
 10 directories, 2 files
 ```
-Lignum Forest defines lignum-core as a build-time dependency in its main CMakeLists.txt.
+The root CMakeLists.txt for LignumForest specifies lignum-core as a build-time dependency.
 
-[PROGRAMMING_GUIDELINES](PROGRAMMING_GUIDELINES.md)
-discuss best practices for LIGNUM application development.
+The [PROGRAMMING_GUIDELINES](PROGRAMMING_GUIDELINES.md) outline recommended practices for LIGNUM application development.
 
 ## Litterature to cite the LIGNUM model
 
