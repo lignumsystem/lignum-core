@@ -35,9 +35,11 @@ class VoxelSpace;
    ///\sa starSum
    ///\sa weight
    ///\todo Check the calculation for STAR:
-   ///  - `starS` is multiplied by `farea` to set `VoxelBox::starSum`, and `farea` is set to `VoxelBox::weight`.
-   ///  - `VoxelBox::starSum` is then divided by `VoxelBox::weight` (or `farea`) in VoxelBox::updateValues(),
-   ///     effectively canceling out the multiplication in `val_c` calculation.
+   /// - Note \p starS is multiplied by \p farea to set \p VoxelBox::starSum, and \p farea is set to \p VoxelBox::weight.
+   /// - In  VoxelBox::updateValues() \p VoxelBox::starSum is divided by \p VoxelBox::weight  (i.e. \p farea),
+   ///   effectively canceling out the multiplication in \p val_c calculation.
+   ///
+   ///\sa VoxelBox::updateValues()
    template <class TS,class BUD>
      friend void DumpCfSegmentFoliage(VoxelBox &b, const CfTreeSegment<TS,BUD>& ts,
 				      int num_parts );
@@ -169,7 +171,7 @@ class VoxelSpace;
    void addStarSum(LGMdouble starmean){starSum += starmean;}
    ///\brief Add directional STAR values
    ///
-   ///Add directional STAR values from \stardirmean element-wise to voxel's \p starDirSum. 
+   ///Add directional STAR values from \p stardirmean element-wise to voxel's \p starDirSum. 
    ///\param stardirmean Vector of directional STAR values 
    void addDirectionalStarSum(vector<LGMdouble> stardirmean){
      std::transform (starDirSum.begin(),starDirSum.end(),stardirmean.begin(),starDirSum.begin(),plus<LGMdouble>());
@@ -196,13 +198,19 @@ class VoxelSpace;
    void setOccupiedTry(const bool& set_value) {occupied_try = set_value;}
    bool getOccupiedTry() {return occupied_try;}
    ///\brief STAR calculations
-   /// \todo Method needs more descriptive name.
-   /// \todo Check parameters, it seems Wf*Sf just recalculates Af:
-   ///       - Sf is calculated with Af and Wf in the calling DumpCfSegmentFoliage().
-   ///       - Instead of Wf and Sf pass Af as parameter
-   /// \todo For easier read, write the implementation in the Oker-Blom and Smolander (1988) notation form:
-   ///       - See for example Eq. 8 as a model.
-   ///       - The current implementation seems to match Eq. 8 in Oker-Blom and Smolander (1988) though.
+   ///\param phi Altitude angle (measured from projectioon plane)
+   ///\param sf Specific leaf area, Lignum::LGASf
+   ///\param Wf Foliage mass
+   ///\param r Segment radius (up to foliage limit)
+   ///\param l Segment length 
+   ///\todo Method needs more descriptive name than just VoxelBox::S().
+   ///\todo Check parameters, it seems VoxelBox::S() just recalculates \p Af as \p Wf*sf:
+   /// - \p sf is calculated with \p Af and \p Wf in the calling DumpCfSegmentFoliage().
+   /// - Instead of \p Wf and \p sf, pass \p Af as parameter.
+   ///\todo For easier read, write the implementation in the Oker-Blom and Smolander (1988) notation form:
+   /// - See for example Eq. 8 as a model.
+   /// - The current implementation seems to match Eq. 8 in Oker-Blom and Smolander (1988) though.
+   ///
    /// \sa DumpCfSegmentFoliage()
    LGMdouble S(LGMdouble phi, LGMdouble sf, LGMdouble Wf,
 	       LGMdouble r, LGMdouble l);
@@ -233,12 +241,12 @@ class VoxelSpace;
      big_leaf_normal = PositionVector(0,0,0);
    }
    ///\brief Tree segment silhouette area.
-   ///\todo Conceptually should be a function for a tree segment instead of VoxelBox method.
-   ///\todo The implementation looks like a silhouette implementation.
-   ///      - Oker-Blom and Smolander (1988) use shoot projection area (Aproj) in their Eq. 5 
+   ///\todo The implementation looks like a cylinder \e silhouette implementation:
+   /// - Oker-Blom and Smolander (1988) use shoot \e projection area in their Eq. 5.
+   ///
+   ///\todo Conceptually VoxelBox::SAc() should be a function for a tree segment instead of VoxelBox method.
    LGMdouble SAc(LGMdouble phi, LGMdouble r, LGMdouble l);
    LGMdouble K(LGMdouble phi);
-
    M2 needleArea;
    M2 leafArea;
    LGMdouble Q_in;

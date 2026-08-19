@@ -4,7 +4,6 @@
 #ifndef VOXELSPACE_H
 #define VOXELSPACE_H
 
-
 #include <vector>
 #include <utility>
 #include <climits>
@@ -90,7 +89,8 @@ private:
     ///\post VoxelSpace::updateBoxValues() \e is called
     ///\post Wooden part insertion only if no foliage
     ///\sa DumpCfTreeFunctor
-    ///\todo Merge with DumpCfTree(VoxelSpace &vs, Tree<TS, BUD> &tree,int num_parts)
+    ///\todo Merge with DumpCfTree(VoxelSpace &vs, Tree<TS, BUD> &tree,int num_parts):
+    ///
     ///    - Make call to VoxelSpace::updateBoxValues() behind boolean flag
     ///    - Remove woody part insertion depenency on foliage mass.
     ///    - Remove  DumpCfTree(VoxelSpace &vs, Tree<TS, BUD> &tree,int num_parts) from use.
@@ -271,6 +271,7 @@ private:
     double getBorderStandExtinction(const Point& p0, const PositionVector& dir)const;
     ///\brief Loop through VoxelBoxes and update VoxelBox values
     ///\todo VoxelSpace::updateBoxValues() is called:
+    ///
     /// - Every time in DumpCfTree(VoxelSpace &s, Tree<TS, BUD> &tree,int num_parts, bool wood)
     /// - In the LignumForest::GrowthLoop::setVoxelSpaceAndBorderForest()
     /// .
