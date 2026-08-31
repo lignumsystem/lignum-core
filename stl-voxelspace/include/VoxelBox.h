@@ -34,10 +34,13 @@ class VoxelSpace;
    ///\param num_parts Number of parts tree segment is divided into
    ///\sa starSum
    ///\sa weight
-   ///\todo Check the calculation for STAR:
+   ///\todo \htmlonly <span style="color:red;">&#9679;</span>\endhtmlonly Check the calculation for STAR:
    /// - Note \p starS is multiplied by \p farea to set \p VoxelBox::starSum, and \p farea is set to \p VoxelBox::weight.
    /// - In  VoxelBox::updateValues() \p VoxelBox::starSum is divided by \p VoxelBox::weight  (i.e. \p farea),
    ///   effectively canceling out the multiplication in \p val_c calculation.
+   ///
+   ///\todo \htmlonly <span style="color:red;">&#9679;</span>\endhtmlonly Variable names in calculating STAR should clearly match the specific operations and values being calculated,
+   ///      such as STAR, directional_STAR, and STAR_mean.
    ///
    ///\sa VoxelBox::updateValues()
    template <class TS,class BUD>
@@ -87,10 +90,12 @@ class VoxelSpace;
    ///   \mathit{val}_b = k_b \times (A_{\mathrm{leaf}} / V_{\mathrm{voxel}})
    ///  \end{array}
    ///\f}
+   ///\note \f$ val_c \f$ and \f$ val_b \f$ are local volume extinction coeffients, also denoted
+   ///with symbol \f$ k \f$ in plant sciences or \f$ \sigma \f$ in computer graphics.
    ///\sa star 				       
    ///\sa val_c
    ///\sa val_b
-   ///\sa voxelspace::LGAkb
+   ///\sa voxelspace::LGAkb for \f$ k_b \f$
    ///\sa DumpCfSegmentFoliage
    void updateValues();
    ///\brief Update directional \f$\mathbf{STARDIR}\f$ vector
@@ -203,11 +208,11 @@ class VoxelSpace;
    ///\param Wf Foliage mass
    ///\param r Segment radius (up to foliage limit)
    ///\param l Segment length 
-   ///\todo Method needs more descriptive name than just VoxelBox::S().
-   ///\todo Check parameters, it seems VoxelBox::S() just recalculates \p Af as \p Wf*sf:
+   ///\todo \htmlonly <span style="color:red;">&#9679;</span>\endhtmlonly  Method needs more descriptive name than just VoxelBox::S().
+   ///\todo \htmlonly <span style="color:red;">&#9679;</span>\endhtmlonly Check parameters, it seems VoxelBox::S() just recalculates \p Af as \p Wf*sf:
    /// - \p sf is calculated with \p Af and \p Wf in the calling DumpCfSegmentFoliage().
    /// - Instead of \p Wf and \p sf, pass \p Af as parameter.
-   ///\todo For easier read, write the implementation in the Oker-Blom and Smolander (1988) notation form:
+   ///\todo \htmlonly <span style="color:red;">&#9679;</span>\endhtmlonly For easier read, write the implementation in the Oker-Blom and Smolander (1988) notation form:
    /// - See for example Eq. 8 as a model.
    /// - The current implementation seems to match Eq. 8 in Oker-Blom and Smolander (1988) though.
    ///
@@ -241,10 +246,10 @@ class VoxelSpace;
      big_leaf_normal = PositionVector(0,0,0);
    }
    ///\brief Tree segment silhouette area.
-   ///\todo The implementation looks like a cylinder \e silhouette implementation:
+   ///\todo \htmlonly <span style="color:red;">&#9679;</span>\endhtmlonly The implementation looks like a cylinder \e silhouette implementation:
    /// - Oker-Blom and Smolander (1988) use shoot \e projection area in their Eq. 5.
    ///
-   ///\todo Conceptually VoxelBox::SAc() should be a function for a tree segment instead of VoxelBox method.
+   ///\todo \htmlonly <span style="color:red;">&#9679;</span>\endhtmlonly Conceptually VoxelBox::SAc() should be a function for a tree segment instead of VoxelBox method.
    LGMdouble SAc(LGMdouble phi, LGMdouble r, LGMdouble l);
    LGMdouble K(LGMdouble phi);
    M2 needleArea;

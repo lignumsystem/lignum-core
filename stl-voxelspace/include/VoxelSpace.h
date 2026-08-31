@@ -89,8 +89,7 @@ private:
     ///\post VoxelSpace::updateBoxValues() \e is called
     ///\post Wooden part insertion only if no foliage
     ///\sa DumpCfTreeFunctor
-    ///\todo Merge with DumpCfTree(VoxelSpace &vs, Tree<TS, BUD> &tree,int num_parts):
-    ///
+    ///\todo  \htmlonly <span style="color:orange;">&#9679;</span>\endhtmlonly Merge with DumpCfTree(VoxelSpace &vs, Tree<TS, BUD> &tree,int num_parts):
     ///    - Make call to VoxelSpace::updateBoxValues() behind boolean flag
     ///    - Remove woody part insertion depenency on foliage mass.
     ///    - Remove  DumpCfTree(VoxelSpace &vs, Tree<TS, BUD> &tree,int num_parts) from use.
@@ -248,36 +247,151 @@ private:
     //VoxelBox.
     list<vector<int> > getBoxesAroundPoint(const Point& p, const double& dist,
                                            const bool permissive = true);
-
-    vector<VoxelMovement>& getRoute(vector<VoxelMovement> &vec, int startx,
-                                    int starty, int startz, PositionVector dir)const;
-    //The method  calculates the route through the  voxel space from
-    //start point to the direction given.
-    //Input/Output: vec   the route, includes extincion in each voxel
-    //Input:        p0  start point (global)
-    //              dir direction, |dir| == 1 (!!!)
-    //              K   extinction
-    //              pairwise if true use the voxel objects in voxels to
-    //                       calculate extinction, if false calculate only the
-    //                       path lengths in voxels
-    vector<VoxelMovement>& getRoute(vector<VoxelMovement> &vec,
-                                    const Point& p0,
-                                    const PositionVector& dir,
-                                    const ParametricCurve& K,
-                                    bool pairwise, bool dir_star)const;
-    //Return the extinction caused by the border stand
-    //Input: p0   start point of the light beam
-    //       dir  direction of the light beam, |dir| == 1 (!!!)
+    ///\brief Calculate the light beam route through the  voxel space.
+    ///
+    ///Implementation of Amanatides and Woo (1987), A fast voxel traversal algorithm for
+    ///ray casting. This implementation integrates radiation attenuation tracking and data collection.
+    ///\param vec [out] The route, includes path lengths and extincion in each voxel
+    ///\param p0  The light beam start point in the voxel
+    ///\param dir The light beam direction
+    ///\param K   The directional light extinction coefficient (Oker-Blom and Smolander, 1988)
+    ///\param pairwise \e true: Use the voxel objects in voxels to calculate radiation attenuation<br>
+    ///                \e false: Calculate the path lengths in voxels
+    ///\param dir_star \e true: Collect  STAR values from all directions<br>
+    ///                \e false: Use voxel's STAR mean values
+    ///\pre \p |vec| = 0
+    ///\pre \p |dir| = 1
+    ///\pre \p p0 must be inside the voxel space
+    ///\retval vec Vector containing the beam route data in VoxelMovement
+    ///\sa VoxelMovement
+    ///
+    ///\par Details for calculating the beam route
+    ///
+    ///The Fast Voxel Traversal Algorithm is divided into an initialization phase and an incremental
+    ///loop phase. In the initialization phase the algorithm sets the loop variables based on the
+    ///starting position and the beam direction. In the loop phase the algorithm travels forward by identifying
+    ///which of the X,Y or Z voxel plane boundary is reached first, jumps to the corresponding voxel and updates
+    ///the current voxel indices. The process is repeated until voxel space boundary is reached.
+    ///
+    ///\par Initialization phase
+    ///
+    ///Initialization phase sets computes the starting conditions from the ray's origin and direction.
+    ///These conditions consists of four sets of variables.
+    ///
+    ///\par The current voxel
+    ///
+    ///Setting the current voxel, \f$ \mathtt{startx, starty, startz} \f$, is trivial based on the starting position.
+    ///
+    ///\par Direction of the step
+    ///
+    ///The step directions, \f$ \mathtt{x\_jump, y\_jump, z\_jump} \f$, are set to \f$ \pm 1 \f$ based on the ray's direction vector.
+    ///A negative component results in \f$ -1 \f$, while a positive component results in \f$ +1 \f$.
+    ///
+    ///\par Calculate strides
+    ///
+    ///For each dimension - \f$ \mathtt{xmove, ymove, zmove} \f$ - calculate the voxel stride to cross a voxel boundary.
+    ///\f[
+    /// \mathtt{xmove}=\frac{\mathtt{Xbox}}{\mathtt{dir.x}},  \mathtt{ymove}=\frac{\mathtt{Ybox}}{\mathtt{dir.y}}, \mathtt{zmove}=\frac{\mathtt{Zbox}}{\mathtt{dir.z}}
+    ///\f]
+    ///During the iteration phase, these values do not change.
+    ///\sa VoxelSpace::Xbox, VoxelSpace::Ybox, VoxelSpace::Zbox
+    ///\note Although the voxel space traversal algorithm itself does not require a normalized direction vector,
+    ///normalization (\f$|\mathtt{dir}| = 1 \f$) is necessary to ensure the traversal route reflects true geometric
+    ///distance for accurate radiation attenuation calculations.
+    ///
+    ///\par The first voxel face crossings
+    ///
+    ///Calculate the total distances, \f$ \mathtt{next\_x, next\_y} \f$ and \f$ \mathtt{next\_z} \f$, the light beam must travel
+    ///before crossing a voxel face for the first time  in all \f$ X, Y \f$ and \f$ Z \f$ directions.  This is for example the problem
+    ///of deciding if a ray intersects with a plane. The  beam  is represented as \f$ p_0+td \f$, where \f$ p_0 \f$ is the starting
+    ///point and \f$ d \f$ is the direction unit vector of the ray. The \f$ t \f$ is the parametric distance to the plane.
+    ///
+    ///The plane is represented as \f$ Ax+By+Cz+D=0 \f$, where \f$ A, B \f$ and \f$ C \f$ is the  normal to the  plane (unit  vector) and
+    ///\f$ D \f$  is the shortest distance of  the plane  to  origo. At the point  of intersection the ray satisfies
+    ///the  plane   equation: \f$ A\left(p_0.x+td.x\right)+B\left(p_0.y+td.y\right)+C\left(p_0.z+td.z\right)+D = 0 \f$.
+    ///
+    ///Both the  normals (\f$ A, B, C \f$) and the distances (\f$D\f$) are known for all six voxel faces as the voxel space is aligned
+    ///with the \f$ X, Y \f$ and \f$ Z \f$ axes. Set \f$ A, B, C \f$ and \f$ D \f$ for each of the six voxel sides and solve the
+    ///equations for \f$ t \f$ :
+    ///\f[
+    ///t=-(Ap_0.x+Bp_0.y+Cp_0.z+D)/(Ad.x+Bd.y+Cd.z)
+    ///\f]
+    ///This results in at most three positive values for \f$ t \f$, and three corresponding voxel face intersection points.
+    ///Negative values indicate intersection points behind the ray's origin, while a zero denominator implies that the ray is
+    ///parallel to the corresponding voxel face.
+    ///
+    ///\par Iteration phase
+    ///
+    ///In the iteration phase compare the total distances \f$ \mathtt{next\_x, next\_y} \f$ and \f$ \mathtt{next\_z} \f$ to find the smallest.
+    ///Enter the corresponding voxel, and update that distance by adding its step size.
+    ///
+    ///The iteration phase calculates radiation attenuation (\f$ \tau \f$) and collects data from each voxel in \p vec:
+    /// - STAR mean based on foliage area in the voxel, aggregate voxel based method 
+    /// - Radiation attenuation (\f$ \tau \f$), pairwise comparison of shading tree segments
+    /// - Number tree segments
+    /// - Mean segment direction
+    /// - Foliage area
+    /// - Wood area
+    ///.
+    ///
+    ///\par Example
+    ///
+    ///The set-up
+    /// - Voxel size: \f$ \left(1.0 \times 1.0 \times 1.0\right)\f$
+    /// - Ray origin: (0.1, 0.4, 0.7)
+    /// - Normalized ray direction: (0.4402, 0.8805, 0.1761)
+    ///.
+    ///Initialization
+    /// - Start voxel: X=0, Y=0, Z=0
+    /// - Step direction: +1,+1,+1
+    /// - Calculate strides:
+    ///   - xmove = \f$ 1.0 / 0.4402 = 2.2716 \f$
+    ///   - ymove = \f$ 1.0 / 0.8805 = 1.1358 \f$
+    ///   - zmove = \f$ 1.0 / 0.1761 = 5.6789 \f$
+    ///.
+    /// - Calculate the first intersections:
+    ///   - next_x = 2.0444
+    ///   - next_y = 0.6815
+    ///   - next_z = 1.7037
+    ///.
+    ///Traversal
+    /// - Step 1:
+    ///  - Status: next_x = 2.0444, next_y = 0.6815, next_z = 1.7037
+    ///  - Compare: The mininum intersection Y =  0.6815
+    ///  - Action:
+    ///    - Y increase \f$ 0 \rightarrow 1 \f$ 
+    ///    - Current voxel (0,1,0)
+    ///    - next_y = 0.6815 + 1.1358 = 1.8173
+    /// - Step 2:
+    ///  - Status: next_x = 2.0444, next_y = 1.8173, next_z = 1.7037
+    ///  - Compare: The mininum intersection Z = 1.7037
+    ///  - Action:
+    ///   - Z increase \f$ 0 \rightarrow 1 \f$
+    ///   - Current voxel (0,1,1)
+    ///   - next_z = 1.7037+5.6789 = 7.3826
+    ///.
+    /// Repeat Step 2. until one voxel space slab is encountered
+    vector<VoxelMovement>& getRoute(vector<VoxelMovement>& vec,const Point& p0,const PositionVector& dir,const ParametricCurve& K,bool pairwise, bool dir_star)const;
+    ///\todo \htmlonly <span style="color:orange;">&#9679;</span>\endhtmlonly
+    /// Merge with getRoute(vector<VoxelMovement>& vec,const Point& p0,const PositionVector& dir,const ParametricCurve& K,bool pairwise, bool dir_star)const
+    ///
+    ///\overload  vector<VoxelMovement>& getRoute(vector<VoxelMovement> &vec, int startx, int starty, int startz, PositionVector dir)const;
+    ///\note Not tested or documented
+    vector<VoxelMovement>& getRoute(vector<VoxelMovement> &vec, int startx,int starty, int startz, PositionVector dir)const;
+    ///The extinction caused by the border stand
+    ///\param p0   Start point of the light beam
+    ///\param dir  Direction of the light beam, |dir| == 1 (!!!)
+    ///\return The extinction caused by the border stand
     double getBorderStandExtinction(const Point& p0, const PositionVector& dir)const;
     ///\brief Loop through VoxelBoxes and update VoxelBox values
-    ///\todo VoxelSpace::updateBoxValues() is called:
     ///
+    ///\invariant It seeems  VoxelBox::updateValues() is strictly local, no cross-voxel dependencies.
+    ///
+    ///\todo VoxelSpace::updateBoxValues() is called:
     /// - Every time in DumpCfTree(VoxelSpace &s, Tree<TS, BUD> &tree,int num_parts, bool wood)
     /// - In the LignumForest::GrowthLoop::setVoxelSpaceAndBorderForest()
-    /// .
-    /// It seeems  VoxelBox::updateValues() is strictly local, no cross-voxel dependencies.
-    /// However, VoxelSpace::updateBoxValues() loops each time 3D voxel space matrix.
-    /// \todo Minimize calls to VoxelSpace::updateBoxValues().
+    /// \todo  \htmlonly <span style="color:orange;">&#9679;</span>\endhtmlonly Minimize calls to VoxelSpace::updateBoxValues():
+    /// - VoxelSpace::updateBoxValues() loops each time 3D voxel space matrix.
     void updateBoxValues();  
     LGMdouble calculateTurbidLight(bool border_forest, bool self_shading = true);
     //diffuse is to calcluate the real diffuse from standard 1200, structureFlag is

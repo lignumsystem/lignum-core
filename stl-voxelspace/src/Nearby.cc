@@ -47,38 +47,39 @@ double NearbyShading(const Point& out, const PositionVector& direction, double H
 		     double Hbot, double LAIc, double LAIb, double k_conifer, double k_deciduous) {
 
   if(out.getZ() >= Htop - R_EPSILON)
-    return 1.0;    //no shading if out from ceiling
+    return 1.0;    //No extinction if out from ceiling
 
   // Inclination angle of the direction (from horizon),
   // length of direction = 1, hence z coordinate = sin(alpha)
   double sin_alpha = direction.getZ();
   if(maximum(1.0-sin_alpha,sin_alpha-1.0) < R_EPSILON)
-    return 1.0;   // vertical beam, cannot travel in surrounding 
+    return 1.0;   // No extinction if vertical beam, cannot travel in surrounding 
                   // (this check may be unnecessary)
 
   if(maximum(sin_alpha, -sin_alpha) < R_EPSILON)
     return 0.0;       //horizontal ray
- 
+
+  // [BorderDist]
   double Hpoint = out.getZ();
-  if(Hpoint < Hbot)  Hpoint = Hbot;  //Allows for possibility that the ray
-                   //comes out lower than bottom of surrounding canopy
-
-
+  //Allows for possibility that the ray comes out lower than bottom of surrounding canopy
+  if(Hpoint < Hbot)  Hpoint = Hbot;  
   double distance = (Htop - Hpoint) / sin_alpha;
-
+  // [BorderDist]
+  // [BorderExt]
   double dens_c  = LAIc/(Htop-Hbot);
   double dens_b  = LAIb/(Htop-Hbot);
-
   double optTh = (k_conifer*dens_c + k_deciduous*dens_b)*distance;
   double ext;
   if(optTh < R_HUGE)
     ext = exp(-optTh);
   else
     ext = 0.0;
-
+  return ext;
+  // [BorderExt]
+  
   // if(lage > 18)
   // return 1.0;
   //else 
-      return ext;
+  
 }
 }//end namespace voxelspace
