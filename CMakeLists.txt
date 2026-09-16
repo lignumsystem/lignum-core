@@ -32,6 +32,16 @@ cmake_minimum_required(VERSION 3.30)
 # cmake 3.23 for Xcode 13 recommends the policy CMP0114 (warning output)
 #cmake_policy(SET CMP0114 NEW)
 project(lignum-core DESCRIPTION "Lignum project core models")
+include(CMakePrintHelpers)
+
+message("lignum-core")
+message(STATUS "Inherited CMAKE_CXX_STANDARD: ${CMAKE_CXX_STANDARD}")
+cmake_print_variables(CMAKE_CXX_COMPILER)
+cmake_print_variables(CMAKE_CXX_COMPILER_ID) 
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+  
+endif()
+
 add_subdirectory(c++adt)
 add_subdirectory(Firmament)
 add_subdirectory(LEngine)

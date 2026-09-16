@@ -1,8 +1,6 @@
 cmake_minimum_required(VERSION 3.12)
 project(voxellib DESCRIPTION "3D Voxel space implementation")
-message("----------")
 message("VoxelSpace")
-message("----------")
 include(CMakePrintHelpers)
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
   cmake_print_variables(CMAKE_SOURCE_DIR)

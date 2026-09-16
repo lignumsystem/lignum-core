@@ -1,9 +1,10 @@
 cmake_minimum_required(VERSION 3.12)
 project(cxxadtlib DESCRIPTION "Generic utility classes")
-message("------")
 message("c++adt")
-message("------")
 find_package(HDF5 COMPONENTS C CXX HL REQUIRED)
+if (HDF5_FOUND)
+  message(STATUS "Found HDF5: ${HDF5_VERSION}")
+endif()
 include(CMakePrintHelpers)
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
   cmake_print_variables(CMAKE_SOURCE_DIR)
@@ -48,13 +49,18 @@ src/RectangularCuboid.cc
 )
 add_library(cxxadt::cxxadt ALIAS cxxadt)
 if(CMAKE_HOST_SYSTEM_NAME MATCHES "Darwin")
-  message("-----")
-  message("Note: using the C++14 standard (-std=c++14) for the HDF5 library")
-  message("The C++17 standard (-std=c++17, XCode clang default) will cause error")
+  message(STATUS "Using the C++14 standard for the HDF5 library")
+  message(STATUS "The C++17 standard (-std=c++17), XCode clang default) will cause error")
   #Keep the C++14 standard PRIVATE to this compilation,
   #otherwise the language standard may propagate unintentionally.
   #Many software packages like VTK and QT6 require C++17.
-  target_compile_options(cxxadt PRIVATE -std=c++14)
+  # Forces C++14 for the cxxadt library compilation only
+  target_compile_features(cxxadt PRIVATE cxx_std_14)
+  set_target_properties(cxxadt PROPERTIES
+    CXX_STANDARD_REQUIRED ON
+  )
+  get_target_property(TARGET_FEATURES cxxadt COMPILE_FEATURES)
+  message(STATUS "cxxadt compile features: ${TARGET_FEATURES}")
 endif()
 target_include_directories(cxxadt PRIVATE ${HDF5_INCLUDE_DIRS} "include" "/opt/local/include")
 set(CMAKE_INSTALL_PREFIX ".")

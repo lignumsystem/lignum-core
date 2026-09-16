@@ -1,8 +1,6 @@
 cmake_minimum_required(VERSION 3.12)
 project(Graphics DESCRIPTION "Simple LIGNUM tree visualization")
-message("--------")
 message("Graphics")
-message("--------")
 include(CMakePrintHelpers)
 if (CMAKEBUILD_TYPE STREQUAL "Debug")
   cmake_print_variables(CMAKE_SOURCE_DIR)

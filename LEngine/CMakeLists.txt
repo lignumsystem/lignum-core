@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.12)
 project(LEngine)
-
+message("LEngine")
 set(CMAKE_INSTALL_PREFIX ${PROJECT_SOURCE_DIR})
 
 set(LENGINE_INSTALL_INCLUDE_DIR ${CMAKE_CURRENT_LIST_DIR}/include)
