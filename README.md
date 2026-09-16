@@ -8,17 +8,15 @@ lignum-core
 ├── LEngine:        Lindenmayer system 
 ├── XMLTree:        LIGNUM tree XML representation 
 ├── c++adt:         General purpose classes
-├── qt-workbench:   LignumWb application
+├── qt-workbench:   LignumWb application for tree visualization
 ├── stl-lignum:     LIGNUM tree and generic algorithms
 └── stl-voxelspace: Voxel space
 
 7 directories
 ```
-
-The qt-workbench and its `LignumWb` application for visualizing simulated trees
-are now obsolete and will be removed. Because `LignumWb` relies on Qt4 - which 
-lacks support for Apple Silicon - it has been incompatible with macOS since 
-the release of macOS Tahoe. `LignumWb` has been superseded by LignumVTK.
+macOS 27 Golden Gate marks the final stop for Intel apps. As a result, qt-workbench and its `LignumWb` 
+application will be removed; they rely on Qt4, which does not support Apple silicon. `LignumWb` has been
+superseded by LignumVTK.
 
 ## Operating system requirements
 The LIGNUM system is developed for macOS, with Ubuntu Linux used to verify software portability.
@@ -39,12 +37,30 @@ Install also command line tools:
 Xcode is a mandatory dependency for the MacPorts system.
 
 ### MacPorts
-Install from [MacPorts](https://www.macports.org) website. Once installed
+Install MacPorts from [MacPorts](https://www.macports.org) website. Once installed
 use the `port` command line interface in Terminal for package management.
+
+To list available ports for a specific program or library use the following template,
+for example list all Python versions supported:
+
+	 port search --name --line --regex '^python\d*$'
+	 
 Query *notes* or *info* for quick package details, for example:
 
 	port notes python314
 	port info python314
+
+Each major macOS release requires new macOS-specific MacPorts version and updated packages.
+Fortunately, existing installed ports remain functional and usable during this transition,
+allowing this migration to be made at a more convenient or appropriate time. Indeed, waiting
+allows some time for package compatibility updates.
+
+To remove all installed packages and compilation work:
+
+	sudo port uninstall installed
+	sudo port reclaim
+	
+This leaves only the MacPorts  installation and configuration on the system.
 
 ### CMake
 Use CMake to manage the configuration and build process for lignum-core and 
@@ -54,7 +70,7 @@ two main versions:
 	sudo port install cmake       #CMake 3.x
 	sudo port install cmake-devel #CMake 4.x
 
-`cmake` is the standard, stable release version and `cmake-devel` tracks the latest features and changes.
+`cmake` is the stable release version and `cmake-devel` tracks the latest features and changes.
 These packages are mutually exclusive; you can only install one.
 
 ### HDF5
@@ -69,16 +85,21 @@ HDF5 facilitates seamless data analysis for high-level languages like R or Pytho
 Both offer dedicated packages — `rhdf5` and `h5py`, respectively — that implement the 
 HDF5 API for reading, writing, and inspecting data.
 
-### Qt
-Simulated trees are saved and read in XML format via the QtXML module in [Qt](https://www.qt.io),
-ensuring compatibility with both Qt5 and Qt6.
+### Qt Toolkit
+Simulated trees are saved and read in XML format implemented with the [Qt XML module](https://doc.qt.io/qt-6/qtxml-index.html),
+ensuring compatibility with both Qt5 and Qt6. The Qt XML module module is part of the foundational ports
+`qt5-qtbase` and `qt6-qtbase`:
 
-#### Qt5 
-Qt5 installation is straightforward:
+	sudo port install qt5-qtbase #Qt5 version
+	sudo port install qt6-qtbase #Qt6 version
 
-	sudo port install qt5
+MacPorts allows both Qt5 and Qt6 to co-exists.
+
+Optionally, both Qt5 and Qt6 have *meta-ports* that will trigger the installation of the whole
+Qt library system. The Qt5 installation is straightforward:
+
+	sudo port install qt5 #Qt5 libraries and headers
 	
-#### Qt6
 Qt6 installation is more complex because the `qt6-qtwebengine` uses Metal toolchain,
 which is no longer bundled with Xcode 26. First, install Metal:
 
@@ -86,17 +107,24 @@ which is no longer bundled with Xcode 26. First, install Metal:
 	sudo xcodebuild -downloadComponent MetalToolchain
 	sudo xcodebuild -showComponent MetalToolchain
 	sudo rm -f "$(sudo --user=macports getconf DARWIN_USER_TEMP_DIR)/xcrun_db"
-	
+
 To install Qt6:
-	
-	sudo port install qt6
 
-#### Troubleshooting Qt6 installation issues
+	sudo port install qt6 #Qt6 libraries and headers
+
 If Qt6 installation fails, try restarting Mac; this clears the `xcrun` cache in Xcode, 
-which often resolves the issue. The instructions for Qt6 are from the article in MacPorts for 
-[Metal toolchain](https://trac.macports.org/wiki/TahoeProblems#MetaltoolchainisnolongerbundledinXcode).
+which may resolve the issue (see [Metal toolchain](https://trac.macports.org/wiki/TahoeProblems#MetaltoolchainisnolongerbundledinXcode)).
 
-##### Error: Failed to destroot qt6-qtwebengine: xinstall:
+#### Failed to build qt5-qtwebengine: command execution failed
+This error can occur because of an incompatibility between modern Apple Clang compilers
+and older Chromium source code embedded inside qt5-qtwebengine. Use an older `clang-17`
+bundled with MacPorts. 
+
+	sudo port install clang-17
+	sudo port clean qt5-qtwebengine
+	sudo port install qt5-qtwebengine
+
+#### Error: Failed to destroot qt6-qtwebengine: xinstall:
 This error occurs because MacPorts' staging system (`xinstall`) attempts to copy compiled files into
 the destination directory (destroot) before the required nested folder path for QtWebEngineCore.framework
 resources has been created. MacPorts does not generate this directory structure automatically.
@@ -104,8 +132,6 @@ resources has been created. MacPorts does not generate this directory structure 
 Solution: create the necessary folder path in the error message manually, for example:
 
 	sudo mkdir -p /opt/local/var/macports/build/qt6-qtwebengine-e1fa6a31/work/destroot/opt/local/libexec/qt6/lib/QtWebEngineCore.framework/Resources/
-
-The solution was found with Google AI.
 
 ### LignumVTK and VTK
 LignumVTK now replaces `LignumWb` for visualization. The [VTK](https://vtk.org) Visualization Toolkit converts 
@@ -129,48 +155,64 @@ typeset mathematical equations and notations:
 	sudo port install doxygen +qt5     #doxygen with Qt5 dependency
 	sudo port install doxygen-launcher #doxygen and doxywizard GUI
 	sudo port install graphviz         #Graphviz and dot for Doxygen figures
-	sudo port install texlive +full    #LaTeX full installation 
+	sudo port install texlive [+full]  #LaTeX [full] installation 
 
-Doxygen documentation uses the built-in LaTeX mathematical environment only. 
-Auxiliary packages such as *amstex* are not used.
+The `doxygen` port provides the stable version, whereas the `doxygen-devel` package
+tracks the latest Doxygen development releases.
 
 To produce Doxygen software documentation use the project Doxyfile:
 
 	doxygen Doxyfile 2> errors.txt
 	open  DoxygenDoc/html/index.html   #Final documentation
 
-Project Doxyfiles specify *DoxygenDoc* as the destination for final documents. 
+Each project's Doxyfile sets the *DoxygenDoc* directory as the destination for final documents.
 
-#### Troubleshooting LaTeX installation issues 
-LaTeX installation or ugrade can fail because the `jxrlib` CMake configuration is
+Doxygen documentations use the built-in LaTeX mathematical environment only. 
+Auxiliary packages such as *amstex* are not used.
+
+#### LaTeX installation issues 
+The default `texlive` installation is sufficient for writing academic journal articles. 
+Upgrading to the *+full* variant consumes an additional 8+ GB of disk space for packages
+rarely needed. Furthermore, the *+full* variant introduces a complex dependency tree that can force
+hours of local source file compilation. These builds are  prone to errors, particularly following
+the launch of a major macOS version when package compatibility is still being updated.
+
+#### jxrlib installation fails
+LaTeX installation or ugrade can fail because the CMake configuration for `jxrlib` is
 incompatible with CMake 4. Temporarily downgrade to CMake 3 and reinstall `texlive`:
 
 	sudo port uninstall cmake-devel #CMake 4
 	sudo port install cmake         #CMake 3
-	sudo port install texlive       #Alternatively: port upgrade
+	sudo port install texlive       #Alternatively: sudo port upgrade texlive
 	
 Finally, replace CMake 3 with CMake 4. 
 
 ### Python
 Some C++ projects use Cython to expose their software as Python packages. 
-To set up this environment, install Python, create a virtual environment, 
-and install Cython along with required packages.
+To set up Python environment: 
+
++ Install Python
++ Create a Python virtual environment
++ Install Cython 
++ Install the required packages
+
+Follow the Terminal command line sequence:
 
 	sudo port install python312                               #Python 3.12
-	/opt/local/bin/python3.12 -m venv ~/venv/lignumsystem     #Create virtual environment
+	/opt/local/bin/python3.12 -m venv ~/venv/lignumsystem     #Create a Python virtual environment
 	source ~/venv/lignumsystem/bin/activate                   #Activate the virtual environment
 	(lignumsystem) pip install --upgrade pip setuptools wheel #Core packaging tools for Python 3.12
 	(lignumsystem) pip install Cython                         #Cython for Python 3.12
-	(lignumsystem) pip install -r requirements.txt            #Install required python packages
+	(lignumsystem) pip install -r requirements.txt            #Install the required python packages
 
 The [requirements.txt](https://github.com/lignumsystem/lignum-core/blob/master/requirements.txt) 
-file is available in *lignum-core*.
+file is available in the *lignum-core* directory.
 
-The build process for C++ extensions with Cython is in *setup.py* files:
+The build processes for C++ extensions with Cython are in *setup.py* files:
 	
 	(lignumsystem) python3 setup.py build_ext --inplace
 	
-See instructions for each use case.
+See detailed instructions for each use case.
 
 > [!TIP]
 > In the example the *lignumsystem* virtual environment is in the *~/venv* directory, where
@@ -178,15 +220,14 @@ See instructions for each use case.
 > easier to locate and manage.
 
 ### R
-R is used in data analysis in the LIGNUM system. [RStudio](https://posit.co/products/open-source/rstudio/) 
-is a popular choice and it has instructions for R system installation.
+`R` is used in data analysis in the LIGNUM system. Download `R` from [CRAN](https://cran.r-project.org).
+`RStudio` is a popular choice to replace the built-in `R GUI`. Download `RStudio` from 
+[Posit](https://posit.co/products/open-source/rstudio/).
 
-The [tidyverse](https://www.tidyverse.org) is a collection of R packages 
+[tidyverse](https://www.tidyverse.org) is a collection of `R` libraries 
 for data science:
 	
-	install.packages("tidyverse") #Function in R
-
-RStudio features a built-in GUI that simplifies package management and installation.
+	install.packages("tidyverse") #Function call in the R console
 
 ### Emacs
 Emacs is a popular text editor in software engineering. Download and install
