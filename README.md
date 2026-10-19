@@ -147,7 +147,7 @@ Install from [ParaView](https://www.paraview.org) home page.
 > [!IMPORTANT]
 > Choose the right processor architecture for macOS: Intel or Apple Silicon.
 
-### Doxygen 
+### Doxygen and LaTeX
 Documentation of the lignum-core and the LIGNUM system applications 
 is done with Doxygen documentation blocks in the software. LaTeX is used to 
 typeset mathematical equations and notations:
@@ -170,13 +170,6 @@ Each project's Doxyfile sets the *DoxygenDoc* directory as the destination for f
 Doxygen documentations use the built-in LaTeX mathematical environment only. 
 Auxiliary packages such as *amstex* are not used.
 
-#### LaTeX installation issues 
-The default `texlive` installation is sufficient for writing academic journal articles. 
-Upgrading to the *+full* variant consumes an additional 8+ GB of disk space for packages
-rarely needed. Furthermore, the *+full* variant introduces a complex dependency tree that can force
-hours of local source file compilation. These builds are  prone to errors, particularly following
-the launch of a major macOS version when package compatibility is still being updated.
-
 #### jxrlib installation fails
 LaTeX installation or ugrade can fail because the CMake configuration for `jxrlib` is
 incompatible with CMake 4. Temporarily downgrade to CMake 3 and reinstall `texlive`:
@@ -186,6 +179,28 @@ incompatible with CMake 4. Temporarily downgrade to CMake 3 and reinstall `texli
 	sudo port install texlive       #Alternatively: sudo port upgrade texlive
 	
 Finally, replace CMake 3 with CMake 4. 
+
+### LaTeX for academic journals
+The default MacPorts `texlive` package installation is sufficient for writing academic journal articles. 
+Upgrading to the *+full* variant consumes an additional 8+ GB of disk space for packages
+rarely needed. Furthermore, the *+full* variant introduces a complex dependency tree that can force
+hours of local source file compilation. These builds are  prone to errors, particularly following
+the launch of a major macOS version when package compatibility is still being updated.
+
+The *endfloat* and *caption* packages provide the flexibility to position tables and figures anywhere
+within a manuscript, typically at the very end:
+
+	sudo port install texlive-latex-extra
+	
+BibTeX is the original bibliography management system, and historically allows only for the ASCII 
+character set. The modern alternative is the UTF-8 native BibLaTeX with Biber:
+
+	sudo port install texlive-bibtex-extra
+	sudo port install biblatex-biber
+	biber -v  #Command line check 
+
+Journals that accept LaTeX manuscripts define the specific preambles — whether proprietary or
+built-in — and bibliography style files required for submission.
 
 ### Python
 Some C++ projects use Cython to expose their software as Python packages. 
