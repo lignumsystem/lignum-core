@@ -115,24 +115,6 @@ To install Qt6:
 If Qt6 installation fails, try restarting Mac; this clears the `xcrun` cache in Xcode, 
 which may resolve the issue (see [Metal toolchain](https://trac.macports.org/wiki/TahoeProblems#MetaltoolchainisnolongerbundledinXcode)).
 
-#### Failed to build qt5-qtwebengine: command execution failed
-This error can occur because of an incompatibility between modern Apple Clang compilers
-and older Chromium source code embedded inside qt5-qtwebengine. Use an older `clang-17`
-bundled with MacPorts. 
-
-	sudo port install clang-17
-	sudo port clean qt5-qtwebengine
-	sudo port install qt5-qtwebengine
-
-#### Error: Failed to destroot qt6-qtwebengine: xinstall:
-This error occurs because MacPorts' staging system (`xinstall`) attempts to copy compiled files into
-the destination directory (destroot) before the required nested folder path for QtWebEngineCore.framework
-resources has been created. MacPorts does not generate this directory structure automatically.
-
-Solution: create the necessary folder path in the error message manually, for example:
-
-	sudo mkdir -p /opt/local/var/macports/build/qt6-qtwebengine-e1fa6a31/work/destroot/opt/local/libexec/qt6/lib/QtWebEngineCore.framework/Resources/
-
 ### LignumVTK and VTK
 LignumVTK now replaces `LignumWb` for visualization. The [VTK](https://vtk.org) Visualization Toolkit converts 
 LIGNUM trees and voxel space data into VTK files for final visualization in [ParaView](https://www.paraview.org).
@@ -169,16 +151,6 @@ Each project's Doxyfile sets the *DoxygenDoc* directory as the destination for f
 
 Doxygen documentations use the built-in LaTeX mathematical environment only. 
 Auxiliary packages such as *amstex* are not used.
-
-#### jxrlib installation fails
-LaTeX installation or ugrade can fail because the CMake configuration for `jxrlib` is
-incompatible with CMake 4. Temporarily downgrade to CMake 3 and reinstall `texlive`:
-
-	sudo port uninstall cmake-devel #CMake 4
-	sudo port install cmake         #CMake 3
-	sudo port install texlive       #Alternatively: sudo port upgrade texlive
-	
-Finally, replace CMake 3 with CMake 4. 
 
 ### LaTeX for academic journals
 The default MacPorts `texlive` package installation is sufficient for writing academic journal articles. 
@@ -233,6 +205,56 @@ See detailed instructions for each use case.
 > In the example the *lignumsystem* virtual environment is in the *~/venv* directory, where
 > the tilde (~) denotes home directory. Centralizing environments this way makes them 
 > easier to locate and manage.
+
+### MacPorts: port installation issues
+
+#### Cannot activate openldap
+Since `openldap` is needed only  as a library dependency for gnupg2 (and are not running an LDAP server daemon),
+tell MacPorts not to install /Library/LaunchDaemons symlinks, then rebuild `openldap` from source so that
+/Library/LaunchDaemons/org.macports.slapd.plist is excluded from the package.
+
+1. Add *startupitem_install no* to /opt/local/etc/macports/macports.conf:
+
+	echo "startupitem_install no" | sudo tee -a /opt/local/etc/macports/macports.conf
+
+2. Remove the old openldap archive and reinstall from source (-s):
+
+	sudo port clean --all openldap
+	sudo port -f uninstall openldap
+	sudo port -s install openldap
+
+On recent macOS versions (such as Sequoia/Tahoe/Golden Gate), Apple tightened security on /Library/LaunchDaemons/ 
+(including background item management and stricter `clonefile()`, i.e. symlink ownership rules). When MacPorts
+tries to ``clonefile()` the extracted symlink into /Library/LaunchDaemons/ &#8212;  or if /Library/LaunchDaemons
+has restrictive flags/ACLs or a pre-existing file &#8212; macOS returns EPERM (not owner). 
+
+#### Failed to build qt5-qtwebengine: command execution failed
+This error can occur because of an incompatibility between modern Apple Clang compilers
+and older Chromium source code embedded inside qt5-qtwebengine. Use an older `clang-17`
+bundled with MacPorts. 
+
+	sudo port install clang-17
+	sudo port clean qt5-qtwebengine
+	sudo port install qt5-qtwebengine
+
+#### Error: Failed to destroot qt6-qtwebengine: xinstall:
+This error occurs because MacPorts' staging system (`xinstall`) attempts to copy compiled files into
+the destination directory (destroot) before the required nested folder path for QtWebEngineCore.framework
+resources has been created. MacPorts does not generate this directory structure automatically.
+
+Solution: create the necessary folder path in the error message manually, for example:
+
+	sudo mkdir -p /opt/local/var/macports/build/qt6-qtwebengine-e1fa6a31/work/destroot/opt/local/libexec/qt6/lib/QtWebEngineCore.framework/Resources/
+	
+#### jxrlib installation fails
+LaTeX installation or ugrade can fail because the CMake configuration for `jxrlib` is
+incompatible with CMake 4. Temporarily downgrade to CMake 3 and reinstall `texlive`:
+
+	sudo port uninstall cmake-devel #CMake 4
+	sudo port install cmake         #CMake 3
+	sudo port install texlive       #Alternatively: sudo port upgrade texlive
+	
+Finally, replace CMake 3 with CMake 4. 
 
 ### R
 `R` is used in data analysis in the LIGNUM system. Download `R` from [CRAN](https://cran.r-project.org).
